@@ -28,7 +28,7 @@ export function ChatPopup({ onClose }: ChatPopupProps) {
   const [feedback, setFeedback] = useState<{ type: FeedbackType; message: string } | null>(null);
   
   // ✅ DRY: Centralized hooks
-  const { getToken, canLoad } = useHCaptcha();
+  const { getToken, canLoad, isReady } = useHCaptcha();
   const { acceptAll, hasConsent } = useCookieConsent();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,17 +50,34 @@ export function ChatPopup({ onClose }: ChatPopupProps) {
       return;
     }
 
+    // ✅ FIX: Check if hCaptcha is ready
+    if (!isReady) {
+      console.warn('⚠️ hCaptcha not ready yet, waiting...');
+      setFeedback({ 
+        type: "error", 
+        message: "Verificatie wordt geladen... Probeer zo opnieuw." 
+      });
+      return;
+    }
+
     setIsSending(true);
 
     try {
       // ✅ Get hCaptcha token (spam prevention)
+      console.log('🔐 Getting hCaptcha token...');
       const captchaToken = await getToken();
       
       if (!captchaToken) {
-        setFeedback({ type: "error", message: "Verificatie mislukt. Probeer opnieuw." });
+        console.error('❌ No captcha token received');
+        setFeedback({ 
+          type: "error", 
+          message: "Verificatie mislukt. Wacht even en probeer opnieuw." 
+        });
         setIsSending(false);
         return;
       }
+      
+      console.log('✅ hCaptcha token received, sending message...');
 
       // ✅ Send to backend
       const response = await apiFetch<{ success: boolean; message?: string }>(
