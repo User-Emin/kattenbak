@@ -30,7 +30,7 @@ const createOrderSchema = z.object({
       postalCode: z.string().min(6, 'Postal code required'),
       country: z.string().default('NL'),
     }),
-    paymentMethod: z.enum(['ideal', 'creditcard', 'bancontact', 'sofort']).default('ideal'),
+    paymentMethod: z.enum(['ideal', 'creditcard', 'paypal', 'bancontact', 'sofort', 'sepa']).default('ideal'),
   }),
 });
 

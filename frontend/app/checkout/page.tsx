@@ -16,6 +16,7 @@ import { Loader2, CreditCard, Cookie, AlertCircle } from "lucide-react";
 import { ProductImage } from "@/components/ui/product-image";
 import { getProductImage } from "@/lib/image-config";
 import { useCookieConsent } from "@/lib/hooks/use-cookie-consent";
+import { PaymentMethodSelector, type PaymentMethodType } from "@/components/payment/payment-method-selector";
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -30,6 +31,7 @@ function CheckoutContent() {
   const [error, setError] = useState<string | null>(null);
   const [saveData, setSaveData] = useState(true);
   const [showCookieWarning, setShowCookieWarning] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethodType>('ideal'); // ✅ Payment method state
 
   const [formData, setFormData] = useState({
     firstName: customerData?.firstName || "",
@@ -104,7 +106,7 @@ function CheckoutContent() {
           postalCode: formData.postalCode,
           country: formData.country,
         },
-        paymentMethod: 'ideal',
+        paymentMethod: paymentMethod, // ✅ DRY: Use selected payment method
       };
 
       const result = await ordersApi.create(orderData);
@@ -369,8 +371,18 @@ function CheckoutContent() {
 
                 <Separator variant="float" spacing="md" />
 
+                {/* ✅ Payment Method Selector - RECHTS BOVEN BUTTON */}
+                <div className="mt-6">
+                  <PaymentMethodSelector
+                    selectedMethod={paymentMethod}
+                    onMethodChange={setPaymentMethod}
+                  />
+                </div>
+
+                <Separator variant="float" spacing="sm" />
+
                 {/* CTA Button rechts - Prominent */}
-                <div className="mt-8">
+                <div className="mt-6">
                   <Button type="submit" variant="cta" size="lg" fullWidth disabled={isProcessing} loading={isProcessing} leftIcon={<CreditCard className="h-5 w-5" />}>
                     Betalen - {formatPrice(total)}
                   </Button>

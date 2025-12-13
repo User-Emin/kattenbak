@@ -113,11 +113,15 @@ class Server {
     const contactRoutes = (await import('./routes/contact.routes')).default;
     this.app.use('/api/v1/contact', contactRoutes);
     
+    // Payment methods routes - DRY: Fetch available Mollie payment methods
+    const paymentMethodsRoutes = (await import('./routes/payment-methods.routes')).default;
+    this.app.use('/api/v1/payment-methods', paymentMethodsRoutes);
+    
     // Webhook routes
     const webhookRoutes = (await import('./routes/webhook.routes')).default;
     this.app.use('/api/v1/webhooks', webhookRoutes);
 
-    logger.info('✅ Routes initialized (admin + products + orders + returns + contact + webhooks)');
+    logger.info('✅ Routes initialized (admin + products + orders + returns + contact + payment-methods + webhooks)');
   }
 
   /**

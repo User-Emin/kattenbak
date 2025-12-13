@@ -13,17 +13,32 @@ export class MollieService {
   private static client = createMollieClient({ apiKey: env.MOLLIE_API_KEY });
 
   /**
+   * Get available payment methods
+   */
+  static async getAvailableMethods(): Promise<string[]> {
+    try {
+      const methods = await this.client.methods.list();
+      return methods.map((method: any) => method.id);
+    } catch (error) {
+      logger.error('Failed to fetch Mollie payment methods:', error);
+      // Fallback to common methods
+      return ['ideal', 'creditcard', 'paypal', 'bancontact', 'sepa'];
+    }
+  }
+
+  /**
    * Create payment
    */
   static async createPayment(
     orderId: string,
     amount: number,
     description: string,
-    redirectUrl: string
+    redirectUrl: string,
+    paymentMethod?: string
   ): Promise<Payment> {
     try {
-      // Create Mollie payment
-      const molliePayment = await this.client.payments.create({
+      // Create Mollie payment with optional method
+      const paymentData: any = {
         amount: {
           currency: 'EUR',
           value: amount.toFixed(2),
@@ -34,7 +49,14 @@ export class MollieService {
         metadata: {
           orderId,
         },
-      });
+      };
+
+      // Add payment method if specified
+      if (paymentMethod) {
+        paymentData.method = paymentMethod;
+      }
+
+      const molliePayment = await this.client.payments.create(paymentData);
 
       // Store payment in database
       const payment = await prisma.payment.create({
@@ -192,6 +214,8 @@ export class MollieService {
       paypal: PaymentMethod.PAYPAL,
       sofort: PaymentMethod.SOFORT,
       banktransfer: PaymentMethod.BANK_TRANSFER,
+      directdebit: PaymentMethod.BANK_TRANSFER, // SEPA
+      sepadirectdebit: PaymentMethod.BANK_TRANSFER, // SEPA alternative
     };
 
     return methodMap[method] || null;
