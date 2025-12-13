@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ChatPopup } from "@/components/ui/chat-popup";
 import { Separator } from "@/components/ui/separator";
 import { ProductVideo } from "@/components/ui/product-video";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { ArrowRight, Play, Check, MessageCircle, ChevronDown, ChevronUp, Package, Volume2, Sparkles, Smartphone } from "lucide-react";
 import type { Product } from "@/types/product";
 import { API_CONFIG, SITE_CONFIG, apiFetch } from "@/lib/config";
