@@ -138,9 +138,9 @@ export default function HomePage() {
       {/* USP Section - COMPACT ZIGZAG - DYNAMISCH VIA ADMIN */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-12 text-gray-900">
+          <SectionHeading className="mb-12">
             Waarom Kiezen Voor Deze Kattenbak?
-          </h2>
+          </SectionHeading>
           
           {/* Feature 1 - COMPACT ZIGZAG LINKS */}
           <div className="grid md:grid-cols-2 gap-10 items-center mb-16">
@@ -174,7 +174,7 @@ export default function HomePage() {
             <div className="order-1 md:order-2">
               <div className="flex items-center gap-4 mb-4">
                 <Volume2 className="h-10 w-10 text-black" />
-                <h3 className="text-xl font-semibold text-gray-900">{usps.feature2.title}</h3>
+                <h3 className="text-xl font-light text-gray-900">{usps.feature2.title}</h3>
               </div>
               <p className="text-sm text-gray-600 leading-relaxed">{usps.feature2.description}</p>
             </div>
@@ -212,7 +212,7 @@ export default function HomePage() {
       {/* FAQ Section */}
       <section className="py-20">
         <div className="container mx-auto px-6 lg:px-12 max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-4 text-gray-900">Veelgestelde Vragen</h2>
+          <SectionHeading className="mb-4">Veelgestelde Vragen</SectionHeading>
           <p className="text-base text-gray-600 text-center mb-12">
             Alles wat je moet weten
           </p>

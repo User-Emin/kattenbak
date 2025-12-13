@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Shield, Truck, Star, Check, Zap, Sparkles, Package } from "lucide-react";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 interface ProductUsp {
   icon: string;
@@ -41,9 +42,9 @@ const COLOR_MAP = {
 export function ProductUsps({ usps }: ProductUspsProps) {
   return (
     <div className="max-w-5xl mx-auto mb-16 relative">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900">
+      <SectionHeading className="mb-12">
         Waarom deze kattenbak?
-      </h2>
+      </SectionHeading>
       
       <div className="space-y-12">
         {usps.map((usp, index) => {
@@ -65,7 +66,7 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                     <IconComponent className={`h-12 w-12 flex-shrink-0 ${colorClass}`} />
                     
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{usp.title}</h3>
+                      <h3 className="text-xl font-light text-gray-900 mb-2">{usp.title}</h3>
                       <p className="text-gray-600 text-lg leading-relaxed">{usp.description}</p>
                     </div>
                   </div>

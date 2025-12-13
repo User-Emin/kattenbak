@@ -7,6 +7,7 @@ import { ProductImage } from "@/components/ui/product-image";
 import { ProductUsps } from "@/components/products/product-usps";
 import { ProductVideo } from "@/components/ui/product-video";
 import { Separator } from "@/components/ui/separator";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { ChatPopup } from "@/components/ui/chat-popup";
 import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
@@ -224,7 +225,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         {/* Product Description - DIRECT ZICHTBAAR CENTRAAL */}
         <div className="max-w-4xl mx-auto text-center mb-12">
-          <h2 className="text-xl md:text-2xl font-bold mb-6 text-gray-900">Over dit product</h2>
+          <SectionHeading className="mb-6" size="sm">
+            Over dit product
+          </SectionHeading>
           
           {/* DRY: Product Demo Video - EXACT zoals homepage, direct onder titel */}
           {product.videoUrl && (
