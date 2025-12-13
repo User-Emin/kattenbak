@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { verifyCaptcha } from '../middleware/captcha.middleware';
+import prisma from '../lib/prisma';
 
 const router = Router();
 
@@ -12,21 +13,9 @@ const contactMessageSchema = z.object({
   captchaToken: z.string().min(1, 'hCaptcha token is verplicht'),
 });
 
-// In-memory storage voor demo (in productie: database)
-interface ContactMessage {
-  id: string;
-  email: string;
-  message: string;
-  orderNumber?: string;
-  createdAt: Date;
-  status: 'new' | 'read' | 'replied';
-}
-
-const messages: ContactMessage[] = [];
-
 /**
  * POST /api/v1/contact
- * Verstuur contact bericht
+ * Verstuur contact bericht (DRY: Database storage)
  */
 router.post('/', async (req, res) => {
   try {
@@ -51,18 +40,20 @@ router.post('/', async (req, res) => {
 
     console.log('✅ hCaptcha passed (GDPR-compliant):', { score: captchaResult.score });
 
-    const newMessage: ContactMessage = {
-      id: `MSG-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      email: validatedData.email,
-      message: validatedData.message,
-      orderNumber: validatedData.orderNumber,
-      createdAt: new Date(),
-      status: 'new',
-    };
+    // DRY: Save to database
+    const newMessage = await prisma.contactMessage.create({
+      data: {
+        email: validatedData.email,
+        message: validatedData.message,
+        orderNumber: validatedData.orderNumber,
+        captchaToken: validatedData.captchaToken,
+        captchaScore: captchaResult.score,
+        ipAddress: req.ip,
+        userAgent: req.get('user-agent'),
+      },
+    });
 
-    messages.unshift(newMessage);
-
-    console.log('📧 Nieuw contact bericht:', {
+    console.log('📧 Nieuw contact bericht (database):', {
       id: newMessage.id,
       email: newMessage.email,
       orderNumber: newMessage.orderNumber,
@@ -96,47 +87,81 @@ router.post('/', async (req, res) => {
 
 /**
  * GET /api/v1/contact
- * Haal alle berichten op (voor admin)
+ * Haal alle berichten op (voor admin) - DRY: Database
  */
-router.get('/', (req, res) => {
-  res.json({
-    success: true,
-    data: messages,
-    total: messages.length,
-  });
+router.get('/', async (req, res) => {
+  try {
+    const messages = await prisma.contactMessage.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+
+    res.json({
+      success: true,
+      data: messages,
+      total: messages.length,
+    });
+  } catch (error) {
+    console.error('Get messages error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server fout bij ophalen berichten',
+    });
+  }
 });
 
 /**
  * PATCH /api/v1/contact/:id/status
- * Update status van bericht
+ * Update status van bericht - DRY: Database
  */
-router.patch('/:id/status', (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
+router.patch('/:id/status', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
 
-  const message = messages.find((m) => m.id === id);
-  
-  if (!message) {
-    return res.status(404).json({
+    if (!['new', 'read', 'replied'].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Ongeldige status',
+      });
+    }
+
+    const updateData: any = { status };
+    
+    // Track timestamps
+    const existing = await prisma.contactMessage.findUnique({ where: { id } });
+    
+    if (!existing) {
+      return res.status(404).json({
+        success: false,
+        message: 'Bericht niet gevonden',
+      });
+    }
+    
+    if (status === 'read' && !existing.readAt) {
+      updateData.readAt = new Date();
+    }
+    
+    if (status === 'replied' && !existing.repliedAt) {
+      updateData.repliedAt = new Date();
+    }
+
+    const updated = await prisma.contactMessage.update({
+      where: { id },
+      data: updateData,
+    });
+
+    res.json({
+      success: true,
+      message: 'Status bijgewerkt',
+      data: updated,
+    });
+  } catch (error) {
+    console.error('Update status error:', error);
+    res.status(500).json({
       success: false,
-      message: 'Bericht niet gevonden',
+      message: 'Server fout bij updaten status',
     });
   }
-
-  if (!['new', 'read', 'replied'].includes(status)) {
-    return res.status(400).json({
-      success: false,
-      message: 'Ongeldige status',
-    });
-  }
-
-  message.status = status;
-
-  res.json({
-    success: true,
-    message: 'Status bijgewerkt',
-    data: message,
-  });
 });
 
 export default router;

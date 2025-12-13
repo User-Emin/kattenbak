@@ -467,6 +467,41 @@ model AuditLog {
 }
 
 // ============================================
+// CONTACT & MESSAGING
+// ============================================
+
+model ContactMessage {
+  id            String      @id @default(cuid())
+  
+  // Message details
+  email         String
+  message       String      @db.Text
+  orderNumber   String?     @map("order_number")
+  
+  // Status tracking
+  status        String      @default("new") // new, read, replied
+  
+  // hCaptcha verification (GDPR-compliant)
+  captchaToken  String?     @map("captcha_token")
+  captchaScore  Float?      @map("captcha_score")
+  
+  // Request metadata
+  ipAddress     String?     @map("ip_address")
+  userAgent     String?     @map("user_agent")
+  
+  // Timestamps
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  readAt        DateTime?   @map("read_at")
+  repliedAt     DateTime?   @map("replied_at")
+  
+  @@map("contact_messages")
+  @@index([status])
+  @@index([createdAt])
+  @@index([email])
+}
+
+// ============================================
 // SYSTEM CONFIGURATION
 // ============================================
 
