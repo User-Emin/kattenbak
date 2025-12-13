@@ -1,0 +1,166 @@
+"use client";
+
+import { useCart } from '@/context/cart-context';
+import { Button } from '@/components/ui/button';
+import { ProductImage } from '@/components/ui/product-image';
+import { Separator } from '@/components/ui/separator';
+import { formatPrice } from '@/lib/utils';
+import { getProductImage } from '@/lib/image-config';
+import { X, Plus, Minus, ShoppingCart, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+
+export default function CartPage() {
+  const { items, itemCount, subtotal, removeItem, updateQuantity } = useCart();
+
+  if (itemCount === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center max-w-md px-6">
+          <ShoppingCart className="h-20 w-20 mx-auto mb-6 text-gray-300" />
+          <h1 className="text-3xl font-light mb-4 text-gray-900">Je winkelwagen is leeg</h1>
+          <p className="text-gray-600 mb-8">
+            Ontdek onze premium zelfreinigende kattenbak
+          </p>
+          <Link href="/">
+            <Button size="lg" variant="primary" rightIcon={<ArrowRight className="h-5 w-5" />}>
+              Verder Winkelen
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const shipping = subtotal >= 50 ? 0 : 5.95;
+  const tax = (subtotal + shipping) * 0.21;
+  const total = subtotal + shipping + tax;
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
+        <h1 className="text-4xl font-normal mb-2">Winkelwagen</h1>
+        <p className="text-gray-600 mb-8">{itemCount} {itemCount === 1 ? 'product' : 'producten'}</p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Cart Items */}
+          <div className="lg:col-span-2 space-y-6">
+            {items.map((item, index) => (
+              <div key={item.product.id}>
+                <div className="flex gap-6">
+                  <div className="relative w-32 h-32 bg-gray-50 rounded overflow-hidden flex-shrink-0">
+                    <ProductImage
+                      src={getProductImage(item.product.images)}
+                      alt={item.product.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h2 className="text-xl font-normal mb-1">
+                          {item.product.name}
+                        </h2>
+                        <p className="text-gray-600">
+                          {formatPrice(item.product.price)} per stuk
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => removeItem(item.product.id)}
+                        className="text-gray-400 hover:text-gray-600 transition p-2"
+                        aria-label="Verwijder"
+                      >
+                        <X className="h-5 w-5" />
+                      </button>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                          className="w-10 h-10 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition"
+                        >
+                          <Minus className="h-4 w-4" />
+                        </button>
+
+                        <span className="w-12 text-center font-medium">
+                          {item.quantity}
+                        </span>
+
+                        <button
+                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          className="w-10 h-10 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition"
+                          disabled={item.quantity >= item.product.stock}
+                        >
+                          <Plus className="h-4 w-4" />
+                        </button>
+                      </div>
+
+                      <p className="text-xl font-light">
+                        {formatPrice(item.product.price * item.quantity)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {index < items.length - 1 && (
+                  <Separator variant="float" spacing="md" />
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Order Summary */}
+          <div className="lg:col-span-1">
+            <div className="bg-gray-50 p-8 rounded-lg sticky top-8">
+              <h2 className="text-xl font-normal mb-6">Overzicht</h2>
+
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Subtotaal</span>
+                  <span>{formatPrice(subtotal)}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Verzendkosten</span>
+                  <span>{shipping === 0 ? 'Gratis' : formatPrice(shipping)}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-gray-600">BTW (21%)</span>
+                  <span>{formatPrice(tax)}</span>
+                </div>
+              </div>
+
+              <Separator variant="float" spacing="sm" />
+
+              <div className="flex justify-between items-center mb-6">
+                <span className="text-lg font-medium">Totaal</span>
+                <span className="text-2xl font-light">{formatPrice(total)}</span>
+              </div>
+
+              <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
+                <Button variant="cta" size="lg" fullWidth rightIcon={<ArrowRight className="h-5 w-5" />}>
+                  Afrekenen
+                </Button>
+              </Link>
+
+              <p className="text-xs text-gray-500 text-center mt-4">
+                Geen account nodig - direct afrekenen als gast
+              </p>
+
+              <Separator variant="float" spacing="md" />
+
+              <div className="text-sm text-gray-600 space-y-2">
+                <p>✓ Gratis verzending vanaf €50</p>
+                <p>✓ Veilig betalen met Mollie</p>
+                <p>✓ 14 dagen bedenktijd</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

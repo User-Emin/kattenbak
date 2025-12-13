@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+/* DRY: Verberg hCaptcha badge (we tonen eigen disclosure tekst) */
+.h-captcha {
+  display: none !important;
+}
+
+/* DRY: Als je de hCaptcha badge WEL wilt tonen (optioneel), haal bovenstaande weg */
