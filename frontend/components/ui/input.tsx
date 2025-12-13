@@ -29,9 +29,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           placeholder={placeholder}
           autoComplete={autoComplete}
           ref={ref}
-          className={`w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 
-            focus:outline-none focus:border-accent focus:ring-4 focus:ring-accent/10 
-            hover:border-gray-400 transition-all duration-200
+          className={`w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 
+            focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 
+            hover:border-gray-300 transition-all duration-200
             ${error ? 'border-red-400 focus:border-red-500 focus:ring-red-100' : ''}
             ${className}`}
           {...props}

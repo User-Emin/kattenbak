@@ -291,31 +291,21 @@ function CheckoutContent() {
 
               <Separator variant="float" spacing="md" />
 
-              {/* Guest Checkout Info + Consent */}
-              <div className="space-y-4">
-                <div className="p-5 bg-accent/5 border-2 border-accent/20 rounded-xl">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-accent-dark mb-1">Geen account nodig</p>
-                      <p className="text-sm text-gray-700">Je kunt direct afrekenen als gast</p>
-                    </div>
-                  </div>
+              {/* Guest Checkout Info + Consent - SMOOTH */}
+              <div className="space-y-3">
+                <div className="text-sm text-gray-600 bg-gray-50 px-4 py-3 rounded-lg">
+                  ✓ Geen account nodig - direct afrekenen als gast
                 </div>
 
-                <label className="flex items-start gap-3 cursor-pointer p-4 rounded-xl hover:bg-gray-50 transition-colors">
+                <label className="flex items-start gap-3 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={saveData}
                     onChange={(e) => setSaveData(e.target.checked)}
-                    className="mt-1 w-5 h-5 text-accent border-2 border-gray-300 rounded focus:ring-2 focus:ring-accent/20 cursor-pointer"
+                    className="mt-0.5 w-4 h-4 text-accent border border-gray-300 rounded focus:ring-2 focus:ring-accent/20 cursor-pointer"
                   />
-                  <span className="text-sm text-gray-700 leading-relaxed">
-                    Bewaar mijn gegevens voor een snellere checkout bij volgende bestellingen (7 dagen)
+                  <span className="text-sm text-gray-600 leading-relaxed">
+                    Gegevens bewaren voor snellere checkout (7 dagen)
                   </span>
                 </label>
               </div>
