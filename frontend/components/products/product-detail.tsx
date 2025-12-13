@@ -225,6 +225,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         {/* Product Description - DIRECT ZICHTBAAR CENTRAAL */}
         <div className="max-w-4xl mx-auto text-center mb-12">
           <h2 className="text-xl md:text-2xl font-bold mb-6 text-gray-900">Over dit product</h2>
+          
+          {/* DRY: Product Demo Video - EXACT zoals homepage, direct onder titel */}
+          {product.videoUrl && (
+            <div className="mb-12">
+              <ProductVideo
+                videoUrl={product.videoUrl}
+                productName={product.name}
+                className=""
+              />
+              <p className="text-center text-sm text-gray-500 mt-4">
+                🎥 Bekijk de demo video
+              </p>
+            </div>
+          )}
+          
           <p className="text-gray-700 leading-relaxed text-base">{product.description}</p>
         </div>
 
