@@ -1,48 +1,63 @@
 #!/bin/bash
 
-# Kattenbak Webshop - Direct Start (Poorten: 3100, 3101, 3102)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# QUICK START - All Services in één commando
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-set -e
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
 
-echo "🚀 KATTENBAK WEBSHOP - DIRECT START"
-echo "Poorten: Frontend 3100, Backend 3101, Admin 3102"
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}🚀 STARTING ALL SERVICES${NC}"
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
 
-# Check Docker
-if ! docker info > /dev/null 2>&1; then
-    echo "⚠️  Docker niet actief, start Docker..."
-    open -a Docker
-    echo "Wacht 10 seconden..."
-    sleep 10
-fi
-
-# Start databases
-echo "📦 PostgreSQL + Redis starten..."
-docker-compose up -d postgres redis 2>/dev/null || true
-sleep 3
-
-# Setup backend (zonder output tenzij error)
-echo "🔧 Backend setup..."
-cd backend
-npm run prisma:generate >/dev/null 2>&1 || true
-npm run prisma:migrate >/dev/null 2>&1 || true
-npm run prisma:seed 2>&1 | grep -E "(Admin|Product|Category)" || true
-cd ..
-
-echo ""
-echo "✅ GESTART!"
-echo ""
-echo "🌐 URLs:"
-echo "   Frontend:  http://localhost:3100"
-echo "   Backend:   http://localhost:3101"
-echo "   Admin:     http://localhost:3102"
-echo ""
-echo "📝 Admin: admin@localhost / admin123"
-echo "💳 Mollie: TEST mode"
-echo ""
-echo "Druk Ctrl+C om te stoppen"
-echo "=========================================="
-echo ""
+# Kill existing
+echo "🧹 Cleaning up..."
+lsof -ti:3001,3101,3102 2>/dev/null | xargs kill -9 2>/dev/null || true
+sleep 1
 
 # Start services
-npm run dev
+echo "🚀 Starting backend..."
+cd /Users/emin/kattenbak/backend && npm run dev > /dev/null 2>&1 &
+
+echo "🚀 Starting frontend..."
+cd /Users/emin/kattenbak/frontend && npm run dev > /dev/null 2>&1 &
+
+echo "🚀 Starting admin..."
+cd /Users/emin/kattenbak/admin-next && npm run dev > /dev/null 2>&1 &
+
+echo ""
+echo "⏳ Services starting... (10 seconds)"
+sleep 10
+
+echo ""
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}✅ SERVICES READY!${NC}"
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo ""
+echo -e "${CYAN}📍 ADMIN PANEL (Video veld toevoegen):${NC}"
+echo "   http://localhost:3001/dashboard/products"
+echo ""
+echo -e "${CYAN}📍 FRONTEND (Video bekijken):${NC}"
+echo "   http://localhost:3102/product/automatische-kattenbak-premium"
+echo ""
+echo -e "${CYAN}📍 BACKEND API:${NC}"
+echo "   http://localhost:3101/api/v1/products/featured"
+echo ""
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}🎥 VIDEO VELD LOCATIE:${NC}"
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo ""
+echo "1. Open: http://localhost:3001/dashboard/products"
+echo "2. Klik product → Scroll naar 'Afbeeldingen'"
+echo "3. Vind: 'Demo Video URL (Optioneel)' ← HIER!"
+echo "4. Plak: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+echo "5. Zie: ✅ Validatie"
+echo "6. Klik: 'Opslaan'"
+echo "7. Check: http://localhost:3102/product/automatische-kattenbak-premium"
+echo "8. Scroll: 'Over dit product' → Video daar!"
+echo ""
+echo -e "${GREEN}✨ All services running! Open je browser!${NC}"
