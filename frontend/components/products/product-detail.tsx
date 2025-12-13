@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ProductImage } from "@/components/ui/product-image";
 import { ProductUsps } from "@/components/products/product-usps";
+import { ProductVideo } from "@/components/ui/product-video";
 import { Separator } from "@/components/ui/separator";
 import { ChatPopup } from "@/components/ui/chat-popup";
 import { useCart } from "@/context/cart-context";

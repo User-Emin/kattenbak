@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ChatPopup } from "@/components/ui/chat-popup";
 import { Separator } from "@/components/ui/separator";
+import { ProductVideo } from "@/components/ui/product-video";
 import { ArrowRight, Play, Check, MessageCircle, ChevronDown, ChevronUp, Package, Volume2, Sparkles, Smartphone } from "lucide-react";
 import type { Product } from "@/types/product";
 import { API_CONFIG, SITE_CONFIG, apiFetch } from "@/lib/config";
@@ -15,7 +16,7 @@ import { TYPOGRAPHY } from "@/lib/theme-colors";
 
 // DRY: Site Settings Type (sync met backend)
 interface SiteSettings {
-  hero: { title: string; subtitle: string; image: string };
+  hero: { title: string; subtitle: string; image: string; videoUrl?: string }; // DRY: Dynamic video
   usps: {
     title: string;
     feature1: { title: string; description: string; image: string };
@@ -55,6 +56,7 @@ export default function HomePage() {
       .catch(() => {}); // Silent fail, use fallback
   }, []);
 
+  // DRY: Fetch featured product (used for video on homepage)
   useEffect(() => {
     apiFetch<{ success: boolean; data: Product[] }>(API_CONFIG.ENDPOINTS.PRODUCTS_FEATURED)
       .then(data => setProduct(data.data?.[0] || null))
@@ -80,18 +82,32 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - Met Volledige Afbeelding */}
+      {/* Hero Section - DRY: Dynamisch via Featured Product Video */}
       <section className="relative min-h-[80vh] flex items-center overflow-hidden">
-        {/* Background Image - Volledig zichtbaar */}
+        {/* Background Image OR Video - DRY: Uses featured product videoUrl */}
         <div className="absolute inset-0 z-0">
-          <Image
-            src={hero.image}
-            alt={hero.title}
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
+          {product?.videoUrl ? (
+            /* DRY: Featured product video (same video as on product detail!) */
+            <div className="w-full h-full">
+              <ProductVideo
+                videoUrl={product.videoUrl}
+                productName={product.name}
+                className="w-full h-full rounded-none"
+              />
+            </div>
+          ) : (
+            /* Fallback: Static hero image */
+            <>
+              <Image
+                src={hero.image}
+                alt={hero.title}
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
+            </>
+          )}
         </div>
 
         <div className="container mx-auto px-6 lg:px-12 py-20 relative z-10">

@@ -189,6 +189,9 @@ model Product {
   // Images (array of URLs)
   images        Json        @default("[]")
   
+  // DRY: Video URL for product demos (YouTube/Vimeo)
+  videoUrl      String?     @map("video_url")
+  
   // SEO
   metaTitle     String?     @map("meta_title")
   metaDescription String?   @map("meta_description")

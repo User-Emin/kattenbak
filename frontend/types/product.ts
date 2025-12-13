@@ -18,6 +18,7 @@ export interface Product {
     height?: number;
   } | null;
   images: string[];
+  videoUrl?: string | null; // DRY: YouTube/Vimeo URL for product demos
   metaTitle: string | null;
   metaDescription: string | null;
   isActive: boolean;
