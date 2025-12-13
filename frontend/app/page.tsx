@@ -175,7 +175,7 @@ export default function HomePage() {
             <div className="order-1 md:order-2">
               <div className="flex items-center gap-4 mb-4">
                 <Volume2 className="h-10 w-10 text-black" />
-                <h3 className="text-xl font-light text-gray-900">{usps.feature2.title}</h3>
+                <h3 className="text-xl font-bold text-gray-900">{usps.feature2.title}</h3>
               </div>
               <p className="text-sm text-gray-600 leading-relaxed">{usps.feature2.description}</p>
             </div>
