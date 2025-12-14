@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { COOKIES_CONFIG, type CookieConsent } from "@/shared/cookies.config";
+import { COOKIES_CONFIG, type CookieConsent } from "../../shared/cookies.config";
 
 /**
  * useCookieConsent Hook - GDPR Compliant

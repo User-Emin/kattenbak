@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "./button";
 import { X, Cookie, Shield, BarChart, Target } from "lucide-react";
-import { COOKIES_CONFIG, type CookieConsent } from "@/shared/cookies.config";
+import { COOKIES_CONFIG, type CookieConsent } from "../../shared/cookies.config";
 import { COMPONENT_COLORS } from "@/lib/theme-colors";
 
 interface CookieSettingsModalProps {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { HCAPTCHA_CONFIG } from "@/shared/hcaptcha.config";
+import { HCAPTCHA_CONFIG } from "../../shared/hcaptcha.config";
 import { useCookieConsent } from "./use-cookie-consent";
 
 /**
