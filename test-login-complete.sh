@@ -174,3 +174,5 @@ echo "  3. Restart admin: pkill -f admin-next && cd admin-next && npm run dev"
 echo "  4. Check Network tab in DevTools for actual API calls"
 echo ""
 echo -e "${CYAN}Open now: $ADMIN_URL/login${NC}"
+
+

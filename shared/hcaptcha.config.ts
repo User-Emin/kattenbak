@@ -46,3 +46,5 @@ export const HCAPTCHA_CONFIG = {
 
 export type HCaptchaConfig = typeof HCAPTCHA_CONFIG;
 
+
+

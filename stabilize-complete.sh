@@ -366,3 +366,5 @@ echo "  3. Monitor logs: tail -f /tmp/backend-stable.log"
 echo ""
 
 echo -e "${GREEN}All services running! 🚀${NC}"
+
+

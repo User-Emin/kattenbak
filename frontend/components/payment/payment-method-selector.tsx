@@ -155,3 +155,5 @@ export const CompactPaymentMethods: React.FC<CompactPaymentMethodsProps> = ({ cl
     </div>
   );
 };
+
+

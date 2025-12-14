@@ -263,3 +263,5 @@ echo ""
 echo "Next: git add backend/.env.example frontend/.env.example admin/.env.example"
 echo "      git commit -m 'Add environment templates'"
 echo ""
+
+

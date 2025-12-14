@@ -80,3 +80,5 @@ export function ProductSpecsAccordion({ specs }: ProductSpecsAccordionProps) {
   );
 }
 
+
+

@@ -218,3 +218,5 @@ cd admin-next && npm run dev
 **Open je browser en test nu!** 🚀
 - Admin: http://localhost:3001/dashboard/products
 - Product: http://localhost:3102/product/automatische-kattenbak-premium
+
+

@@ -39,3 +39,5 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
     </h2>
   );
 };
+
+

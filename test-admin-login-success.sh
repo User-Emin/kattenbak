@@ -73,3 +73,5 @@ echo -e "${GREEN}✓ Admin:      http://localhost:3001${NC}"
 echo -e "${GREEN}✓ Login API:  WORKING!${NC}"
 echo ""
 echo -e "${YELLOW}Open je browser en test nu!${NC}"
+
+

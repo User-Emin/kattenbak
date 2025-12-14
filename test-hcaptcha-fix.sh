@@ -149,3 +149,5 @@ echo -e "${GREEN}Frontend: http://localhost:3000${NC}"
 echo -e "${GREEN}Backend:  http://localhost:3101${NC}"
 echo ""
 echo -e "${CYAN}Test now! 🚀${NC}"
+
+

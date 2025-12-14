@@ -383,3 +383,5 @@ curl http://localhost:3101/api/v1/admin/settings | jq
 
 **Zonder enige code wijziging nodig! ✅**
 
+
+

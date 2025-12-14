@@ -71,3 +71,5 @@ echo "ssh root@$SERVER"
 echo "cd /var/www/kattenbak"
 echo "GIT_SSH_COMMAND='ssh -i /root/.ssh/github_deploy_key' git clone git@github.com:User-Emin/kattenbak.git ."
 echo ""
+
+

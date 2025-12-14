@@ -286,3 +286,5 @@ echo "   curl https://api.catsupply.nl/health"
 echo ""
 
 echo -e "${MAGENTA}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+
+

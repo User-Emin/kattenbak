@@ -202,3 +202,5 @@ echo "  ssh root@${SERVER}"
 echo "  cd /var/www/kattenbak"
 echo "  git clone https://github.com/User-Emin/kattenbak.git ."
 echo ""
+
+

@@ -454,3 +454,5 @@ sudo certbot certonly --manual --preferred-challenges dns -d catsupply.nl
 **Priority:** CRITICAL
 **Timeline:** Fix DNS now, deploy within 2 hours
 **Success:** catsupply.nl live & secure! 🎉
+
+

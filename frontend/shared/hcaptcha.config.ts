@@ -28,3 +28,5 @@ export const HCAPTCHA_CONFIG = {
   // Performance
   TIMEOUT: 5000,
 } as const;
+
+

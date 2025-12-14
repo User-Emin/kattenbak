@@ -332,3 +332,5 @@ code admin-next/components/product-form.tsx
 **Exacte locatie video in product detail:**
 `frontend/components/products/product-detail.tsx` regel **226-245**
 Direct onder titel "Over dit product", voor beschrijving! ✨
+
+

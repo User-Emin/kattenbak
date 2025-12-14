@@ -68,3 +68,5 @@ export const COOKIES_CONFIG = {
 export type CookieCategory = keyof typeof COOKIES_CONFIG.CATEGORIES;
 export type CookieConsent = typeof COOKIES_CONFIG.DEFAULT_CONSENT;
 
+
+

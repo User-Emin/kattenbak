@@ -162,3 +162,5 @@ export function saveCookieConsent(consent: Partial<CookieConsent>): void {
   // Dispatch event voor real-time updates
   window.dispatchEvent(new CustomEvent('cookieConsentChanged', { detail: updated }));
 }
+
+

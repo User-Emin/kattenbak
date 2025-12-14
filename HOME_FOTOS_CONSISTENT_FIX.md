@@ -348,3 +348,5 @@ Render <Image src={hero.image} />
 
 **🎊 HOME FOTOS NU CONSISTENT, MAXIMAAL DRY, SHARED CODE! ✅**
 
+
+

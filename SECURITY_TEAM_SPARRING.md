@@ -509,3 +509,5 @@ curl -I https://yourdomain.com | grep -E "(X-Frame|X-Content|Strict-Transport|Co
 **Shopify comparison**: Even veilig, meer controle, geen over-engineering!
 
 **Next**: Execute deployment met deze security measures! 🛡️
+
+

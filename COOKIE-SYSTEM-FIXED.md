@@ -16,3 +16,5 @@
 1. Open checkout zonder cookies → zie warning
 2. Klik "Accepteer & Ga door" → cookies geaccepteerd
 3. Order plaatsen → werkt direct
+
+

@@ -133,3 +133,5 @@ echo -e "${YELLOW}Of kill alle Node processen:${NC}"
 echo "  pkill -f 'node.*dev'"
 echo ""
 echo -e "${GREEN}✨ All services running! Open je browser en test!${NC}"
+
+

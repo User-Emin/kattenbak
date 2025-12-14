@@ -437,3 +437,5 @@ echo ""
 
 echo -e "${GREEN}All automated tests passed! 🎉${NC}"
 echo -e "${YELLOW}Continue with manual browser testing.${NC}"
+
+

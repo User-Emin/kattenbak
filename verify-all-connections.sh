@@ -275,3 +275,5 @@ echo "   GRANT ALL PRIVILEGES ON DATABASE kattenbak_dev TO kattenbak_user;"
 echo ""
 
 echo -e "${GREEN}Verification complete! 🚀${NC}"
+
+

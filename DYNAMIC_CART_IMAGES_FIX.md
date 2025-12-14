@@ -281,3 +281,5 @@ Always works! ✅
 - ✅ Checkout toont groene SVG
 - ✅ GEEN placeholders meer!
 
+
+

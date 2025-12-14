@@ -258,3 +258,5 @@ open http://localhost:3000
 ```
 
 **All services running! Backend fixed! Database working! 🚀**
+
+

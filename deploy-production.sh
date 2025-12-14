@@ -363,3 +363,5 @@ echo "  4. Setup backups (database, uploads)"
 echo ""
 
 echo -e "${GREEN}Production deployment ready! 🚀${NC}"
+
+

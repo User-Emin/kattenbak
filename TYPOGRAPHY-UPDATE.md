@@ -269,3 +269,5 @@ Hero (8xl) > H1 (7xl) > H2 (5xl) > H3 (4xl) > H4 (3xl) > H5 (2xl)
 
 **Maximaal dynamisch • Absoluut DRY • Professioneel & Warm**
 
+
+

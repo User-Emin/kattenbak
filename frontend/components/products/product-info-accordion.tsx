@@ -41,3 +41,5 @@ export function ProductInfoAccordion({ title, content }: ProductInfoAccordionPro
     </div>
   );
 }
+
+

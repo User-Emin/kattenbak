@@ -341,3 +341,5 @@ Error thrown → apiClient interceptor → Extract details (message, status, url
 ```
 
 **All code committed and pushed to GitHub!** 🚀
+
+

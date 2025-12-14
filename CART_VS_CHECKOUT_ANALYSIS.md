@@ -304,3 +304,5 @@ const { items } = useCart();  ← Van localStorage
 3. Refresh & add product to cart
 4. → Cart images werken NU! ✅
 
+
+

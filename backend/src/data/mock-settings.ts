@@ -152,3 +152,5 @@ export const updateSettings = (updates: Partial<SiteSettings>): SiteSettings => 
   return getSettings();
 };
 
+
+

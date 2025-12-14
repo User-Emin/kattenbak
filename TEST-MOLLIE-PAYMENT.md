@@ -171,3 +171,5 @@ Voor vragen of problemen:
 **Status:** ✅ OPERATIONEEL (Development Mode)  
 **Laatst getest:** 2025-12-12  
 **Versie:** 1.0.0
+
+

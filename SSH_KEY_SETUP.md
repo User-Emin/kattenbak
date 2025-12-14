@@ -327,3 +327,5 @@ Fix: Whitelist je IP in server firewall/control panel
 **Priority:** 🔴 CRITICAL - Blocking deployment
 **Time:** 5 minutes to upload key
 **Next:** Upload key → Test → Deploy
+
+

@@ -478,3 +478,5 @@ PGPASSWORD=your_password psql -U kattenbak_user -h localhost -d kattenbak_prod -
 ---
 
 **SERVER IS FULLY SECURE & READY! 🚀**
+
+

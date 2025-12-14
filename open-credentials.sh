@@ -43,3 +43,5 @@ echo "      • NEXT_PUBLIC_API_URL → actual domain"
 echo "      • NEXT_PUBLIC_SITE_URL → actual domain"
 echo ""
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+
+

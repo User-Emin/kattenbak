@@ -265,3 +265,5 @@ echo "  4. Backend logs: tail -f /tmp/backend-connection-fix.log"
 echo ""
 
 echo -e "${GREEN}Backend is running! Test now! 🚀${NC}"
+
+

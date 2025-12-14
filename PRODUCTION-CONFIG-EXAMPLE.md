@@ -269,3 +269,5 @@ CORS_ORIGINS=https://kattenbak.nl,https://admin.kattenbak.nl
 
 *Generated: 2025-12-12*
 
+
+
