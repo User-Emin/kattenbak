@@ -1,0 +1,67 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          
+      - name: Deploy Backend
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            cd /var/www/kattenbak/backend && \
+            git pull && \
+            npm install && \
+            npx prisma generate && \
+            pm2 restart backend
+          "
+          
+      - name: Deploy Admin
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            cd /var/www/kattenbak/admin-next && \
+            git pull && \
+            npm install && \
+            npm run build && \
+            pm2 restart admin || pm2 start ecosystem.config.js
+          "
+          
+      - name: Deploy Frontend
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            cd /var/www/kattenbak/frontend && \
+            git pull && \
+            npm install && \
+            npm run build && \
+            pm2 restart frontend || pm2 start npm --name frontend -- start
+          "
+          
+      - name: Save PM2
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "pm2 save"
+          
+      - name: Verify Deployment
+        run: |
+          sleep 10
+          curl -f https://catsupply.nl/api/v1/health || exit 1
+          echo "✅ Backend healthy"
+          curl -f https://catsupply.nl/admin || exit 1
+          echo "✅ Admin accessible"
+          curl -f https://catsupply.nl || exit 1
+          echo "✅ Frontend accessible"
