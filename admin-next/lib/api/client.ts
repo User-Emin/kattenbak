@@ -5,8 +5,8 @@
 
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
-// DRY: API Configuration - ROBUST & CORRECT
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
+// DRY: API Configuration - CORRECT PORT & FALLBACK
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3101/api/v1';
 
 // DRY: Standard API Response Type
 export interface ApiResponse<T = any> {
