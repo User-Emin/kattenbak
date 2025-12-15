@@ -29,7 +29,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
     <h2 
       className={`
         ${sizeClasses[size]}
-        font-light
+        font-semibold
         text-gray-900
         ${centered ? 'text-center' : ''}
         ${className}

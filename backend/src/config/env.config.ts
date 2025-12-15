@@ -99,6 +99,10 @@ class EnvironmentConfig {
   // Frontend URLs
   public readonly FRONTEND_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
+  // Admin Credentials
+  public readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@localhost';
+  public readonly ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+
   /**
    * Get required environment variable or throw error
    */

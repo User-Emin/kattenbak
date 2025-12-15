@@ -48,7 +48,7 @@ export default function SuccessPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-6">
       <div className="max-w-2xl w-full text-center">
         {/* Heading - Zonder icon */}
-        <h1 className="text-4xl font-light mb-3 text-gray-900">
+        <h1 className="text-4xl font-semibold mb-3 text-gray-900">
           Bedankt voor je bestelling!
         </h1>
         <p className="text-lg text-gray-600 mb-8">
@@ -59,7 +59,7 @@ export default function SuccessPage() {
 
         {/* Next Steps - Direct op achtergrond, geen card */}
         <div className="mb-8">
-          <h2 className="text-xl font-medium mb-6 text-gray-900">
+          <h2 className="text-xl font-semibold mb-6 text-gray-900">
             Wat is de bedoeling nu?
           </h2>
           

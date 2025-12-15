@@ -22,6 +22,9 @@ export const API_CONFIG = {
     // Contact
     CONTACT: '/contact',
     
+    // Admin
+    ADMIN: '/admin',
+    
     // Settings (DRY: Site-wide settings voor hero, USPs, etc.)
     SETTINGS: '/admin/settings',
     

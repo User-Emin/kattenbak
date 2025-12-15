@@ -46,14 +46,14 @@ export function CookieConsentBanner({
                   Meer informatie in ons{" "}
                   <Link 
                     href="/privacy-policy" 
-                    className="text-blue-600 hover:underline font-medium"
+                    className="text-brand hover:underline font-medium"
                   >
                     privacybeleid
                   </Link>
                   {" "}en{" "}
                   <Link 
                     href="/cookie-policy" 
-                    className="text-blue-600 hover:underline font-medium"
+                    className="text-brand hover:underline font-medium"
                   >
                     cookiebeleid
                   </Link>

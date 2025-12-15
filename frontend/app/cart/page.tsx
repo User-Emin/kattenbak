@@ -17,7 +17,7 @@ export default function CartPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center max-w-md px-6">
           <ShoppingCart className="h-20 w-20 mx-auto mb-6 text-gray-300" />
-          <h1 className="text-3xl font-light mb-4 text-gray-900">Je winkelwagen is leeg</h1>
+          <h1 className="text-3xl font-semibold mb-4 text-gray-900">Je winkelwagen is leeg</h1>
           <p className="text-gray-600 mb-8">
             Ontdek onze premium zelfreinigende kattenbak
           </p>
@@ -38,7 +38,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-        <h1 className="text-4xl font-normal mb-2">Winkelwagen</h1>
+        <h1 className="text-4xl font-semibold mb-2">Winkelwagen</h1>
         <p className="text-gray-600 mb-8">{itemCount} {itemCount === 1 ? 'product' : 'producten'}</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -59,7 +59,7 @@ export default function CartPage() {
                   <div className="flex-1">
                     <div className="flex justify-between items-start mb-3">
                       <div>
-                        <h2 className="text-xl font-normal mb-1">
+                        <h2 className="text-xl font-semibold mb-1">
                           {item.product.name}
                         </h2>
                         <p className="text-gray-600">
@@ -79,18 +79,18 @@ export default function CartPage() {
                       <div className="flex items-center gap-3">
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="w-10 h-10 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition"
+                          className="w-12 h-12 sm:w-10 sm:h-10 rounded-lg border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
                         >
                           <Minus className="h-4 w-4" />
                         </button>
 
-                        <span className="w-12 text-center font-medium">
+                        <span className="w-16 sm:w-12 text-center font-semibold text-lg sm:text-base">
                           {item.quantity}
                         </span>
 
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="w-10 h-10 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition"
+                          className="w-12 h-12 sm:w-10 sm:h-10 rounded-lg border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
                           disabled={item.quantity >= item.product.stock}
                         >
                           <Plus className="h-4 w-4" />
@@ -114,7 +114,7 @@ export default function CartPage() {
           {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="bg-gray-50 p-8 rounded-lg sticky top-8">
-              <h2 className="text-xl font-normal mb-6">Overzicht</h2>
+              <h2 className="text-xl font-semibold mb-6">Overzicht</h2>
 
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
@@ -136,8 +136,8 @@ export default function CartPage() {
               <Separator variant="float" spacing="sm" />
 
               <div className="flex justify-between items-center mb-6">
-                <span className="text-lg font-medium">Totaal</span>
-                <span className="text-2xl font-light">{formatPrice(total)}</span>
+                <span className="text-lg font-semibold">Totaal</span>
+                <span className="text-2xl font-semibold">{formatPrice(total)}</span>
               </div>
 
               <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
@@ -152,7 +152,7 @@ export default function CartPage() {
 
               <Separator variant="float" spacing="md" />
 
-              <div className="text-sm text-gray-600 space-y-2">
+              <div className="text-sm font-semibold text-gray-700 space-y-2">
                 <p>✓ Gratis verzending vanaf €50</p>
                 <p>✓ Veilig betalen met Mollie</p>
                 <p>✓ 14 dagen bedenktijd</p>

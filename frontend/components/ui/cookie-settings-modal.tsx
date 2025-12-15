@@ -46,37 +46,32 @@ export function CookieSettingsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-300">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm" 
         onClick={onClose}
       />
       
-      {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-300">
-        {/* Header - Cookie icon direct op achtergrond (geen extra veld) */}
-        <div className={`sticky top-0 ${COMPONENT_COLORS.navbar.bg} border-b border-gray-700/20 px-6 py-4 flex items-center justify-between`}>
-          <div className="flex items-center gap-3">
-            <Cookie className="h-8 w-8 text-white" />
-            <div>
-              <h2 className="text-xl font-semibold text-white">Cookie instellingen</h2>
-              <p className="text-sm text-white/80">Beheer je cookie voorkeuren</p>
-            </div>
+      {/* Modal - Compacter + meer naar midden */}
+      <div className="relative bg-white rounded-xl sm:rounded-2xl shadow-2xl max-w-xl w-full max-h-[85vh] sm:max-h-[80vh] overflow-hidden animate-in zoom-in-95 duration-300">
+        {/* Header - Compact */}
+        <div className={`sticky top-0 ${COMPONENT_COLORS.navbar.bg} border-b border-gray-700/20 px-4 py-3 flex items-center justify-between`}>
+          <div className="flex items-center gap-2">
+            <Cookie className="h-6 w-6 text-white" />
+            <h2 className="text-lg font-semibold text-white">Cookie instellingen</h2>
           </div>
           <button
             onClick={onClose}
-            className="text-white/80 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
+            className="text-white/80 hover:text-white transition-colors p-1.5 hover:bg-white/10 rounded-full"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="overflow-y-auto max-h-[calc(90vh-180px)] px-6 py-6 space-y-6">
+        {/* Content - CLEAN, geen onnodige icons */}
+        <div className="overflow-y-auto max-h-[calc(85vh-140px)] px-4 py-4 space-y-3">
           {Object.entries(COOKIES_CONFIG.CATEGORIES).map(([categoryKey, category]) => {
-            // DRY: Get icon via uppercase key mapping
-            const IconComponent = CATEGORY_ICONS[categoryKey as keyof typeof CATEGORY_ICONS];
             const consentKey = category.id as keyof CookieConsent;
             const isEnabled = consent[consentKey];
             const isRequired = category.required;
@@ -84,59 +79,36 @@ export function CookieSettingsModal({
             return (
               <div 
                 key={categoryKey}
-                className="border border-gray-200 rounded-xl p-5 hover:border-gray-300 transition-colors"
+                className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors"
               >
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <div className="flex items-start gap-3 flex-1">
-                    {/* Icon direct op achtergrond, geen extra cirkel veld */}
-                    <IconComponent className={`h-6 w-6 mt-1 flex-shrink-0 ${
-                      isRequired ? 'text-brand' : 'text-gray-600'
-                    }`} />
-                    
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-gray-900">{category.name}</h3>
-                        {isRequired && (
-                          <span className={`text-xs ${COMPONENT_COLORS.navbar.bg} text-white px-2 py-0.5 rounded-full font-medium`}>
-                            Verplicht
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-sm text-gray-600 mb-3">{category.description}</p>
-                      
-                      {/* Cookie details */}
-                      <div className="space-y-2">
-                        {category.cookies.map((cookie, idx) => (
-                          <div key={idx} className="text-xs text-gray-500 flex items-start gap-2">
-                            <Cookie className="h-3 w-3 text-gray-400 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <span className="font-mono font-medium text-gray-700">{cookie.name}</span>
-                              {" - "}
-                              <span>{cookie.purpose}</span>
-                              {" "}
-                              <span className="text-gray-400">({cookie.duration})</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-semibold text-sm text-gray-900">{category.name}</h3>
+                      {isRequired && (
+                        <span className={`text-xs ${COMPONENT_COLORS.navbar.bg} text-white px-2 py-0.5 rounded-full`}>
+                          Verplicht
+                        </span>
+                      )}
                     </div>
+                    <p className="text-xs text-gray-600">{category.description}</p>
                   </div>
 
-                  {/* Toggle */}
+                  {/* Toggle - CLEAN */}
                   <button
                     onClick={() => handleToggle(consentKey)}
                     disabled={isRequired}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors flex-shrink-0 ${
                       isRequired 
                         ? 'bg-brand cursor-not-allowed opacity-50' 
                         : isEnabled 
-                          ? 'bg-black' // ✅ ZWART ipv ORANJE 
+                          ? 'bg-black'
                           : 'bg-gray-200'
                     }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        isEnabled ? 'translate-x-6' : 'translate-x-1'
+                      className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                        isEnabled ? 'translate-x-5' : 'translate-x-0.5'
                       }`}
                     />
                   </button>
@@ -146,12 +118,14 @@ export function CookieSettingsModal({
           })}
         </div>
 
-        {/* Footer */}
-        <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4 flex gap-3">
+        {/* Footer - Compact, BUTTONS GELIJK DIK */}
+        <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-4 py-3 flex flex-col sm:flex-row gap-2">
           <Button
             variant="outline"
             fullWidth
             onClick={onClose}
+            size="sm"
+            className="border-2 border-gray-900"
           >
             Annuleren
           </Button>
@@ -159,6 +133,7 @@ export function CookieSettingsModal({
             variant="cta"
             fullWidth
             onClick={handleSave}
+            size="sm"
           >
             Voorkeuren opslaan
           </Button>

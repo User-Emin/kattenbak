@@ -189,8 +189,9 @@ model Product {
   // Images (array of URLs)
   images        Json        @default("[]")
   
-  // DRY: Video URL for product demos (YouTube/Vimeo)
-  videoUrl      String?     @map("video_url")
+  // Video URLs (supports up to 50MB)
+  heroVideoUrl  String?     @map("hero_video_url")  // 10-20MB, homepage hero background
+  videoUrl      String?     @map("video_url")        // 20-50MB, product demo + "Zie Het in Actie"
   
   // SEO
   metaTitle     String?     @map("meta_title")

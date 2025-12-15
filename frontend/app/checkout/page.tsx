@@ -154,15 +154,15 @@ function CheckoutContent() {
     <div className="bg-gray-50 min-h-screen py-12">
       <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-light mb-3 text-gray-900">Bestelling Afronden</h1>
-          <p className="text-gray-600 text-lg">Vul je gegevens in voor een snelle checkout</p>
+          <h1 className="text-3xl md:text-4xl font-semibold mb-3 text-gray-900">Afrekenen</h1>
+          <p className="text-gray-600 text-base">Vul je gegevens in voor een snelle checkout</p>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Gegevens Form - Direct op achtergrond */}
             <div>
-              <h2 className="text-2xl font-medium mb-6 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-6 text-gray-900">
                 Jouw Gegevens
               </h2>
             
@@ -283,7 +283,7 @@ function CheckoutContent() {
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                   <div>
-                    <p className="font-medium">Fout bij bestellen</p>
+                    <p className="font-semibold">Fout bij bestellen</p>
                     <p className="mt-1">{error}</p>
                   </div>
                 </div>
@@ -314,7 +314,7 @@ function CheckoutContent() {
             {/* Bestelling Overzicht - Rechterkant, direct op achtergrond */}
             <div className="space-y-6">
               <div className="sticky top-28">
-                <h2 className="text-2xl font-medium mb-6 text-gray-900">Jouw Bestelling</h2>
+                <h2 className="text-2xl font-semibold mb-6 text-gray-900">Jouw Bestelling</h2>
 
                 <Separator variant="float" spacing="sm" />
                 
@@ -329,7 +329,7 @@ function CheckoutContent() {
                     />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-medium mb-1 text-gray-900">{product.name}</h3>
+                    <h3 className="font-semibold mb-1 text-gray-900">{product.name}</h3>
                     <p className="text-sm text-gray-600 mb-2">Aantal: {quantity}</p>
                     <p className="font-semibold text-gray-900">{formatPrice(product.price)}</p>
                   </div>
@@ -340,15 +340,15 @@ function CheckoutContent() {
                 <div className="space-y-3 my-6">
                   <div className="flex justify-between text-gray-700">
                     <span>Subtotaal</span>
-                    <span className="font-medium">{formatPrice(subtotal)}</span>
+                    <span className="font-semibold">{formatPrice(subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-gray-700">
                     <span>Verzendkosten</span>
-                    <span className="font-medium">{shipping === 0 ? "Gratis" : formatPrice(shipping)}</span>
+                    <span className="font-semibold">{shipping === 0 ? "Gratis" : formatPrice(shipping)}</span>
                   </div>
                   <div className="flex justify-between text-gray-700">
                     <span>BTW (21%)</span>
-                    <span className="font-medium">{formatPrice(tax)}</span>
+                    <span className="font-semibold">{formatPrice(tax)}</span>
                   </div>
                 </div>
 

@@ -18,14 +18,14 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 export const TYPOGRAPHY = {
-  // ✅ PROFESSIONELE TYPOGRAPHY (geïnspireerd door Revoloo.nl)
-  // Font Weights - WARM & PROFESSIONEEL
+  // ✅ DIKKE TYPOGRAPHY - ALLES font-semibold (zoals FAQ balken)
+  // Font Weights - MAXIMAAL DUIDELIJK & LEESBAAR
   weight: {
-    light: 'font-light',      // 300
-    normal: 'font-normal',    // 400 ✅ DEFAULT (warmer dan light!)
-    medium: 'font-medium',    // 500
-    semibold: 'font-semibold', // 600
-    bold: 'font-bold',        // 700
+    light: 'font-normal',      // 400 (was: 300) ✅ DIKKER
+    normal: 'font-semibold',   // 600 ✅ DEFAULT = SEMIBOLD!
+    medium: 'font-semibold',   // 600 ✅ SEMIBOLD
+    semibold: 'font-bold',     // 700 ✅ BOLD
+    bold: 'font-bold',         // 700
   },
   
   // Font Sizes - Headlines - GROTER & ZICHTBAARDER
@@ -47,23 +47,23 @@ export const TYPOGRAPHY = {
     xs: 'text-sm',                     // ✅ +1 level (was xs)
   },
   
-  // Complete Heading Styles - WARM & PROFESSIONEEL (Revoloo.nl style)
+  // Complete Heading Styles - DIKKE TITELS
   heading_complete: {
-    hero: 'text-6xl md:text-8xl font-normal tracking-tight',     // ✅ Warm & groot
-    h1: 'text-5xl md:text-7xl font-normal tracking-tight',       // ✅ Warm & prominent
-    h2: 'text-4xl md:text-5xl font-normal',                      // ✅ Warm & duidelijk
-    h3: 'text-3xl md:text-4xl font-normal',                      // ✅ Warm & leesbaar
-    h4: 'text-2xl md:text-3xl font-normal',                      // ✅ Warm & schattig
-    h5: 'text-xl md:text-2xl font-normal',                       // ✅ Warm & vriendelijk
+    hero: 'text-6xl md:text-8xl font-semibold tracking-tight',     // ✅ SEMIBOLD
+    h1: 'text-5xl md:text-7xl font-semibold tracking-tight',       // ✅ SEMIBOLD
+    h2: 'text-4xl md:text-5xl font-semibold',                      // ✅ SEMIBOLD
+    h3: 'text-3xl md:text-4xl font-semibold',                      // ✅ SEMIBOLD
+    h4: 'text-2xl md:text-3xl font-semibold',                      // ✅ SEMIBOLD
+    h5: 'text-xl md:text-2xl font-semibold',                       // ✅ SEMIBOLD
   },
   
-  // Body Text Styles - WARM & LEESBAAR
+  // Body Text Styles - DIKKE BODY TEKST (zoals FAQ)
   body_complete: {
-    xl: 'text-2xl font-normal leading-relaxed',                  // ✅ Extra groot & warm
-    lg: 'text-xl font-normal leading-relaxed',                   // ✅ Groot & warm
-    base: 'text-lg font-normal leading-relaxed',                 // ✅ Standaard & warm
-    sm: 'text-base font-normal leading-relaxed',                 // ✅ Klein & warm
-    xs: 'text-sm font-normal leading-relaxed',                   // ✅ Extra klein & warm
+    xl: 'text-2xl font-semibold leading-relaxed',                  // ✅ SEMIBOLD
+    lg: 'text-xl font-semibold leading-relaxed',                   // ✅ SEMIBOLD
+    base: 'text-lg font-semibold leading-relaxed',                 // ✅ SEMIBOLD
+    sm: 'text-base font-semibold leading-relaxed',                 // ✅ SEMIBOLD
+    xs: 'text-sm font-semibold leading-relaxed',                   // ✅ SEMIBOLD
   },
 } as const;
 
@@ -255,8 +255,8 @@ export const COMPONENT_COLORS = {
     bg: 'bg-white',                 // ✅ WIT zoals normaal
     text: 'text-gray-900',          // ✅ ZWARTE TEKST zoals normaal
     border: 'border-gray-200',      // ✅ Lichte border
-    button: 'bg-gray-900 hover:bg-gray-800 text-white font-semibold transition-all', // ✅ DONKER met WIT
-    ctaButton: `${NAVBAR_COLOR} hover:bg-brand-dark text-white font-bold transition-all`, // ✅ NAVBAR BLAUW met WIT
+    button: `${NAVBAR_COLOR} hover:bg-brand-dark text-white font-semibold transition-all`, // ✅ "Bekijk Winkelwagen" NAVBAR BLAUW
+    ctaButton: 'bg-black hover:bg-gray-900 text-white font-bold transition-all', // ✅ "Afrekenen" ZWART
   },
   chat: {
     icon: NAVBAR_COLOR, // ✅ DRY: Exact bg-brand zoals navbar

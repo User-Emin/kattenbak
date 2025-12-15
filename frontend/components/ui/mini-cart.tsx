@@ -10,6 +10,7 @@ import { X, Plus, Minus, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from './separator';
 import { COMPONENT_COLORS } from '@/lib/theme-colors';
+import { SHARED_CONTENT } from '@/lib/content.config';
 
 interface MiniCartProps {
   onClose?: () => void;
@@ -68,19 +69,19 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                    className={`w-7 h-7 rounded border ${COMPONENT_COLORS.sidebar.border} flex items-center justify-center hover:bg-gray-100 transition ${COMPONENT_COLORS.sidebar.text}`}
+                    className={`w-9 h-9 rounded-lg border-2 ${COMPONENT_COLORS.sidebar.border} hover:border-gray-400 flex items-center justify-center hover:bg-gray-100 transition active:scale-95 ${COMPONENT_COLORS.sidebar.text}`}
                     aria-label="Verlaag aantal"
                   >
                     <Minus className="h-3 w-3" />
                   </button>
                   
-                  <span className={`w-8 text-center text-sm font-medium ${COMPONENT_COLORS.sidebar.text}`}>
+                  <span className={`w-10 text-center text-base font-semibold ${COMPONENT_COLORS.sidebar.text}`}>
                     {item.quantity}
                   </span>
                   
                   <button
                     onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                    className={`w-7 h-7 rounded border ${COMPONENT_COLORS.sidebar.border} flex items-center justify-center hover:bg-gray-100 transition ${COMPONENT_COLORS.sidebar.text}`}
+                    className={`w-9 h-9 rounded-lg border-2 ${COMPONENT_COLORS.sidebar.border} hover:border-gray-400 flex items-center justify-center hover:bg-gray-100 transition active:scale-95 ${COMPONENT_COLORS.sidebar.text}`}
                     aria-label="Verhoog aantal"
                     disabled={item.quantity >= item.product.stock}
                   >
@@ -116,7 +117,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
               className={COMPONENT_COLORS.sidebar.button}
               onClick={() => handleNavigate('/cart')}
             >
-              Bekijk Winkelwagen
+              {SHARED_CONTENT.buttons.viewCart}
             </Button>
             
             <Button 
@@ -125,7 +126,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
               className={COMPONENT_COLORS.sidebar.ctaButton}
               onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
             >
-              Afrekenen
+              {SHARED_CONTENT.buttons.checkout}
             </Button>
           </div>
           

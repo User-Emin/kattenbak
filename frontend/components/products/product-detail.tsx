@@ -5,12 +5,11 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ProductImage } from "@/components/ui/product-image";
 import { ProductUsps } from "@/components/products/product-usps";
-import { ProductVideo } from "@/components/ui/product-video";
+import { VideoPlayer } from "@/components/ui/video-player";
 import { Separator } from "@/components/ui/separator";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ChatPopup } from "@/components/ui/chat-popup";
 import { useCart } from "@/context/cart-context";
-import { useUI } from "@/context/ui-context";
 import { formatPrice } from "@/lib/utils";
 import { ShoppingCart, Plus, Minus, Check } from "lucide-react";
 import Link from "next/link";
@@ -27,20 +26,11 @@ interface ProductDetailProps {
 export function ProductDetail({ slug }: ProductDetailProps) {
   const router = useRouter();
   const { addItem } = useCart();
-  const { isChatOpen, closeChat } = useUI(); // DRY: Global UI state
   const [product, setProduct] = useState<Product | null>(null);
-  const [settings, setSettings] = useState<any>(null); // DRY: Site settings met productUsps
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
-
-  // DRY: Fetch site settings voor USPs
-  useEffect(() => {
-    apiFetch<{ success: boolean; data: any }>(API_CONFIG.ENDPOINTS.SETTINGS)
-      .then(data => setSettings(data.data))
-      .catch(() => {}); // Silent fail
-  }, []);
 
   useEffect(() => {
     apiFetch<{ success: boolean; data: Product }>(API_CONFIG.ENDPOINTS.PRODUCT_BY_SLUG(slug))
@@ -92,11 +82,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
-        {/* Breadcrumb */}
+        {/* Breadcrumb - DIKKE TEKST */}
         <nav className="mb-8 text-sm">
-          <Link href="/" className="text-brand hover:text-brand-dark transition font-medium">Home</Link>
-          <span className="mx-2 text-gray-400">/</span>
-          <span className="text-gray-900 font-medium">{product.name}</span>
+          <Link href="/" className="text-brand hover:text-brand-dark transition font-semibold">Home</Link>
+          <span className="mx-2 text-gray-400 font-semibold">/</span>
+          <span className="text-gray-900 font-semibold">{product.name}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
@@ -138,22 +128,22 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* Product Info - Direct op achtergrond */}
           <div className="space-y-8">
             <div>
-              {/* Productnaam - DUNNER FONT */}
-              <h1 className="text-2xl md:text-3xl font-normal mb-6 leading-tight text-gray-900 tracking-tight">{product.name}</h1>
+              {/* Productnaam - VOLLEDIG AUTOMATISCH - DUNNE FONT */}
+              <h1 className="text-2xl md:text-3xl font-semibold mb-6 leading-tight text-gray-900 tracking-tight">{product.name}</h1>
               
-              {/* USPs - DUNNER FONT */}
+              {/* USPs - DUNNE FONT + ORIGINEEL */}
               <div className="space-y-3 mb-6">
                 <div className="flex items-center gap-3">
                   <Check className="h-6 w-6 text-brand flex-shrink-0" />
-                  <span className="text-base font-normal text-gray-900">Geen stank meer</span>
+                  <span className="text-base font-semibold text-gray-900">Gratis verzending vanaf €50</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Check className="h-6 w-6 text-brand flex-shrink-0" />
-                  <span className="text-base font-normal text-gray-900">Nooit meer scheppen</span>
+                  <span className="text-base font-semibold text-gray-900">10.5L capaciteit - Grootste afvalbak</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Check className="h-6 w-6 text-brand flex-shrink-0" />
-                  <span className="text-base font-normal text-gray-900">Veilig te gebruiken</span>
+                  <span className="text-base font-semibold text-gray-900">Ultra-stil motor (&lt;40 decibel)</span>
                 </div>
               </div>
 
@@ -162,6 +152,20 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               {/* Prijs - COMPACT */}
               <div className="mb-6">
                 <div className="text-4xl md:text-5xl font-bold text-gray-900">{formatPrice(product.price)}</div>
+              </div>
+
+              {/* Marketing USPs */}
+
+              {/* Marketing USPs - Minimaal, zonder kaartje */}
+              <div className="mb-6 space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 bg-brand rounded-full"></div>
+                  <span className="text-sm font-semibold text-gray-600">14 dagen bedenktijd</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 bg-brand rounded-full"></div>
+                  <span className="text-sm font-semibold text-gray-600">Veilig betalen met Mollie</span>
+                </div>
               </div>
 
               {/* CTA Button - DIK TEKST, GEEN PIJL */}
@@ -186,26 +190,25 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   </div>
                 </button>
 
-                {/* Aantal Selector - COMPACTER */}
-                <div className="flex items-center justify-center gap-4">
-                  <span className="text-base font-bold text-gray-900">Aantal:</span>
+                {/* Aantal Selector - ALTIJD HORIZONTAAL, HOVER NAVBAR BLAUW */}
+                <div className="flex flex-row items-center justify-center gap-3">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
-                    className="w-10 h-10 rounded-full border-2 border-gray-400 hover:border-blue-600 hover:bg-blue-50 flex items-center justify-center transition disabled:opacity-30 bg-white"
+                    className="w-12 h-12 rounded-full border-2 border-gray-400 hover:border-brand hover:bg-brand/5 flex items-center justify-center transition disabled:opacity-30 bg-white"
                     aria-label="Verlaag aantal"
                   >
                     <Minus className="h-4 w-4 text-gray-700" />
                   </button>
                   
-                  <span className="text-xl font-bold text-gray-900 min-w-[2.5rem] text-center">
+                  <span className="text-2xl font-bold text-gray-900 min-w-[3rem] text-center">
                     {quantity}
                   </span>
                   
                   <button
                     onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
                     disabled={quantity >= product.stock}
-                    className="w-10 h-10 rounded-full border-2 border-gray-400 hover:border-blue-600 hover:bg-blue-50 flex items-center justify-center transition disabled:opacity-30 bg-white"
+                    className="w-12 h-12 rounded-full border-2 border-gray-400 hover:border-brand hover:bg-brand/5 flex items-center justify-center transition disabled:opacity-30 bg-white"
                     aria-label="Verhoog aantal"
                   >
                     <Plus className="h-4 w-4 text-gray-700" />
@@ -232,10 +235,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* DRY: Product Demo Video - EXACT zoals homepage, direct onder titel */}
           {product.videoUrl && (
             <div className="mb-12">
-              <ProductVideo
+              <VideoPlayer
                 videoUrl={product.videoUrl}
-                productName={product.name}
-                className=""
+                posterUrl={product.images?.[0] || ''}
+                type="product"
+                controls
+                className="w-full aspect-video rounded-2xl overflow-hidden shadow-lg"
               />
               <p className="text-center text-sm text-gray-500 mt-4">
                 🎥 Bekijk de demo video
@@ -243,27 +248,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             </div>
           )}
           
-          <p className="text-gray-700 leading-relaxed text-base">{product.description}</p>
+          <p className="text-base md:text-lg font-semibold text-gray-700 leading-relaxed">{product.description}</p>
         </div>
 
         <Separator variant="float" spacing="xl" />
 
-        {/* USPs - DRY: 2 belangrijkste features via site settings */}
-        {settings?.productUsps && (
-          <>
-            <ProductUsps usps={[
-              settings.productUsps.usp1,
-              settings.productUsps.usp2,
-            ]} />
-            <Separator variant="float" spacing="xl" />
-          </>
-        )}
-
-
       </div>
 
-      {/* Chat Popup - Global UI Component */}
-      {isChatOpen && <ChatPopup onClose={closeChat} />}
+      {/* Chat Popup - ALTIJD ZICHTBAAR */}
+      <ChatPopup />
     </div>
   );
 }

@@ -59,15 +59,15 @@ export function ProductUsps({ usps }: ProductUspsProps) {
               <div className={`grid md:grid-cols-2 gap-8 items-center ${
                 isEven ? '' : 'md:flex-row-reverse'
               }`}>
-                {/* Text content */}
-                <div className={`space-y-4 ${isEven ? 'md:order-1' : 'md:order-2'}`}>
-                  <div className="flex items-start gap-4">
+                {/* Text content - CENTRAAL OP MOBIEL */}
+                <div className={`space-y-4 ${isEven ? 'md:order-1' : 'md:order-2'} text-center md:text-left`}>
+                  <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
                     {/* Icon direct op achtergrond (geen cirkel/veld) */}
                     <IconComponent className={`h-12 w-12 flex-shrink-0 ${colorClass}`} />
                     
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{usp.title}</h3>
-                      <p className="text-gray-600 text-lg leading-relaxed">{usp.description}</p>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">{usp.title}</h3>
+                      <p className="text-gray-600 text-base leading-relaxed">{usp.description}</p>
                     </div>
                   </div>
                 </div>

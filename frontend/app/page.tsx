@@ -6,13 +6,12 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ChatPopup } from "@/components/ui/chat-popup";
 import { Separator } from "@/components/ui/separator";
-import { ProductVideo } from "@/components/ui/product-video";
+import { VideoPlayer } from "@/components/ui/video-player";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ArrowRight, Play, Check, MessageCircle, ChevronDown, ChevronUp, Package, Volume2, Sparkles, Smartphone } from "lucide-react";
 import type { Product } from "@/types/product";
 import { API_CONFIG, SITE_CONFIG, apiFetch } from "@/lib/config";
 import { IMAGE_CONFIG, getImageFillProps } from "@/lib/image-config";
-import { useUI } from "@/context/ui-context";
 import { TYPOGRAPHY } from "@/lib/theme-colors";
 
 // DRY: Site Settings Type (sync met backend)
@@ -46,16 +45,7 @@ const faqs = [
 
 export default function HomePage() {
   const [product, setProduct] = useState<Product | null>(null);
-  const [settings, setSettings] = useState<SiteSettings | null>(null); // NEW: Dynamic settings
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const { isChatOpen, closeChat, openChat } = useUI();
-
-  // DRY: Fetch settings from backend
-  useEffect(() => {
-    apiFetch<{ success: boolean; data: SiteSettings }>(API_CONFIG.ENDPOINTS.SETTINGS)
-      .then(data => setSettings(data.data))
-      .catch(() => {}); // Silent fail, use fallback
-  }, []);
 
   // DRY: Fetch featured product (used for video on homepage)
   useEffect(() => {
@@ -64,19 +54,13 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
-  // Auto-open chat na 5 seconden
-  useEffect(() => {
-    const timer = setTimeout(() => openChat(), 5000);
-    return () => clearTimeout(timer);
-  }, [openChat]);
-
   // Product slug - single source
   const productSlug = product?.slug || SITE_CONFIG.DEFAULT_PRODUCT_SLUG;
 
-  // DRY: Get dynamic values with intelligent fallback
-  const hero = settings?.hero || { title: 'Slimste Kattenbak', subtitle: 'Automatisch • Smart • Hygiënisch', image: IMAGE_CONFIG.hero.main };
-  const usps = settings?.usps || {
-    title: 'De Beste Innovatie',
+  // DRY: Static values
+  const hero = { title: 'Slimme Kattenbak', subtitle: 'Automatisch • Smart • Hygiënisch', image: IMAGE_CONFIG.hero.main };
+  const usps = {
+    title: 'Waarom Deze Kattenbak?',
     feature1: { title: '10.5L Capaciteit', description: 'De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.', image: IMAGE_CONFIG.usps.capacity.src },
     feature2: { title: 'Ultra-Quiet Motor', description: 'Werkt onder 40 decibel. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.', image: IMAGE_CONFIG.usps.quiet.src },
   };
@@ -85,17 +69,22 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       {/* Hero Section - DRY: Dynamisch via Featured Product Video */}
       <section className="relative min-h-[80vh] flex items-center overflow-hidden">
-        {/* Background Image OR Video - DRY: Uses featured product videoUrl */}
+        {/* Background Video OR Image */}
         <div className="absolute inset-0 z-0">
-          {product?.videoUrl ? (
-            /* DRY: Featured product video (same video as on product detail!) */
-            <div className="w-full h-full">
-              <ProductVideo
-                videoUrl={product.videoUrl}
-                productName={product.name}
-                className="w-full h-full rounded-none"
+          {product?.heroVideoUrl && product.heroVideoUrl.endsWith('.mp4') ? (
+            /* Hero Video: autoplay, muted, loop, optimized */
+            <>
+              <VideoPlayer
+                videoUrl={product.heroVideoUrl}
+                posterUrl={hero.image}
+                type="hero"
+                autoplay
+                muted
+                loop
+                className="w-full h-full"
               />
-            </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
+            </>
           ) : (
             /* Fallback: Static hero image */
             <>
@@ -114,11 +103,11 @@ export default function HomePage() {
         <div className="container mx-auto px-6 lg:px-12 py-20 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             {/* Stabiele Titel - DRY: Via Settings */}
-            <h1 className="text-5xl md:text-7xl font-light mb-6 leading-tight text-white drop-shadow-lg">
+            <h1 className="text-5xl md:text-7xl font-semibold mb-6 leading-tight text-white drop-shadow-lg">
               {hero.title}
             </h1>
 
-            <p className="text-lg md:text-xl font-normal text-white/90 mb-10 drop-shadow-md max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl font-semibold text-white/90 mb-10 drop-shadow-md max-w-2xl mx-auto">
               {hero.subtitle}
             </p>
 
@@ -134,23 +123,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Separator variant="float" spacing="xl" />
+      <Separator variant="float" spacing="md" />
 
-      {/* USP Section - COMPACT ZIGZAG - DYNAMISCH VIA ADMIN */}
-      <section className="py-16 bg-white">
+      {/* USP Section - COMPACT + MINDER SPACING - MOBILE FIRST */}
+      <section className="py-8 md:py-12 bg-white text-center">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-          <SectionHeading className="mb-12">
+          <SectionHeading className="mb-12 md:mb-16 text-center">
             Waarom Kiezen Voor Deze Kattenbak?
           </SectionHeading>
           
-          {/* Feature 1 - COMPACT ZIGZAG LINKS */}
-          <div className="grid md:grid-cols-2 gap-10 items-center mb-16">
+          {/* Feature 1 - ICONS NAAST TITEL (ook mobiel) */}
+          <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center text-center md:text-left mb-6 md:mb-10">
             <div>
-              <div className="flex items-center gap-4 mb-4">
-                <Package className="h-10 w-10 text-black" />
-                <h3 className="text-xl font-bold text-gray-900">{usps.feature1.title}</h3>
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
+                <Package className="h-10 w-10 text-brand flex-shrink-0" />
+                <h3 className="text-xl font-semibold text-gray-900">{usps.feature1.title}</h3>
               </div>
-              <p className="text-sm text-gray-600 leading-relaxed">{usps.feature1.description}</p>
+              <p className="text-base md:text-lg font-semibold text-gray-700 leading-relaxed">{usps.feature1.description}</p>
             </div>
             <div className="relative aspect-video rounded-xl overflow-hidden shadow-md">
               <Image
@@ -162,8 +151,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Feature 2 - COMPACT ZIGZAG RECHTS */}
-          <div className="grid md:grid-cols-2 gap-10 items-center">
+          {/* Feature 2 - COMPACT ZIGZAG RECHTS, USP TITEL CENTRAAL */}
+          <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center text-center md:text-left">
             <div className="order-2 md:order-1 relative aspect-video rounded-xl overflow-hidden shadow-md">
               <Image
                 src={usps.feature2.image}
@@ -173,23 +162,23 @@ export default function HomePage() {
               />
             </div>
             <div className="order-1 md:order-2">
-              <div className="flex items-center gap-4 mb-4">
-                <Volume2 className="h-10 w-10 text-black" />
-                <h3 className="text-xl font-bold text-gray-900">{usps.feature2.title}</h3>
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
+                <Volume2 className="h-10 w-10 text-brand flex-shrink-0" />
+                <h3 className="text-xl font-semibold text-gray-900">{usps.feature2.title}</h3>
               </div>
-              <p className="text-sm text-gray-600 leading-relaxed">{usps.feature2.description}</p>
+              <p className="text-base md:text-lg font-semibold text-gray-700 leading-relaxed">{usps.feature2.description}</p>
             </div>
           </div>
         </div>
       </section>
 
-      <Separator variant="float" spacing="xl" />
+      <Separator variant="float" spacing="sm" />
 
-      {/* Video/Demo Section */}
-      <section id="video" className="py-24">
+      {/* Video/Demo Section - COMPACT */}
+      <section id="video" className="py-8 md:py-12">
         <div className="container mx-auto px-6 lg:px-12 max-w-5xl">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-6 text-gray-900">Zie Het in Actie</h2>
-          <p className="text-base text-gray-600 text-center mb-16">
+          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-3 text-gray-900">Zie Het in Actie</h2>
+          <p className="text-base text-gray-600 text-center mb-6 md:mb-8">
             2:30 min demo video
           </p>
           
@@ -202,19 +191,19 @@ export default function HomePage() {
             </div>
             <div className="absolute bottom-6 left-6 text-white">
               <p className="text-sm font-medium opacity-80">Product Demo</p>
-              <p className="text-2xl font-light">2:30 min</p>
+              <p className="text-2xl font-semibold">2:30 min</p>
             </div>
           </div>
         </div>
       </section>
 
-      <Separator variant="float" spacing="xl" />
+      <Separator variant="float" spacing="sm" />
 
-      {/* FAQ Section */}
-      <section className="py-20">
+      {/* FAQ Section - DICHTER BIJ VIDEO */}
+      <section className="py-8 md:py-12">
         <div className="container mx-auto px-6 lg:px-12 max-w-3xl">
-          <SectionHeading className="mb-4">Veelgestelde Vragen</SectionHeading>
-          <p className="text-base text-gray-600 text-center mb-12">
+          <SectionHeading className="mb-3">Veelgestelde Vragen</SectionHeading>
+          <p className="text-base text-gray-600 text-center mb-6 md:mb-8">
             Alles wat je moet weten
           </p>
 
@@ -225,7 +214,7 @@ export default function HomePage() {
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
                 >
-                  <span className="font-medium text-lg">{faq.q}</span>
+                  <span className="font-medium text-base md:text-lg">{faq.q}</span>
                   {openFaq === i ? (
                     <ChevronUp className="h-5 w-5 text-accent flex-shrink-0" />
                   ) : (
@@ -244,8 +233,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Contact Chat Popup - Altijd zichtbaar in balkje vorm */}
-      {isChatOpen && <ChatPopup onClose={closeChat} />}
+      {/* Contact Chat Popup - ALTIJD ZICHTBAAR */}
+      <ChatPopup />
     </div>
   );
 }
