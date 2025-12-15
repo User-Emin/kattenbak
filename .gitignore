@@ -63,3 +63,4 @@ tmp/
 # Server credentials (NEVER COMMIT!)
 .credentials/
 *.env.production
+GITHUB_SECRETS.txt
