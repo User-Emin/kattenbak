@@ -1,12 +1,13 @@
 /**
  * RAG SECURITY MIDDLEWARE
  * 4-Layer defense against prompt injection and attacks
+ * In-memory rate limiting (no database dependency)
  */
 
 import { Request, Response, NextFunction } from 'express';
-import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+// In-memory rate limiting
+const rateLimitStore = new Map<string, { count: number; windowStart: number; blockedUntil?: number }>();
 
 export interface SecurityCheckResult {
   safe: boolean;
@@ -74,68 +75,50 @@ export class RAGSecurityMiddleware {
   }
   
   /**
-   * Layer 1: Rate limiting (10 requests per minute per IP)
+   * Layer 1: Rate limiting (10 requests per minute per IP) - IN-MEMORY
    */
   private static async checkRateLimit(ip: string): Promise<boolean> {
     try {
-      const now = new Date();
-      const oneMinuteAgo = new Date(now.getTime() - 60000);
+      const now = Date.now();
+      const oneMinute = 60000;
       
-      // Get or create rate limit entry
-      const entry = await prisma.$queryRaw<Array<{
-        request_count: number;
-        window_start: Date;
-        blocked_until: Date | null;
-      }>>`
-        SELECT request_count, window_start, blocked_until
-        FROM rag_rate_limits
-        WHERE ip_address = ${ip}
-      `;
+      // Get current entry
+      let entry = rateLimitStore.get(ip);
       
-      if (entry.length === 0) {
-        // First request - create entry
-        await prisma.$executeRaw`
-          INSERT INTO rag_rate_limits (ip_address, request_count, window_start)
-          VALUES (${ip}, 1, ${now})
-        `;
+      if (!entry) {
+        // First request
+        rateLimitStore.set(ip, {
+          count: 1,
+          windowStart: now
+        });
         return true;
       }
       
-      const current = entry[0];
-      
       // Check if blocked
-      if (current.blocked_until && new Date(current.blocked_until) > now) {
+      if (entry.blockedUntil && entry.blockedUntil > now) {
         return false;
       }
       
       // Reset window if expired
-      if (new Date(current.window_start) < oneMinuteAgo) {
-        await prisma.$executeRaw`
-          UPDATE rag_rate_limits
-          SET request_count = 1, window_start = ${now}, blocked_until = NULL
-          WHERE ip_address = ${ip}
-        `;
+      if (now - entry.windowStart > oneMinute) {
+        rateLimitStore.set(ip, {
+          count: 1,
+          windowStart: now
+        });
         return true;
       }
       
       // Check limit
-      if (current.request_count >= 10) {
+      if (entry.count >= 10) {
         // Block for 1 minute
-        const blockUntil = new Date(now.getTime() + 60000);
-        await prisma.$executeRaw`
-          UPDATE rag_rate_limits
-          SET blocked_until = ${blockUntil}
-          WHERE ip_address = ${ip}
-        `;
+        entry.blockedUntil = now + oneMinute;
+        rateLimitStore.set(ip, entry);
         return false;
       }
       
       // Increment counter
-      await prisma.$executeRaw`
-        UPDATE rag_rate_limits
-        SET request_count = request_count + 1
-        WHERE ip_address = ${ip}
-      `;
+      entry.count++;
+      rateLimitStore.set(ip, entry);
       
       return true;
     } catch (err) {
@@ -230,7 +213,7 @@ export class RAGSecurityMiddleware {
   }
   
   /**
-   * Layer 4: Query logging
+   * Layer 4: Query logging (console only - no database)
    */
   private static async logQuery(
     query: string,
@@ -238,27 +221,19 @@ export class RAGSecurityMiddleware {
     attackType: string | undefined,
     req: Request
   ): Promise<void> {
-    try {
-      await prisma.$executeRaw`
-        INSERT INTO rag_query_logs (
-          query,
-          query_sanitized,
-          ip_address,
-          user_agent,
-          flagged_as_attack,
-          attack_type
-        ) VALUES (
-          ${query.substring(0, 500)},
-          ${query},
-          ${req.ip || 'unknown'},
-          ${req.get('user-agent') || 'unknown'},
-          ${flagged},
-          ${attackType || null}
-        )
-      `;
-    } catch (err) {
-      console.error('Failed to log query:', err);
-      // Don't fail the request if logging fails
+    // Log to console for monitoring
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      ip: req.ip || 'unknown',
+      query: query.substring(0, 100),
+      flagged,
+      attackType: attackType || null
+    };
+    
+    if (flagged) {
+      console.warn('🚨 SECURITY ALERT:', JSON.stringify(logEntry));
+    } else {
+      console.log('📝 RAG Query:', logEntry.query);
     }
   }
 }

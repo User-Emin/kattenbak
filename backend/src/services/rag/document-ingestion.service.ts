@@ -1,14 +1,13 @@
 /**
- * DOCUMENT INGESTION SERVICE
- * Load product specifications into vector database
+ * DOCUMENT INGESTION SERVICE  
+ * Load product specifications into IN-MEMORY vector store
+ * No PostgreSQL/pgvector needed
  */
 
-import { PrismaClient } from '@prisma/client';
 import { EmbeddingsService } from './embeddings.service';
+import { VectorStoreService, VectorDocument } from './vector-store.service';
 import * as fs from 'fs';
 import * as path from 'path';
-
-const prisma = new PrismaClient();
 
 interface ProductDocument {
   type: string;
@@ -29,7 +28,7 @@ export class DocumentIngestionService {
    * Ingest all product specifications
    */
   static async ingestProductSpecifications(): Promise<void> {
-    console.log('🔄 Starting document ingestion...');
+    console.log('🔄 Starting document ingestion (IN-MEMORY)...');
     
     const specsPath = path.join(__dirname, '../../data/product-specifications.json');
     const specsData: ProductSpecifications = JSON.parse(
@@ -38,67 +37,51 @@ export class DocumentIngestionService {
     
     console.log(`📄 Found ${specsData.documents.length} documents for product ${specsData.sku}`);
     
-    let ingested = 0;
-    let skipped = 0;
+    const vectorDocs: VectorDocument[] = [];
     
     for (const doc of specsData.documents) {
       try {
-        // Generate content hash for deduplication
+        // Generate content hash for ID
         const contentHash = EmbeddingsService.calculateHash(doc.content);
-        
-        // Check if already exists
-        const existing = await prisma.$queryRaw`
-          SELECT id FROM document_embeddings WHERE content_hash = ${contentHash}
-        `;
-        
-        if (Array.isArray(existing) && existing.length > 0) {
-          console.log(`⏭️  Skipping duplicate: ${doc.title}`);
-          skipped++;
-          continue;
-        }
+        const docId = `doc_${contentHash.substring(0, 12)}`;
         
         // Generate embedding
         console.log(`🔮 Generating embedding for: ${doc.title}`);
         const { embedding } = await EmbeddingsService.generateEmbedding(doc.content);
         
-        // Store in database
-        await prisma.$executeRaw`
-          INSERT INTO document_embeddings (
-            document_type,
-            product_id,
-            content,
-            content_hash,
-            embedding,
-            metadata
-          ) VALUES (
-            ${doc.type},
-            ${specsData.product_id},
-            ${doc.content},
-            ${contentHash},
-            ${`[${embedding.join(',')}]`}::vector,
-            ${JSON.stringify({
-              title: doc.title,
-              keywords: doc.keywords,
-              importance: doc.importance,
-              sku: specsData.sku
-            })}
-          )
-        `;
+        // Create vector document
+        const vectorDoc: VectorDocument = {
+          id: docId,
+          content: doc.content,
+          embedding,
+          metadata: {
+            title: doc.title,
+            keywords: doc.keywords,
+            importance: doc.importance,
+            sku: specsData.sku,
+            product_id: specsData.product_id,
+            type: doc.type
+          },
+          type: doc.type
+        };
         
-        console.log(`✅ Ingested: ${doc.title}`);
-        ingested++;
+        vectorDocs.push(vectorDoc);
+        console.log(`✅ Prepared: ${doc.title}`);
         
       } catch (err: any) {
-        console.error(`❌ Failed to ingest ${doc.title}:`, err.message);
+        console.error(`❌ Failed to prepare ${doc.title}:`, err.message);
       }
     }
+    
+    // Add all documents to vector store
+    await VectorStoreService.addDocuments(vectorDocs);
     
     console.log('');
     console.log('========================================');
     console.log('📊 INGESTION COMPLETE');
     console.log('========================================');
-    console.log(`✅ Ingested: ${ingested} documents`);
-    console.log(`⏭️  Skipped: ${skipped} duplicates`);
+    console.log(`✅ Ingested: ${vectorDocs.length} documents`);
+    console.log(`💾 Storage: IN-MEMORY + File persistence`);
     console.log('========================================');
   }
   
@@ -108,9 +91,7 @@ export class DocumentIngestionService {
   static async clearDocuments(): Promise<void> {
     console.log('🗑️  Clearing all documents...');
     
-    await prisma.$executeRaw`
-      DELETE FROM document_embeddings
-    `;
+    await VectorStoreService.clear();
     
     console.log('✅ All documents cleared');
   }
@@ -119,11 +100,7 @@ export class DocumentIngestionService {
    * Get document count
    */
   static async getDocumentCount(): Promise<number> {
-    const result = await prisma.$queryRaw<[{ count: bigint }]>`
-      SELECT COUNT(*)::int as count FROM document_embeddings
-    `;
-    
-    return Number(result[0].count);
+    return VectorStoreService.getCount();
   }
 }
 
@@ -146,8 +123,6 @@ if (require.main === module) {
     } catch (err: any) {
       console.error('❌ Error:', err.message);
       process.exit(1);
-    } finally {
-      await prisma.$disconnect();
     }
   })();
 }

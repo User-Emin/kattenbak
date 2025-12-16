@@ -1,13 +1,11 @@
 /**
  * RAG SERVICE - Retrieval Augmented Generation
- * Combines vector similarity search with Ollama LLM
+ * Combines IN-MEMORY vector similarity search with Ollama LLM
  */
 
-import { PrismaClient } from '@prisma/client';
 import { EmbeddingsService } from './embeddings.service';
+import { VectorStoreService } from './vector-store.service';
 import { spawn } from 'child_process';
-
-const prisma = new PrismaClient();
 
 export interface RAGResponse {
   answer: string;
@@ -90,7 +88,7 @@ export class RAGService {
   }
   
   /**
-   * Similarity search in vector database
+   * Similarity search in IN-MEMORY vector store
    */
   private static async similaritySearch(
     queryEmbedding: number[],
@@ -102,35 +100,11 @@ export class RAGService {
     similarity: number;
     metadata: any;
   }>> {
-    const embeddingStr = `[${queryEmbedding.join(',')}]`;
-    
-    const results = await prisma.$queryRaw<Array<{
-      id: string;
-      document_type: string;
-      content: string;
-      product_id: string;
-      metadata: any;
-      similarity: number;
-    }>>`
-      SELECT 
-        id,
-        document_type,
-        content,
-        product_id,
-        metadata,
-        1 - (embedding <=> ${embeddingStr}::vector) as similarity
-      FROM document_embeddings
-      WHERE 1 - (embedding <=> ${embeddingStr}::vector) > ${threshold}
-      ORDER BY embedding <=> ${embeddingStr}::vector
-      LIMIT ${maxDocs}
-    `;
-    
-    return results.map(r => ({
-      id: r.id,
-      content: r.content,
-      similarity: Number(r.similarity),
-      metadata: r.metadata
-    }));
+    return await VectorStoreService.similaritySearch(
+      queryEmbedding,
+      maxDocs,
+      threshold
+    );
   }
   
   /**

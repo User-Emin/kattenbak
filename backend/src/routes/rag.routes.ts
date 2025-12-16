@@ -55,21 +55,16 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
  */
 router.get('/health', async (req: Request, res: Response) => {
   try {
-    // Quick health check
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
+    const { VectorStoreService } = require('../services/rag/vector-store.service');
     
-    const docCount = await prisma.$queryRaw<[{ count: bigint }]>`
-      SELECT COUNT(*)::int as count FROM document_embeddings
-    `;
-    
-    await prisma.$disconnect();
+    const docCount = VectorStoreService.getCount();
     
     res.json({
       success: true,
       data: {
         status: 'healthy',
-        documents_loaded: Number(docCount[0].count),
+        storage: 'in-memory',
+        documents_loaded: docCount,
         model: 'llama3.2:3b',
         embeddings_model: 'all-MiniLM-L6-v2'
       }
