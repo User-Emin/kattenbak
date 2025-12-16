@@ -136,11 +136,11 @@ export class EmbeddingsService {
         }
       });
       
-      // Timeout after 10 seconds
+      // Timeout after 60 seconds (model download on first use)
       setTimeout(() => {
         python.kill();
         reject(new Error('Embedding generation timeout'));
-      }, 10000);
+      }, 60000);
     });
   }
 }
