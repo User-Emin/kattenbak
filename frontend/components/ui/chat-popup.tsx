@@ -33,51 +33,29 @@ export function ChatPopup() {
     setIsExpanded(false);
   };
 
-  // STABIELE DETECTION: Sticky cart visibility met debouncing
+  // SIMPELE STABIELE DETECTION: opacity + pointer-events check
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-
     const checkStickyCart = () => {
       const stickyBar = document.querySelector('[data-sticky-cart]') as HTMLElement;
       
       if (stickyBar) {
-        // Check of sticky cart zichtbaar is (niet translate-y-full)
-        const computedStyle = window.getComputedStyle(stickyBar);
-        const transform = computedStyle.transform;
+        // Check classes - simpel en betrouwbaar
+        const hasOpacity = stickyBar.classList.contains('opacity-100');
+        const hasPointerEvents = !stickyBar.classList.contains('pointer-events-none');
+        const isVisible = hasOpacity && hasPointerEvents;
         
-        // translate-y-full = matrix(1, 0, 0, 1, 0, Y) waar Y > 50
-        // Zichtbaar = translate-y-0 of Y <= 10
-        const isHidden = transform !== 'none' && 
-          (transform.includes('matrix') && parseFloat(transform.split(',')[5]) > 10);
-        
-        const newVisibility = !isHidden;
-        
-        // Alleen updaten als status echt verandert (stabiel)
-        if (newVisibility !== stickyCartVisible) {
-          setStickyCartVisible(newVisibility);
-        }
+        setStickyCartVisible(isVisible);
       } else {
-        // Geen sticky cart gevonden = niet zichtbaar
-        if (stickyCartVisible) {
-          setStickyCartVisible(false);
-        }
+        setStickyCartVisible(false);
       }
     };
 
-    // Debounced scroll handler voor stabiliteit
-    const handleScroll = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkStickyCart, 50); // 50ms debounce
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Check elke 200ms voor stabiliteit
+    const interval = setInterval(checkStickyCart, 200);
     checkStickyCart(); // Initial check
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(timeoutId);
-    };
-  }, [stickyCartVisible]);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
