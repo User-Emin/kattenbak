@@ -24,8 +24,9 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
       });
     }
     
-    // Generate RAG response
-    const response = await RAGService.answerQuestion(sanitizedQuery);
+    // Use queue for sequential processing (prevents Ollama overload)
+    const { RAGQueueService } = await import('../services/rag/queue.service');
+    const response = await RAGQueueService.enqueue(sanitizedQuery);
     
     // Update log with response
     const latency = response.latency_ms;
