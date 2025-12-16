@@ -17,12 +17,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 // DRY: Gebruik theme-colors.ts (MAXIMAAL DYNAMISCH)
 const VARIANT_STYLES: Record<ButtonVariant, string> = {
-  primary: `${COMPONENT_COLORS.button.primary}`, // Zwart gradient + text-white
-  secondary: `${COMPONENT_COLORS.button.secondary}`, // Blauw + text-white
-  cta: `${COMPONENT_COLORS.button.cta}`, // Oranje + text-white
+  primary: `${COMPONENT_COLORS.button.primary} border-2 border-transparent`, // Zwart + invisible border
+  secondary: `${COMPONENT_COLORS.button.secondary} border-2 border-transparent`, // Blauw + invisible border
+  cta: `${COMPONENT_COLORS.button.cta} border-2 border-transparent`, // Oranje + invisible border voor gelijke dikte
   outline: 'bg-transparent border-2 border-current hover:bg-gray-50',
   ghost: 'bg-transparent hover:bg-gray-50',
-  brand: 'bg-brand text-white hover:bg-brand-dark',
+  brand: 'bg-brand text-white hover:bg-brand-dark border-2 border-transparent',
 };
 
 const SIZE_STYLES: Record<ButtonSize, string> = {

@@ -55,7 +55,7 @@ export function Footer() {
           </div>
 
           {/* Column 3: Service */}
-          <div>
+          <div className="text-center sm:text-left">
             <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Service</h3>
             <ul className="space-y-2 text-xs sm:text-sm">
               <li>
