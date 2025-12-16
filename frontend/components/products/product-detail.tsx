@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ProductImage } from "@/components/ui/product-image";
@@ -9,6 +9,7 @@ import { VideoPlayer } from "@/components/ui/video-player";
 import { Separator } from "@/components/ui/separator";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ChatPopup } from "@/components/ui/chat-popup";
+import { StickyCartBar } from "@/components/products/sticky-cart-bar";
 import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/utils";
 import { ShoppingCart, Plus, Minus, Check } from "lucide-react";
@@ -169,7 +170,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
 
               {/* CTA Button - DIK TEKST, GEEN PIJL */}
-              <div className="mb-8">
+              <div ref={addToCartButtonRef} className="mb-8">
                 <button
                   onClick={handleAddToCart}
                   disabled={isAdding}
@@ -254,6 +255,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <Separator variant="float" spacing="xl" />
 
       </div>
+
+      {/* Sticky Cart Bar - SMOOTH BOTTOM BANNER */}
+      <StickyCartBar product={product} addToCartButtonRef={addToCartButtonRef} />
 
       {/* Chat Popup - ALTIJD ZICHTBAAR */}
       <ChatPopup />

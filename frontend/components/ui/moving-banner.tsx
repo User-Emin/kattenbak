@@ -1,13 +1,13 @@
 "use client";
 
 /**
- * MOVING BANNER - SNELLE MARQUEE MET STREEPJES
+ * MOVING BANNER - CLEAN & SMOOTH
  * DRY: Gecentraliseerde USP teksten
- * Performance: 8s desktop, 4s mobiel
+ * Design: Geen strepen, gratis verzending standaard
  */
 export function MovingBanner() {
   const usps = [
-    "Gratis verzending vanaf €50",
+    "Gratis verzending",
     "2 jaar garantie",
     "Vandaag besteld, morgen in huis",
     "30 dagen bedenktijd",
@@ -15,14 +15,15 @@ export function MovingBanner() {
 
   return (
     <div className="bg-black text-white py-2 overflow-hidden relative">
-      <div className="animate-marquee whitespace-nowrap flex items-center antialiased">
+      <div className="animate-marquee whitespace-nowrap flex items-center gap-12 antialiased">
         {[...usps, ...usps, ...usps].map((text, idx) => (
-          <div key={idx} className="inline-flex items-center mx-6">
-            <span className="text-sm font-semibold text-white tracking-wide" style={{ WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}>
-              {text}
-            </span>
-            <span className="mx-6 text-white/40 font-bold text-lg">-</span>
-          </div>
+          <span 
+            key={idx}
+            className="text-sm font-semibold text-white tracking-wide" 
+            style={{ WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}
+          >
+            {text}
+          </span>
         ))}
       </div>
       <style jsx>{`
