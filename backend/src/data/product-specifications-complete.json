@@ -1,0 +1,361 @@
+{
+  "product": {
+    "name": "Automatische Kattenbak Premium",
+    "brand": "CatSupply",
+    "model": "Premium Self-Cleaning",
+    "category": "Automatische Kattenbak",
+    "sku": "CS-AUTO-PREMIUM-001"
+  },
+  
+  "comparison_table": {
+    "source": "Official comparison chart - OURS vs OTHERS",
+    "features": [
+      {
+        "feature": "Self-Cleaning Function",
+        "ours": true,
+        "competitor_1": true,
+        "competitor_2": true,
+        "description": "Automatische zelfreinigende functie voor hands-free onderhoud"
+      },
+      {
+        "feature": "Open-Top, Low-Stress Design",
+        "ours": true,
+        "competitor_1": false,
+        "competitor_2": true,
+        "description": "Open bovenkant ontwerp zonder deur vermindert stress voor katten, geen claustrofobisch gevoel",
+        "advantage": "Veel katten mijden gesloten bakken - ons open design zorgt voor betere acceptatie"
+      },
+      {
+        "feature": "Dual Safety Sensors",
+        "ours": true,
+        "competitor_1": false,
+        "competitor_2": false,
+        "description": "Twee onafhankelijke veiligheidssensoren voor maximale bescherming van je kat",
+        "advantage": "EXCLUSIEF - Wij zijn de enige met dubbele sensoren voor extra veiligheid",
+        "technical": "Detectie binnen fractie van seconde, automatische stop bij beweging"
+      },
+      {
+        "feature": "App Control & Health Monitoring",
+        "ours": true,
+        "competitor_1": true,
+        "competitor_2": false,
+        "description": "Slimme app voor iOS en Android met gezondheidsmonitoring en notificaties",
+        "app_features": [
+          "Real-time monitoring van toiletgedrag",
+          "Gewicht tracking per gebruik",
+          "Frequentie analyse",
+          "Meldingen wanneer legen nodig is",
+          "Geschiedenis bijhouden",
+          "Meerdere katten ondersteuning"
+        ]
+      },
+      {
+        "feature": "High-Efficiency Filter",
+        "ours": true,
+        "competitor_1": false,
+        "competitor_2": false,
+        "description": "Hoogwaardig filtersysteem met actieve koolstof",
+        "advantage": "EXCLUSIEF - Elimineert 99% van geuren, geen nare luchtjes meer",
+        "filter_specs": {
+          "type": "Activated Carbon Filter",
+          "efficiency": "99%",
+          "lifespan": "3-6 maanden afhankelijk van gebruik",
+          "replaceable": true
+        }
+      },
+      {
+        "feature": "Waste Bin Capacity",
+        "ours": "10.5L",
+        "competitor_1": "9L",
+        "competitor_2": "7L",
+        "description": "Extra grote afvalbak capaciteit van 10.5 liter",
+        "advantage": "Grootste capaciteit op de markt - tot 33% meer dan concurrenten",
+        "practical": {
+          "one_cat": "7-10 dagen tussen legen",
+          "two_cats": "3-5 dagen tussen legen",
+          "three_cats": "2-3 dagen tussen legen"
+        }
+      },
+      {
+        "feature": "Anti-Splash, High-Side Walls",
+        "ours": true,
+        "competitor_1": false,
+        "competitor_2": false,
+        "description": "Extra hoge zijwanden met anti-splash design",
+        "advantage": "EXCLUSIEF - Voorkomt morsen en spatten, houdt vloer schoon",
+        "height": "Verhoogde wanden van 25cm voor optimale bescherming"
+      },
+      {
+        "feature": "Easy to Disassemble and Clean",
+        "ours": true,
+        "competitor_1": false,
+        "competitor_2": true,
+        "description": "Volledig demonteerbaar voor grondige reiniging",
+        "maintenance": "Alle onderdelen kunnen in 2 minuten verwijderd worden, geen gereedschap nodig"
+      },
+      {
+        "feature": "Suitable for Most Types of Cat Litter",
+        "ours": true,
+        "competitor_1": true,
+        "competitor_2": false,
+        "description": "Compatibel met alle gangbare kattenbakvullingen",
+        "compatible_litter": [
+          "Klonterende bentoniet (aanbevolen)",
+          "Silica gel kristallen",
+          "Natuurlijke/biologische vulling",
+          "Tofu-gebaseerde vulling"
+        ],
+        "not_compatible": [
+          "Niet-klonterende vulling",
+          "Houtkorrels (te licht)"
+        ],
+        "recommended": "Klonterende bentoniet vulling geeft beste resultaten"
+      },
+      {
+        "feature": "Compact Footprint, Large Interior",
+        "ours": true,
+        "competitor_1": false,
+        "competitor_2": false,
+        "description": "Compact buitenformaat met ruim binnenste",
+        "advantage": "EXCLUSIEF - Neemt weinig ruimte in maar biedt veel ruimte voor kat",
+        "dimensions": {
+          "external": {
+            "length": "62cm",
+            "width": "53cm",
+            "height": "66cm"
+          },
+          "internal": {
+            "length": "52cm",
+            "width": "48cm",
+            "height": "25cm",
+            "suitable_for": "Katten tot 8kg (meeste rassen)"
+          }
+        }
+      },
+      {
+        "feature": "Ultra-Quiet Motor (<40 dB)",
+        "ours": true,
+        "competitor_1": true,
+        "competitor_2": false,
+        "description": "Fluisterstil met minder dan 40 decibel geluidsniveau",
+        "noise_comparison": {
+          "our_product": "< 40 dB (zachter dan normaal gesprek)",
+          "normal_conversation": "60 dB",
+          "whisper": "30 dB",
+          "competitor_average": "50-65 dB"
+        },
+        "benefit": "Katten schrikken niet, gebruikt veilig 's nachts"
+      },
+      {
+        "feature": "Modular Design (OEM-Friendly)",
+        "ours": true,
+        "competitor_1": false,
+        "competitor_2": false,
+        "description": "Modulair ontwerp met vervangbare componenten",
+        "advantage": "EXCLUSIEF - Alle onderdelen afzonderlijk vervangbaar voor lange levensduur",
+        "replaceable_parts": [
+          "Motor unit",
+          "Sensor modules",
+          "Waste tray",
+          "Sifting screen",
+          "Carbon filters",
+          "Inner liner"
+        ],
+        "warranty": {
+          "standard": "2 jaar volledige garantie",
+          "motor": "3 jaar motorgarantie",
+          "parts": "Reserveonderdelen 5 jaar beschikbaar"
+        }
+      }
+    ]
+  },
+  
+  "technical_specifications": {
+    "power": {
+      "voltage": "220-240V AC",
+      "frequency": "50/60Hz",
+      "consumption": "15W standby, 60W tijdens reiniging",
+      "cable_length": "1.8m"
+    },
+    "cleaning_cycle": {
+      "duration": "3-4 minuten",
+      "delay_after_use": "5 minuten (instelbaar 3-30 min)",
+      "method": "Rotating sifting mechanism",
+      "waste_disposal": "Automatic deposit in sealed waste drawer"
+    },
+    "sensors": {
+      "primary": "Infrared motion sensor (range: 20cm)",
+      "secondary": "Weight sensor (detects 0.5kg+)",
+      "safety_stop": "< 0.3 seconden reactietijd"
+    },
+    "materials": {
+      "body": "ABS plastic (BPA-vrij)",
+      "liner": "HDPE (Food-grade)",
+      "certifications": ["CE", "RoHS", "ISO 9001"]
+    },
+    "weight": {
+      "product": "7.2kg (leeg)",
+      "package": "9.5kg (inclusief verpakking)"
+    }
+  },
+  
+  "setup_and_usage": {
+    "installation": {
+      "time": "10 minuten",
+      "steps": [
+        "Uitpakken en onderdelen controleren",
+        "Basis plaatsen op vlakke ondergrond",
+        "Afvalbak installeren met vuilniszak",
+        "Carbon filter plaatsen",
+        "Vulling toevoegen (5-7cm diepte)",
+        "Stroom aansluiten",
+        "App downloaden en koppelen",
+        "Testcyclus uitvoeren"
+      ],
+      "requirements": [
+        "Vlakke, stevige ondergrond",
+        "Minimaal 20cm vrije ruimte rondom",
+        "Stopcontact binnen 1.5m",
+        "WiFi 2.4GHz voor app connectie"
+      ]
+    },
+    "daily_use": {
+      "litter_amount": "5-7cm diepte (ongeveer 6-8 liter)",
+      "refill_frequency": "Elke 2-3 weken bijvullen",
+      "waste_emptying": {
+        "one_cat": "1x per 7-10 dagen",
+        "two_cats": "1x per 3-5 dagen",
+        "indicator": "App notificatie + LED waarschuwing"
+      }
+    },
+    "maintenance": {
+      "daily": "Geen - volledig automatisch",
+      "weekly": "Visuele inspectie van vulling niveau",
+      "monthly": "Buitenkant schoonvegen met vochtige doek",
+      "quarterly": "Carbon filter vervangen",
+      "yearly": "Volledige demontage en grondige reiniging"
+    }
+  },
+  
+  "cat_compatibility": {
+    "size": {
+      "minimum": "Kittens vanaf 6 maanden (>2kg)",
+      "ideal": "Volwassen katten 3-6kg",
+      "maximum": "Grote katten tot 8kg",
+      "breeds_tested": [
+        "Europees korthaar",
+        "Maine Coon (tot 7kg)",
+        "Perzen",
+        "Siamees",
+        "Ragdoll",
+        "British Shorthair"
+      ]
+    },
+    "behavior": {
+      "best_for": [
+        "Katten die open bakken prefereren",
+        "Meerdere katten in huishouden (max 3)",
+        "Katten met regelmatig toiletpatroon"
+      ],
+      "adaptation_time": "3-7 dagen gemiddeld",
+      "tips": [
+        "Plaats naast oude bak gedurende week",
+        "Gebruik vertrouwde vulling",
+        "Beloon na eerste gebruik",
+        "Houd oude bak beschikbaar eerste dagen"
+      ]
+    }
+  },
+  
+  "health_monitoring": {
+    "tracked_metrics": [
+      {
+        "metric": "Toiletfrequentie",
+        "importance": "Veranderingen kunnen wijzen op urinewegproblemen",
+        "alert_threshold": ">5x per dag of <1x per dag"
+      },
+      {
+        "metric": "Tijd in bak",
+        "importance": "Lang verblijf kan obstipatie signaleren",
+        "alert_threshold": ">3 minuten gemiddeld"
+      },
+      {
+        "metric": "Gewichtsverandering",
+        "importance": "Snelle veranderingen indiceren gezondheidsissues",
+        "alert_threshold": ">10% verandering per week"
+      },
+      {
+        "metric": "Gebruikspatroon",
+        "importance": "Afwijkingen in routine kunnen stress/ziekte betekenen",
+        "alert_threshold": "Plotselinge verandering van >50%"
+      }
+    ],
+    "veterinary_export": "Data exporteerbaar naar PDF voor dierenarts"
+  },
+  
+  "environmental_impact": {
+    "energy_efficiency": "A+ rated - slechts 5kWh/maand",
+    "packaging": "100% recycleerbaar karton",
+    "product_lifespan": "8-10 jaar bij normaal gebruik",
+    "replaceable_parts": "Voorkomt volledige vervanging",
+    "waste_reduction": "Optimaal klonteren bespaart 20-30% vulling"
+  },
+  
+  "comparison_advantages": {
+    "unique_features": [
+      "Dual Safety Sensors (enige op markt)",
+      "Grootste afvalbak (10.5L)",
+      "High-efficiency carbon filter",
+      "Anti-splash high walls",
+      "Modulair design met vervangbare delen",
+      "Compact footprint met groot interieur",
+      "Ultrastil (<40dB)"
+    ],
+    "value_proposition": "Premium kwaliteit met 7 exclusieve features die concurrentie niet heeft"
+  },
+  
+  "pricing_and_warranty": {
+    "price": {
+      "retail": "€399",
+      "special_offer": "Vanaf €299 (check website voor actuele acties)"
+    },
+    "included": [
+      "Automatische kattenbak (volledig geassembleerd)",
+      "Carbon filter (1x)",
+      "Afvalzakken (10x)",
+      "Schepje",
+      "Gebruikershandleiding NL/EN",
+      "Quick start guide"
+    ],
+    "warranty": {
+      "product": "2 jaar volledige garantie",
+      "motor": "3 jaar verlengde motorgarantie",
+      "coverage": "Materiaal- en fabricagefouten",
+      "exclusions": "Normale slijtage, verkeerd gebruik, externe schade"
+    }
+  },
+  
+  "support_and_service": {
+    "customer_service": {
+      "phone": "Beschikbaar ma-vr 9:00-18:00",
+      "email": "24/7 response binnen 24u",
+      "chat": "Live chat tijdens kantooruren"
+    },
+    "resources": [
+      "Video tutorials op YouTube",
+      "Online FAQ (50+ vragen)",
+      "Troubleshooting guide in app",
+      "Community forum"
+    ],
+    "spare_parts": {
+      "availability": "5 jaar gegarandeerd",
+      "delivery": "2-3 werkdagen NL/BE",
+      "popular_parts": {
+        "carbon_filter_3pack": "€24.99",
+        "waste_bags_50pack": "€14.99",
+        "replacement_liner": "€39.99",
+        "sensor_module": "€49.99"
+      }
+    }
+  }
+}
