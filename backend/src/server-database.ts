@@ -501,6 +501,14 @@ app.get('/api/v1/admin/contact', async (req: Request, res: Response) => {
 });
 
 // =============================================================================
+// RAG ENDPOINTS - AI Chat (No hCaptcha)
+// =============================================================================
+
+// Import RAG routes
+const ragRoutes = require('./routes/rag.routes').default;
+app.use('/api/v1/rag', ragRoutes);
+
+// =============================================================================
 // ERROR HANDLERS
 // =============================================================================
 
