@@ -29,7 +29,17 @@ export class VectorStoreService {
     try {
       if (fs.existsSync(this.STORE_PATH)) {
         const data = fs.readFileSync(this.STORE_PATH, 'utf-8');
-        this.documents = JSON.parse(data);
+        const parsed = JSON.parse(data);
+        
+        // Handle both old format (array) and new format (object with documents key)
+        if (Array.isArray(parsed)) {
+          this.documents = parsed;
+        } else if (parsed.documents && Array.isArray(parsed.documents)) {
+          this.documents = parsed.documents;
+        } else {
+          throw new Error('Invalid vector store format');
+        }
+        
         console.log(`✅ Vector store loaded: ${this.documents.length} documents`);
       } else {
         console.log('ℹ️  Vector store empty - run ingestion');
