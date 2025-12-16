@@ -33,21 +33,51 @@ export function ChatPopup() {
     setIsExpanded(false);
   };
 
-  // Detecteer sticky cart visibility voor responsieve positioning
+  // STABIELE DETECTION: Sticky cart visibility met debouncing
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
     const checkStickyCart = () => {
-      const stickyBar = document.querySelector('[data-sticky-cart]');
+      const stickyBar = document.querySelector('[data-sticky-cart]') as HTMLElement;
+      
       if (stickyBar) {
-        const rect = stickyBar.getBoundingClientRect();
-        setStickyCartVisible(rect.top < window.innerHeight);
+        // Check of sticky cart zichtbaar is (niet translate-y-full)
+        const computedStyle = window.getComputedStyle(stickyBar);
+        const transform = computedStyle.transform;
+        
+        // translate-y-full = matrix(1, 0, 0, 1, 0, Y) waar Y > 50
+        // Zichtbaar = translate-y-0 of Y <= 10
+        const isHidden = transform !== 'none' && 
+          (transform.includes('matrix') && parseFloat(transform.split(',')[5]) > 10);
+        
+        const newVisibility = !isHidden;
+        
+        // Alleen updaten als status echt verandert (stabiel)
+        if (newVisibility !== stickyCartVisible) {
+          setStickyCartVisible(newVisibility);
+        }
+      } else {
+        // Geen sticky cart gevonden = niet zichtbaar
+        if (stickyCartVisible) {
+          setStickyCartVisible(false);
+        }
       }
     };
 
-    window.addEventListener('scroll', checkStickyCart, { passive: true });
-    checkStickyCart();
+    // Debounced scroll handler voor stabiliteit
+    const handleScroll = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkStickyCart, 50); // 50ms debounce
+    };
 
-    return () => window.removeEventListener('scroll', checkStickyCart);
-  }, []);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    checkStickyCart(); // Initial check
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timeoutId);
+    };
+  }, [stickyCartVisible]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,12 +150,13 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* CHAT BUTTON - DYNAMISCH: Omhoog wanneer sticky cart toont */}
+      {/* CHAT BUTTON - STABIEL: Smooth transition tussen 2 states */}
       <button
         onClick={() => setIsExpanded(true)}
-        className={`fixed right-6 md:right-8 z-[100] w-14 h-14 ${COMPONENT_COLORS.chat.icon} rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-500 ${
-          stickyCartVisible ? 'bottom-24 md:bottom-28' : 'bottom-6 md:bottom-8'
-        }`}
+        style={{
+          bottom: stickyCartVisible ? '6.5rem' : '1.5rem',
+        }}
+        className={`fixed right-6 md:right-8 z-[100] w-14 h-14 ${COMPONENT_COLORS.chat.icon} rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 ease-in-out`}
         aria-label="Open chat"
       >
         <MessageCircle className={`h-6 w-6 ${COMPONENT_COLORS.chat.iconText}`} />
