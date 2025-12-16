@@ -9,14 +9,14 @@ export function Footer() {
   return (
     <footer className="bg-black text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {/* Logo - Smooth branding */}
+        {/* Logo - Smooth branding, goed formaat */}
         <div className="flex justify-center lg:justify-start mb-8">
           <Image
             src="/logo.png"
             alt="Catsupply"
-            width={160}
-            height={45}
-            className="h-10 w-auto opacity-90"
+            width={200}
+            height={55}
+            className="h-14 sm:h-16 w-auto opacity-90"
           />
         </div>
 
