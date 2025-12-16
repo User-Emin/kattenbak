@@ -9,7 +9,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "./button";
 import { X, Send, MessageCircle, Loader2 } from "lucide-react";
-import { COMPONENT_COLORS } from "@/lib/theme-colors";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -141,7 +140,7 @@ export function ChatPopup() {
             <div className="pointer-events-auto w-full max-w-md max-h-[90vh] md:max-h-[600px] bg-white rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
               
               {/* Header */}
-              <div className={`${COMPONENT_COLORS.gradients.brand} p-6 rounded-t-2xl text-white`}>
+              <div className="bg-gradient-to-br from-brand to-brand-dark p-6 rounded-t-2xl text-white">
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className="text-xl font-bold">AI Assistent</h3>
