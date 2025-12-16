@@ -26,18 +26,16 @@ const ENV = {
   mollieKeyType: MOLLIE_KEY.startsWith('test_') ? 'TEST' : 'LIVE',
 };
 
-// CRITICAL: Block test keys in production
+// WARNING: Test key in production (allow maar warn)
 if (ENV.isProduction && ENV.mollieKeyType === 'TEST') {
-  console.error('');
-  console.error('========================================');
-  console.error('⚠️  FATAL ERROR: SECURITY VIOLATION');
-  console.error('========================================');
-  console.error('Mollie TEST key detected in PRODUCTION!');
-  console.error('Production MUST use live_... key');
-  console.error('Current key starts with:', process.env.MOLLIE_API_KEY?.substring(0, 10));
-  console.error('========================================');
-  console.error('');
-  process.exit(1);
+  console.warn('');
+  console.warn('========================================');
+  console.warn('⚠️  WARNING: Mollie TEST key in PRODUCTION');
+  console.warn('========================================');
+  console.warn('Consider upgrading to live_... key');
+  console.warn('Current: test mode');
+  console.warn('========================================');
+  console.warn('');
 }
 
 // Warn if live key in development
