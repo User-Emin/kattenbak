@@ -5,6 +5,7 @@ import { ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/context/cart-context';
 import type { Product } from '@/types/product';
+import { formatCurrency } from '../../lib/utils/price';
 
 interface StickyCartBarProps {
   product: Product;

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ReturnItem } from '@/types/return';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { formatCurrency } from '../../lib/utils/price';
 
 /**
  * RETURN ITEM SELECTOR - DRY Component
