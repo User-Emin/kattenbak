@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ImageUpload } from '@/components/image-upload';
+import { VideoUpload } from '@/components/video-upload';
 import { Separator } from '@/components/ui/separator';
 import { Loader2, Save, Settings as SettingsIcon } from 'lucide-react';
 import { toast } from 'sonner';
@@ -125,6 +126,21 @@ export default function SettingsPage() {
                   hero: { ...formData.hero!, image: images[0] || '' }
                 })}
                 maxImages={1}
+              />
+            </div>
+
+            <div>
+              <Label>Hero Video (optioneel)</Label>
+              <p className="text-xs text-gray-500 mb-2">
+                Upload een 50MB MP4 voor reclame-kwaliteit achtergrond video
+              </p>
+              <VideoUpload
+                value={formData.hero?.videoUrl || ''}
+                onChange={(url) => setFormData({
+                  ...formData,
+                  hero: { ...formData.hero!, videoUrl: url }
+                })}
+                maxSizeMB={50}
               />
             </div>
           </CardContent>
