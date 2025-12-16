@@ -154,16 +154,16 @@ export function ChatPopup() {
         <MessageCircle className={`h-6 w-6 ${COMPONENT_COLORS.chat.iconText}`} />
       </button>
 
-      {/* ECHTE MODAL - CENTERED MET KEYBOARD SUPPORT */}
+      {/* POPUP - RECHTSBENEDEN DESKTOP, CENTERED MOBIEL */}
       {isExpanded && (
         <>
           <div 
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-in fade-in duration-200 z-[110]"
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-in fade-in duration-200 z-[110] md:bg-transparent md:pointer-events-none"
             onClick={handleClose}
           />
           
-          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 pointer-events-none">
-            <div className="pointer-events-auto w-full max-w-md max-h-[90vh] overflow-y-auto animate-in zoom-in-95 fade-in duration-300">
+          <div className="fixed inset-0 md:inset-auto md:bottom-24 md:right-8 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
+            <div className="pointer-events-auto w-full max-w-md max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300">
               <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 space-y-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
