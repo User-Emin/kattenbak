@@ -24,22 +24,27 @@ interface SiteSettings {
   };
 }
 
+// DRY: Realistische FAQ's gebaseerd op product features (vergelijkingstabel)
 const faqs = [
   {
-    q: "Hoe werkt de zelfreinigende functie?",
-    a: "De kattenbak detecteert automatisch wanneer je kat klaar is en start een reinigingscyclus. Alle afval wordt verzameld in een afgesloten compartiment."
+    q: "Wat maakt deze kattenbak beter dan andere zelfreinigende bakken?",
+    a: "Onze kattenbak heeft een unieke combinatie van features: 10.5L afvalbak capaciteit (17% meer dan de concurrentie), dubbele veiligheidssensoren, open-top low-stress design, en een ultra-stille motor onder 40dB. Ook is hij volledig modulair en makkelijk te demonteren voor reiniging."
   },
   {
-    q: "Voor welke katten is dit geschikt?",
-    a: "Geschikt voor katten van alle maten tot 7kg. De ruime binnenruimte zorgt voor comfort."
+    q: "Hoe werkt de zelfreinigende functie en dubbele beveiliging?",
+    a: "De kattenbak detecteert automatisch wanneer je kat klaar is via dubbele veiligheidssensoren. Deze sensoren zorgen ervoor dat de reinigingscyclus alleen start wanneer het 100% veilig is. Alle afval wordt verzameld in een afgesloten 10.5L compartiment met anti-splash hoge wanden."
   },
   {
-    q: "Hoe vaak moet ik de afvalbak legen?",
-    a: "Bij één kat ongeveer 1x per week. De 10L capaciteit betekent minder onderhoud."
+    q: "Hoe vaak moet ik de 10.5L afvalbak legen?",
+    a: "Bij één kat ongeveer 1x per week, bij meerdere katten 2-3x per week. Dankzij de XL 10.5L capaciteit (grootste in zijn klasse) heb je tot 30% minder onderhoud dan bij concurrerende modellen met 7-9L capaciteit."
   },
   {
-    q: "Is de app-bediening inbegrepen?",
-    a: "Ja! De app is gratis te downloaden en biedt realtime monitoring, schema's en gezondheidsrapporten."
+    q: "Is de app-bediening en gezondheidsmonitoring inbegrepen?",
+    a: "Ja! De app is gratis te downloaden voor iOS en Android. Je krijgt realtime notifications, kunt reinigingsschema's instellen, en ontvangt gedetailleerde gezondheidsrapporten over toiletbezoeken van je kat - ideaal voor vroege detectie van gezondheidsproblemen."
+  },
+  {
+    q: "Is de kattenbak geschikt voor meerdere katten en welk kattenbakvulling?",
+    a: "Ja, geschikt voor huishoudens met meerdere katten dankzij de XL 10.5L capaciteit. Het compacte ontwerp met grote binnenruimte biedt comfort voor katten tot 7kg. Je kunt alle soorten kattenbakvulling gebruiken (klontvormend, silica, houtkorrels) dankzij het high-efficiency filter."
   },
 ];
 
@@ -199,12 +204,12 @@ export default function HomePage() {
 
       <Separator variant="float" spacing="sm" />
 
-      {/* FAQ Section - DICHTER BIJ VIDEO */}
+      {/* FAQ Section - REALISTISCH & INFORMATIEF */}
       <section className="py-8 md:py-12">
         <div className="container mx-auto px-6 lg:px-12 max-w-3xl">
-          <SectionHeading className="mb-3">Veelgestelde Vragen</SectionHeading>
+          <SectionHeading className="mb-3">Veelgestelde Vragen over de Automatische Kattenbak</SectionHeading>
           <p className="text-base text-gray-600 text-center mb-6 md:mb-8">
-            Alles wat je moet weten
+            Alles over zelfreiniging, capaciteit, app-bediening en gezondheidsmonitoring
           </p>
 
           <div className="space-y-4">

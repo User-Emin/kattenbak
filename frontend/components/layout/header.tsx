@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
@@ -49,9 +50,16 @@ export function Header() {
         <header className="bg-brand shadow-md">
         <div className="container mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link href="/" className="text-xl font-bold text-white hover:text-white/90 transition">
-              Kattenbak
+            {/* Logo - DRY: Smooth responsive branding */}
+            <Link href="/" className="flex items-center hover:opacity-90 transition">
+              <Image
+                src="/logo.png"
+                alt="Catsupply"
+                width={140}
+                height={40}
+                className="h-8 w-auto"
+                priority
+              />
             </Link>
 
             {/* Desktop Navigation */}
