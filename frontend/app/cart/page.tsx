@@ -114,9 +114,9 @@ export default function CartPage() {
             ))}
           </div>
 
-          {/* Order Summary */}
+          {/* Order Summary - ZELFDE MARGIN ALS PRODUCTEN */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-50 p-8 rounded-lg sticky top-8">
+            <div className="bg-gray-50 p-4 sm:p-6 lg:p-8 rounded-lg sticky top-8">
               <h2 className="text-xl font-semibold mb-6">Overzicht</h2>
 
               <div className="space-y-3 mb-6">

@@ -11,7 +11,7 @@ export function Footer() {
         {/* Footer Grid - Responsive (1 → 2 → 4 columns) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8">
           {/* Column 1: About */}
-          <div>
+          <div className="text-center sm:text-left">
             <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Over Ons</h3>
             <ul className="space-y-2 text-xs sm:text-sm">
               <li>
@@ -33,7 +33,7 @@ export function Footer() {
           </div>
 
           {/* Column 2: Shop */}
-          <div>
+          <div className="text-center sm:text-left">
             <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Winkel</h3>
             <ul className="space-y-2 text-xs sm:text-sm">
               <li>
@@ -77,7 +77,7 @@ export function Footer() {
           </div>
 
           {/* Column 4: Contact */}
-          <div>
+          <div className="text-center sm:text-left">
             <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Contact</h3>
             <ul className="space-y-2 text-xs sm:text-sm">
               <li>info@kattenbak.nl</li>
