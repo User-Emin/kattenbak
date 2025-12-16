@@ -44,9 +44,10 @@ export function ChatPopup() {
         const hasPointerEvents = !stickyBar.classList.contains('pointer-events-none');
         const isVisible = hasOpacity && hasPointerEvents;
         
-        setStickyCartVisible(isVisible);
+        // Update alleen bij verandering
+        setStickyCartVisible(prev => prev !== isVisible ? isVisible : prev);
       } else {
-        setStickyCartVisible(false);
+        setStickyCartVisible(prev => prev !== false ? false : prev);
       }
     };
 
@@ -55,7 +56,7 @@ export function ChatPopup() {
     checkStickyCart(); // Initial check
 
     return () => clearInterval(interval);
-  }, []);
+  }, []); // Empty dependency - runs once, cleanup on unmount
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
