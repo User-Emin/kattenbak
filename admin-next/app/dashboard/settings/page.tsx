@@ -279,6 +279,217 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
+        {/* Product Detail USPs - DRY: 2 belangrijkste features */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Product Detail USPs (Productpagina)</CardTitle>
+            <p className="text-sm text-gray-500 mt-1">
+              2 belangrijkste features met zigzag layout onder de product video
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* USP 1 */}
+            <div className="space-y-4 p-4 border border-gray-200 rounded-lg">
+              <h3 className="font-semibold text-lg">USP 1 - Automatische Functie</h3>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="usp1-icon">Icon</Label>
+                  <select
+                    id="usp1-icon"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    value={formData.productUsps?.usp1?.icon || 'sparkles'}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      productUsps: {
+                        ...formData.productUsps!,
+                        usp1: { ...formData.productUsps!.usp1!, icon: e.target.value }
+                      }
+                    })}
+                  >
+                    <option value="sparkles">✨ Sparkles</option>
+                    <option value="shield">🛡️ Shield</option>
+                    <option value="truck">🚚 Truck</option>
+                    <option value="star">⭐ Star</option>
+                    <option value="check">✓ Check</option>
+                    <option value="zap">⚡ Zap</option>
+                    <option value="package">📦 Package</option>
+                  </select>
+                </div>
+
+                <div>
+                  <Label htmlFor="usp1-color">Kleur</Label>
+                  <select
+                    id="usp1-color"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    value={formData.productUsps?.usp1?.color || 'brand'}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      productUsps: {
+                        ...formData.productUsps!,
+                        usp1: { ...formData.productUsps!.usp1!, color: e.target.value }
+                      }
+                    })}
+                  >
+                    <option value="brand">🔵 Blauw (Brand)</option>
+                    <option value="blue">🔷 Lichtblauw</option>
+                    <option value="accent">⚫ Zwart (Accent)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="usp1-title">Titel</Label>
+                <Input
+                  id="usp1-title"
+                  value={formData.productUsps?.usp1?.title || ''}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    productUsps: {
+                      ...formData.productUsps!,
+                      usp1: { ...formData.productUsps!.usp1!, title: e.target.value }
+                    }
+                  })}
+                  placeholder="Volledig Automatisch met Dubbele Beveiliging"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="usp1-description">Beschrijving</Label>
+                <Textarea
+                  id="usp1-description"
+                  value={formData.productUsps?.usp1?.description || ''}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    productUsps: {
+                      ...formData.productUsps!,
+                      usp1: { ...formData.productUsps!.usp1!, description: e.target.value }
+                    }
+                  })}
+                  placeholder="Zelfreinigende functie met dubbele veiligheidssensoren..."
+                  rows={3}
+                />
+              </div>
+
+              <div>
+                <Label>Afbeelding USP 1</Label>
+                <ImageUpload
+                  value={formData.productUsps?.usp1?.image ? [formData.productUsps.usp1.image] : []}
+                  onChange={(images) => setFormData({
+                    ...formData,
+                    productUsps: {
+                      ...formData.productUsps!,
+                      usp1: { ...formData.productUsps!.usp1!, image: images[0] || '' }
+                    }
+                  })}
+                  maxImages={1}
+                />
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* USP 2 */}
+            <div className="space-y-4 p-4 border border-gray-200 rounded-lg">
+              <h3 className="font-semibold text-lg">USP 2 - Capaciteit</h3>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="usp2-icon">Icon</Label>
+                  <select
+                    id="usp2-icon"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    value={formData.productUsps?.usp2?.icon || 'package'}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      productUsps: {
+                        ...formData.productUsps!,
+                        usp2: { ...formData.productUsps!.usp2!, icon: e.target.value }
+                      }
+                    })}
+                  >
+                    <option value="sparkles">✨ Sparkles</option>
+                    <option value="shield">🛡️ Shield</option>
+                    <option value="truck">🚚 Truck</option>
+                    <option value="star">⭐ Star</option>
+                    <option value="check">✓ Check</option>
+                    <option value="zap">⚡ Zap</option>
+                    <option value="package">📦 Package</option>
+                  </select>
+                </div>
+
+                <div>
+                  <Label htmlFor="usp2-color">Kleur</Label>
+                  <select
+                    id="usp2-color"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    value={formData.productUsps?.usp2?.color || 'brand'}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      productUsps: {
+                        ...formData.productUsps!,
+                        usp2: { ...formData.productUsps!.usp2!, color: e.target.value }
+                      }
+                    })}
+                  >
+                    <option value="brand">🔵 Blauw (Brand)</option>
+                    <option value="blue">🔷 Lichtblauw</option>
+                    <option value="accent">⚫ Zwart (Accent)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="usp2-title">Titel</Label>
+                <Input
+                  id="usp2-title"
+                  value={formData.productUsps?.usp2?.title || ''}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    productUsps: {
+                      ...formData.productUsps!,
+                      usp2: { ...formData.productUsps!.usp2!, title: e.target.value }
+                    }
+                  })}
+                  placeholder="10.5L XL Afvalbak Capaciteit"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="usp2-description">Beschrijving</Label>
+                <Textarea
+                  id="usp2-description"
+                  value={formData.productUsps?.usp2?.description || ''}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    productUsps: {
+                      ...formData.productUsps!,
+                      usp2: { ...formData.productUsps!.usp2!, description: e.target.value }
+                    }
+                  })}
+                  placeholder="De grootste afvalbak in zijn klasse..."
+                  rows={3}
+                />
+              </div>
+
+              <div>
+                <Label>Afbeelding USP 2</Label>
+                <ImageUpload
+                  value={formData.productUsps?.usp2?.image ? [formData.productUsps.usp2.image] : []}
+                  onChange={(images) => setFormData({
+                    ...formData,
+                    productUsps: {
+                      ...formData.productUsps!,
+                      usp2: { ...formData.productUsps!.usp2!, image: images[0] || '' }
+                    }
+                  })}
+                  maxImages={1}
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Save Button */}
         <div className="flex justify-end">
           <Button

@@ -20,6 +20,35 @@ import { getProductImage, IMAGE_CONFIG } from "@/lib/image-config";
 import { ProductHighlights } from "@/components/products/product-highlights";
 import { ProductSpecsComparison } from "@/components/products/product-specs-comparison";
 
+// DRY: Site Settings Type (SYNC: admin-next/lib/api/settings.ts)
+interface SiteSettings {
+  productUsps: {
+    usp1: {
+      icon: string;
+      color: string;
+      title: string;
+      description: string;
+      image: string;
+    };
+    usp2: {
+      icon: string;
+      color: string;
+      title: string;
+      description: string;
+      image: string;
+    };
+  };
+}
+
+// DRY: Product USP type voor component
+interface ProductUsp {
+  icon: string;
+  color: string;
+  title: string;
+  description: string;
+  image: string;
+}
+
 interface ProductDetailProps {
   slug: string;
 }
@@ -32,8 +61,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
   const addToCartButtonRef = useRef<HTMLDivElement>(null);
 
+  // DRY: Fetch product data
   useEffect(() => {
     apiFetch<{ success: boolean; data: Product }>(API_CONFIG.ENDPOINTS.PRODUCT_BY_SLUG(slug))
       .then(data => {
@@ -44,6 +75,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       })
       .catch(() => setLoading(false));
   }, [slug]);
+
+  // DRY: Fetch site settings voor productUsps
+  useEffect(() => {
+    apiFetch<{ success: boolean; data: SiteSettings }>(API_CONFIG.ENDPOINTS.SETTINGS)
+      .then(data => {
+        if (data.success && data.data) {
+          setSettings(data.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleAddToCart = async () => {
     if (!product) return;
@@ -252,6 +294,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           
           <p className="text-base md:text-lg font-semibold text-gray-700 leading-relaxed">{product.description}</p>
         </div>
+
+        <Separator variant="float" spacing="xl" />
+
+        {/* Product USPs - DRY: Zigzag layout met dynamische content */}
+        {settings?.productUsps && (
+          <div className="container mx-auto px-6 lg:px-12">
+            <ProductUsps usps={[settings.productUsps.usp1, settings.productUsps.usp2]} />
+          </div>
+        )}
 
         <Separator variant="float" spacing="xl" />
 

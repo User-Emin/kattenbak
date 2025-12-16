@@ -82,20 +82,20 @@ let settingsState: SiteSettings = {
       image: demoImages[2], // ✅ Blauwe SVG (zelfde pattern)
     },
   },
-  // Product Detail USPs - 2 belangrijkste (uit vergelijkingstabel)
+  // Product Detail USPs - 2 belangrijkste features (uit vergelijkingstabel screenshot)
   productUsps: {
     usp1: {
       icon: 'sparkles',
-      color: 'orange',
-      title: 'Volledig Automatisch',
-      description: 'Zelfreinigende functie met dubbele veiligheidssensoren. Reinigt automatisch na elk bezoek voor een altijd schone kattenbak.',
+      color: 'brand',
+      title: 'Volledig Automatisch met Dubbele Beveiliging',
+      description: 'Zelfreinigende functie met dubbele veiligheidssensoren. De kattenbak detecteert automatisch wanneer je kat klaar is en start een veilige reinigingscyclus. Open-top design voor minder stress bij je kat.',
       image: demoImages[0],
     },
     usp2: {
       icon: 'package',
       color: 'brand',
-      title: '10.5L Capaciteit',
-      description: 'De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou en je kat.',
+      title: '10.5L XL Afvalbak Capaciteit',
+      description: 'De grootste afvalbak in zijn klasse - 17% meer dan de concurrentie. Met anti-splash hoge wanden en makkelijk te demonteren design. Minder vaak legen betekent meer vrijheid voor jou.',
       image: demoImages[1],
     },
   },
