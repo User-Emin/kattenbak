@@ -315,6 +315,163 @@ app.post('/api/v1/webhooks/mollie', async (req: Request, res: Response) => {
 });
 
 // =============================================================================
+// ADMIN ENDPOINTS - CRUD OPERATIONS
+// =============================================================================
+
+// ADMIN: Create product
+app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
+  try {
+    const productData = req.body;
+
+    // Create category if needed
+    let category = await prisma.category.findUnique({
+      where: { slug: productData.categorySlug || 'kattenbakken' },
+    });
+
+    if (!category) {
+      category = await prisma.category.create({
+        data: {
+          name: 'Kattenbakken',
+          slug: 'kattenbakken',
+          description: 'Automatische kattenbakken',
+        },
+      });
+    }
+
+    const product = await prisma.product.create({
+      data: {
+        ...productData,
+        categoryId: category.id,
+      },
+    });
+
+    console.log(`✅ Admin created product: ${product.name}`);
+    res.status(201).json(success(product));
+  } catch (err: any) {
+    console.error('Admin create product error:', err.message);
+    res.status(500).json(error('Could not create product'));
+  }
+});
+
+// ADMIN: Update product
+app.put('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
+  try {
+    const product = await prisma.product.update({
+      where: { id: req.params.id },
+      data: req.body,
+    });
+
+    console.log(`✅ Admin updated product: ${product.name}`);
+    res.json(success(product));
+  } catch (err: any) {
+    console.error('Admin update product error:', err.message);
+    res.status(500).json(error('Could not update product'));
+  }
+});
+
+// ADMIN: Delete product
+app.delete('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
+  try {
+    await prisma.product.delete({
+      where: { id: req.params.id },
+    });
+
+    console.log(`✅ Admin deleted product: ${req.params.id}`);
+    res.json(success({ id: req.params.id }));
+  } catch (err: any) {
+    console.error('Admin delete product error:', err.message);
+    res.status(500).json(error('Could not delete product'));
+  }
+});
+
+// ADMIN: Get all products (with filters)
+app.get('/api/v1/admin/products', async (req: Request, res: Response) => {
+  try {
+    const products = await prisma.product.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: { category: true },
+    });
+
+    res.json(success(products));
+  } catch (err: any) {
+    console.error('Admin products error:', err.message);
+    res.status(500).json(error('Could not fetch products'));
+  }
+});
+
+// ADMIN: Get single product
+app.get('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: req.params.id },
+      include: { category: true },
+    });
+
+    if (!product) {
+      return res.status(404).json(error('Product not found'));
+    }
+
+    res.json(success(product));
+  } catch (err: any) {
+    console.error('Admin product error:', err.message);
+    res.status(500).json(error('Could not fetch product'));
+  }
+});
+
+// ADMIN: Get settings
+app.get('/api/v1/admin/settings', async (req: Request, res: Response) => {
+  try {
+    const settings = await prisma.setting.findMany();
+
+    const settingsObject = settings.reduce((acc: any, setting: any) => {
+      acc[setting.key] = setting.value;
+      return acc;
+    }, {});
+
+    res.json(success(settingsObject));
+  } catch (err: any) {
+    console.error('Admin settings error:', err.message);
+    res.status(500).json(error('Could not fetch settings'));
+  }
+});
+
+// ADMIN: Update settings
+app.put('/api/v1/admin/settings', async (req: Request, res: Response) => {
+  try {
+    const updates = req.body;
+
+    for (const [key, value] of Object.entries(updates)) {
+      await prisma.setting.upsert({
+        where: { key },
+        update: { value: value as any },
+        create: { key, value: value as any },
+      });
+    }
+
+    console.log(`✅ Admin updated settings: ${Object.keys(updates).join(', ')}`);
+    res.json(success({ message: 'Settings updated' }));
+  } catch (err: any) {
+    console.error('Admin settings update error:', err.message);
+    res.status(500).json(error('Could not update settings'));
+  }
+});
+
+// ADMIN: Get contact messages
+app.get('/api/v1/admin/contact', async (req: Request, res: Response) => {
+  try {
+    const messages = await prisma.contactMessage.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 100,
+    });
+
+    res.json(success({ messages, total: messages.length }));
+  } catch (err: any) {
+    console.error('Admin contact messages error:', err.message);
+    res.status(500).json(error('Could not fetch messages'));
+  }
+});
+
+// =============================================================================
 // ERROR HANDLERS
 // =============================================================================
 
