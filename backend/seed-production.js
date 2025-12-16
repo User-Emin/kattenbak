@@ -33,17 +33,17 @@ async function main() {
       price: 299.99,
       compareAtPrice: 399.99,
       stock: 50,
+      weight: 5.2,
+      dimensions: {
+        length: 50,
+        width: 40,
+        height: 35,
+        unit: 'cm',
+      },
       isActive: true,
       isFeatured: true,
       categoryId: category.id,
       images: ['/images/premium-main.jpg', '/images/premium-detail.jpg'],
-      specifications: {
-        capacity: '10.5L',
-        weight: '5.2kg',
-        dimensions: '50x40x35cm',
-        power: '5W',
-        warranty: '2 jaar',
-      },
     },
   });
 
