@@ -4,7 +4,7 @@
  */
 
 import { Router, Request, Response } from 'express';
-import { RAGService } from '../services/rag/rag.service';
+import { RAGProductionService } from '../services/rag/rag-production.service';
 import { RAGSecurityMiddleware } from '../middleware/rag-security.middleware';
 
 const router = Router();
@@ -24,9 +24,8 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
       });
     }
     
-    // Use queue for sequential processing (prevents Ollama overload)
-    const { RAGQueueService } = await import('../services/rag/queue.service');
-    const response = await RAGQueueService.enqueue(sanitizedQuery);
+    // Production RAG with Claude
+    const response = await RAGProductionService.answerQuestion(sanitizedQuery);
     
     // Update log with response
     const latency = response.latency_ms;
@@ -57,17 +56,18 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
 router.get('/health', async (req: Request, res: Response) => {
   try {
     const { VectorStoreService } = require('../services/rag/vector-store.service');
-    
+    const health = await RAGProductionService.healthCheck();
     const docCount = VectorStoreService.getCount();
     
     res.json({
       success: true,
       data: {
-        status: 'healthy',
+        status: health.claude && health.vectorStore && health.embeddings ? 'healthy' : 'degraded',
         storage: 'in-memory',
         documents_loaded: docCount,
-        model: 'llama3.2:3b',
-        embeddings_model: 'all-MiniLM-L6-v2'
+        model: 'claude-3-5-haiku-20241022',
+        embeddings_model: 'intfloat/multilingual-e5-base',
+        backends: health
       }
     });
   } catch (err: any) {
