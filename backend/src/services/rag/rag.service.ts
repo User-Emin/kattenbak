@@ -21,7 +21,7 @@ export interface RAGResponse {
 export class RAGService {
   private static readonly MODEL = 'llama3.2:3b';
   private static readonly MAX_CONTEXT_DOCS = 5;
-  private static readonly SIMILARITY_THRESHOLD = 0.65;
+  private static readonly SIMILARITY_THRESHOLD = 0.40; // Lowered for better recall
   
   /**
    * Answer question using RAG
