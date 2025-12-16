@@ -102,10 +102,10 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* ALTIJD ZICHTBARE BUTTON - HOGER DAN STICKY CART */}
+      {/* CHAT BUTTON - Z-INDEX 100, ALTIJD BOVENOP STICKY CART (Z-40) */}
       <button
         onClick={() => setIsExpanded(true)}
-        className={`fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[100] w-14 h-14 ${COMPONENT_COLORS.chat.icon} rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-200`}
+        className={`fixed bottom-24 right-6 md:bottom-8 md:right-8 z-[100] w-14 h-14 ${COMPONENT_COLORS.chat.icon} rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300`}
         aria-label="Open chat"
       >
         <MessageCircle className={`h-6 w-6 ${COMPONENT_COLORS.chat.iconText}`} />
