@@ -1,303 +1,253 @@
 "use client";
 
+/**
+ * RAG CHAT POPUP - No hCaptcha
+ * AI-powered chat met Ollama + RAG
+ * Security: Rate limiting + input validation backend
+ */
+
 import { useState, useEffect } from "react";
 import { Button } from "./button";
-import { Input } from "./input";
-import { X, Send, MessageCircle, CheckCircle, AlertCircle, Cookie } from "lucide-react";
-import { apiFetch, API_CONFIG } from "@/lib/config";
+import { X, Send, MessageCircle, Loader2 } from "lucide-react";
 import { COMPONENT_COLORS } from "@/lib/theme-colors";
-import { useHCaptcha } from "@/lib/hooks/use-hcaptcha";
-import { useCookieConsent } from "@/lib/hooks/use-cookie-consent";
 
-type FeedbackType = "success" | "error" | "cookies" | null;
+interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
 
-/**
- * Chat Popup - GDPR-Compliant met hCaptcha
- * ALTIJD ZICHTBARE BUTTON + SMOOTH POPUP
- * DRY: Geen props nodig, volledig self-contained
- * RESPONSIVE: Beweegt omhoog wanneer sticky cart toont
- */
 export function ChatPopup() {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [orderNumber, setOrderNumber] = useState("");
-  const [isSending, setIsSending] = useState(false);
-  const [feedback, setFeedback] = useState<{ type: FeedbackType; message: string } | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
-  
-  const { getToken, isReady } = useHCaptcha();
-  const { acceptAll, hasConsent } = useCookieConsent();
 
-  const handleClose = () => {
-    setIsExpanded(false);
-  };
-
-  // SIMPELE STABIELE DETECTION: opacity + pointer-events check
+  // Sticky cart detection
   useEffect(() => {
     const checkStickyCart = () => {
       const stickyBar = document.querySelector('[data-sticky-cart]') as HTMLElement;
       
       if (stickyBar) {
-        // Check classes - simpel en betrouwbaar
         const hasOpacity = stickyBar.classList.contains('opacity-100');
         const hasPointerEvents = !stickyBar.classList.contains('pointer-events-none');
         const isVisible = hasOpacity && hasPointerEvents;
         
-        // Update alleen bij verandering
         setStickyCartVisible(prev => prev !== isVisible ? isVisible : prev);
       } else {
         setStickyCartVisible(prev => prev !== false ? false : prev);
       }
     };
-
-    // Check elke 200ms voor stabiliteit
-    const interval = setInterval(checkStickyCart, 200);
-    checkStickyCart(); // Initial check
-
-    return () => clearInterval(interval);
-  }, []); // Empty dependency - runs once, cleanup on unmount
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFeedback(null);
     
-    if (!email || !message) {
-      setFeedback({ type: "error", message: "Vul alle verplichte velden in" });
-      return;
-    }
+    // Poll every 100ms voor stabiele detectie
+    const interval = setInterval(checkStickyCart, 100);
+    checkStickyCart(); // Initial check
+    
+    return () => clearInterval(interval);
+  }, []);
 
-    // ✅ AUTO-ACCEPT: Als cookies niet geaccepteerd, accepteer automatisch
-    if (!hasConsent('functional')) {
-      console.log('🔄 Auto-accepting cookies voor chat functionaliteit');
-      acceptAll();
-      setFeedback({ 
-        type: "cookies", 
-        message: "Cookies geaccepteerd. Even geduld terwijl verificatie laadt..." 
-      });
-      // Wacht kort en probeer opnieuw
-      setTimeout(() => {
-        setFeedback(null);
-        handleSubmit(e);
-      }, 2000);
-      return;
-    }
-
-    // ✅ BETERE FEEDBACK: Als hCaptcha nog niet ready is
-    if (!isReady) {
-      setFeedback({ 
-        type: "error", 
-        message: "Bezig met laden van beveiliging... Een moment geduld." 
-      });
-      // Auto-retry na 2 seconden
-      setTimeout(() => {
-        setFeedback(null);
-      }, 2000);
-      return;
-    }
-
-    setIsSending(true);
-
+  const handleSendMessage = async () => {
+    if (!input.trim() || isLoading) return;
+    
+    const userMessage: Message = {
+      role: 'user',
+      content: input.trim(),
+      timestamp: new Date()
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
+    setInput("");
+    setIsLoading(true);
+    setError(null);
+    
     try {
-      const captchaToken = await getToken();
+      const response = await fetch('/api/v1/rag/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: userMessage.content
+        })
+      });
       
-      if (!captchaToken) {
-        setFeedback({ 
-          type: "error", 
-          message: "Verificatie mislukt. Wacht even en probeer opnieuw." 
-        });
-        setIsSending(false);
-        return;
+      const data = await response.json();
+      
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Er ging iets mis');
       }
-
-      const response = await apiFetch<{ success: boolean; message?: string }>(
-        API_CONFIG.ENDPOINTS.CONTACT, 
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            message: orderNumber ? `[Order: ${orderNumber}] ${message}` : message,
-            orderNumber: orderNumber || undefined,
-            captchaToken,
-          }),
-        }
-      );
-
-      if (response.success) {
-        setFeedback({ type: "success", message: "Bericht verzonden! We nemen spoedig contact op." });
-        setEmail("");
-        setMessage("");
-        setOrderNumber("");
-        setTimeout(() => handleClose(), 2500);
-      } else {
-        throw new Error("Failed to send message");
-      }
-    } catch (error) {
-      setFeedback({ type: "error", message: "Kon bericht niet verzenden. Probeer het opnieuw." });
+      
+      const assistantMessage: Message = {
+        role: 'assistant',
+        content: data.data.answer,
+        timestamp: new Date()
+      };
+      
+      setMessages(prev => [...prev, assistantMessage]);
+      
+    } catch (err: any) {
+      console.error('Chat error:', err);
+      setError(err.message || 'Kon geen antwoord krijgen. Probeer het opnieuw.');
+      
+      // Remove user message on error
+      setMessages(prev => prev.slice(0, -1));
     } finally {
-      setIsSending(false);
+      setIsLoading(false);
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  // Calculate button position based on sticky cart
+  const buttonBottomClass = stickyCartVisible 
+    ? 'bottom-32 md:bottom-24' // 8rem = sticky cart height
+    : 'bottom-8 md:bottom-8';
+
   return (
     <>
-      {/* CHAT BUTTON - STABIEL: Smooth transition tussen 2 states */}
+      {/* Floating Chat Button - ALWAYS VISIBLE */}
       <button
-        onClick={() => setIsExpanded(true)}
-        style={{
-          bottom: stickyCartVisible ? '6.5rem' : '1.5rem',
-        }}
-        className={`fixed right-6 md:right-8 z-[100] w-14 h-14 ${COMPONENT_COLORS.chat.icon} rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 ease-in-out`}
+        onClick={() => setIsExpanded(!isExpanded)}
+        className={`fixed right-4 z-[100] ${buttonBottomClass} transition-all duration-300
+                   bg-gradient-to-br from-brand to-brand-dark text-white 
+                   rounded-full p-4 shadow-2xl hover:scale-110 hover:shadow-brand/50
+                   focus:outline-none focus:ring-4 focus:ring-brand/30
+                   active:scale-95`}
         aria-label="Open chat"
       >
-        <MessageCircle className={`h-6 w-6 ${COMPONENT_COLORS.chat.iconText}`} />
+        {isExpanded ? (
+          <X className="w-6 h-6" />
+        ) : (
+          <MessageCircle className="w-6 h-6" />
+        )}
       </button>
 
-      {/* POPUP - RECHTSBENEDEN DESKTOP, CENTERED MOBIEL */}
+      {/* Chat Popup */}
       {isExpanded && (
         <>
-          <div 
+          {/* Backdrop */}
+          <div
             className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-in fade-in duration-200 z-[110] md:bg-transparent md:pointer-events-none"
-            onClick={handleClose}
+            onClick={() => setIsExpanded(false)}
           />
           
-          <div className="fixed inset-0 md:inset-auto md:bottom-24 md:right-8 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
-            <div className="pointer-events-auto w-full max-w-md max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300">
-              <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 space-y-4">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 ${COMPONENT_COLORS.chat.icon} rounded-full flex items-center justify-center`}>
-                    <MessageCircle className={`h-5 w-5 ${COMPONENT_COLORS.chat.iconText}`} />
-                  </div>
+          {/* Chat Modal */}
+          <div className="fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
+            <div className="pointer-events-auto w-full max-w-md max-h-[90vh] md:max-h-[600px] bg-white rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
+              
+              {/* Header */}
+              <div className={`${COMPONENT_COLORS.gradients.brand} p-6 rounded-t-2xl text-white`}>
+                <div className="flex justify-between items-start mb-2">
                   <div>
-                    <h3 className="font-semibold text-gray-900">Chat met ons</h3>
-                    <p className="text-xs text-gray-600">We helpen je graag</p>
+                    <h3 className="text-xl font-bold">AI Assistent</h3>
+                    <p className="text-sm text-white/90 mt-1">Stel me een vraag over onze kattenbak</p>
                   </div>
+                  <button
+                    onClick={() => setIsExpanded(false)}
+                    className="text-white/80 hover:text-white transition-colors p-1"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={handleClose}
-                  className="text-gray-400 hover:text-gray-900 transition-colors p-1 hover:bg-gray-100 rounded-full"
-                  aria-label="Sluiten"
-                >
-                  <X className="h-5 w-5" />
-                </button>
               </div>
 
-              <Input
-                name="email"
-                label="Email *"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="jouw@email.nl"
-                required
-                autoFocus
-              />
-
-              <Input
-                name="orderNumber"
-                label="Ordernummer (optioneel)"
-                type="text"
-                value={orderNumber}
-                onChange={(e) => setOrderNumber(e.target.value)}
-                placeholder="ORD-12345"
-              />
-
-              <div>
-                <label className="block text-sm font-medium text-gray-900 mb-2">
-                  Bericht *
-                </label>
-                <textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Typ hier je vraag..."
-                  required
-                  rows={3}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all resize-none text-gray-900"
-                />
-                <p className="text-xs text-gray-500 mt-2">
-                  💡 Bij vragen over je order, vermeld het ordernummer
-                </p>
-              </div>
-
-              <p className="text-xs text-gray-500 text-center leading-relaxed">
-                Beschermd door{" "}
-                <a 
-                  href="https://www.hcaptcha.com/privacy" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-brand hover:underline"
-                >
-                  hCaptcha
-                </a>
-                {" "}· Vereist functionele cookies
-              </p>
-
-              {feedback?.type === "cookies" && (
-                <div className="bg-orange-50 border-2 border-orange-500 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <Cookie className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-gray-900 mb-2">
-                        Functionele cookies vereist
-                      </p>
-                      <p className="text-xs text-gray-700 mb-3">
-                        Voor spam-preventie (hCaptcha) hebben we functionele cookies nodig.
-                      </p>
-                      <Button
-                        size="sm"
-                        variant="cta"
-                        onClick={() => {
-                          acceptAll();
-                          setFeedback(null);
-                        }}
-                        leftIcon={<Cookie className="h-3 w-3" />}
+              {/* Messages */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
+                {messages.length === 0 && (
+                  <div className="text-center text-gray-500 mt-8">
+                    <MessageCircle className="w-12 h-12 mx-auto mb-3 text-brand/30" />
+                    <p className="text-sm">Stel een vraag over features, specificaties, of geschiktheid</p>
+                    <div className="mt-4 space-y-2">
+                      <button
+                        onClick={() => setInput("Hoeveel liter is de afvalbak?")}
+                        className="block w-full text-left px-4 py-2 bg-white rounded-lg text-sm hover:bg-brand/5 transition-colors"
                       >
-                        Accepteer cookies
-                      </Button>
+                        Hoeveel liter is de afvalbak?
+                      </button>
+                      <button
+                        onClick={() => setInput("Heeft deze kattenbak een app?")}
+                        className="block w-full text-left px-4 py-2 bg-white rounded-lg text-sm hover:bg-brand/5 transition-colors"
+                      >
+                        Heeft deze kattenbak een app?
+                      </button>
+                      <button
+                        onClick={() => setInput("Is het veilig voor mijn kat?")}
+                        className="block w-full text-left px-4 py-2 bg-white rounded-lg text-sm hover:bg-brand/5 transition-colors"
+                      >
+                        Is het veilig voor mijn kat?
+                      </button>
                     </div>
                   </div>
-                </div>
-              )}
-
-              {feedback && feedback.type !== "cookies" && (
-                <div className={`flex items-center gap-2 p-3 rounded-lg ${
-                  feedback.type === "success" 
-                    ? "bg-green-50 text-green-800" 
-                    : "bg-red-50 text-red-800"
-                }`}>
-                  {feedback.type === "success" ? (
-                    <CheckCircle className="h-4 w-4 flex-shrink-0" />
-                  ) : (
-                    <AlertCircle className="h-4 w-4 flex-shrink-0" />
-                  )}
-                  <p className="text-sm">{feedback.message}</p>
-                </div>
-              )}
-
-              <div className="flex gap-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  fullWidth
-                  onClick={handleClose}
-                  disabled={isSending}
-                >
-                  Terug
-                </Button>
-                <Button
-                  type="submit"
-                  variant="cta"
-                  fullWidth
-                  loading={isSending}
-                  leftIcon={<Send className="h-4 w-4" />}
-                >
-                  Versturen
-                </Button>
+                )}
+                
+                {messages.map((msg, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                        msg.role === 'user'
+                          ? 'bg-brand text-white'
+                          : 'bg-white border border-gray-200'
+                      }`}
+                    >
+                      <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                      <span className="text-xs opacity-60 mt-1 block">
+                        {msg.timestamp.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3">
+                      <Loader2 className="w-5 h-5 animate-spin text-brand" />
+                    </div>
+                  </div>
+                )}
+                
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700">
+                    {error}
+                  </div>
+                )}
               </div>
-              </form>
+
+              {/* Input */}
+              <div className="p-4 bg-white border-t border-gray-200 rounded-b-2xl">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Stel je vraag..."
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand text-sm"
+                    disabled={isLoading}
+                  />
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={!input.trim() || isLoading}
+                    className="px-6 rounded-xl"
+                  >
+                    {isLoading ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <Send className="w-5 h-5" />
+                    )}
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  Powered by AI · Antwoorden op basis van productinformatie
+                </p>
+              </div>
             </div>
           </div>
         </>
