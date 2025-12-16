@@ -67,6 +67,23 @@ app.get('/api/v1/health', (req: Request, res: Response) => {
 // PRODUCTS ENDPOINTS - DATABASE
 // =============================================================================
 
+// Helper: Convert Prisma Decimal to Number (defensive)
+const toNumber = (value: any): number => {
+  if (value === null || value === undefined) return 0;
+  if (typeof value === 'number') return value;
+  const num = parseFloat(String(value));
+  return isNaN(num) ? 0 : num;
+};
+
+// Helper: Sanitize product for API response
+const sanitizeProduct = (product: any) => ({
+  ...product,
+  price: toNumber(product.price),
+  compareAtPrice: product.compareAtPrice ? toNumber(product.compareAtPrice) : null,
+  costPrice: product.costPrice ? toNumber(product.costPrice) : null,
+  weight: product.weight ? toNumber(product.weight) : null,
+});
+
 // GET all products
 app.get('/api/v1/products', async (req: Request, res: Response) => {
   try {
@@ -75,12 +92,15 @@ app.get('/api/v1/products', async (req: Request, res: Response) => {
       orderBy: { createdAt: 'desc' },
     });
 
+    // DEFENSIVE: Convert Decimal to Number for frontend
+    const sanitizedProducts = products.map(sanitizeProduct);
+
     res.json(success({
-      products,
+      products: sanitizedProducts,
       pagination: {
         page: 1,
-        pageSize: products.length,
-        total: products.length,
+        pageSize: sanitizedProducts.length,
+        total: sanitizedProducts.length,
         totalPages: 1,
       },
     }));
@@ -98,7 +118,9 @@ app.get('/api/v1/products/featured', async (req: Request, res: Response) => {
       take: 3,
     });
 
-    res.json(success(products));
+    // DEFENSIVE: Sanitize all products
+    const sanitizedProducts = products.map(sanitizeProduct);
+    res.json(success(sanitizedProducts));
   } catch (err: any) {
     console.error('Featured products error:', err.message);
     res.status(500).json(error('Could not fetch featured products'));
@@ -116,7 +138,8 @@ app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
       return res.status(404).json(error('Product not found'));
     }
 
-    res.json(success(product));
+    // DEFENSIVE: Sanitize product
+    res.json(success(sanitizeProduct(product)));
   } catch (err: any) {
     console.error('Product by ID error:', err.message);
     res.status(500).json(error('Could not fetch product'));
@@ -126,15 +149,19 @@ app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
 // GET product by slug
 app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
   try {
+    // SECURITY: Sanitize slug input
+    const slug = String(req.params.slug).toLowerCase().trim();
+    
     const product = await prisma.product.findUnique({
-      where: { slug: req.params.slug },
+      where: { slug },
     });
 
     if (!product) {
       return res.status(404).json(error('Product not found'));
     }
 
-    res.json(success(product));
+    // DEFENSIVE: Sanitize product
+    res.json(success(sanitizeProduct(product)));
   } catch (err: any) {
     console.error('Product by slug error:', err.message);
     res.status(500).json(error('Could not fetch product'));
@@ -392,7 +419,9 @@ app.get('/api/v1/admin/products', async (req: Request, res: Response) => {
       include: { category: true },
     });
 
-    res.json(success(products));
+    // DEFENSIVE: Sanitize all products
+    const sanitizedProducts = products.map(sanitizeProduct);
+    res.json(success(sanitizedProducts));
   } catch (err: any) {
     console.error('Admin products error:', err.message);
     res.status(500).json(error('Could not fetch products'));
