@@ -4,7 +4,7 @@
  */
 
 import { Router, Request, Response } from 'express';
-import { RAGClaudeService } from '../services/rag/rag-claude.service';
+import { ClaudeDirectService } from '../services/rag/claude-direct.service';
 import { RAGSecurityMiddleware } from '../middleware/rag-security.middleware';
 
 const router = Router();
@@ -24,8 +24,8 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
       });
     }
     
-    // Production RAG with Claude (+ Ollama fallback)
-    const response = await RAGClaudeService.answerQuestion(sanitizedQuery);
+    // Claude Direct API (no SDK dependency)
+    const response = await ClaudeDirectService.answerQuestion(sanitizedQuery);
     
     // Update log with response
     const latency = response.latency_ms;
@@ -56,7 +56,7 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
 router.get('/health', async (req: Request, res: Response) => {
   try {
     const { VectorStoreService } = require('../services/rag/vector-store.service');
-    const health = await RAGClaudeService.healthCheck();
+    const health = await ClaudeDirectService.healthCheck();
     const docCount = VectorStoreService.getCount();
     
     res.json({
