@@ -4,7 +4,7 @@
  */
 
 import { Router, Request, Response } from 'express';
-import { RAGProductionService } from '../services/rag/rag-production.service';
+import { RAGClaudeService } from '../services/rag/rag-claude.service';
 import { RAGSecurityMiddleware } from '../middleware/rag-security.middleware';
 
 const router = Router();
@@ -24,8 +24,8 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
       });
     }
     
-    // Production RAG with Claude
-    const response = await RAGProductionService.answerQuestion(sanitizedQuery);
+    // Production RAG with Claude (+ Ollama fallback)
+    const response = await RAGClaudeService.answerQuestion(sanitizedQuery);
     
     // Update log with response
     const latency = response.latency_ms;
@@ -56,13 +56,13 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
 router.get('/health', async (req: Request, res: Response) => {
   try {
     const { VectorStoreService } = require('../services/rag/vector-store.service');
-    const health = await RAGProductionService.healthCheck();
+    const health = await RAGClaudeService.healthCheck();
     const docCount = VectorStoreService.getCount();
     
     res.json({
       success: true,
       data: {
-        status: health.claude && health.vectorStore && health.embeddings ? 'healthy' : 'degraded',
+        status: health.claude ? 'healthy' : 'degraded',
         storage: 'in-memory',
         documents_loaded: docCount,
         model: 'claude-3-5-haiku-20241022',
