@@ -46,8 +46,9 @@ export default function CartPage() {
           <div className="lg:col-span-2 space-y-6">
             {items.map((item, index) => (
               <div key={item.product.id}>
-                <div className="flex gap-6">
-                  <div className="relative w-32 h-32 bg-gray-50 rounded overflow-hidden flex-shrink-0">
+                <div className="flex gap-3 sm:gap-6">
+                  {/* COMPACT IMAGE - mobiel 80x80, desktop 128x128 */}
+                  <div className="relative w-20 h-20 sm:w-32 sm:h-32 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0">
                     <ProductImage
                       src={getProductImage(item.product.images)}
                       alt={item.product.name}
@@ -56,48 +57,50 @@ export default function CartPage() {
                     />
                   </div>
 
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <h2 className="text-xl font-semibold mb-1">
+                  <div className="flex-1 min-w-0">
+                    {/* HEADER - compact op mobiel */}
+                    <div className="flex justify-between items-start mb-2 sm:mb-3">
+                      <div className="flex-1 min-w-0 pr-2">
+                        <h2 className="text-base sm:text-xl font-semibold mb-1 truncate">
                           {item.product.name}
                         </h2>
-                        <p className="text-gray-600">
+                        <p className="text-sm sm:text-base text-gray-600">
                           {formatPrice(item.product.price)} per stuk
                         </p>
                       </div>
                       <button
                         onClick={() => removeItem(item.product.id)}
-                        className="text-gray-400 hover:text-gray-600 transition p-2"
+                        className="text-gray-400 hover:text-gray-600 transition p-1 sm:p-2 flex-shrink-0"
                         aria-label="Verwijder"
                       >
-                        <X className="h-5 w-5" />
+                        <X className="h-4 w-4 sm:h-5 sm:w-5" />
                       </button>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
+                    {/* QUANTITY + PRICE - responsive */}
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="w-12 h-12 sm:w-10 sm:h-10 rounded-lg border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
+                          className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
                         >
-                          <Minus className="h-4 w-4" />
+                          <Minus className="h-3 w-3 sm:h-4 sm:w-4" />
                         </button>
 
-                        <span className="w-16 sm:w-12 text-center font-semibold text-lg sm:text-base">
+                        <span className="w-10 sm:w-12 text-center font-semibold text-base sm:text-lg">
                           {item.quantity}
                         </span>
 
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="w-12 h-12 sm:w-10 sm:h-10 rounded-lg border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
+                          className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
                           disabled={item.quantity >= item.product.stock}
                         >
-                          <Plus className="h-4 w-4" />
+                          <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
                         </button>
                       </div>
 
-                      <p className="text-xl font-light">
+                      <p className="text-base sm:text-xl font-semibold">
                         {formatPrice(item.product.price * item.quantity)}
                       </p>
                     </div>

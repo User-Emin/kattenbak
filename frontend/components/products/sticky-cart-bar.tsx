@@ -41,10 +41,13 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
 
   const handleAddToCart = () => {
     addItem(product, quantity);
+    // Direct naar winkelwagen zoals de hoofdbutton
+    window.location.href = '/cart';
   };
 
   return (
     <div
+      data-sticky-cart
       className={`fixed bottom-0 left-0 right-0 z-40 transition-all duration-500 ease-out ${
         isVisible 
           ? 'translate-y-0 opacity-100' 

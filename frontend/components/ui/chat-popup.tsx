@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./button";
 import { Input } from "./input";
 import { X, Send, MessageCircle, CheckCircle, AlertCircle, Cookie } from "lucide-react";
@@ -15,6 +15,7 @@ type FeedbackType = "success" | "error" | "cookies" | null;
  * Chat Popup - GDPR-Compliant met hCaptcha
  * ALTIJD ZICHTBARE BUTTON + SMOOTH POPUP
  * DRY: Geen props nodig, volledig self-contained
+ * RESPONSIVE: Beweegt omhoog wanneer sticky cart toont
  */
 export function ChatPopup() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -23,6 +24,7 @@ export function ChatPopup() {
   const [orderNumber, setOrderNumber] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [feedback, setFeedback] = useState<{ type: FeedbackType; message: string } | null>(null);
+  const [stickyCartVisible, setStickyCartVisible] = useState(false);
   
   const { getToken, isReady } = useHCaptcha();
   const { acceptAll, hasConsent } = useCookieConsent();
@@ -30,6 +32,22 @@ export function ChatPopup() {
   const handleClose = () => {
     setIsExpanded(false);
   };
+
+  // Detecteer sticky cart visibility voor responsieve positioning
+  useEffect(() => {
+    const checkStickyCart = () => {
+      const stickyBar = document.querySelector('[data-sticky-cart]');
+      if (stickyBar) {
+        const rect = stickyBar.getBoundingClientRect();
+        setStickyCartVisible(rect.top < window.innerHeight);
+      }
+    };
+
+    window.addEventListener('scroll', checkStickyCart, { passive: true });
+    checkStickyCart();
+
+    return () => window.removeEventListener('scroll', checkStickyCart);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,10 +120,12 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* CHAT BUTTON - Z-INDEX 100, ALTIJD BOVENOP STICKY CART (Z-40) */}
+      {/* CHAT BUTTON - DYNAMISCH: Omhoog wanneer sticky cart toont */}
       <button
         onClick={() => setIsExpanded(true)}
-        className={`fixed bottom-24 right-6 md:bottom-8 md:right-8 z-[100] w-14 h-14 ${COMPONENT_COLORS.chat.icon} rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300`}
+        className={`fixed right-6 md:right-8 z-[100] w-14 h-14 ${COMPONENT_COLORS.chat.icon} rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-500 ${
+          stickyCartVisible ? 'bottom-24 md:bottom-28' : 'bottom-6 md:bottom-8'
+        }`}
         aria-label="Open chat"
       >
         <MessageCircle className={`h-6 w-6 ${COMPONENT_COLORS.chat.iconText}`} />
