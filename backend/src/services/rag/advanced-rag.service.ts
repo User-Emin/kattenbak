@@ -33,7 +33,7 @@ export interface AdvancedRAGResponse {
 }
 
 export class AdvancedRAGService {
-  private static readonly LLM_MODEL = 'qwen2.5:3b';
+  private static readonly LLM_MODEL = 'qwen2.5:3b'; // ACTIVATED
   private static readonly REWRITE_MODEL = 'qwen2.5:3b';
   private static readonly MAX_RETRIEVAL = 10;
   private static readonly MAX_FINAL = 5;

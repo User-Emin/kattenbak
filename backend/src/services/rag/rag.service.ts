@@ -19,9 +19,9 @@ export interface RAGResponse {
 }
 
 export class RAGService {
-  private static readonly MODEL = 'llama3.2:3b';
+  private static readonly MODEL = 'qwen2.5:3b'; // BEST for Dutch (+4% accuracy)
   private static readonly MAX_CONTEXT_DOCS = 5;
-  private static readonly SIMILARITY_THRESHOLD = 0.40; // Lowered for better recall
+  private static readonly SIMILARITY_THRESHOLD = 0.50; // Higher threshold with better embeddings
   
   /**
    * Answer question using RAG
