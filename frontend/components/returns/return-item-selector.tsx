@@ -123,7 +123,7 @@ export function ReturnItemSelector({
               <div className="flex-1">
                 <p className="font-medium">{item.productName}</p>
                 <p className="text-sm text-gray-600">
-                  € {item.price.toFixed(2)} × {item.quantity}
+                  {formatCurrency(item.price)} × {item.quantity}
                 </p>
               </div>
 

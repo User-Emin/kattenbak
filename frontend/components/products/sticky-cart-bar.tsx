@@ -75,7 +75,7 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
                   {product.name}
                 </h3>
                 <p className="text-lg font-bold text-brand">
-                  €{product.price.toFixed(2)}
+                  {formatCurrency(product.price)}
                 </p>
               </div>
             </div>
