@@ -67,19 +67,32 @@ export function ChatPopup() {
       return;
     }
 
+    // ✅ AUTO-ACCEPT: Als cookies niet geaccepteerd, accepteer automatisch
     if (!hasConsent('functional')) {
+      console.log('🔄 Auto-accepting cookies voor chat functionaliteit');
+      acceptAll();
       setFeedback({ 
         type: "cookies", 
-        message: "Accepteer functionele cookies voor spam-preventie (hCaptcha)" 
+        message: "Cookies geaccepteerd. Even geduld terwijl verificatie laadt..." 
       });
+      // Wacht kort en probeer opnieuw
+      setTimeout(() => {
+        setFeedback(null);
+        handleSubmit(e);
+      }, 2000);
       return;
     }
 
+    // ✅ BETERE FEEDBACK: Als hCaptcha nog niet ready is
     if (!isReady) {
       setFeedback({ 
         type: "error", 
-        message: "Verificatie wordt geladen... Probeer zo opnieuw." 
+        message: "Bezig met laden van beveiliging... Een moment geduld." 
       });
+      // Auto-retry na 2 seconden
+      setTimeout(() => {
+        setFeedback(null);
+      }, 2000);
       return;
     }
 

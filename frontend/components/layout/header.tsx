@@ -49,15 +49,15 @@ export function Header() {
         {/* Navbar - Direct onder banner */}
         <header className="bg-brand shadow-md">
         <div className="container mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-24 sm:h-28">
-            {/* Logo - ECHT GROOT: Maximale zichtbaarheid */}
-            <Link href="/" className="flex items-center hover:opacity-90 transition py-2">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo - BREED: Maximale branding horizontaal */}
+            <Link href="/" className="flex items-center hover:opacity-90 transition">
               <Image
                 src="/logo.png"
                 alt="Catsupply"
-                width={720}
-                height={200}
-                className="h-20 sm:h-24 w-auto"
+                width={360}
+                height={100}
+                className="h-auto w-72 sm:w-80 max-h-12"
                 priority
               />
             </Link>
