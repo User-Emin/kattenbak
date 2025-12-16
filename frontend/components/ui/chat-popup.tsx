@@ -253,10 +253,11 @@ export function ChatPopup() {
                   Versturen
                 </Button>
               </div>
-            </form>
+              </form>
+            </div>
           </div>
         </>
       )}
-    </div>
+    </>
   );
 }
