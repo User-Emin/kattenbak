@@ -5,7 +5,11 @@ import { ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/context/cart-context';
 import type { Product } from '@/types/product';
-import { formatCurrency } from '../../lib/utils/price';
+// Defensive price formatting
+const formatCurrency = (price: any): string => {
+  const num = typeof price === 'number' ? price : parseFloat(String(price));
+  return `€${(isNaN(num) ? 0 : num).toFixed(2)}`;
+};
 
 interface StickyCartBarProps {
   product: Product;

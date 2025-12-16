@@ -5,7 +5,11 @@ import Image from 'next/image';
 import { ReturnItem } from '@/types/return';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { formatCurrency } from '../../lib/utils/price';
+// Defensive price formatting
+const formatCurrency = (price: any): string => {
+  const num = typeof price === 'number' ? price : parseFloat(String(price));
+  return `€${(isNaN(num) ? 0 : num).toFixed(2)}`;
+};
 
 /**
  * RETURN ITEM SELECTOR - DRY Component
