@@ -9,6 +9,17 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Seeding production database...');
 
+  // Seed category first
+  const category = await prisma.category.upsert({
+    where: { slug: 'kattenbakken' },
+    update: {},
+    create: {
+      name: 'Kattenbakken',
+      slug: 'kattenbakken',
+      description: 'Automatische kattenbakken',
+    },
+  });
+
   // Seed product
   const product = await prisma.product.upsert({
     where: { slug: 'automatische-kattenbak-premium' },
@@ -24,7 +35,7 @@ async function main() {
       stock: 50,
       isActive: true,
       isFeatured: true,
-      category: 'kattenbakken',
+      categoryId: category.id,
       images: ['/images/premium-main.jpg', '/images/premium-detail.jpg'],
       specifications: {
         capacity: '10.5L',
