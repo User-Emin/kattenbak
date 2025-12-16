@@ -40,13 +40,7 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
   }, [addToCartButtonRef]);
 
   const handleAddToCart = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.images?.[0] || '/images/placeholder.jpg',
-      quantity,
-    });
+    addItem(product, quantity);
   };
 
   return (
