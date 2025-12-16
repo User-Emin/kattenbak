@@ -11,8 +11,8 @@ from sentence_transformers import SentenceTransformer
 def generate_embedding(text: str) -> list:
     """Generate embedding for text"""
     try:
-        # Load model (cached after first load)
-        model = SentenceTransformer('all-MiniLM-L6-v2')
+        # Load BEST model for Dutch (cached after first load)
+        model = SentenceTransformer('intfloat/multilingual-e5-base')
         
         # Generate embedding
         embedding = model.encode(text, normalize_embeddings=True)
