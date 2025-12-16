@@ -109,8 +109,8 @@ class Server {
     const orderRoutes = (await import('./routes/orders.routes')).default;
     this.app.use('/api/v1/orders', orderRoutes);
     
-    // Contact routes - DRY: Chat messages
-    const contactRoutes = (await import('./routes/contact.routes')).default;
+    // Contact routes - SIMPLE: No database, no @ imports
+    const contactRoutes = (await import('./routes/contact.routes.simple')).default;
     this.app.use('/api/v1/contact', contactRoutes);
     
     // Payment methods routes - DRY: Fetch available Mollie payment methods
