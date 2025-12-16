@@ -50,14 +50,14 @@ export function Header() {
         <header className="bg-brand shadow-md">
         <div className="container mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-16">
-            {/* Logo - DRY: Smooth responsive branding, goed formaat */}
+            {/* Logo - DRY: Goed zichtbaar, even groot als nav items */}
             <Link href="/" className="flex items-center hover:opacity-90 transition">
               <Image
                 src="/logo.png"
                 alt="Catsupply"
-                width={180}
-                height={50}
-                className="h-12 sm:h-14 w-auto"
+                width={240}
+                height={67}
+                className="h-14 sm:h-16 w-auto"
                 priority
               />
             </Link>
