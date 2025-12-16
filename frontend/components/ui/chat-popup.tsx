@@ -101,26 +101,27 @@ export function ChatPopup() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50">
+    <>
       {/* ALTIJD ZICHTBARE BUTTON */}
       <button
         onClick={() => setIsExpanded(true)}
-        className={`w-14 h-14 ${COMPONENT_COLORS.chat.icon} rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-200`}
+        className={`fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 w-14 h-14 ${COMPONENT_COLORS.chat.icon} rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-200`}
         aria-label="Open chat"
       >
         <MessageCircle className={`h-6 w-6 ${COMPONENT_COLORS.chat.iconText}`} />
       </button>
 
-      {/* POPUP MET SMOOTH ANIMATIE */}
+      {/* ECHTE MODAL - CENTERED MET KEYBOARD SUPPORT */}
       {isExpanded && (
         <>
           <div 
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-in fade-in duration-200 z-40"
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-in fade-in duration-200 z-[60]"
             onClick={handleClose}
           />
           
-          <div className="fixed bottom-24 right-6 md:right-8 z-50 animate-in slide-in-from-bottom-4 fade-in duration-300">
-            <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 space-y-4 max-w-sm w-[calc(100vw-3rem)] md:w-96">
+          <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none">
+            <div className="pointer-events-auto w-full max-w-md max-h-[90vh] overflow-y-auto animate-in zoom-in-95 fade-in duration-300">
+              <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 space-y-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 ${COMPONENT_COLORS.chat.icon} rounded-full flex items-center justify-center`}>
