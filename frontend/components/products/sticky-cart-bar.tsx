@@ -8,7 +8,7 @@ import type { Product } from '@/types/product';
 
 interface StickyCartBarProps {
   product: Product;
-  addToCartButtonRef: React.RefObject<HTMLDivElement>;
+  addToCartButtonRef: React.RefObject<HTMLDivElement | null>;
 }
 
 /**
