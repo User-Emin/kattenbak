@@ -73,6 +73,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const discount = hasDiscount ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100) : 0;
 
+  // Pre-order calculations
+  const isPreOrder = product.isPreOrder;
+  const preOrderDiscountPercentage = product.preOrderDiscount || 0;
+  const originalPrice = product.price;
+  const discountedPrice = isPreOrder && preOrderDiscountPercentage > 0
+    ? originalPrice * (1 - preOrderDiscountPercentage / 100)
+    : originalPrice;
+  const displayPrice = isPreOrder && preOrderDiscountPercentage > 0 ? discountedPrice : product.price;
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
@@ -124,6 +133,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             <div>
               <h1 className="text-4xl font-light mb-6 leading-tight text-gray-900">{product.name}</h1>
               
+              {/* Pre-order Badge */}
+              {isPreOrder && (
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand/10 text-brand rounded-full mb-4">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="font-semibold">Pre-order</span>
+                  {product.releaseDate && (
+                    <span className="text-sm">
+                      • Verwacht: {new Date(product.releaseDate).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </span>
+                  )}
+                </div>
+              )}
+              
               {/* USPs - Direct op achtergrond */}
               <div className="space-y-2 mb-8">
                 <div className="flex items-center gap-3">
@@ -144,7 +168,24 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               {/* Prijs - Direct op achtergrond */}
               <div className="mb-8">
-                <div className="text-5xl font-light text-gray-900">{formatPrice(product.price)}</div>
+                {isPreOrder && preOrderDiscountPercentage > 0 ? (
+                  <div className="space-y-2">
+                    <div className="flex items-baseline gap-3">
+                      <div className="text-5xl font-light text-brand">{formatPrice(discountedPrice)}</div>
+                      <div className="text-2xl text-gray-400 line-through">{formatPrice(originalPrice)}</div>
+                    </div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                        <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                      </svg>
+                      <span className="font-semibold text-sm">{preOrderDiscountPercentage}% Pre-order Korting</span>
+                      <span className="text-sm">• Bespaar {formatPrice(originalPrice - discountedPrice)}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-5xl font-light text-gray-900">{formatPrice(product.price)}</div>
+                )}
               </div>
 
               {/* CTA Button - Hoger voor MacBook view */}
@@ -158,7 +199,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   leftIcon={<ShoppingCart className="h-5 w-5" />}
                   className="mb-4"
                 >
-                  Aan winkelwagen toevoegen - {formatPrice(product.price)}
+                  {isPreOrder ? 'Pre-order Nu' : 'Aan winkelwagen toevoegen'} - {formatPrice(displayPrice)}
                 </Button>
                 
                 {/* Aantal Selector - Compacter onder button */}
