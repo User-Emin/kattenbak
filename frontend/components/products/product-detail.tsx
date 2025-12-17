@@ -25,6 +25,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [showAllSpecs, setShowAllSpecs] = useState(false);
 
   useEffect(() => {
     apiFetch<{ success: boolean; data: Product }>(API_CONFIG.ENDPOINTS.PRODUCT_BY_SLUG(slug))
@@ -231,8 +232,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               <Separator variant="float" spacing="md" />
 
-              {/* Product Features from Comparison Table */}
-              <div className="space-y-3">
+              {/* Top 4 Features */}
+              <div className="space-y-3 mb-6">
                 <div className="flex items-start gap-3">
                   <Check className="h-5 w-5 text-brand flex-shrink-0 mt-0.5" />
                   <div>
@@ -262,6 +263,41 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   </div>
                 </div>
               </div>
+
+              {/* "Meer" Button + Collapsible Specs */}
+              <button
+                onClick={() => setShowAllSpecs(!showAllSpecs)}
+                className="w-full text-center py-3 text-sm font-bold text-brand hover:text-brand-dark transition"
+              >
+                {showAllSpecs ? 'Minder kenmerken' : 'Meer kenmerken'} {showAllSpecs ? '▲' : '▼'}
+              </button>
+
+              {showAllSpecs && (
+                <div className="space-y-2 mt-4">
+                  {[
+                    { title: 'Zelfreinigende Functie', note: 'Automatisch na elk bezoek' },
+                    { title: 'Open-Top, Low-Stress Design', note: 'Minder stress voor katten' },
+                    { title: 'Hoge-Efficiëntie Filter', note: 'Geavanceerd filtersysteem' },
+                    { title: 'Anti-Splash, Hoge Zijwanden', note: 'Voorkomt morsen' },
+                    { title: 'Gemakkelijk te Demonteren', note: 'Voor grondige reiniging' },
+                    { title: 'Geschikt voor Meeste Kattengrit', note: 'Klonterende en silica' },
+                    { title: 'Compact Formaat, Groot Inwendig', note: 'Ruimtebesparend ontwerp' },
+                    { title: 'Modulair Design (OEM-Vriendelijk)', note: 'Alle onderdelen vervangbaar' },
+                  ].map((spec, idx) => (
+                    <details key={idx} className="group">
+                      <summary className="flex justify-between items-center py-3 cursor-pointer hover:text-brand transition border-b border-gray-200">
+                        <span className="font-bold text-gray-900">{spec.title}</span>
+                        <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </summary>
+                      <div className="pb-3 pt-2 text-sm text-gray-600">
+                        {spec.note}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -325,42 +361,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Specifications from Comparison Table - Accordion Style */}
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-light text-center mb-10 text-gray-900">Vergelijk Kenmerken</h2>
-          
-          <div className="space-y-3">
-            {[
-              { title: 'Zelfreinigende Functie', value: '✓', note: 'Automatisch na elk bezoek' },
-              { title: 'Open-Top, Low-Stress Design', value: '✓', note: 'Minder stress voor katten' },
-              { title: 'Dubbele Veiligheidssensoren', value: '✓', note: 'Stopt automatisch bij detectie' },
-              { title: 'App Control & Gezondheidsmonitoring', value: '✓', note: 'Real-time tracking via app' },
-              { title: 'Hoge-Efficiëntie Filter', value: '✓', note: 'Geavanceerd filtersysteem' },
-              { title: 'Afvalbak Capaciteit', value: '10.5L', note: 'Grootste in zijn klasse' },
-              { title: 'Anti-Splash, Hoge Zijwanden', value: '✓', note: 'Voorkomt morsen' },
-              { title: 'Gemakkelijk te Demonteren', value: '✓', note: 'Voor grondige reiniging' },
-              { title: 'Geschikt voor Meeste Kattengrit', value: '✓', note: 'Klonterende en silica' },
-              { title: 'Compact Formaat, Groot Inwendig', value: '✓', note: 'Ruimtebesparend ontwerp' },
-              { title: 'Ultra-Stille Motor', value: '&lt;40dB', note: 'Stil genoeg voor slaapkamer' },
-              { title: 'Modulair Design (OEM-Vriendelijk)', value: '✓', note: 'Alle onderdelen vervangbaar' },
-            ].map((spec, idx) => (
-              <details key={idx} className="group bg-white border border-gray-200 rounded-lg overflow-hidden">
-                <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
-                  <span className="font-bold text-gray-900">{spec.title}</span>
-                  <div className="flex items-center gap-3">
-                    <span className="text-brand font-bold">{spec.value}</span>
-                    <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </summary>
-                <div className="px-4 pb-4 text-gray-600 text-sm border-t border-gray-100">
-                  {spec.note}
-                </div>
-              </details>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
