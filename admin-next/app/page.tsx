@@ -1,9 +1,8 @@
-/**
- * HOME PAGE - Redirect to dashboard or login
- */
-
 import { redirect } from 'next/navigation';
 
-export default function HomePage() {
+/**
+ * ROOT PAGE - Redirect to dashboard
+ */
+export default function RootPage() {
   redirect('/dashboard');
 }
