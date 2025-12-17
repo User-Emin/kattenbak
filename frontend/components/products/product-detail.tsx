@@ -231,28 +231,35 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               <Separator variant="float" spacing="md" />
 
-              {/* Beschikbaarheid */}
-              <div className="flex items-center gap-3 mb-8">
-                <Check className="h-6 w-6 text-brand flex-shrink-0" />
-                <div>
-                  <p className="font-semibold text-brand text-lg">Op voorraad - Direct leverbaar</p>
-                  <p className="text-sm text-gray-600">Vandaag besteld, morgen in huis</p>
+              {/* Product Features from Comparison Table */}
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <Check className="h-5 w-5 text-brand flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-bold text-gray-900">10.5L Afvalbak Capaciteit</p>
+                    <p className="text-sm text-gray-600">Grootste in zijn klasse - Minder vaak legen</p>
+                  </div>
                 </div>
-              </div>
-
-              {/* Trust badges - Direct op achtergrond */}
-              <div className="grid grid-cols-3 gap-3 text-center">
-                <div className="flex flex-col items-center gap-2">
-                  <Truck className="h-6 w-6 text-brand" />
-                  <p className="text-xs font-medium text-gray-700">Gratis verzending</p>
+                <div className="flex items-start gap-3">
+                  <Check className="h-5 w-5 text-brand flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-bold text-gray-900">Dubbele Veiligheidssensoren</p>
+                    <p className="text-sm text-gray-600">Stopt automatisch als kat erbij komt</p>
+                  </div>
                 </div>
-                <div className="flex flex-col items-center gap-2">
-                  <Shield className="h-6 w-6 text-brand" />
-                  <p className="text-xs font-medium text-gray-700">2 jaar garantie</p>
+                <div className="flex items-start gap-3">
+                  <Check className="h-5 w-5 text-brand flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-bold text-gray-900">App + Gezondheidsmonitoring</p>
+                    <p className="text-sm text-gray-600">Volg het gedrag van je kat in real-time</p>
+                  </div>
                 </div>
-                <div className="flex flex-col items-center gap-2">
-                  <Check className="h-6 w-6 text-brand" />
-                  <p className="text-xs font-medium text-gray-700">30 dagen retour</p>
+                <div className="flex items-start gap-3">
+                  <Check className="h-5 w-5 text-brand flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-bold text-gray-900">Ultra-Stille Motor (&lt;40dB)</p>
+                    <p className="text-sm text-gray-600">Stil genoeg voor gebruik in slaapkamer</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -269,99 +276,89 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
-        {/* USPs - Direct op achtergrond */}
+        {/* Key Features from Comparison Table */}
         <div className="max-w-5xl mx-auto mb-16">
-          <h2 className="text-3xl font-light text-center mb-12 text-gray-900">Waarom deze kattenbak?</h2>
+          <h2 className="text-3xl font-light text-center mb-12 text-gray-900">Waarom kiezen katten eigenaren voor ons?</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-brand flex items-center justify-center">
-                <Shield className="h-8 w-8 text-white" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="flex gap-4">
+              <div className="w-12 h-12 flex-shrink-0 rounded-lg bg-brand/10 flex items-center justify-center">
+                <Shield className="h-6 w-6 text-brand" />
               </div>
-              <h3 className="text-xl font-medium mb-3 text-gray-900">Volledig Automatisch</h3>
-              <p className="text-gray-600">Reinigt het grit na elk bezoek, altijd een schone kattenbak</p>
+              <div>
+                <h3 className="text-lg font-bold mb-2 text-gray-900">Open-Top, Low-Stress Design</h3>
+                <p className="text-gray-600">Minder stressvol voor katten - ze kunnen alles zien en voelen zich veilig</p>
+              </div>
             </div>
 
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-accent flex items-center justify-center">
-                <Star className="h-8 w-8 text-white" />
+            <div className="flex gap-4">
+              <div className="w-12 h-12 flex-shrink-0 rounded-lg bg-brand/10 flex items-center justify-center">
+                <Check className="h-6 w-6 text-brand" />
               </div>
-              <h3 className="text-xl font-medium mb-3 text-gray-900">Geen Stank</h3>
-              <p className="text-gray-600">Ingebouwde deodorizer houdt vieze geurtjes uit je huis</p>
+              <div>
+                <h3 className="text-lg font-bold mb-2 text-gray-900">Hoge Anti-Splash Wanden</h3>
+                <p className="text-gray-600">Voorkomt morsen - zelfs bij enthousiast graven blijft je vloer schoon</p>
+              </div>
             </div>
 
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-brand flex items-center justify-center">
-                <Truck className="h-8 w-8 text-white" />
+            <div className="flex gap-4">
+              <div className="w-12 h-12 flex-shrink-0 rounded-lg bg-brand/10 flex items-center justify-center">
+                <Star className="h-6 w-6 text-brand" />
               </div>
-              <h3 className="text-xl font-medium mb-3 text-gray-900">Morgen in Huis</h3>
-              <p className="text-gray-600">Voor 16:00 besteld? Morgen al bij je thuis!</p>
+              <div>
+                <h3 className="text-lg font-bold mb-2 text-gray-900">Modulair OEM-Vriendelijk</h3>
+                <p className="text-gray-600">Gemakkelijk uit elkaar te halen voor grondige reiniging - alle onderdelen bereikbaar</p>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="w-12 h-12 flex-shrink-0 rounded-lg bg-brand/10 flex items-center justify-center">
+                <Truck className="h-6 w-6 text-brand" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold mb-2 text-gray-900">Compact Formaat, Groot Inwendig</h3>
+                <p className="text-gray-600">Past in kleinere ruimtes, maar biedt je kat volop bewegingsruimte</p>
+              </div>
             </div>
           </div>
         </div>
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Specificaties - Direct op achtergrond */}
+        {/* Specifications from Comparison Table - Accordion Style */}
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-light text-center mb-10 text-gray-900">Specificaties</h2>
+          <h2 className="text-3xl font-light text-center mb-10 text-gray-900">Vergelijk Kenmerken</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Kolom 1 */}
-            <div className="space-y-4">
-              <div className="flex justify-between items-center pb-3">
-                <span className="font-medium text-gray-700">Materiaal</span>
-                <span className="text-gray-900 font-semibold">Premium kunststof</span>
-              </div>
-              <Separator variant="float" spacing="sm" />
-              <div className="flex justify-between items-center pb-3">
-                <span className="font-medium text-gray-700">Afmetingen</span>
-                <span className="text-gray-900 font-semibold">60 × 55 × 62 cm</span>
-              </div>
-              <Separator variant="float" spacing="sm" />
-              <div className="flex justify-between items-center pb-3">
-                <span className="font-medium text-gray-700">Gewicht</span>
-                <span className="text-gray-900 font-semibold">8,5 kg</span>
-              </div>
-              <Separator variant="float" spacing="sm" />
-              <div className="flex justify-between items-center pb-3">
-                <span className="font-medium text-gray-700">Kleur</span>
-                <span className="text-gray-900 font-semibold">Wit</span>
-              </div>
-              <Separator variant="float" spacing="sm" />
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-gray-700">Geschikt voor</span>
-                <span className="text-gray-900 font-semibold">Alle katten</span>
-              </div>
-            </div>
-
-            {/* Kolom 2 */}
-            <div className="space-y-4">
-              <div className="flex justify-between items-center pb-3">
-                <span className="font-medium text-gray-700">Stroomverbruik</span>
-                <span className="text-gray-900 font-semibold">Laag energieverbruik</span>
-              </div>
-              <Separator variant="float" spacing="sm" />
-              <div className="flex justify-between items-center pb-3">
-                <span className="font-medium text-gray-700">Zelfreinigend</span>
-                <span className="text-gray-900 font-semibold flex items-center gap-1"><Check className="h-4 w-4 text-brand" /> Ja</span>
-              </div>
-              <Separator variant="float" spacing="sm" />
-              <div className="flex justify-between items-center pb-3">
-                <span className="font-medium text-gray-700">App ondersteuning</span>
-                <span className="text-gray-900 font-semibold flex items-center gap-1"><Check className="h-4 w-4 text-brand" /> Ja</span>
-              </div>
-              <Separator variant="float" spacing="sm" />
-              <div className="flex justify-between items-center pb-3">
-                <span className="font-medium text-gray-700">Garantie</span>
-                <span className="text-gray-900 font-semibold">2 jaar</span>
-              </div>
-              <Separator variant="float" spacing="sm" />
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-gray-700">Geluidsarm</span>
-                <span className="text-gray-900 font-semibold flex items-center gap-1"><Check className="h-4 w-4 text-brand" /> Ja</span>
-              </div>
-            </div>
+          <div className="space-y-3">
+            {[
+              { title: 'Zelfreinigende Functie', value: '✓', note: 'Automatisch na elk bezoek' },
+              { title: 'Open-Top, Low-Stress Design', value: '✓', note: 'Minder stress voor katten' },
+              { title: 'Dubbele Veiligheidssensoren', value: '✓', note: 'Stopt automatisch bij detectie' },
+              { title: 'App Control & Gezondheidsmonitoring', value: '✓', note: 'Real-time tracking via app' },
+              { title: 'Hoge-Efficiëntie Filter', value: '✓', note: 'Geavanceerd filtersysteem' },
+              { title: 'Afvalbak Capaciteit', value: '10.5L', note: 'Grootste in zijn klasse' },
+              { title: 'Anti-Splash, Hoge Zijwanden', value: '✓', note: 'Voorkomt morsen' },
+              { title: 'Gemakkelijk te Demonteren', value: '✓', note: 'Voor grondige reiniging' },
+              { title: 'Geschikt voor Meeste Kattengrit', value: '✓', note: 'Klonterende en silica' },
+              { title: 'Compact Formaat, Groot Inwendig', value: '✓', note: 'Ruimtebesparend ontwerp' },
+              { title: 'Ultra-Stille Motor', value: '&lt;40dB', note: 'Stil genoeg voor slaapkamer' },
+              { title: 'Modulair Design (OEM-Vriendelijk)', value: '✓', note: 'Alle onderdelen vervangbaar' },
+            ].map((spec, idx) => (
+              <details key={idx} className="group bg-white border border-gray-200 rounded-lg overflow-hidden">
+                <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
+                  <span className="font-bold text-gray-900">{spec.title}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-brand font-bold">{spec.value}</span>
+                    <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </summary>
+                <div className="px-4 pb-4 text-gray-600 text-sm border-t border-gray-100">
+                  {spec.note}
+                </div>
+              </details>
+            ))}
           </div>
         </div>
       </div>
