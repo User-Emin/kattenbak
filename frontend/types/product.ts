@@ -22,6 +22,9 @@ export interface Product {
   metaDescription: string | null;
   isActive: boolean;
   isFeatured: boolean;
+  isPreOrder: boolean;
+  preOrderDiscount: number | null;
+  releaseDate: string | null;
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;

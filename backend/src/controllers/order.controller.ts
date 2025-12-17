@@ -19,18 +19,19 @@ export class OrderController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const orderData = req.body;
+      const { paymentMethod, ...orderData } = req.body;
 
       // Create order
       const order = await OrderService.createOrder(orderData);
 
-      // Create Mollie payment
+      // Create Mollie payment with optional method
       const redirectUrl = `${env.FRONTEND_URL}/order/${order.id}/payment`;
       const payment = await MollieService.createPayment(
         order.id,
         order.total,
         `Order ${order.orderNumber}`,
-        redirectUrl
+        redirectUrl,
+        paymentMethod // Pass payment method from frontend
       );
 
       res.status(201).json(

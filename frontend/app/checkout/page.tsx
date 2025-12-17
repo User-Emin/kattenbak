@@ -27,6 +27,7 @@ function CheckoutContent() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saveData, setSaveData] = useState(true);
+  const [paymentMethod, setPaymentMethod] = useState<'ideal' | 'paypal' | 'creditcard'>('ideal');
 
   const [formData, setFormData] = useState({
     firstName: customerData?.firstName || "",
@@ -99,7 +100,7 @@ function CheckoutContent() {
         },
       };
 
-      const { order, payment } = await ordersApi.create(orderData);
+      const { order, payment } = await ordersApi.create(orderData, paymentMethod);
 
       if (payment.checkoutUrl) {
         window.location.href = payment.checkoutUrl;
@@ -132,7 +133,15 @@ function CheckoutContent() {
 
   if (!product) return null;
 
-  const subtotal = product.price * quantity;
+  // Calculate price with pre-order discount
+  let productPrice = product.price;
+  let discount = 0;
+  if (product.isPreOrder && product.preOrderDiscount) {
+    discount = (product.price * product.preOrderDiscount) / 100;
+    productPrice = product.price - discount;
+  }
+
+  const subtotal = productPrice * quantity;
   const shipping = subtotal >= 50 ? 0 : 5.95;
   const tax = (subtotal + shipping) * 0.21;
   const total = subtotal + shipping + tax;
@@ -278,6 +287,122 @@ function CheckoutContent() {
 
               <Separator variant="float" spacing="md" />
 
+              {/* Payment Method Selection */}
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg mb-5 flex items-center gap-2 text-gray-900">
+                  <CreditCard className="w-5 h-5 text-brand" />
+                  Betaalmethode
+                </h3>
+
+                <div className="grid grid-cols-1 gap-3">
+                  {/* iDEAL */}
+                  <label className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all ${
+                    paymentMethod === 'ideal' 
+                      ? 'border-brand bg-brand/5 shadow-sm' 
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="ideal"
+                      checked={paymentMethod === 'ideal'}
+                      onChange={(e) => setPaymentMethod(e.target.value as 'ideal')}
+                      className="w-5 h-5 text-brand focus:ring-2 focus:ring-brand/20"
+                    />
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center">
+                        <svg className="w-10 h-6" viewBox="0 0 40 24" fill="none">
+                          <rect width="40" height="24" rx="4" fill="white"/>
+                          <path d="M8 7h2v10H8V7zm4 0h2v10h-2V7zm4 0h2v10h-2V7z" fill="#CC0066"/>
+                          <path d="M20 7h12v10H20V7z" fill="#CC0066"/>
+                          <text x="21" y="15" fontSize="8" fill="white" fontWeight="bold">iDEAL</text>
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">iDEAL</p>
+                        <p className="text-sm text-gray-600">Direct betalen via je bank</p>
+                      </div>
+                    </div>
+                    {paymentMethod === 'ideal' && (
+                      <div className="w-6 h-6 rounded-full bg-brand flex items-center justify-center">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    )}
+                  </label>
+
+                  {/* PayPal */}
+                  <label className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all ${
+                    paymentMethod === 'paypal' 
+                      ? 'border-brand bg-brand/5 shadow-sm' 
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="paypal"
+                      checked={paymentMethod === 'paypal'}
+                      onChange={(e) => setPaymentMethod(e.target.value as 'paypal')}
+                      className="w-5 h-5 text-brand focus:ring-2 focus:ring-brand/20"
+                    />
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center">
+                        <svg className="w-10 h-6" viewBox="0 0 40 24">
+                          <path d="M15 8c-.5 0-1 .4-1 1v6c0 .6.5 1 1 1h2c1.7 0 3-1.3 3-3s-1.3-3-3-3h-2zm2 6h-1v-4h1c1.1 0 2 .9 2 2s-.9 2-2 2zm8-6c-.5 0-1 .4-1 1v6c0 .6.5 1 1 1h2c1.7 0 3-1.3 3-3s-1.3-3-3-3h-2zm2 6h-1v-4h1c1.1 0 2 .9 2 2s-.9 2-2 2z" fill="#003087"/>
+                          <path d="M15 8c-.5 0-1 .4-1 1v6c0 .6.5 1 1 1h2c1.7 0 3-1.3 3-3s-1.3-3-3-3h-2z" fill="#0070E0"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">PayPal</p>
+                        <p className="text-sm text-gray-600">Veilig betalen met PayPal</p>
+                      </div>
+                    </div>
+                    {paymentMethod === 'paypal' && (
+                      <div className="w-6 h-6 rounded-full bg-brand flex items-center justify-center">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    )}
+                  </label>
+
+                  {/* Credit Card */}
+                  <label className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all ${
+                    paymentMethod === 'creditcard' 
+                      ? 'border-brand bg-brand/5 shadow-sm' 
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="creditcard"
+                      checked={paymentMethod === 'creditcard'}
+                      onChange={(e) => setPaymentMethod(e.target.value as 'creditcard')}
+                      className="w-5 h-5 text-brand focus:ring-2 focus:ring-brand/20"
+                    />
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center">
+                        <CreditCard className="w-6 h-6 text-gray-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">Creditcard</p>
+                        <p className="text-sm text-gray-600">Visa, Mastercard, Amex</p>
+                      </div>
+                    </div>
+                    {paymentMethod === 'creditcard' && (
+                      <div className="w-6 h-6 rounded-full bg-brand flex items-center justify-center">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    )}
+                  </label>
+                </div>
+              </div>
+
+              <Separator variant="float" spacing="md" />
+
               {/* Guest Checkout Info + Consent */}
               <div className="space-y-4">
                 <div className="p-5 bg-accent/5 border-2 border-accent/20 rounded-xl">
@@ -326,9 +451,26 @@ function CheckoutContent() {
                     />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-medium mb-1 text-gray-900">{product.name}</h3>
+                    <div className="flex items-start gap-2 mb-1">
+                      <h3 className="font-medium text-gray-900">{product.name}</h3>
+                      {product.isPreOrder && (
+                        <span className="px-2 py-0.5 bg-accent/10 text-accent text-xs font-semibold rounded-full">
+                          Pre-order
+                        </span>
+                      )}
+                    </div>
                     <p className="text-sm text-gray-600 mb-2">Aantal: {quantity}</p>
-                    <p className="font-semibold text-gray-900">{formatPrice(product.price)}</p>
+                    {product.isPreOrder && product.preOrderDiscount ? (
+                      <div>
+                        <p className="text-sm text-gray-500 line-through">{formatPrice(product.price)}</p>
+                        <p className="font-semibold text-brand">
+                          {formatPrice(productPrice)} 
+                          <span className="text-sm ml-2 text-accent">({product.preOrderDiscount}% korting!)</span>
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="font-semibold text-gray-900">{formatPrice(product.price)}</p>
+                    )}
                   </div>
                 </div>
 
@@ -339,6 +481,12 @@ function CheckoutContent() {
                     <span>Subtotaal</span>
                     <span className="font-medium">{formatPrice(subtotal)}</span>
                   </div>
+                  {discount > 0 && (
+                    <div className="flex justify-between text-accent font-medium">
+                      <span>Pre-order korting ({product.preOrderDiscount}%)</span>
+                      <span>-{formatPrice(discount * quantity)}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between text-gray-700">
                     <span>Verzendkosten</span>
                     <span className="font-medium">{shipping === 0 ? "Gratis" : formatPrice(shipping)}</span>

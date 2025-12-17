@@ -7,14 +7,17 @@ import { API_CONFIG, apiFetch } from "@/lib/config";
  */
 export const ordersApi = {
   /**
-   * Create new order
+   * Create new order with optional payment method
    */
-  async create(data: CreateOrderData): Promise<{ order: Order; payment: { id: string; checkoutUrl: string } }> {
+  async create(
+    data: CreateOrderData, 
+    paymentMethod?: 'ideal' | 'paypal' | 'creditcard' | 'bancontact'
+  ): Promise<{ order: Order; payment: { id: string; checkoutUrl: string } }> {
     const result = await apiFetch<{ success: boolean; data: { order: Order; payment: { id: string; checkoutUrl: string } } }>(
       API_CONFIG.ENDPOINTS.ORDERS,
       {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, paymentMethod }),
       }
     );
     return result.data;
