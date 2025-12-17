@@ -12,10 +12,9 @@ import { Product } from "@/types/product";
 import { CreateOrderData } from "@/types/product";
 import { productsApi } from "@/lib/api/products";
 import { ordersApi } from "@/lib/api/orders";
-import { Loader2, CreditCard } from "lucide-react";
+import { Loader2, CreditCard, ChevronDown } from "lucide-react";
 import { ProductImage } from "@/components/ui/product-image";
 import { getProductImage } from "@/lib/image-config";
-import Image from "next/image";
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -286,96 +285,6 @@ function CheckoutContent() {
                 </div>
               )}
 
-              <Separator variant="float" spacing="md" />
-
-              {/* Payment Method Selection */}
-              <div className="space-y-4">
-                <h3 className="font-semibold text-lg mb-5 flex items-center gap-2 text-gray-900">
-                  <CreditCard className="w-5 h-5 text-brand" />
-                  Betaalmethode
-                </h3>
-
-                <div className="grid grid-cols-1 gap-3">
-                  {/* iDEAL */}
-                  <label className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all ${
-                    paymentMethod === 'ideal' 
-                      ? 'border-brand bg-brand/5 shadow-sm' 
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}>
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="ideal"
-                      checked={paymentMethod === 'ideal'}
-                      onChange={(e) => setPaymentMethod(e.target.value as 'ideal')}
-                      className="w-5 h-5 text-brand focus:ring-2 focus:ring-brand/20"
-                    />
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className="w-16 h-10 bg-white rounded flex items-center justify-center">
-                        <Image 
-                          src="/images/ideal-logo.png" 
-                          alt="iDEAL" 
-                          width={64} 
-                          height={40} 
-                          className="object-contain"
-                        />
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">iDEAL</p>
-                        <p className="text-sm text-gray-600">Direct betalen via je bank</p>
-                      </div>
-                    </div>
-                    {paymentMethod === 'ideal' && (
-                      <div className="w-6 h-6 rounded-full bg-brand flex items-center justify-center">
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    )}
-                  </label>
-
-                  {/* PayPal */}
-                  <label className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all ${
-                    paymentMethod === 'paypal' 
-                      ? 'border-brand bg-brand/5 shadow-sm' 
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}>
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="paypal"
-                      checked={paymentMethod === 'paypal'}
-                      onChange={(e) => setPaymentMethod(e.target.value as 'paypal')}
-                      className="w-5 h-5 text-brand focus:ring-2 focus:ring-brand/20"
-                    />
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className="w-16 h-10 bg-white rounded flex items-center justify-center">
-                        <Image 
-                          src="/images/paypal-logo.jpg" 
-                          alt="PayPal" 
-                          width={64} 
-                          height={40} 
-                          className="object-contain"
-                        />
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">PayPal</p>
-                        <p className="text-sm text-gray-600">Veilig betalen met PayPal</p>
-                      </div>
-                    </div>
-                    {paymentMethod === 'paypal' && (
-                      <div className="w-6 h-6 rounded-full bg-brand flex items-center justify-center">
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    )}
-                  </label>
-
-                </div>
-              </div>
-
-              <Separator variant="float" spacing="md" />
 
               {/* Guest Checkout Info + Consent */}
               <div className="space-y-4">
@@ -452,7 +361,7 @@ function CheckoutContent() {
 
                 <div className="space-y-3 my-6">
                   <div className="flex justify-between text-gray-700">
-                    <span>Subtotaal</span>
+                    <span>Subtotaal (incl. BTW)</span>
                     <span className="font-medium">{formatPrice(subtotal)}</span>
                   </div>
                   {discount > 0 && (
@@ -465,23 +374,40 @@ function CheckoutContent() {
                     <span>Verzendkosten</span>
                     <span className="font-medium">{shipping === 0 ? "Gratis" : formatPrice(shipping)}</span>
                   </div>
-                  <div className="flex justify-between text-gray-700">
-                    <span>BTW (21%)</span>
-                    <span className="font-medium">{formatPrice(tax)}</span>
-                  </div>
                 </div>
 
                 <Separator variant="float" spacing="sm" />
 
                 <div className="flex justify-between items-center text-xl font-semibold text-gray-900 my-6">
-                  <span>Totaal</span>
+                  <span>Totaal (incl. BTW)</span>
                   <span className="text-2xl text-brand">{formatPrice(total)}</span>
                 </div>
 
                 <Separator variant="float" spacing="md" />
 
+                {/* Payment Method Selector - BOVEN Button, Rechterkant */}
+                <div className="flex justify-end mb-4">
+                  <div className="relative w-64">
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">Betaalmethode:</label>
+                    <select
+                      value={paymentMethod}
+                      onChange={(e) => setPaymentMethod(e.target.value as 'ideal' | 'paypal')}
+                      className="w-full h-12 pl-4 pr-10 bg-white border-2 border-gray-200 rounded-xl text-gray-900 font-medium cursor-pointer hover:border-brand focus:border-brand focus:ring-2 focus:ring-brand/20 appearance-none transition-all"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                        backgroundPosition: 'right 0.5rem center',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: '1.5em 1.5em',
+                      }}
+                    >
+                      <option value="ideal">iDEAL - Direct via je bank</option>
+                      <option value="paypal">PayPal - Veilig digitaal betalen</option>
+                    </select>
+                  </div>
+                </div>
+
                 {/* CTA Button rechts - Prominent */}
-                <div className="mt-8">
+                <div>
                   <Button type="submit" variant="primary" size="lg" fullWidth disabled={isProcessing} loading={isProcessing} leftIcon={<CreditCard className="h-5 w-5" />}>
                     Betalen - {formatPrice(total)}
                   </Button>
