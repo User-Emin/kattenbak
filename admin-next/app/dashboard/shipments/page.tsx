@@ -49,8 +49,8 @@ export default function ShipmentsPage() {
   const loadShipments = async () => {
     try {
       setIsLoading(true);
-      const response = await get<Shipment[]>('/admin/shipments');
-      setShipments(response.data);
+      const shipments = await get<Shipment[]>('/admin/shipments');
+      setShipments(shipments);
     } catch (error: any) {
       console.error('Load shipments error:', error);
       toast.error('Fout bij laden van verzendingen');
