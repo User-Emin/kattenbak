@@ -110,11 +110,11 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
 
               {/* Add to cart button */}
               <Button
-                variant="default"
+                variant="brand"
                 size="lg"
                 onClick={handleAddToCart}
                 leftIcon={<ShoppingCart className="h-5 w-5" />}
-                className="shadow-lg hover:shadow-xl transition-shadow bg-brand hover:bg-brand-dark"
+                className="shadow-lg hover:shadow-xl transition-shadow"
               >
                 <span className="hidden sm:inline">In Winkelwagen</span>
                 <span className="sm:hidden">Toevoegen</span>
