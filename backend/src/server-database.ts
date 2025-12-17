@@ -320,43 +320,123 @@ app.get('/api/v1/contact', async (req: Request, res: Response) => {
 // ORDERS ENDPOINTS - DATABASE (persistent storage)
 // =============================================================================
 
-// POST create order
+// POST create order - COMPLEET MET RELATIES
 app.post('/api/v1/orders', async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
 
-    // Calculate totals
-    const subtotal = orderData.items.reduce((sum: number, item: any) => {
-      return sum + item.price * item.quantity;
-    }, 0);
+    // Validate required fields
+    if (!orderData.items || !Array.isArray(orderData.items) || orderData.items.length === 0) {
+      return res.status(400).json(error('Items required'));
+    }
+
+    if (!orderData.customerEmail) {
+      return res.status(400).json(error('Customer email required'));
+    }
+
+    if (!orderData.shippingAddress) {
+      return res.status(400).json(error('Shipping address required'));
+    }
+
+    // Fetch product details for price calculation
+    const productIds = orderData.items.map((item: any) => item.productId);
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+    });
+
+    if (products.length !== productIds.length) {
+      return res.status(400).json(error('Invalid product IDs'));
+    }
+
+    // Calculate totals with pre-order discounts
+    let subtotal = 0;
+    const orderItems = orderData.items.map((item: any) => {
+      const product = products.find((p) => p.id === item.productId);
+      if (!product) throw new Error('Product not found');
+
+      let itemPrice = parseFloat(product.price.toString());
+
+      // Apply pre-order discount if applicable
+      if (product.isPreOrder && product.preOrderDiscount) {
+        const discount = parseFloat(product.preOrderDiscount.toString());
+        itemPrice = itemPrice * (1 - discount / 100);
+      }
+
+      const itemTotal = itemPrice * item.quantity;
+      subtotal += itemTotal;
+
+      return {
+        productId: product.id,
+        productName: product.name,
+        productSku: product.sku,
+        price: itemPrice,
+        quantity: item.quantity,
+        total: itemTotal,
+      };
+    });
 
     const tax = subtotal * 0.21;
     const shippingCost = subtotal >= 50 ? 0 : 5.95;
     const total = subtotal + tax + shippingCost;
 
-    // Create order in database
+    // Create order with addresses and items
     const order = await prisma.order.create({
       data: {
         orderNumber: `ORD${Date.now()}`,
         customerEmail: orderData.customerEmail,
-        customerFirstName: orderData.shippingAddress?.firstName || '',
-        customerLastName: orderData.shippingAddress?.lastName || '',
+        customerFirstName: orderData.shippingAddress.firstName,
+        customerLastName: orderData.shippingAddress.lastName,
+        customerPhone: orderData.customerPhone || null,
         subtotal,
         shippingCost,
         tax,
         total,
         status: 'PENDING',
-        paymentMethod: 'mollie',
+        paymentStatus: 'PENDING',
         shippingMethod: 'standard',
         customerNotes: orderData.customerNotes || null,
         metadata: {
           ip: req.ip,
           userAgent: req.get('user-agent'),
         },
+        shippingAddress: {
+          create: {
+            firstName: orderData.shippingAddress.firstName,
+            lastName: orderData.shippingAddress.lastName,
+            street: orderData.shippingAddress.street,
+            houseNumber: orderData.shippingAddress.houseNumber,
+            addition: orderData.shippingAddress.addition || null,
+            postalCode: orderData.shippingAddress.postalCode,
+            city: orderData.shippingAddress.city,
+            country: orderData.shippingAddress.country || 'NL',
+            phone: orderData.shippingAddress.phone || null,
+          },
+        },
+        billingAddress: orderData.billingAddress ? {
+          create: {
+            firstName: orderData.billingAddress.firstName,
+            lastName: orderData.billingAddress.lastName,
+            street: orderData.billingAddress.street,
+            houseNumber: orderData.billingAddress.houseNumber,
+            addition: orderData.billingAddress.addition || null,
+            postalCode: orderData.billingAddress.postalCode,
+            city: orderData.billingAddress.city,
+            country: orderData.billingAddress.country || 'NL',
+            phone: orderData.billingAddress.phone || null,
+          },
+        } : undefined,
+        items: {
+          create: orderItems,
+        },
+      },
+      include: {
+        items: true,
+        shippingAddress: true,
+        billingAddress: true,
       },
     });
 
-    console.log(`✅ Order created: ${order.orderNumber} | €${total}`);
+    console.log(`✅ Order created: ${order.orderNumber} | €${total.toFixed(2)}`);
 
     // Mock Mollie payment
     const mollieUrl = `${ENV.FRONTEND_URL}/success?order=${order.id}&payment=test`;
@@ -368,8 +448,8 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
 
     res.status(201).json(success({ order, payment }));
   } catch (err: any) {
-    console.error('Order creation error:', err.message);
-    res.status(500).json(error('Could not create order'));
+    console.error('❌ Order creation error:', err.message, err.stack);
+    res.status(500).json(error(`Could not create order: ${err.message}`));
   }
 });
 

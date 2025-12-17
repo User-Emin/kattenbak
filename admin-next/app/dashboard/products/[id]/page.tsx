@@ -99,6 +99,9 @@ export default function EditProductPage() {
         isActive: formData.get('isActive') === 'on',
         isFeatured: formData.get('isFeatured') === 'on',
         categoryId: categoryId || null,
+        videoUrl: (formData.get('videoUrl') as string) || null,
+        uspImage1: (formData.get('uspImage1') as string) || null,
+        uspImage2: (formData.get('uspImage2') as string) || null,
       };
 
       await put(`/admin/products/${productId}`, updateData);
@@ -326,6 +329,63 @@ export default function EditProductPage() {
               />
               <span className="text-sm font-medium">Uitgelicht</span>
             </label>
+          </div>
+        </div>
+
+        <div className="bg-card rounded-lg border shadow-sm p-6 space-y-4">
+          <h2 className="text-lg font-semibold">Media & Content</h2>
+          
+          <div>
+            <label htmlFor="videoUrl" className="block text-sm font-medium mb-2">
+              Video URL (YouTube/Vimeo Embed)
+            </label>
+            <input
+              id="videoUrl"
+              name="videoUrl"
+              type="url"
+              defaultValue={product.videoUrl || ''}
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="https://www.youtube.com/embed/VIDEO_ID"
+            />
+            <p className="mt-1 text-sm text-gray-500">
+              Voer de embed URL in voor product demo video
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <label htmlFor="uspImage1" className="block text-sm font-medium mb-2">
+                USP Afbeelding 1
+              </label>
+              <input
+                id="uspImage1"
+                name="uspImage1"
+                type="url"
+                defaultValue={product.uspImage1 || ''}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="https://example.com/usp1.jpg"
+              />
+              <p className="mt-1 text-sm text-gray-500">
+                10.5L Capaciteit afbeelding
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="uspImage2" className="block text-sm font-medium mb-2">
+                USP Afbeelding 2
+              </label>
+              <input
+                id="uspImage2"
+                name="uspImage2"
+                type="url"
+                defaultValue={product.uspImage2 || ''}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="https://example.com/usp2.jpg"
+              />
+              <p className="mt-1 text-sm text-gray-500">
+                Ultra-Quiet Motor afbeelding
+              </p>
+            </div>
           </div>
         </div>
 
