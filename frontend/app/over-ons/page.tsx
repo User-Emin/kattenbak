@@ -25,22 +25,6 @@ export default function OverOnsPage() {
             </p>
           </div>
 
-          {/* Stats - Direct op achtergrond */}
-          <div className="grid md:grid-cols-3 gap-12 my-16 text-center">
-            <div>
-              <div className="text-5xl font-light text-brand mb-2">10+</div>
-              <p className="text-sm font-medium text-gray-600">Jaar Ervaring</p>
-            </div>
-            <div>
-              <div className="text-5xl font-light text-brand mb-2">50K+</div>
-              <p className="text-sm font-medium text-gray-600">Tevreden Klanten</p>
-            </div>
-            <div>
-              <div className="text-5xl font-light text-brand mb-2">4.9</div>
-              <p className="text-sm font-medium text-gray-600">Gemiddelde Score</p>
-            </div>
-          </div>
-
           {/* Waarom Wij */}
           <div className="text-center mb-16">
             <h2 className="text-3xl font-light mb-4 text-gray-900">Waarom Wij?</h2>
@@ -58,7 +42,7 @@ export default function OverOnsPage() {
             </p>
             <a 
               href="/contact"
-              className="inline-block bg-accent hover:bg-accent-dark text-gray-900 font-semibold py-4 px-10 rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
+              className="inline-block bg-black hover:bg-gray-800 text-white font-semibold py-4 px-10 rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
             >
               Contact Opnemen
             </a>

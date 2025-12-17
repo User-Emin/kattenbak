@@ -39,10 +39,10 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full font-sans">
       {/* Scrollable items section */}
       <div className="flex-1 overflow-y-auto p-6">
-        <h2 className="text-xl font-normal mb-6">Winkelwagen ({itemCount})</h2>
+        <h2 className="text-xl font-semibold mb-6">Winkelwagen ({itemCount})</h2>
         
         <div className="space-y-4">
           {items.map((item) => (
@@ -57,10 +57,10 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
               </div>
               
               <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-sm mb-1 truncate">
+                <h3 className="font-semibold text-sm mb-1 truncate">
                   {item.product.name}
                 </h3>
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-sm text-gray-600 mb-2 font-medium">
                   {formatPrice(item.product.price)}
                 </p>
                 
@@ -125,10 +125,10 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
               variant="primary" 
               size="lg" 
               fullWidth 
-              className="font-medium"
+              className="font-semibold"
               onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
             >
-              Afrekenen
+              Bestelling Afronden
             </Button>
           </div>
           
