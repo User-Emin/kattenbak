@@ -387,12 +387,7 @@ app.post('/api/v1/webhooks/mollie', async (req: Request, res: Response) => {
 // ADMIN: Create product
 app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
   try {
-    const productData = req.body;
-
-    // Handle null categoryId explicitly (optioneel)
-    if (productData.categoryId === '' || productData.categoryId === 'null') {
-      productData.categoryId = null;
-    }
+    const { categoryId, ...productData } = req.body;
 
     // Auto-generate slug if not provided
     const slug = productData.slug || productData.name
@@ -400,12 +395,20 @@ app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
       .replace(/[^\w\s-]/g, '')
       .replace(/\s+/g, '-');
 
+    // Build create data with proper Prisma relations
+    const createData: any = {
+      ...productData,
+      slug,
+      images: productData.images || [],
+    };
+
+    // Handle category relationship (optioneel)
+    if (categoryId && categoryId !== '' && categoryId !== 'null') {
+      createData.category = { connect: { id: categoryId } };
+    }
+
     const product = await prisma.product.create({
-      data: {
-        ...productData,
-        slug,
-        images: productData.images || [],
-      },
+      data: createData,
       include: { category: true },
     });
 
@@ -420,10 +423,16 @@ app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
 // ADMIN: Update product
 app.put('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
   try {
-    // Handle null categoryId explicitly (optioneel)
-    const updateData = { ...req.body };
-    if (updateData.categoryId === '' || updateData.categoryId === 'null') {
-      updateData.categoryId = null;
+    const { categoryId, ...productData } = req.body;
+    
+    // Build update data with proper Prisma relations
+    const updateData: any = { ...productData };
+    
+    // Handle category relationship (optioneel)
+    if (categoryId === null || categoryId === '' || categoryId === 'null') {
+      updateData.category = { disconnect: true };
+    } else if (categoryId) {
+      updateData.category = { connect: { id: categoryId } };
     }
 
     const product = await prisma.product.update({
