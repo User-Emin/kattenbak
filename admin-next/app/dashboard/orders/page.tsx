@@ -9,12 +9,23 @@ interface Order {
   id: string;
   orderNumber: string;
   status: string;
-  totalAmount: number;
+  total: string | number; // Backend returns string (Decimal)
+  subtotal?: string | number;
+  tax?: string | number;
+  shippingCost?: string | number;
+  customerEmail?: string;
+  customerPhone?: string;
   createdAt: string;
   user?: {
     firstName: string;
     lastName: string;
     email: string;
+  };
+  shippingAddress?: {
+    firstName: string;
+    lastName: string;
+    street: string;
+    city: string;
   };
 }
 
@@ -42,6 +53,7 @@ export default function OrdersPage() {
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       PENDING: 'bg-yellow-100 text-yellow-800',
+      CONFIRMED: 'bg-green-100 text-green-800',
       PROCESSING: 'bg-blue-100 text-blue-800',
       SHIPPED: 'bg-purple-100 text-purple-800',
       DELIVERED: 'bg-green-100 text-green-800',
@@ -98,6 +110,13 @@ export default function OrdersPage() {
                           </div>
                           <div className="text-muted-foreground text-xs">{order.user.email}</div>
                         </div>
+                      ) : order.shippingAddress ? (
+                        <div>
+                          <div className="font-medium">
+                            {order.shippingAddress.firstName} {order.shippingAddress.lastName}
+                          </div>
+                          <div className="text-muted-foreground text-xs">{order.customerEmail || 'Gast'}</div>
+                        </div>
                       ) : (
                         <span className="text-muted-foreground">Gast</span>
                       )}
@@ -106,7 +125,7 @@ export default function OrdersPage() {
                       {new Date(order.createdAt).toLocaleDateString('nl-NL')}
                     </td>
                     <td className="px-4 py-3 text-sm text-right font-medium">
-                      €{order.totalAmount.toFixed(2)}
+                      €{typeof order.total === 'string' ? parseFloat(order.total).toFixed(2) : order.total?.toFixed(2) || '0.00'}
                     </td>
                     <td className="px-4 py-3 text-center">
                       <span
