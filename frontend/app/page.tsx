@@ -12,20 +12,36 @@ import { IMAGE_CONFIG, getImageFillProps } from "@/lib/image-config";
 
 const faqs = [
   {
-    q: "Hoe werkt de zelfreinigende functie?",
-    a: "De kattenbak detecteert automatisch wanneer je kat klaar is en start een reinigingscyclus. Alle afval wordt verzameld in een afgesloten compartiment."
+    q: "Waarom is deze kattenbak beter dan concurrenten?",
+    a: "Onze kattenbak heeft een 10.5L afvalbak (grootste op de markt), dubbele veiligheidssensoren, open-top design voor minder stress, en een ultra-stille motor (<40dB). Plus: modulair ontwerp voor gemakkelijke reiniging."
   },
   {
-    q: "Voor welke katten is dit geschikt?",
-    a: "Geschikt voor katten van alle maten tot 7kg. De ruime binnenruimte zorgt voor comfort."
+    q: "Hoe werken de dubbele veiligheidssensoren?",
+    a: "Twee onafhankelijke sensoren detecteren wanneer je kat de bak benadert of binnenkomt. De reiniging stopt onmiddellijk en start pas 3 minuten na het laatste bezoek. Dit is uniek - andere merken hebben maar één sensor."
   },
   {
-    q: "Hoe vaak moet ik de afvalbak legen?",
-    a: "Bij één kat ongeveer 1x per week. De 10L capaciteit betekent minder onderhoud."
+    q: "Wat maakt het open-top design beter?",
+    a: "Katten zijn van nature waakzaam. Een open bovenkant zorgt dat ze alles kunnen zien, waardoor ze zich veiliger voelen en minder gestrest zijn. Dit vermindert gedragsproblemen en zorgt voor meer gebruik."
   },
   {
-    q: "Is de app-bediening inbegrepen?",
-    a: "Ja! De app is gratis te downloaden en biedt realtime monitoring, schema's en gezondheidsrapporten."
+    q: "Is de 10.5L afvalbak echt zo belangrijk?",
+    a: "Ja! Met 10.5L hoef je bij één kat slechts 1x per week te legen (vs. 2-3x bij 7-9L concurrenten). Dit bespaart tijd en vermindert geur doordat afval langer afgesloten blijft."
+  },
+  {
+    q: "Welk type kattengrit moet ik gebruiken?",
+    a: "Geschikt voor de meeste soorten: klonterende bentoniet, silica gel, en plantaardige grit. Alleen niet geschikt voor houtkorrels of zeer grove korrels. Concurrent bakken werken vaak alleen met specifieke dure merken."
+  },
+  {
+    q: "Hoe stil is de motor echt?",
+    a: "Met <40dB is onze motor stil genoeg voor gebruik in slaapkamers. Vergelijkbaar met fluisteren. Andere bakken produceren vaak 50-60dB (vergelijkbaar met een normaal gesprek)."
+  },
+  {
+    q: "Wat houdt de app-monitoring precies in?",
+    a: "Track het aantal bezoeken, gewicht van afval, reinigingstijden en ontvang gezondheidsalerts. Bijv. bij plotselinge toename van bezoeken (mogelijk urineweginfectie) krijg je een notificatie."
+  },
+  {
+    q: "Hoe eenvoudig is het om te reinigen?",
+    a: "Volledig modulair: alle onderdelen kunnen los voor grondige reiniging. Geen verborgen hoeken waar vuil zich ophoopt. Dit is uniek - de meeste concurrenten hebben sealed units die moeilijk te reinigen zijn."
   },
 ];
 
