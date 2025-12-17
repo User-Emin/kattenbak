@@ -5,10 +5,10 @@ export interface ReturnItem {
   productId: string;
   productName: string;
   productSku: string;
+  productImage?: string; // ← ADDED for return-item-selector
   quantity: number;
   price: number;
   reason?: string;
   status?: string;
   createdAt?: Date;
 }
-

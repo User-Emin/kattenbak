@@ -53,8 +53,11 @@ export function ReturnItemSelector({
       onChange([
         ...selectedItems,
         {
+          id: `temp-${Date.now()}`, // Temporary ID
+          orderId: '', // Will be filled when submitting
           productId: item.productId,
           productName: item.productName,
+          productSku: item.productId, // Use productId as SKU fallback
           productImage: item.productImage,
           quantity: 1,
           price: item.price,
