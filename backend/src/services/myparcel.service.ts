@@ -225,6 +225,125 @@ export class MyParcelService {
       throw error;
     }
   }
+
+  /**
+   * Create RETURN shipment and label
+   * Volgens MyParcel API: https://developer.myparcel.nl/api-reference/
+   */
+  static async createReturnShipment(returnId: string): Promise<any> {
+    if (!env.MYPARCEL_API_KEY) {
+      throw new InternalServerError('MyParcel API key not configured');
+    }
+
+    try {
+      // Get return with order and address
+      const returnRecord = await prisma.return.findUnique({
+        where: { id: returnId },
+        include: {
+          order: {
+            include: {
+              shippingAddress: true,
+            },
+          },
+        },
+      });
+
+      if (!returnRecord || !returnRecord.order.shippingAddress) {
+        throw new NotFoundError(`Return ${returnId} not found or has no shipping address`);
+      }
+
+      const order = returnRecord.order;
+      const address = order.shippingAddress;
+
+      // Create RETURN shipment in MyParcel
+      // Belangrijk: "return": true zorgt ervoor dat het een retourlabel wordt
+      const response = await axios.post(
+        `${this.API_URL}/shipments`,
+        {
+          data: {
+            shipments: [{
+              carrier: 1, // PostNL
+              recipient: {
+                cc: address.country,
+                person: `${address.firstName} ${address.lastName}`,
+                street: address.street,
+                number: address.houseNumber,
+                number_suffix: address.addition || '',
+                postal_code: address.postalCode,
+                city: address.city,
+                email: order.customerEmail,
+                phone: address.phone || order.customerPhone || '',
+              },
+              options: {
+                package_type: 1, // Package
+                delivery_type: 2, // Standard delivery
+                signature: false,
+                return: true, // ⭐ DIT MAAKT HET EEN RETURN LABEL!
+              },
+            }],
+          },
+        },
+        { headers: this.HEADERS }
+      );
+
+      const myparcelId = response.data.data.ids[0].id;
+
+      // Download return label
+      const labelUrl = await this.downloadLabel(myparcelId);
+
+      // Get tracking info
+      const trackingInfo = await this.getTrackingInfo(myparcelId);
+
+      // Update return record in database
+      const updatedReturn = await prisma.return.update({
+        where: { id: returnId },
+        data: {
+          myparcelId,
+          trackingCode: trackingInfo.trackingCode,
+          trackingUrl: trackingInfo.trackingUrl,
+          labelUrl,
+          status: 'LABEL_CREATED',
+        },
+      });
+
+      logger.info(`Return shipment created: ${returnId} (MyParcel: ${myparcelId})`);
+
+      return {
+        returnId: updatedReturn.id,
+        myparcelId,
+        trackingCode: trackingInfo.trackingCode,
+        trackingUrl: trackingInfo.trackingUrl,
+        labelUrl,
+      };
+    } catch (error: any) {
+      logger.error('MyParcel return shipment creation failed:', error);
+      throw new InternalServerError(`Failed to create return shipment: ${error.message}`);
+    }
+  }
+
+  /**
+   * Track return shipment
+   */
+  static async trackReturnShipment(myparcelId: number): Promise<any> {
+    try {
+      const response = await axios.get(
+        `${this.API_URL}/shipments/${myparcelId}`,
+        { headers: this.HEADERS }
+      );
+
+      const shipment = response.data.data.shipments[0];
+      
+      return {
+        status: shipment.status,
+        trackingCode: shipment.barcode,
+        trackingUrl: `https://postnl.nl/tracktrace/?B=${shipment.barcode}&P=${shipment.recipient.postal_code}`,
+        statusHistory: shipment.status_history || [],
+      };
+    } catch (error) {
+      logger.error('MyParcel return tracking failed:', error);
+      throw new InternalServerError('Failed to track return shipment');
+    }
+  }
 }
 
 

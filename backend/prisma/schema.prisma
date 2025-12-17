@@ -242,6 +242,7 @@ model Order {
   items           OrderItem[]
   payment         Payment?
   shipment        Shipment?
+  returns         Return[]
 
   @@map("orders")
 }
@@ -353,6 +354,77 @@ model Shipment {
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("shipments")
+}
+
+// ============================================
+// RETURN MANAGEMENT (MyParcel Returns)
+// ============================================
+
+enum ReturnStatus {
+  REQUESTED        // Klant heeft retour aangevraagd
+  LABEL_CREATED    // Return label is aangemaakt bij MyParcel
+  LABEL_SENT       // Email met label is verzonden
+  IN_TRANSIT       // Retour is onderweg
+  RECEIVED         // Retour is ontvangen in warehouse
+  INSPECTED        // Retour is geïnspecteerd
+  APPROVED         // Retour is goedgekeurd
+  REJECTED         // Retour is afgekeurd
+  REFUND_PENDING   // Terugbetaling in behandeling
+  REFUND_PROCESSED // Terugbetaald
+  CLOSED           // Afgerond
+}
+
+enum ReturnReason {
+  DEFECTIVE         // Product is defect
+  WRONG_ITEM        // Verkeerd artikel
+  NOT_AS_DESCRIBED  // Niet zoals beschreven
+  CHANGED_MIND      // Van gedachten veranderd
+  DAMAGED_SHIPPING  // Beschadigd tijdens verzending
+  OTHER             // Anders
+}
+
+model Return {
+  id       String @id @default(cuid())
+  orderId  String @map("order_id")
+  
+  // MyParcel integration
+  myparcelId   Int?    @unique @map("myparcel_id")
+  trackingCode String? @map("tracking_code")
+  trackingUrl  String? @map("tracking_url")
+  labelUrl     String? @map("label_url")
+  
+  // Return details
+  reason        ReturnReason @default(OTHER)
+  reasonDetails String?      @map("reason_details")
+  status        ReturnStatus @default(REQUESTED)
+  
+  // Items being returned (JSON array)
+  items Json @default("[]") // {productId, productName, quantity, price}[]
+  
+  // Financial
+  refundAmount Decimal? @map("refund_amount") @db.Decimal(10, 2)
+  
+  // Notes
+  customerNotes String? @map("customer_notes")
+  adminNotes    String? @map("admin_notes")
+  
+  // Customer photos (evidence)
+  customerPhotos Json? @map("customer_photos") @default("[]") // Array of URLs
+  
+  // Email tracking
+  emailSentAt DateTime? @map("email_sent_at")
+  
+  // Timestamps
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  receivedAt DateTime? @map("received_at")
+  refundedAt DateTime? @map("refunded_at")
+  closedAt   DateTime? @map("closed_at")
+  
+  // Relations
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  @@map("returns")
 }
 
 // ============================================

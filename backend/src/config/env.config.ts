@@ -49,6 +49,13 @@ class EnvironmentConfig {
 
   // MyParcel (Shipping)
   public readonly MYPARCEL_API_KEY = process.env.MYPARCEL_API_KEY || '';
+
+  // SMTP Configuration
+  public readonly SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
+  public readonly SMTP_PORT = process.env.SMTP_PORT || '587';
+  public readonly SMTP_SECURE = process.env.SMTP_SECURE || 'false';
+  public readonly SMTP_USER = process.env.SMTP_USER || '';
+  public readonly SMTP_PASS = process.env.SMTP_PASS || '';
   public readonly MYPARCEL_WEBHOOK_URL = process.env.MYPARCEL_WEBHOOK_URL || '';
 
   // Redis
@@ -121,6 +128,7 @@ class EnvironmentConfig {
     console.log(`   - Database: ${this.DATABASE_URL.split('@')[1] || 'configured'}`);
     console.log(`   - Mollie: ${this.MOLLIE_API_KEY.substring(0, 15)}...`);
     console.log(`   - MyParcel: ${this.MYPARCEL_API_KEY ? 'configured' : 'not configured'}`);
+    console.log(`   - SMTP: ${this.SMTP_USER ? 'configured' : 'not configured'}`);
     console.log(`   - Redis: ${this.REDIS_HOST}:${this.REDIS_PORT}`);
     console.log(`   - CORS Origins: ${this.CORS_ORIGINS.join(', ')}`);
   }
