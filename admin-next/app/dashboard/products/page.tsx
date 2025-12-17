@@ -57,7 +57,7 @@ export default function ProductsPage() {
           <p className="text-muted-foreground">Beheer je productcatalogus</p>
         </div>
         <Link
-          href="/admin/dashboard/products/new"
+          href="/dashboard/products/new"
           className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
         >
           <Plus className="h-4 w-4" />
@@ -113,7 +113,7 @@ export default function ProductsPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-center gap-2">
                         <Link
-                          href={`/admin/dashboard/products/${product.id}`}
+                          href={`/dashboard/products/${product.id}`}
                           className="p-2 hover:bg-muted rounded-md transition-colors"
                           title="Bewerken"
                         >

@@ -58,7 +58,7 @@ export default function NewProductPage() {
 
       await post('/admin/products', productData);
       toast.success('Product succesvol aangemaakt!');
-      router.push('/admin/dashboard/products');
+      router.push('/dashboard/products');
     } catch (error: any) {
       console.error('Error creating product:', error);
       toast.error(error.response?.data?.error || 'Fout bij aanmaken product');
@@ -79,7 +79,7 @@ export default function NewProductPage() {
     <div className="space-y-6">
       <div className="flex items-center gap-4">
         <Link
-          href="/admin/dashboard/products"
+          href="/dashboard/products"
           className="p-2 hover:bg-muted rounded-md transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -278,7 +278,7 @@ export default function NewProductPage() {
           </button>
 
           <Link
-            href="/admin/dashboard/products"
+            href="/dashboard/products"
             className="inline-flex items-center gap-2 px-6 py-3 border rounded-md hover:bg-muted transition-colors"
           >
             Annuleren

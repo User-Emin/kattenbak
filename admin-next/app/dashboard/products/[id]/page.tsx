@@ -98,7 +98,7 @@ export default function EditProductPage() {
 
       await put(`/admin/products/${productId}`, updateData);
       toast.success('Product succesvol bijgewerkt!');
-      router.push('/admin/dashboard/products');
+      router.push('/dashboard/products');
     } catch (error: any) {
       console.error('Error updating product:', error);
       toast.error('Fout bij bijwerken product');
@@ -121,7 +121,7 @@ export default function EditProductPage() {
         <div className="text-center py-12">
           <h2 className="text-2xl font-bold mb-2">Product niet gevonden</h2>
           <Link
-            href="/admin/dashboard/products"
+            href="/dashboard/products"
             className="text-primary hover:underline"
           >
             Terug naar producten
@@ -135,7 +135,7 @@ export default function EditProductPage() {
     <div className="space-y-6">
       <div className="flex items-center gap-4">
         <Link
-          href="/admin/dashboard/products"
+          href="/dashboard/products"
           className="p-2 hover:bg-muted rounded-md transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -335,7 +335,7 @@ export default function EditProductPage() {
           </button>
 
           <Link
-            href="/admin/dashboard/products"
+            href="/dashboard/products"
             className="inline-flex items-center gap-2 px-6 py-3 border rounded-md hover:bg-muted transition-colors"
           >
             Annuleren
