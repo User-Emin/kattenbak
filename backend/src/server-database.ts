@@ -356,35 +356,39 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
     }
 
     // Calculate totals with pre-order discounts
-    let subtotal = 0;
+    // BELANGRIJKE NOTE: Prijzen zijn INCLUSIEF BTW!
+    let subtotalInclBTW = 0;
     const orderItems = orderData.items.map((item: any) => {
       const product = products.find((p) => p.id === item.productId);
       if (!product) throw new Error('Product not found');
 
-      let itemPrice = parseFloat(product.price.toString());
+      let itemPriceInclBTW = parseFloat(product.price.toString());
 
       // Apply pre-order discount if applicable
       if (product.isPreOrder && product.preOrderDiscount) {
         const discount = parseFloat(product.preOrderDiscount.toString());
-        itemPrice = itemPrice * (1 - discount / 100);
+        itemPriceInclBTW = itemPriceInclBTW * (1 - discount / 100);
       }
 
-      const itemTotal = itemPrice * item.quantity;
-      subtotal += itemTotal;
+      const itemTotal = itemPriceInclBTW * item.quantity;
+      subtotalInclBTW += itemTotal;
 
       return {
         product: { connect: { id: product.id } },
         productName: product.name,
         productSku: product.sku,
-        price: itemPrice,
+        price: itemPriceInclBTW,
         quantity: item.quantity,
         subtotal: itemTotal,
       };
     });
 
-    const tax = subtotal * 0.21;
+    // Bereken BTW UIT de inclusieve prijs (niet erbij optellen!)
+    const taxRate = 0.21;
+    const tax = subtotalInclBTW - (subtotalInclBTW / (1 + taxRate));
+    const subtotalExclBTW = subtotalInclBTW - tax;
     const shippingCost = 0; // Altijd gratis verzending
-    const total = subtotal + tax + shippingCost;
+    const total = subtotalInclBTW + shippingCost; // Total = subtotal incl BTW + verzendkosten
 
     // Create order with addresses and items  
     const order = await prisma.order.create({
@@ -392,10 +396,10 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
         orderNumber: `ORD${Date.now()}`,
         customerEmail: orderData.customerEmail,
         customerPhone: orderData.customerPhone || null,
-        subtotal,
+        subtotal: subtotalExclBTW, // Exclusief BTW in database
         shippingCost,
-        tax,
-        total,
+        tax, // BTW bedrag
+        total, // Inclusief BTW
         status: 'PENDING',
         customerNotes: orderData.customerNotes || null,
         shippingAddress: {
