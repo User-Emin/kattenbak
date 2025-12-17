@@ -387,7 +387,7 @@ app.post('/api/v1/webhooks/mollie', async (req: Request, res: Response) => {
 // ADMIN: Create product
 app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
   try {
-    const { categoryId, videoUrl, ...productData } = req.body;
+    const { categoryId, videoUrl, uspImage1, uspImage2, ...productData } = req.body;
 
     // Auto-generate slug if not provided
     const slug = productData.slug || productData.name
@@ -401,6 +401,8 @@ app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
       slug,
       images: productData.images || [],
       videoUrl: videoUrl || null,
+      uspImage1: uspImage1 || null,
+      uspImage2: uspImage2 || null,
     };
 
     // Handle category relationship (optioneel)
@@ -424,10 +426,15 @@ app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
 // ADMIN: Update product
 app.put('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
   try {
-    const { categoryId, videoUrl, ...productData } = req.body;
+    const { categoryId, videoUrl, uspImage1, uspImage2, ...productData } = req.body;
     
     // Build update data with proper Prisma relations
-    const updateData: any = { ...productData };
+    const updateData: any = { 
+      ...productData,
+      videoUrl: videoUrl || null,
+      uspImage1: uspImage1 || null,
+      uspImage2: uspImage2 || null,
+    };
     
     // Handle category relationship (optioneel)
     if (categoryId === null || categoryId === '' || categoryId === 'null') {

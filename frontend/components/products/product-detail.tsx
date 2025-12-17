@@ -321,6 +321,56 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
+        {/* Zigzag USP Section - Dynamisch met admin images */}
+        <div className="max-w-6xl mx-auto mb-16">
+          <h2 className="text-3xl font-medium text-center mb-12 text-gray-900">Waarom Eigenaren Kiezen Voor Ons</h2>
+          
+          {/* USP 1 - 10.5L Capaciteit met afbeelding */}
+          {product.uspImage1 && (
+            <>
+              <div className="grid md:grid-cols-2 gap-16 items-center mb-16">
+                <div>
+                  <h3 className="text-3xl font-medium mb-4">10.5L Capaciteit</h3>
+                  <p className="text-gray-600 leading-relaxed text-lg">
+                    De grootste afvalbak in zijn klasse. Bij één kat hoef je slechts 1x per week te legen, in plaats van 2-3x bij concurrenten. Bespaart tijd en vermindert geur doordat afval langer afgesloten blijft.
+                  </p>
+                </div>
+                <div className="relative aspect-square rounded-3xl overflow-hidden shadow-lg">
+                  <ProductImage
+                    src={product.uspImage1}
+                    alt="10.5L Capaciteit"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+              <Separator variant="float" spacing="lg" />
+            </>
+          )}
+
+          {/* USP 2 - Ultra-Quiet met afbeelding (omgekeerde volgorde) */}
+          {product.uspImage2 && (
+            <div className="grid md:grid-cols-2 gap-16 items-center">
+              <div className="order-2 md:order-1 relative aspect-square rounded-3xl overflow-hidden shadow-lg">
+                <ProductImage
+                  src={product.uspImage2}
+                  alt="Ultra-Quiet Motor"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="order-1 md:order-2">
+                <h3 className="text-3xl font-medium mb-4">Ultra-Quiet Motor</h3>
+                <p className="text-gray-600 leading-relaxed text-lg">
+                  Met minder dan 40 decibel stiller dan een bibliotheek. Vergelijkbaar met gefluister (30dB). Andere bakken produceren vaak 50-60dB. Geschikt voor gebruik in slaapkamers zonder verstoring.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <Separator variant="float" spacing="xl" />
+
       </div>
     </div>
   );

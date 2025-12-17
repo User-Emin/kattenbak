@@ -168,6 +168,10 @@ model Product {
   
   // Video URL (YouTube, Vimeo, etc.)
   videoUrl String? @map("video_url")
+  
+  // USP Images (for zigzag section)
+  uspImage1 String? @map("usp_image1")
+  uspImage2 String? @map("usp_image2")
 
   // SEO
   metaTitle       String? @map("meta_title")

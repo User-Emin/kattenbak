@@ -37,7 +37,7 @@ export function ChatPopup() {
         setStickyCartVisible(false);
       }
     };
-
+    
     // Initial check
     checkStickyCart();
 

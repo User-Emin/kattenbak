@@ -24,6 +24,8 @@ interface Product {
   categoryId: string | null;
   images: string[];
   videoUrl: string | null;
+  uspImage1: string | null;
+  uspImage2: string | null;
   category?: {
     id: string;
     name: string;

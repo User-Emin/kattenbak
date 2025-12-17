@@ -19,6 +19,8 @@ export interface Product {
   } | null;
   images: string[];
   videoUrl: string | null;
+  uspImage1: string | null;
+  uspImage2: string | null;
   metaTitle: string | null;
   metaDescription: string | null;
   isActive: boolean;
