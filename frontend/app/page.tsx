@@ -134,7 +134,7 @@ export default function HomePage() {
       {/* USP Section - 2 Beste Features */}
       <section className="py-20">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-          <h2 className="text-4xl font-light text-center mb-20">De Beste Innovatie</h2>
+          <h2 className="text-4xl font-semibold text-center mb-20">De Beste Innovatie</h2>
           
           {/* Feature 1 - 10.5L Capaciteit MET Afbeelding */}
           <div className="grid md:grid-cols-2 gap-16 items-center mb-20">
@@ -181,7 +181,7 @@ export default function HomePage() {
       {/* Video/Demo Section */}
       <section id="video" className="py-20">
         <div className="container mx-auto px-6 lg:px-12 max-w-5xl">
-          <h2 className="text-4xl font-light text-center mb-6">Zie Het in Actie</h2>
+          <h2 className="text-4xl font-semibold text-center mb-6">Zie Het in Actie</h2>
           <p className="text-lg text-gray-600 text-center mb-12">
             2:30 min demo video
           </p>
