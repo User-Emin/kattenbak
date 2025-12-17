@@ -31,3 +31,26 @@ export const authApi = {
   },
 };
 
+// Helper functions for auth-context
+export const getToken = (): string | null => {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('auth_token');
+};
+
+export const getUser = (): AuthUser | null => {
+  if (typeof window === 'undefined') return null;
+  const userStr = localStorage.getItem('auth_user');
+  if (!userStr) return null;
+  try {
+    return JSON.parse(userStr);
+  } catch {
+    return null;
+  }
+};
+
+export const logout = (): void => {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem('auth_token');
+  localStorage.removeItem('auth_user');
+};
+
