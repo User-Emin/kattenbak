@@ -242,12 +242,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 ].map((spec, idx) => (
                   <details key={idx} className="group">
                     <summary className="flex justify-between items-center py-3 cursor-pointer hover:text-brand transition border-b border-gray-200">
-                      <span className="font-medium text-gray-700">{spec.title}</span>
+                      <span className="font-medium text-gray-900">{spec.title}</span>
                       <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </summary>
-                    <div className="pb-3 pt-2 text-sm text-gray-600">
+                    <div className="pb-4 pt-3 text-sm text-gray-700 leading-relaxed">
                       {spec.note}
                     </div>
                   </details>
@@ -303,52 +303,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Key Features from Comparison Table */}
-        <div className="max-w-5xl mx-auto mb-16">
-          <h2 className="text-3xl font-medium text-center mb-12 text-gray-900">Waarom kiezen katten eigenaren voor ons?</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="flex gap-4">
-              <div className="w-12 h-12 flex-shrink-0 rounded-lg bg-brand/10 flex items-center justify-center">
-                <Shield className="h-6 w-6 text-brand" />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium mb-2 text-gray-900">Open-Top, Low-Stress Design</h3>
-                <p className="text-gray-700">Minder stressvol voor katten - ze kunnen alles zien en voelen zich veilig</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4">
-              <div className="w-12 h-12 flex-shrink-0 rounded-lg bg-brand/10 flex items-center justify-center">
-                <Check className="h-6 w-6 text-brand" />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium mb-2 text-gray-900">Hoge Anti-Splash Wanden</h3>
-                <p className="text-gray-700">Voorkomt morsen - zelfs bij enthousiast graven blijft je vloer schoon</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4">
-              <div className="w-12 h-12 flex-shrink-0 rounded-lg bg-brand/10 flex items-center justify-center">
-                <Star className="h-6 w-6 text-brand" />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium mb-2 text-gray-900">Modulair OEM-Vriendelijk</h3>
-                <p className="text-gray-700">Gemakkelijk uit elkaar te halen voor grondige reiniging - alle onderdelen bereikbaar</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4">
-              <div className="w-12 h-12 flex-shrink-0 rounded-lg bg-brand/10 flex items-center justify-center">
-                <Truck className="h-6 w-6 text-brand" />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium mb-2 text-gray-900">Compact Formaat, Groot Inwendig</h3>
-                <p className="text-gray-700">Past in kleinere ruimtes, maar biedt je kat volop bewegingsruimte</p>
-              </div>
+        {/* Product Video - Dynamisch van admin */}
+        {product.videoUrl && (
+          <div className="max-w-4xl mx-auto mb-16">
+            <h2 className="text-3xl font-medium text-center mb-8 text-gray-900">Bekijk het Product in Actie</h2>
+            <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl">
+              <iframe
+                src={product.videoUrl}
+                title="Product demonstratie"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
             </div>
           </div>
-        </div>
+        )}
 
         <Separator variant="float" spacing="xl" />
 
