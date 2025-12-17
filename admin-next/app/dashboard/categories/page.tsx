@@ -31,8 +31,8 @@ export default function CategoriesPage() {
   const loadCategories = async () => {
     try {
       setIsLoading(true);
-      const categories = await get<Category[]>('/admin/categories');
-      setCategories(categories);
+      const response = await get<{success: boolean; data: Category[]}>('/admin/categories');
+      setCategories(response.data || []);
     } catch (error: any) {
       console.error('Load categories error:', error);
       toast.error('Fout bij laden van categorieën');

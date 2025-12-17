@@ -29,8 +29,8 @@ export default function OrdersPage() {
   const fetchOrders = async () => {
     try {
       setIsLoading(true);
-      const response = await get<Order[]>('/admin/orders');
-      setOrders(response);
+      const response = await get<{success: boolean; data: Order[]}>('/admin/orders');
+      setOrders(response.data || []);
     } catch (error: any) {
       console.error('Error fetching orders:', error);
       toast.error('Fout bij ophalen bestellingen');

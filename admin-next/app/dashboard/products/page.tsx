@@ -31,8 +31,8 @@ export default function ProductsPage() {
   const fetchProducts = async () => {
     try {
       setIsLoading(true);
-      const response = await get<Product[]>('/admin/products');
-      setProducts(response);
+      const response = await get<{success: boolean; data: Product[]}>('/admin/products');
+      setProducts(response.data || []);
     } catch (error: any) {
       console.error('Error fetching products:', error);
       toast.error('Fout bij ophalen producten');
