@@ -32,3 +32,16 @@ api.interceptors.response.use(
   }
 );
 
+// DRY Helper functions
+export const get = <T = any>(url: string, params?: any) => 
+  api.get<T>(url, { params }).then(res => res.data);
+
+export const post = <T = any>(url: string, data?: any) => 
+  api.post<T>(url, data).then(res => res.data);
+
+export const put = <T = any>(url: string, data?: any) => 
+  api.put<T>(url, data).then(res => res.data);
+
+export const del = <T = any>(url: string) => 
+  api.delete<T>(url).then(res => res.data);
+
