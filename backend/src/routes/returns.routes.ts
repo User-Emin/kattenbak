@@ -1,10 +1,4 @@
-import { Router } from 'express';
-import { prisma } from '@/config/database.config';
-import { MyParcelService } from '@/services/myparcel.service';
-import { successResponse, errorResponse } from '@/utils/response.util';
-import { logger } from '@/config/logger.config';
-import { Request, Response, NextFunction } from 'express';
-import { sendReturnLabelEmail } from '@/services/email.service';
+import { Router, Request, Response, NextFunction } from 'express';
 
 const router = Router();
 

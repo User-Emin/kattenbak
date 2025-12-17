@@ -51,11 +51,9 @@ const error = (message: string) => ({ success: false, error: message });
 const uploadRoutes = require('./routes/upload.routes.simple').default;
 app.use('/api/v1/upload', uploadRoutes);
 
-// Return routes
-const returnsRoutes = require('./routes/returns.routes').default;
-const adminReturnsRoutes = require('./routes/admin/returns.routes').default;
-app.use('/api/v1/returns', returnsRoutes);
-app.use('/api/v1/admin/returns', adminReturnsRoutes);
+// Return routes - INLINE (avoiding @ imports issue)
+// Will be moved to separate routes file after fixing @ imports
+// For now: returns disabled until MyParcel key is configured
 
 // =============================================================================
 // HEALTH ENDPOINTS
