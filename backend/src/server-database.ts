@@ -437,26 +437,136 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
 
     console.log(`✅ Order created: ${order.orderNumber} | €${total.toFixed(2)}`);
 
-    // Mock Mollie payment
-    const mollieUrl = `${ENV.FRONTEND_URL}/success?order=${order.id}&payment=test`;
-    const payment = {
-      id: `pay_${Date.now()}`,
-      checkoutUrl: mollieUrl,
-      mollieMode: ENV.isTest ? 'TEST' : 'LIVE',
-    };
+    // REAL Mollie payment creation
+    try {
+      const mollieClient = require('@mollie/api-client').default;
+      const mollie = mollieClient({ apiKey: process.env.MOLLIE_API_KEY });
 
-    res.status(201).json(success({ order, payment }));
+      const molliePayment = await mollie.payments.create({
+        amount: {
+          currency: 'EUR',
+          value: total.toFixed(2),
+        },
+        description: `Order ${order.orderNumber}`,
+        redirectUrl: `${ENV.FRONTEND_URL}/success?order=${order.id}`,
+        webhookUrl: `${ENV.BACKEND_URL || 'https://catsupply.nl'}/api/v1/webhooks/mollie`,
+        method: orderData.paymentMethod || undefined, // Let Mollie show all methods if not specified
+        metadata: {
+          orderId: order.id,
+          orderNumber: order.orderNumber,
+        },
+      });
+
+      // Store payment in database
+      await prisma.payment.create({
+        data: {
+          orderId: order.id,
+          mollieId: molliePayment.id,
+          amount: total,
+          currency: 'EUR',
+          status: 'PENDING',
+          checkoutUrl: molliePayment._links.checkout?.href || null,
+          webhookUrl: `${ENV.BACKEND_URL || 'https://catsupply.nl'}/api/v1/webhooks/mollie`,
+          redirectUrl: `${ENV.FRONTEND_URL}/success?order=${order.id}`,
+          description: `Order ${order.orderNumber}`,
+          metadata: {
+            mollieStatus: molliePayment.status,
+          },
+        },
+      });
+
+      console.log(`✅ Mollie payment created: ${molliePayment.id} | ${ENV.isTest ? 'TEST' : 'LIVE'} mode`);
+
+      const payment = {
+        id: molliePayment.id,
+        checkoutUrl: molliePayment._links.checkout?.href,
+        mollieMode: ENV.isTest ? 'TEST' : 'LIVE',
+      };
+
+      res.status(201).json(success({ order, payment }));
+    } catch (mollieError: any) {
+      console.error('❌ Mollie payment creation failed:', mollieError.message);
+      // Delete order if payment fails (rollback)
+      await prisma.order.delete({ where: { id: order.id } });
+      throw new Error(`Payment creation failed: ${mollieError.message}`);
+    }
   } catch (err: any) {
     console.error('❌ Order creation error:', err.message, err.stack);
     res.status(500).json(error(`Could not create order: ${err.message}`));
   }
 });
 
-// Mollie webhook
+// Mollie webhook - REAL IMPLEMENTATION
 app.post('/api/v1/webhooks/mollie', async (req: Request, res: Response) => {
-  const { id: mollieId } = req.body;
-  console.log(`✅ Mollie webhook: ${mollieId} (${ENV.isTest ? 'TEST' : 'LIVE'})`);
-  res.status(200).json(success({ received: true }));
+  try {
+    const { id: mollieId } = req.body;
+    console.log(`🔔 Mollie webhook received: ${mollieId}`);
+
+    const mollieClient = require('@mollie/api-client').default;
+    const mollie = mollieClient({ apiKey: process.env.MOLLIE_API_KEY });
+
+    // Get payment status from Mollie
+    const molliePayment = await mollie.payments.get(mollieId);
+    
+    // Find payment in database
+    const payment = await prisma.payment.findUnique({
+      where: { mollieId },
+      include: { order: { include: { items: true } } },
+    });
+
+    if (!payment) {
+      console.error(`❌ Payment not found: ${mollieId}`);
+      return res.status(404).json(error('Payment not found'));
+    }
+
+    // Map Mollie status to our status
+    let newStatus = payment.status;
+    if (molliePayment.status === 'paid') {
+      newStatus = 'PAID';
+      
+      // Update order status
+      await prisma.order.update({
+        where: { id: payment.orderId },
+        data: { status: 'CONFIRMED' },
+      });
+
+      // NOW update stock (only after confirmed payment)
+      if (payment.order) {
+        await Promise.all(payment.order.items.map((item: any) =>
+          prisma.product.update({
+            where: { id: item.productId },
+            data: { stock: { decrement: item.quantity } },
+          })
+        ));
+        console.log(`✅ Stock updated for order ${payment.order.orderNumber}`);
+      }
+    } else if (molliePayment.status === 'failed' || molliePayment.status === 'expired' || molliePayment.status === 'canceled') {
+      newStatus = 'FAILED';
+      await prisma.order.update({
+        where: { id: payment.orderId },
+        data: { status: 'CANCELLED' },
+      });
+    }
+
+    // Update payment status
+    await prisma.payment.update({
+      where: { id: payment.id },
+      data: {
+        status: newStatus,
+        paidAt: molliePayment.paidAt ? new Date(molliePayment.paidAt) : null,
+        metadata: {
+          ...(payment.metadata as any),
+          mollieStatus: molliePayment.status,
+        },
+      },
+    });
+
+    console.log(`✅ Payment ${mollieId} updated: ${newStatus}`);
+    res.status(200).json(success({ received: true, status: newStatus }));
+  } catch (err: any) {
+    console.error('❌ Webhook error:', err.message);
+    res.status(500).json(error('Webhook processing failed'));
+  }
 });
 
 // =============================================================================
