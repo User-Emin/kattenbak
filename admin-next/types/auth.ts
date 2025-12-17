@@ -1,22 +1,14 @@
-/**
- * AUTH TYPES - DRY & Backend Compatible
- */
-
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
 export interface AuthUser {
   id: string;
   email: string;
-  role: string;
-  firstName: string;
-  lastName: string;
+  name?: string;
+  role: 'ADMIN' | 'SUPER_ADMIN';
+  createdAt?: Date;
 }
 
-export interface LoginResponse {
-  token: string;
-  user: AuthUser;
+export interface AuthState {
+  user: AuthUser | null;
+  token: string | null;
+  isLoading: boolean;
+  isAuthenticated: boolean;
 }
-
