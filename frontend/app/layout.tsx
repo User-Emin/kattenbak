@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Roboto_Flex } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { CartProvider } from "@/context/cart-context";
 import { ChatPopup } from "@/components/ui/chat-popup-rag";
 
-const robotoFlex = Roboto_Flex({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-roboto-flex",
+  variable: "--font-montserrat",
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -23,8 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl" className={robotoFlex.variable}>
-      <body className="antialiased">
+    <html lang="nl" className={montserrat.variable}>
+      <body className="antialiased font-sans">
         <CartProvider>
           <div className="flex flex-col min-h-screen">
             <Header />

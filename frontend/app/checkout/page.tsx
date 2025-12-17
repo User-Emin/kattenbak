@@ -274,7 +274,7 @@ function CheckoutContent() {
               </div>
 
               {error && (
-                <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl text-red-700 text-sm flex items-start gap-3 mt-6">
+                <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-start gap-3 mt-6">
                   <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
@@ -288,7 +288,7 @@ function CheckoutContent() {
 
               {/* Guest Checkout Info + Consent */}
               <div className="space-y-4">
-                <div className="p-5 bg-accent/5 border-2 border-accent/20 rounded-xl">
+                <div className="p-5 bg-accent/5 border border-accent/20 rounded-xl">
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
                       <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
@@ -307,7 +307,7 @@ function CheckoutContent() {
                     type="checkbox"
                     checked={saveData}
                     onChange={(e) => setSaveData(e.target.checked)}
-                    className="mt-1 w-5 h-5 text-accent border-2 border-gray-300 rounded focus:ring-2 focus:ring-accent/20 cursor-pointer"
+                    className="mt-1 w-5 h-5 text-accent border border-gray-300 rounded focus:ring-2 focus:ring-accent/20 cursor-pointer"
                   />
                   <span className="text-sm text-gray-700 leading-relaxed">
                     Bewaar mijn gegevens voor een snellere checkout bij volgende bestellingen (7 dagen)
@@ -385,24 +385,63 @@ function CheckoutContent() {
 
                 <Separator variant="float" spacing="md" />
 
-                {/* Payment Method Selector - BOVEN Button, Rechterkant */}
-                <div className="flex justify-end mb-4">
-                  <div className="relative w-64">
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">Betaalmethode:</label>
-                    <select
-                      value={paymentMethod}
-                      onChange={(e) => setPaymentMethod(e.target.value as 'ideal' | 'paypal')}
-                      className="w-full h-12 pl-4 pr-10 bg-white border-2 border-gray-200 rounded-xl text-gray-900 font-medium cursor-pointer hover:border-brand focus:border-brand focus:ring-2 focus:ring-brand/20 appearance-none transition-all"
-                      style={{
-                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                        backgroundPosition: 'right 0.5rem center',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundSize: '1.5em 1.5em',
-                      }}
+                {/* Payment Method Selector - Custom Cards Above Button */}
+                <div className="mb-6">
+                  <label className="text-sm font-semibold text-gray-900 mb-3 block">Kies je betaalmethode:</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* iDEAL Card */}
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod('ideal')}
+                      className={`relative p-4 rounded-lg border transition-all ${
+                        paymentMethod === 'ideal'
+                          ? 'border-2 border-brand bg-brand/5 shadow-md'
+                          : 'border border-gray-300 hover:border-gray-400 bg-white'
+                      }`}
                     >
-                      <option value="ideal">iDEAL - Direct via je bank</option>
-                      <option value="paypal">PayPal - Veilig digitaal betalen</option>
-                    </select>
+                      <div className="flex flex-col items-center gap-2">
+                        <img 
+                          src="/images/ideal-logo.png" 
+                          alt="iDEAL" 
+                          className="h-8 object-contain"
+                        />
+                        <span className="text-sm font-medium text-gray-900">iDEAL</span>
+                      </div>
+                      {paymentMethod === 'ideal' && (
+                        <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-brand flex items-center justify-center">
+                          <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      )}
+                    </button>
+
+                    {/* PayPal Card */}
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod('paypal')}
+                      className={`relative p-4 rounded-lg border transition-all ${
+                        paymentMethod === 'paypal'
+                          ? 'border-2 border-brand bg-brand/5 shadow-md'
+                          : 'border border-gray-300 hover:border-gray-400 bg-white'
+                      }`}
+                    >
+                      <div className="flex flex-col items-center gap-2">
+                        <img 
+                          src="/images/paypal-logo.jpg" 
+                          alt="PayPal" 
+                          className="h-8 object-contain"
+                        />
+                        <span className="text-sm font-medium text-gray-900">PayPal</span>
+                      </div>
+                      {paymentMethod === 'paypal' && (
+                        <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-brand flex items-center justify-center">
+                          <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      )}
+                    </button>
                   </div>
                 </div>
 

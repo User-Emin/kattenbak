@@ -25,11 +25,11 @@ export default {
           light: '#0077a3',
           dark: '#003d5c',
         },
-        // Goud/Geel voor action buttons (conversie optimalisatie)
+        // Zwart voor action buttons (serieuzere uitstraling)
         accent: {
-          DEFAULT: '#f4d673',      // Goud als base
-          light: '#ffebab',        // Lichter geel
-          dark: '#e6c255',         // Donkerder goud voor hover
+          DEFAULT: '#000000',      // Zwart als base
+          light: '#1a1a1a',        // Donker grijs
+          dark: '#0a0a0a',         // Zeer donker zwart voor hover
         },
       },
       borderRadius: {
@@ -38,7 +38,7 @@ export default {
         '5xl': '2.5rem',           // Zeer rond
       },
       fontFamily: {
-        sans: ['var(--font-roboto-flex)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-montserrat)', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fade-in 0.4s ease-out',
