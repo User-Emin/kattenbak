@@ -167,8 +167,7 @@ export default function HomePage() {
               />
             </div>
             <div className="order-1 md:order-2">
-              <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
-                <Volume2 className="h-10 w-10 text-brand flex-shrink-0" />
+              <div className="mb-3">
                 <h3 className="text-xl font-semibold text-gray-900">{usps.feature2.title}</h3>
               </div>
               <p className="text-base md:text-lg font-semibold text-gray-700 leading-relaxed">{usps.feature2.description}</p>

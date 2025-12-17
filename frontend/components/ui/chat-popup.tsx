@@ -109,20 +109,25 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* Floating Chat Button - ALWAYS VISIBLE */}
+      {/* Floating Chat Button - ALWAYS VISIBLE with WAVE EFFECT */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={`fixed right-4 z-[100] ${buttonBottomClass} transition-all duration-300
                    bg-gradient-to-br from-brand to-brand-dark text-white 
                    rounded-full p-4 shadow-2xl hover:scale-110 hover:shadow-brand/50
                    focus:outline-none focus:ring-4 focus:ring-brand/30
-                   active:scale-95`}
+                   active:scale-95 relative overflow-visible
+                   before:absolute before:inset-0 before:rounded-full before:bg-brand/30
+                   before:animate-ping before:animation-delay-0
+                   after:absolute after:inset-0 after:rounded-full after:bg-brand/20
+                   after:animate-ping after:animation-delay-700`}
         aria-label="Open chat"
+        title="Druk mij"
       >
         {isExpanded ? (
-          <X className="w-6 h-6" />
+          <X className="w-6 h-6 relative z-10" />
         ) : (
-          <MessageCircle className="w-6 h-6" />
+          <MessageCircle className="w-6 h-6 relative z-10" />
         )}
       </button>
 

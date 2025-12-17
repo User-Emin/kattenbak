@@ -2,15 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-gray-50 text-gray-900;
+/* DRY: Global custom animations */
+@layer utilities {
+  /* Wave/Ping effect for chat button - "Druk mij" effect */
+  .animation-delay-0 {
+    animation-delay: 0s;
+  }
+  
+  .animation-delay-700 {
+    animation-delay: 0.7s;
+  }
+  
+  /* Ensure ping animation is visible */
+  @keyframes ping {
+    75%, 100% {
+      transform: scale(2);
+      opacity: 0;
+    }
   }
 }
 
-/* DRY: Verberg hCaptcha badge (we tonen eigen disclosure tekst) */
-.h-captcha {
-  display: none !important;
+/* DRY: Base styles */
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 255, 255, 255;
 }
 
-/* DRY: Als je de hCaptcha badge WEL wilt tonen (optioneel), haal bovenstaande weg */
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* DRY: Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* DRY: Focus styles */
+*:focus-visible {
+  outline: 2px solid #0066CC;
+  outline-offset: 2px;
+}
