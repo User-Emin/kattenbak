@@ -1,29 +1,25 @@
 "use client";
 
-/**
- * MOVING BANNER - CLEAN & SMOOTH
- * DRY: Gecentraliseerde USP teksten
- * Design: Geen strepen, gratis verzending standaard
- */
+import { Truck, Shield, Clock } from "lucide-react";
+
 export function MovingBanner() {
   const usps = [
-    "Gratis verzending",
-    "2 jaar garantie",
-    "Vandaag besteld, morgen in huis",
-    "30 dagen bedenktijd",
+    { icon: Truck, text: "Gratis verzending vanaf €50" },
+    { icon: Shield, text: "2 jaar garantie" },
+    { icon: Clock, text: "Vandaag besteld, morgen in huis" },
+    { icon: Truck, text: "30 dagen bedenktijd" },
   ];
 
   return (
     <div className="bg-black text-white py-2 overflow-hidden relative">
-      <div className="animate-marquee whitespace-nowrap flex items-center gap-12 antialiased">
-        {[...usps, ...usps, ...usps].map((text, idx) => (
-          <span 
-            key={idx}
-            className="text-sm font-semibold text-white tracking-wide" 
-            style={{ WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}
-          >
-            {text}
-          </span>
+      <div className="animate-marquee whitespace-nowrap flex items-center antialiased">
+        {[...usps, ...usps, ...usps].map((usp, idx) => (
+          <div key={idx} className="inline-flex items-center gap-2 mx-8">
+            <usp.icon className="h-4 w-4 flex-shrink-0 text-white" />
+            <span className="text-sm font-medium text-white" style={{ WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}>
+              {usp.text}
+            </span>
+          </div>
         ))}
       </div>
       <style jsx>{`
@@ -32,7 +28,7 @@ export function MovingBanner() {
           100% { transform: translateX(-33.333%) translateZ(0); }
         }
         .animate-marquee {
-          animation: marquee 8s linear infinite;
+          animation: marquee 12s linear infinite;
           will-change: transform;
           backface-visibility: hidden;
           -webkit-font-smoothing: antialiased;
@@ -43,7 +39,7 @@ export function MovingBanner() {
         }
         @media (max-width: 768px) {
           .animate-marquee {
-            animation: marquee 4s linear infinite;
+            animation: marquee 5s linear infinite;
           }
         }
       `}</style>

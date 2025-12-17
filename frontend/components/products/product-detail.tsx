@@ -1,53 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ProductImage } from "@/components/ui/product-image";
-import { ProductUsps } from "@/components/products/product-usps";
-import { VideoPlayer } from "@/components/ui/video-player";
 import { Separator } from "@/components/ui/separator";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { ChatPopup } from "@/components/ui/chat-popup";
-import { StickyCartBar } from "@/components/products/sticky-cart-bar";
 import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/utils";
-import { ShoppingCart, Plus, Minus, Check } from "lucide-react";
+import { ShoppingCart, Plus, Minus, Check, Truck, Shield, Star } from "lucide-react";
 import Link from "next/link";
 import type { Product } from "@/types/product";
 import { API_CONFIG, apiFetch } from "@/lib/config";
 import { getProductImage, IMAGE_CONFIG } from "@/lib/image-config";
-import { ProductHighlights } from "@/components/products/product-highlights";
-import { ProductSpecsComparison } from "@/components/products/product-specs-comparison";
-
-// DRY: Site Settings Type (SYNC: admin-next/lib/api/settings.ts)
-interface SiteSettings {
-  productUsps: {
-    usp1: {
-      icon: string;
-      color: string;
-      title: string;
-      description: string;
-      image: string;
-    };
-    usp2: {
-      icon: string;
-      color: string;
-      title: string;
-      description: string;
-      image: string;
-    };
-  };
-}
-
-// DRY: Product USP type voor component
-interface ProductUsp {
-  icon: string;
-  color: string;
-  title: string;
-  description: string;
-  image: string;
-}
 
 interface ProductDetailProps {
   slug: string;
@@ -61,10 +25,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [settings, setSettings] = useState<SiteSettings | null>(null);
-  const addToCartButtonRef = useRef<HTMLDivElement>(null);
 
-  // DRY: Fetch product data
   useEffect(() => {
     apiFetch<{ success: boolean; data: Product }>(API_CONFIG.ENDPOINTS.PRODUCT_BY_SLUG(slug))
       .then(data => {
@@ -75,17 +36,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       })
       .catch(() => setLoading(false));
   }, [slug]);
-
-  // DRY: Fetch site settings voor productUsps
-  useEffect(() => {
-    apiFetch<{ success: boolean; data: SiteSettings }>(API_CONFIG.ENDPOINTS.SETTINGS)
-      .then(data => {
-        if (data.success && data.data) {
-          setSettings(data.data);
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   const handleAddToCart = async () => {
     if (!product) return;
@@ -126,11 +76,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
-        {/* Breadcrumb - DIKKE TEKST */}
+        {/* Breadcrumb */}
         <nav className="mb-8 text-sm">
-          <Link href="/" className="text-brand hover:text-brand-dark transition font-semibold">Home</Link>
-          <span className="mx-2 text-gray-400 font-semibold">/</span>
-          <span className="text-gray-900 font-semibold">{product.name}</span>
+          <Link href="/" className="text-brand hover:text-brand-dark transition font-medium">Home</Link>
+          <span className="mx-2 text-gray-400">/</span>
+          <span className="text-gray-900 font-medium">{product.name}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
@@ -172,87 +122,65 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* Product Info - Direct op achtergrond */}
           <div className="space-y-8">
             <div>
-              {/* Productnaam - VOLLEDIG AUTOMATISCH - DUNNE FONT */}
-              <h1 className="text-2xl md:text-3xl font-semibold mb-6 leading-tight text-gray-900 tracking-tight">{product.name}</h1>
+              <h1 className="text-4xl font-light mb-6 leading-tight text-gray-900">{product.name}</h1>
               
-              {/* USPs - DUNNE FONT + ORIGINEEL */}
-              <div className="space-y-3 mb-6">
+              {/* USPs - Direct op achtergrond */}
+              <div className="space-y-2 mb-8">
                 <div className="flex items-center gap-3">
-                  <Check className="h-6 w-6 text-brand flex-shrink-0" />
-                  <span className="text-base font-semibold text-gray-900">Gratis verzending vanaf €50</span>
+                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                  <span className="font-medium text-gray-700">Geen stank meer</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="h-6 w-6 text-brand flex-shrink-0" />
-                  <span className="text-base font-semibold text-gray-900">10.5L capaciteit - Grootste afvalbak</span>
+                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                  <span className="font-medium text-gray-700">Nooit meer scheppen</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="h-6 w-6 text-brand flex-shrink-0" />
-                  <span className="text-base font-semibold text-gray-900">Ultra-stil motor (&lt;40 decibel)</span>
+                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                  <span className="font-medium text-gray-700">Veilig te gebruiken</span>
                 </div>
               </div>
 
               <Separator variant="float" spacing="md" />
 
-              {/* Prijs - COMPACT */}
-              <div className="mb-6">
-                <div className="text-4xl md:text-5xl font-bold text-gray-900">{formatPrice(product.price)}</div>
+              {/* Prijs - Direct op achtergrond */}
+              <div className="mb-8">
+                <div className="text-5xl font-light text-gray-900">{formatPrice(product.price)}</div>
               </div>
 
-              {/* Marketing USPs */}
-
-              {/* Marketing USPs - Minimaal, zonder kaartje */}
-              <div className="mb-6 space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-1 h-1 bg-brand rounded-full"></div>
-                  <span className="text-sm font-semibold text-gray-600">14 dagen bedenktijd</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-1 h-1 bg-brand rounded-full"></div>
-                  <span className="text-sm font-semibold text-gray-600">Veilig betalen met Mollie</span>
-                </div>
-              </div>
-
-              {/* CTA Button - DIK TEKST, GEEN PIJL */}
-              <div ref={addToCartButtonRef} className="mb-8">
-                <button
+              {/* CTA Button - Hoger voor MacBook view */}
+              <div className="mb-8">
+                <Button
                   onClick={handleAddToCart}
-                  disabled={isAdding}
-                  className="w-full h-16 text-lg font-bold text-white bg-black hover:bg-gray-900 rounded-full transition-all duration-200 mb-4"
+                  loading={isAdding}
+                  size="lg"
+                  variant="primary"
+                  fullWidth
+                  leftIcon={<ShoppingCart className="h-5 w-5" />}
+                  className="mb-4"
                 >
-                  <div className="flex items-center justify-center gap-3">
-                    {isAdding ? (
-                      <>
-                        <div className="h-5 w-5 animate-spin rounded-full border-3 border-current border-t-transparent" />
-                        <span className="tracking-wide">Toevoegen...</span>
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingCart className="h-6 w-6" />
-                        <span className="tracking-wide">In Winkelwagen</span>
-                      </>
-                    )}
-                  </div>
-                </button>
-
-                {/* Aantal Selector - ALTIJD HORIZONTAAL, HOVER NAVBAR BLAUW */}
-                <div className="flex flex-row items-center justify-center gap-3">
+                  Aan winkelwagen toevoegen - {formatPrice(product.price)}
+                </Button>
+                
+                {/* Aantal Selector - Compacter onder button */}
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <span className="text-sm font-medium text-gray-700">Aantal:</span>
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
-                    className="w-12 h-12 rounded-full border-2 border-gray-400 hover:border-brand hover:bg-brand/5 flex items-center justify-center transition disabled:opacity-30 bg-white"
+                    className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
                     aria-label="Verlaag aantal"
                   >
                     <Minus className="h-4 w-4 text-gray-700" />
                   </button>
                   
-                  <span className="text-2xl font-bold text-gray-900 min-w-[3rem] text-center">
+                  <span className="text-xl font-semibold text-gray-900 min-w-[2.5rem] text-center">
                     {quantity}
                   </span>
                   
                   <button
                     onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
                     disabled={quantity >= product.stock}
-                    className="w-12 h-12 rounded-full border-2 border-gray-400 hover:border-brand hover:bg-brand/5 flex items-center justify-center transition disabled:opacity-30 bg-white"
+                    className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
                     aria-label="Verhoog aantal"
                   >
                     <Plus className="h-4 w-4 text-gray-700" />
@@ -262,57 +190,140 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               <Separator variant="float" spacing="md" />
 
-              {/* Product Specs Comparison - ACCORDION BALKEN */}
-              <ProductSpecsComparison />
+              {/* Beschikbaarheid */}
+              <div className="flex items-center gap-3 mb-8">
+                <Check className="h-6 w-6 text-brand flex-shrink-0" />
+                <div>
+                  <p className="font-semibold text-brand text-lg">Op voorraad - Direct leverbaar</p>
+                  <p className="text-sm text-gray-600">Vandaag besteld, morgen in huis</p>
+                </div>
+              </div>
+
+              {/* Trust badges - Direct op achtergrond */}
+              <div className="grid grid-cols-3 gap-3 text-center">
+                <div className="flex flex-col items-center gap-2">
+                  <Truck className="h-6 w-6 text-brand" />
+                  <p className="text-xs font-medium text-gray-700">Gratis verzending</p>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <Shield className="h-6 w-6 text-brand" />
+                  <p className="text-xs font-medium text-gray-700">2 jaar garantie</p>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <Check className="h-6 w-6 text-brand" />
+                  <p className="text-xs font-medium text-gray-700">30 dagen retour</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Product Description - DIRECT ZICHTBAAR CENTRAAL */}
-        <div className="max-w-4xl mx-auto text-center mb-12">
-          <SectionHeading className="mb-6" size="sm">
-            Over dit product
-          </SectionHeading>
-          
-          {/* DRY: Product Demo Video - EXACT zoals homepage, direct onder titel */}
-          {product.videoUrl && (
-            <div className="mb-12">
-              <VideoPlayer
-                videoUrl={product.videoUrl}
-                posterUrl={product.images?.[0] || ''}
-                type="product"
-                controls
-                className="w-full aspect-video rounded-2xl overflow-hidden shadow-lg"
-              />
-              <p className="text-center text-sm text-gray-500 mt-4">
-                🎥 Bekijk de demo video
-              </p>
-            </div>
-          )}
-          
-          <p className="text-base md:text-lg font-semibold text-gray-700 leading-relaxed">{product.description}</p>
+        {/* Product Description - Direct op achtergrond */}
+        <div className="max-w-4xl mx-auto text-center mb-16">
+          <h2 className="text-3xl font-light mb-6 text-gray-900">Over dit product</h2>
+          <p className="text-gray-600 leading-relaxed text-lg">{product.description}</p>
         </div>
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Product USPs - DRY: Zigzag layout met dynamische content */}
-        {settings?.productUsps && (
-          <div className="container mx-auto px-6 lg:px-12">
-            <ProductUsps usps={[settings.productUsps.usp1, settings.productUsps.usp2]} />
+        {/* USPs - Direct op achtergrond */}
+        <div className="max-w-5xl mx-auto mb-16">
+          <h2 className="text-3xl font-light text-center mb-12 text-gray-900">Waarom deze kattenbak?</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-brand flex items-center justify-center">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-medium mb-3 text-gray-900">Volledig Automatisch</h3>
+              <p className="text-gray-600">Reinigt het grit na elk bezoek, altijd een schone kattenbak</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-accent flex items-center justify-center">
+                <Star className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-medium mb-3 text-gray-900">Geen Stank</h3>
+              <p className="text-gray-600">Ingebouwde deodorizer houdt vieze geurtjes uit je huis</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-brand flex items-center justify-center">
+                <Truck className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-medium mb-3 text-gray-900">Morgen in Huis</h3>
+              <p className="text-gray-600">Voor 16:00 besteld? Morgen al bij je thuis!</p>
+            </div>
           </div>
-        )}
+        </div>
 
         <Separator variant="float" spacing="xl" />
 
+        {/* Specificaties - Direct op achtergrond */}
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-light text-center mb-10 text-gray-900">Specificaties</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Kolom 1 */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-center pb-3">
+                <span className="font-medium text-gray-700">Materiaal</span>
+                <span className="text-gray-900 font-semibold">Premium kunststof</span>
+              </div>
+              <Separator variant="float" spacing="sm" />
+              <div className="flex justify-between items-center pb-3">
+                <span className="font-medium text-gray-700">Afmetingen</span>
+                <span className="text-gray-900 font-semibold">60 × 55 × 62 cm</span>
+              </div>
+              <Separator variant="float" spacing="sm" />
+              <div className="flex justify-between items-center pb-3">
+                <span className="font-medium text-gray-700">Gewicht</span>
+                <span className="text-gray-900 font-semibold">8,5 kg</span>
+              </div>
+              <Separator variant="float" spacing="sm" />
+              <div className="flex justify-between items-center pb-3">
+                <span className="font-medium text-gray-700">Kleur</span>
+                <span className="text-gray-900 font-semibold">Wit</span>
+              </div>
+              <Separator variant="float" spacing="sm" />
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-gray-700">Geschikt voor</span>
+                <span className="text-gray-900 font-semibold">Alle katten</span>
+              </div>
+            </div>
+
+            {/* Kolom 2 */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-center pb-3">
+                <span className="font-medium text-gray-700">Stroomverbruik</span>
+                <span className="text-gray-900 font-semibold">Laag energieverbruik</span>
+              </div>
+              <Separator variant="float" spacing="sm" />
+              <div className="flex justify-between items-center pb-3">
+                <span className="font-medium text-gray-700">Zelfreinigend</span>
+                <span className="text-gray-900 font-semibold flex items-center gap-1"><Check className="h-4 w-4 text-brand" /> Ja</span>
+              </div>
+              <Separator variant="float" spacing="sm" />
+              <div className="flex justify-between items-center pb-3">
+                <span className="font-medium text-gray-700">App ondersteuning</span>
+                <span className="text-gray-900 font-semibold flex items-center gap-1"><Check className="h-4 w-4 text-brand" /> Ja</span>
+              </div>
+              <Separator variant="float" spacing="sm" />
+              <div className="flex justify-between items-center pb-3">
+                <span className="font-medium text-gray-700">Garantie</span>
+                <span className="text-gray-900 font-semibold">2 jaar</span>
+              </div>
+              <Separator variant="float" spacing="sm" />
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-gray-700">Geluidsarm</span>
+                <span className="text-gray-900 font-semibold flex items-center gap-1"><Check className="h-4 w-4 text-brand" /> Ja</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      {/* Sticky Cart Bar - SMOOTH BOTTOM BANNER */}
-      <StickyCartBar product={product} addToCartButtonRef={addToCartButtonRef} />
-
-      {/* Chat Popup - ALTIJD ZICHTBAAR */}
-      <ChatPopup />
     </div>
   );
 }

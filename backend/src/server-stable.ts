@@ -26,16 +26,18 @@ const ENV = {
   mollieKeyType: MOLLIE_KEY.startsWith('test_') ? 'TEST' : 'LIVE',
 };
 
-// WARNING: Test key in production (allow maar warn)
+// CRITICAL: Block test keys in production
 if (ENV.isProduction && ENV.mollieKeyType === 'TEST') {
-  console.warn('');
-  console.warn('========================================');
-  console.warn('⚠️  WARNING: Mollie TEST key in PRODUCTION');
-  console.warn('========================================');
-  console.warn('Consider upgrading to live_... key');
-  console.warn('Current: test mode');
-  console.warn('========================================');
-  console.warn('');
+  console.error('');
+  console.error('========================================');
+  console.error('⚠️  FATAL ERROR: SECURITY VIOLATION');
+  console.error('========================================');
+  console.error('Mollie TEST key detected in PRODUCTION!');
+  console.error('Production MUST use live_... key');
+  console.error('Current key starts with:', process.env.MOLLIE_API_KEY?.substring(0, 10));
+  console.error('========================================');
+  console.error('');
+  process.exit(1);
 }
 
 // Warn if live key in development
@@ -140,59 +142,6 @@ app.post('/api/v1/webhooks/mollie', (req: Request, res: Response) => {
   const { id: mollieId } = req.body;
   console.log(`✅ Mollie webhook: ${mollieId} (${ENV.isTest ? 'TEST' : 'LIVE'})`);
   res.status(200).json(success({ received: true }));
-});
-
-// ENTERPRISE: Contact/Chat endpoints
-const contactMessages: any[] = [];
-const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET_KEY || '';
-
-app.post('/api/v1/contact', async (req: Request, res: Response) => {
-  try {
-    const { email, message, orderNumber, captchaToken } = req.body;
-
-    if (!email || !message || !captchaToken) {
-      return res.status(400).json(error('Email, message en captchaToken verplicht'));
-    }
-
-    // hCaptcha verificatie
-    const axios = require('axios');
-    const formData = new URLSearchParams();
-    formData.append('secret', HCAPTCHA_SECRET);
-    formData.append('response', captchaToken);
-
-    const captchaResponse = await axios.post('https://hcaptcha.com/siteverify', formData, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      timeout: 5000,
-    });
-
-    if (!captchaResponse.data.success) {
-      console.warn('❌ hCaptcha fail:', captchaResponse.data['error-codes']);
-      return res.status(403).json(error('Captcha verificatie mislukt'));
-    }
-
-    // Store message (in-memory)
-    const newMessage = {
-      id: Date.now().toString(),
-      email,
-      message,
-      orderNumber: orderNumber || null,
-      createdAt: new Date().toISOString(),
-      status: 'new',
-      ip: req.ip,
-    };
-
-    contactMessages.push(newMessage);
-    console.log(`✅ Contact: ${email} - "${message.substring(0, 50)}..."`);
-
-    res.status(201).json(success({ id: newMessage.id, message: 'Bericht ontvangen' }));
-  } catch (err: any) {
-    console.error('❌ Contact error:', err.message);
-    res.status(500).json(error('Server fout'));
-  }
-});
-
-app.get('/api/v1/contact', (req: Request, res: Response) => {
-  res.json(success({ messages: contactMessages.reverse(), total: contactMessages.length }));
 });
 
 app.use((req: Request, res: Response) => {

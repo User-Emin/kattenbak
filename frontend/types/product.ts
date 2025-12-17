@@ -18,8 +18,6 @@ export interface Product {
     height?: number;
   } | null;
   images: string[];
-  heroVideoUrl?: string | null; // 10-20MB MP4 for homepage hero background
-  videoUrl?: string | null; // 20-50MB MP4 for product demo + "Zie Het in Actie" (DRY)
   metaTitle: string | null;
   metaDescription: string | null;
   isActive: boolean;

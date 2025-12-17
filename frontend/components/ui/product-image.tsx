@@ -3,7 +3,6 @@
 import { useState, useRef, MouseEvent } from 'react';
 import Image from 'next/image';
 import { X, ZoomIn } from 'lucide-react';
-import { getFallbackImage } from '@/lib/demo-images';
 
 interface ProductImageProps {
   src: string | null;
@@ -44,9 +43,7 @@ export function ProductImage({
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // DRY: Use fallback from demo-images (sync met backend)
-  // MAXIMAAL DYNAMISCH: Eerst API, dan demo fallback
-  const imageSrc = src || getFallbackImage();
+  const imageSrc = src || 'https://placehold.co/800x800/e5e7eb/9ca3af?text=Product';
 
   // Open lightbox on click
   const handleImageClick = () => {

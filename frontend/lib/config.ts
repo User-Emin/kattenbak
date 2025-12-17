@@ -4,33 +4,24 @@
  * Maximaal DRY, maintainable en type-safe
  */
 
-// API Configuration - ROBUST & MAINTAINABLE - DRY
+// API Configuration
 export const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3101/api/v1',
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3101',
   ENDPOINTS: {
-    // Products - DRY: No /api/v1 prefix (already in BASE_URL)
-    PRODUCTS: '/products',
-    PRODUCT_BY_ID: (id: string) => `/products/${id}`,
-    PRODUCT_BY_SLUG: (slug: string) => `/products/slug/${slug}`,
-    PRODUCTS_FEATURED: '/products/featured',
-    PRODUCTS_SEARCH: '/products/search',
+    // Products
+    PRODUCTS: '/api/v1/products',
+    PRODUCT_BY_ID: (id: string) => `/api/v1/products/${id}`,
+    PRODUCT_BY_SLUG: (slug: string) => `/api/v1/products/slug/${slug}`,
+    PRODUCTS_FEATURED: '/api/v1/products/featured',
+    PRODUCTS_SEARCH: '/api/v1/products/search',
     
     // Orders
-    ORDERS: '/orders',
-    ORDER_BY_ID: (id: string) => `/orders/${id}`,
-    
-    // Contact
-    CONTACT: '/contact',
-    
-    // Admin
-    ADMIN: '/admin',
-    
-    // Settings (DRY: Site-wide settings voor hero, USPs, etc.)
-    SETTINGS: '/admin/settings',
+    ORDERS: '/api/v1/orders',
+    ORDER_BY_ID: (id: string) => `/api/v1/orders/${id}`,
     
     // Health
     HEALTH: '/health',
-    API_HEALTH: '/health',
+    API_HEALTH: '/api/v1/health',
   },
   TIMEOUT: 10000, // 10 seconds
   CACHE: {

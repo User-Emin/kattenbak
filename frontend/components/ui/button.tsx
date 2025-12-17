@@ -1,9 +1,8 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import { COMPONENT_COLORS } from "@/lib/theme-colors";
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'brand' | 'cta';
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'brand';
 type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,14 +14,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   rightIcon?: React.ReactNode;
 }
 
-// DRY: Gebruik theme-colors.ts (MAXIMAAL DYNAMISCH)
 const VARIANT_STYLES: Record<ButtonVariant, string> = {
-  primary: `${COMPONENT_COLORS.button.primary} border-2 border-transparent`, // Zwart + invisible border
-  secondary: `${COMPONENT_COLORS.button.secondary} border-2 border-transparent`, // Blauw + invisible border
-  cta: `${COMPONENT_COLORS.button.cta} border-2 border-transparent`, // Oranje + invisible border voor gelijke dikte
+  primary: 'bg-accent text-gray-900 hover:bg-accent-dark font-semibold',
+  secondary: 'bg-white text-accent border-2 border-accent hover:bg-accent hover:text-gray-900 font-semibold',
   outline: 'bg-transparent border-2 border-current hover:bg-gray-50',
   ghost: 'bg-transparent hover:bg-gray-50',
-  brand: 'bg-brand text-white hover:bg-brand-dark border-2 border-transparent',
+  brand: 'bg-brand text-white hover:bg-brand-dark',
 };
 
 const SIZE_STYLES: Record<ButtonSize, string> = {
@@ -53,7 +50,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          'inline-flex items-center justify-center gap-2 font-medium rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 hover:scale-105 active:scale-95',
+          'inline-flex items-center justify-center gap-2 font-medium rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 hover:scale-105 active:scale-95',
           VARIANT_STYLES[variant],
           SIZE_STYLES[size],
           fullWidth && 'w-full',

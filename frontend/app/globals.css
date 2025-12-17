@@ -2,55 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
-/* DRY: Global custom animations */
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
+  body {
+    @apply bg-white text-gray-900;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 @layer utilities {
-  /* Wave/Ping effect for chat button - "Druk mij" effect */
-  .animation-delay-0 {
-    animation-delay: 0s;
+  .container-custom {
+    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
   }
-  
-  .animation-delay-700 {
-    animation-delay: 0.7s;
+
+  .text-balance {
+    text-wrap: balance;
   }
-  
-  /* Ensure ping animation is visible */
-  @keyframes ping {
-    75%, 100% {
-      transform: scale(2);
-      opacity: 0;
-    }
+
+  /* DRY: Hide scrollbar maar keep scrolling functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
-}
-
-/* DRY: Base styles */
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 255, 255, 255;
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* DRY: Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* DRY: Focus styles */
-*:focus-visible {
-  outline: 2px solid #0066CC;
-  outline-offset: 2px;
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }

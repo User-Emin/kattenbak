@@ -37,7 +37,7 @@ interface CartContextValue {
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   customerData: CustomerData | null;
-  saveCustomerData: (data: CustomerData) => void;
+  saveCustomerData: (data: CustomerData, consent: boolean) => void;
   loadCustomerData: () => CustomerData | null;
   clearCustomerData: () => void;
 }
@@ -126,32 +126,40 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem(CART_STORAGE_KEY);
   }, []);
 
-  // ✅ Save customer data (localStorage only - GDPR compliant)
-  const saveCustomerData = useCallback((data: CustomerData) => {
-    setCustomerData(data);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('kb_customer_data', JSON.stringify(data));
+  const saveCustomerData = useCallback((data: CustomerData, consent: boolean) => {
+    if (consent) {
+      Cookies.set(CUSTOMER_DATA_COOKIE, JSON.stringify(data), {
+        expires: COOKIE_MAX_AGE,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+      });
+      Cookies.set(CONSENT_COOKIE, 'true', {
+        expires: COOKIE_MAX_AGE,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+      });
+      setCustomerData(data);
     }
   }, []);
 
-  // ✅ Load customer data (localStorage only - GDPR compliant)
   const loadCustomerData = useCallback((): CustomerData | null => {
-    if (typeof window === 'undefined') return null;
-    
+    const consent = Cookies.get(CONSENT_COOKIE);
+    if (!consent) return null;
+
+    const data = Cookies.get(CUSTOMER_DATA_COOKIE);
+    if (!data) return null;
+
     try {
-      const data = localStorage.getItem('kb_customer_data');
-      return data ? JSON.parse(data) : null;
+      return JSON.parse(data);
     } catch {
       return null;
     }
   }, []);
 
-  // ✅ Clear customer data (localStorage only - GDPR compliant)
   const clearCustomerData = useCallback(() => {
+    Cookies.remove(CUSTOMER_DATA_COOKIE);
+    Cookies.remove(CONSENT_COOKIE);
     setCustomerData(null);
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('kb_customer_data');
-    }
   }, []);
 
   return (

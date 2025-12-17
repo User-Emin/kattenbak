@@ -32,10 +32,9 @@ class EnvironmentConfig {
   public readonly IS_PRODUCTION = this.NODE_ENV === 'production';
   public readonly IS_DEVELOPMENT = this.NODE_ENV === 'development';
 
-  // Server Configuration - DRY: Use PORT or fallback to BACKEND_PORT
-  public readonly PORT = parseInt(process.env.PORT || process.env.BACKEND_PORT || '3101', 10);
-  public readonly BACKEND_PORT = this.PORT; // Alias for backwards compatibility
-  public readonly BACKEND_URL = process.env.BACKEND_URL || `http://localhost:${this.PORT}`;
+  // Server configuration
+  public readonly BACKEND_PORT = parseInt(process.env.BACKEND_PORT || '3001', 10);
+  public readonly BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
 
   // Database
   public readonly DATABASE_URL = this.getRequired('DATABASE_URL');
@@ -48,35 +47,21 @@ class EnvironmentConfig {
   public readonly MOLLIE_API_KEY = this.getRequired('MOLLIE_API_KEY');
   public readonly MOLLIE_WEBHOOK_URL = process.env.MOLLIE_WEBHOOK_URL || '';
 
-  // MyParcel (Shipping & Returns) - DRY: Same config for both
+  // MyParcel (Shipping)
   public readonly MYPARCEL_API_KEY = process.env.MYPARCEL_API_KEY || '';
   public readonly MYPARCEL_WEBHOOK_URL = process.env.MYPARCEL_WEBHOOK_URL || '';
-  public readonly MYPARCEL_WEBHOOK_SECRET = process.env.MYPARCEL_WEBHOOK_SECRET || ''; // NEW: For signature verification
-  public readonly MYPARCEL_MODE = process.env.MYPARCEL_MODE || 'test'; // 'test' or 'production'
-  public readonly MYPARCEL_RETURN_ADDRESS = {
-    company: process.env.MYPARCEL_RETURN_COMPANY || 'Kattenbak B.V.',
-    street: process.env.MYPARCEL_RETURN_STREET || 'Retourstraat',
-    number: process.env.MYPARCEL_RETURN_NUMBER || '1',
-    postalCode: process.env.MYPARCEL_RETURN_POSTAL || '1234AB',
-    city: process.env.MYPARCEL_RETURN_CITY || 'Amsterdam',
-    country: process.env.MYPARCEL_RETURN_COUNTRY || 'NL',
-    email: process.env.MYPARCEL_RETURN_EMAIL || 'retour@kattenbak.nl',
-    phone: process.env.MYPARCEL_RETURN_PHONE || '+31201234567',
-  };
 
   // Redis
   public readonly REDIS_HOST = process.env.REDIS_HOST || 'localhost';
   public readonly REDIS_PORT = parseInt(process.env.REDIS_PORT || '6379', 10);
   public readonly REDIS_PASSWORD = process.env.REDIS_PASSWORD || '';
 
-  // Email (DRY: Shared config for all email types)
+  // Email
   public readonly SMTP_HOST = process.env.SMTP_HOST || '';
   public readonly SMTP_PORT = parseInt(process.env.SMTP_PORT || '587', 10);
   public readonly SMTP_USER = process.env.SMTP_USER || '';
   public readonly SMTP_PASSWORD = process.env.SMTP_PASSWORD || '';
-  public readonly EMAIL_FROM = process.env.EMAIL_FROM || 'noreply@kattenbak.nl';
-  public readonly EMAIL_PROVIDER = process.env.EMAIL_PROVIDER || 'console'; // 'console', 'smtp', 'sendgrid'
-  public readonly SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || '';
+  public readonly EMAIL_FROM = process.env.EMAIL_FROM || '';
 
   // Admin
   public readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@localhost';
@@ -98,10 +83,6 @@ class EnvironmentConfig {
 
   // Frontend URLs
   public readonly FRONTEND_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-
-  // Admin Credentials
-  public readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@localhost';
-  public readonly ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
   /**
    * Get required environment variable or throw error
@@ -139,7 +120,7 @@ class EnvironmentConfig {
     console.log(`   - Port: ${this.BACKEND_PORT}`);
     console.log(`   - Database: ${this.DATABASE_URL.split('@')[1] || 'configured'}`);
     console.log(`   - Mollie: ${this.MOLLIE_API_KEY.substring(0, 15)}...`);
-    console.log(`   - MyParcel: ${this.MYPARCEL_API_KEY ? `configured (${this.MYPARCEL_MODE} mode)` : 'not configured'}`);
+    console.log(`   - MyParcel: ${this.MYPARCEL_API_KEY ? 'configured' : 'not configured'}`);
     console.log(`   - Redis: ${this.REDIS_HOST}:${this.REDIS_PORT}`);
     console.log(`   - CORS Origins: ${this.CORS_ORIGINS.join(', ')}`);
   }

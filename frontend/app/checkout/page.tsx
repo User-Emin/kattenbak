@@ -12,17 +12,14 @@ import { Product } from "@/types/product";
 import { CreateOrderData } from "@/types/product";
 import { productsApi } from "@/lib/api/products";
 import { ordersApi } from "@/lib/api/orders";
-import { Loader2, CreditCard, Cookie, AlertCircle } from "lucide-react";
+import { Loader2, CreditCard } from "lucide-react";
 import { ProductImage } from "@/components/ui/product-image";
 import { getProductImage } from "@/lib/image-config";
-import { useCookieConsent } from "@/lib/hooks/use-cookie-consent";
-import { PaymentMethodSelector, type PaymentMethodType } from "@/components/payment/payment-method-selector";
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { items, customerData, saveCustomerData } = useCart();
-  const { hasConsent, acceptAll } = useCookieConsent(); // ✅ Cookie consent check
   
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -30,8 +27,6 @@ function CheckoutContent() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saveData, setSaveData] = useState(true);
-  const [showCookieWarning, setShowCookieWarning] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethodType>('ideal'); // ✅ Payment method state
 
   const [formData, setFormData] = useState({
     firstName: customerData?.firstName || "",
@@ -82,40 +77,32 @@ function CheckoutContent() {
     setError(null);
 
     try {
-      // Save customer data to localStorage
+      // Save customer data to cookies if consented
       if (saveData) {
-        saveCustomerData(formData);
+        saveCustomerData(formData, true);
       }
 
-      // ✅ DRY: Match backend schema exactly
-      const orderData = {
-        items: [{ 
-          productId: product.id, 
-          quantity,
-          price: product.price 
-        }],
-        customer: {
+      const orderData: CreateOrderData = {
+        items: [{ productId: product.id, quantity }],
+        customerEmail: formData.email,
+        customerPhone: formData.phone || undefined,
+        shippingAddress: {
           firstName: formData.firstName,
           lastName: formData.lastName,
-          email: formData.email,
+          street: formData.street,
+          houseNumber: formData.houseNumber,
+          addition: formData.addition || undefined,
+          postalCode: formData.postalCode,
+          city: formData.city,
+          country: formData.country,
           phone: formData.phone || undefined,
         },
-        shipping: {
-          address: `${formData.street} ${formData.houseNumber}${formData.addition ? ' ' + formData.addition : ''}`,
-          city: formData.city,
-          postalCode: formData.postalCode,
-          country: formData.country,
-        },
-        paymentMethod: paymentMethod, // ✅ DRY: Use selected payment method
       };
 
-      const result = await ordersApi.create(orderData);
+      const { order, payment } = await ordersApi.create(orderData);
 
-      // ✅ DRY: Handle both response formats
-      const checkoutUrl = result.paymentUrl || result.payment?.checkoutUrl;
-      
-      if (checkoutUrl) {
-        window.location.href = checkoutUrl;
+      if (payment.checkoutUrl) {
+        window.location.href = payment.checkoutUrl;
       } else {
         throw new Error("Payment URL not available");
       }
@@ -154,15 +141,15 @@ function CheckoutContent() {
     <div className="bg-gray-50 min-h-screen py-12">
       <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-semibold mb-3 text-gray-900">Afrekenen</h1>
-          <p className="text-gray-600 text-base">Vul je gegevens in voor een snelle checkout</p>
+          <h1 className="text-4xl md:text-5xl font-light mb-3 text-gray-900">Bestelling Afronden</h1>
+          <p className="text-gray-600 text-lg">Vul je gegevens in voor een snelle checkout</p>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Gegevens Form - Direct op achtergrond */}
             <div>
-              <h2 className="text-2xl font-semibold mb-6 text-gray-900">
+              <h2 className="text-2xl font-medium mb-6 text-gray-900">
                 Jouw Gegevens
               </h2>
             
@@ -283,7 +270,7 @@ function CheckoutContent() {
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                   <div>
-                    <p className="font-semibold">Fout bij bestellen</p>
+                    <p className="font-medium">Fout bij bestellen</p>
                     <p className="mt-1">{error}</p>
                   </div>
                 </div>
@@ -291,21 +278,31 @@ function CheckoutContent() {
 
               <Separator variant="float" spacing="md" />
 
-              {/* Guest Checkout Info + Consent - SMOOTH */}
-              <div className="space-y-3">
-                <div className="text-sm text-gray-600 bg-gray-50 px-4 py-3 rounded-lg">
-                  ✓ Geen account nodig - direct afrekenen als gast
+              {/* Guest Checkout Info + Consent */}
+              <div className="space-y-4">
+                <div className="p-5 bg-accent/5 border-2 border-accent/20 rounded-xl">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-accent-dark mb-1">Geen account nodig</p>
+                      <p className="text-sm text-gray-700">Je kunt direct afrekenen als gast</p>
+                    </div>
+                  </div>
                 </div>
 
-                <label className="flex items-start gap-3 cursor-pointer">
+                <label className="flex items-start gap-3 cursor-pointer p-4 rounded-xl hover:bg-gray-50 transition-colors">
                   <input
                     type="checkbox"
                     checked={saveData}
                     onChange={(e) => setSaveData(e.target.checked)}
-                    className="mt-0.5 w-4 h-4 text-accent border border-gray-300 rounded focus:ring-2 focus:ring-accent/20 cursor-pointer"
+                    className="mt-1 w-5 h-5 text-accent border-2 border-gray-300 rounded focus:ring-2 focus:ring-accent/20 cursor-pointer"
                   />
-                  <span className="text-sm text-gray-600 leading-relaxed">
-                    Gegevens bewaren voor snellere checkout (7 dagen)
+                  <span className="text-sm text-gray-700 leading-relaxed">
+                    Bewaar mijn gegevens voor een snellere checkout bij volgende bestellingen (7 dagen)
                   </span>
                 </label>
               </div>
@@ -314,7 +311,7 @@ function CheckoutContent() {
             {/* Bestelling Overzicht - Rechterkant, direct op achtergrond */}
             <div className="space-y-6">
               <div className="sticky top-28">
-                <h2 className="text-2xl font-semibold mb-6 text-gray-900">Jouw Bestelling</h2>
+                <h2 className="text-2xl font-medium mb-6 text-gray-900">Jouw Bestelling</h2>
 
                 <Separator variant="float" spacing="sm" />
                 
@@ -329,7 +326,7 @@ function CheckoutContent() {
                     />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold mb-1 text-gray-900">{product.name}</h3>
+                    <h3 className="font-medium mb-1 text-gray-900">{product.name}</h3>
                     <p className="text-sm text-gray-600 mb-2">Aantal: {quantity}</p>
                     <p className="font-semibold text-gray-900">{formatPrice(product.price)}</p>
                   </div>
@@ -340,15 +337,15 @@ function CheckoutContent() {
                 <div className="space-y-3 my-6">
                   <div className="flex justify-between text-gray-700">
                     <span>Subtotaal</span>
-                    <span className="font-semibold">{formatPrice(subtotal)}</span>
+                    <span className="font-medium">{formatPrice(subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-gray-700">
                     <span>Verzendkosten</span>
-                    <span className="font-semibold">{shipping === 0 ? "Gratis" : formatPrice(shipping)}</span>
+                    <span className="font-medium">{shipping === 0 ? "Gratis" : formatPrice(shipping)}</span>
                   </div>
                   <div className="flex justify-between text-gray-700">
                     <span>BTW (21%)</span>
-                    <span className="font-semibold">{formatPrice(tax)}</span>
+                    <span className="font-medium">{formatPrice(tax)}</span>
                   </div>
                 </div>
 
@@ -361,19 +358,9 @@ function CheckoutContent() {
 
                 <Separator variant="float" spacing="md" />
 
-                {/* ✅ Payment Method Selector - RECHTS BOVEN BUTTON */}
-                <div className="mt-6">
-                  <PaymentMethodSelector
-                    selectedMethod={paymentMethod}
-                    onMethodChange={setPaymentMethod}
-                  />
-                </div>
-
-                <Separator variant="float" spacing="sm" />
-
                 {/* CTA Button rechts - Prominent */}
-                <div className="mt-6">
-                  <Button type="submit" variant="cta" size="lg" fullWidth disabled={isProcessing} loading={isProcessing} leftIcon={<CreditCard className="h-5 w-5" />}>
+                <div className="mt-8">
+                  <Button type="submit" variant="primary" size="lg" fullWidth disabled={isProcessing} loading={isProcessing} leftIcon={<CreditCard className="h-5 w-5" />}>
                     Betalen - {formatPrice(total)}
                   </Button>
                   <p className="text-xs text-gray-500 text-center mt-3">

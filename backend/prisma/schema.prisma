@@ -58,29 +58,6 @@ enum ShipmentStatus {
   FAILED
 }
 
-enum ReturnStatus {
-  REQUESTED         // Klant heeft retour aangevraagd
-  LABEL_CREATED     // Label gegenereerd
-  LABEL_SENT        // Email verstuurd naar klant
-  IN_TRANSIT        // Pakket onderweg naar ons
-  RECEIVED          // Ontvangen in warehouse
-  INSPECTED         // Geïnspecteerd (conditie check)
-  APPROVED          // Goedgekeurd voor refund
-  REJECTED          // Afgekeurd (niet compleet/beschadigd)
-  REFUND_PENDING    // Terugbetaling in behandeling
-  REFUND_PROCESSED  // Terugbetaling verwerkt
-  CLOSED            // Retour afgerond
-}
-
-enum ReturnReason {
-  DEFECTIVE         // Defect product
-  WRONG_ITEM        // Verkeerd artikel ontvangen
-  NOT_AS_DESCRIBED  // Niet zoals beschreven
-  CHANGED_MIND      // Van gedachten veranderd
-  DAMAGED_SHIPPING  // Beschadigd tijdens verzending
-  OTHER             // Anders
-}
-
 // ============================================
 // USER MANAGEMENT
 // ============================================
@@ -189,10 +166,6 @@ model Product {
   // Images (array of URLs)
   images        Json        @default("[]")
   
-  // Video URLs (supports up to 50MB)
-  heroVideoUrl  String?     @map("hero_video_url")  // 10-20MB, homepage hero background
-  videoUrl      String?     @map("video_url")        // 20-50MB, product demo + "Zie Het in Actie"
-  
   // SEO
   metaTitle     String?     @map("meta_title")
   metaDescription String?   @map("meta_description")
@@ -257,7 +230,6 @@ model Order {
   items         OrderItem[]
   payment       Payment?
   shipment      Shipment?
-  returns       Return[]      // NEW: Returns relation
   
   @@map("orders")
 }
@@ -372,72 +344,6 @@ model Shipment {
 }
 
 // ============================================
-// RETURN MANAGEMENT (MyParcel Returns)
-// ============================================
-
-model Return {
-  id            String        @id @default(cuid())
-  orderId       String        @map("order_id")
-  
-  // MyParcel integration (DRY: Same structure as Shipment)
-  myparcelId    Int?          @unique @map("myparcel_id")
-  trackingCode  String?       @unique @map("tracking_code")
-  trackingUrl   String?       @map("tracking_url")
-  labelUrl      String?       @map("label_url")
-  
-  // Return details
-  reason        ReturnReason
-  reasonDetails String?       @map("reason_details") @db.Text
-  status        ReturnStatus  @default(REQUESTED)
-  
-  // Items to return (DRY: JSON for flexibility)
-  items         Json          // [{productId, productName, quantity, condition}]
-  
-  // Financial tracking
-  refundAmount  Decimal?      @map("refund_amount") @db.Decimal(10, 2)
-  refundMethod  String?       @map("refund_method") // ORIGINAL_PAYMENT, BANK_TRANSFER
-  refundTransactionId String? @map("refund_transaction_id") // Mollie refund ID
-  
-  // Warehouse inspection (Quality control)
-  inspectedAt   DateTime?     @map("inspected_at")
-  inspectedBy   String?       @map("inspected_by") // User ID
-  inspectionNotes String?     @map("inspection_notes") @db.Text
-  productCondition String?    @map("product_condition") // NEW, GOOD, DAMAGED, DEFECTIVE
-  
-  // Communication tracking
-  customerNotes String?       @map("customer_notes") @db.Text
-  adminNotes    String?       @map("admin_notes") @db.Text
-  emailSentAt   DateTime?     @map("email_sent_at")
-  
-  // Photo evidence (customer + warehouse)
-  customerPhotos Json?        @map("customer_photos") @default("[]") // URLs array
-  warehousePhotos Json?       @map("warehouse_photos") @default("[]") // URLs array
-  
-  // Metadata (MyParcel API responses, etc.)
-  metadata      Json?
-  
-  // Timestamps (Complete audit trail)
-  createdAt     DateTime      @default(now()) @map("created_at")
-  updatedAt     DateTime      @updatedAt @map("updated_at")
-  receivedAt    DateTime?     @map("received_at")
-  approvedAt    DateTime?     @map("approved_at")
-  rejectedAt    DateTime?     @map("rejected_at")
-  refundedAt    DateTime?     @map("refunded_at")
-  closedAt      DateTime?     @map("closed_at")
-  
-  // Relations
-  order         Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  
-  // Indexes (Performance optimization)
-  @@map("returns")
-  @@index([orderId])
-  @@index([status])
-  @@index([createdAt])
-  @@index([myparcelId])
-  @@index([trackingCode])
-}
-
-// ============================================
 // AUDIT & LOGGING
 // ============================================
 
@@ -465,41 +371,6 @@ model AuditLog {
   user          User?       @relation(fields: [userId], references: [id])
   
   @@map("audit_logs")
-}
-
-// ============================================
-// CONTACT & MESSAGING
-// ============================================
-
-model ContactMessage {
-  id            String      @id @default(cuid())
-  
-  // Message details
-  email         String
-  message       String      @db.Text
-  orderNumber   String?     @map("order_number")
-  
-  // Status tracking
-  status        String      @default("new") // new, read, replied
-  
-  // hCaptcha verification (GDPR-compliant)
-  captchaToken  String?     @map("captcha_token")
-  captchaScore  Float?      @map("captcha_score")
-  
-  // Request metadata
-  ipAddress     String?     @map("ip_address")
-  userAgent     String?     @map("user_agent")
-  
-  // Timestamps
-  createdAt     DateTime    @default(now()) @map("created_at")
-  updatedAt     DateTime    @updatedAt @map("updated_at")
-  readAt        DateTime?   @map("read_at")
-  repliedAt     DateTime?   @map("replied_at")
-  
-  @@map("contact_messages")
-  @@index([status])
-  @@index([createdAt])
-  @@index([email])
 }
 
 // ============================================

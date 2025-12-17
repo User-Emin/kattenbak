@@ -1,7 +1,6 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import path from 'path'; // FIX: Import path module
 import { env } from './config/env.config';
 import { DatabaseClient } from './config/database.config';
 import { logger } from './config/logger.config';
@@ -54,11 +53,8 @@ class Server {
     }));
 
     // Body parsing
-    this.app.use(express.json({ limit: '50mb' })); // Increased for uploads
-    this.app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-
-    // DRY: Static files - Serve uploaded images
-    this.app.use('/uploads', express.static(path.join(process.cwd(), 'public', 'uploads')));
+    this.app.use(express.json({ limit: '10mb' }));
+    this.app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
     // Request logging
     this.app.use(requestLogger);
@@ -101,27 +97,11 @@ class Server {
     const adminRoutes = (await import('./routes/admin/index')).default;
     this.app.use('/api/v1/admin', adminRoutes);
     
-    // Return routes - DRY: Customer + Admin returns
-    const returnRoutes = (await import('./routes/returns.routes')).default;
-    this.app.use('/api/v1/returns', returnRoutes);
-    
-    // Orders routes - DRY: Public order creation with payment
-    const orderRoutes = (await import('./routes/orders.routes')).default;
-    this.app.use('/api/v1/orders', orderRoutes);
-    
-    // Contact routes - SIMPLE: No database, no @ imports
-    const contactRoutes = (await import('./routes/contact.routes.simple')).default;
-    this.app.use('/api/v1/contact', contactRoutes);
-    
-    // Payment methods routes - DRY: Fetch available Mollie payment methods
-    const paymentMethodsRoutes = (await import('./routes/payment-methods.routes')).default;
-    this.app.use('/api/v1/payment-methods', paymentMethodsRoutes);
-    
     // Webhook routes
     const webhookRoutes = (await import('./routes/webhook.routes')).default;
     this.app.use('/api/v1/webhooks', webhookRoutes);
 
-    logger.info('✅ Routes initialized (admin + products + orders + returns + contact + payment-methods + webhooks)');
+    logger.info('✅ Routes initialized (admin + products + webhooks)');
   }
 
   /**
@@ -153,13 +133,13 @@ class Server {
       }
 
       // Start listening
-      this.app.listen(env.PORT, () => {
+      this.app.listen(env.BACKEND_PORT, () => {
         logger.info('='.repeat(50));
         logger.info('🚀 KATTENBAK WEBSHOP API SERVER');
         logger.info('='.repeat(50));
         logger.info(`Environment: ${env.NODE_ENV}`);
         logger.info(`Server: ${env.BACKEND_URL}`);
-        logger.info(`Port: ${env.PORT}`);
+        logger.info(`Port: ${env.BACKEND_PORT}`);
         logger.info(`Redis: ${env.REDIS_HOST}:${env.REDIS_PORT}`);
         logger.info(`Mollie: ${env.MOLLIE_API_KEY.substring(0, 15)}...`);
         logger.info('='.repeat(50));

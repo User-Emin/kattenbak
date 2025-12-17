@@ -1,4 +1,4 @@
-import { Order } from "@/types/product";
+import { CreateOrderData, Order } from "@/types/product";
 import { API_CONFIG, apiFetch } from "@/lib/config";
 
 /**
@@ -7,10 +7,10 @@ import { API_CONFIG, apiFetch } from "@/lib/config";
  */
 export const ordersApi = {
   /**
-   * Create new order - DRY: Flexible schema
+   * Create new order
    */
-  async create(data: any): Promise<{ order: Order; payment?: { id: string; checkoutUrl?: string }; paymentUrl?: string }> {
-    const result = await apiFetch<{ success: boolean; data: any }>(
+  async create(data: CreateOrderData): Promise<{ order: Order; payment: { id: string; checkoutUrl: string } }> {
+    const result = await apiFetch<{ success: boolean; data: { order: Order; payment: { id: string; checkoutUrl: string } } }>(
       API_CONFIG.ENDPOINTS.ORDERS,
       {
         method: "POST",

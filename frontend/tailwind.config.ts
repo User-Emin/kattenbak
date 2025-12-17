@@ -5,36 +5,6 @@ export default {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./lib/**/*.{js,ts,jsx,tsx}",
-  ],
-  safelist: [
-    // DRY: Safelist alle theme-colors.ts classes
-    // Primary is now BLACK/GRAY (was cyan)
-    'bg-gray-50', 'bg-gray-100', 'bg-gray-200', 'bg-gray-300', 'bg-gray-400',
-    'bg-gray-500', 'bg-gray-600', 'bg-gray-700', 'bg-gray-800', 'bg-gray-900',
-    'bg-blue-50', 'bg-blue-100', 'bg-blue-200', 'bg-blue-300', 'bg-blue-400',
-    'bg-blue-500', 'bg-blue-600', 'bg-blue-700', 'bg-blue-800', 'bg-blue-900',
-    'bg-orange-500', 'bg-orange-600', 'bg-orange-700', 'bg-orange-800',
-    'bg-black', 'bg-white',
-    // Text colors
-    'text-gray-50', 'text-gray-100', 'text-gray-200', 'text-gray-300', 'text-gray-400',
-    'text-gray-500', 'text-gray-600', 'text-gray-700', 'text-gray-800', 'text-gray-900',
-    'text-blue-50', 'text-blue-100', 'text-blue-200', 'text-blue-300', 'text-blue-400',
-    'text-blue-500', 'text-blue-600', 'text-blue-700', 'text-blue-800', 'text-blue-900',
-    'text-orange-500', 'text-orange-600', 'text-orange-700',
-    'text-white', 'text-black',
-    // Gradients
-    'from-gray-50', 'from-gray-900', 'from-gray-800',
-    'to-gray-100', 'to-gray-900', 'to-black',
-    'from-orange-600', 'from-orange-700', 'to-orange-700', 'to-orange-800',
-    'via-white',
-    // Border colors
-    'border-gray-100', 'border-gray-200', 'border-gray-300', 'border-gray-600', 'border-gray-800',
-    'border-blue-100', 'border-blue-600',
-    // Hover states
-    'hover:bg-orange-700', 'hover:bg-orange-800', 'hover:bg-gray-100', 'hover:bg-gray-200',
-    'hover:bg-gray-800', 'hover:bg-gray-900', 'hover:text-gray-900',
-    'hover:from-gray-800', 'hover:from-orange-700', 'hover:to-gray-900', 'hover:to-orange-800',
   ],
   theme: {
     extend: {
@@ -55,14 +25,12 @@ export default {
           light: '#0077a3',
           dark: '#003d5c',
         },
-        // ZWART voor action buttons - MAXIMAAL DYNAMISCH (was cyaan #00fbff)
+        // Goud/Geel voor action buttons (conversie optimalisatie)
         accent: {
-          DEFAULT: '#000000',      // ZWART als base
-          light: '#1a1a1a',        // Lichter zwart
-          dark: '#000000',         // Pure zwart
+          DEFAULT: '#f4d673',      // Goud als base
+          light: '#ffebab',        // Lichter geel
+          dark: '#e6c255',         // Donkerder goud voor hover
         },
-        // Verwijder custom cyan - gebruik default Tailwind
-        // cyan removed - primary is now BLACK/GRAY
       },
       borderRadius: {
         'pill': '9999px',          // Volledige pill vorm

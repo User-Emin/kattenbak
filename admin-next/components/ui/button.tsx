@@ -36,52 +36,25 @@ const buttonVariants = cva(
   }
 )
 
-// DRY: Extended props to support leftIcon and rightIcon
-export interface ButtonProps
-  extends React.ComponentProps<"button">,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+function Button({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+  }) {
+  const Comp = asChild ? Slot : "button"
+
+  return (
+    <Comp
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  )
 }
-
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, leftIcon, rightIcon, children, ...props }, ref) => {
-    // DRY: Check if we have multiple children (icons + content)
-    const hasIcons = Boolean(leftIcon || rightIcon);
-    
-    // ABSOLUTE DRY SOLUTION: Only use Slot when safe (no icons)
-    // When icons exist: Always use button to avoid Children.only error
-    if (asChild && !hasIcons) {
-      // Safe: Single child, Slot works
-      return (
-        <Slot
-          ref={ref}
-          data-slot="button"
-          className={cn(buttonVariants({ variant, size, className }))}
-          {...props}
-        >
-          {children}
-        </Slot>
-      )
-    }
-
-    // Default: Regular button (handles multiple children)
-    return (
-      <button
-        ref={ref}
-        data-slot="button"
-        className={cn(buttonVariants({ variant, size, className }))}
-        {...props}
-      >
-        {leftIcon && <span className="inline-flex shrink-0">{leftIcon}</span>}
-        {children}
-        {rightIcon && <span className="inline-flex shrink-0">{rightIcon}</span>}
-      </button>
-    )
-  }
-)
-
-Button.displayName = "Button"
 
 export { Button, buttonVariants }

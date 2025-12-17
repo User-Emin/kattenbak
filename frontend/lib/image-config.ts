@@ -1,49 +1,46 @@
 /**
- * IMAGE CONFIGURATION - Maximaal DRY & DYNAMISCH
- * Sync met backend demo images voor consistentie
- * NO HARDCODED PATHS - Alles via API of demo fallback
+ * IMAGE CONFIGURATION - Maximaal DRY
+ * Single source voor alle afbeeldingen in de app
  */
 
-import { DEFAULT_PRODUCT_IMAGE, getFallbackImage } from './demo-images';
-
 export const IMAGE_CONFIG = {
-  // DRY: Alle images gebruiken demo fallback (sync met backend)
-  // Deze worden ALLEEN gebruikt als fallback - echte images komen van API
+  // Hero images - Gebruikt overal in de app
   hero: {
-    main: DEFAULT_PRODUCT_IMAGE,
+    main: '/images/test-cat.jpg',
     alt: 'Premium automatische kattenbak',
   },
   
+  // USP section images
   usps: {
     capacity: {
-      src: DEFAULT_PRODUCT_IMAGE,
+      src: '/images/test-cat.jpg',
       alt: '10.5L grote capaciteit',
     },
     quiet: {
-      src: DEFAULT_PRODUCT_IMAGE,
+      src: '/images/test-cat.jpg',
       alt: 'Ultra-stille motor onder 40dB',
     },
   },
   
-  // Product images - ALLEEN fallback, echte data via API
+  // Product images - Voor detail, cart, checkout
   product: {
-    main: DEFAULT_PRODUCT_IMAGE,
+    main: '/images/test-cat.jpg',
     alt: 'Premium Kattenbak',
   },
   
-  // Cart & Checkout - ALLEEN fallback, echte data via API
+  // Cart & Checkout images (alias voor product)
   cart: {
-    thumbnail: DEFAULT_PRODUCT_IMAGE,
+    thumbnail: '/images/test-cat.jpg',
     alt: 'Premium Kattenbak',
   },
   
   checkout: {
-    thumbnail: DEFAULT_PRODUCT_IMAGE,
+    thumbnail: '/images/test-cat.jpg',
     alt: 'Premium Kattenbak',
   },
   
-  // Fallback placeholder (zelfde als demo main)
-  placeholder: DEFAULT_PRODUCT_IMAGE,
+  // Fallback placeholder
+  placeholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPklNQUdFPC90ZXh0Pjwvc3ZnPg==',
 } as const;
 
 // Image optimization settings
@@ -51,17 +48,16 @@ export const IMAGE_QUALITY = 85;
 
 /**
  * DRY Helper: Get product image with intelligent fallback
- * MAXIMAAL DYNAMISCH: Eerst proberen vanuit API, dan demo fallback
  * Single source voor alle product afbeeldingen
  */
 export const getProductImage = (images: string[] | null | undefined): string => {
-  // 1. Probeer images array vanuit API (DYNAMISCH)
+  // Probeer images array
   if (images && Array.isArray(images) && images.length > 0 && images[0]) {
     return images[0];
   }
   
-  // 2. Fallback naar demo image (sync met backend)
-  return getFallbackImage();
+  // Fallback naar centrale product afbeelding
+  return IMAGE_CONFIG.product.main;
 };
 
 // Helper voor FILL images (geen width/height)

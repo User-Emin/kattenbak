@@ -3,18 +3,16 @@
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { useCart } from "@/context/cart-context";
-import { useUI } from "@/context/ui-context";
 import { MiniCart } from "@/components/ui/mini-cart";
 import { MovingBanner } from "@/components/ui/moving-banner";
 
 export function Header() {
   const { itemCount } = useCart();
-  const { isCartOpen, openCart, closeCart } = useUI();
   const pathname = usePathname();
   const router = useRouter();
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Dynamisch checken of we op cart pagina zijn - DRY & Maintainable
@@ -23,43 +21,33 @@ export function Header() {
   // Auto-close cart wanneer we naar cart pagina navigeren
   useEffect(() => {
     if (isOnCartPage && isCartOpen) {
-      closeCart();
+      setIsCartOpen(false);
     }
-  }, [isOnCartPage, isCartOpen, closeCart]);
+  }, [isOnCartPage, isCartOpen]);
 
   // Handler voor cart toggle met page detection
   const handleCartToggle = () => {
+    // Als we op cart pagina zijn, sluit de mini-cart (als open) of doe niets
     if (isOnCartPage) {
-      closeCart();
+      setIsCartOpen(false);
       return;
     }
-    if (isCartOpen) {
-      closeCart();
-    } else {
-      openCart();
-    }
+    // Anders toggle normal
+    setIsCartOpen(!isCartOpen);
   };
 
   return (
     <>
-      {/* Moving USP Banner + Navbar - Sticky als groep (DRY) */}
-      <div className="sticky top-0 z-50">
-        <MovingBanner />
-        
-        {/* Navbar - Direct onder banner */}
-        <header className="bg-brand shadow-md">
+      {/* Moving USP Banner - Bovenaan */}
+      <MovingBanner />
+      
+      {/* Navbar - Edge-to-edge, vierkant, GEEN floating */}
+      <header className="sticky top-0 z-50 bg-brand shadow-md">
         <div className="container mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-18">
-            {/* Logo - BALANCED: Goed zichtbaar, correct formaat */}
-            <Link href="/" className="flex items-center hover:opacity-90 transition">
-              <Image
-                src="/logo.png"
-                alt="Catsupply"
-                width={180}
-                height={180}
-                className="h-14 w-auto"
-                priority
-              />
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link href="/" className="text-xl font-bold text-white hover:text-white/90 transition">
+              Kattenbak
             </Link>
 
             {/* Desktop Navigation */}
@@ -85,11 +73,11 @@ export function Header() {
               title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
             >
               <ShoppingCart className="h-6 w-6 text-white" />
-                {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-black text-white text-xs rounded-full flex items-center justify-center font-bold px-1.5">
-                    {itemCount}
-                  </span>
-                )}
+              {itemCount > 0 && (
+                <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-accent text-gray-900 text-xs rounded-full flex items-center justify-center font-bold px-1.5">
+                  {itemCount}
+                </span>
+              )}
             </button>
 
             {/* Mobile: Cart + Menu Icons - Smart routing */}
@@ -104,7 +92,7 @@ export function Header() {
               >
                 <ShoppingCart className="h-6 w-6 text-white" />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-black text-white text-xs rounded-full flex items-center justify-center font-bold px-1.5">
+                  <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-accent text-gray-900 text-xs rounded-full flex items-center justify-center font-bold px-1.5">
                     {itemCount}
                   </span>
                 )}
@@ -137,25 +125,24 @@ export function Header() {
             </nav>
           )}
         </div>
-        </header>
-      </div>
+      </header>
 
       {/* Cart Sidebar */}
       {isCartOpen && (
         <>
           <div
             className="fixed inset-0 bg-black/20 z-40 backdrop-blur-sm"
-            onClick={closeCart}
+            onClick={() => setIsCartOpen(false)}
           />
           <div className="fixed right-0 top-0 h-screen w-full max-w-md bg-white shadow-2xl z-50 animate-slide-in-right flex flex-col">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
               <h2 className="text-xl font-medium">Winkelwagen</h2>
-              <button onClick={closeCart} className="p-2 hover:bg-gray-100 rounded-lg transition">
+              <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-gray-100 rounded-lg transition">
                 <X className="h-6 w-6" />
               </button>
             </div>
             <div className="flex-1 overflow-hidden">
-              <MiniCart onClose={closeCart} />
+              <MiniCart onClose={() => setIsCartOpen(false)} />
             </div>
           </div>
         </>

@@ -17,7 +17,7 @@ export default function CartPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center max-w-md px-6">
           <ShoppingCart className="h-20 w-20 mx-auto mb-6 text-gray-300" />
-          <h1 className="text-3xl font-semibold mb-4 text-gray-900">Je winkelwagen is leeg</h1>
+          <h1 className="text-3xl font-light mb-4 text-gray-900">Je winkelwagen is leeg</h1>
           <p className="text-gray-600 mb-8">
             Ontdek onze premium zelfreinigende kattenbak
           </p>
@@ -38,7 +38,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-        <h1 className="text-4xl font-semibold mb-2">Winkelwagen</h1>
+        <h1 className="text-4xl font-normal mb-2">Winkelwagen</h1>
         <p className="text-gray-600 mb-8">{itemCount} {itemCount === 1 ? 'product' : 'producten'}</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -46,9 +46,8 @@ export default function CartPage() {
           <div className="lg:col-span-2 space-y-6">
             {items.map((item, index) => (
               <div key={item.product.id}>
-                <div className="flex gap-3 sm:gap-6">
-                  {/* COMPACT IMAGE - mobiel 80x80, desktop 128x128 */}
-                  <div className="relative w-20 h-20 sm:w-32 sm:h-32 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0">
+                <div className="flex gap-6">
+                  <div className="relative w-32 h-32 bg-gray-50 rounded overflow-hidden flex-shrink-0">
                     <ProductImage
                       src={getProductImage(item.product.images)}
                       alt={item.product.name}
@@ -57,50 +56,48 @@ export default function CartPage() {
                     />
                   </div>
 
-                  <div className="flex-1 min-w-0">
-                    {/* HEADER - compact op mobiel */}
-                    <div className="flex justify-between items-start mb-2 sm:mb-3">
-                      <div className="flex-1 min-w-0 pr-2">
-                        <h2 className="text-base sm:text-xl font-semibold mb-1 truncate">
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h2 className="text-xl font-normal mb-1">
                           {item.product.name}
                         </h2>
-                        <p className="text-sm sm:text-base text-gray-600">
+                        <p className="text-gray-600">
                           {formatPrice(item.product.price)} per stuk
                         </p>
                       </div>
                       <button
                         onClick={() => removeItem(item.product.id)}
-                        className="text-gray-400 hover:text-gray-600 transition p-1 sm:p-2 flex-shrink-0"
+                        className="text-gray-400 hover:text-gray-600 transition p-2"
                         aria-label="Verwijder"
                       >
-                        <X className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <X className="h-5 w-5" />
                       </button>
                     </div>
 
-                    {/* QUANTITY + PRICE - responsive */}
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
+                          className="w-10 h-10 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition"
                         >
-                          <Minus className="h-3 w-3 sm:h-4 sm:w-4" />
+                          <Minus className="h-4 w-4" />
                         </button>
 
-                        <span className="w-10 sm:w-12 text-center font-semibold text-base sm:text-lg">
+                        <span className="w-12 text-center font-medium">
                           {item.quantity}
                         </span>
 
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
+                          className="w-10 h-10 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition"
                           disabled={item.quantity >= item.product.stock}
                         >
-                          <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
+                          <Plus className="h-4 w-4" />
                         </button>
                       </div>
 
-                      <p className="text-base sm:text-xl font-semibold">
+                      <p className="text-xl font-light">
                         {formatPrice(item.product.price * item.quantity)}
                       </p>
                     </div>
@@ -114,10 +111,10 @@ export default function CartPage() {
             ))}
           </div>
 
-          {/* Order Summary - ZELFDE MARGIN ALS PRODUCTEN */}
+          {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-50 p-4 sm:p-6 lg:p-8 rounded-lg sticky top-8">
-              <h2 className="text-xl font-semibold mb-6">Overzicht</h2>
+            <div className="bg-gray-50 p-8 rounded-lg sticky top-8">
+              <h2 className="text-xl font-normal mb-6">Overzicht</h2>
 
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
@@ -139,12 +136,12 @@ export default function CartPage() {
               <Separator variant="float" spacing="sm" />
 
               <div className="flex justify-between items-center mb-6">
-                <span className="text-lg font-semibold">Totaal</span>
-                <span className="text-2xl font-semibold">{formatPrice(total)}</span>
+                <span className="text-lg font-medium">Totaal</span>
+                <span className="text-2xl font-light">{formatPrice(total)}</span>
               </div>
 
               <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
-                <Button variant="cta" size="lg" fullWidth rightIcon={<ArrowRight className="h-5 w-5" />}>
+                <Button variant="primary" size="lg" fullWidth rightIcon={<ArrowRight className="h-5 w-5" />}>
                   Afrekenen
                 </Button>
               </Link>
@@ -155,7 +152,7 @@ export default function CartPage() {
 
               <Separator variant="float" spacing="md" />
 
-              <div className="text-sm font-semibold text-gray-700 space-y-2">
+              <div className="text-sm text-gray-600 space-y-2">
                 <p>✓ Gratis verzending vanaf €50</p>
                 <p>✓ Veilig betalen met Mollie</p>
                 <p>✓ 14 dagen bedenktijd</p>
