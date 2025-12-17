@@ -409,6 +409,7 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
             city: orderData.shippingAddress.city,
             country: orderData.shippingAddress.country || 'NL',
             phone: orderData.shippingAddress.phone || null,
+            user: undefined, // Guest checkout
           },
         },
         billingAddress: orderData.billingAddress ? {
@@ -422,6 +423,7 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
             city: orderData.billingAddress.city,
             country: orderData.billingAddress.country || 'NL',
             phone: orderData.billingAddress.phone || null,
+            user: undefined, // Guest checkout
           },
         } : undefined,
         items: {
