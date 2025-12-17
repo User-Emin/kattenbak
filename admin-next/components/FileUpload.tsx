@@ -42,7 +42,12 @@ export function FileUpload({ label, accept, currentUrl, onUpload, helpText }: Fi
       formData.append('file', file);
 
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl';
-      const response = await fetch(`${API_URL}/api/v1/upload/image`, {
+      // FIX: Remove double /api/v1 - API_URL already has it
+      const uploadUrl = API_URL.includes('/api/v1') 
+        ? `${API_URL}/upload/image` 
+        : `${API_URL}/api/v1/upload/image`;
+      
+      const response = await fetch(uploadUrl, {
         method: 'POST',
         body: formData,
       });

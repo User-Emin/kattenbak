@@ -47,10 +47,9 @@ if (ENV.isProduction && ENV.isTest) {
 const success = (data: any) => ({ success: true, data });
 const error = (message: string) => ({ success: false, error: message });
 
-// NOTE: Upload routes disabled temporarily due to Sharp module issues on server
-// Will re-enable after fixing Sharp installation
-// const uploadRoutes = require('./routes/upload.routes').default;
-// app.use('/api/v1/upload', uploadRoutes);
+// Upload routes - SIMPLE version zonder Sharp dependency
+const uploadRoutes = require('./routes/upload.routes.simple').default;
+app.use('/api/v1/upload', uploadRoutes);
 
 // =============================================================================
 // HEALTH ENDPOINTS
