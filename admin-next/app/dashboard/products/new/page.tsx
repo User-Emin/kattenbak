@@ -41,6 +41,8 @@ export default function NewProductPage() {
       setIsSaving(true);
       const formData = new FormData(e.currentTarget);
       
+      const categoryId = formData.get('categoryId') as string;
+      
       const productData = {
         name: formData.get('name') as string,
         sku: formData.get('sku') as string,
@@ -53,7 +55,7 @@ export default function NewProductPage() {
         trackInventory: formData.get('trackInventory') === 'on',
         isActive: formData.get('isActive') === 'on',
         isFeatured: formData.get('isFeatured') === 'on',
-        categoryId: formData.get('categoryId') as string,
+        categoryId: categoryId || null,
       };
 
       await post('/admin/products', productData);
@@ -218,15 +220,14 @@ export default function NewProductPage() {
           
           <div>
             <label htmlFor="categoryId" className="block text-sm font-medium mb-2">
-              Categorie *
+              Categorie
             </label>
             <select
               id="categoryId"
               name="categoryId"
-              required
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              <option value="">Selecteer categorie</option>
+              <option value="">Geen categorie</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}

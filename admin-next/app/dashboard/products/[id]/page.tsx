@@ -81,6 +81,8 @@ export default function EditProductPage() {
       setIsSaving(true);
       const formData = new FormData(e.currentTarget);
       
+      const categoryId = formData.get('categoryId') as string;
+      
       const updateData = {
         name: formData.get('name') as string,
         sku: formData.get('sku') as string,
@@ -93,7 +95,7 @@ export default function EditProductPage() {
         trackInventory: formData.get('trackInventory') === 'on',
         isActive: formData.get('isActive') === 'on',
         isFeatured: formData.get('isFeatured') === 'on',
-        categoryId: formData.get('categoryId') as string,
+        categoryId: categoryId || null,
       };
 
       await put(`/admin/products/${productId}`, updateData);
@@ -274,15 +276,15 @@ export default function EditProductPage() {
           
           <div>
             <label htmlFor="categoryId" className="block text-sm font-medium mb-2">
-              Categorie *
+              Categorie
             </label>
             <select
               id="categoryId"
               name="categoryId"
-              required
-              defaultValue={product.categoryId}
+              defaultValue={product.categoryId || ''}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             >
+              <option value="">Geen categorie</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}
