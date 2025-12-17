@@ -13,13 +13,14 @@ export class MollieService {
   private static client = createMollieClient({ apiKey: env.MOLLIE_API_KEY });
 
   /**
-   * Create payment
+   * Create payment with optional method selection
    */
   static async createPayment(
     orderId: string,
     amount: number,
     description: string,
-    redirectUrl: string
+    redirectUrl: string,
+    method?: 'ideal' | 'paypal' | 'creditcard' | 'bancontact'
   ): Promise<Payment> {
     try {
       // Create Mollie payment
@@ -31,6 +32,7 @@ export class MollieService {
         description,
         redirectUrl,
         webhookUrl: env.MOLLIE_WEBHOOK_URL,
+        method, // Allow customer to select payment method
         metadata: {
           orderId,
         },

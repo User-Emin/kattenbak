@@ -91,10 +91,17 @@ export class OrderService {
       })
     );
 
-    // Calculate totals
+    // Calculate totals with pre-order discount
     let subtotal = new Decimal(0);
     const orderItems = productDetails.map(({ product, quantity }) => {
-      const price = new Decimal(product.price.toString());
+      let price = new Decimal(product.price.toString());
+      
+      // Apply pre-order discount if applicable
+      if (product.isPreOrder && product.preOrderDiscount) {
+        const discount = new Decimal(product.preOrderDiscount.toString()).dividedBy(100);
+        price = price.times(new Decimal(1).minus(discount));
+      }
+      
       const itemTotal = price.times(quantity);
       subtotal = subtotal.plus(itemTotal);
 
