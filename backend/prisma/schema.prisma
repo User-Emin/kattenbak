@@ -85,8 +85,8 @@ model User {
 }
 
 model Address {
-  id     String @id @default(cuid())
-  userId String @map("user_id")
+  id     String  @id @default(cuid())
+  userId String? @map("user_id")
 
   // Address fields
   firstName   String  @map("first_name")
@@ -106,7 +106,7 @@ model Address {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   ordersShipping Order[] @relation("ShippingAddress")
   ordersBilling  Order[] @relation("BillingAddress")
 
