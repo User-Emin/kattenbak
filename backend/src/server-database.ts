@@ -387,7 +387,7 @@ app.post('/api/v1/webhooks/mollie', async (req: Request, res: Response) => {
 // ADMIN: Create product
 app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
   try {
-    const { categoryId, ...productData } = req.body;
+    const { categoryId, videoUrl, ...productData } = req.body;
 
     // Auto-generate slug if not provided
     const slug = productData.slug || productData.name
@@ -400,6 +400,7 @@ app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
       ...productData,
       slug,
       images: productData.images || [],
+      videoUrl: videoUrl || null,
     };
 
     // Handle category relationship (optioneel)
@@ -423,7 +424,7 @@ app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
 // ADMIN: Update product
 app.put('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
   try {
-    const { categoryId, ...productData } = req.body;
+    const { categoryId, videoUrl, ...productData } = req.body;
     
     // Build update data with proper Prisma relations
     const updateData: any = { ...productData };
