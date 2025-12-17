@@ -20,7 +20,7 @@ export class MollieService {
     amount: number,
     description: string,
     redirectUrl: string,
-    method?: 'ideal' | 'paypal' | 'creditcard' | 'bancontact'
+    method?: 'ideal' | 'paypal' // Mollie-supported methods only
   ): Promise<Payment> {
     try {
       // Create Mollie payment

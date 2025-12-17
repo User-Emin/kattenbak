@@ -15,6 +15,7 @@ import { ordersApi } from "@/lib/api/orders";
 import { Loader2, CreditCard } from "lucide-react";
 import { ProductImage } from "@/components/ui/product-image";
 import { getProductImage } from "@/lib/image-config";
+import Image from "next/image";
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -27,7 +28,7 @@ function CheckoutContent() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saveData, setSaveData] = useState(true);
-  const [paymentMethod, setPaymentMethod] = useState<'ideal' | 'paypal' | 'creditcard'>('ideal');
+  const [paymentMethod, setPaymentMethod] = useState<'ideal' | 'paypal'>('ideal');
 
   const [formData, setFormData] = useState({
     firstName: customerData?.firstName || "",
@@ -310,13 +311,14 @@ function CheckoutContent() {
                       className="w-5 h-5 text-brand focus:ring-2 focus:ring-brand/20"
                     />
                     <div className="flex items-center gap-3 flex-1">
-                      <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center">
-                        <svg className="w-10 h-6" viewBox="0 0 40 24" fill="none">
-                          <rect width="40" height="24" rx="4" fill="white"/>
-                          <path d="M8 7h2v10H8V7zm4 0h2v10h-2V7zm4 0h2v10h-2V7z" fill="#CC0066"/>
-                          <path d="M20 7h12v10H20V7z" fill="#CC0066"/>
-                          <text x="21" y="15" fontSize="8" fill="white" fontWeight="bold">iDEAL</text>
-                        </svg>
+                      <div className="w-16 h-10 bg-white rounded flex items-center justify-center">
+                        <Image 
+                          src="/images/ideal-logo.png" 
+                          alt="iDEAL" 
+                          width={64} 
+                          height={40} 
+                          className="object-contain"
+                        />
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">iDEAL</p>
@@ -347,11 +349,14 @@ function CheckoutContent() {
                       className="w-5 h-5 text-brand focus:ring-2 focus:ring-brand/20"
                     />
                     <div className="flex items-center gap-3 flex-1">
-                      <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center">
-                        <svg className="w-10 h-6" viewBox="0 0 40 24">
-                          <path d="M15 8c-.5 0-1 .4-1 1v6c0 .6.5 1 1 1h2c1.7 0 3-1.3 3-3s-1.3-3-3-3h-2zm2 6h-1v-4h1c1.1 0 2 .9 2 2s-.9 2-2 2zm8-6c-.5 0-1 .4-1 1v6c0 .6.5 1 1 1h2c1.7 0 3-1.3 3-3s-1.3-3-3-3h-2zm2 6h-1v-4h1c1.1 0 2 .9 2 2s-.9 2-2 2z" fill="#003087"/>
-                          <path d="M15 8c-.5 0-1 .4-1 1v6c0 .6.5 1 1 1h2c1.7 0 3-1.3 3-3s-1.3-3-3-3h-2z" fill="#0070E0"/>
-                        </svg>
+                      <div className="w-16 h-10 bg-white rounded flex items-center justify-center">
+                        <Image 
+                          src="/images/paypal-logo.jpg" 
+                          alt="PayPal" 
+                          width={64} 
+                          height={40} 
+                          className="object-contain"
+                        />
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">PayPal</p>
@@ -367,37 +372,6 @@ function CheckoutContent() {
                     )}
                   </label>
 
-                  {/* Credit Card */}
-                  <label className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all ${
-                    paymentMethod === 'creditcard' 
-                      ? 'border-brand bg-brand/5 shadow-sm' 
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}>
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="creditcard"
-                      checked={paymentMethod === 'creditcard'}
-                      onChange={(e) => setPaymentMethod(e.target.value as 'creditcard')}
-                      className="w-5 h-5 text-brand focus:ring-2 focus:ring-brand/20"
-                    />
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center">
-                        <CreditCard className="w-6 h-6 text-gray-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">Creditcard</p>
-                        <p className="text-sm text-gray-600">Visa, Mastercard, Amex</p>
-                      </div>
-                    </div>
-                    {paymentMethod === 'creditcard' && (
-                      <div className="w-6 h-6 rounded-full bg-brand flex items-center justify-center">
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    )}
-                  </label>
                 </div>
               </div>
 
