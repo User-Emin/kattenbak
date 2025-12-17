@@ -64,6 +64,45 @@ app.get('/api/v1/health', (req: Request, res: Response) => {
 });
 
 // =============================================================================
+// ADMIN AUTH ENDPOINT
+// =============================================================================
+
+app.post('/api/v1/admin/auth/login', (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@kattenbak.nl';
+    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+    
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      // Generate simple token
+      const token = Buffer.from(JSON.stringify({ 
+        email, 
+        role: 'ADMIN', 
+        exp: Date.now() + 86400000 
+      })).toString('base64');
+      
+      res.json({ 
+        success: true, 
+        data: { 
+          token, 
+          user: { 
+            id: 'admin-1', 
+            email, 
+            role: 'ADMIN', 
+            firstName: 'Admin', 
+            lastName: 'User' 
+          }
+        }
+      });
+    } else {
+      res.status(401).json({ success: false, error: 'Invalid credentials' });
+    }
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// =============================================================================
 // PRODUCTS ENDPOINTS - DATABASE
 // =============================================================================
 
