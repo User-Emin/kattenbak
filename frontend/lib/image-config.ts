@@ -6,36 +6,36 @@
 export const IMAGE_CONFIG = {
   // Hero images - Gebruikt overal in de app
   hero: {
-    main: '/images/test-cat.jpg',
+    main: '/images/premium-main.jpg',
     alt: 'Premium automatische kattenbak',
   },
   
   // USP section images
   usps: {
     capacity: {
-      src: '/images/test-cat.jpg',
+      src: '/images/premium-main.jpg',
       alt: '10.5L grote capaciteit',
     },
     quiet: {
-      src: '/images/test-cat.jpg',
+      src: '/images/premium-main.jpg',
       alt: 'Ultra-stille motor onder 40dB',
     },
   },
   
   // Product images - Voor detail, cart, checkout
   product: {
-    main: '/images/test-cat.jpg',
+    main: '/images/premium-main.jpg',
     alt: 'Premium Kattenbak',
   },
   
   // Cart & Checkout images (alias voor product)
   cart: {
-    thumbnail: '/images/test-cat.jpg',
+    thumbnail: '/images/premium-main.jpg',
     alt: 'Premium Kattenbak',
   },
   
   checkout: {
-    thumbnail: '/images/test-cat.jpg',
+    thumbnail: '/images/premium-main.jpg',
     alt: 'Premium Kattenbak',
   },
   

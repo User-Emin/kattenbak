@@ -132,7 +132,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* Product Info - Direct op achtergrond */}
           <div className="space-y-8">
             <div>
-              <h1 className="text-4xl font-semibold mb-6 leading-tight text-gray-900">{product.name}</h1>
+              <h1 className="text-4xl font-light mb-6 leading-tight text-gray-900">{product.name}</h1>
               
               {/* Pre-order Badge */}
               {isPreOrder && (
@@ -240,9 +240,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   { title: '10.5L Afvalbak Capaciteit', note: 'Grootste in zijn klasse' },
                   { title: 'Dubbele Veiligheidssensoren', note: 'Stopt bij detectie kat' },
                 ].map((spec, idx) => (
-                  <details key={idx} className="group" open>
+                  <details key={idx} className="group">
                     <summary className="flex justify-between items-center py-3 cursor-pointer hover:text-brand transition border-b border-gray-200">
-                      <span className="font-semibold text-gray-900">{spec.title}</span>
+                      <span className="font-medium text-gray-700">{spec.title}</span>
                       <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
@@ -297,7 +297,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         {/* Product Description - Direct op achtergrond */}
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="text-3xl font-semibold mb-6 text-gray-900">Over dit product</h2>
+          <h2 className="text-3xl font-light mb-6 text-gray-900">Over dit product</h2>
           <p className="text-gray-700 leading-relaxed text-lg">{product.description}</p>
         </div>
 
@@ -305,7 +305,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         {/* Key Features from Comparison Table */}
         <div className="max-w-5xl mx-auto mb-16">
-          <h2 className="text-3xl font-semibold text-center mb-12 text-gray-900">Waarom kiezen katten eigenaren voor ons?</h2>
+          <h2 className="text-3xl font-light text-center mb-12 text-gray-900">Waarom kiezen katten eigenaren voor ons?</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="flex gap-4">
@@ -313,7 +313,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <Shield className="h-6 w-6 text-brand" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-900">Open-Top, Low-Stress Design</h3>
+                <h3 className="text-lg font-medium mb-2 text-gray-900">Open-Top, Low-Stress Design</h3>
                 <p className="text-gray-700">Minder stressvol voor katten - ze kunnen alles zien en voelen zich veilig</p>
               </div>
             </div>
@@ -323,7 +323,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <Check className="h-6 w-6 text-brand" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-900">Hoge Anti-Splash Wanden</h3>
+                <h3 className="text-lg font-medium mb-2 text-gray-900">Hoge Anti-Splash Wanden</h3>
                 <p className="text-gray-700">Voorkomt morsen - zelfs bij enthousiast graven blijft je vloer schoon</p>
               </div>
             </div>
@@ -333,7 +333,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <Star className="h-6 w-6 text-brand" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-900">Modulair OEM-Vriendelijk</h3>
+                <h3 className="text-lg font-medium mb-2 text-gray-900">Modulair OEM-Vriendelijk</h3>
                 <p className="text-gray-700">Gemakkelijk uit elkaar te halen voor grondige reiniging - alle onderdelen bereikbaar</p>
               </div>
             </div>
@@ -343,7 +343,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <Truck className="h-6 w-6 text-brand" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-900">Compact Formaat, Groot Inwendig</h3>
+                <h3 className="text-lg font-medium mb-2 text-gray-900">Compact Formaat, Groot Inwendig</h3>
                 <p className="text-gray-700">Past in kleinere ruimtes, maar biedt je kat volop bewegingsruimte</p>
               </div>
             </div>
