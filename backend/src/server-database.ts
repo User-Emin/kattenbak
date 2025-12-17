@@ -389,26 +389,24 @@ app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
   try {
     const productData = req.body;
 
-    // Create category if needed
-    let category = await prisma.category.findUnique({
-      where: { slug: productData.categorySlug || 'kattenbakken' },
-    });
-
-    if (!category) {
-      category = await prisma.category.create({
-        data: {
-          name: 'Kattenbakken',
-          slug: 'kattenbakken',
-          description: 'Automatische kattenbakken',
-        },
-      });
+    // Handle null categoryId explicitly (optioneel)
+    if (productData.categoryId === '' || productData.categoryId === 'null') {
+      productData.categoryId = null;
     }
+
+    // Auto-generate slug if not provided
+    const slug = productData.slug || productData.name
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-');
 
     const product = await prisma.product.create({
       data: {
         ...productData,
-        categoryId: category.id,
+        slug,
+        images: productData.images || [],
       },
+      include: { category: true },
     });
 
     console.log(`✅ Admin created product: ${product.name}`);
@@ -422,9 +420,16 @@ app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
 // ADMIN: Update product
 app.put('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
   try {
+    // Handle null categoryId explicitly (optioneel)
+    const updateData = { ...req.body };
+    if (updateData.categoryId === '' || updateData.categoryId === 'null') {
+      updateData.categoryId = null;
+    }
+
     const product = await prisma.product.update({
       where: { id: req.params.id },
-      data: req.body,
+      data: updateData,
+      include: { category: true },
     });
 
     console.log(`✅ Admin updated product: ${product.name}`);
@@ -483,6 +488,116 @@ app.get('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
   } catch (err: any) {
     console.error('Admin product error:', err.message);
     res.status(500).json(error('Could not fetch product'));
+  }
+});
+
+// =============================================================================
+// ADMIN: CATEGORIES (DYNAMIC FROM DATABASE)
+// =============================================================================
+
+// ADMIN: Get all categories
+app.get('/api/v1/admin/categories', async (req: Request, res: Response) => {
+  try {
+    const categories = await prisma.category.findMany({
+      orderBy: { name: 'asc' },
+      include: {
+        _count: {
+          select: { products: true },
+        },
+      },
+    });
+
+    console.log(`✅ Admin fetched ${categories.length} categories`);
+    res.json(success(categories));
+  } catch (err: any) {
+    console.error('Admin get categories error:', err.message);
+    res.status(500).json(error('Could not fetch categories'));
+  }
+});
+
+// ADMIN: Get single category
+app.get('/api/v1/admin/categories/:id', async (req: Request, res: Response) => {
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id: req.params.id },
+      include: {
+        _count: {
+          select: { products: true },
+        },
+      },
+    });
+
+    if (!category) {
+      return res.status(404).json(error('Category not found'));
+    }
+
+    res.json(success(category));
+  } catch (err: any) {
+    console.error('Admin get category error:', err.message);
+    res.status(500).json(error('Could not fetch category'));
+  }
+});
+
+// ADMIN: Create category
+app.post('/api/v1/admin/categories', async (req: Request, res: Response) => {
+  try {
+    const slug = req.body.slug || req.body.name
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-');
+
+    const category = await prisma.category.create({
+      data: {
+        ...req.body,
+        slug,
+      },
+    });
+
+    console.log(`✅ Admin created category: ${category.name}`);
+    res.json(success(category));
+  } catch (err: any) {
+    console.error('Admin create category error:', err.message);
+    res.status(400).json(error(err.message || 'Could not create category'));
+  }
+});
+
+// ADMIN: Update category
+app.put('/api/v1/admin/categories/:id', async (req: Request, res: Response) => {
+  try {
+    const category = await prisma.category.update({
+      where: { id: req.params.id },
+      data: req.body,
+    });
+
+    console.log(`✅ Admin updated category: ${category.name}`);
+    res.json(success(category));
+  } catch (err: any) {
+    console.error('Admin update category error:', err.message);
+    res.status(500).json(error('Could not update category'));
+  }
+});
+
+// ADMIN: Delete category
+app.delete('/api/v1/admin/categories/:id', async (req: Request, res: Response) => {
+  try {
+    // Check if category has products
+    const productsCount = await prisma.product.count({
+      where: { categoryId: req.params.id },
+    });
+
+    if (productsCount > 0) {
+      return res.status(400).json(error(`Cannot delete category with ${productsCount} products. Remove products first.`));
+    }
+
+    await prisma.category.delete({
+      where: { id: req.params.id },
+    });
+
+    console.log(`✅ Admin deleted category: ${req.params.id}`);
+    res.json(success({ id: req.params.id }));
+  } catch (err: any) {
+    console.error('Admin delete category error:', err.message);
+    res.status(500).json(error('Could not delete category'));
   }
 });
 
