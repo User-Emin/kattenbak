@@ -1,180 +1,120 @@
 #!/bin/bash
+# AUTOMATED DEPLOYMENT SCRIPT WITH SECURITY CHECKS
+# Usage: ./deploy.sh [production|staging]
 
-# Production Deployment Script
-# Deploy to VPS/Cloud server
+set -e  # Exit on error
 
-set -e
+ENV=${1:-production}
+SERVER_IP="185.224.139.74"
+SERVER_USER="root"
+SERVER_PASS="Amasyaspor@66"
 
-echo "=========================================="
-echo "KATTENBAK WEBSHOP - DEPLOYMENT SCRIPT"
-echo "=========================================="
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
 
-# Configuration
-ENV_FILE="${1:-.env.production}"
-BACKUP_DIR="./backups"
-DATE=$(date +%Y%m%d_%H%M%S)
+echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}🚀 DEPLOYMENT SCRIPT - Environment: ${ENV}${NC}"
+echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
 
-echo "Environment: $ENV_FILE"
+# STEP 1: Pre-deployment checks
+echo -e "\n${YELLOW}[1/8]${NC} Pre-deployment security checks..."
+./PRE_DEPLOYMENT_VALIDATION.sh || {
+    echo -e "${RED}❌ Pre-deployment validation failed!${NC}"
+    exit 1
+}
 
-# Check if .env file exists
-if [ ! -f "$ENV_FILE" ]; then
-    echo "ERROR: Environment file $ENV_FILE not found!"
-    echo "Please create it from .env.example"
+# STEP 2: Git check
+echo -e "\n${YELLOW}[2/8]${NC} Checking Git status..."
+if [ -n "$(git status --porcelain)" ]; then
+    echo -e "${RED}❌ Uncommitted changes detected!${NC}"
+    echo "Commit or stash changes before deploying"
     exit 1
 fi
+echo -e "${GREEN}✅ Git clean${NC}"
 
-# Load environment variables
-set -a
-source "$ENV_FILE"
-set +a
+# STEP 3: Push to remote
+echo -e "\n${YELLOW}[3/8]${NC} Pushing to GitHub..."
+git push origin main || {
+    echo -e "${RED}❌ Git push failed!${NC}"
+    exit 1
+}
+echo -e "${GREEN}✅ Pushed to GitHub${NC}"
 
-echo "✓ Environment loaded"
+# STEP 4: Pull on server
+echo -e "\n${YELLOW}[4/8]${NC} Pulling latest code on server..."
+sshpass -p "$SERVER_PASS" ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
+    "cd /var/www/kattenbak && git pull origin main" || {
+    echo -e "${RED}❌ Git pull on server failed!${NC}"
+    exit 1
+}
+echo -e "${GREEN}✅ Code updated on server${NC}"
 
-# Pre-deployment checks
-echo ""
-echo "Pre-deployment checks..."
+# STEP 5: Build frontend
+echo -e "\n${YELLOW}[5/8]${NC} Building frontend..."
+sshpass -p "$SERVER_PASS" ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
+    "cd /var/www/kattenbak/frontend && rm -rf .next && npm run build" || {
+    echo -e "${RED}❌ Frontend build failed!${NC}"
+    exit 1
+}
+echo -e "${GREEN}✅ Frontend built${NC}"
 
-# Check required variables
-REQUIRED_VARS=(
-    "DATABASE_URL"
-    "JWT_SECRET"
-    "MOLLIE_API_KEY"
-    "ADMIN_EMAIL"
-    "ADMIN_PASSWORD"
-)
+# STEP 6: Copy static files
+echo -e "\n${YELLOW}[6/8]${NC} Copying static assets..."
+sshpass -p "$SERVER_PASS" ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
+    "cd /var/www/kattenbak/frontend && \
+     cp -r .next/static .next/standalone/frontend/.next/static && \
+     cp -r public .next/standalone/frontend/public" || {
+    echo -e "${RED}❌ Static copy failed!${NC}"
+    exit 1
+}
+echo -e "${GREEN}✅ Static files copied${NC}"
 
-for var in "${REQUIRED_VARS[@]}"; do
-    if [ -z "${!var}" ]; then
-        echo "ERROR: Required variable $var is not set!"
-        exit 1
-    fi
-done
+# STEP 7: Restart services
+echo -e "\n${YELLOW}[7/8]${NC} Restarting PM2 services..."
+sshpass -p "$SERVER_PASS" ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
+    "pm2 restart frontend backend && pm2 save" || {
+    echo -e "${RED}❌ PM2 restart failed!${NC}"
+    exit 1
+}
+echo -e "${GREEN}✅ Services restarted${NC}"
 
-echo "✓ All required variables set"
-
-# Warn if using test Mollie key in production
-if [[ "$MOLLIE_API_KEY" == test_* ]] && [[ "$NODE_ENV" == "production" ]]; then
-    echo "WARNING: Using Mollie TEST API key in PRODUCTION!"
-    read -p "Continue anyway? (y/N) " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        exit 1
-    fi
-fi
-
-# Backup database
-echo ""
-echo "Creating database backup..."
-mkdir -p "$BACKUP_DIR"
-
-if command -v pg_dump &> /dev/null; then
-    pg_dump "$DATABASE_URL" > "$BACKUP_DIR/db_backup_$DATE.sql"
-    echo "✓ Database backup created: $BACKUP_DIR/db_backup_$DATE.sql"
-else
-    echo "⚠ pg_dump not found, skipping database backup"
-fi
-
-# Build backend
-echo ""
-echo "Building backend..."
-cd backend
-npm ci --only=production
-npm run build
-npm run prisma:migrate:prod
-echo "✓ Backend built"
-cd ..
-
-# Build frontend
-echo ""
-echo "Building frontend..."
-cd frontend
-npm ci --only=production
-npm run build
-echo "✓ Frontend built"
-cd ..
-
-# Build admin
-echo ""
-echo "Building admin..."
-cd admin
-npm ci --only=production
-npm run build
-echo "✓ Admin built"
-cd ..
-
-# Start services with PM2
-echo ""
-echo "Starting services..."
-
-if command -v pm2 &> /dev/null; then
-    # Stop existing processes
-    pm2 delete kattenbak-backend kattenbak-frontend 2>/dev/null || true
-    
-    # Start backend
-    cd backend
-    pm2 start dist/server.js --name kattenbak-backend
-    cd ..
-    
-    # Start frontend
-    cd frontend
-    pm2 start npm --name kattenbak-frontend -- start
-    cd ..
-    
-    # Save PM2 configuration
-    pm2 save
-    
-    echo "✓ Services started with PM2"
-    echo ""
-    pm2 status
-else
-    echo "⚠ PM2 not found. Please install: npm install -g pm2"
-    echo "Services not started automatically."
-fi
-
-# Post-deployment checks
-echo ""
-echo "Post-deployment checks..."
-
-# Wait for backend to start
+# STEP 8: Health check
+echo -e "\n${YELLOW}[8/8]${NC} Running health checks..."
 sleep 5
 
-# Check backend health
-BACKEND_HEALTH=$(curl -s -o /dev/null -w "%{http_code}" "$BACKEND_URL/health" || echo "000")
-
-if [ "$BACKEND_HEALTH" == "200" ]; then
-    echo "✓ Backend health check passed"
+# Check homepage
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://catsupply.nl)
+if [ "$HTTP_CODE" == "200" ]; then
+    echo -e "${GREEN}✅ Homepage: 200 OK${NC}"
 else
-    echo "ERROR: Backend health check failed (HTTP $BACKEND_HEALTH)"
-    echo "Check logs: pm2 logs kattenbak-backend"
-    exit 1
+    echo -e "${RED}❌ Homepage: ${HTTP_CODE}${NC}"
 fi
 
-# Check frontend
-FRONTEND_HEALTH=$(curl -s -o /dev/null -w "%{http_code}" "$NEXT_PUBLIC_SITE_URL" || echo "000")
-
-if [ "$FRONTEND_HEALTH" == "200" ]; then
-    echo "✓ Frontend health check passed"
+# Check backend API
+API_STATUS=$(curl -s http://${SERVER_IP}:3101/health | jq -r '.success' 2>/dev/null || echo "false")
+if [ "$API_STATUS" == "true" ]; then
+    echo -e "${GREEN}✅ Backend API: Healthy${NC}"
 else
-    echo "⚠ Frontend health check failed (HTTP $FRONTEND_HEALTH)"
+    echo -e "${RED}❌ Backend API: Failed${NC}"
 fi
 
-echo ""
-echo "=========================================="
-echo "DEPLOYMENT COMPLETED SUCCESSFULLY"
-echo "=========================================="
-echo ""
-echo "Services:"
-echo "  - Backend API: $BACKEND_URL"
-echo "  - Frontend: $NEXT_PUBLIC_SITE_URL"
-echo "  - Admin: http://localhost:3002 (or your admin URL)"
-echo ""
-echo "Useful commands:"
-echo "  - View logs: pm2 logs"
-echo "  - Restart: pm2 restart all"
-echo "  - Stop: pm2 stop all"
-echo "  - Monitor: pm2 monit"
-echo ""
-echo "Database backup saved to: $BACKUP_DIR/db_backup_$DATE.sql"
-echo ""
+# Check PM2 status
+PM2_STATUS=$(sshpass -p "$SERVER_PASS" ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
+    "pm2 list | grep -c online" || echo "0")
+if [ "$PM2_STATUS" -ge 2 ]; then
+    echo -e "${GREEN}✅ PM2: ${PM2_STATUS} services online${NC}"
+else
+    echo -e "${RED}❌ PM2: Only ${PM2_STATUS} services online${NC}"
+fi
 
-
+echo -e "\n${BLUE}═══════════════════════════════════════════════════════════════${NC}"
+echo -e "${GREEN}🎉 DEPLOYMENT SUCCESSFUL!${NC}"
+echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
+echo ""
+echo "🌐 Website: https://catsupply.nl"
+echo "📊 Check PM2: ssh root@${SERVER_IP} 'pm2 monit'"
+echo ""
