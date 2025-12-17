@@ -376,7 +376,7 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
     });
 
     const tax = subtotal * 0.21;
-    const shippingCost = subtotal >= 50 ? 0 : 5.95;
+    const shippingCost = 0; // Altijd gratis verzending
     const total = subtotal + tax + shippingCost;
 
     // Create order with addresses and items

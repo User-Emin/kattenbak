@@ -149,21 +149,25 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
               
-          {/* USPs - Origineel */}
-          <div className="space-y-2 mb-8">
-            <div className="flex items-center gap-3">
-              <Check className="h-5 w-5 text-brand flex-shrink-0" />
-              <span className="font-bold text-gray-900">Geen stank meer</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Check className="h-5 w-5 text-brand flex-shrink-0" />
-              <span className="font-bold text-gray-900">Nooit meer scheppen</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Check className="h-5 w-5 text-brand flex-shrink-0" />
-              <span className="font-bold text-gray-900">Veilig te gebruiken</span>
-            </div>
-          </div>
+                  {/* USPs - Relevanter uit comparison table */}
+                  <div className="space-y-2 mb-8">
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                      <span className="font-medium text-gray-900">10.5L - Grootste afvalbak in zijn klasse</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                      <span className="font-medium text-gray-900">Ultra-stille motor onder 40dB</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                      <span className="font-medium text-gray-900">Dubbele veiligheidssensoren</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                      <span className="font-medium text-gray-900">Gratis verzending</span>
+                    </div>
+                  </div>
 
               <Separator variant="float" spacing="md" />
 
