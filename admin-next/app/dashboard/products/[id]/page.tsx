@@ -23,6 +23,7 @@ interface Product {
   isFeatured: boolean;
   categoryId: string | null;
   images: string[];
+  videoUrl: string | null;
   category?: {
     id: string;
     name: string;

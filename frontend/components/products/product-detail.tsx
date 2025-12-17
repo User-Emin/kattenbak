@@ -235,10 +235,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               {/* Always Visible Specs */}
               <div className="space-y-2 mb-4">
                 {[
-                  { title: 'Zelfreinigende Functie', note: 'Automatisch na elk bezoek' },
-                  { title: 'Open-Top, Low-Stress Design', note: 'Minder stress voor katten' },
-                  { title: '10.5L Afvalbak Capaciteit', note: 'Grootste in zijn klasse' },
-                  { title: 'Dubbele Veiligheidssensoren', note: 'Stopt bij detectie kat' },
+                  { title: 'Zelfreinigende Functie', note: 'Automatische reiniging start 3 minuten na elk bezoek van je kat. Het systeem scheidt vaste afval van schoon grit en verzamelt alles in een afgesloten container, zodat er geen geurtjes vrijkomen.' },
+                  { title: 'Open-Top, Low-Stress Design', note: 'Katten zijn van nature waakzaam en voelen zich veiliger in een open ruimte waar ze hun omgeving kunnen blijven zien. Dit ontwerp vermindert stress en angst, wat leidt tot meer gebruik en minder gedragsproblemen.' },
+                  { title: '10.5L Afvalbak Capaciteit', note: 'Met 10.5 liter de grootste afvalbak in zijn klasse. Voor één kat hoef je slechts 1x per week te legen, in plaats van 2-3x bij concurrenten met 7-9L bakken. Dit bespaart tijd en vermindert geur.' },
+                  { title: 'Dubbele Veiligheidssensoren', note: 'Twee onafhankelijke sensoren detecteren wanneer je kat de bak benadert of gebruikt. De reiniging stopt onmiddellijk bij detectie en start pas 3 minuten na het laatste bezoek. Extra veilig vergeleken met single-sensor systemen.' },
                 ].map((spec, idx) => (
                   <details key={idx} className="group">
                     <summary className="flex justify-between items-center py-3 cursor-pointer hover:text-brand transition border-b border-gray-200">
@@ -258,14 +258,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               {showAllSpecs && (
                 <div className="space-y-2 mb-4">
                   {[
-                    { title: 'Hoge-Efficiëntie Filter', note: 'Geavanceerd filtersysteem' },
-                    { title: 'Anti-Splash, Hoge Zijwanden', note: 'Voorkomt morsen' },
-                    { title: 'Gemakkelijk te Demonteren', note: 'Voor grondige reiniging' },
-                    { title: 'Geschikt voor Meeste Kattengrit', note: 'Klonterende en silica' },
-                    { title: 'Compact Formaat, Groot Inwendig', note: 'Ruimtebesparend ontwerp' },
-                    { title: 'Ultra-Stille Motor (<40dB)', note: 'Stil genoeg voor slaapkamer' },
-                    { title: 'Modulair Design (OEM-Vriendelijk)', note: 'Alle onderdelen vervangbaar' },
-                    { title: 'App + Gezondheidsmonitoring', note: 'Real-time tracking via app' },
+                    { title: 'Hoge-Efficiëntie Filter', note: 'Geavanceerd multi-laags filtersysteem met actieve koolstof vangt geuren en stofdeeltjes op voordat ze je huis in komen. Het filter is uitwasbaar en herbruikbaar, wat zorgt voor lagere onderhoudskosten.' },
+                    { title: 'Anti-Splash, Hoge Zijwanden', note: 'De verhoogde zijwanden van 22cm zijn speciaal ontworpen om morsen te voorkomen, zelfs bij katten die enthousiast graven. De vorm leidt grit terug naar beneden in plaats van naar buiten.' },
+                    { title: 'Gemakkelijk te Demonteren', note: 'Volledig modulair ontwerp waarbij elk onderdeel los kan voor grondige reiniging. Geen verborgen hoeken waar vuil zich kan ophopen. Alle onderdelen zijn vaatwasserbestendig (top rack).' },
+                    { title: 'Geschikt voor Meeste Kattengrit', note: 'Werkt met klonterende bentoniet, silica gel, en plantaardige grit. Alleen niet geschikt voor houtkorrels. De zeef heeft verstelbare openingen voor verschillende gritgroottes, in tegenstelling tot concurrenten die vaak maar één type accepteren.' },
+                    { title: 'Compact Formaat, Groot Inwendig', note: 'Buitenmaat 60×55×62cm past in kleinere ruimtes, maar biedt een ruime binnenkant van 50×45cm waar je kat comfortabel kan draaien. Intelligente ruimte-optimalisatie zonder de kat te benauwen.' },
+                    { title: 'Ultra-Stille Motor (<40dB)', note: 'Met minder dan 40 decibel is de motor stiller dan een bibliotheek (40dB) en vergelijkbaar met gefluister (30dB). Andere bakken produceren vaak 50-60dB, vergelijkbaar met een normaal gesprek. Geschikt voor gebruik in slaapkamers.' },
+                    { title: 'Modulair Design (OEM-Vriendelijk)', note: 'Alle onderdelen zijn apart verkrijgbaar en vervangbaar. Geen sealed units zoals bij concurrenten - als één onderdeel kapot gaat, vervang je alleen dat deel. Dit verlengt de levensduur aanzienlijk en reduceert kosten.' },
+                    { title: 'App + Gezondheidsmonitoring', note: 'De gratis app (iOS/Android) tracked aantal bezoeken, gewicht van afval, reinigingstijden en stuurt gezondheidsalerts. Bij plotselinge toename van bezoeken (mogelijk urineweginfectie) krijg je een notificatie om tijdig naar de dierenarts te gaan.' },
                   ].map((spec, idx) => (
                     <details key={idx} className="group">
                       <summary className="flex justify-between items-center py-3 cursor-pointer hover:text-brand transition border-b border-gray-200">
