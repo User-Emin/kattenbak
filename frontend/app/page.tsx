@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ArrowRight, Play, Check, MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowRight, Play, Check, ChevronDown, ChevronUp } from "lucide-react";
 import type { Product } from "@/types/product";
 import { API_CONFIG, SITE_CONFIG, apiFetch } from "@/lib/config";
 import { IMAGE_CONFIG, getImageFillProps } from "@/lib/image-config";
