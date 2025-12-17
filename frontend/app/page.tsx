@@ -4,185 +4,174 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ChatPopup } from "@/components/ui/chat-popup";
 import { Separator } from "@/components/ui/separator";
-import { VideoPlayer } from "@/components/ui/video-player";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { ArrowRight, Play, Check, MessageCircle, ChevronDown, ChevronUp, Package, Volume2, Sparkles, Smartphone } from "lucide-react";
+import { ArrowRight, Play, Check, MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
 import type { Product } from "@/types/product";
 import { API_CONFIG, SITE_CONFIG, apiFetch } from "@/lib/config";
 import { IMAGE_CONFIG, getImageFillProps } from "@/lib/image-config";
-import { TYPOGRAPHY } from "@/lib/theme-colors";
 
-// DRY: Site Settings Type (sync met backend)
-interface SiteSettings {
-  hero: { title: string; subtitle: string; image: string; videoUrl?: string }; // DRY: Dynamic video
-  usps: {
-    title: string;
-    feature1: { title: string; description: string; image: string };
-    feature2: { title: string; description: string; image: string };
-  };
-}
-
-// DRY: Realistische FAQ's gebaseerd op product features (vergelijkingstabel)
 const faqs = [
   {
-    q: "Wat maakt deze kattenbak beter dan andere zelfreinigende bakken?",
-    a: "Onze kattenbak heeft een unieke combinatie van features: 10.5L afvalbak capaciteit (17% meer dan de concurrentie), dubbele veiligheidssensoren, open-top low-stress design, en een ultra-stille motor onder 40dB. Ook is hij volledig modulair en makkelijk te demonteren voor reiniging."
+    q: "Hoe werkt de zelfreinigende functie?",
+    a: "De kattenbak detecteert automatisch wanneer je kat klaar is en start een reinigingscyclus. Alle afval wordt verzameld in een afgesloten compartiment."
   },
   {
-    q: "Hoe werkt de zelfreinigende functie en dubbele beveiliging?",
-    a: "De kattenbak detecteert automatisch wanneer je kat klaar is via dubbele veiligheidssensoren. Deze sensoren zorgen ervoor dat de reinigingscyclus alleen start wanneer het 100% veilig is. Alle afval wordt verzameld in een afgesloten 10.5L compartiment met anti-splash hoge wanden."
+    q: "Voor welke katten is dit geschikt?",
+    a: "Geschikt voor katten van alle maten tot 7kg. De ruime binnenruimte zorgt voor comfort."
   },
   {
-    q: "Hoe vaak moet ik de 10.5L afvalbak legen?",
-    a: "Bij één kat ongeveer 1x per week, bij meerdere katten 2-3x per week. Dankzij de XL 10.5L capaciteit (grootste in zijn klasse) heb je tot 30% minder onderhoud dan bij concurrerende modellen met 7-9L capaciteit."
+    q: "Hoe vaak moet ik de afvalbak legen?",
+    a: "Bij één kat ongeveer 1x per week. De 10L capaciteit betekent minder onderhoud."
   },
   {
-    q: "Is de app-bediening en gezondheidsmonitoring inbegrepen?",
-    a: "Ja! De app is gratis te downloaden voor iOS en Android. Je krijgt realtime notifications, kunt reinigingsschema's instellen, en ontvangt gedetailleerde gezondheidsrapporten over toiletbezoeken van je kat - ideaal voor vroege detectie van gezondheidsproblemen."
-  },
-  {
-    q: "Is de kattenbak geschikt voor meerdere katten en welk kattenbakvulling?",
-    a: "Ja, geschikt voor huishoudens met meerdere katten dankzij de XL 10.5L capaciteit. Het compacte ontwerp met grote binnenruimte biedt comfort voor katten tot 7kg. Je kunt alle soorten kattenbakvulling gebruiken (klontvormend, silica, houtkorrels) dankzij het high-efficiency filter."
+    q: "Is de app-bediening inbegrepen?",
+    a: "Ja! De app is gratis te downloaden en biedt realtime monitoring, schema's en gezondheidsrapporten."
   },
 ];
 
 export default function HomePage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [showContactPopup, setShowContactPopup] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // DRY: Fetch featured product (used for video on homepage)
   useEffect(() => {
     apiFetch<{ success: boolean; data: Product[] }>(API_CONFIG.ENDPOINTS.PRODUCTS_FEATURED)
       .then(data => setProduct(data.data?.[0] || null))
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setShowContactPopup(true), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Check cart state from window (set by Header component)
+  useEffect(() => {
+    const checkCartState = () => {
+      if (typeof window !== 'undefined') {
+        const cartOpen = (window as any).__isCartOpen || false;
+        setIsCartOpen(cartOpen);
+      }
+    };
+    
+    const interval = setInterval(checkCartState, 100);
+    return () => clearInterval(interval);
+  }, []);
+
   // Product slug - single source
   const productSlug = product?.slug || SITE_CONFIG.DEFAULT_PRODUCT_SLUG;
 
-  // DRY: Static values
-  const hero = { title: 'Slimme Kattenbak', subtitle: 'Automatisch • Smart • Hygiënisch', image: IMAGE_CONFIG.hero.main };
-  const usps = {
-    title: 'Waarom Deze Kattenbak?',
-    feature1: { title: '10.5L Capaciteit', description: 'De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.', image: IMAGE_CONFIG.usps.capacity.src },
-    feature2: { title: 'Ultra-Quiet Motor', description: 'Werkt onder 40 decibel. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.', image: IMAGE_CONFIG.usps.quiet.src },
-  };
-
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - DRY: Dynamisch via Featured Product Video */}
+      {/* Hero Section - Met Volledige Afbeelding */}
       <section className="relative min-h-[80vh] flex items-center overflow-hidden">
-        {/* Background Video OR Image */}
+        {/* Background Image - Volledig zichtbaar */}
         <div className="absolute inset-0 z-0">
-          {product?.heroVideoUrl && product.heroVideoUrl.endsWith('.mp4') ? (
-            /* Hero Video: autoplay, muted, loop, optimized */
-            <>
-              <VideoPlayer
-                videoUrl={product.heroVideoUrl}
-                posterUrl={hero.image}
-                type="hero"
-                autoplay
-                muted
-                loop
-                className="w-full h-full"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
-            </>
-          ) : (
-            /* Fallback: Static hero image */
-            <>
-              <Image
-                src={hero.image}
-                alt={hero.title}
-                fill
-                className="object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
-            </>
-          )}
+          <Image
+            {...getImageFillProps(IMAGE_CONFIG.hero)}
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
         </div>
 
         <div className="container mx-auto px-6 lg:px-12 py-20 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            {/* Stabiele Titel - DRY: Via Settings */}
-            <h1 className="text-5xl md:text-7xl font-semibold mb-6 leading-tight text-white drop-shadow-lg">
-              {hero.title}
+            <h1 className="text-5xl md:text-7xl font-light mb-6 leading-tight animate-fade-in text-white drop-shadow-lg">
+              Slimste Kattenbak
             </h1>
 
-            <p className="text-lg md:text-xl font-semibold text-white/90 mb-10 drop-shadow-md max-w-2xl mx-auto">
-              {hero.subtitle}
+            <p className="text-xl md:text-2xl text-white mb-10 drop-shadow-md">
+              Automatisch • Smart • Hygiënisch
             </p>
 
-            {/* Compacte CTA Button */}
-            <div className="flex justify-center">
-              <Link href={`/product/${productSlug}`}>
-                <button className="h-12 px-8 text-sm font-semibold text-white bg-black hover:bg-gray-900 rounded-full transition-all duration-200">
+            <div className="flex flex-row gap-2 sm:gap-4 justify-center mb-12 max-w-2xl mx-auto px-4">
+              <Link href={`/product/${productSlug}`} className="flex-1">
+                <Button size="lg" variant="primary" rightIcon={<ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />} fullWidth className="text-sm sm:text-base">
                   Bekijk Product
-                </button>
+                </Button>
               </Link>
+              <Link href="#video" className="flex-1">
+                <Button size="lg" variant="brand" leftIcon={<Play className="h-4 w-4 sm:h-5 sm:w-5" />} fullWidth className="text-sm sm:text-base">
+                  Demo Video
+                </Button>
+              </Link>
+            </div>
+
+            {/* Trust Badges */}
+            <div className="flex flex-wrap justify-center gap-6 text-sm text-white">
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-accent" />
+                <span>Gratis verzending</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-accent" />
+                <span>2 jaar garantie</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-accent" />
+                <span>14 dagen retour</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <Separator variant="float" spacing="md" />
+      <Separator variant="float" spacing="xl" />
 
-      {/* USP Section - COMPACT + MINDER SPACING - MOBILE FIRST */}
-      <section className="py-8 md:py-12 bg-white text-center">
+      {/* USP Section - 2 Beste Features */}
+      <section className="py-20">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-          <SectionHeading className="mb-12 md:mb-16 text-center">
-            Waarom Kiezen Voor Deze Kattenbak?
-          </SectionHeading>
+          <h2 className="text-4xl font-light text-center mb-20">De Beste Innovatie</h2>
           
-          {/* Feature 1 - ICONS NAAST TITEL (ook mobiel) */}
-          <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center text-center md:text-left mb-6 md:mb-10">
+          {/* Feature 1 - 10.5L Capaciteit MET Afbeelding */}
+          <div className="grid md:grid-cols-2 gap-16 items-center mb-20">
             <div>
-              <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
-                <Package className="h-10 w-10 text-brand flex-shrink-0" />
-                <h3 className="text-xl font-semibold text-gray-900">{usps.feature1.title}</h3>
+              <div className="mb-6">
+                <h3 className="text-3xl font-medium">10.5L Capaciteit</h3>
               </div>
-              <p className="text-base md:text-lg font-semibold text-gray-700 leading-relaxed">{usps.feature1.description}</p>
+              <p className="text-gray-600 leading-relaxed text-xl">
+                De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.
+              </p>
             </div>
-            <div className="relative aspect-video rounded-xl overflow-hidden shadow-md">
+            <div className="relative aspect-square rounded-3xl overflow-hidden">
               <Image
-                src={usps.feature1.image}
-                alt={usps.feature1.title}
-                fill
+                {...getImageFillProps(IMAGE_CONFIG.usps.capacity)}
                 className="object-cover"
               />
             </div>
           </div>
 
-          {/* Feature 2 - COMPACT ZIGZAG RECHTS, USP TITEL CENTRAAL */}
-          <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center text-center md:text-left">
-            <div className="order-2 md:order-1 relative aspect-video rounded-xl overflow-hidden shadow-md">
+          <Separator variant="float" spacing="xl" />
+
+          {/* Feature 2 - Ultra-Quiet <40dB MET Afbeelding */}
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="order-2 md:order-1 relative aspect-square rounded-3xl overflow-hidden">
               <Image
-                src={usps.feature2.image}
-                alt={usps.feature2.title}
-                fill
+                {...getImageFillProps(IMAGE_CONFIG.usps.quiet)}
                 className="object-cover"
               />
             </div>
             <div className="order-1 md:order-2">
-              <div className="mb-3">
-                <h3 className="text-xl font-semibold text-gray-900">{usps.feature2.title}</h3>
+              <div className="mb-6">
+                <h3 className="text-3xl font-medium">Ultra-Quiet Motor</h3>
               </div>
-              <p className="text-base md:text-lg font-semibold text-gray-700 leading-relaxed">{usps.feature2.description}</p>
+              <p className="text-gray-600 leading-relaxed text-xl">
+                Werkt onder 40 decibel. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <Separator variant="float" spacing="sm" />
+      <Separator variant="float" spacing="xl" />
 
-      {/* Video/Demo Section - COMPACT */}
-      <section id="video" className="py-8 md:py-12">
+      {/* Video/Demo Section */}
+      <section id="video" className="py-20">
         <div className="container mx-auto px-6 lg:px-12 max-w-5xl">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-3 text-gray-900">Zie Het in Actie</h2>
-          <p className="text-base text-gray-600 text-center mb-6 md:mb-8">
+          <h2 className="text-4xl font-light text-center mb-6">Zie Het in Actie</h2>
+          <p className="text-lg text-gray-600 text-center mb-12">
             2:30 min demo video
           </p>
           
@@ -195,20 +184,20 @@ export default function HomePage() {
             </div>
             <div className="absolute bottom-6 left-6 text-white">
               <p className="text-sm font-medium opacity-80">Product Demo</p>
-              <p className="text-2xl font-semibold">2:30 min</p>
+              <p className="text-2xl font-light">2:30 min</p>
             </div>
           </div>
         </div>
       </section>
 
-      <Separator variant="float" spacing="sm" />
+      <Separator variant="float" spacing="xl" />
 
-      {/* FAQ Section - REALISTISCH & INFORMATIEF */}
-      <section className="py-8 md:py-12">
+      {/* FAQ Section */}
+      <section className="py-20">
         <div className="container mx-auto px-6 lg:px-12 max-w-3xl">
-          <SectionHeading className="mb-3">Veelgestelde Vragen over de Automatische Kattenbak</SectionHeading>
-          <p className="text-base text-gray-600 text-center mb-6 md:mb-8">
-            Alles over zelfreiniging, capaciteit, app-bediening en gezondheidsmonitoring
+          <h2 className="text-4xl font-light text-center mb-4">Veelgestelde Vragen</h2>
+          <p className="text-gray-600 text-center mb-12">
+            Alles wat je moet weten
           </p>
 
           <div className="space-y-4">
@@ -218,7 +207,7 @@ export default function HomePage() {
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
                 >
-                  <span className="font-medium text-base md:text-lg">{faq.q}</span>
+                  <span className="font-medium text-lg">{faq.q}</span>
                   {openFaq === i ? (
                     <ChevronUp className="h-5 w-5 text-accent flex-shrink-0" />
                   ) : (
@@ -237,8 +226,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Contact Chat Popup - ALTIJD ZICHTBAAR */}
-      <ChatPopup />
+      {/* Contact Popup - Altijd tonen op homepage */}
+      {showContactPopup && (
+        <div className="fixed bottom-6 right-6 z-40 animate-slide-up">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-sm border border-gray-200">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <MessageCircle className="h-8 w-8 text-brand" />
+                <div>
+                  <p className="font-medium">Hulp nodig?</p>
+                  <p className="text-sm text-gray-600">Chat met ons</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowContactPopup(false)} 
+                className="text-gray-400 hover:text-gray-900 transition-colors p-1 hover:bg-gray-100 rounded-full"
+                aria-label="Sluiten"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <Link href="/contact">
+              <Button size="sm" variant="primary" fullWidth rightIcon={<ArrowRight className="h-4 w-4" />}>
+                Start Chat
+              </Button>
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

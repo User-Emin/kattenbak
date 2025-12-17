@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google"; // ✅ PROFESSIONEEL & MODERN (maximaal dynamisch)
+import { Roboto_Flex } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { CartProvider } from "@/context/cart-context";
-import { UIProvider } from "@/context/ui-context";
-import { Toaster } from "sonner";
-import { CookieConsentManager } from "@/components/ui/cookie-consent-manager";
+import { ChatPopup } from "@/components/ui/chat-popup-rag";
 
-// ✅ Montserrat - Professioneel, modern, zakelijk gevoel
-const montserrat = Montserrat({
-  weight: ['300', '400', '500', '600', '700', '800'],
+const robotoFlex = Roboto_Flex({
   subsets: ["latin"],
-  variable: "--font-montserrat",
+  variable: "--font-roboto-flex",
   display: "swap",
 });
 
@@ -27,20 +23,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl" className={montserrat.variable}>
-      <body className="antialiased font-[family-name:var(--font-montserrat)]">
-        <UIProvider>
-          <CartProvider>
-            <div className="flex flex-col min-h-screen">
-              <Header />
-              {/* Geen spacer meer nodig - navbar is sticky top-0 edge-to-edge */}
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
-          </CartProvider>
-          <CookieConsentManager />
-        </UIProvider>
-        <Toaster position="top-right" richColors />
+    <html lang="nl" className={robotoFlex.variable}>
+      <body className="antialiased">
+        <CartProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            {/* Geen spacer meer nodig - navbar is sticky top-0 edge-to-edge */}
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+          {/* Chat button - GLOBAL op alle paginas */}
+          <ChatPopup />
+        </CartProvider>
       </body>
     </html>
   );

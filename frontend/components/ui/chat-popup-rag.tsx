@@ -24,27 +24,43 @@ export function ChatPopup() {
   const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
 
-  // Sticky cart detection
+  // DEFENSIVE: Monitor sticky cart met ResizeObserver/MutationObserver (performanter dan polling)
   useEffect(() => {
     const checkStickyCart = () => {
       const stickyBar = document.querySelector('[data-sticky-cart]') as HTMLElement;
-      
       if (stickyBar) {
-        const hasOpacity = stickyBar.classList.contains('opacity-100');
-        const hasPointerEvents = !stickyBar.classList.contains('pointer-events-none');
-        const isVisible = hasOpacity && hasPointerEvents;
-        
-        setStickyCartVisible(prev => prev !== isVisible ? isVisible : prev);
+        // Check if sticky bar has opacity-100 AND translate-y-0 (is visible)
+        const computedStyle = window.getComputedStyle(stickyBar);
+        const isVisible = computedStyle.opacity === '1' && computedStyle.transform === 'none';
+        setStickyCartVisible(isVisible);
       } else {
-        setStickyCartVisible(prev => prev !== false ? false : prev);
+        setStickyCartVisible(false);
       }
     };
-    
-    // Poll every 100ms voor stabiele detectie
-    const interval = setInterval(checkStickyCart, 100);
-    checkStickyCart(); // Initial check
-    
-    return () => clearInterval(interval);
+
+    // Initial check
+    checkStickyCart();
+
+    // Observer voor class changes (meer performant dan setInterval)
+    const stickyBar = document.querySelector('[data-sticky-cart]');
+    if (stickyBar) {
+      const observer = new MutationObserver(checkStickyCart);
+      observer.observe(stickyBar, { 
+        attributes: true, 
+        attributeFilter: ['class', 'style'] 
+      });
+
+      // Fallback: scroll listener (lightweight)
+      const handleScroll = () => checkStickyCart();
+      window.addEventListener('scroll', handleScroll, { passive: true });
+
+      return () => {
+        observer.disconnect();
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
+
+    return () => {};
   }, []);
 
   const handleSendMessage = async () => {
@@ -102,22 +118,26 @@ export function ChatPopup() {
     }
   };
 
-  // Calculate button position based on sticky cart
-  const buttonBottomClass = stickyCartVisible 
-    ? 'bottom-32 md:bottom-24' // 8rem = sticky cart height
-    : 'bottom-8 md:bottom-8';
+  // DEFENSIVE: Dynamic position om sticky cart conflict te voorkomen
+  // z-index: 50 (boven sticky cart z-40, maar onder modals/lightbox)
+  const buttonPosition = stickyCartVisible 
+    ? 'bottom-[120px]' // Boven sticky cart (80px cart + 40px margin)
+    : 'bottom-6'; // Normaal
 
   return (
     <>
-      {/* Floating Chat Button - ALWAYS VISIBLE */}
+      {/* Chat Button - DEFENSIEF STICKY MET CONFLICT PREVENTIE */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className={`fixed right-4 z-[100] ${buttonBottomClass} transition-all duration-300
+        className={`fixed right-6 z-50 ${buttonPosition}
                    bg-gradient-to-br from-brand to-brand-dark text-white 
-                   rounded-full p-4 shadow-2xl hover:scale-110 hover:shadow-brand/50
+                   rounded-full p-4 shadow-2xl 
+                   hover:scale-110 hover:shadow-brand/50
                    focus:outline-none focus:ring-4 focus:ring-brand/30
-                   active:scale-95`}
+                   active:scale-95
+                   transition-all duration-300 ease-out`}
         aria-label="Open chat"
+        style={{ willChange: 'transform' }}
       >
         {isExpanded ? (
           <X className="w-6 h-6" />
@@ -135,9 +155,9 @@ export function ChatPopup() {
             onClick={() => setIsExpanded(false)}
           />
           
-          {/* Chat Modal */}
-          <div className="fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
-            <div className="pointer-events-auto w-full max-w-md max-h-[90vh] md:max-h-[600px] bg-white rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
+          {/* Chat Modal - RECHTS BENEDEN */}
+          <div className="fixed inset-0 md:inset-auto md:bottom-24 md:right-6 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
+            <div className="pointer-events-auto w-full max-w-md max-h-[85vh] md:max-h-[600px] bg-white rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
               
               {/* Header */}
               <div className="bg-gradient-to-br from-brand to-brand-dark p-6 rounded-t-2xl text-white">
