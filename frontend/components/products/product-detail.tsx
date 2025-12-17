@@ -86,12 +86,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
-        {/* Breadcrumb */}
-        <nav className="mb-8 text-sm">
-          <Link href="/" className="text-brand hover:text-brand-dark transition font-medium">Home</Link>
-          <span className="mx-2 text-gray-400">/</span>
-          <span className="text-gray-900 font-medium">{product.name}</span>
-        </nav>
+            {/* Breadcrumb */}
+            <nav className="mb-8 text-sm">
+              <Link href="/" className="text-brand hover:text-brand-dark transition font-bold">Home</Link>
+              <span className="mx-2 text-gray-400">/</span>
+              <span className="text-gray-900 font-bold">{product.name}</span>
+            </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Product Images - Met zoom op hover */}
@@ -132,7 +132,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* Product Info - Direct op achtergrond */}
           <div className="space-y-8">
             <div>
-              <h1 className="text-4xl font-bold mb-6 leading-tight text-gray-900">{product.name}</h1>
+              <h1 className="text-4xl font-semibold mb-6 leading-tight text-gray-900">{product.name}</h1>
               
               {/* Pre-order Badge */}
               {isPreOrder && (
@@ -232,29 +232,44 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               <Separator variant="float" spacing="md" />
 
-              {/* "Meer" Button + Collapsible Specs */}
-              <button
-                onClick={() => setShowAllSpecs(!showAllSpecs)}
-                className="w-full text-center py-3 text-sm font-bold text-brand hover:text-brand-dark transition"
-              >
-                {showAllSpecs ? 'Minder kenmerken' : 'Meer kenmerken'} {showAllSpecs ? '▲' : '▼'}
-              </button>
+              {/* Always Visible Specs */}
+              <div className="space-y-2 mb-4">
+                {[
+                  { title: 'Zelfreinigende Functie', note: 'Automatisch na elk bezoek' },
+                  { title: 'Open-Top, Low-Stress Design', note: 'Minder stress voor katten' },
+                  { title: '10.5L Afvalbak Capaciteit', note: 'Grootste in zijn klasse' },
+                  { title: 'Dubbele Veiligheidssensoren', note: 'Stopt bij detectie kat' },
+                ].map((spec, idx) => (
+                  <details key={idx} className="group" open>
+                    <summary className="flex justify-between items-center py-3 cursor-pointer hover:text-brand transition border-b border-gray-200">
+                      <span className="font-semibold text-gray-900">{spec.title}</span>
+                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </summary>
+                    <div className="pb-3 pt-2 text-sm text-gray-600">
+                      {spec.note}
+                    </div>
+                  </details>
+                ))}
+              </div>
 
+              {/* Extra Specs - Collapsible */}
               {showAllSpecs && (
-                <div className="space-y-2 mt-4">
+                <div className="space-y-2 mb-4">
                   {[
-                    { title: 'Zelfreinigende Functie', note: 'Automatisch na elk bezoek' },
-                    { title: 'Open-Top, Low-Stress Design', note: 'Minder stress voor katten' },
                     { title: 'Hoge-Efficiëntie Filter', note: 'Geavanceerd filtersysteem' },
                     { title: 'Anti-Splash, Hoge Zijwanden', note: 'Voorkomt morsen' },
                     { title: 'Gemakkelijk te Demonteren', note: 'Voor grondige reiniging' },
                     { title: 'Geschikt voor Meeste Kattengrit', note: 'Klonterende en silica' },
                     { title: 'Compact Formaat, Groot Inwendig', note: 'Ruimtebesparend ontwerp' },
+                    { title: 'Ultra-Stille Motor (<40dB)', note: 'Stil genoeg voor slaapkamer' },
                     { title: 'Modulair Design (OEM-Vriendelijk)', note: 'Alle onderdelen vervangbaar' },
+                    { title: 'App + Gezondheidsmonitoring', note: 'Real-time tracking via app' },
                   ].map((spec, idx) => (
                     <details key={idx} className="group">
                       <summary className="flex justify-between items-center py-3 cursor-pointer hover:text-brand transition border-b border-gray-200">
-                        <span className="font-bold text-gray-900">{spec.title}</span>
+                        <span className="font-semibold text-gray-900">{spec.title}</span>
                         <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
@@ -266,6 +281,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   ))}
                 </div>
               )}
+
+              {/* "Meer" Button - Below All Specs */}
+              <button
+                onClick={() => setShowAllSpecs(!showAllSpecs)}
+                className="w-full text-center py-3 text-sm font-bold text-brand hover:text-brand-dark transition"
+              >
+                {showAllSpecs ? 'Minder kenmerken' : 'Meer kenmerken'} {showAllSpecs ? '▲' : '▼'}
+              </button>
             </div>
           </div>
         </div>
@@ -274,15 +297,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         {/* Product Description - Direct op achtergrond */}
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="text-3xl font-bold mb-6 text-gray-900">Over dit product</h2>
-          <p className="text-gray-700 font-medium leading-relaxed text-lg">{product.description}</p>
+          <h2 className="text-3xl font-semibold mb-6 text-gray-900">Over dit product</h2>
+          <p className="text-gray-700 leading-relaxed text-lg">{product.description}</p>
         </div>
 
         <Separator variant="float" spacing="xl" />
 
         {/* Key Features from Comparison Table */}
         <div className="max-w-5xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Waarom kiezen katten eigenaren voor ons?</h2>
+          <h2 className="text-3xl font-semibold text-center mb-12 text-gray-900">Waarom kiezen katten eigenaren voor ons?</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="flex gap-4">
@@ -290,8 +313,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <Shield className="h-6 w-6 text-brand" />
               </div>
               <div>
-                <h3 className="text-lg font-bold mb-2 text-gray-900">Open-Top, Low-Stress Design</h3>
-                <p className="text-gray-700 font-medium">Minder stressvol voor katten - ze kunnen alles zien en voelen zich veilig</p>
+                <h3 className="text-lg font-semibold mb-2 text-gray-900">Open-Top, Low-Stress Design</h3>
+                <p className="text-gray-700">Minder stressvol voor katten - ze kunnen alles zien en voelen zich veilig</p>
               </div>
             </div>
 
@@ -300,8 +323,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <Check className="h-6 w-6 text-brand" />
               </div>
               <div>
-                <h3 className="text-lg font-bold mb-2 text-gray-900">Hoge Anti-Splash Wanden</h3>
-                <p className="text-gray-700 font-medium">Voorkomt morsen - zelfs bij enthousiast graven blijft je vloer schoon</p>
+                <h3 className="text-lg font-semibold mb-2 text-gray-900">Hoge Anti-Splash Wanden</h3>
+                <p className="text-gray-700">Voorkomt morsen - zelfs bij enthousiast graven blijft je vloer schoon</p>
               </div>
             </div>
 
@@ -310,8 +333,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <Star className="h-6 w-6 text-brand" />
               </div>
               <div>
-                <h3 className="text-lg font-bold mb-2 text-gray-900">Modulair OEM-Vriendelijk</h3>
-                <p className="text-gray-700 font-medium">Gemakkelijk uit elkaar te halen voor grondige reiniging - alle onderdelen bereikbaar</p>
+                <h3 className="text-lg font-semibold mb-2 text-gray-900">Modulair OEM-Vriendelijk</h3>
+                <p className="text-gray-700">Gemakkelijk uit elkaar te halen voor grondige reiniging - alle onderdelen bereikbaar</p>
               </div>
             </div>
 
@@ -320,8 +343,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <Truck className="h-6 w-6 text-brand" />
               </div>
               <div>
-                <h3 className="text-lg font-bold mb-2 text-gray-900">Compact Formaat, Groot Inwendig</h3>
-                <p className="text-gray-700 font-medium">Past in kleinere ruimtes, maar biedt je kat volop bewegingsruimte</p>
+                <h3 className="text-lg font-semibold mb-2 text-gray-900">Compact Formaat, Groot Inwendig</h3>
+                <p className="text-gray-700">Past in kleinere ruimtes, maar biedt je kat volop bewegingsruimte</p>
               </div>
             </div>
           </div>

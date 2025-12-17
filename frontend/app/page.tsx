@@ -48,7 +48,6 @@ const faqs = [
 export default function HomePage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [showContactPopup, setShowContactPopup] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
@@ -57,10 +56,6 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShowContactPopup(true), 5000);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Check cart state from window (set by Header component)
   useEffect(() => {
@@ -242,36 +237,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Contact Popup - Altijd tonen op homepage */}
-      {showContactPopup && (
-        <div className="fixed bottom-6 right-6 z-40 animate-slide-up">
-          <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-sm border border-gray-200">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <MessageCircle className="h-8 w-8 text-brand" />
-                <div>
-                  <p className="font-medium">Hulp nodig?</p>
-                  <p className="text-sm text-gray-600">Chat met ons</p>
-                </div>
-              </div>
-              <button 
-                onClick={() => setShowContactPopup(false)} 
-                className="text-gray-400 hover:text-gray-900 transition-colors p-1 hover:bg-gray-100 rounded-full"
-                aria-label="Sluiten"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <Link href="/contact">
-              <Button size="sm" variant="primary" fullWidth rightIcon={<ArrowRight className="h-4 w-4" />}>
-                Start Chat
-              </Button>
-            </Link>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
