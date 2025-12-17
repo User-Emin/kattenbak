@@ -397,7 +397,6 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
         tax,
         total,
         status: 'PENDING',
-        shippingMethod: 'standard',
         customerNotes: orderData.customerNotes || null,
         metadata: {
           ip: req.ip,
