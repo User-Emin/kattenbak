@@ -132,7 +132,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* Product Info - Direct op achtergrond */}
           <div className="space-y-8">
             <div>
-              <h1 className="text-4xl font-light mb-6 leading-tight text-gray-900">{product.name}</h1>
+              <h1 className="text-4xl font-medium mb-6 leading-tight text-gray-900">{product.name}</h1>
               
               {/* Pre-order Badge */}
               {isPreOrder && (
@@ -297,7 +297,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         {/* Product Description - Direct op achtergrond */}
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="text-3xl font-light mb-6 text-gray-900">Over dit product</h2>
+          <h2 className="text-3xl font-medium mb-6 text-gray-900">Over dit product</h2>
           <p className="text-gray-700 leading-relaxed text-lg">{product.description}</p>
         </div>
 
@@ -305,7 +305,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         {/* Key Features from Comparison Table */}
         <div className="max-w-5xl mx-auto mb-16">
-          <h2 className="text-3xl font-light text-center mb-12 text-gray-900">Waarom kiezen katten eigenaren voor ons?</h2>
+          <h2 className="text-3xl font-medium text-center mb-12 text-gray-900">Waarom kiezen katten eigenaren voor ons?</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="flex gap-4">
