@@ -422,7 +422,6 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
             city: orderData.billingAddress.city,
             country: orderData.billingAddress.country || 'NL',
             phone: orderData.billingAddress.phone || null,
-            user: undefined, // Guest checkout
           },
         } : undefined,
         items: {
@@ -598,13 +597,15 @@ app.get('/api/v1/admin/orders', async (req: Request, res: Response) => {
     const orders = await prisma.order.findMany({
       orderBy: { createdAt: 'desc' },
       include: {
-        orderItems: {
+        items: {
           include: {
             product: true,
           },
         },
         payment: true,
         shipment: true,
+        shippingAddress: true,
+        billingAddress: true,
       },
       take: 100, // Limit voor performance
     });
@@ -655,8 +656,10 @@ app.put('/api/v1/admin/orders/:id', async (req: Request, res: Response) => {
         status: req.body.status,
       },
       include: {
-        orderItems: true,
+        items: true,
         payment: true,
+        shippingAddress: true,
+        billingAddress: true,
       },
     });
 
