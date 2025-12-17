@@ -206,7 +206,7 @@ export default function HomePage() {
       {/* FAQ Section */}
       <section className="py-20">
         <div className="container mx-auto px-6 lg:px-12 max-w-3xl">
-          <h2 className="text-4xl font-medium text-center mb-4">Vragen Over ALP 1071</h2>
+          <h2 className="text-4xl font-semibold text-center mb-4">Vragen Over ALP 1071</h2>
           <p className="text-gray-600 text-center mb-12">
             Alles wat je moet weten
           </p>
