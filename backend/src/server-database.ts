@@ -501,6 +501,86 @@ app.get('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
 });
 
 // =============================================================================
+// ADMIN: ORDERS (DYNAMIC FROM DATABASE)
+// =============================================================================
+
+// ADMIN: Get all orders
+app.get('/api/v1/admin/orders', async (req: Request, res: Response) => {
+  try {
+    const orders = await prisma.order.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: {
+        orderItems: {
+          include: {
+            product: true,
+          },
+        },
+        payment: true,
+        shipment: true,
+      },
+      take: 100, // Limit voor performance
+    });
+
+    console.log(`✅ Admin fetched ${orders.length} orders`);
+    res.json(success(orders));
+  } catch (err: any) {
+    console.error('Admin get orders error:', err.message);
+    res.status(500).json(error('Could not fetch orders'));
+  }
+});
+
+// ADMIN: Get single order
+app.get('/api/v1/admin/orders/:id', async (req: Request, res: Response) => {
+  try {
+    const order = await prisma.order.findUnique({
+      where: { id: req.params.id },
+      include: {
+        orderItems: {
+          include: {
+            product: true,
+          },
+        },
+        payment: true,
+        shipment: true,
+        shippingAddress: true,
+        billingAddress: true,
+      },
+    });
+
+    if (!order) {
+      return res.status(404).json(error('Order not found'));
+    }
+
+    res.json(success(order));
+  } catch (err: any) {
+    console.error('Admin get order error:', err.message);
+    res.status(500).json(error('Could not fetch order'));
+  }
+});
+
+// ADMIN: Update order status
+app.put('/api/v1/admin/orders/:id', async (req: Request, res: Response) => {
+  try {
+    const order = await prisma.order.update({
+      where: { id: req.params.id },
+      data: {
+        status: req.body.status,
+      },
+      include: {
+        orderItems: true,
+        payment: true,
+      },
+    });
+
+    console.log(`✅ Admin updated order: ${order.orderNumber}`);
+    res.json(success(order));
+  } catch (err: any) {
+    console.error('Admin update order error:', err.message);
+    res.status(500).json(error('Could not update order'));
+  }
+});
+
+// =============================================================================
 // ADMIN: CATEGORIES (DYNAMIC FROM DATABASE)
 // =============================================================================
 
