@@ -244,9 +244,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   { title: '10.5L Afvalbak Capaciteit', note: 'Met 10.5 liter de grootste afvalbak in zijn klasse. Voor één kat hoef je slechts 1x per week te legen, in plaats van 2-3x bij concurrenten met 7-9L bakken. Dit bespaart tijd en vermindert geur.' },
                   { title: 'Dubbele Veiligheidssensoren', note: 'Twee onafhankelijke sensoren detecteren wanneer je kat de bak benadert of gebruikt. De reiniging stopt onmiddellijk bij detectie en start pas 3 minuten na het laatste bezoek. Extra veilig vergeleken met single-sensor systemen.' },
                 ].map((spec, idx) => (
-                  <details key={idx} className="group">
+                  <details key={idx} className="group" open>
                     <summary className="flex justify-between items-center py-3 cursor-pointer hover:text-brand transition border-b border-gray-200">
-                      <span className="font-medium text-gray-900">{spec.title}</span>
+                      <span className="font-semibold text-gray-900">{spec.title}</span>
                       <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
