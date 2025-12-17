@@ -373,12 +373,12 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
       subtotal += itemTotal;
 
       return {
-        productId: product.id,
+        product: { connect: { id: product.id } },
         productName: product.name,
         productSku: product.sku,
         price: itemPrice,
         quantity: item.quantity,
-        total: itemTotal,
+        subtotal: itemTotal,
       };
     });
 
@@ -398,10 +398,6 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
         total,
         status: 'PENDING',
         customerNotes: orderData.customerNotes || null,
-        metadata: {
-          ip: req.ip,
-          userAgent: req.get('user-agent'),
-        },
         shippingAddress: {
           create: {
             firstName: orderData.shippingAddress.firstName,
