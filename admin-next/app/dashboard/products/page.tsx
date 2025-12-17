@@ -15,9 +15,9 @@ interface Product {
   stock: number;
   isActive: boolean;
   isFeatured: boolean;
-  category: {
+  category?: {
     name: string;
-  };
+  } | null;
 }
 
 export default function ProductsPage() {
@@ -92,7 +92,9 @@ export default function ProductsPage() {
                   <tr key={product.id} className="hover:bg-muted/50 transition-colors">
                     <td className="px-4 py-3 text-sm font-mono">{product.sku}</td>
                     <td className="px-4 py-3 text-sm font-medium">{product.name}</td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">{product.category.name}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
+                      {product.category?.name || <span className="text-gray-400 italic">Geen categorie</span>}
+                    </td>
                     <td className="px-4 py-3 text-sm text-right">€{product.price.toFixed(2)}</td>
                     <td className="px-4 py-3 text-sm text-right">
                       <span className={product.stock <= 10 ? 'text-destructive font-medium' : ''}>

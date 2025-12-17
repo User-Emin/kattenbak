@@ -21,12 +21,12 @@ interface Product {
   trackInventory: boolean;
   isActive: boolean;
   isFeatured: boolean;
-  categoryId: string;
+  categoryId: string | null;
   images: string[];
-  category: {
+  category?: {
     id: string;
     name: string;
-  };
+  } | null;
 }
 
 interface Category {
