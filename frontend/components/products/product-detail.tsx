@@ -132,7 +132,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* Product Info - Direct op achtergrond */}
           <div className="space-y-8">
             <div>
-              <h1 className="text-4xl font-light mb-6 leading-tight text-gray-900">{product.name}</h1>
+              <h1 className="text-4xl font-bold mb-6 leading-tight text-gray-900">{product.name}</h1>
               
               {/* Pre-order Badge */}
               {isPreOrder && (
@@ -149,21 +149,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
               
-              {/* USPs - Direct op achtergrond */}
-              <div className="space-y-2 mb-8">
-                <div className="flex items-center gap-3">
-                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                  <span className="font-medium text-gray-700">Geen stank meer</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                  <span className="font-medium text-gray-700">Nooit meer scheppen</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                  <span className="font-medium text-gray-700">Veilig te gebruiken</span>
-                </div>
-              </div>
+          {/* USPs - Origineel */}
+          <div className="space-y-2 mb-8">
+            <div className="flex items-center gap-3">
+              <Check className="h-5 w-5 text-brand flex-shrink-0" />
+              <span className="font-bold text-gray-900">Geen stank meer</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Check className="h-5 w-5 text-brand flex-shrink-0" />
+              <span className="font-bold text-gray-900">Nooit meer scheppen</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Check className="h-5 w-5 text-brand flex-shrink-0" />
+              <span className="font-bold text-gray-900">Veilig te gebruiken</span>
+            </div>
+          </div>
 
               <Separator variant="float" spacing="md" />
 
@@ -200,12 +200,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   leftIcon={<ShoppingCart className="h-5 w-5" />}
                   className="mb-4"
                 >
-                  {isPreOrder ? 'Pre-order Nu' : 'Aan winkelwagen toevoegen'} - {formatPrice(displayPrice)}
+                  Winkelwagen toevoegen
                 </Button>
                 
                 {/* Aantal Selector - Compacter onder button */}
                 <div className="flex items-center justify-center gap-4 mb-4">
-                  <span className="text-sm font-medium text-gray-700">Aantal:</span>
+                  <span className="text-sm font-bold text-gray-900">Aantal:</span>
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
@@ -215,7 +215,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     <Minus className="h-4 w-4 text-gray-700" />
                   </button>
                   
-                  <span className="text-xl font-semibold text-gray-900 min-w-[2.5rem] text-center">
+                  <span className="text-xl font-bold text-gray-900 min-w-[2.5rem] text-center">
                     {quantity}
                   </span>
                   
@@ -231,38 +231,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
 
               <Separator variant="float" spacing="md" />
-
-              {/* Top 4 Features */}
-              <div className="space-y-3 mb-6">
-                <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-brand flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-gray-900">10.5L Afvalbak Capaciteit</p>
-                    <p className="text-sm text-gray-600">Grootste in zijn klasse - Minder vaak legen</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-brand flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-gray-900">Dubbele Veiligheidssensoren</p>
-                    <p className="text-sm text-gray-600">Stopt automatisch als kat erbij komt</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-brand flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-gray-900">App + Gezondheidsmonitoring</p>
-                    <p className="text-sm text-gray-600">Volg het gedrag van je kat in real-time</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-brand flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-gray-900">Ultra-Stille Motor (&lt;40dB)</p>
-                    <p className="text-sm text-gray-600">Stil genoeg voor gebruik in slaapkamer</p>
-                  </div>
-                </div>
-              </div>
 
               {/* "Meer" Button + Collapsible Specs */}
               <button
@@ -306,15 +274,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         {/* Product Description - Direct op achtergrond */}
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="text-3xl font-light mb-6 text-gray-900">Over dit product</h2>
-          <p className="text-gray-600 leading-relaxed text-lg">{product.description}</p>
+          <h2 className="text-3xl font-bold mb-6 text-gray-900">Over dit product</h2>
+          <p className="text-gray-700 font-medium leading-relaxed text-lg">{product.description}</p>
         </div>
 
         <Separator variant="float" spacing="xl" />
 
         {/* Key Features from Comparison Table */}
         <div className="max-w-5xl mx-auto mb-16">
-          <h2 className="text-3xl font-light text-center mb-12 text-gray-900">Waarom kiezen katten eigenaren voor ons?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Waarom kiezen katten eigenaren voor ons?</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="flex gap-4">
@@ -323,7 +291,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
               <div>
                 <h3 className="text-lg font-bold mb-2 text-gray-900">Open-Top, Low-Stress Design</h3>
-                <p className="text-gray-600">Minder stressvol voor katten - ze kunnen alles zien en voelen zich veilig</p>
+                <p className="text-gray-700 font-medium">Minder stressvol voor katten - ze kunnen alles zien en voelen zich veilig</p>
               </div>
             </div>
 
@@ -333,7 +301,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
               <div>
                 <h3 className="text-lg font-bold mb-2 text-gray-900">Hoge Anti-Splash Wanden</h3>
-                <p className="text-gray-600">Voorkomt morsen - zelfs bij enthousiast graven blijft je vloer schoon</p>
+                <p className="text-gray-700 font-medium">Voorkomt morsen - zelfs bij enthousiast graven blijft je vloer schoon</p>
               </div>
             </div>
 
@@ -343,7 +311,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
               <div>
                 <h3 className="text-lg font-bold mb-2 text-gray-900">Modulair OEM-Vriendelijk</h3>
-                <p className="text-gray-600">Gemakkelijk uit elkaar te halen voor grondige reiniging - alle onderdelen bereikbaar</p>
+                <p className="text-gray-700 font-medium">Gemakkelijk uit elkaar te halen voor grondige reiniging - alle onderdelen bereikbaar</p>
               </div>
             </div>
 
@@ -353,7 +321,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
               <div>
                 <h3 className="text-lg font-bold mb-2 text-gray-900">Compact Formaat, Groot Inwendig</h3>
-                <p className="text-gray-600">Past in kleinere ruimtes, maar biedt je kat volop bewegingsruimte</p>
+                <p className="text-gray-700 font-medium">Past in kleinere ruimtes, maar biedt je kat volop bewegingsruimte</p>
               </div>
             </div>
           </div>
