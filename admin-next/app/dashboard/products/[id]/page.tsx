@@ -6,6 +6,7 @@ import { get, put } from '@/lib/api/client';
 import { toast } from 'sonner';
 import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
+import { FileUpload } from '@/components/FileUpload';
 
 interface Product {
   id: string;
@@ -32,6 +33,12 @@ interface Product {
   } | null;
 }
 
+interface ProductFormData extends Product {
+  videoUrlTemp?: string;
+  uspImage1Temp?: string;
+  uspImage2Temp?: string;
+}
+
 interface Category {
   id: string;
   name: string;
@@ -46,6 +53,11 @@ export default function EditProductPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  
+  // Uploaded URLs
+  const [videoUrl, setVideoUrl] = useState<string>('');
+  const [uspImage1, setUspImage1] = useState<string>('');
+  const [uspImage2, setUspImage2] = useState<string>('');
 
   useEffect(() => {
     if (productId) {
@@ -59,6 +71,11 @@ export default function EditProductPage() {
       setIsLoading(true);
       const response = await get<{success: boolean; data: Product}>(`/admin/products/${productId}`);
       setProduct(response.data);
+      
+      // Initialize uploaded URLs from product
+      setVideoUrl(response.data.videoUrl || '');
+      setUspImage1(response.data.uspImage1 || '');
+      setUspImage2(response.data.uspImage2 || '');
     } catch (error: any) {
       console.error('Error fetching product:', error);
       toast.error('Fout bij ophalen product');
@@ -332,61 +349,39 @@ export default function EditProductPage() {
           </div>
         </div>
 
-        <div className="bg-card rounded-lg border shadow-sm p-6 space-y-4">
+        <div className="bg-card rounded-lg border shadow-sm p-6 space-y-6">
           <h2 className="text-lg font-semibold">Media & Content</h2>
           
-          <div>
-            <label htmlFor="videoUrl" className="block text-sm font-medium mb-2">
-              Video URL (YouTube/Vimeo Embed)
-            </label>
-            <input
-              id="videoUrl"
-              name="videoUrl"
-              type="url"
-              defaultValue={product.videoUrl || ''}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="https://www.youtube.com/embed/VIDEO_ID"
+          <FileUpload
+            label="Product Video"
+            accept="video/*"
+            currentUrl={videoUrl}
+            onUpload={(url) => setVideoUrl(url)}
+            helpText="Upload MP4 of MOV video voor product demo"
+          />
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <FileUpload
+              label="USP Afbeelding 1 - 10.5L Capaciteit"
+              accept="image/*"
+              currentUrl={uspImage1}
+              onUpload={(url) => setUspImage1(url)}
+              helpText="Auto-convert naar WebP"
             />
-            <p className="mt-1 text-sm text-gray-500">
-              Voer de embed URL in voor product demo video
-            </p>
+
+            <FileUpload
+              label="USP Afbeelding 2 - Ultra-Quiet Motor"
+              accept="image/*"
+              currentUrl={uspImage2}
+              onUpload={(url) => setUspImage2(url)}
+              helpText="Auto-convert naar WebP"
+            />
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <label htmlFor="uspImage1" className="block text-sm font-medium mb-2">
-                USP Afbeelding 1
-              </label>
-              <input
-                id="uspImage1"
-                name="uspImage1"
-                type="url"
-                defaultValue={product.uspImage1 || ''}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="https://example.com/usp1.jpg"
-              />
-              <p className="mt-1 text-sm text-gray-500">
-                10.5L Capaciteit afbeelding
-              </p>
-            </div>
-
-            <div>
-              <label htmlFor="uspImage2" className="block text-sm font-medium mb-2">
-                USP Afbeelding 2
-              </label>
-              <input
-                id="uspImage2"
-                name="uspImage2"
-                type="url"
-                defaultValue={product.uspImage2 || ''}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="https://example.com/usp2.jpg"
-              />
-              <p className="mt-1 text-sm text-gray-500">
-                Ultra-Quiet Motor afbeelding
-              </p>
-            </div>
-          </div>
+          {/* Hidden inputs voor form submission */}
+          <input type="hidden" name="videoUrl" value={videoUrl} />
+          <input type="hidden" name="uspImage1" value={uspImage1} />
+          <input type="hidden" name="uspImage2" value={uspImage2} />
         </div>
 
         <div className="flex gap-4">

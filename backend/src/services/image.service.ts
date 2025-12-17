@@ -5,24 +5,27 @@ import { promises as fs } from 'fs';
 import { Request } from 'express';
 
 /**
- * Image Upload Service - DRY & Optimized
+ * Image & Video Upload Service - DRY & Optimized
  * Team Sparring Results:
  * 
- * 1. DevOps: Store in /uploads, met CDN ready structuur
+ * 1. DevOps: Store in /public/uploads, CDN ready
  * 2. Security: Validate file types, size limits, sanitize names
  * 3. Performance: Automatic WebP conversion, resize, optimize
  * 4. Frontend: Multiple sizes (thumbnail, medium, large)
+ * 5. Video: Accept MP4, MOV - serve as-is (browser-optimized)
  */
 
-const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100MB
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/x-msvideo'];
 
 // Image sizes - responsive optimization
 const IMAGE_SIZES = {
   thumbnail: { width: 200, height: 200 },
-  medium: { width: 600, height: 600 },
-  large: { width: 1200, height: 1200 },
+  medium: { width: 800, height: 800 },
+  large: { width: 1600, height: 1600 },
 } as const;
 
 /**
@@ -35,23 +38,29 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
-    const sanitized = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
-    cb(null, `${uniqueSuffix}-${sanitized}`);
+    const ext = path.extname(file.originalname);
+    const sanitized = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9-]/g, '_');
+    cb(null, `${sanitized}-${uniqueSuffix}${ext}`);
   },
 });
 
 const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-  if (ALLOWED_TYPES.includes(file.mimetype)) {
+  const isImage = ALLOWED_IMAGE_TYPES.includes(file.mimetype);
+  const isVideo = ALLOWED_VIDEO_TYPES.includes(file.mimetype);
+  
+  if (isImage || isVideo) {
     cb(null, true);
   } else {
-    cb(new Error('Invalid file type. Only JPEG, PNG, and WebP allowed.'));
+    cb(new Error(`Invalid file type. Allowed: ${[...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEO_TYPES].join(', ')}`));
   }
 };
 
 export const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: MAX_FILE_SIZE },
+  limits: { 
+    fileSize: MAX_VIDEO_SIZE, // Max for videos (images are smaller)
+  },
 });
 
 /**
@@ -66,81 +75,98 @@ async function ensureUploadDir(): Promise<void> {
 }
 
 /**
- * Process image - convert to WebP + create multiple sizes
- * Returns URLs for all sizes
+ * Process uploaded image - convert to WebP + create sizes
+ * DRY: Single function for all image processing
  */
 export async function processImage(
   filePath: string,
-  filename: string
-): Promise<{
-  thumbnail: string;
-  medium: string;
-  large: string;
-  original: string;
-}> {
-  const baseFilename = path.parse(filename).name;
-  const results: any = { original: `/uploads/${filename}` };
-
-  for (const [size, dimensions] of Object.entries(IMAGE_SIZES)) {
-    const outputFilename = `${baseFilename}-${size}.webp`;
-    const outputPath = path.join(UPLOAD_DIR, outputFilename);
-
-    await sharp(filePath)
-      .resize(dimensions.width, dimensions.height, {
-        fit: 'cover',
-        position: 'center',
-      })
-      .webp({ quality: 85, effort: 6 })
-      .toFile(outputPath);
-
-    results[size] = `/uploads/${outputFilename}`;
-  }
-
-  // Delete original if not WebP
-  if (!filename.endsWith('.webp')) {
-    await fs.unlink(filePath);
-  }
-
-  return results;
-}
-
-/**
- * Delete image and all its sizes
- */
-export async function deleteImage(filename: string): Promise<void> {
-  const baseFilename = path.parse(filename).name;
+  originalFilename: string
+): Promise<{ thumbnail: string; medium: string; large: string; original: string }> {
+  const nameWithoutExt = path.basename(originalFilename, path.extname(originalFilename));
   
-  // Delete all sizes
-  for (const size of Object.keys(IMAGE_SIZES)) {
-    const filepath = path.join(UPLOAD_DIR, `${baseFilename}-${size}.webp`);
-    try {
-      await fs.unlink(filepath);
-    } catch {
-      // File might not exist, that's ok
-    }
-  }
+  // Convert and resize to all sizes in parallel
+  const [thumbnail, medium, large] = await Promise.all([
+    convertToWebP(filePath, nameWithoutExt, IMAGE_SIZES.thumbnail),
+    convertToWebP(filePath, nameWithoutExt, IMAGE_SIZES.medium),
+    convertToWebP(filePath, nameWithoutExt, IMAGE_SIZES.large),
+  ]);
 
-  // Delete original
+  // Delete original uploaded file (we only keep WebP versions)
   try {
-    await fs.unlink(path.join(UPLOAD_DIR, filename));
-  } catch {
-    // File might not exist
+    await fs.unlink(filePath);
+  } catch (err) {
+    console.warn('Could not delete original file:', err);
   }
+
+  return {
+    thumbnail: `/uploads/${thumbnail}`,
+    medium: `/uploads/${medium}`,
+    large: `/uploads/${large}`,
+    original: `/uploads/${large}`, // Use large as original
+  };
 }
 
 /**
- * Validate image dimensions
+ * Convert image to WebP format with specified size
  */
-export async function validateImageDimensions(
-  filePath: string,
-  minWidth: number = 400,
-  minHeight: number = 400
-): Promise<boolean> {
-  const metadata = await sharp(filePath).metadata();
-  
-  if (!metadata.width || !metadata.height) {
+async function convertToWebP(
+  inputPath: string,
+  nameWithoutExt: string,
+  size: { width: number; height: number }
+): Promise<string> {
+  const outputFilename = `${nameWithoutExt}-${size.width}x${size.height}.webp`;
+  const outputPath = path.join(UPLOAD_DIR, outputFilename);
+
+  await sharp(inputPath)
+    .resize(size.width, size.height, {
+      fit: 'cover',
+      position: 'center',
+    })
+    .webp({ quality: 85 })
+    .toFile(outputPath);
+
+  return outputFilename;
+}
+
+/**
+ * Validate image dimensions (minimum size)
+ */
+export async function validateImageDimensions(filePath: string): Promise<boolean> {
+  try {
+    const metadata = await sharp(filePath).metadata();
+    const minSize = 200; // Minimum 200x200
+
+    return (
+      metadata.width !== undefined &&
+      metadata.height !== undefined &&
+      metadata.width >= minSize &&
+      metadata.height >= minSize
+    );
+  } catch {
     return false;
   }
+}
 
-  return metadata.width >= minWidth && metadata.height >= minHeight;
+/**
+ * Delete image files (all sizes)
+ */
+export async function deleteImage(filename: string): Promise<void> {
+  const nameWithoutExt = path.basename(filename, path.extname(filename));
+  
+  // Delete all sizes
+  const filesToDelete = [
+    `${nameWithoutExt}-${IMAGE_SIZES.thumbnail.width}x${IMAGE_SIZES.thumbnail.height}.webp`,
+    `${nameWithoutExt}-${IMAGE_SIZES.medium.width}x${IMAGE_SIZES.medium.height}.webp`,
+    `${nameWithoutExt}-${IMAGE_SIZES.large.width}x${IMAGE_SIZES.large.height}.webp`,
+  ];
+
+  await Promise.all(
+    filesToDelete.map(async (file) => {
+      try {
+        await fs.unlink(path.join(UPLOAD_DIR, file));
+      } catch {
+        // Ignore errors (file might not exist)
+      }
+    })
+  );
 }

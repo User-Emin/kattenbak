@@ -14,7 +14,7 @@ export function MovingBanner() {
         {[...usps, ...usps, ...usps].map((usp, idx) => (
           <span 
             key={idx} 
-            className="inline-block mx-8 text-sm font-normal text-white" 
+            className="inline-block mx-8 text-sm font-semibold text-white" 
             style={{ WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}
           >
             {usp}

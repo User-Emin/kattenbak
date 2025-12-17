@@ -52,13 +52,13 @@ export function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
-              <Link href="/" className="text-white hover:text-white/80 transition font-medium">
+              <Link href="/" className="text-white hover:text-white/80 transition font-semibold">
                 Home
               </Link>
-              <Link href="/over-ons" className="text-white hover:text-white/80 transition font-medium">
+              <Link href="/over-ons" className="text-white hover:text-white/80 transition font-semibold">
                 Over Ons
               </Link>
-              <Link href="/contact" className="text-white hover:text-white/80 transition font-medium">
+              <Link href="/contact" className="text-white hover:text-white/80 transition font-semibold">
                 Contact
               </Link>
             </nav>

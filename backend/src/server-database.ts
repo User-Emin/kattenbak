@@ -25,6 +25,9 @@ app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static uploads directory
+app.use('/uploads', express.static('public/uploads'));
+
 // ENV config
 const ENV = {
   NODE_ENV: process.env.NODE_ENV || 'production',
@@ -43,6 +46,10 @@ if (ENV.isProduction && ENV.isTest) {
 // Helper functions
 const success = (data: any) => ({ success: true, data });
 const error = (message: string) => ({ success: false, error: message });
+
+// Import upload routes
+const uploadRoutes = require('./routes/upload.routes').default;
+app.use('/api/v1/upload', uploadRoutes);
 
 // =============================================================================
 // HEALTH ENDPOINTS
