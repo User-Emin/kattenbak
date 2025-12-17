@@ -6,7 +6,7 @@
 
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3101',
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3101/api/v1',
   ENDPOINTS: {
     // Products
     PRODUCTS: '/api/v1/products',

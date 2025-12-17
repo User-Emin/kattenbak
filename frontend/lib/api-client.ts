@@ -12,7 +12,7 @@ class ApiClient {
   public static getInstance(): AxiosInstance {
     if (!ApiClient.instance) {
       ApiClient.instance = axios.create({
-        baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1",
+        baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3101/api/v1",
         timeout: 30000,
         headers: {
           "Content-Type": "application/json",
