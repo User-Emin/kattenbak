@@ -241,15 +241,7 @@
     "size": {
       "minimum": "Kittens vanaf 6 maanden (>2kg)",
       "ideal": "Volwassen katten 3-6kg",
-      "maximum": "Grote katten tot 8kg",
-      "breeds_tested": [
-        "Europees korthaar",
-        "Maine Coon (tot 7kg)",
-        "Perzen",
-        "Siamees",
-        "Ragdoll",
-        "British Shorthair"
-      ]
+      "maximum": "Grote katten tot 8kg"
     },
     "behavior": {
       "best_for": [

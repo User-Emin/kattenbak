@@ -169,9 +169,6 @@ Afmetingen geschikt voor:
 - Ideaal: ${completeSpecs.cat_compatibility.size.ideal}
 - Maximum: ${completeSpecs.cat_compatibility.size.maximum}
 
-Geteste rassen:
-${completeSpecs.cat_compatibility.size.breeds_tested.map(b => `- ${b}`).join('\n')}
-
 Aanpassingstijd: ${completeSpecs.cat_compatibility.behavior.adaptation_time}
 
 Tips voor wennen:
