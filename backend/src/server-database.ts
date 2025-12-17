@@ -386,13 +386,11 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
     const shippingCost = 0; // Altijd gratis verzending
     const total = subtotal + tax + shippingCost;
 
-    // Create order with addresses and items
+    // Create order with addresses and items  
     const order = await prisma.order.create({
       data: {
         orderNumber: `ORD${Date.now()}`,
         customerEmail: orderData.customerEmail,
-        customerFirstName: orderData.shippingAddress.firstName,
-        customerLastName: orderData.shippingAddress.lastName,
         customerPhone: orderData.customerPhone || null,
         subtotal,
         shippingCost,
