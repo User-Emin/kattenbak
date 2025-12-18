@@ -29,7 +29,7 @@ export default function LoginPage() {
         localStorage.setItem('auth_user', JSON.stringify(response.data.user));
         
         toast.success('Succesvol ingelogd!');
-        router.push('/admin/dashboard');
+        router.push('/dashboard');
       } else {
         toast.error(response.error || 'Inloggen mislukt');
       }

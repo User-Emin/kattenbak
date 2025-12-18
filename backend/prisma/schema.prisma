@@ -163,7 +163,7 @@ model Product {
   weight     Decimal? @db.Decimal(10, 2) // in kg
   dimensions Json? // {length, width, height} in cm
 
-  // Images (array of URLs)
+  // Images (array of URLs) - DEFAULT images if no variants
   images Json @default("[]")
   
   // Video URL (YouTube, Vimeo, etc.)
@@ -172,6 +172,9 @@ model Product {
   // USP Images (for zigzag section)
   uspImage1 String? @map("usp_image1")
   uspImage2 String? @map("usp_image2")
+  
+  // Variant settings
+  hasVariants Boolean @default(false) @map("has_variants") // Enable color variants
 
   // SEO
   metaTitle       String? @map("meta_title")
@@ -192,11 +195,50 @@ model Product {
   publishedAt DateTime? @map("published_at")
 
   // Relations
-  categoryId String?     @map("category_id")
-  category   Category?   @relation(fields: [categoryId], references: [id])
+  categoryId String?           @map("category_id")
+  category   Category?         @relation(fields: [categoryId], references: [id])
   orderItems OrderItem[]
+  variants   ProductVariant[] // Color variants
 
   @@map("products")
+}
+
+// ============================================
+// PRODUCT VARIANTS (Colors/Options)
+// ============================================
+
+model ProductVariant {
+  id        String @id @default(cuid())
+  productId String @map("product_id")
+
+  // Variant details
+  name           String // e.g., "Zwart", "Wit"
+  sku            String  @unique // Unique SKU per variant
+  colorCode      String? @map("color_code") // Hex code e.g., "#000000"
+  colorImageUrl  String? @map("color_image_url") // Visual sample of the color
+  
+  // Pricing (optional override)
+  priceAdjustment Decimal? @map("price_adjustment") @db.Decimal(10, 2) // +/- price difference
+  
+  // Inventory per variant
+  stock Int @default(0)
+
+  // Images for THIS variant (JSON array of URLs)
+  images Json @default("[]") // Product photos in this color
+  
+  // Status
+  isActive Boolean @default(true) @map("is_active")
+  sortOrder Int @default(0) @map("sort_order") // Display order
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+
+  @@map("product_variants")
 }
 
 // ============================================
@@ -248,24 +290,28 @@ model Order {
 }
 
 model OrderItem {
-  id        String @id @default(cuid())
-  orderId   String @map("order_id")
-  productId String @map("product_id")
+  id        String  @id @default(cuid())
+  orderId   String  @map("order_id")
+  productId String  @map("product_id")
+  variantId String? @map("variant_id") // Optional: if product has variants
 
   // Snapshot data (prices at time of order)
-  productName String  @map("product_name")
-  productSku  String  @map("product_sku")
-  price       Decimal @db.Decimal(10, 2)
-  quantity    Int
-  subtotal    Decimal @db.Decimal(10, 2)
+  productName  String  @map("product_name")
+  productSku   String  @map("product_sku")
+  variantName  String? @map("variant_name") // e.g., "Zwart"
+  variantColor String? @map("variant_color") // e.g., "#000000"
+  price        Decimal @db.Decimal(10, 2)
+  quantity     Int
+  subtotal     Decimal @db.Decimal(10, 2)
 
   // Timestamps
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product Product @relation(fields: [productId], references: [id])
+  order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product         @relation(fields: [productId], references: [id])
+  variant ProductVariant? @relation(fields: [variantId], references: [id])
 
   @@map("order_items")
 }
