@@ -92,16 +92,20 @@ class Server {
     // Load simple product routes (no database needed)
     const productRoutes = (await import('./routes/product.routes.simple')).default;
     this.app.use('/api/v1/products', productRoutes);
-    
+
+    // Returns routes (public - customer facing)
+    const returnsRoutes = (await import('./routes/returns.routes')).default;
+    this.app.use('/api/v1/returns', returnsRoutes);
+
     // Admin routes - IMPORTANT for admin panel
     const adminRoutes = (await import('./routes/admin/index')).default;
     this.app.use('/api/v1/admin', adminRoutes);
-    
+
     // Webhook routes
     const webhookRoutes = (await import('./routes/webhook.routes')).default;
     this.app.use('/api/v1/webhooks', webhookRoutes);
 
-    logger.info('✅ Routes initialized (admin + products + webhooks)');
+    logger.info('✅ Routes initialized (admin + products + returns + webhooks)');
   }
 
   /**
