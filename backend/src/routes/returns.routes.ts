@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { prisma } from '@/config/database';
+import { prisma } from '@/config/database.config';
 import { successResponse, errorResponse } from '@/utils/response.util';
-import { logger } from '@/config/logger';
+import { logger } from '@/config/logger.config';
 
 const router = Router();
 
