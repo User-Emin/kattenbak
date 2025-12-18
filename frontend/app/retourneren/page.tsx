@@ -29,13 +29,22 @@ export default function RetournerenPage() {
       // Check if response is JSON
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
-        throw new Error('Server gaf een ongeldige response. Probeer het later opnieuw.');
+        throw new Error('Server is tijdelijk niet bereikbaar. Probeer het later opnieuw of neem contact op via info@kattenbak.shop');
       }
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Bestelling niet gevonden');
+        // Order not found of andere error
+        if (response.status === 404) {
+          setEligibilityResult({
+            eligible: false,
+            reason: 'Bestelling niet gevonden. Controleer het ordernummer en probeer opnieuw.',
+          });
+        } else {
+          throw new Error(data.error || 'Kon bestelling niet controleren');
+        }
+        return;
       }
 
       setEligibilityResult(data.data);
@@ -43,7 +52,7 @@ export default function RetournerenPage() {
       console.error('Check eligibility error:', error);
       setEligibilityResult({
         eligible: false,
-        reason: error.message || 'Fout bij controleren bestelling',
+        reason: error.message || 'Kon bestelling niet controleren. Probeer het later opnieuw.',
       });
     } finally {
       setIsChecking(false);
@@ -191,15 +200,13 @@ export default function RetournerenPage() {
                 required
               />
 
-              <Button
+              <button
                 type="submit"
-                variant="primary"
-                size="lg"
-                fullWidth
-                loading={isChecking}
+                disabled={isChecking}
+                className="w-full px-6 py-3 bg-accent hover:bg-accentDark text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isChecking ? 'Controleren...' : 'Controleer bestelling'}
-              </Button>
+              </button>
             </form>
 
             {/* Eligibility Result */}
@@ -225,7 +232,13 @@ export default function RetournerenPage() {
                         Deze bestelling komt niet in aanmerking voor retournering
                       </p>
                       <p className="text-sm text-red-700 mt-1">
-                        {eligibilityResult.reason}
+                        {eligibilityResult.reason || 'Neem contact op met klantenservice voor meer informatie.'}
+                      </p>
+                      <p className="text-sm text-gray-600 mt-2">
+                        Vragen? Mail ons op{' '}
+                        <a href="mailto:info@kattenbak.shop" className="text-accent hover:underline">
+                          info@kattenbak.shop
+                        </a>
                       </p>
                     </div>
                   </div>
@@ -324,16 +337,13 @@ export default function RetournerenPage() {
                 />
               </div>
 
-              <Button
+              <button
                 type="submit"
-                variant="primary"
-                size="lg"
-                fullWidth
-                loading={isSubmitting}
-                className="text-white"
+                disabled={isSubmitting}
+                className="w-full px-6 py-3 bg-accent hover:bg-accentDark text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Aanmaken...' : 'Retour aanvragen'}
-              </Button>
+              </button>
             </form>
           </div>
         )}
