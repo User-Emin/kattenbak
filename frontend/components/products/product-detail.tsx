@@ -217,10 +217,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
 
-              {/* Desktop CTA - Wordt vervangen door sticky cart, dus compacter */}
-              <div className="mb-6 lg:hidden">
+              {/* Desktop CTA - Direct onder prijs (alleen desktop, mobile gebruikt sticky cart) */}
+              <div className="hidden lg:block mb-6">
                 {isOutOfStock ? (
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <Button
                       disabled
                       size="lg"
@@ -231,56 +231,50 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       Niet beschikbaar
                     </Button>
                     <p className="text-center text-sm text-gray-600">
-                      Dit product is momenteel uitverkocht. Neem contact op voor verwachte leverdatum.
+                      Dit product is momenteel uitverkocht.
                     </p>
                   </div>
                 ) : (
-                  <>
-                <Button
-                  onClick={handleAddToCart}
-                  loading={isAdding}
-                  size="lg"
-                  variant="primary"
-                  fullWidth
-                  leftIcon={<ShoppingCart className="h-5 w-5" />}
-                  className="mb-4"
-                >
-                  Winkelwagen toevoegen
-                </Button>
-                
-                    {/* Aantal Selector - Alleen mobile */}
-                <div className="flex items-center justify-center gap-4 mb-4">
-                  <span className="text-sm font-bold text-gray-900">Aantal:</span>
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    disabled={quantity <= 1}
-                    className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
-                    aria-label="Verlaag aantal"
-                  >
-                    <Minus className="h-4 w-4 text-gray-700" />
-                  </button>
-                  
-                  <span className="text-xl font-bold text-gray-900 min-w-[2.5rem] text-center">
-                    {quantity}
-                  </span>
-                  
-                  <button
-                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                    disabled={quantity >= product.stock}
-                    className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
-                    aria-label="Verhoog aantal"
-                  >
-                    <Plus className="h-4 w-4 text-gray-700" />
-                  </button>
-                </div>
-
-                    {/* Lage voorraad waarschuwing */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
+                        <button
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          disabled={quantity <= 1}
+                          className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
+                        >
+                          <Minus className="h-4 w-4 text-gray-700" />
+                        </button>
+                        <span className="text-xl font-bold text-gray-900 min-w-[3rem] text-center">
+                          {quantity}
+                        </span>
+                        <button
+                          onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                          disabled={quantity >= product.stock}
+                          className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
+                        >
+                          <Plus className="h-4 w-4 text-gray-700" />
+                        </button>
+                      </div>
+                      
+                      <Button
+                        onClick={handleAddToCart}
+                        loading={isAdding}
+                        size="lg"
+                        variant="primary"
+                        leftIcon={<ShoppingCart className="h-5 w-5" />}
+                        className="flex-1"
+                      >
+                        In winkelwagen
+                      </Button>
+                    </div>
+                    
                     {isLowStock && (
-                      <p className="text-center text-sm text-orange-600 font-semibold">
+                      <p className="text-sm text-orange-600 font-semibold">
                         ⚠️ Nog maar {product.stock} stuks beschikbaar
                       </p>
                     )}
-                  </>
+                  </div>
                 )}
               </div>
 
@@ -376,26 +370,40 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         )}
       </div>
 
+      {/* Sticky Cart - Mobile only, met product afbeelding */}
       <div 
         data-sticky-cart
-        className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40"
+        className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40 lg:hidden"
       >
-        <div className="container mx-auto px-4 lg:px-12 max-w-7xl py-3">
+        <div className="container mx-auto px-4 py-3">
           {isOutOfStock ? (
             <div className="text-center py-2">
               <p className="text-sm font-semibold text-red-600">Dit product is momenteel uitverkocht</p>
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              {/* Product info - alleen desktop */}
-              <div className="hidden md:flex flex-col flex-1 min-w-0">
-                <div className="text-xs text-gray-600 truncate">{product.name}</div>
-                <div className="text-2xl font-bold text-gray-900">{formatPrice(displayPrice)}</div>
+              {/* Product afbeelding + info */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="relative w-12 h-12 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+                  <ProductImage
+                    src={images[0]}
+                    alt={product.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <div className="text-lg font-bold text-gray-900">{formatPrice(displayPrice)}</div>
+                  {isLowStock && (
+                    <div className="text-xs text-orange-600 font-semibold">
+                      ⚠️ {product.stock}x
+                    </div>
+                  )}
+                </div>
               </div>
               
-              {/* Controls - mobile full width */}
-              <div className="flex items-center gap-2 flex-1 md:flex-none">
-                {/* Quantity selector - compacter */}
+              {/* Controls */}
+              <div className="flex items-center gap-2 flex-1">
                 <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-2 py-1.5">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -420,17 +428,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   </button>
                 </div>
 
-                {/* Add to cart button - compacter */}
                 <Button
                   onClick={handleAddToCart}
                   loading={isAdding}
                   size="md"
                   variant="primary"
                   leftIcon={<ShoppingCart className="h-4 w-4" />}
-                  className="flex-1 md:flex-none h-10 px-6 text-sm"
+                  className="flex-1 h-10 px-4 text-sm"
                 >
-                  <span className="hidden sm:inline">Winkelwagen</span>
-                  <span className="sm:hidden">Toevoegen</span>
+                  <span className="hidden xs:inline">Toevoegen</span>
+                  <span className="xs:hidden">+</span>
                 </Button>
               </div>
             </div>

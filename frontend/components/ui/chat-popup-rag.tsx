@@ -118,11 +118,8 @@ export function ChatPopup() {
     }
   };
 
-  // DEFENSIVE: Dynamic position om sticky cart conflict te voorkomen
-  // z-index: 50 (boven sticky cart z-40, maar onder modals/lightbox)
-  const buttonPosition = stickyCartVisible 
-    ? 'bottom-[100px]' // Net boven sticky cart (±80px cart height + 20px margin)
-    : 'bottom-6'; // Normaal
+  // Chat button positie: altijd boven sticky cart op mobile, normaal op desktop
+  const buttonPosition = 'bottom-[85px] lg:bottom-6'; // 85px = sticky cart height + margin
 
   return (
     <>
