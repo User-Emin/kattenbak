@@ -243,7 +243,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                         onClick={handleAddToCart}
                         loading={isAdding}
                         size="lg"
-                        variant="primary"
+                        variant="brand"
                         fullWidth
                         leftIcon={<ShoppingCart className="h-5 w-5" />}
                       >
@@ -407,10 +407,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         {/* USP Section met Zigzag Layout + Afbeeldingen - Exact zoals Home */}
         <div className="max-w-6xl mx-auto py-20">
-          <h2 className="text-4xl font-medium text-center mb-20 text-gray-900">
-            Waarom Klanten Kiezen Voor Onze Kattenbak
-          </h2>
-          
           {/* Feature 1 - 10.5L Capaciteit (Afbeelding RECHTS) */}
           <div className="grid md:grid-cols-2 gap-16 items-center mb-20">
             <div>
@@ -519,7 +515,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   onClick={handleAddToCart}
                   loading={isAdding}
                   size="md"
-                  variant="primary"
+                  variant="brand"
                   leftIcon={<ShoppingCart className="h-4 w-4" />}
                   className="h-10 px-5 text-sm lg:px-8"
                 >
