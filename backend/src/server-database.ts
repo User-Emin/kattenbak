@@ -81,7 +81,7 @@ app.get('/api/v1/health', (req: Request, res: Response) => {
 app.post('/api/v1/admin/auth/login', (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@kattenbak.nl';
+    const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@catsupply.nl';
     const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
     
     if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {

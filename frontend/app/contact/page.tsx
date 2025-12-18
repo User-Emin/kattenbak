@@ -17,8 +17,8 @@ export default function ContactPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
             <h3 className="text-lg font-semibold mb-2 text-gray-900">Email</h3>
-            <a href="mailto:info@kattenbak.nl" className="text-brand hover:text-brand-dark transition-colors">
-              info@kattenbak.nl
+            <a href="mailto:info@catsupply.nl" className="text-accent hover:text-accentDark transition-colors">
+              info@catsupply.nl
             </a>
           </div>
 

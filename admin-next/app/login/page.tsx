@@ -105,7 +105,7 @@ export default function LoginPage() {
         
         <div className="text-center text-sm text-gray-500">
           <p>Test credentials:</p>
-          <p className="mt-1">Email: admin@kattenbak.nl</p>
+          <p className="mt-1">Email: admin@catsupply.nl</p>
           <p>Password: admin123</p>
         </div>
       </div>

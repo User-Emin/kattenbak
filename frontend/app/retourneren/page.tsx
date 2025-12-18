@@ -29,7 +29,7 @@ export default function RetournerenPage() {
       // Check if response is JSON
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
-        throw new Error('Server is tijdelijk niet bereikbaar. Probeer het later opnieuw of neem contact op via info@kattenbak.shop');
+        throw new Error('Server is tijdelijk niet bereikbaar. Probeer het later opnieuw of neem contact op via info@catsupply.nl');
       }
 
       const data = await response.json();
@@ -236,8 +236,8 @@ export default function RetournerenPage() {
                       </p>
                       <p className="text-sm text-gray-600 mt-2">
                         Vragen? Mail ons op{' '}
-                        <a href="mailto:info@kattenbak.shop" className="text-accent hover:underline">
-                          info@kattenbak.shop
+                        <a href="mailto:info@catsupply.nl" className="text-accent hover:underline">
+                          info@catsupply.nl
                         </a>
                       </p>
                     </div>
@@ -379,7 +379,7 @@ export default function RetournerenPage() {
             <div>
               <h4 className="font-semibold text-gray-900 mb-2">📧 Vragen?</h4>
               <p className="text-gray-600">
-                Neem contact op via <a href="mailto:info@catsupply.nl" className="text-black underline">info@catsupply.nl</a> of gebruik onze chat assistent.
+                Neem contact op via <a href="mailto:info@catsupply.nl" className="text-accent underline hover:text-accentDark">info@catsupply.nl</a> of gebruik onze chat assistent.
               </p>
             </div>
           </div>

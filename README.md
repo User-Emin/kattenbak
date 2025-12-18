@@ -296,6 +296,6 @@ Private - All Rights Reserved
 Voor vragen of problemen:
 - Check documentatie in `/docs`
 - Open een GitHub issue
-- Contact: support@kattenbak.nl
+- Contact: support@catsupply.nl
 
 
