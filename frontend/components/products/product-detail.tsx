@@ -9,9 +9,10 @@ import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/utils";
 import { ShoppingCart, Plus, Minus, Check, Truck, Shield, Star } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import type { Product } from "@/types/product";
 import { API_CONFIG, apiFetch } from "@/lib/config";
-import { getProductImage, IMAGE_CONFIG } from "@/lib/image-config";
+import { getProductImage, IMAGE_CONFIG, getImageFillProps } from "@/lib/image-config";
 
 interface ProductDetailProps {
   slug: string;
@@ -403,6 +404,51 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             <Separator variant="float" spacing="xl" />
           </>
         )}
+
+        {/* USP Section met Zigzag Layout + Afbeeldingen - Exact zoals Home */}
+        <div className="max-w-6xl mx-auto py-20">
+          <h2 className="text-4xl font-medium text-center mb-20 text-gray-900">
+            Waarom Klanten Kiezen Voor Onze Kattenbak
+          </h2>
+          
+          {/* Feature 1 - 10.5L Capaciteit (Afbeelding RECHTS) */}
+          <div className="grid md:grid-cols-2 gap-16 items-center mb-20">
+            <div>
+              <div className="mb-6">
+                <h3 className="text-3xl font-medium text-gray-900">10.5L Capaciteit</h3>
+              </div>
+              <p className="text-gray-600 leading-relaxed text-xl">
+                De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou en minder stress voor je kat.
+              </p>
+            </div>
+            <div className="relative aspect-square rounded-3xl overflow-hidden shadow-sm">
+              <Image
+                {...getImageFillProps(IMAGE_CONFIG.usps.capacity)}
+                className="object-cover"
+              />
+            </div>
+          </div>
+
+          <Separator variant="float" spacing="xl" />
+
+          {/* Feature 2 - Ultra-Quiet Motor (Afbeelding LINKS - zigzag) */}
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="order-2 md:order-1 relative aspect-square rounded-3xl overflow-hidden shadow-sm">
+              <Image
+                {...getImageFillProps(IMAGE_CONFIG.usps.quiet)}
+                className="object-cover"
+              />
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="mb-6">
+                <h3 className="text-3xl font-medium text-gray-900">Ultra-Quiet Motor</h3>
+              </div>
+              <p className="text-gray-600 leading-relaxed text-xl">
+                Werkt onder 40 decibel. Zo stil dat je het nauwelijks hoort, zelfs 's nachts in je slaapkamer. Perfect voor appartement of slaapkamer.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Sticky Cart - Mobile: alleen button, Desktop: button + quantity */}
