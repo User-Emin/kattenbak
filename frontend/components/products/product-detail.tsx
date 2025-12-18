@@ -343,14 +343,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* "Meer" Button - Below All Specs */}
+              {/* "Meer" Button */}
               <button
                 onClick={() => setShowAllSpecs(!showAllSpecs)}
                 className="w-full text-center py-3 text-sm font-bold text-brand hover:text-brand-dark transition"
               >
                 {showAllSpecs ? 'Minder kenmerken' : 'Meer kenmerken'} {showAllSpecs ? '▲' : '▼'}
               </button>
-            </div>
           </div>
         </div>
 
@@ -384,12 +383,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         )}
       </div>
 
-      {/* STICKY CART ONDERAAN - Fixed, outside container maar inside main div */}
       {!isOutOfStock && (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl z-50">
           <div className="container mx-auto px-6 lg:px-12 max-w-7xl py-4">
             <div className="flex items-center justify-between gap-6">
-              {/* Product Info */}
               <div className="flex-1 min-w-0">
                 <div className="text-sm text-gray-600 font-medium truncate">{product.name}</div>
                 <div className="text-3xl font-bold text-gray-900">{formatPrice(displayPrice)}</div>
@@ -400,9 +397,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
               
-              {/* Controls - Desktop & Mobile */}
               <div className="flex items-center gap-4">
-                {/* Aantal Selector */}
                 <div className="flex items-center gap-3 bg-gray-50 rounded-lg px-3 py-2">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -427,7 +422,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   </button>
                 </div>
 
-                {/* Add to Cart Button */}
                 <Button
                   onClick={handleAddToCart}
                   loading={isAdding}
