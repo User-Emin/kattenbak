@@ -64,3 +64,4 @@ tmp/
 .credentials/
 *.env.production
 GITHUB_SECRETS.txt
+*.tsbuildinfo
