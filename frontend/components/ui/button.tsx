@@ -19,7 +19,7 @@ const VARIANT_STYLES: Record<ButtonVariant, string> = {
   secondary: 'bg-white text-accent border border-accent hover:bg-accent hover:text-white font-semibold',
   outline: 'bg-transparent border border-current hover:bg-gray-50',
   ghost: 'bg-transparent hover:bg-gray-50',
-  brand: 'bg-brand text-white hover:bg-brand-dark',
+  brand: 'bg-gradient-to-br from-accent to-accentDark text-white hover:shadow-lg hover:shadow-accent/30 hover:scale-105 font-semibold',
 };
 
 const SIZE_STYLES: Record<ButtonSize, string> = {

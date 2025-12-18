@@ -13,11 +13,11 @@ export const IMAGE_CONFIG = {
   // USP section images
   usps: {
     capacity: {
-      src: '/images/premium-main.jpg',
+      src: '/images/test-cat.jpg',
       alt: '10.5L grote capaciteit',
     },
     quiet: {
-      src: '/images/premium-main.jpg',
+      src: '/images/test-cat.jpg',
       alt: 'Ultra-stille motor onder 40dB',
     },
   },

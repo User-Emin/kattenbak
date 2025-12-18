@@ -41,8 +41,8 @@ export function Header() {
       {/* Moving USP Banner - Bovenaan */}
       <MovingBanner />
       
-      {/* Navbar - Edge-to-edge, vierkant, GEEN floating */}
-      <header className="sticky top-0 z-50 bg-brand shadow-md">
+      {/* Navbar - Edge-to-edge met Smooth Gradient */}
+      <header className="sticky top-0 z-50 bg-gradient-to-br from-accent to-accentDark shadow-md">
         <div className="container mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
