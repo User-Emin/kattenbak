@@ -424,7 +424,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <Button
                   onClick={handleAddToCart}
                   loading={isAdding}
-                  size="default"
+                  size="md"
                   variant="primary"
                   leftIcon={<ShoppingCart className="h-4 w-4" />}
                   className="flex-1 md:flex-none h-10 px-6 text-sm"
