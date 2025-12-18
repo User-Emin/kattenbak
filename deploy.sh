@@ -27,9 +27,10 @@ echo -e "\n${YELLOW}[1/8]${NC} Pre-deployment security checks..."
     exit 1
 }
 
-# STEP 2: Git check
+# STEP 2: Git check (ignore build artifacts)
 echo -e "\n${YELLOW}[2/8]${NC} Checking Git status..."
-if [ -n "$(git status --porcelain)" ]; then
+UNCOMMITTED=$(git status --porcelain | grep -v "tsconfig.tsbuildinfo")
+if [ -n "$UNCOMMITTED" ]; then
     echo -e "${RED}❌ Uncommitted changes detected!${NC}"
     echo "Commit or stash changes before deploying"
     exit 1
