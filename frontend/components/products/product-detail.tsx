@@ -354,69 +354,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           </div>
         </div>
 
-        {/* STICKY CART ONDERAAN - Coolblue stijl (ALTIJD zichtbaar, niet alleen mobile) */}
-        {!isOutOfStock && (
-          <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl z-50">
-            <div className="container mx-auto px-6 lg:px-12 max-w-7xl py-4">
-              <div className="flex items-center justify-between gap-6">
-                {/* Product Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm text-gray-600 font-medium truncate">{product.name}</div>
-                  <div className="text-3xl font-bold text-gray-900">{formatPrice(displayPrice)}</div>
-                  {isLowStock && (
-                    <div className="text-xs text-orange-600 font-semibold mt-1">
-                      ⚠️ Nog {product.stock}x op voorraad
-                    </div>
-                  )}
-                </div>
-                
-                {/* Controls - Desktop & Mobile */}
-                <div className="flex items-center gap-4">
-                  {/* Aantal Selector */}
-                  <div className="flex items-center gap-3 bg-gray-50 rounded-lg px-3 py-2">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      disabled={quantity <= 1}
-                      className="w-10 h-10 rounded-full bg-white border-2 border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30 shadow-sm"
-                      aria-label="Verlaag aantal"
-                    >
-                      <Minus className="h-4 w-4 text-gray-700" />
-                    </button>
-                    
-                    <span className="text-xl font-bold text-gray-900 min-w-[3rem] text-center">
-                      {quantity}
-                    </span>
-                    
-                    <button
-                      onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                      disabled={quantity >= product.stock}
-                      className="w-10 h-10 rounded-full bg-white border-2 border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30 shadow-sm"
-                      aria-label="Verhoog aantal"
-                    >
-                      <Plus className="h-4 w-4 text-gray-700" />
-                    </button>
-                  </div>
-
-                  {/* Add to Cart Button */}
-                  <Button
-                    onClick={handleAddToCart}
-                    loading={isAdding}
-                    size="lg"
-                    variant="primary"
-                    leftIcon={<ShoppingCart className="h-5 w-5" />}
-                    className="whitespace-nowrap px-8"
-                  >
-                    In winkelwagen
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
         <Separator variant="float" spacing="xl" />
 
-        {/* Product Description - Direct op achtergrond */}
+        {/* Product Description */}
         <div className="max-w-4xl mx-auto text-center mb-16">
           <h2 className="text-3xl font-medium mb-6 text-gray-900">Over dit product</h2>
           <p className="text-gray-700 leading-relaxed text-lg">{product.description}</p>
@@ -426,23 +366,83 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         {/* Product Video - Dynamisch van admin */}
         {product.videoUrl && (
-          <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-3xl font-medium text-center mb-8 text-gray-900">Bekijk het Product in Actie</h2>
-            <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl">
-              <iframe
-                src={product.videoUrl}
-                title="Product demonstratie"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="absolute inset-0 w-full h-full"
-              />
+          <>
+            <div className="max-w-4xl mx-auto mb-16">
+              <h2 className="text-3xl font-medium text-center mb-8 text-gray-900">Bekijk het Product in Actie</h2>
+              <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl">
+                <iframe
+                  src={product.videoUrl}
+                  title="Product demonstratie"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                />
+              </div>
+            </div>
+            <Separator variant="float" spacing="xl" />
+          </>
+        )}
+      </div>
+
+      {/* STICKY CART ONDERAAN - Fixed, outside container maar inside main div */}
+      {!isOutOfStock && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl z-50">
+          <div className="container mx-auto px-6 lg:px-12 max-w-7xl py-4">
+            <div className="flex items-center justify-between gap-6">
+              {/* Product Info */}
+              <div className="flex-1 min-w-0">
+                <div className="text-sm text-gray-600 font-medium truncate">{product.name}</div>
+                <div className="text-3xl font-bold text-gray-900">{formatPrice(displayPrice)}</div>
+                {isLowStock && (
+                  <div className="text-xs text-orange-600 font-semibold mt-1">
+                    ⚠️ Nog {product.stock}x op voorraad
+                  </div>
+                )}
+              </div>
+              
+              {/* Controls - Desktop & Mobile */}
+              <div className="flex items-center gap-4">
+                {/* Aantal Selector */}
+                <div className="flex items-center gap-3 bg-gray-50 rounded-lg px-3 py-2">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    disabled={quantity <= 1}
+                    className="w-10 h-10 rounded-full bg-white border-2 border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30 shadow-sm"
+                    aria-label="Verlaag aantal"
+                  >
+                    <Minus className="h-4 w-4 text-gray-700" />
+                  </button>
+                  
+                  <span className="text-xl font-bold text-gray-900 min-w-[3rem] text-center">
+                    {quantity}
+                  </span>
+                  
+                  <button
+                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                    disabled={quantity >= product.stock}
+                    className="w-10 h-10 rounded-full bg-white border-2 border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30 shadow-sm"
+                    aria-label="Verhoog aantal"
+                  >
+                    <Plus className="h-4 w-4 text-gray-700" />
+                  </button>
+                </div>
+
+                {/* Add to Cart Button */}
+                <Button
+                  onClick={handleAddToCart}
+                  loading={isAdding}
+                  size="lg"
+                  variant="primary"
+                  leftIcon={<ShoppingCart className="h-5 w-5" />}
+                  className="whitespace-nowrap px-8"
+                >
+                  In winkelwagen
+                </Button>
+              </div>
             </div>
           </div>
-        )}
-
-        <Separator variant="float" spacing="xl" />
-
-      </div>
+        </div>
+      )}
     </div>
   );
 }
