@@ -24,7 +24,14 @@ export default function RetournerenPage() {
     setSelectedItems([]);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/returns/check/${orderNumber}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/returns/check/${orderNumber}`);
+      
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Server gaf een ongeldige response. Probeer het later opnieuw.');
+      }
+
       const data = await response.json();
 
       if (!response.ok) {
@@ -33,6 +40,7 @@ export default function RetournerenPage() {
 
       setEligibilityResult(data.data);
     } catch (error: any) {
+      console.error('Check eligibility error:', error);
       setEligibilityResult({
         eligible: false,
         reason: error.message || 'Fout bij controleren bestelling',
@@ -78,7 +86,7 @@ export default function RetournerenPage() {
           price: item.price,
         }));
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/returns`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/returns`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +96,6 @@ export default function RetournerenPage() {
           orderNumber: eligibilityResult.order.orderNumber,
           customerName: customerEmail.split('@')[0], // Simple fallback
           customerEmail,
-          shippingAddress: {}, // Will be fetched from order on backend
           reason,
           reasonDetails,
           items: returnItems,
@@ -96,6 +103,12 @@ export default function RetournerenPage() {
           sendEmail: true,
         }),
       });
+
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Server gaf een ongeldige response. Probeer het later opnieuw.');
+      }
 
       const data = await response.json();
 
@@ -105,6 +118,7 @@ export default function RetournerenPage() {
 
       setSubmitResult(data.data);
     } catch (error: any) {
+      console.error('Submit return error:', error);
       alert(error.message || 'Fout bij aanmaken retour');
     } finally {
       setIsSubmitting(false);

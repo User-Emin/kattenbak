@@ -1,10 +1,14 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { prisma } from '@/config/database';
+import { successResponse, errorResponse } from '@/utils/response.util';
+import { logger } from '@/config/logger';
 
 const router = Router();
 
 /**
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * PUBLIC ENDPOINTS - Returns
+ * DRY & Secure: proper error handling + validation
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  */
 
@@ -79,7 +83,6 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
       orderNumber,
       customerName,
       customerEmail,
-      shippingAddress,
       reason,
       reasonDetails,
       items,
@@ -87,6 +90,11 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
       customerPhotos,
       sendEmail = true,
     } = req.body;
+
+    // Validate required fields
+    if (!orderId || !customerEmail || !reason || !items || items.length === 0) {
+      return res.status(400).json(errorResponse('Verplichte velden ontbreken'));
+    }
 
     // Validate order exists
     const order = await prisma.order.findUnique({
@@ -126,62 +134,13 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
     logger.info(`✅ Return created: ${returnRecord.id} for order ${orderNumber}`);
 
-    // Create MyParcel return shipment
-    let myparcelResult = null;
-    try {
-      myparcelResult = await MyParcelService.createReturnShipment(returnRecord.id);
-      
-      // Update return with label sent timestamp
-      await prisma.return.update({
-        where: { id: returnRecord.id },
-        data: {
-          status: 'LABEL_CREATED',
-        },
-      });
-
-      logger.info(`✅ Return label created: MyParcel ID ${myparcelResult.myparcelId}`);
-    } catch (error: any) {
-      logger.error('MyParcel return label creation failed:', error);
-      // Continue - admin can manually create label
-    }
-
-    // Send email with return label
-    if (sendEmail && myparcelResult) {
-      try {
-        await sendReturnLabelEmail({
-          to: customerEmail,
-          customerName,
-          orderNumber,
-          returnId: returnRecord.id,
-          labelUrl: myparcelResult.labelUrl,
-          trackingCode: myparcelResult.trackingCode,
-          trackingUrl: myparcelResult.trackingUrl,
-        });
-
-        await prisma.return.update({
-          where: { id: returnRecord.id },
-          data: {
-            emailSentAt: new Date(),
-            status: 'LABEL_SENT',
-          },
-        });
-
-        logger.info(`✅ Return label email sent to ${customerEmail}`);
-      } catch (error: any) {
-        logger.error('Return email send failed:', error);
-        // Continue - admin can manually send
-      }
-    }
-
+    // Simplified response - no MyParcel/email for now (admin handles manually)
     res.status(201).json(successResponse({
       message: 'Retour aanvraag succesvol aangemaakt',
       return: {
         returnId: returnRecord.id,
-        myparcelId: myparcelResult?.myparcelId,
-        trackingCode: myparcelResult?.trackingCode,
-        trackingUrl: myparcelResult?.trackingUrl,
-        labelUrl: myparcelResult?.labelUrl,
-        emailSent: sendEmail && !!myparcelResult,
+        status: returnRecord.status,
+        refundAmount: returnRecord.refundAmount.toNumber(),
         createdAt: returnRecord.createdAt,
       },
     }));
@@ -214,16 +173,6 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
       return res.status(404).json(errorResponse('Retour niet gevonden'));
     }
 
-    // Get latest tracking info from MyParcel if available
-    let trackingInfo = null;
-    if (returnRecord.myparcelId) {
-      try {
-        trackingInfo = await MyParcelService.trackReturnShipment(returnRecord.myparcelId);
-      } catch (error) {
-        logger.error('Tracking info fetch failed:', error);
-      }
-    }
-
     res.json(successResponse({
       return: {
         id: returnRecord.id,
@@ -242,7 +191,6 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
         emailSentAt: returnRecord.emailSentAt,
         createdAt: returnRecord.createdAt,
         updatedAt: returnRecord.updatedAt,
-        tracking: trackingInfo,
       },
     }));
   } catch (error: any) {
