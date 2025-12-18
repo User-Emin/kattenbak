@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   images: {
+    unoptimized: true, // Disable Image Optimization API for standalone mode
     remotePatterns: [
       {
         protocol: "https",
