@@ -166,20 +166,20 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* RECHTS: Product Info - BEGINT OP ZELFDE HOOGTE ALS AFBEELDING */}
           <div className="space-y-6">
             {/* Pre-order Badge (optioneel) */}
-            {isPreOrder && (
+              {isPreOrder && (
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand/10 text-brand rounded-full">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span className="font-semibold">Pre-order</span>
-                {product.releaseDate && (
-                  <span className="text-sm">
-                    • Verwacht: {new Date(product.releaseDate).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
-                  </span>
-                )}
-              </div>
-            )}
-            
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="font-semibold">Pre-order</span>
+                  {product.releaseDate && (
+                    <span className="text-sm">
+                      • Verwacht: {new Date(product.releaseDate).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </span>
+                  )}
+                </div>
+              )}
+              
             {/* USPs - Compacter */}
             <div className="space-y-2">
                     <div className="flex items-center gap-3">
@@ -243,43 +243,43 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   </div>
                 ) : (
                   <>
-                    <Button
-                      onClick={handleAddToCart}
-                      loading={isAdding}
-                      size="lg"
-                      variant="primary"
-                      fullWidth
-                      leftIcon={<ShoppingCart className="h-5 w-5" />}
-                      className="mb-4"
-                    >
-                      Winkelwagen toevoegen
-                    </Button>
-                    
+                <Button
+                  onClick={handleAddToCart}
+                  loading={isAdding}
+                  size="lg"
+                  variant="primary"
+                  fullWidth
+                  leftIcon={<ShoppingCart className="h-5 w-5" />}
+                  className="mb-4"
+                >
+                  Winkelwagen toevoegen
+                </Button>
+                
                     {/* Aantal Selector - Alleen mobile */}
-                    <div className="flex items-center justify-center gap-4 mb-4">
-                      <span className="text-sm font-bold text-gray-900">Aantal:</span>
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        disabled={quantity <= 1}
-                        className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
-                        aria-label="Verlaag aantal"
-                      >
-                        <Minus className="h-4 w-4 text-gray-700" />
-                      </button>
-                      
-                      <span className="text-xl font-bold text-gray-900 min-w-[2.5rem] text-center">
-                        {quantity}
-                      </span>
-                      
-                      <button
-                        onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                        disabled={quantity >= product.stock}
-                        className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
-                        aria-label="Verhoog aantal"
-                      >
-                        <Plus className="h-4 w-4 text-gray-700" />
-                      </button>
-                    </div>
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <span className="text-sm font-bold text-gray-900">Aantal:</span>
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    disabled={quantity <= 1}
+                    className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
+                    aria-label="Verlaag aantal"
+                  >
+                    <Minus className="h-4 w-4 text-gray-700" />
+                  </button>
+                  
+                  <span className="text-xl font-bold text-gray-900 min-w-[2.5rem] text-center">
+                    {quantity}
+                  </span>
+                  
+                  <button
+                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                    disabled={quantity >= product.stock}
+                    className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
+                    aria-label="Verhoog aantal"
+                  >
+                    <Plus className="h-4 w-4 text-gray-700" />
+                  </button>
+                </div>
 
                     {/* Lage voorraad waarschuwing */}
                     {isLowStock && (
@@ -366,28 +366,38 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         {/* Product Video - Dynamisch van admin */}
         {product.videoUrl && (
           <>
-            <div className="max-w-4xl mx-auto mb-16">
-              <h2 className="text-3xl font-medium text-center mb-8 text-gray-900">Bekijk het Product in Actie</h2>
-              <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl">
-                <iframe
-                  src={product.videoUrl}
-                  title="Product demonstratie"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full"
-                />
-              </div>
+          <div className="max-w-4xl mx-auto mb-16">
+            <h2 className="text-3xl font-medium text-center mb-8 text-gray-900">Bekijk het Product in Actie</h2>
+            <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl">
+              <iframe
+                src={product.videoUrl}
+                title="Product demonstratie"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
             </div>
+          </div>
             <Separator variant="float" spacing="xl" />
           </>
         )}
       </div>
 
-      {!isOutOfStock && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl z-50">
-          <div className="container mx-auto px-6 lg:px-12 max-w-7xl py-4">
+      <div 
+        data-sticky-cart
+        className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl z-40 transition-all duration-300"
+      >
+        <div className="container mx-auto px-6 lg:px-12 max-w-7xl py-4">
+          {isOutOfStock ? (
+            <div className="flex items-center justify-center gap-4">
+              <div className="text-center">
+                <p className="text-lg font-semibold text-gray-700">{product.name}</p>
+                <p className="text-sm text-red-600 font-semibold mt-1">Dit product is momenteel uitverkocht</p>
+              </div>
+            </div>
+          ) : (
             <div className="flex items-center justify-between gap-6">
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 hidden md:block">
                 <div className="text-sm text-gray-600 font-medium truncate">{product.name}</div>
                 <div className="text-3xl font-bold text-gray-900">{formatPrice(displayPrice)}</div>
                 {isLowStock && (
@@ -397,7 +407,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
               
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 w-full md:w-auto">
                 <div className="flex items-center gap-3 bg-gray-50 rounded-lg px-3 py-2">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -428,15 +438,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   size="lg"
                   variant="primary"
                   leftIcon={<ShoppingCart className="h-5 w-5" />}
-                  className="whitespace-nowrap px-8"
+                  className="whitespace-nowrap px-8 flex-1 md:flex-none"
                 >
-                  In winkelwagen
+                  <span className="hidden md:inline">In winkelwagen</span>
+                  <span className="md:hidden">Toevoegen</span>
                 </Button>
               </div>
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

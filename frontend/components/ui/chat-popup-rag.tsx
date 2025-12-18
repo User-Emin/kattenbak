@@ -121,7 +121,7 @@ export function ChatPopup() {
   // DEFENSIVE: Dynamic position om sticky cart conflict te voorkomen
   // z-index: 50 (boven sticky cart z-40, maar onder modals/lightbox)
   const buttonPosition = stickyCartVisible 
-    ? 'bottom-[120px]' // Boven sticky cart (80px cart + 40px margin)
+    ? 'bottom-[100px]' // Net boven sticky cart (±80px cart height + 20px margin)
     : 'bottom-6'; // Normaal
 
   return (
