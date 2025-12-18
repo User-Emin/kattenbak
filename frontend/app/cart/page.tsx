@@ -36,18 +36,19 @@ export default function CartPage() {
   const total = subtotal + shipping + tax;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-        <h1 className="text-4xl font-normal mb-2">Winkelwagen</h1>
-        <p className="text-gray-600 mb-8">{itemCount} {itemCount === 1 ? 'product' : 'producten'}</p>
+    <div className="min-h-screen bg-gray-50 py-8 pb-24">
+      <div className="container mx-auto px-4 lg:px-12 max-w-6xl">
+        <h1 className="text-3xl font-normal mb-2">Winkelwagen</h1>
+        <p className="text-gray-600 mb-6">{itemCount} {itemCount === 1 ? 'product' : 'producten'}</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Cart Items */}
-          <div className="lg:col-span-2 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Cart Items - Compacter */}
+          <div className="lg:col-span-2 space-y-4">
             {items.map((item, index) => (
               <div key={item.product.id}>
-                <div className="flex gap-6">
-                  <div className="relative w-32 h-32 bg-gray-50 rounded overflow-hidden flex-shrink-0">
+                <div className="flex gap-4">
+                  {/* Smaller image on mobile */}
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 bg-gray-50 rounded overflow-hidden flex-shrink-0">
                     <ProductImage
                       src={getProductImage(item.product.images)}
                       alt={item.product.name}
@@ -56,48 +57,49 @@ export default function CartPage() {
                     />
                   </div>
 
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <h2 className="text-xl font-normal mb-1">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex-1 min-w-0 pr-2">
+                        <h2 className="text-base md:text-lg font-normal mb-1 truncate">
                           {item.product.name}
                         </h2>
-                        <p className="text-gray-600">
+                        <p className="text-sm text-gray-600">
                           {formatPrice(item.product.price)} per stuk
                         </p>
                       </div>
                       <button
                         onClick={() => removeItem(item.product.id)}
-                        className="text-gray-400 hover:text-gray-600 transition p-2"
+                        className="text-gray-400 hover:text-gray-600 transition p-1"
                         aria-label="Verwijder"
                       >
-                        <X className="h-5 w-5" />
+                        <X className="h-4 w-4 md:h-5 md:w-5" />
                       </button>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
+                      {/* Compacter quantity selector */}
+                      <div className="flex items-center gap-2">
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="w-10 h-10 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition"
+                          className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition"
                         >
-                          <Minus className="h-4 w-4" />
+                          <Minus className="h-3.5 w-3.5" />
                         </button>
 
-                        <span className="w-12 text-center font-medium">
+                        <span className="w-8 text-center font-medium text-sm">
                           {item.quantity}
                         </span>
 
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="w-10 h-10 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition"
+                          className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition"
                           disabled={item.quantity >= item.product.stock}
                         >
-                          <Plus className="h-4 w-4" />
+                          <Plus className="h-3.5 w-3.5" />
                         </button>
                       </div>
 
-                      <p className="text-xl font-light">
+                      <p className="text-lg md:text-xl font-light">
                         {formatPrice(item.product.price * item.quantity)}
                       </p>
                     </div>
@@ -105,18 +107,18 @@ export default function CartPage() {
                 </div>
 
                 {index < items.length - 1 && (
-                  <Separator variant="float" spacing="md" />
+                  <Separator variant="float" spacing="sm" />
                 )}
               </div>
             ))}
           </div>
 
-          {/* Order Summary */}
+          {/* Order Summary - Compacter */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-50 p-8 rounded-lg sticky top-8">
-              <h2 className="text-xl font-normal mb-6">Overzicht</h2>
+            <div className="bg-gray-50 p-6 rounded-lg sticky top-8">
+              <h2 className="text-lg font-normal mb-4">Overzicht</h2>
 
-              <div className="space-y-3 mb-6">
+              <div className="space-y-2 mb-4 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotaal</span>
                   <span>{formatPrice(subtotal)}</span>
@@ -135,9 +137,9 @@ export default function CartPage() {
 
               <Separator variant="float" spacing="sm" />
 
-              <div className="flex justify-between items-center mb-6">
-                <span className="text-lg font-medium">Totaal</span>
-                <span className="text-2xl font-light">{formatPrice(total)}</span>
+              <div className="flex justify-between items-center mb-5">
+                <span className="text-base font-medium">Totaal</span>
+                <span className="text-xl font-light">{formatPrice(total)}</span>
               </div>
 
               <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
@@ -146,13 +148,13 @@ export default function CartPage() {
                 </Button>
               </Link>
 
-              <p className="text-xs text-gray-500 text-center mt-4">
-                Geen account nodig - direct afrekenen als gast
+              <p className="text-xs text-gray-500 text-center mt-3">
+                Geen account nodig
               </p>
 
-              <Separator variant="float" spacing="md" />
+              <Separator variant="float" spacing="sm" />
 
-              <div className="text-sm text-gray-600 space-y-2">
+              <div className="text-xs text-gray-600 space-y-1.5">
                 <p>✓ Gratis verzending vanaf €50</p>
                 <p>✓ Veilig betalen met Mollie</p>
                 <p>✓ 14 dagen bedenktijd</p>

@@ -378,63 +378,59 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
       <div 
         data-sticky-cart
-        className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl z-40 transition-all duration-300"
+        className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40"
       >
-        <div className="container mx-auto px-6 lg:px-12 max-w-7xl py-4">
+        <div className="container mx-auto px-4 lg:px-12 max-w-7xl py-3">
           {isOutOfStock ? (
-            <div className="flex items-center justify-center gap-4">
-              <div className="text-center">
-                <p className="text-lg font-semibold text-gray-700">{product.name}</p>
-                <p className="text-sm text-red-600 font-semibold mt-1">Dit product is momenteel uitverkocht</p>
-              </div>
+            <div className="text-center py-2">
+              <p className="text-sm font-semibold text-red-600">Dit product is momenteel uitverkocht</p>
             </div>
           ) : (
-            <div className="flex items-center justify-between gap-6">
-              <div className="flex-1 min-w-0 hidden md:block">
-                <div className="text-sm text-gray-600 font-medium truncate">{product.name}</div>
-                <div className="text-3xl font-bold text-gray-900">{formatPrice(displayPrice)}</div>
-                {isLowStock && (
-                  <div className="text-xs text-orange-600 font-semibold mt-1">
-                    ⚠️ Nog {product.stock}x op voorraad
-                  </div>
-                )}
+            <div className="flex items-center gap-3">
+              {/* Product info - alleen desktop */}
+              <div className="hidden md:flex flex-col flex-1 min-w-0">
+                <div className="text-xs text-gray-600 truncate">{product.name}</div>
+                <div className="text-2xl font-bold text-gray-900">{formatPrice(displayPrice)}</div>
               </div>
               
-              <div className="flex items-center gap-4 w-full md:w-auto">
-                <div className="flex items-center gap-3 bg-gray-50 rounded-lg px-3 py-2">
+              {/* Controls - mobile full width */}
+              <div className="flex items-center gap-2 flex-1 md:flex-none">
+                {/* Quantity selector - compacter */}
+                <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-2 py-1.5">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
-                    className="w-10 h-10 rounded-full bg-white border-2 border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30 shadow-sm"
-                    aria-label="Verlaag aantal"
+                    className="w-8 h-8 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
+                    aria-label="Min"
                   >
-                    <Minus className="h-4 w-4 text-gray-700" />
+                    <Minus className="h-3.5 w-3.5 text-gray-700" />
                   </button>
                   
-                  <span className="text-xl font-bold text-gray-900 min-w-[3rem] text-center">
+                  <span className="text-lg font-bold text-gray-900 min-w-[2rem] text-center">
                     {quantity}
                   </span>
                   
                   <button
                     onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
                     disabled={quantity >= product.stock}
-                    className="w-10 h-10 rounded-full bg-white border-2 border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30 shadow-sm"
-                    aria-label="Verhoog aantal"
+                    className="w-8 h-8 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
+                    aria-label="Plus"
                   >
-                    <Plus className="h-4 w-4 text-gray-700" />
+                    <Plus className="h-3.5 w-3.5 text-gray-700" />
                   </button>
                 </div>
 
+                {/* Add to cart button - compacter */}
                 <Button
                   onClick={handleAddToCart}
                   loading={isAdding}
-                  size="lg"
+                  size="default"
                   variant="primary"
-                  leftIcon={<ShoppingCart className="h-5 w-5" />}
-                  className="whitespace-nowrap px-8 flex-1 md:flex-none"
+                  leftIcon={<ShoppingCart className="h-4 w-4" />}
+                  className="flex-1 md:flex-none h-10 px-6 text-sm"
                 >
-                  <span className="hidden md:inline">In winkelwagen</span>
-                  <span className="md:hidden">Toevoegen</span>
+                  <span className="hidden sm:inline">Winkelwagen</span>
+                  <span className="sm:hidden">Toevoegen</span>
                 </Button>
               </div>
             </div>
