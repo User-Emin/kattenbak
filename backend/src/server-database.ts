@@ -359,6 +359,24 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
       return res.status(400).json(error('Invalid product IDs'));
     }
 
+    // VOORRAAD CHECK - Security tegen race conditions
+    for (const item of orderData.items) {
+      const product = products.find((p) => p.id === item.productId);
+      if (!product) {
+        return res.status(400).json(error('Product not found'));
+      }
+
+      // Check if product is out of stock
+      if (product.stock <= 0) {
+        return res.status(400).json(error(`Product "${product.name}" is niet meer op voorraad`));
+      }
+
+      // Check if requested quantity exceeds available stock
+      if (item.quantity > product.stock) {
+        return res.status(400).json(error(`Product "${product.name}" heeft maar ${product.stock} stuks op voorraad`));
+      }
+    }
+
     // Calculate totals with pre-order discounts
     // BELANGRIJKE NOTE: Prijzen zijn INCLUSIEF BTW!
     let subtotalInclBTW = 0;

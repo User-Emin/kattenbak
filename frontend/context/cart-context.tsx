@@ -96,11 +96,22 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (existingIndex >= 0) {
         const updated = [...prev];
-        updated[existingIndex].quantity += quantity;
+        const newQuantity = updated[existingIndex].quantity + quantity;
+        
+        // VOORRAAD CHECK - Niet meer toevoegen dan beschikbaar
+        if (newQuantity > product.stock) {
+          console.warn(`Kan niet meer dan ${product.stock} stuks toevoegen`);
+          updated[existingIndex].quantity = product.stock;
+          return updated;
+        }
+        
+        updated[existingIndex].quantity = newQuantity;
         return updated;
       }
       
-      return [...prev, { product, quantity }];
+      // Voor nieuw item ook stock checken
+      const safeQuantity = Math.min(quantity, product.stock);
+      return [...prev, { product, quantity: safeQuantity }];
     });
   }, []);
 
@@ -115,9 +126,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     
     setItems((prev) =>
-      prev.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
-      )
+      prev.map((item) => {
+        if (item.product.id === productId) {
+          // VOORRAAD CHECK - Niet meer dan stock
+          const safeQuantity = Math.min(quantity, item.product.stock);
+          return { ...item, quantity: safeQuantity };
+        }
+        return item;
+      })
     );
   }, [removeItem]);
 

@@ -83,6 +83,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     : originalPrice;
   const displayPrice = isPreOrder && preOrderDiscountPercentage > 0 ? discountedPrice : product.price;
 
+  // STOCK CHECK - Kritiek voor voorraad systeem
+  const isOutOfStock = product.stock <= 0;
+  const isLowStock = product.stock > 0 && product.stock <= product.lowStockThreshold;
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
@@ -94,8 +98,36 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Product Images - Met zoom op hover */}
+          {/* LINKS: Titel + Afbeeldingen (Coolblue stijl) */}
           <div className="space-y-4">
+            {/* Product Titel - BOVEN afbeeldingen zoals Coolblue */}
+            <div className="mb-6">
+              <h1 className="text-4xl font-medium leading-tight text-gray-900">{product.name}</h1>
+              
+              {/* Voorraad Status - Direct onder titel */}
+              <div className="mt-3">
+                {isOutOfStock ? (
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 rounded-lg font-semibold">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Niet op voorraad
+                  </div>
+                ) : isLowStock ? (
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 text-orange-700 rounded-lg font-semibold">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    Laatste {product.stock} op voorraad
+                  </div>
+                ) : (
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand/10 text-brand rounded-lg font-semibold">
+                    <Check className="h-5 w-5" />
+                    Op voorraad
+                  </div>
+                )}
+              </div>
+            </div>
             {/* Main Product Image - Klik voor lightbox met zoom */}
             <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-sm">
               <ProductImage
@@ -129,11 +161,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
           </div>
 
-          {/* Product Info - Direct op achtergrond */}
+          {/* RECHTS: Product Info (Symmetrisch) */}
           <div className="space-y-8">
             <div>
-              <h1 className="text-4xl font-medium mb-6 leading-tight text-gray-900">{product.name}</h1>
-              
               {/* Pre-order Badge */}
               {isPreOrder && (
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand/10 text-brand rounded-full mb-4">
@@ -193,45 +223,71 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
 
-              {/* CTA Button - Hoger voor MacBook view */}
+              {/* CTA Section - Met voorraad check */}
               <div className="mb-8">
-                <Button
-                  onClick={handleAddToCart}
-                  loading={isAdding}
-                  size="lg"
-                  variant="primary"
-                  fullWidth
-                  leftIcon={<ShoppingCart className="h-5 w-5" />}
-                  className="mb-4"
-                >
-                  Winkelwagen toevoegen
-                </Button>
-                
-                {/* Aantal Selector - Compacter onder button */}
-                <div className="flex items-center justify-center gap-4 mb-4">
-                  <span className="text-sm font-bold text-gray-900">Aantal:</span>
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    disabled={quantity <= 1}
-                    className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
-                    aria-label="Verlaag aantal"
-                  >
-                    <Minus className="h-4 w-4 text-gray-700" />
-                  </button>
-                  
-                  <span className="text-xl font-bold text-gray-900 min-w-[2.5rem] text-center">
-                    {quantity}
-                  </span>
-                  
-                  <button
-                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                    disabled={quantity >= product.stock}
-                    className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
-                    aria-label="Verhoog aantal"
-                  >
-                    <Plus className="h-4 w-4 text-gray-700" />
-                  </button>
-                </div>
+                {isOutOfStock ? (
+                  <div className="space-y-4">
+                    <Button
+                      disabled
+                      size="lg"
+                      variant="primary"
+                      fullWidth
+                      className="bg-gray-300 cursor-not-allowed opacity-60"
+                    >
+                      Niet beschikbaar
+                    </Button>
+                    <p className="text-center text-sm text-gray-600">
+                      Dit product is momenteel uitverkocht. Neem contact op voor verwachte leverdatum.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <Button
+                      onClick={handleAddToCart}
+                      loading={isAdding}
+                      size="lg"
+                      variant="primary"
+                      fullWidth
+                      leftIcon={<ShoppingCart className="h-5 w-5" />}
+                      className="mb-4"
+                    >
+                      Winkelwagen toevoegen
+                    </Button>
+                    
+                    {/* Aantal Selector - Alleen als op voorraad */}
+                    <div className="flex items-center justify-center gap-4 mb-4">
+                      <span className="text-sm font-bold text-gray-900">Aantal:</span>
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        disabled={quantity <= 1}
+                        className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
+                        aria-label="Verlaag aantal"
+                      >
+                        <Minus className="h-4 w-4 text-gray-700" />
+                      </button>
+                      
+                      <span className="text-xl font-bold text-gray-900 min-w-[2.5rem] text-center">
+                        {quantity}
+                      </span>
+                      
+                      <button
+                        onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                        disabled={quantity >= product.stock}
+                        className="w-10 h-10 rounded-pill border-2 border-gray-300 hover:border-brand hover:bg-white flex items-center justify-center transition disabled:opacity-30 bg-white shadow-sm"
+                        aria-label="Verhoog aantal"
+                      >
+                        <Plus className="h-4 w-4 text-gray-700" />
+                      </button>
+                    </div>
+
+                    {/* Lage voorraad waarschuwing */}
+                    {isLowStock && (
+                      <p className="text-center text-sm text-orange-600 font-semibold">
+                        ⚠️ Nog maar {product.stock} stuks beschikbaar
+                      </p>
+                    )}
+                  </>
+                )}
               </div>
 
               <Separator variant="float" spacing="md" />
@@ -296,6 +352,61 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             </div>
           </div>
         </div>
+
+        {/* STICKY CART - Coolblue stijl onderaan (mobile only) */}
+        {!isOutOfStock && (
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl z-50 lg:hidden">
+            <div className="container mx-auto px-6 py-4">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex-1">
+                  <div className="text-sm text-gray-600 font-medium truncate">{product.name}</div>
+                  <div className="text-2xl font-bold text-gray-900">{formatPrice(displayPrice)}</div>
+                  {isLowStock && (
+                    <div className="text-xs text-orange-600 font-semibold">
+                      Nog {product.stock}x op voorraad
+                    </div>
+                  )}
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  {/* Compact Aantal Selector */}
+                  <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-2 py-1">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      disabled={quantity <= 1}
+                      className="w-8 h-8 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30 shadow-sm"
+                    >
+                      <Minus className="h-3 w-3 text-gray-700" />
+                    </button>
+                    
+                    <span className="text-lg font-bold text-gray-900 min-w-[1.5rem] text-center">
+                      {quantity}
+                    </span>
+                    
+                    <button
+                      onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                      disabled={quantity >= product.stock}
+                      className="w-8 h-8 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30 shadow-sm"
+                    >
+                      <Plus className="h-3 w-3 text-gray-700" />
+                    </button>
+                  </div>
+
+                  <Button
+                    onClick={handleAddToCart}
+                    loading={isAdding}
+                    size="md"
+                    variant="primary"
+                    leftIcon={<ShoppingCart className="h-4 w-4" />}
+                    className="whitespace-nowrap"
+                  >
+                    Toevoegen
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         <Separator variant="float" spacing="xl" />
 
