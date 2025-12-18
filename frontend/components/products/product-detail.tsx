@@ -99,31 +99,24 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         {/* Product Titel - BOVEN ALLES (Coolblue stijl) */}
         <div className="mb-6">
-          <h1 className="text-4xl font-medium leading-tight text-gray-900 mb-3">{product.name}</h1>
+          <h1 className="text-4xl font-medium leading-tight text-gray-900">{product.name}</h1>
           
-          {/* Voorraad Status - Direct onder titel */}
-          <div>
-            {isOutOfStock ? (
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 rounded-lg font-semibold">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                Niet op voorraad
-              </div>
-            ) : isLowStock ? (
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 text-orange-700 rounded-lg font-semibold">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-                Laatste {product.stock} op voorraad
-              </div>
-            ) : (
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand/10 text-brand rounded-lg font-semibold">
-                <Check className="h-5 w-5" />
-                Op voorraad
-              </div>
-            )}
-          </div>
+          {/* Voorraad Status - Alleen bij problemen tonen */}
+          {isOutOfStock ? (
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 rounded-lg font-semibold mt-3">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Niet op voorraad
+            </div>
+          ) : isLowStock ? (
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 text-orange-700 rounded-lg font-semibold mt-3">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Laatste {product.stock} op voorraad
+            </div>
+          ) : null}
         </div>
 
         {/* SYMMETRISCHE LAYOUT: Afbeeldingen LINKS | Info RECHTS op zelfde hoogte */}
@@ -180,25 +173,25 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
               
-            {/* USPs - Compacter */}
+            {/* USPs - Exact zelfde styling als kenmerken titels */}
             <div className="space-y-2">
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                      <span className="font-medium text-gray-900">10.5L - Grootste afvalbak in zijn klasse</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                      <span className="font-medium text-gray-900">Ultra-stille motor onder 40dB</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                      <span className="font-medium text-gray-900">Dubbele veiligheidssensoren</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                      <span className="font-medium text-gray-900">Gratis verzending</span>
-                    </div>
-                  </div>
+              <div className="flex items-center gap-3">
+                <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                <span className="font-semibold text-gray-900">10.5L - Grootste afvalbak in zijn klasse</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                <span className="font-semibold text-gray-900">Ultra-stille motor onder 40dB</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                <span className="font-semibold text-gray-900">Dubbele veiligheidssensoren</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                <span className="font-semibold text-gray-900">Gratis verzending</span>
+              </div>
+            </div>
 
               <Separator variant="float" spacing="sm" />
 
