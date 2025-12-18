@@ -217,8 +217,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
 
-              {/* Desktop CTA - Horizontaal: Button + Quantity naast elkaar */}
-              <div className="hidden lg:block mb-6">
+              {/* Inline CTA - Altijd zichtbaar (mobile + desktop) */}
+              <div className="mb-6">
                 {isOutOfStock ? (
                   <div className="space-y-3">
                     <Button
