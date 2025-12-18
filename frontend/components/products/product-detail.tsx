@@ -217,7 +217,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
 
-              {/* Desktop CTA - Verticaal: Button boven, Quantity onder */}
+              {/* Desktop CTA - Horizontaal: Button + Quantity naast elkaar */}
               <div className="hidden lg:block mb-6">
                 {isOutOfStock ? (
                   <div className="space-y-3">
@@ -236,36 +236,38 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <Button
-                      onClick={handleAddToCart}
-                      loading={isAdding}
-                      size="lg"
-                      variant="primary"
-                      fullWidth
-                      leftIcon={<ShoppingCart className="h-5 w-5" />}
-                    >
-                      In winkelwagen
-                    </Button>
-                    
-                    {/* Quantity selector ONDER button */}
-                    <div className="flex items-center justify-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        disabled={quantity <= 1}
-                        className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
+                    <div className="flex items-center gap-3">
+                      <Button
+                        onClick={handleAddToCart}
+                        loading={isAdding}
+                        size="lg"
+                        variant="primary"
+                        leftIcon={<ShoppingCart className="h-5 w-5" />}
+                        className="flex-1"
                       >
-                        <Minus className="h-4 w-4 text-gray-700" />
-                      </button>
-                      <span className="text-xl font-bold text-gray-900 min-w-[3rem] text-center">
-                        {quantity}
-                      </span>
-                      <button
-                        onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                        disabled={quantity >= product.stock}
-                        className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
-                      >
-                        <Plus className="h-4 w-4 text-gray-700" />
-                      </button>
+                        In winkelwagen
+                      </Button>
+                      
+                      {/* Quantity selector ACHTER button */}
+                      <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
+                        <button
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          disabled={quantity <= 1}
+                          className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
+                        >
+                          <Minus className="h-4 w-4 text-gray-700" />
+                        </button>
+                        <span className="text-xl font-bold text-gray-900 min-w-[3rem] text-center">
+                          {quantity}
+                        </span>
+                        <button
+                          onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                          disabled={quantity >= product.stock}
+                          className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
+                        >
+                          <Plus className="h-4 w-4 text-gray-700" />
+                        </button>
+                      </div>
                     </div>
                     
                     {isLowStock && (
@@ -369,7 +371,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         )}
       </div>
 
-      {/* Sticky Cart - Altijd zichtbaar, met product afbeelding en betere spacing */}
+      {/* Sticky Cart - Mobile: alleen button, Desktop: button + quantity */}
       <div 
         data-sticky-cart
         className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40"
@@ -405,9 +407,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               </div>
               
-              {/* Controls - betere spacing, niet plakken aan rand */}
+              {/* Controls */}
               <div className="flex items-center gap-3 flex-1 justify-end">
-                <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
+                {/* Quantity selector - alleen desktop */}
+                <div className="hidden lg:flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
@@ -431,16 +434,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   </button>
                 </div>
 
+                {/* Cart button - altijd zichtbaar */}
                 <Button
                   onClick={handleAddToCart}
                   loading={isAdding}
                   size="md"
                   variant="primary"
                   leftIcon={<ShoppingCart className="h-4 w-4" />}
-                  className="h-10 px-5 text-sm"
+                  className="h-10 px-5 text-sm lg:px-8"
                 >
                   <span className="hidden sm:inline">Winkelwagen</span>
-                  <span className="sm:hidden">+</span>
+                  <span className="sm:hidden">Toevoegen</span>
                 </Button>
               </div>
             </div>
