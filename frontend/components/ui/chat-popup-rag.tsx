@@ -118,8 +118,8 @@ export function ChatPopup() {
     }
   };
 
-  // Chat button positie: altijd boven sticky cart op mobile, normaal op desktop
-  const buttonPosition = 'bottom-[85px] lg:bottom-6'; // 85px = sticky cart height + margin
+  // Chat button positie: altijd BOVEN sticky cart
+  const buttonPosition = 'bottom-[85px]'; // 85px = sticky cart height + margin
 
   return (
     <>

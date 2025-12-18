@@ -217,7 +217,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
 
-              {/* Inline CTA - Altijd zichtbaar (mobile + desktop) */}
+              {/* Inline CTA - Responsive: Mobile verticaal, Desktop horizontaal */}
               <div className="mb-6">
                 {isOutOfStock ? (
                   <div className="space-y-3">
@@ -236,7 +236,42 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <div className="flex items-center gap-3">
+                    {/* Mobile: Verticaal (button boven, quantity onder) */}
+                    <div className="lg:hidden space-y-3">
+                      <Button
+                        onClick={handleAddToCart}
+                        loading={isAdding}
+                        size="lg"
+                        variant="primary"
+                        fullWidth
+                        leftIcon={<ShoppingCart className="h-5 w-5" />}
+                      >
+                        In winkelwagen
+                      </Button>
+                      
+                      <div className="flex items-center justify-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
+                        <button
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          disabled={quantity <= 1}
+                          className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
+                        >
+                          <Minus className="h-4 w-4 text-gray-700" />
+                        </button>
+                        <span className="text-xl font-bold text-gray-900 min-w-[3rem] text-center">
+                          {quantity}
+                        </span>
+                        <button
+                          onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                          disabled={quantity >= product.stock}
+                          className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
+                        >
+                          <Plus className="h-4 w-4 text-gray-700" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Desktop: Horizontaal (button + quantity naast elkaar) */}
+                    <div className="hidden lg:flex items-center gap-3">
                       <Button
                         onClick={handleAddToCart}
                         loading={isAdding}
@@ -248,7 +283,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                         In winkelwagen
                       </Button>
                       
-                      {/* Quantity selector ACHTER button */}
                       <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
                         <button
                           onClick={() => setQuantity(Math.max(1, quantity - 1))}
