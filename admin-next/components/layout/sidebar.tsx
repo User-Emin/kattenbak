@@ -26,12 +26,12 @@ export function Sidebar() {
   const { logout } = useAuth();
 
   return (
-    <div className="flex h-full w-64 flex-col bg-gray-900 text-white">
-      <div className="flex h-16 items-center justify-center border-b border-gray-800">
+    <div className="fixed left-0 top-0 z-40 h-screen w-64 flex-col bg-gray-900 text-white hidden lg:flex">
+      <div className="flex h-16 items-center justify-center border-b border-gray-800 flex-shrink-0">
         <h1 className="text-xl font-bold">Kattenbak Admin</h1>
       </div>
       
-      <nav className="flex-1 space-y-1 px-3 py-4">
+      <nav className="flex-1 overflow-y-auto space-y-1 px-3 py-4">
         {navigation.map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
           const Icon = item.icon;
@@ -53,7 +53,7 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="border-t border-gray-800 p-4">
+      <div className="border-t border-gray-800 p-4 flex-shrink-0">
         <button
           onClick={() => logout()}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
