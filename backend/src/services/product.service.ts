@@ -80,6 +80,10 @@ export class ProductService {
       where: { id },
       include: {
         category: true,
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+        },
       },
     });
 
@@ -111,6 +115,10 @@ export class ProductService {
       where: { slug },
       include: {
         category: true,
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+        },
       },
     });
 

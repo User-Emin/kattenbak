@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ProductImage } from "@/components/ui/product-image";
 import { Separator } from "@/components/ui/separator";
+import { ColorSelector, type ProductVariant } from "@/components/products/color-selector";
 import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/utils";
 import { ShoppingCart, Plus, Minus, Check, Truck, Shield, Star } from "lucide-react";
@@ -27,22 +28,51 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [showAllSpecs, setShowAllSpecs] = useState(false);
+  
+  // Variant state
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
 
   useEffect(() => {
     apiFetch<{ success: boolean; data: Product }>(API_CONFIG.ENDPOINTS.PRODUCT_BY_SLUG(slug))
       .then(data => {
         if (data.success && data.data) {
           setProduct(data.data);
+          // Auto-select first variant if product has variants
+          if (data.data.hasVariants && data.data.variants && data.data.variants.length > 0) {
+            const firstActiveVariant = data.data.variants.find(v => v.isActive && v.stock > 0);
+            if (firstActiveVariant) {
+              setSelectedVariant(firstActiveVariant);
+            }
+          }
         }
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, [slug]);
 
+  const handleVariantSelect = (variant: ProductVariant) => {
+    setSelectedVariant(variant);
+    setSelectedImage(0); // Reset to first image of variant
+  };
+
   const handleAddToCart = async () => {
     if (!product) return;
     setIsAdding(true);
-    addItem(product, quantity);
+    
+    // Pass variant info to cart if applicable
+    const cartItem = {
+      ...product,
+      ...(selectedVariant && {
+        variantId: selectedVariant.id,
+        variantName: selectedVariant.name,
+        variantColor: selectedVariant.colorCode,
+        // Override product images/price with variant's
+        images: selectedVariant.images,
+        price: product.price + (selectedVariant.priceAdjustment || 0),
+      }),
+    };
+    
+    addItem(cartItem, quantity);
     await new Promise((resolve) => setTimeout(resolve, 500));
     setIsAdding(false);
     router.push('/cart');
@@ -69,24 +99,34 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     );
   }
 
-  const images = Array.isArray(product.images) && product.images.length > 0 
-    ? product.images 
-    : [IMAGE_CONFIG.product.main];
-  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
-  const discount = hasDiscount ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100) : 0;
+  // Determine images and stock based on variant selection
+  const displayImages = selectedVariant && selectedVariant.images.length > 0
+    ? selectedVariant.images
+    : (Array.isArray(product.images) && product.images.length > 0 
+        ? product.images 
+        : [IMAGE_CONFIG.product.main]);
+  
+  const displayStock = selectedVariant ? selectedVariant.stock : product.stock;
+  const displayPrice = selectedVariant
+    ? product.price + (selectedVariant.priceAdjustment || 0)
+    : product.price;
+
+  const images = displayImages;
+  const hasDiscount = product.compareAtPrice && product.compareAtPrice > displayPrice;
+  const discount = hasDiscount ? Math.round(((product.compareAtPrice! - displayPrice) / product.compareAtPrice!) * 100) : 0;
 
   // Pre-order calculations
   const isPreOrder = product.isPreOrder;
   const preOrderDiscountPercentage = product.preOrderDiscount || 0;
-  const originalPrice = product.price;
+  const originalPrice = displayPrice;
   const discountedPrice = isPreOrder && preOrderDiscountPercentage > 0
     ? originalPrice * (1 - preOrderDiscountPercentage / 100)
     : originalPrice;
-  const displayPrice = isPreOrder && preOrderDiscountPercentage > 0 ? discountedPrice : product.price;
+  const finalDisplayPrice = isPreOrder && preOrderDiscountPercentage > 0 ? discountedPrice : displayPrice;
 
-  // STOCK CHECK - Kritiek voor voorraad systeem
-  const isOutOfStock = product.stock <= 0;
-  const isLowStock = product.stock > 0 && product.stock <= product.lowStockThreshold;
+  // STOCK CHECK - Kritiek voor voorraad systeem (uses displayStock)
+  const isOutOfStock = displayStock <= 0;
+  const isLowStock = displayStock > 0 && displayStock <= product.lowStockThreshold;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 pb-32">
@@ -115,7 +155,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
-              Laatste {product.stock} op voorraad
+              Laatste {displayStock} op voorraad
             </div>
           ) : null}
         </div>
@@ -196,6 +236,19 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               <Separator variant="float" spacing="sm" />
 
+              {/* Color Selector - Toon alleen als product varianten heeft */}
+              {product.hasVariants && product.variants && product.variants.length > 0 && (
+                <>
+                  <ColorSelector
+                    variants={product.variants}
+                    selectedVariantId={selectedVariant?.id || null}
+                    onSelectVariant={handleVariantSelect}
+                    disabled={isAdding}
+                  />
+                  <Separator variant="float" spacing="sm" />
+                </>
+              )}
+
               {/* Prijs - Dikker zoals productnaam */}
               <div className="mb-6">
                 {isPreOrder && preOrderDiscountPercentage > 0 ? (
@@ -214,7 +267,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-5xl font-semibold text-gray-900">{formatPrice(product.price)}</div>
+                  <div className="text-5xl font-semibold text-gray-900">{formatPrice(displayPrice)}</div>
                 )}
               </div>
 

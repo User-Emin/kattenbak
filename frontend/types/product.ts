@@ -21,6 +21,8 @@ export interface Product {
   videoUrl: string | null;
   uspImage1: string | null;
   uspImage2: string | null;
+  hasVariants: boolean;
+  variants?: ProductVariant[];
   metaTitle: string | null;
   metaDescription: string | null;
   isActive: boolean;
@@ -37,6 +39,22 @@ export interface Product {
     name: string;
     slug: string;
   };
+}
+
+export interface ProductVariant {
+  id: string;
+  productId: string;
+  name: string;
+  sku: string;
+  colorCode?: string;
+  colorImageUrl?: string;
+  priceAdjustment?: number;
+  stock: number;
+  images: string[];
+  isActive: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateOrderData {
@@ -97,8 +115,11 @@ export interface Order {
 export interface OrderItem {
   id: string;
   productId: string;
+  variantId?: string;
   productName: string;
   productSku: string;
+  variantName?: string;
+  variantColor?: string;
   price: number;
   quantity: number;
   subtotal: number;

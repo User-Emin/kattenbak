@@ -5,6 +5,7 @@ import orderRoutes from './order.routes';
 import categoryRoutes from './category.routes';
 import shipmentRoutes from './shipment.routes';
 import returnsRoutes from './returns.routes';
+import variantRoutes from './variant.routes';
 import { authenticate, adminOnly } from '@/middleware/auth.middleware';
 
 /**
@@ -18,6 +19,7 @@ router.use('/auth', authRoutes);
 
 // 🔒 PROTECTED: All other admin routes require authentication + admin role
 router.use('/products', authenticate, adminOnly, productRoutes);
+router.use('/variants', authenticate, adminOnly, variantRoutes);
 router.use('/orders', authenticate, adminOnly, orderRoutes);
 router.use('/categories', authenticate, adminOnly, categoryRoutes);
 router.use('/shipments', authenticate, adminOnly, shipmentRoutes);

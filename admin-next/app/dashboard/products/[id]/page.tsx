@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
 import { FileUpload } from '@/components/FileUpload';
+import { VariantManager } from '@/components/VariantManager';
 
 interface Product {
   id: string;
@@ -382,6 +383,11 @@ export default function EditProductPage() {
           <input type="hidden" name="videoUrl" value={videoUrl} />
           <input type="hidden" name="uspImage1" value={uspImage1} />
           <input type="hidden" name="uspImage2" value={uspImage2} />
+        </div>
+
+        {/* Variant Management */}
+        <div className="bg-card rounded-lg border shadow-sm p-6">
+          <VariantManager productId={productId} productName={product.name} />
         </div>
 
         <div className="flex gap-4">
