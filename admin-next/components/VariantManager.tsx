@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { Plus, Edit, Trash2, Image as ImageIcon, Save, X } from 'lucide-react';
-import { get, post, put, del } from '@/lib/api/client';
+import { adminApi } from '@/lib/api/admin-client';
 import { FileUpload } from './FileUpload';
 
 /**
@@ -65,8 +65,8 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
   const fetchVariants = async () => {
     try {
       setIsLoading(true);
-      const response = await get<{ success: boolean; data: ProductVariant[] }>(
-        `/admin/variants?productId=${productId}`
+      const response = await adminApi.get<{ success: boolean; data: ProductVariant[] }>(
+        `/variants?productId=${productId}`
       );
       setVariants(response.data || []);
     } catch (error: any) {
@@ -134,14 +134,14 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
 
       if (isCreating) {
         // Create new variant
-        await post('/admin/variants', {
+        await adminApi.post('/variants', {
           ...formData,
           productId,
         });
         toast.success('Variant toegevoegd!');
       } else if (editingId) {
         // Update existing variant
-        await put(`/admin/variants/${editingId}`, formData);
+        await adminApi.put(`/variants/${editingId}`, formData);
         toast.success('Variant bijgewerkt!');
       }
 
@@ -157,7 +157,7 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
     if (!confirm(`Variant "${name}" verwijderen?`)) return;
 
     try {
-      await del(`/admin/variants/${id}`);
+      await adminApi.delete(`/variants/${id}`);
       toast.success('Variant verwijderd');
       fetchVariants();
     } catch (error: any) {
