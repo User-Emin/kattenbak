@@ -1,5 +1,8 @@
 import { prisma } from '@/config/database.config';
-import { Order, Prisma } from '@prisma/client';
+import { Order } from '@prisma/client';
+import { NotFoundError, ValidationError } from '@/utils/errors.util';
+import { logger } from '@/config/logger.config';
+import { ProductService } from './product.service';
 import Decimal from 'decimal.js';
 
 interface CreateOrderData {

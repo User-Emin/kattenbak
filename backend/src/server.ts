@@ -101,11 +101,11 @@ class Server {
     const adminRoutes = (await import('./routes/admin/index')).default;
     this.app.use('/api/v1/admin', adminRoutes);
 
-    // Webhook routes
-    const webhookRoutes = (await import('./routes/webhook.routes')).default;
-    this.app.use('/api/v1/webhooks', webhookRoutes);
+    // Webhook routes - DISABLED (Mollie/MyParcel have TS errors)
+    // const webhookRoutes = (await import('./routes/webhook.routes')).default;
+    // this.app.use('/api/v1/webhooks', webhookRoutes);
 
-    logger.info('✅ Routes initialized (admin + products + returns + webhooks)');
+    logger.info('✅ Routes initialized (admin + products + returns)');
   }
 
   /**

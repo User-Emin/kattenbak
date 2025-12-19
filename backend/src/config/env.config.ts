@@ -2,12 +2,19 @@ import { config } from 'dotenv';
 import path from 'path';
 import { existsSync } from 'fs';
 
-// Load environment-specific .env file
-// Try multiple locations: backend/.env, root/.env, parent .env.development
+// ROBUST .env loading - works in ALL contexts (dev, PM2, Docker)
 const possibleEnvPaths = [
+  // PM2 context: /var/www/kattenbak/.env
   path.resolve(process.cwd(), '.env'),
+  // Backend subfolder context
+  path.resolve(process.cwd(), 'backend', '.env'),
   path.resolve(process.cwd(), '..', '.env'),
-  path.resolve(process.cwd(), '..', '.env.development'),
+  // Explicit production path
+  '/var/www/kattenbak/.env',
+  '/var/www/kattenbak/backend/.env',
+  // Development paths
+  path.resolve(__dirname, '..', '..', '.env'),
+  path.resolve(__dirname, '..', '..', '..', '.env'),
   path.resolve(process.cwd(), '.env.development'),
 ];
 
