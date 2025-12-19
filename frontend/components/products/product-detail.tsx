@@ -195,6 +195,26 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               </div>
             )}
+
+            {/* USPs - ONDER FOTO */}
+            <div className="space-y-2 bg-white rounded-2xl p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                <span className="font-semibold text-gray-900">10.5L - Grootste afvalbak in zijn klasse</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                <span className="font-semibold text-gray-900">Ultra-stille motor onder 40dB</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                <span className="font-semibold text-gray-900">Dubbele veiligheidssensoren</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                <span className="font-semibold text-gray-900">Gratis verzending</span>
+              </div>
+            </div>
           </div>
 
           {/* RECHTS: Product Info - BEGINT OP ZELFDE HOOGTE ALS AFBEELDING */}
@@ -214,26 +234,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
               
-            {/* USPs - Exact zelfde styling als kenmerken titels */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                <span className="font-semibold text-gray-900">10.5L - Grootste afvalbak in zijn klasse</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                <span className="font-semibold text-gray-900">Ultra-stille motor onder 40dB</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                <span className="font-semibold text-gray-900">Dubbele veiligheidssensoren</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                <span className="font-semibold text-gray-900">Gratis verzending</span>
-              </div>
-            </div>
-
               <Separator variant="float" spacing="sm" />
 
               {/* Color Selector - Toon alleen als product varianten heeft */}
