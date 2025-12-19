@@ -29,7 +29,9 @@ export default function LoginPage() {
         localStorage.setItem('auth_user', JSON.stringify(response.data.user));
         
         toast.success('Succesvol ingelogd!');
-        router.push('/dashboard');
+        
+        // Force hard navigation (Next.js router.push fails sometimes)
+        window.location.href = '/dashboard';
       } else {
         toast.error(response.error || 'Inloggen mislukt');
       }
