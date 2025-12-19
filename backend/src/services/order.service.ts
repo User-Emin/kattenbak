@@ -1,8 +1,5 @@
 import { prisma } from '@/config/database.config';
 import { Order, Prisma } from '@prisma/client';
-import { NotFoundError, ValidationError } from '@/utils/errors.util';
-import { logger } from '@/config/logger.config';
-import { ProductService } from './product.service';
 import Decimal from 'decimal.js';
 
 interface CreateOrderData {
@@ -235,14 +232,14 @@ export class OrderService {
   /**
    * Update order status
    */
-  static async updateOrderStatus(
+  static   async updateOrderStatus(
     id: string,
     status: string
   ): Promise<Order> {
     const order = await prisma.order.update({
       where: { id },
       data: {
-        status,
+        status: status as any, // Type cast for status enum
         ...(status === 'DELIVERED' && { completedAt: new Date() }),
       },
       include: {

@@ -26,13 +26,11 @@ export async function comparePasswords(
   return bcrypt.compare(password, hash);
 }
 
-/**
- * Generate JWT token
- */
 export function generateToken(payload: JWTPayload): string {
-  return jwt.sign(payload, env.JWT_SECRET, {
-    expiresIn: env.JWT_EXPIRES_IN as string | number,
-  });
+  const options = {
+    expiresIn: env.JWT_EXPIRES_IN as any, // JWT accepts string or number
+  };
+  return jwt.sign(payload, env.JWT_SECRET, options);
 }
 
 /**

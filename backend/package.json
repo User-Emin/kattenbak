@@ -5,8 +5,8 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc --noEmitOnError false && tsc-alias || true",
-    "start": "node -r tsconfig-paths/register dist/server.js",
+    "build": "rm -rf dist && tsc --noEmitOnError false && tsc-alias -p tsconfig.json",
+    "start": "node dist/server.js",
     "rag:ingest": "tsx src/services/rag/document-ingestion.service.ts ingest",
     "rag:clear": "tsx src/services/rag/document-ingestion.service.ts clear",
     "rag:count": "tsx src/services/rag/document-ingestion.service.ts count",

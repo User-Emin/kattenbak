@@ -1,0 +1,14 @@
+{
+  "verbose": false,
+  "resolveFullPaths": true,
+  "replacers": {
+    "@/": "./src/",
+    "@config/": "./src/config/",
+    "@controllers/": "./src/controllers/",
+    "@services/": "./src/services/",
+    "@repositories/": "./src/repositories/",
+    "@middleware/": "./src/middleware/",
+    "@types/": "./src/types/",
+    "@utils/": "./src/utils/"
+  }
+}
