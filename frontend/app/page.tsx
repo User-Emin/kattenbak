@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { MovingBanner } from "@/components/ui/moving-banner";
 import { ArrowRight, Play, Check, ChevronDown, ChevronUp } from "lucide-react";
 import type { Product } from "@/types/product";
 import { API_CONFIG, SITE_CONFIG, apiFetch } from "@/lib/config";
@@ -87,8 +88,9 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
         </div>
 
-        <div className="container mx-auto px-6 lg:px-12 py-20 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
+        {/* Titel LINKS BENEDEN in hero */}
+        <div className="absolute bottom-12 left-12 z-10 max-w-2xl">
+          <div className="text-left">
             <h1 className="text-5xl md:text-7xl font-light mb-6 leading-tight animate-fade-in text-white drop-shadow-lg">
               Slimste Kattenbak
             </h1>
@@ -97,34 +99,14 @@ export default function HomePage() {
               Automatisch • Smart • Hygiënisch
             </p>
 
-            <div className="flex flex-row gap-2 sm:gap-4 justify-center mb-12 max-w-2xl mx-auto px-4">
-              <Link href={`/product/${productSlug}`} className="flex-1">
-                <Button size="lg" variant="primary" rightIcon={<ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />} fullWidth className="text-sm sm:text-base">
+            <div className="flex justify-start">
+              <Link href={`/product/${productSlug}`}>
+                <Button size="lg" variant="primary" rightIcon={<ArrowRight className="h-5 w-5" />} className="text-base px-8">
                   Bekijk Product
-                </Button>
-              </Link>
-              <Link href="#video" className="flex-1">
-                <Button size="lg" variant="brand" leftIcon={<Play className="h-4 w-4 sm:h-5 sm:w-5" />} fullWidth className="text-sm sm:text-base">
-                  Demo Video
                 </Button>
               </Link>
             </div>
 
-            {/* Trust Badges */}
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-white">
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-accent" />
-                <span>Gratis verzending</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-accent" />
-                <span>2 jaar garantie</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-accent" />
-                <span>14 dagen retour</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>

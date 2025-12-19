@@ -131,7 +131,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   return (
     <div className="min-h-screen bg-gray-50 py-12 pb-32">
       <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
-            {/* Breadcrumb */}
+            {/* Breadcrumb - PADDING TOP voor zwevende navbar */}
             <nav className="mb-8 text-sm">
               <Link href="/" className="text-brand hover:text-brand-dark transition font-bold">Home</Link>
               <span className="mx-2 text-gray-400">/</span>
@@ -503,7 +503,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* Sticky Cart - Mobile: alleen button, Desktop: button + quantity */}
       <div 
         data-sticky-cart
-        className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40"
+        className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-brand shadow-lg z-40"
       >
         <div className="container mx-auto px-4 max-w-7xl py-3">
           {isOutOfStock ? (

@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // output: "standalone", // DISABLED - causes PM2 issues, use regular mode
   images: {
-    unoptimized: true, // Disable Image Optimization API for standalone mode
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",

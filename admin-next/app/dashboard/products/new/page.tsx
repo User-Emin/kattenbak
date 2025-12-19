@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { get, post } from '@/lib/api/client';
+import { adminApi } from '@/lib/api/admin-client';
 import { toast } from 'sonner';
 import { ArrowLeft, Plus } from 'lucide-react';
 import Link from 'next/link';
@@ -24,7 +24,7 @@ export default function NewProductPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await get<{success: boolean; data: Category[]}>('/admin/categories');
+      const response = await adminApi.get<{success: boolean; data: Category[]}>('/categories');
       setCategories(response.data || []);
     } catch (error: any) {
       console.error('Error fetching categories:', error);
@@ -58,7 +58,7 @@ export default function NewProductPage() {
         categoryId: categoryId || null,
       };
 
-      await post('/admin/products', productData);
+      await adminApi.post('/products', productData);
       toast.success('Product succesvol aangemaakt!');
       router.push('/dashboard/products');
     } catch (error: any) {

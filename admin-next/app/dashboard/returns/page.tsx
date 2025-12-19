@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { get } from '@/lib/api/client';
+import { adminApi } from '@/lib/api/admin-client';
 import { Package, Eye, Mail } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
@@ -34,7 +34,7 @@ export default function ReturnsPage() {
   const fetchReturns = async () => {
     try {
       setIsLoading(true);
-      const response = await get<{success: boolean; data: Return[]}>('/admin/returns');
+      const response = await adminApi.get<{success: boolean; data: Return[]}>('/returns');
       setReturns(response.data || []);
     } catch (error: any) {
       console.error('Error fetching returns:', error);

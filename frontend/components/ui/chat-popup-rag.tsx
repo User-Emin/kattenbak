@@ -123,7 +123,7 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* Chat Button - DEFENSIEF STICKY MET CONFLICT PREVENTIE */}
+      {/* Chat Button - BLAUWE GRADIENT */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={`fixed right-6 z-50 ${buttonPosition}
@@ -137,9 +137,53 @@ export function ChatPopup() {
         style={{ willChange: 'transform' }}
       >
         {isExpanded ? (
-          <X className="w-6 h-6" />
+          <X className="w-7 h-7" />
         ) : (
-          <MessageCircle className="w-6 h-6" />
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 40 40" 
+            fill="none" 
+            className="w-8 h-8"
+          >
+            {/* Clean abstract chat bubble - geen overlap */}
+            <path 
+              d="M32 20c0 6.627-5.373 12-12 12-1.657 0-3.23-.336-4.665-.944L10 33l2.056-5.335A11.946 11.946 0 0 1 8 20c0-6.627 5.373-12 12-12s12 5.373 12 12z" 
+              stroke="currentColor" 
+              strokeWidth="3" 
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+            />
+            
+            {/* Drie geanimeerde stippen - perfect spacing, geen overlap */}
+            <circle cx="15" cy="20" r="2" fill="currentColor">
+              <animate 
+                attributeName="r" 
+                values="1.8;2.2;1.8" 
+                dur="1.5s" 
+                repeatCount="indefinite" 
+                begin="0s"
+              />
+            </circle>
+            <circle cx="20" cy="20" r="2" fill="currentColor">
+              <animate 
+                attributeName="r" 
+                values="1.8;2.2;1.8" 
+                dur="1.5s" 
+                repeatCount="indefinite" 
+                begin="0.25s"
+              />
+            </circle>
+            <circle cx="25" cy="20" r="2" fill="currentColor">
+              <animate 
+                attributeName="r" 
+                values="1.8;2.2;1.8" 
+                dur="1.5s" 
+                repeatCount="indefinite" 
+                begin="0.5s"
+              />
+            </circle>
+          </svg>
         )}
       </button>
 
@@ -156,7 +200,7 @@ export function ChatPopup() {
           <div className="fixed inset-0 md:inset-auto md:bottom-24 md:right-6 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
             <div className="pointer-events-auto w-full max-w-md max-h-[85vh] md:max-h-[600px] bg-white rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
               
-              {/* Header */}
+              {/* Header - BLAUWE GRADIENT */}
               <div className="bg-gradient-to-br from-brand to-brand-dark p-6 rounded-t-2xl text-white">
                 <div className="flex justify-between items-start mb-2">
                   <div>

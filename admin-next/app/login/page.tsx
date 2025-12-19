@@ -24,14 +24,20 @@ export default function LoginPage() {
       const response = await authApi.login({ email, password });
       
       if (response.success && response.data) {
-        // Store token and user
+        // Store token in both localStorage AND cookies (for middleware)
         localStorage.setItem('auth_token', response.data.token);
         localStorage.setItem('auth_user', JSON.stringify(response.data.user));
         
-        toast.success('Succesvol ingelogd!');
+        // Set cookie for middleware auth (expires in 24h)
+        document.cookie = `auth_token=${response.data.token}; path=/; max-age=86400; samesite=strict; secure`;
         
-        // Force hard navigation (Next.js router.push fails sometimes)
-        window.location.href = '/dashboard';
+        toast.success('Succesvol ingelogd! Redirecting...');
+        
+        // Small delay to show toast, then redirect
+        setTimeout(() => {
+          // Force hard navigation with correct base path
+          window.location.href = '/admin/dashboard';
+        }, 500);
       } else {
         toast.error(response.error || 'Inloggen mislukt');
       }

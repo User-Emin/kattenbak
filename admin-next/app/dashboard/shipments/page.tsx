@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Loader2 } from 'lucide-react';
-import { get } from '@/lib/api/client';
+import { adminApi } from '@/lib/api/admin-client';
 import { Shipment } from '@/types/common';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
@@ -49,7 +49,7 @@ export default function ShipmentsPage() {
   const loadShipments = async () => {
     try {
       setIsLoading(true);
-      const response = await get<{success: boolean; data: Shipment[]}>('/admin/shipments');
+      const response = await adminApi.get<{success: boolean; data: Shipment[]}>('/shipments');
       setShipments(response.data || []);
     } catch (error: any) {
       console.error('Load shipments error:', error);

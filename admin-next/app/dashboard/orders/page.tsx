@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { get } from '@/lib/api/client';
+import { adminApi } from '@/lib/api/admin-client';
 import { ShoppingCart, Eye } from 'lucide-react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 interface Order {
   id: string;
@@ -40,7 +41,7 @@ export default function OrdersPage() {
   const fetchOrders = async () => {
     try {
       setIsLoading(true);
-      const response = await get<{success: boolean; data: Order[]}>('/admin/orders');
+      const response = await adminApi.get<{success: boolean; data: Order[]}>('/orders');
       setOrders(response.data || []);
     } catch (error: any) {
       console.error('Error fetching orders:', error);

@@ -9,19 +9,19 @@ export const API_CONFIG = {
   BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3101',
   ENDPOINTS: {
     // Products
-    PRODUCTS: '/api/v1/products',
-    PRODUCT_BY_ID: (id: string) => `/api/v1/products/${id}`,
-    PRODUCT_BY_SLUG: (slug: string) => `/api/v1/products/slug/${slug}`,
-    PRODUCTS_FEATURED: '/api/v1/products/featured',
-    PRODUCTS_SEARCH: '/api/v1/products/search',
+    PRODUCTS: '/products',
+    PRODUCT_BY_ID: (id: string) => `/products/${id}`,
+    PRODUCT_BY_SLUG: (slug: string) => `/products/slug/${slug}`,
+    PRODUCTS_FEATURED: '/products/featured',
+    PRODUCTS_SEARCH: '/products/search',
     
     // Orders
-    ORDERS: '/api/v1/orders',
-    ORDER_BY_ID: (id: string) => `/api/v1/orders/${id}`,
+    ORDERS: '/orders',
+    ORDER_BY_ID: (id: string) => `/orders/${id}`,
     
     // Health
     HEALTH: '/health',
-    API_HEALTH: '/api/v1/health',
+    API_HEALTH: '/health',
   },
   TIMEOUT: 10000, // 10 seconds
   CACHE: {

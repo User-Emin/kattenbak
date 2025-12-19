@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Loader2 } from 'lucide-react';
-import { get } from '@/lib/api/client';
+import { adminApi } from '@/lib/api/admin-client';
 import { Category } from '@/types/common';
 import { toast } from 'sonner';
 
@@ -31,7 +31,7 @@ export default function CategoriesPage() {
   const loadCategories = async () => {
     try {
       setIsLoading(true);
-      const response = await get<{success: boolean; data: Category[]}>('/admin/categories');
+      const response = await adminApi.get<{success: boolean; data: Category[]}>('/categories');
       setCategories(response.data || []);
     } catch (error: any) {
       console.error('Load categories error:', error);

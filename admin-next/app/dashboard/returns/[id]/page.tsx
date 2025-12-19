@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { get, put, post } from '@/lib/api/client';
+import { adminApi } from '@/lib/api/admin-client';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { ArrowLeft, Package, User, Clock, Mail, ExternalLink } from 'lucide-react';
@@ -27,7 +27,7 @@ export default function ReturnDetailPage() {
   const fetchReturn = async () => {
     try {
       setIsLoading(true);
-      const response = await get<{success: boolean; data: any}>(`/admin/returns/${returnId}`);
+      const response = await adminApi.get<{success: boolean; data: any}>(`/returns/${returnId}`);
       setReturnData(response.data);
       setNewStatus(response.data.status);
       setAdminNotes(response.data.adminNotes || '');
@@ -42,7 +42,7 @@ export default function ReturnDetailPage() {
   const handleUpdateStatus = async () => {
     try {
       setIsSaving(true);
-      await put(`/admin/returns/${returnId}/status`, {
+      await adminApi.put(`/returns/${returnId}/status`, {
         status: newStatus,
         adminNotes,
       });
@@ -57,7 +57,7 @@ export default function ReturnDetailPage() {
 
   const handleResendEmail = async () => {
     try {
-      await post(`/admin/returns/${returnId}/resend-email`, {});
+      await adminApi.post(`/returns/${returnId}/resend-email`, {});
       toast.success('Email opnieuw verzonden');
       fetchReturn();
     } catch (error: any) {
@@ -67,7 +67,7 @@ export default function ReturnDetailPage() {
 
   const handleCreateLabel = async () => {
     try {
-      await post(`/admin/returns/${returnId}/create-label`, { sendEmail: true });
+      await adminApi.post(`/returns/${returnId}/create-label`, { sendEmail: true });
       toast.success('Label aangemaakt en verzonden');
       fetchReturn();
     } catch (error: any) {

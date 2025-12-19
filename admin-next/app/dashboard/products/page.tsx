@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { get } from '@/lib/api/client';
+import { adminApi } from '@/lib/api/admin-client';
 import { Package, Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -31,7 +31,7 @@ export default function ProductsPage() {
   const fetchProducts = async () => {
     try {
       setIsLoading(true);
-      const response = await get<{success: boolean; data: Product[]}>('/admin/products');
+      const response = await adminApi.get<{success: boolean; data: Product[]}>('/products');
       setProducts(response.data || []);
     } catch (error: any) {
       console.error('Error fetching products:', error);
@@ -95,7 +95,7 @@ export default function ProductsPage() {
                     <td className="px-4 py-3 text-sm text-muted-foreground">
                       {product.category?.name || <span className="text-gray-400 italic">Geen categorie</span>}
                     </td>
-                    <td className="px-4 py-3 text-sm text-right">€{product.price.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-sm text-right">€{Number(product.price || 0).toFixed(2)}</td>
                     <td className="px-4 py-3 text-sm text-right">
                       <span className={product.stock <= 10 ? 'text-destructive font-medium' : ''}>
                         {product.stock}

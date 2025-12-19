@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { get, put } from '@/lib/api/client';
+import { adminApi } from '@/lib/api/admin-client';
 import { toast } from 'sonner';
 import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
@@ -70,7 +70,7 @@ export default function EditProductPage() {
   const fetchProduct = async () => {
     try {
       setIsLoading(true);
-      const response = await get<{success: boolean; data: Product}>(`/admin/products/${productId}`);
+      const response = await adminApi.get<{success: boolean; data: Product}>(`/products/${productId}`);
       setProduct(response.data);
       
       // Initialize uploaded URLs from product
@@ -87,7 +87,7 @@ export default function EditProductPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await get<{success: boolean; data: Category[]}>('/admin/categories');
+      const response = await adminApi.get<{success: boolean; data: Category[]}>('/categories');
       setCategories(response.data || []);
     } catch (error: any) {
       console.error('Error fetching categories:', error);
@@ -122,7 +122,7 @@ export default function EditProductPage() {
         uspImage2: (formData.get('uspImage2') as string) || null,
       };
 
-      await put(`/admin/products/${productId}`, updateData);
+      await adminApi.put(`/products/${productId}`, updateData);
       toast.success('Product succesvol bijgewerkt!');
       router.push('/dashboard/products');
     } catch (error: any) {
