@@ -64,9 +64,9 @@ export class ProductService {
   }
 
   /**
-   * Get product by ID
+   * Get product by ID with variants
    */
-  static async getProductById(id: string): Promise<Product> {
+  static async getProductById(id: string): Promise<any> {
     // Try cache first
     if (RedisClient.isAvailable()) {
       const cached = await redis?.get(`${this.CACHE_PREFIX}${id}`);
@@ -108,9 +108,9 @@ export class ProductService {
   }
 
   /**
-   * Get product by slug
+   * Get product by slug with variants
    */
-  static async getProductBySlug(slug: string): Promise<Product> {
+  static async getProductBySlug(slug: string): Promise<any> {
     const product = await prisma.product.findUnique({
       where: { slug },
       include: {
