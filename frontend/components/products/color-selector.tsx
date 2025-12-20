@@ -48,16 +48,9 @@ export function ColorSelector({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <label className="text-sm font-semibold text-gray-900">
-          Kleur
-        </label>
-        {selectedVariantId && (
-          <span className="text-sm text-gray-600">
-            {activeVariants.find((v) => v.id === selectedVariantId)?.name}
-          </span>
-        )}
-      </div>
+      <label className="text-sm font-semibold text-gray-900">
+        Kleur
+      </label>
 
       <div className="flex flex-wrap gap-3">
         {activeVariants.map((variant) => {

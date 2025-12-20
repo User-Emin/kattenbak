@@ -218,20 +218,22 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* Color Selector - Zonder separator erboven */}
+              {/* Color Selector - Met subtiele separator */}
               {product.hasVariants && product.variants && product.variants.length > 0 && (
-                <div className="pt-4">
-                  <ColorSelector
-                    variants={product.variants}
-                    selectedVariantId={selectedVariant?.id || null}
-                    onSelectVariant={handleVariantSelect}
-                    disabled={isAdding}
-                  />
-                </div>
+                <>
+                  <div className="border-t border-gray-200 pt-6">
+                    <ColorSelector
+                      variants={product.variants}
+                      selectedVariantId={selectedVariant?.id || null}
+                      onSelectVariant={handleVariantSelect}
+                      disabled={isAdding}
+                    />
+                  </div>
+                </>
               )}
 
-              {/* COOLBLUE: USPs vinkjes - Compact zonder separators */}
-              <div className="space-y-2 pt-2">
+              {/* COOLBLUE: USPs vinkjes - Met separator erboven */}
+              <div className="border-t border-gray-200 pt-6 space-y-2">
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Automatische zelfreiniging</span></div>
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">10.5L XL capaciteit</span></div>
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Dubbele veiligheidssensoren</span></div>
