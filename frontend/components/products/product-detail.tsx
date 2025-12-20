@@ -56,6 +56,36 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     setSelectedImage(0); // Reset to first image of variant
   };
 
+  // Sticky cart visibility on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const stickyCart = document.querySelector('[data-sticky-cart]') as HTMLElement;
+      const mainCartButton = document.querySelector('[data-main-cart]') as HTMLElement;
+      
+      if (stickyCart && mainCartButton) {
+        const mainCartRect = mainCartButton.getBoundingClientRect();
+        const isMainCartVisible = mainCartRect.top >= 0 && mainCartRect.bottom <= window.innerHeight;
+        
+        if (isMainCartVisible) {
+          // Main cart visible - hide sticky
+          stickyCart.style.opacity = '0';
+          stickyCart.style.transform = 'translateY(100%)';
+          stickyCart.style.pointerEvents = 'none';
+        } else {
+          // Main cart not visible - show sticky
+          stickyCart.style.opacity = '1';
+          stickyCart.style.transform = 'translateY(0)';
+          stickyCart.style.pointerEvents = 'auto';
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial state
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleAddToCart = async () => {
     if (!product) return;
     setIsAdding(true);
@@ -597,10 +627,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <Separator variant="float" spacing="xl" />
       </div>
 
-      {/* Sticky Cart - RECHTHOEKIG met brand border-top */}
+      {/* Sticky Cart - ALLEEN ZICHTBAAR BIJ SCROLLEN */}
       <div
         data-sticky-cart
-        className="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-40 border-t-2 border-brand"
+        className="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-40 border-t-2 border-brand opacity-0 translate-y-full transition-all duration-300"
+        style={{ pointerEvents: 'none' }}
       >
         <div className="container mx-auto px-4 max-w-7xl py-3">
           {isOutOfStock ? (
