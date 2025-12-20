@@ -212,12 +212,12 @@ export function ChatPopup() {
             onClick={() => setIsExpanded(false)}
           />
           
-          {/* Chat Modal - RECHTS BENEDEN */}
+          {/* Chat Modal - RECHTS BENEDEN MET RONDERE BUBBLES */}
           <div className="fixed inset-0 md:inset-auto md:bottom-24 md:right-6 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
-            <div className="pointer-events-auto w-full max-w-md max-h-[85vh] md:max-h-[600px] bg-white rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
+            <div className="pointer-events-auto w-full max-w-md max-h-[85vh] md:max-h-[600px] bg-white rounded-3xl shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
               
               {/* Header - BLAUWE GRADIENT */}
-              <div className="bg-gradient-to-br from-brand to-brand-dark p-6 rounded-t-2xl text-white">
+              <div className="bg-gradient-to-br from-brand to-brand-dark p-6 rounded-t-3xl text-white">
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className="text-xl font-bold">AI Assistent</h3>
