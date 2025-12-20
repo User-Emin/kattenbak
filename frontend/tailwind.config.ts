@@ -19,11 +19,11 @@ export default {
           light: '#ffffff',
           dark: '#f5f5f5',
         },
-        // Donker blauw voor navbar en structurele elementen
+        // Blauw #223ce3 voor navbar en structurele elementen  
         brand: {
-          DEFAULT: '#005980',      // Donker blauw voor navbar
-          light: '#0077a3',
-          dark: '#003d5c',
+          DEFAULT: '#223ce3',      // Nieuwe blauwe kleur
+          light: '#3d5ce8',
+          dark: '#1a2fb5',
         },
         // Zwart voor action buttons (serieuzere uitstraling)
         accent: {
@@ -65,8 +65,8 @@ export default {
         'float-hover': '0 12px 40px rgba(0, 0, 0, 0.06)',
         'cta': '0 4px 14px rgba(255, 170, 33, 0.25)',
         'cta-hover': '0 6px 20px rgba(255, 170, 33, 0.35)',
-        'brand': '0 8px 32px rgba(0, 89, 128, 0.25)',
-        'brand-lg': '0 12px 48px rgba(0, 89, 128, 0.35)',
+        'brand': '0 8px 32px rgba(34, 60, 227, 0.25)',  // #223ce3
+        'brand-lg': '0 12px 48px rgba(34, 60, 227, 0.35)',
       },
     },
   },
