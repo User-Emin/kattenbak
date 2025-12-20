@@ -217,35 +217,30 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   )}
                 </div>
               )}
-              
-              <Separator variant="float" spacing="sm" />
 
-              {/* Color Selector - Direct na pre-order badge, VOOR USPs */}
+              {/* Color Selector - Zonder separator erboven */}
               {product.hasVariants && product.variants && product.variants.length > 0 && (
-                <>
+                <div className="pt-4">
                   <ColorSelector
                     variants={product.variants}
                     selectedVariantId={selectedVariant?.id || null}
                     onSelectVariant={handleVariantSelect}
                     disabled={isAdding}
                   />
-                  <Separator variant="float" spacing="sm" />
-                </>
+                </div>
               )}
 
-              {/* COOLBLUE: USPs vinkjes - NA color selector */}
-              <div className="mb-6 space-y-2">
+              {/* COOLBLUE: USPs vinkjes - Compact zonder separators */}
+              <div className="space-y-2 pt-2">
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Automatische zelfreiniging</span></div>
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">10.5L XL capaciteit</span></div>
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Dubbele veiligheidssensoren</span></div>
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Ultra-stil &lt;40dB</span></div>
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Gratis verzending</span></div>
               </div>
-              
-              <Separator variant="float" spacing="sm" />
 
               {/* Prijs - Dikker zoals productnaam */}
-              <div className="mb-6">
+              <div className="pt-6 pb-4">
                 {isPreOrder && preOrderDiscountPercentage > 0 ? (
                   <div className="space-y-2">
                     <div className="flex items-baseline gap-3">
