@@ -232,8 +232,35 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </>
               )}
 
-              {/* COOLBLUE: USPs vinkjes - SERIEUZER, ZAKELIJK */}
-              <div className="border-t border-gray-200 pt-6 space-y-2">
+              {/* COOLBLUE: Over dit product + Specificaties - OP 1 LIJN */}
+              <div className="border-t border-gray-200 pt-6">
+                <div className="grid grid-cols-2 gap-6">
+                  {/* Over dit product */}
+                  <div>
+                    <h3 className="font-medium text-sm mb-2 text-gray-900">Over dit product</h3>
+                    <p className="text-xs text-gray-700 leading-relaxed">
+                      Volledig automatisch zelfreinigend systeem met dubbele beveiliging en 10.5L XL afvalbak capaciteit.
+                    </p>
+                  </div>
+                  
+                  {/* Specificaties */}
+                  <div>
+                    <h3 className="font-medium text-sm mb-2 text-gray-900">Specificaties</h3>
+                    <ul className="text-xs text-gray-700 space-y-1">
+                      <li>• Zelfreinigend systeem met dubbele sensoren</li>
+                      <li>• 10.5L XL afvalbak capaciteit</li>
+                      <li>• Geluidsniveau onder 40dB</li>
+                      <li>• Open-top design, ABS kunststof</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* DUBBELSTREEP - Separator tussen specs en USPs */}
+              <div className="border-t-2 border-gray-300 my-6"></div>
+
+              {/* COOLBLUE: USPs vinkjes - ZAKELIJKE SFEER */}
+              <div className="space-y-2">
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-700">Zelfreinigend systeem met dubbele beveiliging</span></div>
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-700">10.5L afvalbak capaciteit</span></div>
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-700">Geluidsniveau onder 40dB</span></div>
