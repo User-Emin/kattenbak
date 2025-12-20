@@ -294,8 +294,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
 
-              {/* COOLBLUE: CTA - Rechthoekige buttons */}
-              <div className="mb-6">
+              {/* COOLBLUE: CTA - Coolblue rechthoekig + DATA ATTR */}
+              <div className="mb-6" data-main-cart>
                 {isOutOfStock ? (
                   <button
                     disabled
