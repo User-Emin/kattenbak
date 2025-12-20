@@ -63,7 +63,7 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
       <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-transparent to-white pointer-events-none -translate-y-full" />
       
       {/* Main bar */}
-      <div className="bg-white border-t-2 border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur-sm">
+      <div className="bg-white border-t-4 border-brand shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex items-center justify-between gap-4">
             {/* Product info */}

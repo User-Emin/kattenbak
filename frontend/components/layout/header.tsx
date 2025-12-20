@@ -38,7 +38,7 @@ export function Header() {
 
       {/* NAVBAR - ONDER banner */}
       <header className="sticky top-0 z-50 w-full">
-        <div className="bg-gradient-to-br from-brand to-brand-dark backdrop-blur-md border-b-2 border-brand-dark">
+        <div className="bg-gradient-to-br from-brand to-brand-dark">
           <div className="container mx-auto px-6 lg:px-10">
             <div className="flex items-center justify-between h-16 relative">
             {/* LOGO - Echte PNG zonder filter */}

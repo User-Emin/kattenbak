@@ -501,9 +501,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       </div>
 
       {/* Sticky Cart - Mobile: alleen button, Desktop: button + quantity */}
-      <div 
+      <div
         data-sticky-cart
-        className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-brand shadow-lg z-40"
+        className="fixed bottom-0 left-0 right-0 bg-white border-t-4 border-brand shadow-lg z-40"
       >
         <div className="container mx-auto px-4 max-w-7xl py-3">
           {isOutOfStock ? (
