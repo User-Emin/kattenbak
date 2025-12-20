@@ -89,8 +89,8 @@ class Server {
       });
     });
 
-    // Load simple product routes (no database needed)
-    const productRoutes = (await import('./routes/product.routes.simple')).default;
+    // Product routes - PRISMA (fully dynamic via database)
+    const productRoutes = (await import('./routes/product.routes')).default;
     this.app.use('/api/v1/products', productRoutes);
 
     // Returns routes (public - customer facing)

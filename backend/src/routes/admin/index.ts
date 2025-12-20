@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import authRoutes from './auth.routes';
-import productRoutes from './product.routes';
+// import productRoutes from './product.routes'; // REMOVED - using Prisma main routes
 import orderRoutes from './order.routes';
 import categoryRoutes from './category.routes';
 import shipmentRoutes from './shipment.routes';
@@ -18,7 +18,7 @@ const router = Router();
 router.use('/auth', authRoutes);
 
 // 🔒 PROTECTED: All other admin routes require authentication + admin role
-router.use('/products', authenticate, adminOnly, productRoutes);
+// router.use('/products', authenticate, adminOnly, productRoutes); // REMOVED - using Prisma main routes
 router.use('/variants', authenticate, adminOnly, variantRoutes);
 router.use('/orders', authenticate, adminOnly, orderRoutes);
 router.use('/categories', authenticate, adminOnly, categoryRoutes);
