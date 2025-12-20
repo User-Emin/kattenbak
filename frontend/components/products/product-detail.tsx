@@ -505,11 +505,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Product Video - Product in actie - GEEN SHADOW */}
+        {/* Product Video - Product in actie - DIKKER TITEL */}
         {product.videoUrl && (
           <>
           <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-2xl font-normal text-center mb-8 text-gray-900">Product in actie</h2>
+            <h2 className="text-2xl font-semibold text-center mb-8 text-gray-900">Product in actie</h2>
             <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-200">
               <iframe
                 src={product.videoUrl}
