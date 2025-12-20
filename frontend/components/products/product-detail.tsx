@@ -369,15 +369,142 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               <Separator variant="float" spacing="sm" />
 
-              {/* COOLBLUE: Korte Specs RECHTS met expandable details */}
-              <div className="mb-6">
-                <h3 className="font-bold text-base mb-3">Korte specificaties</h3>
-                <div className="bg-gray-50 rounded p-4 space-y-2.5 text-sm border border-gray-200">
-                  <div className="flex justify-between border-b border-gray-200 pb-2"><span className="text-gray-600">Capaciteit</span><span className="font-medium text-gray-900">10.5L XL</span></div>
-                  <div className="flex justify-between border-b border-gray-200 pb-2"><span className="text-gray-600">Geluidsniveau</span><span className="font-medium text-gray-900">&lt;40dB</span></div>
-                  <div className="flex justify-between border-b border-gray-200 pb-2"><span className="text-gray-600">Sensoren</span><span className="font-medium text-gray-900">Dubbel systeem</span></div>
-                  <div className="flex justify-between border-b border-gray-200 pb-2"><span className="text-gray-600">Reiniging</span><span className="font-medium text-gray-900">Automatisch</span></div>
-                  <div className="flex justify-between"><span className="text-gray-600">Design</span><span className="font-medium text-gray-900">Open-top</span></div>
+              {/* COOLBLUE: Specs - ALLEMAAL in accordion, 1 geheel */}
+              <div className="border-t border-gray-200 pt-6">
+                <h3 className="font-normal text-base mb-3 text-gray-700">Specificaties</h3>
+                
+                {/* Alle specs in accordion - 1 geheel aangrijpend */}
+                <div className="bg-white rounded border border-gray-200 divide-y divide-gray-100">
+                  <details className="group">
+                    <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
+                      <div className="flex-1">
+                        <div className="font-semibold text-sm text-gray-900">Capaciteit</div>
+                        <div className="text-xs text-gray-500 mt-1">10.5L XL</div>
+                      </div>
+                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </summary>
+                    <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
+                      <div className="flex justify-between py-1"><span>Afvalbak capaciteit</span><span className="font-medium">10.5 liter</span></div>
+                    </div>
+                  </details>
+                  
+                  <details className="group">
+                    <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
+                      <div className="flex-1">
+                        <div className="font-semibold text-sm text-gray-900">Geluidsniveau</div>
+                        <div className="text-xs text-gray-500 mt-1">&lt;40dB</div>
+                      </div>
+                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </summary>
+                    <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
+                      <div className="flex justify-between py-1"><span>Geluidsniveau</span><span className="font-medium">&lt;40dB (ultra-stil)</span></div>
+                    </div>
+                  </details>
+                  
+                  <details className="group">
+                    <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
+                      <div className="flex-1">
+                        <div className="font-semibold text-sm text-gray-900">Sensoren</div>
+                        <div className="text-xs text-gray-500 mt-1">Dubbel systeem</div>
+                      </div>
+                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </summary>
+                    <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
+                      <div className="flex justify-between py-1"><span>Veiligheidssensoren</span><span className="font-medium">Dubbel systeem</span></div>
+                      <div className="flex justify-between py-1"><span>Noodstop</span><span className="font-medium">Ja</span></div>
+                    </div>
+                  </details>
+                  
+                  <details className="group">
+                    <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
+                      <div className="flex-1">
+                        <div className="font-semibold text-sm text-gray-900">Reiniging</div>
+                        <div className="text-xs text-gray-500 mt-1">Automatisch</div>
+                      </div>
+                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </summary>
+                    <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
+                      <div className="flex justify-between py-1"><span>Reinigingsmethode</span><span className="font-medium">Automatisch</span></div>
+                      <div className="flex justify-between py-1"><span>Filter type</span><span className="font-medium">Actieve koolstof</span></div>
+                    </div>
+                  </details>
+                  
+                  <details className="group">
+                    <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
+                      <div className="flex-1">
+                        <div className="font-semibold text-sm text-gray-900">Design</div>
+                        <div className="text-xs text-gray-500 mt-1">Open-top</div>
+                      </div>
+                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </summary>
+                    <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
+                      <div className="flex justify-between py-1"><span>Design type</span><span className="font-medium">Open-top</span></div>
+                      <div className="flex justify-between py-1"><span>Materiaal</span><span className="font-medium">ABS kunststof</span></div>
+                    </div>
+                  </details>
+                  
+                  {/* Extra details bij "Toon meer" */}
+                  {showAllSpecs && (
+                    <>
+                      <details className="group">
+                        <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
+                          <div className="flex-1">
+                            <div className="font-semibold text-sm text-gray-900">Afmetingen & Gewicht</div>
+                            <div className="text-xs text-gray-500 mt-1">50x40x35cm | 5.2kg</div>
+                          </div>
+                          <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </summary>
+                        <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
+                          <div className="flex justify-between py-1"><span>Afmetingen (LxBxH)</span><span className="font-medium">50 x 40 x 35 cm</span></div>
+                          <div className="flex justify-between py-1"><span>Gewicht</span><span className="font-medium">5.2 kg</span></div>
+                        </div>
+                      </details>
+                      
+                      <details className="group">
+                        <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
+                          <div className="flex-1">
+                            <div className="font-semibold text-sm text-gray-900">Stroomvoorziening</div>
+                            <div className="text-xs text-gray-500 mt-1">230V | 15W</div>
+                          </div>
+                          <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </summary>
+                        <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
+                          <div className="flex justify-between py-1"><span>Voltage</span><span className="font-medium">230V</span></div>
+                          <div className="flex justify-between py-1"><span>Vermogen</span><span className="font-medium">15W</span></div>
+                        </div>
+                      </details>
+                      
+                      <details className="group">
+                        <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
+                          <div className="flex-1">
+                            <div className="font-semibold text-sm text-gray-900">Garantie & Service</div>
+                            <div className="text-xs text-gray-500 mt-1">2 jaar garantie</div>
+                          </div>
+                          <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </summary>
+                        <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
+                          <div className="flex justify-between py-1"><span>Garantie</span><span className="font-medium">2 jaar</span></div>
+                          <div className="flex justify-between py-1"><span>Klantenservice</span><span className="font-medium">NL-talig</span></div>
+                        </div>
+                      </details>
+                    </>
+                  )}
                 </div>
                 
                 <button
@@ -386,66 +513,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 >
                   {showAllSpecs ? 'Verberg specificaties' : 'Toon alle specificaties'}
                 </button>
-
-                {/* Expandable Specs - Smooth accordion */}
-                {showAllSpecs && (
-                  <div className="mt-4 space-y-2 bg-white rounded border border-gray-200 p-4 animate-in slide-in-from-top-2">
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">Hoge-Efficiëntie Filter</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">Geavanceerd multi-laags filtersysteem met actieve koolstof. Uitwasbaar en herbruikbaar.</div>
-                    </details>
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">Anti-Splash Zijwanden</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">Verhoogde zijwanden van 22cm voorkomen morsen. Grit blijft binnen.</div>
-                    </details>
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">Gemakkelijk Demonteren</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">Volledig modulair. Alle onderdelen vaatwasserbestendig.</div>
-                    </details>
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">Kattengrit Compatibiliteit</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">Werkt met bentoniet, silica gel, plantaardig. Niet voor houtkorrels.</div>
-                    </details>
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">Compact Formaat</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">60×55×62cm buiten, 50×45cm binnen. Ruim voor je kat.</div>
-                    </details>
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">App Monitoring</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">Gratis iOS/Android app. Tracks bezoeken, gewicht, gezondheidsalerts.</div>
-                    </details>
-                  </div>
-                )}
               </div>
           </div>
         </div>
