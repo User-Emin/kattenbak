@@ -1,6 +1,10 @@
 import axios from 'axios';
 
+// FUNDAMENTELE ISOLATIE: Admin app werkt onafhankelijk
+// Backend API calls gaan naar BACKEND server (NOT admin basePath)
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
+
+console.log('[Admin API Client] Using API base:', API_BASE);
 
 export const api = axios.create({
   baseURL: API_BASE,
@@ -17,18 +21,26 @@ api.interceptors.request.use(
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log('[Admin API] Request:', config.method?.toUpperCase(), config.url);
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    console.error('[Admin API] Request error:', error);
+    return Promise.reject(error);
+  }
 );
 
 // Response interceptor
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('[Admin API] Response:', response.status, response.config.url);
+    return response;
+  },
   (error) => {
+    console.error('[Admin API] Response error:', error.response?.status, error.config?.url);
     if (error.response?.status === 401 && typeof window !== 'undefined') {
       localStorage.removeItem('auth_token');
-      window.location.href = '/login';
+      window.location.href = '/admin/login'; // Admin basePath routing
     }
     return Promise.reject(error);
   }
