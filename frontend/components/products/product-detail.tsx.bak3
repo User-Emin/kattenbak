@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ProductImage } from "@/components/ui/product-image";
 import { Separator } from "@/components/ui/separator";
 import { ColorSelector, type ProductVariant } from "@/components/products/color-selector";
-// ProductSpecs component REMOVED - specs now in right column (Coolblue style)
+import { ProductSpecs } from "@/components/products/product-detail-specs";
 import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/utils";
 import { ShoppingCart, Plus, Minus, Check, Truck, Shield, Star } from "lucide-react";
@@ -218,15 +218,30 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               
               <Separator variant="float" spacing="sm" />
 
-              {/* COOLBLUE: USPs vinkjes - EERST */}
-              <div className="mb-6 space-y-2">
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Automatische zelfreiniging</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">10.5L XL capaciteit</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Dubbele veiligheidssensoren</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Ultra-stil &lt;40dB</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Gratis verzending</span></div>
+
+              {/* COOLBLUE: Korte Specs RECHTS */}
+              <div className="mb-6">
+                <h3 className="font-bold text-base mb-3">Korte specificaties</h3>
+                <div className="bg-gray-50 rounded-lg p-4 space-y-2.5 text-sm border border-gray-200">
+                  <div className="flex justify-between"><span className="text-gray-600">Capaciteit</span><span className="font-medium text-gray-900">10.5L XL</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Geluidsniveau</span><span className="font-medium text-gray-900">&lt;40dB</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Sensoren</span><span className="font-medium text-gray-900">Dubbel systeem</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Reiniging</span><span className="font-medium text-gray-900">Automatisch</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Design</span><span className="font-medium text-gray-900">Open-top</span></div>
+                </div>
+                <button onClick={() => document.getElementById('specs-section')?.scrollIntoView({ behavior: 'smooth' })} className="text-brand hover:text-brand-dark text-sm font-medium mt-3 underline">Toon alle specificaties</button>
               </div>
-              
+
+              <Separator variant="float" spacing="sm" />
+
+              {/* COOLBLUE: USPs vinkjes */}
+              <div className="mb-6 space-y-2">
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand" strokeWidth={3} /><span className="text-sm text-gray-900">Automatische zelfreiniging</span></div>
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand" strokeWidth={3} /><span className="text-sm text-gray-900">10.5L XL capaciteit</span></div>
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand" strokeWidth={3} /><span className="text-sm text-gray-900">Dubbele sensoren</span></div>
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand" strokeWidth={3} /><span className="text-sm text-gray-900">Ultra-stil &lt;40dB</span></div>
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand" strokeWidth={3} /><span className="text-sm text-gray-900">Gratis verzending</span></div>
+              </div>
               <Separator variant="float" spacing="sm" />
 
               {/* Color Selector - Toon alleen als product varianten heeft */}
@@ -264,190 +279,139 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
 
-              {/* COOLBLUE: CTA - Rechthoekige buttons */}
+              {/* Inline CTA - Responsive: Mobile verticaal, Desktop horizontaal */}
               <div className="mb-6">
                 {isOutOfStock ? (
-                  <button
-                    disabled
-                    className="w-full px-6 py-3.5 bg-gray-300 text-gray-600 font-bold rounded text-base cursor-not-allowed"
-                  >
-                    Niet beschikbaar
-                  </button>
+                  <div className="space-y-3">
+                    <Button
+                      disabled
+                      size="lg"
+                      variant="primary"
+                      fullWidth
+                      className="bg-gray-300 cursor-not-allowed opacity-60"
+                    >
+                      Niet beschikbaar
+                    </Button>
+                    <p className="text-center text-sm text-gray-600">
+                      Dit product is momenteel uitverkocht.
+                    </p>
+                  </div>
                 ) : (
-                  <>
-                    {/* Mobile: Verticaal */}
+                  <div className="space-y-3">
+                    {/* Mobile: Verticaal (button boven, quantity onder) */}
                     <div className="lg:hidden space-y-3">
-                      <button
+                      <Button
                         onClick={handleAddToCart}
-                        disabled={isAdding}
-                        className="w-full px-6 py-3.5 bg-brand hover:bg-brand-dark text-white font-bold rounded transition text-base disabled:opacity-50 flex items-center justify-center gap-2"
+                        loading={isAdding}
+                        size="lg"
+                        variant="brand"
+                        fullWidth
+                        leftIcon={<ShoppingCart className="h-5 w-5" />}
                       >
-                        {isAdding ? (
-                          <>
-                            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
-                            </svg>
-                            Toevoegen...
-                          </>
-                        ) : (
-                          <>
-                            <ShoppingCart className="h-5 w-5" />
-                            In winkelwagen
-                          </>
-                        )}
-                      </button>
+                        In winkelwagen
+                      </Button>
                       
-                      <div className="flex items-center justify-center gap-3 bg-gray-50 rounded px-4 py-2.5 border border-gray-200">
+                      <div className="flex items-center justify-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
                         <button
                           onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                          disabled={isAdding || quantity <= 1}
-                          className="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-30 transition"
+                          disabled={quantity <= 1}
+                          className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
                         >
-                          <Minus className="h-4 w-4" />
+                          <Minus className="h-4 w-4 text-gray-700" />
                         </button>
-                        <span className="font-bold text-base min-w-[2ch] text-center">{quantity}</span>
+                        <span className="text-xl font-bold text-gray-900 min-w-[3rem] text-center">
+                          {quantity}
+                        </span>
                         <button
-                          onClick={() => setQuantity(quantity + 1)}
-                          disabled={isAdding || (trackInventory && quantity >= availableStock)}
-                          className="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-30 transition"
+                          onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                          disabled={quantity >= product.stock}
+                          className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
                         >
-                          <Plus className="h-4 w-4" />
+                          <Plus className="h-4 w-4 text-gray-700" />
                         </button>
                       </div>
                     </div>
-
-                    {/* Desktop: Horizontaal - Coolblue rechthoekig */}
-                    <div className="hidden lg:flex gap-3">
-                      <div className="flex items-center gap-2 bg-gray-50 rounded px-3 py-2 border border-gray-200">
+                    
+                    {/* Desktop: Horizontaal (button + quantity naast elkaar) */}
+                    <div className="hidden lg:flex items-center gap-3">
+                      <Button
+                        onClick={handleAddToCart}
+                        loading={isAdding}
+                        size="lg"
+                        variant="brand"
+                        leftIcon={<ShoppingCart className="h-5 w-5" />}
+                        className="flex-1"
+                      >
+                        In winkelwagen
+                      </Button>
+                      
+                      <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
                         <button
                           onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                          disabled={isAdding || quantity <= 1}
-                          className="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-30 transition"
+                          disabled={quantity <= 1}
+                          className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
                         >
-                          <Minus className="h-4 w-4" />
+                          <Minus className="h-4 w-4 text-gray-700" />
                         </button>
-                        <span className="font-bold text-base min-w-[2ch] text-center">{quantity}</span>
+                        <span className="text-xl font-bold text-gray-900 min-w-[3rem] text-center">
+                          {quantity}
+                        </span>
                         <button
-                          onClick={() => setQuantity(quantity + 1)}
-                          disabled={isAdding || (trackInventory && quantity >= availableStock)}
-                          className="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-30 transition"
+                          onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                          disabled={quantity >= product.stock}
+                          className="w-10 h-10 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
                         >
-                          <Plus className="h-4 w-4" />
+                          <Plus className="h-4 w-4 text-gray-700" />
                         </button>
                       </div>
-                      
-                      <button
-                        onClick={handleAddToCart}
-                        disabled={isAdding}
-                        className="flex-1 px-6 py-3 bg-brand hover:bg-brand-dark text-white font-bold rounded transition text-base disabled:opacity-50 flex items-center justify-center gap-2"
-                      >
-                        {isAdding ? (
-                          <>
-                            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
-                            </svg>
-                            Toevoegen...
-                          </>
-                        ) : (
-                          <>
-                            <ShoppingCart className="h-5 w-5" />
-                            In winkelwagen
-                          </>
-                        )}
-                      </button>
                     </div>
                     
                     {isLowStock && (
-                      <p className="text-center text-sm text-orange-600 font-semibold mt-2">
-                        ⚠️ Nog maar {availableStock} stuks beschikbaar
+                      <p className="text-center text-sm text-orange-600 font-semibold">
+                        ⚠️ Nog maar {product.stock} stuks beschikbaar
                       </p>
                     )}
-                  </>
+                  </div>
                 )}
               </div>
 
               <Separator variant="float" spacing="sm" />
 
-              {/* COOLBLUE: Korte Specs RECHTS met expandable details */}
-              <div className="mb-6">
-                <h3 className="font-bold text-base mb-3">Korte specificaties</h3>
-                <div className="bg-gray-50 rounded p-4 space-y-2.5 text-sm border border-gray-200">
-                  <div className="flex justify-between border-b border-gray-200 pb-2"><span className="text-gray-600">Capaciteit</span><span className="font-medium text-gray-900">10.5L XL</span></div>
-                  <div className="flex justify-between border-b border-gray-200 pb-2"><span className="text-gray-600">Geluidsniveau</span><span className="font-medium text-gray-900">&lt;40dB</span></div>
-                  <div className="flex justify-between border-b border-gray-200 pb-2"><span className="text-gray-600">Sensoren</span><span className="font-medium text-gray-900">Dubbel systeem</span></div>
-                  <div className="flex justify-between border-b border-gray-200 pb-2"><span className="text-gray-600">Reiniging</span><span className="font-medium text-gray-900">Automatisch</span></div>
-                  <div className="flex justify-between"><span className="text-gray-600">Design</span><span className="font-medium text-gray-900">Open-top</span></div>
+              {/* Extra Specs - Collapsible */}
+              {showAllSpecs && (
+                <div className="space-y-2 mb-4">
+                  {[
+                    { title: 'Hoge-Efficiëntie Filter', note: 'Geavanceerd multi-laags filtersysteem met actieve koolstof vangt geuren en stofdeeltjes op voordat ze je huis in komen. Het filter is uitwasbaar en herbruikbaar, wat zorgt voor lagere onderhoudskosten.' },
+                    { title: 'Anti-Splash, Hoge Zijwanden', note: 'De verhoogde zijwanden van 22cm zijn speciaal ontworpen om morsen te voorkomen, zelfs bij katten die enthousiast graven. De vorm leidt grit terug naar beneden in plaats van naar buiten.' },
+                    { title: 'Gemakkelijk te Demonteren', note: 'Volledig modulair ontwerp waarbij elk onderdeel los kan voor grondige reiniging. Geen verborgen hoeken waar vuil zich kan ophopen. Alle onderdelen zijn vaatwasserbestendig (top rack).' },
+                    { title: 'Geschikt voor Meeste Kattengrit', note: 'Werkt met klonterende bentoniet, silica gel, en plantaardige grit. Alleen niet geschikt voor houtkorrels. De zeef heeft verstelbare openingen voor verschillende gritgroottes, in tegenstelling tot concurrenten die vaak maar één type accepteren.' },
+                    { title: 'Compact Formaat, Groot Inwendig', note: 'Buitenmaat 60×55×62cm past in kleinere ruimtes, maar biedt een ruime binnenkant van 50×45cm waar je kat comfortabel kan draaien. Intelligente ruimte-optimalisatie zonder de kat te benauwen.' },
+                    { title: 'Ultra-Stille Motor (<40dB)', note: 'Met minder dan 40 decibel is de motor stiller dan een bibliotheek (40dB) en vergelijkbaar met gefluister (30dB). Andere bakken produceren vaak 50-60dB, vergelijkbaar met een normaal gesprek. Geschikt voor gebruik in slaapkamers.' },
+                    { title: 'Modulair Design (OEM-Vriendelijk)', note: 'Alle onderdelen zijn apart verkrijgbaar en vervangbaar. Geen sealed units zoals bij concurrenten - als één onderdeel kapot gaat, vervang je alleen dat deel. Dit verlengt de levensduur aanzienlijk en reduceert kosten.' },
+                    { title: 'App + Gezondheidsmonitoring', note: 'De gratis app (iOS/Android) tracked aantal bezoeken, gewicht van afval, reinigingstijden en stuurt gezondheidsalerts. Bij plotselinge toename van bezoeken (mogelijk urineweginfectie) krijg je een notificatie om tijdig naar de dierenarts te gaan.' },
+                  ].map((spec, idx) => (
+                    <details key={idx} className="group">
+                      <summary className="flex justify-between items-center py-3 cursor-pointer hover:text-brand transition border-b border-gray-200">
+                        <span className="font-semibold text-gray-900">{spec.title}</span>
+                        <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </summary>
+                      <div className="pb-3 pt-2 text-sm text-gray-600">
+                        {spec.note}
+                      </div>
+                    </details>
+                  ))}
                 </div>
-                
-                <button
-                  onClick={() => setShowAllSpecs(!showAllSpecs)}
-                  className="text-brand hover:text-brand-dark text-sm font-medium mt-3 underline"
-                >
-                  {showAllSpecs ? 'Verberg specificaties' : 'Toon alle specificaties'}
-                </button>
+              )}
 
-                {/* Expandable Specs - Smooth accordion */}
-                {showAllSpecs && (
-                  <div className="mt-4 space-y-2 bg-white rounded border border-gray-200 p-4 animate-in slide-in-from-top-2">
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">Hoge-Efficiëntie Filter</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">Geavanceerd multi-laags filtersysteem met actieve koolstof. Uitwasbaar en herbruikbaar.</div>
-                    </details>
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">Anti-Splash Zijwanden</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">Verhoogde zijwanden van 22cm voorkomen morsen. Grit blijft binnen.</div>
-                    </details>
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">Gemakkelijk Demonteren</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">Volledig modulair. Alle onderdelen vaatwasserbestendig.</div>
-                    </details>
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">Kattengrit Compatibiliteit</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">Werkt met bentoniet, silica gel, plantaardig. Niet voor houtkorrels.</div>
-                    </details>
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">Compact Formaat</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">60×55×62cm buiten, 50×45cm binnen. Ruim voor je kat.</div>
-                    </details>
-                    <details className="group">
-                      <summary className="flex justify-between items-center py-2 cursor-pointer hover:text-brand transition border-b border-gray-100">
-                        <span className="font-semibold text-sm text-gray-900">App Monitoring</span>
-                        <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </summary>
-                      <div className="pb-2 pt-2 text-xs text-gray-600">Gratis iOS/Android app. Tracks bezoeken, gewicht, gezondheidsalerts.</div>
-                    </details>
-                  </div>
-                )}
-              </div>
+              {/* "Meer" Button */}
+              <button
+                onClick={() => setShowAllSpecs(!showAllSpecs)}
+                className="w-full text-center py-3 text-sm font-bold text-brand hover:text-brand-dark transition"
+              >
+                {showAllSpecs ? 'Minder kenmerken' : 'Meer kenmerken'} {showAllSpecs ? '▲' : '▼'}
+              </button>
           </div>
         </div>
 
@@ -460,6 +424,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </div>
 
         <Separator variant="float" spacing="xl" />
+
+        {/* COOLBLUE: Productkenmerken met ID */}
+        <ProductSpecs />
+
 
         {/* COOLBLUE: Plus- en minpunten */}
         <div className="max-w-4xl mx-auto mb-12">
