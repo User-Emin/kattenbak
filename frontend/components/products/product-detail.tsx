@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ProductImage } from "@/components/ui/product-image";
 import { Separator } from "@/components/ui/separator";
 import { ColorSelector, type ProductVariant } from "@/components/products/color-selector";
+import { ProductSpecs } from "@/components/products/product-detail-specs";
 import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/utils";
 import { ShoppingCart, Plus, Minus, Check, Truck, Shield, Star } from "lucide-react";
@@ -196,27 +197,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             )}
 
-            {/* USPs - SMOOTH in achtergrond naast foto (GEEN BOX) */}
-            <div className="absolute inset-0 flex items-end pb-4 px-4 pointer-events-none">
-              <div className="grid grid-cols-2 gap-2 w-full text-white text-shadow-lg">
-                <div className="flex items-center gap-2 bg-brand/90 backdrop-blur-sm rounded-xl p-3">
-                  <span className="text-2xl">🗑️</span>
-                  <span className="font-bold text-sm">10.5L XL Capaciteit</span>
-                </div>
-                <div className="flex items-center gap-2 bg-brand/90 backdrop-blur-sm rounded-xl p-3">
-                  <span className="text-2xl">🔇</span>
-                  <span className="font-bold text-sm">&lt;40dB Ultra-Stil</span>
-                </div>
-                <div className="flex items-center gap-2 bg-brand/90 backdrop-blur-sm rounded-xl p-3">
-                  <span className="text-2xl">📡</span>
-                  <span className="font-bold text-sm">Dubbele Sensoren</span>
-                </div>
-                <div className="flex items-center gap-2 bg-brand/90 backdrop-blur-sm rounded-xl p-3">
-                  <span className="text-2xl">🚚</span>
-                  <span className="font-bold text-sm">Gratis Verzending</span>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* RECHTS: Product Info - BEGINT OP ZELFDE HOOGTE ALS AFBEELDING */}
@@ -236,6 +216,46 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
               
+              <Separator variant="float" spacing="sm" />
+
+              {/* 4 USPs - Compact RECHTS naast foto */}
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
+                  <svg className="w-8 h-8 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
+                    <path d="M14 8h20c2 0 3 1 3 3v26c0 2-1 3-3 3H14c-2 0-3-1-3-3V11c0-2 1-3 3-3z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M11 16h26M11 32h26" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                    <circle cx="24" cy="24" r="3" fill="currentColor"/>
+                  </svg>
+                  <span className="font-bold text-sm text-gray-900">10.5L XL Capaciteit</span>
+                </div>
+                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
+                  <svg className="w-8 h-8 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
+                    <circle cx="24" cy="24" r="4" fill="currentColor"/>
+                    <path d="M16 20c-2 1-3 3-3 5s1 4 3 5M32 20c2 1 3 3 3 5s-1 4-3 5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                    <path d="M10 16c-3 2-5 6-5 9s2 7 5 9M38 16c3 2 5 6 5 9s-2 7-5 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+                  </svg>
+                  <span className="font-bold text-sm text-gray-900">&lt;40dB Ultra-Stil</span>
+                </div>
+                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
+                  <svg className="w-8 h-8 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
+                    <circle cx="18" cy="24" r="5" stroke="currentColor" strokeWidth="2.5"/>
+                    <circle cx="30" cy="24" r="5" stroke="currentColor" strokeWidth="2.5"/>
+                    <circle cx="18" cy="24" r="2" fill="currentColor"/>
+                    <circle cx="30" cy="24" r="2" fill="currentColor"/>
+                  </svg>
+                  <span className="font-bold text-sm text-gray-900">Dubbele Sensoren</span>
+                </div>
+                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
+                  <svg className="w-8 h-8 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
+                    <path d="M5 18h24v14H5V18z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M29 24h6l4 4v8h-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="12" cy="36" r="3" stroke="currentColor" strokeWidth="2.5"/>
+                    <circle cx="33" cy="36" r="3" stroke="currentColor" strokeWidth="2.5"/>
+                  </svg>
+                  <span className="font-bold text-sm text-gray-900">Gratis Verzending</span>
+                </div>
+              </div>
+
               <Separator variant="float" spacing="sm" />
 
               {/* Color Selector - Toon alleen als product varianten heeft */}
@@ -411,80 +431,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Product Kenmerken - BREED zoals Over dit product */}
-        <div className="max-w-6xl mx-auto mb-16">
-          <h2 className="text-3xl font-medium mb-8 text-gray-900 text-center">Productkenmerken</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Zelfreinigende Functie */}
-            <details className="group bg-white rounded-xl border-2 border-gray-200 hover:border-brand/40 transition overflow-hidden">
-              <summary className="flex items-center gap-4 p-5 cursor-pointer">
-                <span className="text-4xl flex-shrink-0">⏰</span>
-                <div className="flex-1">
-                  <h4 className="font-bold text-gray-900">Zelfreinigende Functie</h4>
-                  <p className="text-sm text-gray-600 mt-1">Automatisch schoon na elk bezoek</p>
-                </div>
-                <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                </svg>
-              </summary>
-              <div className="px-5 pb-5 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-4">
-                Automatische reiniging start 3 minuten na elk bezoek van je kat. Het systeem scheidt vaste afval van schoon grit en verzamelt alles in een afgesloten container.
-              </div>
-            </details>
-
-            {/* Open-Top Design */}
-            <details className="group bg-white rounded-xl border-2 border-gray-200 hover:border-brand/40 transition overflow-hidden">
-              <summary className="flex items-center gap-4 p-5 cursor-pointer">
-                <span className="text-4xl flex-shrink-0">🏠</span>
-                <div className="flex-1">
-                  <h4 className="font-bold text-gray-900">Open-Top, Low-Stress</h4>
-                  <p className="text-sm text-gray-600 mt-1">Minder stress voor je kat</p>
-                </div>
-                <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                </svg>
-              </summary>
-              <div className="px-5 pb-5 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-4">
-                Katten voelen zich veiliger in een open ruimte waar ze hun omgeving kunnen zien. Dit vermindert stress en angst, wat leidt tot meer gebruik.
-              </div>
-            </details>
-
-            {/* 10.5L Capaciteit */}
-            <details className="group bg-white rounded-xl border-2 border-gray-200 hover:border-brand/40 transition overflow-hidden">
-              <summary className="flex items-center gap-4 p-5 cursor-pointer">
-                <span className="text-4xl flex-shrink-0">🗑️</span>
-                <div className="flex-1">
-                  <h4 className="font-bold text-gray-900">10.5L XL Afvalbak</h4>
-                  <p className="text-sm text-gray-600 mt-1">Grootste in zijn klasse</p>
-                </div>
-                <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                </svg>
-              </summary>
-              <div className="px-5 pb-5 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-4">
-                Met 10.5 liter de grootste afvalbak in zijn klasse. Voor één kat hoef je slechts 1x per week te legen, in plaats van 2-3x bij concurrenten.
-              </div>
-            </details>
-
-            {/* Dubbele Sensoren */}
-            <details className="group bg-white rounded-xl border-2 border-gray-200 hover:border-brand/40 transition overflow-hidden">
-              <summary className="flex items-center gap-4 p-5 cursor-pointer">
-                <span className="text-4xl flex-shrink-0">📡</span>
-                <div className="flex-1">
-                  <h4 className="font-bold text-gray-900">Dubbele Veiligheidssensoren</h4>
-                  <p className="text-sm text-gray-600 mt-1">Extra veilig voor je kat</p>
-                </div>
-                <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                </svg>
-              </summary>
-              <div className="px-5 pb-5 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-4">
-                Twee onafhankelijke sensoren detecteren wanneer je kat de bak benadert. De reiniging stopt onmiddellijk en start pas 3 minuten na het laatste bezoek.
-              </div>
-            </details>
-          </div>
-        </div>
+        {/* Productkenmerken - ALLE specs met custom vectors */}
+        <ProductSpecs />
 
         <Separator variant="float" spacing="xl" />
 
