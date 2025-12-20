@@ -523,136 +523,137 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           </>
         )}
 
-        {/* OVER DIT PRODUCT - ZAKELIJK + STRUCTUREEL */}
+        {/* OVER DIT PRODUCT - ZAKELIJK + STRUCTUREEL - CENTRAAL TITEL */}
         <div className="max-w-5xl mx-auto mb-16">
-          <h2 className="text-2xl font-normal mb-8 text-gray-900">Over dit product</h2>
+          <h2 className="text-2xl font-normal mb-8 text-gray-900 text-center">Over dit product</h2>
           
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+          {/* Direct in achtergrond - geen witte kaart */}
+          <div>
             {/* Introductie */}
-            <div className="p-6 border-b border-gray-200">
-              <p className="text-gray-700 leading-relaxed">
+            <div className="mb-8">
+              <p className="text-gray-700 leading-relaxed text-center max-w-3xl mx-auto">
                 De Premium Automatische Kattenbak combineert innovatieve zelfreinigende technologie met een doordacht design. 
                 Met een afvalbak capaciteit van 10.5L, dubbele veiligheidssensoren en een ultra-stil werkend motor (&lt;40dB), 
                 biedt dit product maximaal comfort voor zowel kat als eigenaar.
               </p>
             </div>
 
-            {/* Vergelijkingstabel - Structureel */}
-            <div className="divide-y divide-gray-100">
+            {/* Vergelijkingstabel - Structureel - RESPONSIVE */}
+            <div className="divide-y divide-gray-200">
               {/* Self-Cleaning Function */}
-              <div className="grid grid-cols-12 items-center hover:bg-gray-50 transition">
-                <div className="col-span-6 p-4">
+              <div className="grid grid-cols-1 md:grid-cols-12 items-center hover:bg-gray-50/50 transition py-3">
+                <div className="md:col-span-6 px-4 py-2">
                   <h3 className="font-medium text-sm text-gray-900">Zelfreinigende functie</h3>
                 </div>
-                <div className="col-span-2 p-4 text-center bg-brand/5">
+                <div className="md:col-span-2 px-4 py-2 text-center bg-brand/5">
                   <svg className="w-5 h-5 mx-auto text-brand" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                   </svg>
                 </div>
-                <div className="col-span-4 p-4 text-center text-xs text-gray-500">
+                <div className="md:col-span-4 px-4 py-2 text-center md:text-left text-xs text-gray-500">
                   Automatisch na elk gebruik
                 </div>
               </div>
 
               {/* Open-Top Design */}
-              <div className="grid grid-cols-12 items-center hover:bg-gray-50 transition">
-                <div className="col-span-6 p-4">
+              <div className="grid grid-cols-1 md:grid-cols-12 items-center hover:bg-gray-50/50 transition py-3">
+                <div className="md:col-span-6 px-4 py-2">
                   <h3 className="font-medium text-sm text-gray-900">Open-top, low-stress design</h3>
                 </div>
-                <div className="col-span-2 p-4 text-center bg-brand/5">
+                <div className="md:col-span-2 px-4 py-2 text-center bg-brand/5">
                   <svg className="w-5 h-5 mx-auto text-brand" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                   </svg>
                 </div>
-                <div className="col-span-4 p-4 text-center text-xs text-gray-500">
+                <div className="md:col-span-4 px-4 py-2 text-center md:text-left text-xs text-gray-500">
                   Minder stress voor kat
                 </div>
               </div>
 
               {/* Dual Safety Sensors */}
-              <div className="grid grid-cols-12 items-center hover:bg-gray-50 transition">
-                <div className="col-span-6 p-4">
+              <div className="grid grid-cols-1 md:grid-cols-12 items-center hover:bg-gray-50/50 transition py-3">
+                <div className="md:col-span-6 px-4 py-2">
                   <h3 className="font-medium text-sm text-gray-900">Dubbele veiligheidssensoren</h3>
                 </div>
-                <div className="col-span-2 p-4 text-center bg-brand/5">
+                <div className="md:col-span-2 px-4 py-2 text-center bg-brand/5">
                   <svg className="w-5 h-5 mx-auto text-brand" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                   </svg>
                 </div>
-                <div className="col-span-4 p-4 text-center text-xs text-gray-500">
+                <div className="md:col-span-4 px-4 py-2 text-center md:text-left text-xs text-gray-500">
                   Automatische noodstop
                 </div>
               </div>
 
               {/* App Control */}
-              <div className="grid grid-cols-12 items-center hover:bg-gray-50 transition">
-                <div className="col-span-6 p-4">
+              <div className="grid grid-cols-1 md:grid-cols-12 items-center hover:bg-gray-50/50 transition py-3">
+                <div className="md:col-span-6 px-4 py-2">
                   <h3 className="font-medium text-sm text-gray-900">App control & health monitoring</h3>
                 </div>
-                <div className="col-span-2 p-4 text-center bg-brand/5">
+                <div className="md:col-span-2 px-4 py-2 text-center bg-brand/5">
                   <svg className="w-5 h-5 mx-auto text-brand" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                   </svg>
                 </div>
-                <div className="col-span-4 p-4 text-center text-xs text-gray-500">
+                <div className="md:col-span-4 px-4 py-2 text-center md:text-left text-xs text-gray-500">
                   Smartphone app beschikbaar
                 </div>
               </div>
 
               {/* High-Efficiency Filter */}
-              <div className="grid grid-cols-12 items-center hover:bg-gray-50 transition">
-                <div className="col-span-6 p-4">
+              <div className="grid grid-cols-1 md:grid-cols-12 items-center hover:bg-gray-50/50 transition py-3">
+                <div className="md:col-span-6 px-4 py-2">
                   <h3 className="font-medium text-sm text-gray-900">High-efficiency filter</h3>
                 </div>
-                <div className="col-span-2 p-4 text-center bg-brand/5">
+                <div className="md:col-span-2 px-4 py-2 text-center bg-brand/5">
                   <svg className="w-5 h-5 mx-auto text-brand" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                   </svg>
                 </div>
-                <div className="col-span-4 p-4 text-center text-xs text-gray-500">
+                <div className="md:col-span-4 px-4 py-2 text-center md:text-left text-xs text-gray-500">
                   Actieve koolstof filter
                 </div>
               </div>
 
-              {/* Waste Bin Capacity */}
-              <div className="grid grid-cols-12 items-center hover:bg-gray-50 transition">
-                <div className="col-span-6 p-4">
+              {/* Waste Bin Capacity - RESPONSIVE TEKST */}
+              <div className="grid grid-cols-1 md:grid-cols-12 items-center hover:bg-gray-50/50 transition py-3">
+                <div className="md:col-span-6 px-4 py-2">
                   <h3 className="font-medium text-sm text-gray-900">Afvalbak capaciteit</h3>
                 </div>
-                <div className="col-span-2 p-4 text-center bg-brand/5">
-                  <span className="font-bold text-brand text-lg">10.5L</span>
+                <div className="md:col-span-2 px-4 py-2 text-center bg-brand/5">
+                  <span className="font-bold text-brand text-lg whitespace-nowrap">10.5L</span>
                 </div>
-                <div className="col-span-4 p-4 text-center text-xs text-gray-500">
+                <div className="md:col-span-4 px-4 py-2 text-center md:text-left text-xs text-gray-500">
                   Grootste in zijn klasse
                 </div>
               </div>
 
               {/* Ultra-Quiet Motor */}
-              <div className="grid grid-cols-12 items-center hover:bg-gray-50 transition">
-                <div className="col-span-6 p-4">
+              <div className="grid grid-cols-1 md:grid-cols-12 items-center hover:bg-gray-50/50 transition py-3">
+                <div className="md:col-span-6 px-4 py-2">
                   <h3 className="font-medium text-sm text-gray-900">Ultra-quiet motor (&lt;40dB)</h3>
                 </div>
-                <div className="col-span-2 p-4 text-center bg-brand/5">
+                <div className="md:col-span-2 px-4 py-2 text-center bg-brand/5">
                   <svg className="w-5 h-5 mx-auto text-brand" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                   </svg>
                 </div>
-                <div className="col-span-4 p-4 text-center text-xs text-gray-500">
+                <div className="md:col-span-4 px-4 py-2 text-center md:text-left text-xs text-gray-500">
                   Stiller dan fluisteren
                 </div>
               </div>
 
               {/* Modular Design */}
-              <div className="grid grid-cols-12 items-center hover:bg-gray-50 transition">
-                <div className="col-span-6 p-4">
+              <div className="grid grid-cols-1 md:grid-cols-12 items-center hover:bg-gray-50/50 transition py-3">
+                <div className="md:col-span-6 px-4 py-2">
                   <h3 className="font-medium text-sm text-gray-900">Modulair design (OEM-friendly)</h3>
                 </div>
-                <div className="col-span-2 p-4 text-center bg-brand/5">
+                <div className="md:col-span-2 px-4 py-2 text-center bg-brand/5">
                   <svg className="w-5 h-5 mx-auto text-brand" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                   </svg>
                 </div>
-                <div className="col-span-4 p-4 text-center text-xs text-gray-500">
+                <div className="md:col-span-4 px-4 py-2 text-center md:text-left text-xs text-gray-500">
                   Makkelijk te onderhouden
                 </div>
               </div>
