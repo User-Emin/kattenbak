@@ -117,9 +117,9 @@ export default function EditProductPage() {
         isActive: formData.get('isActive') === 'on',
         isFeatured: formData.get('isFeatured') === 'on',
         categoryId: categoryId || null,
-        videoUrl: (formData.get('videoUrl') as string) || null,
-        uspImage1: (formData.get('uspImage1') as string) || null,
-        uspImage2: (formData.get('uspImage2') as string) || null,
+        videoUrl: (formData.get('videoUrl') as string)?.trim() || null,
+        uspImage1: (formData.get('uspImage1') as string)?.trim() || null,
+        uspImage2: (formData.get('uspImage2') as string)?.trim() || null,
       };
 
       await adminApi.put(`/products/${productId}`, updateData);
