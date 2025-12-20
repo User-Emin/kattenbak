@@ -62,6 +62,17 @@ app.use(cors({
   credentials: true 
 }));
 
+// Body parsers
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Trust proxy - MUST be set BEFORE rate limiters are defined
+app.set('trust proxy', 1);
+
+// =============================================================================
+// RATE LIMITING
+// =============================================================================
+
 // Rate limiting - Brute force protection
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -79,17 +90,6 @@ const apiLimiter = rateLimit({
 
 app.use('/api/v1/admin/auth/login', loginLimiter);
 app.use('/api/v1/', apiLimiter);
-
-// Body parsers
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Trust proxy (required for nginx)
-app.set('trust proxy', 1);
-
-// =============================================================================
-// RATE LIMITING
-// =============================================================================
 
 interface AuthRequest extends Request {
   user?: { email: string; role: string; exp: number };
