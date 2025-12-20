@@ -126,7 +126,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const finalDisplayPrice = isPreOrder && preOrderDiscountPercentage > 0 ? discountedPrice : displayPrice;
 
   // STOCK CHECK - Kritiek voor voorraad systeem (uses displayStock)
-  const isOutOfStock = displayStock <= 0;
+  const trackInventory = product.trackInventory ?? true;
+  const availableStock = selectedVariant ? selectedVariant.stock : product.stock;
+  const isOutOfStock = trackInventory && availableStock <= 0;
+  const isLowStock = trackInventory && availableStock > 0 && availableStock <= 5;
   const isLowStock = displayStock > 0 && displayStock <= product.lowStockThreshold;
 
   return (
