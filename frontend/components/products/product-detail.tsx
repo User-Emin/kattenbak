@@ -220,18 +220,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               
               <Separator variant="float" spacing="sm" />
 
-              {/* COOLBLUE: USPs vinkjes - EERST */}
-              <div className="mb-6 space-y-2">
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Automatische zelfreiniging</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">10.5L XL capaciteit</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Dubbele veiligheidssensoren</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Ultra-stil &lt;40dB</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Gratis verzending</span></div>
-              </div>
-              
-              <Separator variant="float" spacing="sm" />
-
-              {/* Color Selector - Toon alleen als product varianten heeft */}
+              {/* Color Selector - Direct na pre-order badge, VOOR USPs */}
               {product.hasVariants && product.variants && product.variants.length > 0 && (
                 <>
                   <ColorSelector
@@ -243,6 +232,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   <Separator variant="float" spacing="sm" />
                 </>
               )}
+
+              {/* COOLBLUE: USPs vinkjes - NA color selector */}
+              <div className="mb-6 space-y-2">
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Automatische zelfreiniging</span></div>
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">10.5L XL capaciteit</span></div>
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Dubbele veiligheidssensoren</span></div>
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Ultra-stil &lt;40dB</span></div>
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-900">Gratis verzending</span></div>
+              </div>
+              
+              <Separator variant="float" spacing="sm" />
 
               {/* Prijs - Dikker zoals productnaam */}
               <div className="mb-6">
