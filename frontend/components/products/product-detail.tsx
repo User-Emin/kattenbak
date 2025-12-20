@@ -196,53 +196,25 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             )}
 
-            {/* USPs - NAAST FOTO (4 Premium Features) */}
-            <div className="grid grid-cols-2 gap-3 bg-white rounded-2xl p-6 shadow-sm">
-              {/* 10.5L Capacity - Custom barrel/container icon */}
-              <div className="flex flex-col items-center text-center gap-2 p-3 hover:bg-gray-50 rounded-xl transition">
-                <svg className="w-12 h-12 text-brand" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M14 8h20c2 0 3 1 3 3v26c0 2-1 3-3 3H14c-2 0-3-1-3-3V11c0-2 1-3 3-3z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M11 16h26M11 32h26" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                  <circle cx="24" cy="24" r="3" fill="currentColor"/>
-                  <path d="M20 24v6M28 24v6M24 18v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-                <span className="font-bold text-sm text-gray-900 leading-tight">10.5L XL<br/>Capaciteit</span>
-              </div>
-
-              {/* Ultra Silent - Custom sound wave icon */}
-              <div className="flex flex-col items-center text-center gap-2 p-3 hover:bg-gray-50 rounded-xl transition">
-                <svg className="w-12 h-12 text-brand" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="24" cy="24" r="4" fill="currentColor"/>
-                  <path d="M16 20c-2 1-3 3-3 5s1 4 3 5M32 20c2 1 3 3 3 5s-1 4-3 5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                  <path d="M10 16c-3 2-5 6-5 9s2 7 5 9M38 16c3 2 5 6 5 9s-2 7-5 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
-                  <path d="M22 24h4M20 28h8M21 20h6" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
-                <span className="font-bold text-sm text-gray-900 leading-tight">&lt;40dB<br/>Ultra-Stil</span>
-              </div>
-
-              {/* Dual Sensors - Custom radar/sensor icon */}
-              <div className="flex flex-col items-center text-center gap-2 p-3 hover:bg-gray-50 rounded-xl transition">
-                <svg className="w-12 h-12 text-brand" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="18" cy="24" r="5" stroke="currentColor" strokeWidth="2.5"/>
-                  <circle cx="30" cy="24" r="5" stroke="currentColor" strokeWidth="2.5"/>
-                  <path d="M18 19v10M30 19v10" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                  <path d="M13 24a5 5 0 019-3M26 24a5 5 0 019-3M13 24a5 5 0 009 3M26 24a5 5 0 009 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
-                  <circle cx="18" cy="24" r="2" fill="currentColor"/>
-                  <circle cx="30" cy="24" r="2" fill="currentColor"/>
-                </svg>
-                <span className="font-bold text-sm text-gray-900 leading-tight">Dubbele<br/>Sensoren</span>
-              </div>
-
-              {/* Free Shipping - Custom delivery truck icon */}
-              <div className="flex flex-col items-center text-center gap-2 p-3 hover:bg-gray-50 rounded-xl transition">
-                <svg className="w-12 h-12 text-brand" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 18h24v14H5V18z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M29 24h6l4 4v8h-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="12" cy="36" r="3" stroke="currentColor" strokeWidth="2.5"/>
-                  <circle cx="33" cy="36" r="3" stroke="currentColor" strokeWidth="2.5"/>
-                  <path d="M9 14h14M15 32v-14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
-                </svg>
-                <span className="font-bold text-sm text-gray-900 leading-tight">Gratis<br/>Verzending</span>
+            {/* USPs - SMOOTH in achtergrond naast foto (GEEN BOX) */}
+            <div className="absolute inset-0 flex items-end pb-4 px-4 pointer-events-none">
+              <div className="grid grid-cols-2 gap-2 w-full text-white text-shadow-lg">
+                <div className="flex items-center gap-2 bg-brand/90 backdrop-blur-sm rounded-xl p-3">
+                  <span className="text-2xl">🗑️</span>
+                  <span className="font-bold text-sm">10.5L XL Capaciteit</span>
+                </div>
+                <div className="flex items-center gap-2 bg-brand/90 backdrop-blur-sm rounded-xl p-3">
+                  <span className="text-2xl">🔇</span>
+                  <span className="font-bold text-sm">&lt;40dB Ultra-Stil</span>
+                </div>
+                <div className="flex items-center gap-2 bg-brand/90 backdrop-blur-sm rounded-xl p-3">
+                  <span className="text-2xl">📡</span>
+                  <span className="font-bold text-sm">Dubbele Sensoren</span>
+                </div>
+                <div className="flex items-center gap-2 bg-brand/90 backdrop-blur-sm rounded-xl p-3">
+                  <span className="text-2xl">🚚</span>
+                  <span className="font-bold text-sm">Gratis Verzending</span>
+                </div>
               </div>
             </div>
           </div>
@@ -399,94 +371,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               <Separator variant="float" spacing="sm" />
 
-              {/* Product Specs - BREED met Custom Vector Icons */}
-              <div className="space-y-3 mb-6">
-                {/* Self-Cleaning */}
-                <details className="group bg-white rounded-xl border-2 border-gray-100 hover:border-brand/30 transition overflow-hidden">
-                  <summary className="flex items-center gap-4 p-4 cursor-pointer">
-                    <svg className="w-10 h-10 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
-                      <circle cx="24" cy="24" r="18" stroke="currentColor" strokeWidth="2.5"/>
-                      <path d="M24 12v12l8 4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 24h24M24 12v24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.3"/>
-                      <circle cx="24" cy="24" r="3" fill="currentColor"/>
-                    </svg>
-                    <div className="flex-1">
-                      <h4 className="font-bold text-gray-900 text-base">Zelfreinigende Functie</h4>
-                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform absolute right-4 top-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </summary>
-                  <div className="px-4 pb-4 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-3">
-                    Automatische reiniging start 3 minuten na elk bezoek van je kat. Het systeem scheidt vaste afval van schoon grit en verzamelt alles in een afgesloten container.
-                  </div>
-                </details>
-
-                {/* Open-Top Design */}
-                <details className="group bg-white rounded-xl border-2 border-gray-100 hover:border-brand/30 transition overflow-hidden">
-                  <summary className="flex items-center gap-4 p-4 cursor-pointer">
-                    <svg className="w-10 h-10 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
-                      <path d="M8 28c0-8 8-16 16-16s16 8 16 16" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                      <circle cx="24" cy="32" r="4" fill="currentColor"/>
-                      <path d="M16 28l8 4 8-4M12 24l12 6 12-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" opacity="0.4"/>
-                      <path d="M20 20v8M28 20v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                    <div className="flex-1">
-                      <h4 className="font-bold text-gray-900 text-base">Open-Top, Low-Stress Design</h4>
-                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform absolute right-4 top-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </summary>
-                  <div className="px-4 pb-4 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-3">
-                    Katten voelen zich veiliger in een open ruimte waar ze hun omgeving kunnen zien. Dit vermindert stress en angst, wat leidt tot meer gebruik.
-                  </div>
-                </details>
-
-                {/* 10.5L Capacity */}
-                <details className="group bg-white rounded-xl border-2 border-gray-100 hover:border-brand/30 transition overflow-hidden">
-                  <summary className="flex items-center gap-4 p-4 cursor-pointer">
-                    <svg className="w-10 h-10 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
-                      <path d="M14 10h20c2 0 3 1 3 3v24c0 2-1 3-3 3H14c-2 0-3-1-3-3V13c0-2 1-3 3-3z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M11 18h26M11 30h26" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                      <path d="M24 20v16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                      <circle cx="24" cy="24" r="3" fill="currentColor"/>
-                    </svg>
-                    <div className="flex-1">
-                      <h4 className="font-bold text-gray-900 text-base">10.5L Afvalbak Capaciteit</h4>
-                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform absolute right-4 top-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </summary>
-                  <div className="px-4 pb-4 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-3">
-                    Met 10.5 liter de grootste afvalbak in zijn klasse. Voor één kat hoef je slechts 1x per week te legen, in plaats van 2-3x bij concurrenten.
-                  </div>
-                </details>
-
-                {/* Dual Safety Sensors */}
-                <details className="group bg-white rounded-xl border-2 border-gray-100 hover:border-brand/30 transition overflow-hidden">
-                  <summary className="flex items-center gap-4 p-4 cursor-pointer">
-                    <svg className="w-10 h-10 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
-                      <circle cx="18" cy="24" r="7" stroke="currentColor" strokeWidth="2.5"/>
-                      <circle cx="30" cy="24" r="7" stroke="currentColor" strokeWidth="2.5"/>
-                      <circle cx="18" cy="24" r="3" fill="currentColor"/>
-                      <circle cx="30" cy="24" r="3" fill="currentColor"/>
-                      <path d="M11 24a7 7 0 0114 0M25 24a7 7 0 0114 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.3"/>
-                    </svg>
-                    <div className="flex-1">
-                      <h4 className="font-bold text-gray-900 text-base">Dubbele Veiligheidssensoren</h4>
-                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform absolute right-4 top-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </summary>
-                  <div className="px-4 pb-4 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-3">
-                    Twee onafhankelijke sensoren detecteren wanneer je kat de bak benadert. De reiniging stopt onmiddellijk en start pas 3 minuten na het laatste bezoek.
-                  </div>
-                </details>
-              </div>
-
               {/* Extra Specs - Collapsible */}
               {showAllSpecs && (
                 <div className="space-y-2 mb-4">
@@ -522,6 +406,83 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               >
                 {showAllSpecs ? 'Minder kenmerken' : 'Meer kenmerken'} {showAllSpecs ? '▲' : '▼'}
               </button>
+          </div>
+        </div>
+
+        <Separator variant="float" spacing="xl" />
+
+        {/* Product Kenmerken - BREED zoals Over dit product */}
+        <div className="max-w-6xl mx-auto mb-16">
+          <h2 className="text-3xl font-medium mb-8 text-gray-900 text-center">Productkenmerken</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Zelfreinigende Functie */}
+            <details className="group bg-white rounded-xl border-2 border-gray-200 hover:border-brand/40 transition overflow-hidden">
+              <summary className="flex items-center gap-4 p-5 cursor-pointer">
+                <span className="text-4xl flex-shrink-0">⏰</span>
+                <div className="flex-1">
+                  <h4 className="font-bold text-gray-900">Zelfreinigende Functie</h4>
+                  <p className="text-sm text-gray-600 mt-1">Automatisch schoon na elk bezoek</p>
+                </div>
+                <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-5 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-4">
+                Automatische reiniging start 3 minuten na elk bezoek van je kat. Het systeem scheidt vaste afval van schoon grit en verzamelt alles in een afgesloten container.
+              </div>
+            </details>
+
+            {/* Open-Top Design */}
+            <details className="group bg-white rounded-xl border-2 border-gray-200 hover:border-brand/40 transition overflow-hidden">
+              <summary className="flex items-center gap-4 p-5 cursor-pointer">
+                <span className="text-4xl flex-shrink-0">🏠</span>
+                <div className="flex-1">
+                  <h4 className="font-bold text-gray-900">Open-Top, Low-Stress</h4>
+                  <p className="text-sm text-gray-600 mt-1">Minder stress voor je kat</p>
+                </div>
+                <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-5 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-4">
+                Katten voelen zich veiliger in een open ruimte waar ze hun omgeving kunnen zien. Dit vermindert stress en angst, wat leidt tot meer gebruik.
+              </div>
+            </details>
+
+            {/* 10.5L Capaciteit */}
+            <details className="group bg-white rounded-xl border-2 border-gray-200 hover:border-brand/40 transition overflow-hidden">
+              <summary className="flex items-center gap-4 p-5 cursor-pointer">
+                <span className="text-4xl flex-shrink-0">🗑️</span>
+                <div className="flex-1">
+                  <h4 className="font-bold text-gray-900">10.5L XL Afvalbak</h4>
+                  <p className="text-sm text-gray-600 mt-1">Grootste in zijn klasse</p>
+                </div>
+                <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-5 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-4">
+                Met 10.5 liter de grootste afvalbak in zijn klasse. Voor één kat hoef je slechts 1x per week te legen, in plaats van 2-3x bij concurrenten.
+              </div>
+            </details>
+
+            {/* Dubbele Sensoren */}
+            <details className="group bg-white rounded-xl border-2 border-gray-200 hover:border-brand/40 transition overflow-hidden">
+              <summary className="flex items-center gap-4 p-5 cursor-pointer">
+                <span className="text-4xl flex-shrink-0">📡</span>
+                <div className="flex-1">
+                  <h4 className="font-bold text-gray-900">Dubbele Veiligheidssensoren</h4>
+                  <p className="text-sm text-gray-600 mt-1">Extra veilig voor je kat</p>
+                </div>
+                <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-5 text-sm text-gray-700 leading-relaxed border-t border-gray-100 pt-4">
+                Twee onafhankelijke sensoren detecteren wanneer je kat de bak benadert. De reiniging stopt onmiddellijk en start pas 3 minuten na het laatste bezoek.
+              </div>
+            </details>
           </div>
         </div>
 
