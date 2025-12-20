@@ -370,137 +370,107 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               <Separator variant="float" spacing="sm" />
 
               {/* COOLBLUE: Specs - ALLEMAAL in accordion, 1 geheel */}
-              <div className="border-t border-gray-200 pt-6">
-                <h3 className="font-normal text-base mb-3 text-gray-700">Specificaties</h3>
+              <div className="border-t border-gray-200 pt-4">
+                <h3 className="font-normal text-sm mb-2 text-gray-600">Specificaties</h3>
                 
-                {/* Alle specs in accordion - 1 geheel aangrijpend */}
-                <div className="bg-white rounded border border-gray-200 divide-y divide-gray-100">
-                  <details className="group">
-                    <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
-                      <div className="flex-1">
-                        <div className="font-semibold text-sm text-gray-900">Capaciteit</div>
-                        <div className="text-xs text-gray-500 mt-1">10.5L XL</div>
-                      </div>
-                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* Alle specs in accordion - compact zonder extra backgrounds */}
+                <div className="divide-y divide-gray-100">
+                  <details className="group py-2">
+                    <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
+                      <span className="text-sm font-medium text-gray-900">Capaciteit: <span className="font-normal text-gray-600">10.5L XL</span></span>
+                      <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </summary>
-                    <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
-                      <div className="flex justify-between py-1"><span>Afvalbak capaciteit</span><span className="font-medium">10.5 liter</span></div>
+                    <div className="pt-2 pb-1 text-xs text-gray-600">
+                      Afvalbak capaciteit: 10.5 liter - voldoende voor meerdere dagen
                     </div>
                   </details>
                   
-                  <details className="group">
-                    <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
-                      <div className="flex-1">
-                        <div className="font-semibold text-sm text-gray-900">Geluidsniveau</div>
-                        <div className="text-xs text-gray-500 mt-1">&lt;40dB</div>
-                      </div>
-                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <details className="group py-2">
+                    <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
+                      <span className="text-sm font-medium text-gray-900">Geluidsniveau: <span className="font-normal text-gray-600">&lt;40dB</span></span>
+                      <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </summary>
-                    <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
-                      <div className="flex justify-between py-1"><span>Geluidsniveau</span><span className="font-medium">&lt;40dB (ultra-stil)</span></div>
+                    <div className="pt-2 pb-1 text-xs text-gray-600">
+                      Ultra-stil tijdens werking - ideaal voor 's nachts
                     </div>
                   </details>
                   
-                  <details className="group">
-                    <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
-                      <div className="flex-1">
-                        <div className="font-semibold text-sm text-gray-900">Sensoren</div>
-                        <div className="text-xs text-gray-500 mt-1">Dubbel systeem</div>
-                      </div>
-                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <details className="group py-2">
+                    <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
+                      <span className="text-sm font-medium text-gray-900">Sensoren: <span className="font-normal text-gray-600">Dubbel systeem</span></span>
+                      <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </summary>
-                    <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
-                      <div className="flex justify-between py-1"><span>Veiligheidssensoren</span><span className="font-medium">Dubbel systeem</span></div>
-                      <div className="flex justify-between py-1"><span>Noodstop</span><span className="font-medium">Ja</span></div>
+                    <div className="pt-2 pb-1 text-xs text-gray-600">
+                      Dubbele veiligheidssensoren + noodstop - 100% veilig voor je kat
                     </div>
                   </details>
                   
-                  <details className="group">
-                    <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
-                      <div className="flex-1">
-                        <div className="font-semibold text-sm text-gray-900">Reiniging</div>
-                        <div className="text-xs text-gray-500 mt-1">Automatisch</div>
-                      </div>
-                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <details className="group py-2">
+                    <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
+                      <span className="text-sm font-medium text-gray-900">Reiniging: <span className="font-normal text-gray-600">Automatisch</span></span>
+                      <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </summary>
-                    <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
-                      <div className="flex justify-between py-1"><span>Reinigingsmethode</span><span className="font-medium">Automatisch</span></div>
-                      <div className="flex justify-between py-1"><span>Filter type</span><span className="font-medium">Actieve koolstof</span></div>
+                    <div className="pt-2 pb-1 text-xs text-gray-600">
+                      Volledig automatisch reinigingssysteem + actieve koolstof filter
                     </div>
                   </details>
                   
-                  <details className="group">
-                    <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
-                      <div className="flex-1">
-                        <div className="font-semibold text-sm text-gray-900">Design</div>
-                        <div className="text-xs text-gray-500 mt-1">Open-top</div>
-                      </div>
-                      <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <details className="group py-2">
+                    <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
+                      <span className="text-sm font-medium text-gray-900">Design: <span className="font-normal text-gray-600">Open-top</span></span>
+                      <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </summary>
-                    <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
-                      <div className="flex justify-between py-1"><span>Design type</span><span className="font-medium">Open-top</span></div>
-                      <div className="flex justify-between py-1"><span>Materiaal</span><span className="font-medium">ABS kunststof</span></div>
+                    <div className="pt-2 pb-1 text-xs text-gray-600">
+                      Open-top design - ABS kunststof - zwart/wit kleuren
                     </div>
                   </details>
                   
                   {/* Extra details bij "Toon meer" */}
                   {showAllSpecs && (
                     <>
-                      <details className="group">
-                        <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
-                          <div className="flex-1">
-                            <div className="font-semibold text-sm text-gray-900">Afmetingen & Gewicht</div>
-                            <div className="text-xs text-gray-500 mt-1">50x40x35cm | 5.2kg</div>
-                          </div>
-                          <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <details className="group py-2">
+                        <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
+                          <span className="text-sm font-medium text-gray-900">Afmetingen: <span className="font-normal text-gray-600">50x40x35cm</span></span>
+                          <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                           </svg>
                         </summary>
-                        <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
-                          <div className="flex justify-between py-1"><span>Afmetingen (LxBxH)</span><span className="font-medium">50 x 40 x 35 cm</span></div>
-                          <div className="flex justify-between py-1"><span>Gewicht</span><span className="font-medium">5.2 kg</span></div>
+                        <div className="pt-2 pb-1 text-xs text-gray-600">
+                          Buiten: 60×55×62cm | Binnen: 50×45cm | Gewicht: 5.2 kg
                         </div>
                       </details>
                       
-                      <details className="group">
-                        <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
-                          <div className="flex-1">
-                            <div className="font-semibold text-sm text-gray-900">Stroomvoorziening</div>
-                            <div className="text-xs text-gray-500 mt-1">230V | 15W</div>
-                          </div>
-                          <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <details className="group py-2">
+                        <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
+                          <span className="text-sm font-medium text-gray-900">Stroom: <span className="font-normal text-gray-600">230V | 15W</span></span>
+                          <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                           </svg>
                         </summary>
-                        <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
-                          <div className="flex justify-between py-1"><span>Voltage</span><span className="font-medium">230V</span></div>
-                          <div className="flex justify-between py-1"><span>Vermogen</span><span className="font-medium">15W</span></div>
+                        <div className="pt-2 pb-1 text-xs text-gray-600">
+                          Energiezuinig 15W vermogen - lager verbruik dan een lampje
                         </div>
                       </details>
                       
-                      <details className="group">
-                        <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition">
-                          <div className="flex-1">
-                            <div className="font-semibold text-sm text-gray-900">Garantie & Service</div>
-                            <div className="text-xs text-gray-500 mt-1">2 jaar garantie</div>
-                          </div>
-                          <svg className="w-5 h-5 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <details className="group py-2">
+                        <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
+                          <span className="text-sm font-medium text-gray-900">Garantie: <span className="font-normal text-gray-600">2 jaar</span></span>
+                          <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                           </svg>
                         </summary>
-                        <div className="p-4 pt-0 text-sm text-gray-600 space-y-2">
-                          <div className="flex justify-between py-1"><span>Garantie</span><span className="font-medium">2 jaar</span></div>
-                          <div className="flex justify-between py-1"><span>Klantenservice</span><span className="font-medium">NL-talig</span></div>
+                        <div className="pt-2 pb-1 text-xs text-gray-600">
+                          2 jaar fabrieksgarantie + NL-talige klantenservice
                         </div>
                       </details>
                     </>
@@ -509,7 +479,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 
                 <button
                   onClick={() => setShowAllSpecs(!showAllSpecs)}
-                  className="text-brand hover:text-brand-dark text-sm font-medium mt-3 underline"
+                  className="text-brand hover:text-brand-dark text-xs font-medium mt-2 underline"
                 >
                   {showAllSpecs ? 'Verberg specificaties' : 'Toon alle specificaties'}
                 </button>
