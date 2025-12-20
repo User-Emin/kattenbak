@@ -235,12 +235,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </>
               )}
 
-              {/* COOLBLUE: USPs vinkjes - ZAKELIJKE SFEER - DIKKER TEKST */}
+              {/* COOLBLUE: USPs vinkjes - MAX 3 */}
               <div className="border-t border-gray-200 pt-6 space-y-2.5">
                 <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">Zelfreinigend systeem met dubbele beveiliging</span></div>
-                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">10.5L grote capaciteit</span></div>
-                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">Ultra-stille motor onder 40dB</span></div>
-                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">Open-top design met ABS kunststof</span></div>
+                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">10.5L XL capaciteit - geschikt voor meerdere katten</span></div>
                 <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">Gratis verzending</span></div>
               </div>
 
@@ -571,6 +569,32 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           </div>
           </>
         )}
+
+        {/* PRODUCTINFORMATIE */}
+        <div className="max-w-5xl mx-auto mb-16 px-4">
+          <h2 className="text-2xl font-semibold mb-8 text-gray-900">Productinformatie</h2>
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Volgens onze specialist</h3>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3"><span className="text-green-600 font-bold text-lg">+</span><p className="text-sm text-gray-700">Volledig automatisch zelfreinigend systeem - nooit meer handmatig scheppen</p></div>
+                <div className="flex items-start gap-3"><span className="text-green-600 font-bold text-lg">+</span><p className="text-sm text-gray-700">Extra grote 10.5L afvalbak capaciteit - perfect voor meerdere katten</p></div>
+                <div className="flex items-start gap-3"><span className="text-green-600 font-bold text-lg">+</span><p className="text-sm text-gray-700">Dubbele veiligheidssensoren stoppen de reiniging automatisch bij detectie</p></div>
+                <div className="flex items-start gap-3"><span className="text-red-600 font-bold text-lg">-</span><p className="text-sm text-gray-700">Open-top design is minder geschikt voor katten die graag gravel strooien</p></div>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Omschrijving</h3>
+              <div className="space-y-4 text-sm text-gray-700 leading-relaxed">
+                <p><strong>SKU: ALP 1071222</strong> - De Premium Automatische Kattenbak biedt een complete oplossing voor automatisch kattenbak onderhoud. Dit intelligente zelfreinigende systeem met 10.5L capaciteit zorgt ervoor dat de bak altijd schoon is. Na elk gebruik start een reinigingscyclus die afval scheidt en verzamelt in de grote afvalbak.</p>
+                <p>De dubbele veiligheidssensoren detecteren beweging en stoppen direct met reinigen wanneer je kat de bak nadert. De ultra-stille motor (&lt;40dB) maakt nachtelijke reiniging mogelijk zonder verstoring. Het open-top design vermindert stress en is toegankelijk voor alle kattenformaten.</p>
+                <p>Gemaakt van duurzaam, krasbestendig ABS kunststof dat eenvoudig schoon te maken is. De meegeleverde app helpt je de gezondheid van je kat monitoren door toiletbezoeken en gebruikspatronen bij te houden. Inclusief 2 jaar garantie en gratis verzending.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Separator variant="float" spacing="xl" />
       </div>
 
       {/* Sticky Cart - RECHTHOEKIG met brand border-top */}
