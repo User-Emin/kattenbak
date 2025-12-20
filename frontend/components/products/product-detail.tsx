@@ -287,8 +287,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
 
-              {/* COOLBLUE: CTA - Coolblue rechthoekig + DATA ATTR */}
-              <div className="mb-6" data-main-cart>
+              {/* COOLBLUE: CTA - Desktop: button in pagina, Mobiel: alleen sticky */}
+              <div className="mb-6 hidden lg:block" data-main-cart>
                 {isOutOfStock ? (
                   <button
                     disabled
