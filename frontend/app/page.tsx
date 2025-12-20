@@ -87,13 +87,16 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
         </div>
 
-        <div className="container mx-auto px-6 lg:px-12 py-20 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-light mb-12 leading-tight animate-fade-in text-white drop-shadow-lg text-center md:text-left">
-              Slimste Kattenbak
+        <div className="container mx-auto px-6 lg:px-12 relative z-10 flex items-end min-h-[70vh]">
+          <div className="pb-12">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-light mb-4 leading-tight text-white drop-shadow-lg">
+              Slimme Kattenbak
             </h1>
+            <p className="text-xl md:text-2xl text-white/90 mb-8 drop-shadow-md font-light">
+              Volledig automatisch zelfreinigend systeem
+            </p>
 
-            <div className="flex justify-center md:justify-start">
+            <div>
               <Link href={`/product/${productSlug}`}>
                 <Button size="lg" variant="primary" rightIcon={<ArrowRight className="h-5 w-5" />} className="text-base">
                   Bekijk Product
