@@ -218,41 +218,39 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               
               <Separator variant="float" spacing="sm" />
 
-              {/* 4 USPs - Compact RECHTS naast foto */}
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
-                  <svg className="w-8 h-8 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
-                    <path d="M14 8h20c2 0 3 1 3 3v26c0 2-1 3-3 3H14c-2 0-3-1-3-3V11c0-2 1-3 3-3z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M11 16h26M11 32h26" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+              {/* USPs - ONDER ELKAAR compact */}
+              <div className="space-y-2 mb-6">
+                <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-brand/5 to-transparent rounded-lg">
+                  <svg className="w-7 h-7 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
+                    <circle cx="24" cy="24" r="18" stroke="currentColor" strokeWidth="2.5"/>
+                    <path d="M24 12v12l8 4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="24" cy="24" r="2" fill="currentColor"/>
+                  </svg>
+                  <span className="font-semibold text-sm text-gray-900">Automatische zelfrei niging</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-brand/5 to-transparent rounded-lg">
+                  <svg className="w-7 h-7 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
+                    <path d="M14 8h20c2 0 3 1 3 3v26c0 2-1 3-3 3H14c-2 0-3-1-3-3V11c0-2 1-3 3-3z" stroke="currentColor" strokeWidth="2.5"/>
+                    <path d="M11 16h26M11 32h26" stroke="currentColor" strokeWidth="2" opacity="0.5"/>
+                    <text x="24" y="28" text-anchor="middle" fill="currentColor" font-size="10" font-weight="bold">10.5L</text>
+                  </svg>
+                  <span className="font-semibold text-sm text-gray-900">10.5L XL capaciteit</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-brand/5 to-transparent rounded-lg">
+                  <svg className="w-7 h-7 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
+                    <path d="M24 10v8M10 24h8M30 24h8M24 30v8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
                     <circle cx="24" cy="24" r="3" fill="currentColor"/>
+                    <path d="M16 16l4 4M28 16l-4 4M16 32l4-4M28 32l-4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
                   </svg>
-                  <span className="font-bold text-sm text-gray-900">10.5L XL Capaciteit</span>
+                  <span className="font-semibold text-sm text-gray-900">Dubbele veiligheidssensoren</span>
                 </div>
-                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
-                  <svg className="w-8 h-8 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
-                    <circle cx="24" cy="24" r="4" fill="currentColor"/>
+                <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-brand/5 to-transparent rounded-lg">
+                  <svg className="w-7 h-7 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
+                    <circle cx="24" cy="24" r="3" fill="currentColor"/>
                     <path d="M16 20c-2 1-3 3-3 5s1 4 3 5M32 20c2 1 3 3 3 5s-1 4-3 5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                    <path d="M10 16c-3 2-5 6-5 9s2 7 5 9M38 16c3 2 5 6 5 9s-2 7-5 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+                    <text x="24" y="38" text-anchor="middle" fill="currentColor" font-size="8" font-weight="bold">&lt;40dB</text>
                   </svg>
-                  <span className="font-bold text-sm text-gray-900">&lt;40dB Ultra-Stil</span>
-                </div>
-                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
-                  <svg className="w-8 h-8 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
-                    <circle cx="18" cy="24" r="5" stroke="currentColor" strokeWidth="2.5"/>
-                    <circle cx="30" cy="24" r="5" stroke="currentColor" strokeWidth="2.5"/>
-                    <circle cx="18" cy="24" r="2" fill="currentColor"/>
-                    <circle cx="30" cy="24" r="2" fill="currentColor"/>
-                  </svg>
-                  <span className="font-bold text-sm text-gray-900">Dubbele Sensoren</span>
-                </div>
-                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
-                  <svg className="w-8 h-8 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
-                    <path d="M5 18h24v14H5V18z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M29 24h6l4 4v8h-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <circle cx="12" cy="36" r="3" stroke="currentColor" strokeWidth="2.5"/>
-                    <circle cx="33" cy="36" r="3" stroke="currentColor" strokeWidth="2.5"/>
-                  </svg>
-                  <span className="font-bold text-sm text-gray-900">Gratis Verzending</span>
+                  <span className="font-semibold text-sm text-gray-900">Ultra-stil (&lt;40dB)</span>
                 </div>
               </div>
 
@@ -431,16 +429,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Productkenmerken - ALLE specs met custom vectors */}
-        <ProductSpecs />
-
-        <Separator variant="float" spacing="xl" />
-
-        {/* Product Description */}
+        {/* Product Description - EERST */}
         <div className="max-w-4xl mx-auto text-center mb-16">
           <h2 className="text-3xl font-medium mb-6 text-gray-900">Over dit product</h2>
           <p className="text-gray-700 leading-relaxed text-lg">{product.description}</p>
         </div>
+
+        <Separator variant="float" spacing="xl" />
+
+        {/* Productkenmerken - Direct zichtbaar, compact */}
+        <ProductSpecs />
 
         <Separator variant="float" spacing="xl" />
 
