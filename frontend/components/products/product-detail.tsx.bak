@@ -218,30 +218,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               
               <Separator variant="float" spacing="sm" />
 
-
-              {/* COOLBLUE: Korte Specs RECHTS */}
-              <div className="mb-6">
-                <h3 className="font-bold text-base mb-3">Korte specificaties</h3>
-                <div className="bg-gray-50 rounded-lg p-4 space-y-2.5 text-sm border border-gray-200">
-                  <div className="flex justify-between"><span className="text-gray-600">Capaciteit</span><span className="font-medium text-gray-900">10.5L XL</span></div>
-                  <div className="flex justify-between"><span className="text-gray-600">Geluidsniveau</span><span className="font-medium text-gray-900">&lt;40dB</span></div>
-                  <div className="flex justify-between"><span className="text-gray-600">Sensoren</span><span className="font-medium text-gray-900">Dubbel systeem</span></div>
-                  <div className="flex justify-between"><span className="text-gray-600">Reiniging</span><span className="font-medium text-gray-900">Automatisch</span></div>
-                  <div className="flex justify-between"><span className="text-gray-600">Design</span><span className="font-medium text-gray-900">Open-top</span></div>
-                </div>
-                <button onClick={() => document.getElementById('specs-section')?.scrollIntoView({ behavior: 'smooth' })} className="text-brand hover:text-brand-dark text-sm font-medium mt-3 underline">Toon alle specificaties</button>
-              </div>
-
-              <Separator variant="float" spacing="sm" />
-
-              {/* COOLBLUE: USPs vinkjes */}
-              <div className="mb-6 space-y-2">
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand" strokeWidth={3} /><span className="text-sm text-gray-900">Automatische zelfreiniging</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand" strokeWidth={3} /><span className="text-sm text-gray-900">10.5L XL capaciteit</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand" strokeWidth={3} /><span className="text-sm text-gray-900">Dubbele sensoren</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand" strokeWidth={3} /><span className="text-sm text-gray-900">Ultra-stil &lt;40dB</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand" strokeWidth={3} /><span className="text-sm text-gray-900">Gratis verzending</span></div>
-              </div>
               <Separator variant="float" spacing="sm" />
 
               {/* Color Selector - Toon alleen als product varianten heeft */}
