@@ -265,13 +265,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </>
               )}
 
-              {/* COOLBLUE: USPs vinkjes - MAX 3 */}
-              <div className="border-t border-gray-200 pt-6 space-y-2.5">
-                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">Zelfreinigend systeem met dubbele beveiliging</span></div>
-                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">10.5L XL capaciteit - geschikt voor meerdere katten</span></div>
-                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">Gratis verzending</span></div>
-              </div>
-
               {/* Prijs - Dikker zoals productnaam */}
               <div className="pt-6 pb-4">
                 {isPreOrder && preOrderDiscountPercentage > 0 ? (
