@@ -130,7 +130,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const availableStock = selectedVariant ? selectedVariant.stock : product.stock;
   const isOutOfStock = trackInventory && availableStock <= 0;
   const isLowStock = trackInventory && availableStock > 0 && availableStock <= 5;
-  const isLowStock = displayStock > 0 && displayStock <= product.lowStockThreshold;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 pb-32">
