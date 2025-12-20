@@ -114,7 +114,7 @@ export class AdminProductController {
 
       const product = await ProductService.createProduct(data);
 
-      res.status(201).json(successResponse({ data: product }));
+      res.status(201).json(successResponse({ data: serializeProduct(product) }));
     } catch (error) {
       next(error);
     }
@@ -143,7 +143,7 @@ export class AdminProductController {
 
       const product = await ProductService.updateProduct(id, updateData);
 
-      res.json(successResponse({ data: product }));
+      res.json(successResponse({ data: serializeProduct(product) }));
     } catch (error) {
       next(error);
     }
