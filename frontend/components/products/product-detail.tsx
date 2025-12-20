@@ -371,7 +371,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               {/* COOLBLUE: Specs - ALLEMAAL in accordion, 1 geheel */}
               <div className="border-t border-gray-200 pt-4">
-                <h3 className="font-normal text-sm mb-2 text-gray-600">Specificaties</h3>
+                <h3 className="font-semibold text-sm mb-2 text-gray-900">Specificaties</h3>
                 
                 {/* Alle specs in accordion - compact zonder extra backgrounds */}
                 <div className="divide-y divide-gray-100">
