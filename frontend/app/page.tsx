@@ -88,43 +88,17 @@ export default function HomePage() {
         </div>
 
         <div className="container mx-auto px-6 lg:px-12 py-20 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-7xl font-light mb-6 leading-tight animate-fade-in text-white drop-shadow-lg">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-light mb-12 leading-tight animate-fade-in text-white drop-shadow-lg whitespace-nowrap text-center sm:text-left">
               Slimste Kattenbak
             </h1>
 
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 drop-shadow-lg">Over dit product</h2>
-            <p className="text-xl md:text-2xl text-white mb-10 drop-shadow-md leading-relaxed">
-              Volledig automatisch zelfreinigend systeem met dubbele beveiliging en 10.5L XL afvalbak capaciteit.
-            </p>
-
-            <div className="flex flex-row gap-2 sm:gap-4 justify-center mb-12 max-w-2xl mx-auto px-4">
-              <Link href={`/product/${productSlug}`} className="flex-1">
-                <Button size="lg" variant="primary" rightIcon={<ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />} fullWidth className="text-sm sm:text-base">
+            <div className="flex justify-end">
+              <Link href={`/product/${productSlug}`}>
+                <Button size="lg" variant="primary" rightIcon={<ArrowRight className="h-5 w-5" />} className="text-base">
                   Bekijk Product
                 </Button>
               </Link>
-              <Link href="#video" className="flex-1">
-                <Button size="lg" variant="brand" leftIcon={<Play className="h-4 w-4 sm:h-5 sm:w-5" />} fullWidth className="text-sm sm:text-base">
-                  Demo Video
-                </Button>
-              </Link>
-            </div>
-
-            {/* Trust Badges */}
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-white">
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-accent" />
-                <span>Gratis verzending</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-accent" />
-                <span>2 jaar garantie</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-accent" />
-                <span>14 dagen retour</span>
-              </div>
             </div>
           </div>
         </div>
@@ -135,13 +109,13 @@ export default function HomePage() {
       {/* USP Section - 2 Beste Features */}
       <section className="py-20">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-          <h2 className="text-4xl font-medium text-center mb-20">De Beste Innovatie</h2>
+          <h2 className="text-3xl sm:text-4xl font-medium text-center mb-20 whitespace-nowrap">De Beste Innovatie</h2>
           
           {/* Feature 1 - 10.5L Capaciteit MET Afbeelding */}
           <div className="grid md:grid-cols-2 gap-16 items-center mb-20">
             <div>
               <div className="mb-6">
-                <h3 className="text-3xl font-medium">10.5L Capaciteit</h3>
+                <h3 className="text-2xl sm:text-3xl font-medium whitespace-nowrap">10.5L Capaciteit</h3>
               </div>
               <p className="text-gray-600 leading-relaxed text-xl">
                 De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.
@@ -167,7 +141,7 @@ export default function HomePage() {
             </div>
             <div className="order-1 md:order-2">
               <div className="mb-6">
-                <h3 className="text-3xl font-medium">Ultra-Quiet Motor</h3>
+                <h3 className="text-2xl sm:text-3xl font-medium whitespace-nowrap">Ultra-Quiet Motor</h3>
               </div>
               <p className="text-gray-600 leading-relaxed text-xl">
                 Werkt onder 40 decibel. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.
@@ -182,7 +156,7 @@ export default function HomePage() {
       {/* Video/Demo Section */}
       <section id="video" className="py-20">
         <div className="container mx-auto px-6 lg:px-12 max-w-5xl">
-          <h2 className="text-4xl font-medium text-center mb-6">Zie Het in Actie</h2>
+          <h2 className="text-3xl sm:text-4xl font-medium text-center mb-6 whitespace-nowrap">Zie Het in Actie</h2>
           <p className="text-lg text-gray-600 text-center mb-12">
             2:30 min demo video
           </p>
@@ -207,7 +181,7 @@ export default function HomePage() {
       {/* FAQ Section */}
       <section className="py-20">
         <div className="container mx-auto px-6 lg:px-12 max-w-3xl">
-          <h2 className="text-4xl font-medium text-center mb-4">Vragen Over ALP 1071</h2>
+          <h2 className="text-3xl sm:text-4xl font-medium text-center mb-4 whitespace-nowrap">Vragen Over ALP 1071</h2>
           <p className="text-gray-600 text-center mb-12">
             Alles wat je moet weten
           </p>

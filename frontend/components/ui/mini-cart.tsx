@@ -123,7 +123,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
             
             <button
               onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
-              className="w-full px-6 py-3 bg-brand hover:bg-brand-dark text-white font-semibold rounded transition"
+              className="w-full px-6 py-3 bg-brand hover:bg-brand-dark text-white font-semibold rounded transition whitespace-nowrap"
             >
               Bestelling Afronden
             </button>
