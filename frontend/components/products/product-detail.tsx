@@ -604,15 +604,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className="max-w-5xl mx-auto mb-16 px-4">
           <h2 className="text-2xl font-semibold mb-8 text-gray-900">Productinformatie</h2>
           <div className="space-y-8">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Volgens onze specialist</h3>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3"><span className="text-green-600 font-bold text-lg">+</span><p className="text-sm text-gray-700">Volledig automatisch zelfreinigend systeem - nooit meer handmatig scheppen</p></div>
-                <div className="flex items-start gap-3"><span className="text-green-600 font-bold text-lg">+</span><p className="text-sm text-gray-700">Extra grote 10.5L afvalbak capaciteit - perfect voor meerdere katten</p></div>
-                <div className="flex items-start gap-3"><span className="text-green-600 font-bold text-lg">+</span><p className="text-sm text-gray-700">Dubbele veiligheidssensoren stoppen de reiniging automatisch bij detectie</p></div>
-                <div className="flex items-start gap-3"><span className="text-red-600 font-bold text-lg">-</span><p className="text-sm text-gray-700">Open-top design is minder geschikt voor katten die graag gravel strooien</p></div>
-              </div>
-            </div>
+            {/* Omschrijving - ALLEEN DIT BEHOUDEN */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Omschrijving</h3>
               <div className="space-y-4 text-sm text-gray-700 leading-relaxed">
