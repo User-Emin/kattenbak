@@ -162,18 +162,18 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const isLowStock = trackInventory && availableStock > 0 && availableStock <= 5;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 pb-32">
+    <div className="min-h-screen bg-gray-50 py-6 pb-32">
       <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
-            {/* Breadcrumb - PADDING TOP voor zwevende navbar */}
-            <nav className="mb-8 text-sm">
-              <Link href="/" className="text-brand hover:text-brand-dark transition font-bold">Home</Link>
-              <span className="mx-2 text-gray-400">/</span>
-              <span className="text-gray-900 font-bold">{product.name}</span>
+            {/* Breadcrumb - COMPACT zoals Coolblue */}
+            <nav className="mb-3 text-xs">
+              <Link href="/" className="text-brand hover:text-brand-dark transition">Home</Link>
+              <span className="mx-1.5 text-gray-400">/</span>
+              <span className="text-gray-700">{product.name}</span>
             </nav>
 
-        {/* Product Titel - BOVEN ALLES (Coolblue stijl) */}
-        <div className="mb-6">
-          <h1 className="text-4xl font-medium leading-tight text-gray-900">{product.name}</h1>
+        {/* Product Titel - COMPACT zoals Coolblue */}
+        <div className="mb-4">
+          <h1 className="text-2xl font-medium leading-tight text-gray-900">{product.name}</h1>
           
           {/* Voorraad Status - Alleen bij problemen tonen */}
           {isOutOfStock ? (

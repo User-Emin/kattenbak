@@ -6,7 +6,6 @@ import Link from "next/link";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { MiniCart } from "@/components/ui/mini-cart";
-import { MovingBanner } from "@/components/ui/moving-banner";
 
 export function Header() {
   const { itemCount } = useCart();
@@ -42,10 +41,7 @@ export function Header() {
 
   return (
     <>
-      {/* MOVING BANNER - BOVEN navbar */}
-      <MovingBanner />
-
-      {/* NAVBAR - ONDER banner */}
+      {/* NAVBAR - CLEAN zoals Coolblue */}
       <header className="sticky top-0 z-50 w-full">
         <div className="bg-gradient-to-br from-brand to-brand-dark">
           <div className="container mx-auto px-6 lg:px-10">
