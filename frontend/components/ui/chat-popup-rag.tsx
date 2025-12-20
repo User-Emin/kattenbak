@@ -123,67 +123,30 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* Chat Button - BLAUWE GRADIENT */}
-      <button
+      {/* Chat Button - RECHTHOEKIG CONSISTENT MET PRODUCTDETAIL BUTTONS */}
+<button
         onClick={() => setIsExpanded(!isExpanded)}
         className={`fixed right-6 z-50 ${buttonPosition}
                    bg-gradient-to-br from-brand to-brand-dark text-white 
-                   rounded-full p-4 shadow-2xl 
-                   hover:scale-110 hover:shadow-brand/50
+                   rounded px-6 py-3.5 shadow-2xl 
+                   hover:scale-105 hover:shadow-brand/50
                    focus:outline-none focus:ring-4 focus:ring-brand/30
                    active:scale-95
-                   transition-all duration-300 ease-out`}
-        aria-label="Open chat"
+                   transition-all duration-300 ease-out
+                   flex items-center gap-2 font-semibold`}
+        aria-label="Open AI chat"
         style={{ willChange: 'transform' }}
       >
         {isExpanded ? (
-          <X className="w-7 h-7" />
+          <>
+            <X className="w-5 h-5" />
+            <span>Sluiten</span>
+          </>
         ) : (
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 40 40" 
-            fill="none" 
-            className="w-8 h-8"
-          >
-            {/* Clean abstract chat bubble - geen overlap */}
-            <path 
-              d="M32 20c0 6.627-5.373 12-12 12-1.657 0-3.23-.336-4.665-.944L10 33l2.056-5.335A11.946 11.946 0 0 1 8 20c0-6.627 5.373-12 12-12s12 5.373 12 12z" 
-              stroke="currentColor" 
-              strokeWidth="3" 
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-            
-            {/* Drie geanimeerde stippen - perfect spacing, geen overlap */}
-            <circle cx="15" cy="20" r="2" fill="currentColor">
-              <animate 
-                attributeName="r" 
-                values="1.8;2.2;1.8" 
-                dur="1.5s" 
-                repeatCount="indefinite" 
-                begin="0s"
-              />
-            </circle>
-            <circle cx="20" cy="20" r="2" fill="currentColor">
-              <animate 
-                attributeName="r" 
-                values="1.8;2.2;1.8" 
-                dur="1.5s" 
-                repeatCount="indefinite" 
-                begin="0.25s"
-              />
-            </circle>
-            <circle cx="25" cy="20" r="2" fill="currentColor">
-              <animate 
-                attributeName="r" 
-                values="1.8;2.2;1.8" 
-                dur="1.5s" 
-                repeatCount="indefinite" 
-                begin="0.5s"
-              />
-            </circle>
-          </svg>
+          <>
+            <MessageCircle className="w-5 h-5" />
+            <span>Vraag AI</span>
+          </>
         )}
       </button>
 
