@@ -199,6 +199,7 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
         </div>
         {!isCreating && !editingId && (
           <button
+            type="button"
             onClick={handleCreate}
             className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
           >
@@ -216,6 +217,7 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
               {isCreating ? 'Nieuwe Variant' : 'Variant Bewerken'}
             </h3>
             <button
+              type="button"
               onClick={handleCancel}
               className="p-1 hover:bg-background rounded transition-colors"
             >
@@ -335,6 +337,7 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
                   <img src={url} alt={`Image ${idx + 1}`} className="h-16 w-16 object-cover rounded" />
                   <span className="flex-1 text-sm truncate">{url}</span>
                   <button
+                    type="button"
                     onClick={() => handleRemoveImage(url)}
                     className="p-2 hover:bg-destructive/10 text-destructive rounded transition-colors"
                   >
@@ -365,6 +368,7 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
 
           <div className="flex gap-3 pt-2">
             <button
+              type="button"
               onClick={handleSave}
               className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
             >
@@ -372,6 +376,7 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
               Opslaan
             </button>
             <button
+              type="button"
               onClick={handleCancel}
               className="px-6 py-2 border rounded-md hover:bg-muted transition-colors"
             >
@@ -387,6 +392,7 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
           <ImageIcon className="h-12 w-12 mx-auto mb-3 opacity-50" />
           <p className="text-muted-foreground mb-4">Geen varianten toegevoegd</p>
           <button
+            type="button"
             onClick={handleCreate}
             className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
           >
@@ -444,6 +450,7 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
               {/* Actions */}
               <div className="flex gap-2">
                 <button
+                  type="button"
                   onClick={() => handleEdit(variant)}
                   className="p-2 hover:bg-muted rounded transition-colors"
                   title="Bewerken"
@@ -451,6 +458,7 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
                   <Edit className="h-4 w-4" />
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleDelete(variant.id, variant.name)}
                   className="p-2 hover:bg-destructive/10 text-destructive rounded transition-colors"
                   title="Verwijderen"
