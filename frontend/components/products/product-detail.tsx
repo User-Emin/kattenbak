@@ -248,10 +248,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* Color Selector - Met subtiele separator */}
+              {/* Color Selector - ZONDER separator voor compacte look */}
               {product.hasVariants && product.variants && product.variants.length > 0 && (
                 <>
-                  <div className="border-t border-gray-200 pt-6">
+                  <div className="pt-6">
                     <div className="mb-4">
                       <span className="text-sm font-medium text-gray-700">Kleur</span>
                     </div>
@@ -265,13 +265,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </>
               )}
 
-              {/* Prijs - Dikker zoals productnaam */}
+              {/* Prijs - DUNNER en compacter zoals Coolblue */}
               <div className="pt-6 pb-4">
                 {isPreOrder && preOrderDiscountPercentage > 0 ? (
                   <div className="space-y-2">
                     <div className="flex items-baseline gap-3">
-                      <div className="text-5xl font-semibold text-brand">{formatPrice(discountedPrice)}</div>
-                      <div className="text-2xl text-gray-400 line-through">{formatPrice(originalPrice)}</div>
+                      <div className="text-4xl font-normal text-brand">{formatPrice(discountedPrice)}</div>
+                      <div className="text-xl text-gray-400 line-through font-light">{formatPrice(originalPrice)}</div>
                     </div>
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full">
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -283,7 +283,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-5xl font-semibold text-gray-900">{formatPrice(displayPrice)}</div>
+                  <div className="text-4xl font-normal text-gray-900">{formatPrice(displayPrice)}</div>
                 )}
               </div>
 
