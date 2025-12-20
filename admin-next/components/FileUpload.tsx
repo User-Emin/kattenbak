@@ -42,11 +42,10 @@ export function FileUpload({ label, accept, currentUrl, onUpload, helpText }: Fi
       formData.append('file', file);
 
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl';
-      // Use correct upload endpoint based on file type
-      const uploadEndpoint = isVideo ? '/upload/video' : '/upload/image';
+      // Use /upload/image for both images and videos (backend supports both)
       const uploadUrl = API_URL.includes('/api/v1') 
-        ? `${API_URL}${uploadEndpoint}` 
-        : `${API_URL}/api/v1${uploadEndpoint}`;
+        ? `${API_URL}/upload/image` 
+        : `${API_URL}/api/v1/upload/image`;
       
       const response = await fetch(uploadUrl, {
         method: 'POST',
