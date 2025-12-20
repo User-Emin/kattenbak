@@ -232,13 +232,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </>
               )}
 
-              {/* COOLBLUE: USPs vinkjes - ZAKELIJKE SFEER - RESPONSIVE */}
+              {/* COOLBLUE: USPs vinkjes - ZAKELIJKE SFEER - DIKKER TEKST */}
               <div className="border-t border-gray-200 pt-6 space-y-2.5">
-                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm text-gray-700 leading-snug">Zelfreinigend systeem met dubbele beveiliging</span></div>
-                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm text-gray-700 leading-snug">10.5L grote capaciteit</span></div>
-                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm text-gray-700 leading-snug">Ultra-stille motor onder 40dB</span></div>
-                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm text-gray-700 leading-snug">Open-top design met ABS kunststof</span></div>
-                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm text-gray-700 leading-snug">Gratis verzending</span></div>
+                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">Zelfreinigend systeem met dubbele beveiliging</span></div>
+                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">10.5L grote capaciteit</span></div>
+                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">Ultra-stille motor onder 40dB</span></div>
+                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">Open-top design met ABS kunststof</span></div>
+                <div className="flex items-start gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" strokeWidth={3} /><span className="text-sm font-semibold text-gray-900 leading-snug">Gratis verzending</span></div>
               </div>
 
               {/* Prijs - Dikker zoals productnaam */}
@@ -377,7 +377,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <div className="divide-y divide-gray-100">
                   <details className="group py-2">
                     <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
-                      <span className="text-sm font-medium text-gray-900">Capaciteit: <span className="font-normal text-gray-600">10.5L XL</span></span>
+                      <span className="text-sm font-semibold text-gray-900">Capaciteit: <span className="font-normal text-gray-600">10.5L XL</span></span>
                       <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
@@ -391,7 +391,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   
                   <details className="group py-2">
                     <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
-                      <span className="text-sm font-medium text-gray-900">Geluidsniveau: <span className="font-normal text-gray-600">&lt;40dB</span></span>
+                      <span className="text-sm font-semibold text-gray-900">Geluidsniveau: <span className="font-normal text-gray-600">&lt;40dB</span></span>
                       <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
@@ -405,7 +405,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   
                   <details className="group py-2">
                     <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
-                      <span className="text-sm font-medium text-gray-900">Sensoren: <span className="font-normal text-gray-600">Dubbel systeem</span></span>
+                      <span className="text-sm font-semibold text-gray-900">Sensoren: <span className="font-normal text-gray-600">Dubbel systeem</span></span>
                       <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
@@ -419,7 +419,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   
                   <details className="group py-2">
                     <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
-                      <span className="text-sm font-medium text-gray-900">Reiniging: <span className="font-normal text-gray-600">Automatisch</span></span>
+                      <span className="text-sm font-semibold text-gray-900">Reiniging: <span className="font-normal text-gray-600">Automatisch</span></span>
                       <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
@@ -433,7 +433,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   
                   <details className="group py-2">
                     <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
-                      <span className="text-sm font-medium text-gray-900">Design: <span className="font-normal text-gray-600">Open-top</span></span>
+                      <span className="text-sm font-semibold text-gray-900">Design: <span className="font-normal text-gray-600">Open-top</span></span>
                       <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
@@ -450,7 +450,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     <>
                       <details className="group py-2">
                         <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
-                          <span className="text-sm font-medium text-gray-900">Afmetingen: <span className="font-normal text-gray-600">50x40x35cm</span></span>
+                          <span className="text-sm font-semibold text-gray-900">Afmetingen: <span className="font-normal text-gray-600">50x40x35cm</span></span>
                           <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                           </svg>
@@ -465,7 +465,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       
                       <details className="group py-2">
                         <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
-                          <span className="text-sm font-medium text-gray-900">Stroom: <span className="font-normal text-gray-600">230V | 15W</span></span>
+                          <span className="text-sm font-semibold text-gray-900">Stroom: <span className="font-normal text-gray-600">230V | 15W</span></span>
                           <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                           </svg>
@@ -480,7 +480,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       
                       <details className="group py-2">
                         <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
-                          <span className="text-sm font-medium text-gray-900">Garantie: <span className="font-normal text-gray-600">2 jaar</span></span>
+                          <span className="text-sm font-semibold text-gray-900">Garantie: <span className="font-normal text-gray-600">2 jaar</span></span>
                           <svg className="w-4 h-4 text-gray-400 transform group-open:rotate-180 transition-transform flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                           </svg>
@@ -523,9 +523,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           </>
         )}
 
-        {/* OVER DIT PRODUCT - ZAKELIJK + STRUCTUREEL - CENTRAAL TITEL - MOBIEL OPTIMIZED */}
+        {/* OVER DIT PRODUCT - ZAKELIJK + STRUCTUREEL - CENTRAAL TITEL - DIKKERE TITELS */}
         <div className="max-w-5xl mx-auto mb-16 px-4">
-          <h2 className="text-2xl font-normal mb-8 text-gray-900 text-center">Over dit product</h2>
+          <h2 className="text-2xl font-semibold mb-8 text-gray-900 text-center">Over dit product</h2>
           
           {/* Direct in achtergrond - geen witte kaart */}
           <div>
@@ -543,7 +543,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               {/* Self-Cleaning Function */}
               <div className="grid grid-cols-1 sm:grid-cols-12 items-center hover:bg-gray-50/50 transition py-3 gap-y-2">
                 <div className="sm:col-span-6 px-3 py-1">
-                  <h3 className="font-medium text-sm text-gray-900">Zelfreinigende functie</h3>
+                  <h3 className="font-semibold text-sm text-gray-900">Zelfreinigende functie</h3>
                 </div>
                 <div className="sm:col-span-2 px-3 py-1 text-center bg-brand/5 rounded-md sm:rounded-none">
                   <svg className="w-5 h-5 mx-auto text-brand" fill="currentColor" viewBox="0 0 20 20">
