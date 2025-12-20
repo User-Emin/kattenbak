@@ -232,38 +232,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </>
               )}
 
-              {/* COOLBLUE: Over dit product + Specificaties - OP 1 LIJN */}
-              <div className="border-t border-gray-200 pt-6">
-                <div className="grid grid-cols-2 gap-6">
-                  {/* Over dit product */}
-                  <div>
-                    <h3 className="font-medium text-sm mb-2 text-gray-900">Over dit product</h3>
-                    <p className="text-xs text-gray-700 leading-relaxed">
-                      Volledig automatisch zelfreinigend systeem met dubbele beveiliging en 10.5L XL afvalbak capaciteit.
-                    </p>
-                  </div>
-                  
-                  {/* Specificaties */}
-                  <div>
-                    <h3 className="font-medium text-sm mb-2 text-gray-900">Specificaties</h3>
-                    <ul className="text-xs text-gray-700 space-y-1">
-                      <li>• Zelfreinigend systeem met dubbele sensoren</li>
-                      <li>• 10.5L XL afvalbak capaciteit</li>
-                      <li>• Geluidsniveau onder 40dB</li>
-                      <li>• Open-top design, ABS kunststof</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {/* DUBBELSTREEP - Separator tussen specs en USPs */}
-              <div className="border-t-2 border-gray-300 my-6"></div>
-
               {/* COOLBLUE: USPs vinkjes - ZAKELIJKE SFEER */}
-              <div className="space-y-2">
+              <div className="border-t border-gray-200 pt-6 space-y-2">
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-700">Zelfreinigend systeem met dubbele beveiliging</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-700">10.5L afvalbak capaciteit</span></div>
-                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-700">Geluidsniveau onder 40dB</span></div>
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-700">10.5L grote capaciteit</span></div>
+                <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-700">Ultra-stille motor onder 40dB</span></div>
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-700">Open-top design met ABS kunststof</span></div>
                 <div className="flex items-center gap-2"><Check className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={3} /><span className="text-sm text-gray-700">Gratis verzending</span></div>
               </div>
@@ -532,42 +505,38 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Product Description - COOLBLUE STIJL: OBJECTIEF + ZAKELIJK */}
-        <div className="max-w-4xl mx-auto mb-16">
-          <h2 className="text-2xl font-normal mb-6 text-gray-900">Over dit product</h2>
-          <div className="text-gray-700 leading-relaxed text-base space-y-4">
-            <p>
-              {product.description || 'De automatische kattenbak met zelfreinigend systeem. Geschikt voor meerdere katten met een 10.5L afvalbak capaciteit.'}
-            </p>
-            
-            {/* Objectieve features - Coolblue-stijl */}
-            <div className="grid md:grid-cols-2 gap-6 pt-4">
-              <div className="bg-gray-50 rounded-lg p-5">
-                <h3 className="font-medium text-sm mb-3 text-gray-900">Specificaties</h3>
-                <ul className="space-y-2 text-sm text-gray-700">
-                  <li>• Zelfreinigend systeem met dubbele sensoren</li>
-                  <li>• 10.5L XL afvalbak capaciteit</li>
-                  <li>• Geluidsniveau onder 40dB</li>
-                  <li>• Open-top design, ABS kunststof</li>
-                </ul>
-              </div>
-              
-              <div className="bg-gray-50 rounded-lg p-5">
-                <h3 className="font-medium text-sm mb-3 text-gray-900">Geschikt voor</h3>
-                <ul className="space-y-2 text-sm text-gray-700">
-                  <li>• Huishoudens met 1-3 katten</li>
-                  <li>• Gebruik in slaapkamer (stil)</li>
-                  <li>• Appartement of huis</li>
-                  <li>• Katten vanaf 2.5 kg</li>
-                </ul>
-              </div>
+        {/* USP Section - HELEMAAL BENEDEN - ZAKELIJK */}
+        <div className="max-w-6xl mx-auto py-12">
+          {/* Feature 1 - 10.5L Capaciteit (Afbeelding RECHTS) */}
+          <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+              <h3 className="text-2xl font-medium text-gray-900 mb-4">10.5L Capaciteit</h3>
+              <p className="text-gray-700 leading-relaxed text-base">
+                De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou en minder stress voor je kat.
+              </p>
             </div>
-            
-            {/* Technische info box */}
-            <div className="mt-4 p-5 bg-blue-50 rounded-lg border border-blue-100">
-              <p className="text-sm text-gray-700">
-                <strong className="text-gray-900">Let op:</strong> Voor optimaal gebruik van het zelfreinigend systeem wordt klonterende kattenbakvulling aanbevolen. 
-                Het product werkt op 230V (standaard stopcontact) en heeft een energieverbruik van 15W.
+            <div className="relative aspect-square rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+              <Image
+                {...getImageFillProps(IMAGE_CONFIG.usps.capacity)}
+                className="object-cover"
+              />
+            </div>
+          </div>
+
+          <Separator variant="float" spacing="lg" />
+
+          {/* Feature 2 - Ultra-Quiet Motor (Afbeelding LINKS - zigzag) */}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1 relative aspect-square rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+              <Image
+                {...getImageFillProps(IMAGE_CONFIG.usps.quiet)}
+                className="object-cover"
+              />
+            </div>
+            <div className="order-1 md:order-2">
+              <h3 className="text-2xl font-medium text-gray-900 mb-4">Ultra-Quiet Motor</h3>
+              <p className="text-gray-700 leading-relaxed text-base">
+                Werkt onder 40 decibel. Zo stil dat je het nauwelijks hoort, zelfs 's nachts in je slaapkamer. Perfect voor appartement of slaapkamer.
               </p>
             </div>
           </div>
