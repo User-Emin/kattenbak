@@ -156,30 +156,36 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* Chat Button - RECHTHOEKIG CONSISTENT MET PRODUCTDETAIL BUTTONS */}
+      {/* Chat Button - ROND COMPACT MET CUSTOM MESSAGE ICON */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={`fixed right-6 z-50 ${buttonPosition}
+                   ${isExpanded ? 'w-14 h-14' : 'w-14 h-14'}
                    bg-gradient-to-br from-brand to-brand-dark text-white 
-                   rounded px-6 py-3.5 shadow-2xl 
-                   hover:scale-105 hover:shadow-brand/50
+                   rounded-full shadow-2xl 
+                   hover:scale-110 hover:shadow-brand/50
                    focus:outline-none focus:ring-4 focus:ring-brand/30
                    active:scale-95
                    transition-all duration-300 ease-out
-                   flex items-center gap-2 font-semibold`}
+                   flex items-center justify-center group`}
         aria-label="Open AI chat"
         style={{ willChange: 'transform' }}
       >
         {isExpanded ? (
-          <>
-            <X className="w-5 h-5" />
-            <span>Sluiten</span>
-          </>
+          <X className="w-6 h-6" />
         ) : (
-          <>
-            <MessageCircle className="w-5 h-5" />
-            <span>Vraag AI</span>
-          </>
+          <svg 
+            className="w-6 h-6 group-hover:scale-110 transition-transform" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            <path d="M8 10h.01M12 10h.01M16 10h.01" />
+          </svg>
         )}
       </button>
 
