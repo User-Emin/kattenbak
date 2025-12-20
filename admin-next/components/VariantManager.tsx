@@ -397,195 +397,67 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
       ) : (
         <div className="space-y-3">
           {variants.map((variant) => (
-            <div key={variant.id}>
-              {/* Show edit form if this variant is being edited */}
-              {editingId === variant.id ? (
-                <div className="p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
-                  <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-semibold text-blue-900">Bewerken: {variant.name}</h4>
-                    <button
-                      onClick={handleCancel}
-                      className="text-gray-500 hover:text-gray-700"
-                    >
-                      <X className="h-5 w-5" />
-                    </button>
-                  </div>
-                  
-                  {/* Edit Form - Same as Create Form */}
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium mb-1">Naam *</label>
-                        <input
-                          type="text"
-                          value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full px-3 py-2 border rounded-md"
-                          placeholder="bijv. Zwart, Wit"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-1">SKU *</label>
-                        <input
-                          type="text"
-                          value={formData.sku}
-                          onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-                          className="w-full px-3 py-2 border rounded-md"
-                          placeholder="bijv. KB-BLACK"
-                        />
-                      </div>
-                    </div>
+            <div
+              key={variant.id}
+              className="flex items-center gap-4 p-4 bg-background rounded-lg border hover:shadow-sm transition-shadow"
+            >
+              {/* Color preview */}
+              <div className="flex items-center gap-3">
+                {variant.colorImageUrl ? (
+                  <img
+                    src={variant.colorImageUrl}
+                    alt={variant.name}
+                    className="h-12 w-12 object-cover rounded border"
+                  />
+                ) : (
+                  <div
+                    className="h-12 w-12 rounded border"
+                    style={{ backgroundColor: variant.colorCode || '#cccccc' }}
+                  />
+                )}
+              </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium mb-1">Voorraad</label>
-                        <input
-                          type="number"
-                          value={formData.stock}
-                          onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })}
-                          className="w-full px-3 py-2 border rounded-md"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-1">Prijsaanpassing (€)</label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          value={formData.priceAdjustment}
-                          onChange={(e) => setFormData({ ...formData, priceAdjustment: parseFloat(e.target.value) || 0 })}
-                          className="w-full px-3 py-2 border rounded-md"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-1">Kleurcode</label>
-                      <input
-                        type="color"
-                        value={formData.colorCode}
-                        onChange={(e) => setFormData({ ...formData, colorCode: e.target.value })}
-                        className="w-20 h-10 rounded border cursor-pointer"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Variant Afbeeldingen</label>
-                      <input
-                        type="file"
-                        multiple
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="w-full px-3 py-2 border rounded-md"
-                      />
-                      {formData.images && formData.images.length > 0 && (
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {formData.images.map((url, idx) => (
-                            <div key={idx} className="relative">
-                              <img src={url} alt={`Image ${idx + 1}`} className="h-16 w-16 object-cover rounded" />
-                              <button
-                                onClick={() => {
-                                  const newImages = formData.images?.filter((_, i) => i !== idx) || [];
-                                  setFormData({ ...formData, images: newImages });
-                                }}
-                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-                              >
-                                <X className="h-3 w-3" />
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={formData.isActive}
-                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                        className="rounded"
-                      />
-                      <label className="text-sm">Actief</label>
-                    </div>
-
-                    <div className="flex gap-2 pt-2">
-                      <button
-                        onClick={handleSave}
-                        disabled={isSubmitting}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
-                      >
-                        {isSubmitting ? 'Opslaan...' : 'Opslaan'}
-                      </button>
-                      <button
-                        onClick={handleCancel}
-                        className="px-4 py-2 border rounded-md hover:bg-gray-50"
-                      >
-                        Annuleren
-                      </button>
-                    </div>
-                  </div>
+              {/* Info */}
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h4 className="font-semibold">{variant.name}</h4>
+                  {!variant.isActive && (
+                    <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded">
+                      Inactief
+                    </span>
+                  )}
                 </div>
-              ) : (
-                /* Show normal variant card */
-                <div className="flex items-center gap-4 p-4 bg-background rounded-lg border hover:shadow-sm transition-shadow">
-                  {/* Color preview */}
-                  <div className="flex items-center gap-3">
-                    {variant.colorImageUrl ? (
-                      <img
-                        src={variant.colorImageUrl}
-                        alt={variant.name}
-                        className="h-12 w-12 object-cover rounded border"
-                      />
-                    ) : (
-                      <div
-                        className="h-12 w-12 rounded border"
-                        style={{ backgroundColor: variant.colorCode || '#cccccc' }}
-                      />
-                    )}
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold">{variant.name}</h4>
-                      {!variant.isActive && (
-                        <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded">
-                          Inactief
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-sm text-muted-foreground space-y-0.5">
-                      <p>SKU: <span className="font-mono">{variant.sku}</span></p>
-                      <p>Voorraad: <span className="font-medium">{variant.stock}</span></p>
-                      <p>Foto's: <span className="font-medium">{variant.images?.length || 0}</span></p>
-                      {variant.priceAdjustment !== null && variant.priceAdjustment !== undefined && variant.priceAdjustment !== 0 && (
-                        <p>
-                          Prijs: <span className="font-medium">
-                            {variant.priceAdjustment > 0 ? '+' : ''}€{Number(variant.priceAdjustment).toFixed(2)}
-                          </span>
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleEdit(variant)}
-                      className="p-2 hover:bg-muted rounded transition-colors"
-                      title="Bewerken"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(variant.id, variant.name)}
-                      className="p-2 hover:bg-destructive/10 text-destructive rounded transition-colors"
-                      title="Verwijderen"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
+                <div className="text-sm text-muted-foreground space-y-0.5">
+                  <p>SKU: <span className="font-mono">{variant.sku}</span></p>
+                  <p>Voorraad: <span className="font-medium">{variant.stock}</span></p>
+                  <p>Foto's: <span className="font-medium">{variant.images?.length || 0}</span></p>
+                  {variant.priceAdjustment !== null && variant.priceAdjustment !== undefined && variant.priceAdjustment !== 0 && (
+                    <p>
+                      Prijs: <span className="font-medium">
+                        {variant.priceAdjustment > 0 ? '+' : ''}€{Number(variant.priceAdjustment).toFixed(2)}
+                      </span>
+                    </p>
+                  )}
                 </div>
-              )}
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleEdit(variant)}
+                  className="p-2 hover:bg-muted rounded transition-colors"
+                  title="Bewerken"
+                >
+                  <Edit className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => handleDelete(variant.id, variant.name)}
+                  className="p-2 hover:bg-destructive/10 text-destructive rounded transition-colors"
+                  title="Verwijderen"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           ))}
         </div>
