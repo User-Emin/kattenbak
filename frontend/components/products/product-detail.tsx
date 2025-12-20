@@ -163,7 +163,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   return (
     <div className="min-h-screen bg-white py-6 pb-32">
-      <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
+      <div className="container mx-auto px-6 lg:px-10 max-w-7xl">
             {/* Breadcrumb - COMPACT zoals Coolblue */}
             <nav className="mb-3 text-xs">
               <Link href="/" className="text-brand hover:text-brand-dark transition">Home</Link>
