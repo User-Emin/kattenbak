@@ -453,6 +453,12 @@ app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
   try {
     const product = await prisma.product.findUnique({
       where: { id: req.params.id },
+      include: {
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
     });
 
     if (!product) {
@@ -475,6 +481,12 @@ app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
     
     const product = await prisma.product.findUnique({
       where: { slug },
+      include: {
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
     });
 
     if (!product) {
