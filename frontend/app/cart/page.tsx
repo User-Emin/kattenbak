@@ -143,9 +143,10 @@ export default function CartPage() {
               </div>
 
               <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
-                <Button variant="primary" size="lg" fullWidth rightIcon={<ArrowRight className="h-5 w-5" />}>
+                <button className="w-full px-6 py-3.5 bg-brand hover:bg-brand-dark text-white font-bold rounded transition text-base flex items-center justify-center gap-2">
                   Afrekenen
-                </Button>
+                  <ArrowRight className="h-5 w-5" />
+                </button>
               </Link>
 
               <p className="text-xs text-gray-500 text-center mt-3">
