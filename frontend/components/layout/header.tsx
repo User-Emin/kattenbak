@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { MiniCart } from "@/components/ui/mini-cart";
+import { USPBanner } from "@/components/ui/usp-banner";
 
 export function Header() {
   const { itemCount } = useCart();
@@ -136,6 +137,9 @@ export function Header() {
           )}
           </div>
         </div>
+        
+        {/* USP Banner - ONDER navbar zoals Coolblue */}
+        <USPBanner />
       </header>
 
       {/* Cart Sidebar */}

@@ -111,7 +111,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-2 border-brand border-t-transparent" />
       </div>
     );
@@ -119,7 +119,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-medium mb-4">Product niet gevonden</h1>
           <Link href="/">
