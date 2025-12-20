@@ -85,6 +85,9 @@ export async function PUT(
         isFeatured: data.isFeatured,
         categoryId: data.categoryId,
         images: data.images,
+        videoUrl: (data.videoUrl && data.videoUrl.trim()) || null,
+        uspImage1: (data.uspImage1 && data.uspImage1.trim()) || null,
+        uspImage2: (data.uspImage2 && data.uspImage2.trim()) || null,
       },
       include: {
         category: true,
