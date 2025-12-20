@@ -423,11 +423,25 @@ function CheckoutContent() {
                   </div>
                 </div>
 
-                {/* CTA Button rechts - Prominent */}
+                {/* CTA Button rechts - Prominent VIERKANT */}
                 <div>
-                  <Button type="submit" variant="primary" size="lg" fullWidth disabled={isProcessing} loading={isProcessing} leftIcon={<CreditCard className="h-5 w-5" />}>
-                    Betalen - {formatPrice(total)}
-                  </Button>
+                  <button 
+                    type="submit" 
+                    disabled={isProcessing} 
+                    className="w-full px-6 py-3.5 bg-brand hover:bg-brand-dark text-white font-bold rounded transition text-base disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {isProcessing ? (
+                      <>
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                        Verwerken...
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard className="h-5 w-5" />
+                        Betalen - {formatPrice(total)}
+                      </>
+                    )}
+                  </button>
                   <p className="text-xs text-gray-500 text-center mt-3">
                     Veilig betalen via Mollie
                   </p>

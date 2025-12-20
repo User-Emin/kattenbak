@@ -115,21 +115,18 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
               variant="outline" 
               size="lg" 
               fullWidth 
-              className="font-medium"
+              className="font-medium rounded"
               onClick={() => handleNavigate('/cart')}
             >
               Bekijk Winkelwagen
             </Button>
             
-            <Button 
-              variant="primary" 
-              size="lg" 
-              fullWidth 
-              className="font-semibold"
+            <button
               onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
+              className="w-full px-6 py-3 bg-brand hover:bg-brand-dark text-white font-semibold rounded transition"
             >
               Bestelling Afronden
-            </Button>
+            </button>
           </div>
           
           <p className="text-xs text-gray-500 text-center mt-4">
