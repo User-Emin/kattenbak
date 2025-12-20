@@ -162,7 +162,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const isLowStock = trackInventory && availableStock > 0 && availableStock <= 5;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-6 pb-32">
+    <div className="min-h-screen bg-white py-6 pb-32">
       <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
             {/* Breadcrumb - COMPACT zoals Coolblue */}
             <nav className="mb-3 text-xs">
