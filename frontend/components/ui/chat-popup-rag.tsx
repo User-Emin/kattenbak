@@ -1,12 +1,13 @@
 "use client";
 
 /**
- * RAG CHAT POPUP - No hCaptcha
+ * RAG CHAT POPUP - Alleen op Home & Product Detail
  * AI-powered chat met Ollama + RAG
  * Security: Rate limiting + input validation backend
  */
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Button } from "./button";
 import { X, Send, MessageCircle, Loader2 } from "lucide-react";
 
@@ -17,12 +18,26 @@ interface Message {
 }
 
 export function ChatPopup() {
+  const pathname = usePathname();
   const [isExpanded, setIsExpanded] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
+
+  // CONDITIONAL RENDERING: Alleen op home (/) en productdetail (/product/*)
+  const isHomePage = pathname === '/';
+  const isProductPage = pathname?.startsWith('/product/') || false;
+  const shouldShowChat = isHomePage || isProductPage;
+
+  // Niet renderen als niet op toegestane pagina
+  if (!shouldShowChat) {
+    return null;
+  }
+
+  // POSITIONERING: Home = hoek (bottom-6), ProductDetail = boven sticky cart (bottom-[85px])
+  const buttonPosition = isProductPage ? 'bottom-[85px]' : 'bottom-6';
 
   // DEFENSIVE: Monitor sticky cart met ResizeObserver/MutationObserver (performanter dan polling)
   useEffect(() => {
@@ -118,13 +133,10 @@ export function ChatPopup() {
     }
   };
 
-  // Chat button positie: altijd BOVEN sticky cart
-  const buttonPosition = 'bottom-[85px]'; // 85px = sticky cart height + margin
-
   return (
     <>
       {/* Chat Button - RECHTHOEKIG CONSISTENT MET PRODUCTDETAIL BUTTONS */}
-<button
+      <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={`fixed right-6 z-50 ${buttonPosition}
                    bg-gradient-to-br from-brand to-brand-dark text-white 
