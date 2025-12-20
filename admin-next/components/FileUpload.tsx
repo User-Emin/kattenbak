@@ -42,10 +42,11 @@ export function FileUpload({ label, accept, currentUrl, onUpload, helpText }: Fi
       formData.append('file', file);
 
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl';
-      // FIX: Remove double /api/v1 - API_URL already has it
+      // Use correct upload endpoint based on file type
+      const uploadEndpoint = isVideo ? '/upload/video' : '/upload/image';
       const uploadUrl = API_URL.includes('/api/v1') 
-        ? `${API_URL}/upload/image` 
-        : `${API_URL}/api/v1/upload/image`;
+        ? `${API_URL}${uploadEndpoint}` 
+        : `${API_URL}/api/v1${uploadEndpoint}`;
       
       const response = await fetch(uploadUrl, {
         method: 'POST',
@@ -109,15 +110,25 @@ export function FileUpload({ label, accept, currentUrl, onUpload, helpText }: Fi
             </div>
           ) : (
             <div className="relative">
-              <video
-                src={preview}
-                controls
-                className="w-full h-48 bg-black rounded-lg"
-              />
+              {/* Check if it's a YouTube URL */}
+              {preview.includes('youtube.com') || preview.includes('youtu.be') ? (
+                <iframe
+                  src={preview}
+                  className="w-full h-48 rounded-lg border-2 border-gray-200"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <video
+                  src={preview}
+                  controls
+                  className="w-full h-48 bg-black rounded-lg"
+                />
+              )}
               <button
                 type="button"
                 onClick={handleRemove}
-                className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
+                className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition z-10"
               >
                 <X className="h-4 w-4" />
               </button>
