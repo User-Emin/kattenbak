@@ -521,10 +521,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* Sticky Cart - Mobile: alleen button, Desktop: button + quantity */}
+      {/* Sticky Cart - RECHTHOEKIG met brand border-top */}
       <div
         data-sticky-cart
-        className="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-40"
+        className="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-40 border-t-2 border-brand"
       >
         <div className="container mx-auto px-4 max-w-7xl py-3">
           {isOutOfStock ? (
@@ -559,12 +559,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               
               {/* Controls */}
               <div className="flex items-center gap-3 flex-1 justify-end">
-                {/* Quantity selector - alleen desktop */}
-                <div className="hidden lg:flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
+                {/* Quantity selector - alleen desktop - RECHTHOEKIG */}
+                <div className="hidden lg:flex items-center gap-2 bg-gray-50 rounded px-3 py-2">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
-                    className="w-8 h-8 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
+                    className="w-8 h-8 rounded bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
                     aria-label="Min"
                   >
                     <Minus className="h-3.5 w-3.5 text-gray-700" />
@@ -577,25 +577,35 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   <button
                     onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
                     disabled={quantity >= product.stock}
-                    className="w-8 h-8 rounded-full bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
+                    className="w-8 h-8 rounded bg-white border border-gray-300 hover:border-brand flex items-center justify-center transition disabled:opacity-30"
                     aria-label="Plus"
                   >
                     <Plus className="h-3.5 w-3.5 text-gray-700" />
                   </button>
                 </div>
 
-                {/* Cart button - altijd zichtbaar */}
-                <Button
+                {/* Cart button - RECHTHOEKIG (geen Button component) */}
+                <button
                   onClick={handleAddToCart}
-                  loading={isAdding}
-                  size="md"
-                  variant="brand"
-                  leftIcon={<ShoppingCart className="h-4 w-4" />}
-                  className="h-10 px-5 text-sm lg:px-8"
+                  disabled={isAdding}
+                  className="h-10 px-8 bg-brand hover:bg-brand-dark text-white font-bold rounded text-sm transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 whitespace-nowrap"
                 >
-                  <span className="hidden sm:inline">Winkelwagen</span>
-                  <span className="sm:hidden">Toevoegen</span>
-                </Button>
+                  {isAdding ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                      </svg>
+                      <span className="hidden sm:inline">Toevoegen...</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingCart className="h-4 w-4" />
+                      <span className="hidden sm:inline">Winkelwagen</span>
+                      <span className="sm:hidden">Toevoegen</span>
+                    </>
+                  )}
+                </button>
               </div>
             </div>
           )}
