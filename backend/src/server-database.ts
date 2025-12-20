@@ -954,7 +954,13 @@ app.get('/api/v1/admin/products', authenticate, adminOnly, async (req: AuthReque
   try {
     const products = await prisma.product.findMany({
       orderBy: { createdAt: 'desc' },
-      include: { category: true },
+      include: {
+        category: true,
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
     });
 
     // DEFENSIVE: Sanitize all products
