@@ -431,10 +431,10 @@ export function VariantManager({ productId, productName }: VariantManagerProps) 
                   <p>SKU: <span className="font-mono">{variant.sku}</span></p>
                   <p>Voorraad: <span className="font-medium">{variant.stock}</span></p>
                   <p>Foto's: <span className="font-medium">{variant.images?.length || 0}</span></p>
-                  {variant.priceAdjustment !== 0 && variant.priceAdjustment !== undefined && (
+                  {variant.priceAdjustment !== null && variant.priceAdjustment !== undefined && variant.priceAdjustment !== 0 && (
                     <p>
                       Prijs: <span className="font-medium">
-                        {variant.priceAdjustment > 0 ? '+' : ''}€{variant.priceAdjustment.toFixed(2)}
+                        {variant.priceAdjustment > 0 ? '+' : ''}€{Number(variant.priceAdjustment).toFixed(2)}
                       </span>
                     </p>
                   )}
