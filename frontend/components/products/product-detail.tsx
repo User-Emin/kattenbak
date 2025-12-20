@@ -248,7 +248,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   <svg className="w-7 h-7 text-brand flex-shrink-0" viewBox="0 0 48 48" fill="none">
                     <circle cx="24" cy="24" r="3" fill="currentColor"/>
                     <path d="M16 20c-2 1-3 3-3 5s1 4 3 5M32 20c2 1 3 3 3 5s-1 4-3 5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                    <text x="24" y="38" text-anchor="middle" fill="currentColor" font-size="8" font-weight="bold">&lt;40dB</text>
+                    <text x="24" y="38" text-anchor="middle" fill="currentColor" fontSize="8" fontWeight="bold">&lt;40dB</text>
                   </svg>
                   <span className="font-semibold text-sm text-gray-900">Ultra-stil (&lt;40dB)</span>
                 </div>
