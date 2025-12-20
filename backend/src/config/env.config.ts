@@ -38,6 +38,7 @@ class EnvironmentConfig {
   public readonly NODE_ENV = process.env.NODE_ENV || 'development';
   public readonly IS_PRODUCTION = this.NODE_ENV === 'production';
   public readonly IS_DEVELOPMENT = this.NODE_ENV === 'development';
+  public readonly isTest = this.NODE_ENV === 'test';
 
   // Server configuration
   public readonly BACKEND_PORT = parseInt(process.env.BACKEND_PORT || '3001', 10);
@@ -57,25 +58,20 @@ class EnvironmentConfig {
   // MyParcel (Shipping)
   public readonly MYPARCEL_API_KEY = process.env.MYPARCEL_API_KEY || '';
 
-  // SMTP Configuration
+  // SMTP Configuration (Email)
   public readonly SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
-  public readonly SMTP_PORT = process.env.SMTP_PORT || '587';
+  public readonly SMTP_PORT = parseInt(process.env.SMTP_PORT || '587', 10);
   public readonly SMTP_SECURE = process.env.SMTP_SECURE || 'false';
   public readonly SMTP_USER = process.env.SMTP_USER || '';
   public readonly SMTP_PASS = process.env.SMTP_PASS || '';
+  public readonly SMTP_PASSWORD = process.env.SMTP_PASSWORD || '';
+  public readonly EMAIL_FROM = process.env.EMAIL_FROM || '';
   public readonly MYPARCEL_WEBHOOK_URL = process.env.MYPARCEL_WEBHOOK_URL || '';
 
   // Redis
   public readonly REDIS_HOST = process.env.REDIS_HOST || 'localhost';
   public readonly REDIS_PORT = parseInt(process.env.REDIS_PORT || '6379', 10);
   public readonly REDIS_PASSWORD = process.env.REDIS_PASSWORD || '';
-
-  // Email
-  public readonly SMTP_HOST = process.env.SMTP_HOST || '';
-  public readonly SMTP_PORT = parseInt(process.env.SMTP_PORT || '587', 10);
-  public readonly SMTP_USER = process.env.SMTP_USER || '';
-  public readonly SMTP_PASSWORD = process.env.SMTP_PASSWORD || '';
-  public readonly EMAIL_FROM = process.env.EMAIL_FROM || '';
 
   // Admin
   public readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@localhost';

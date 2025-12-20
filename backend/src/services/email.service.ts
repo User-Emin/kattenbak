@@ -10,7 +10,7 @@ import { logger } from '@/config/logger.config';
  */
 
 // Create reusable transporter
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   host: env.SMTP_HOST || 'smtp.gmail.com',
   port: parseInt(env.SMTP_PORT || '587'),
   secure: env.SMTP_SECURE === 'true',
