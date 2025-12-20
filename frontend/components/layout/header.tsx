@@ -45,10 +45,10 @@ export function Header() {
       {/* NAVBAR - CLEAN zoals Coolblue */}
       <header className="sticky top-0 z-50 w-full">
         <div className="bg-gradient-to-br from-brand to-brand-dark">
-          <div className="container mx-auto px-6 lg:px-10">
+          <div className="container mx-auto px-6 lg:px-10 max-w-7xl">
             <div className="flex items-center justify-between h-16 relative">
-            {/* LOGO - Echte PNG zonder filter */}
-            <Link href="/" className="flex items-center hover:opacity-90 transition absolute left-2 top-1/2 -translate-y-1/2">
+            {/* LOGO - Aligned met container padding */}
+            <Link href="/" className="flex items-center hover:opacity-90 transition">
               <img 
                 src="/logo-catsupply.png" 
                 alt="Catsupply Logo" 
