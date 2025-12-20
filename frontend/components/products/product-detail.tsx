@@ -222,6 +222,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               {product.hasVariants && product.variants && product.variants.length > 0 && (
                 <>
                   <div className="border-t border-gray-200 pt-6">
+                    <div className="mb-4">
+                      <span className="text-sm font-medium text-gray-700">Kleur</span>
+                    </div>
                     <ColorSelector
                       variants={product.variants}
                       selectedVariantId={selectedVariant?.id || null}
@@ -369,17 +372,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               <Separator variant="float" spacing="sm" />
 
-              {/* SPECIFICATIES - OPVALLEND & COMPLEET */}
-              <div className="border-t-2 border-brand/20 pt-6 bg-gradient-to-br from-blue-50/30 to-gray-50/30 -mx-6 px-6 py-6 rounded-2xl">
-                <h3 className="font-bold text-lg mb-4 text-gray-900 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                  </svg>
-                  Complete Specificaties
+              {/* SPECIFICATIES - CLEAN & OPVALLEND */}
+              <div className="border-t border-gray-200 pt-6">
+                <h3 className="font-semibold text-base mb-4 text-gray-900">
+                  Specificaties
                 </h3>
                 
-                {/* Alle specs in accordion - met subtiele backgrounds */}
-                <div className="divide-y divide-gray-200 bg-white rounded-xl overflow-hidden shadow-sm">
+                {/* Alle specs in accordion - clean zonder extra background */}
+                <div className="divide-y divide-gray-200">
                   <details className="group py-3 px-4 hover:bg-gray-50">
                     <summary className="flex justify-between items-center cursor-pointer hover:text-brand transition">
                       <span className="text-sm font-bold text-gray-900">Capaciteit: <span className="font-semibold text-brand">10.5L XL</span></span>

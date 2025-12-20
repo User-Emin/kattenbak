@@ -183,23 +183,23 @@ export function ChatPopup() {
         >
           {isExpanded ? (
             <X className="w-6 h-6 transition-transform group-hover:rotate-90 duration-300" />
-          ) : (
-            <svg 
-              className="w-7 h-7 group-hover:scale-110 transition-transform duration-200" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2.5" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            >
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" 
-                    className="group-hover:stroke-[3]" />
-              <circle cx="8" cy="10" r="1" fill="currentColor" />
-              <circle cx="12" cy="10" r="1" fill="currentColor" />
-              <circle cx="16" cy="10" r="1" fill="currentColor" />
-            </svg>
-          )}
+                  ) : (
+                    <svg
+                      className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                            className="group-hover:stroke-[2.5]" />
+                      <circle cx="8" cy="10" r="1" fill="currentColor" />
+                      <circle cx="12" cy="10" r="1" fill="currentColor" />
+                      <circle cx="16" cy="10" r="1" fill="currentColor" />
+                    </svg>
+                  )}
         </button>
       </div>
 
