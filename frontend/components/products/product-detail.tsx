@@ -425,9 +425,34 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Productkenmerken - Direct zichtbaar, compact */}
-        <ProductSpecs />
+        {/* COOLBLUE: Productkenmerken met ID */}
+        <div id="specs-section"><ProductSpecs /></div>
 
+
+        {/* COOLBLUE: Plus- en minpunten */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <h2 className="text-2xl font-bold mb-4 text-gray-900">Volgens onze kattenbakspecialist</h2>
+          <div className="space-y-2">
+            <div className="flex items-start gap-2 bg-green-50 p-3 rounded-lg">
+              <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" strokeWidth={3} />
+              <span className="text-sm text-gray-900">Met een inhoud van 10.5 liter de grootste in zijn klasse, slechts 1x per week legen</span>
+            </div>
+            <div className="flex items-start gap-2 bg-green-50 p-3 rounded-lg">
+              <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" strokeWidth={3} />
+              <span className="text-sm text-gray-900">Dubbele sensoren stoppen reiniging direct bij detectie voor maximale veiligheid</span>
+            </div>
+            <div className="flex items-start gap-2 bg-green-50 p-3 rounded-lg">
+              <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" strokeWidth={3} />
+              <span className="text-sm text-gray-900">Ultra-stil met &lt;40dB stiller dan een bibliotheek, geschikt voor slaapkamers</span>
+            </div>
+            <div className="flex items-start gap-2 bg-green-50 p-3 rounded-lg">
+              <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" strokeWidth={3} />
+              <span className="text-sm text-gray-900">Open-top design vermindert stress, katten zien hun omgeving</span>
+            </div>
+          </div>
+        </div>
+
+        <Separator variant="float" spacing="xl" />
         <Separator variant="float" spacing="xl" />
 
         {/* Product Video - Dynamisch van admin */}
