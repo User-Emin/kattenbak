@@ -898,9 +898,9 @@ app.post('/api/v1/admin/products', authenticate, adminOnly, async (req: AuthRequ
       ...productData,
       slug,
       images: productData.images || [],
-      videoUrl: videoUrl || null,
-      uspImage1: uspImage1 || null,
-      uspImage2: uspImage2 || null,
+      videoUrl: (videoUrl && videoUrl.trim()) || null,
+      uspImage1: (uspImage1 && uspImage1.trim()) || null,
+      uspImage2: (uspImage2 && uspImage2.trim()) || null,
     };
 
     // Handle category relationship (optioneel)
@@ -929,9 +929,9 @@ app.put('/api/v1/admin/products/:id', authenticate, adminOnly, async (req: AuthR
     // Build update data with proper Prisma relations
     const updateData: any = { 
       ...productData,
-      videoUrl: videoUrl || null,
-      uspImage1: uspImage1 || null,
-      uspImage2: uspImage2 || null,
+      videoUrl: (videoUrl && videoUrl.trim()) || null,
+      uspImage1: (uspImage1 && uspImage1.trim()) || null,
+      uspImage2: (uspImage2 && uspImage2.trim()) || null,
     };
     
     // Handle category relationship (optioneel)
