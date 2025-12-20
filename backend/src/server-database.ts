@@ -917,11 +917,17 @@ app.put('/api/v1/admin/products/:id', authenticate, adminOnly, async (req: AuthR
     const product = await prisma.product.update({
       where: { id: req.params.id },
       data: updateData,
-      include: { category: true },
+      include: {
+        category: true,
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
     });
 
     console.log(`✅ Admin updated product: ${product.name}`);
-    res.json(success(product));
+    res.json(success(sanitizeProduct(product)));
   } catch (err: any) {
     console.error('Admin update product error:', err.message);
     res.status(500).json(error('Could not update product'));
@@ -965,14 +971,20 @@ app.get('/api/v1/admin/products/:id', authenticate, adminOnly, async (req: AuthR
   try {
     const product = await prisma.product.findUnique({
       where: { id: req.params.id },
-      include: { category: true },
+      include: {
+        category: true,
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
     });
 
     if (!product) {
       return res.status(404).json(error('Product not found'));
     }
 
-    res.json(success(product));
+    res.json(success(sanitizeProduct(product)));
   } catch (err: any) {
     console.error('Admin product error:', err.message);
     res.status(500).json(error('Could not fetch product'));
