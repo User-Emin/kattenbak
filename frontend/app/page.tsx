@@ -89,11 +89,11 @@ export default function HomePage() {
 
         <div className="container mx-auto px-6 lg:px-12 py-20 relative z-10">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-light mb-12 leading-tight animate-fade-in text-white drop-shadow-lg whitespace-nowrap text-center sm:text-left">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-light mb-12 leading-tight animate-fade-in text-white drop-shadow-lg text-center md:text-left">
               Slimste Kattenbak
             </h1>
 
-            <div className="flex justify-end">
+            <div className="flex justify-center md:justify-start">
               <Link href={`/product/${productSlug}`}>
                 <Button size="lg" variant="primary" rightIcon={<ArrowRight className="h-5 w-5" />} className="text-base">
                   Bekijk Product
