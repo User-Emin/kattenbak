@@ -108,17 +108,15 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
                 </button>
               </div>
 
-              {/* Add to cart button */}
-              <Button
-                variant="brand"
-                size="lg"
+              {/* Add to cart button - Coolblue serieus */}
+              <button
                 onClick={handleAddToCart}
-                leftIcon={<ShoppingCart className="h-5 w-5" />}
-                className="shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-brand hover:bg-brand-dark text-white font-bold py-3.5 px-6 rounded transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
               >
+                <ShoppingCart className="h-5 w-5" />
                 <span className="hidden sm:inline">In Winkelwagen</span>
                 <span className="sm:hidden">Toevoegen</span>
-              </Button>
+              </button>
             </div>
           </div>
         </div>

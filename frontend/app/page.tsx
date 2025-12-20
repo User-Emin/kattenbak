@@ -93,8 +93,9 @@ export default function HomePage() {
               Slimste Kattenbak
             </h1>
 
-            <p className="text-xl md:text-2xl text-white mb-10 drop-shadow-md">
-              Automatisch • Smart • Hygiënisch
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 drop-shadow-lg">Over dit product</h2>
+            <p className="text-xl md:text-2xl text-white mb-10 drop-shadow-md leading-relaxed">
+              Volledig automatisch zelfreinigend systeem met dubbele beveiliging en 10.5L XL afvalbak capaciteit.
             </p>
 
             <div className="flex flex-row gap-2 sm:gap-4 justify-center mb-12 max-w-2xl mx-auto px-4">
