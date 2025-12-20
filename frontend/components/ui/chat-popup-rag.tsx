@@ -156,38 +156,52 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* Chat Button - ROND COMPACT MET CUSTOM MESSAGE ICON */}
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className={`fixed right-6 z-50 ${buttonPosition}
-                   ${isExpanded ? 'w-14 h-14' : 'w-14 h-14'}
-                   bg-gradient-to-br from-brand to-brand-dark text-white 
-                   rounded-full shadow-2xl 
-                   hover:scale-110 hover:shadow-brand/50
-                   focus:outline-none focus:ring-4 focus:ring-brand/30
-                   active:scale-95
-                   transition-all duration-300 ease-out
-                   flex items-center justify-center group`}
-        aria-label="Open AI chat"
-        style={{ willChange: 'transform' }}
-      >
-        {isExpanded ? (
-          <X className="w-6 h-6" />
-        ) : (
-          <svg 
-            className="w-6 h-6 group-hover:scale-110 transition-transform" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-          >
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            <path d="M8 10h.01M12 10h.01M16 10h.01" />
-          </svg>
+      {/* Chat Button - ROND SMOOTH MET RIPPLE EFFECT */}
+      <div className={`fixed right-6 z-50 ${buttonPosition}`}>
+        {/* Pulse rings */}
+        {!isExpanded && (
+          <>
+            <div className="absolute inset-0 rounded-full bg-brand/20 animate-ping" 
+                 style={{ animationDuration: '2s' }} />
+            <div className="absolute inset-0 rounded-full bg-brand/10 animate-ping" 
+                 style={{ animationDuration: '2.5s', animationDelay: '0.3s' }} />
+          </>
         )}
-      </button>
+        
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className={`relative w-16 h-16
+                     bg-gradient-to-br from-brand to-brand-dark text-white 
+                     rounded-full shadow-xl 
+                     hover:scale-105 hover:shadow-2xl hover:shadow-brand/40
+                     focus:outline-none focus:ring-4 focus:ring-brand/30
+                     active:scale-95
+                     transition-all duration-200 ease-out
+                     flex items-center justify-center group`}
+          aria-label="Open AI chat"
+          style={{ willChange: 'transform' }}
+        >
+          {isExpanded ? (
+            <X className="w-6 h-6 transition-transform group-hover:rotate-90 duration-300" />
+          ) : (
+            <svg 
+              className="w-7 h-7 group-hover:scale-110 transition-transform duration-200" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2.5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" 
+                    className="group-hover:stroke-[3]" />
+              <circle cx="8" cy="10" r="1" fill="currentColor" />
+              <circle cx="12" cy="10" r="1" fill="currentColor" />
+              <circle cx="16" cy="10" r="1" fill="currentColor" />
+            </svg>
+          )}
+        </button>
+      </div>
 
       {/* Chat Popup */}
       {isExpanded && (
