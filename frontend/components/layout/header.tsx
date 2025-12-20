@@ -23,6 +23,15 @@ export function Header() {
     }
   }, [isOnCartPage, isCartOpen]);
 
+  // Sync cart state to body attribute for ChatPopup
+  useEffect(() => {
+    if (isCartOpen) {
+      document.body.setAttribute('data-cart-open', 'true');
+    } else {
+      document.body.removeAttribute('data-cart-open');
+    }
+  }, [isCartOpen]);
+
   const handleCartToggle = () => {
     if (isOnCartPage) {
       setIsCartOpen(false);

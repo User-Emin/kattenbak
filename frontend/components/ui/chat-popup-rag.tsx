@@ -25,14 +25,35 @@ export function ChatPopup() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
+  const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
 
   // CONDITIONAL RENDERING: Alleen op home (/) en productdetail (/product/*)
   const isHomePage = pathname === '/';
   const isProductPage = pathname?.startsWith('/product/') || false;
   const shouldShowChat = isHomePage || isProductPage;
 
-  // Niet renderen als niet op toegestane pagina
-  if (!shouldShowChat) {
+  // Monitor cart sidebar state
+  useEffect(() => {
+    const checkCartSidebar = () => {
+      const isOpen = document.body.hasAttribute('data-cart-open');
+      setIsCartSidebarOpen(isOpen);
+    };
+
+    // Initial check
+    checkCartSidebar();
+
+    // Observer voor attribute changes
+    const observer = new MutationObserver(checkCartSidebar);
+    observer.observe(document.body, { 
+      attributes: true, 
+      attributeFilter: ['data-cart-open'] 
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Niet renderen als niet op toegestane pagina OF als cart sidebar open is
+  if (!shouldShowChat || isCartSidebarOpen) {
     return null;
   }
 
