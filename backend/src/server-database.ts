@@ -428,6 +428,12 @@ app.get('/api/v1/products/featured', async (req: Request, res: Response) => {
     const products = await prisma.product.findMany({
       where: { isActive: true, isFeatured: true },
       take: 3,
+      include: {
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
     });
 
     // DEFENSIVE: Sanitize all products
