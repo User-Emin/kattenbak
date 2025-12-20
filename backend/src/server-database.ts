@@ -84,8 +84,11 @@ app.use('/api/v1/', apiLimiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Trust proxy (required for nginx)
+app.set('trust proxy', 1);
+
 // =============================================================================
-// AUTHENTICATION MIDDLEWARE
+// RATE LIMITING
 // =============================================================================
 
 interface AuthRequest extends Request {
