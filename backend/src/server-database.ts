@@ -396,6 +396,12 @@ app.get('/api/v1/products', async (req: Request, res: Response) => {
     const products = await prisma.product.findMany({
       where: { isActive: true },
       orderBy: { createdAt: 'desc' },
+      include: {
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
     });
 
     // DEFENSIVE: Convert Decimal to Number for frontend
