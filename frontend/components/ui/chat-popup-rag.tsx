@@ -267,7 +267,7 @@ export function ChatPopup() {
                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                      className={`max-w-[85%] rounded-3xl px-4 py-3 ${
                         msg.role === 'user'
                           ? 'bg-brand text-white'
                           : 'bg-white border border-gray-200'
@@ -283,7 +283,7 @@ export function ChatPopup() {
                 
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3">
+                    <div className="bg-white border border-gray-200 rounded-3xl px-4 py-3">
                       <Loader2 className="w-5 h-5 animate-spin text-brand" />
                     </div>
                   </div>
@@ -296,8 +296,8 @@ export function ChatPopup() {
                 )}
               </div>
 
-              {/* Input */}
-              <div className="p-4 bg-white border-t border-gray-200 rounded-b-2xl">
+              {/* Input - MOBILE ZOOM FIX */}
+              <div className="p-4 bg-white border-t border-gray-200 rounded-b-3xl">
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -305,13 +305,14 @@ export function ChatPopup() {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Stel je vraag..."
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand text-sm"
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand text-base"
+                    style={{ fontSize: '16px' }}
                     disabled={isLoading}
                   />
                   <Button
                     onClick={handleSendMessage}
                     disabled={!input.trim() || isLoading}
-                    className="px-6 rounded-xl"
+                    className="px-6 rounded-2xl"
                   >
                     {isLoading ? (
                       <Loader2 className="w-5 h-5 animate-spin" />
