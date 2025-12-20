@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ProductService } from '@/services/product.service';
 import { successResponse } from '@/utils/response.util';
 import { ProductFilters, PaginationParams } from '@/types';
+import { serializeProduct, serializeProducts } from '@/utils/serializer.util';
 
 /**
  * Product Controller
@@ -54,7 +55,7 @@ export class ProductController {
 
       res.json(
         successResponse({
-          products,
+          products: serializeProducts(products),
           pagination: {
             page: pagination.page,
             pageSize: pagination.pageSize,
@@ -81,7 +82,7 @@ export class ProductController {
       const { id } = req.params;
       const product = await ProductService.getProductById(id);
 
-      res.json(successResponse(product));
+      res.json(successResponse(serializeProduct(product)));
     } catch (error) {
       next(error);
     }
@@ -100,7 +101,7 @@ export class ProductController {
       const { slug } = req.params;
       const product = await ProductService.getProductBySlug(slug);
 
-      res.json(successResponse(product));
+      res.json(successResponse(serializeProduct(product)));
     } catch (error) {
       next(error);
     }
@@ -119,7 +120,7 @@ export class ProductController {
       const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 8;
       const products = await ProductService.getFeaturedProducts(limit);
 
-      res.json(successResponse(products));
+      res.json(successResponse(serializeProducts(products)));
     } catch (error) {
       next(error);
     }
@@ -144,7 +145,7 @@ export class ProductController {
 
       const products = await ProductService.searchProducts(query, limit);
 
-      res.json(successResponse(products));
+      res.json(successResponse(serializeProducts(products)));
     } catch (error) {
       next(error);
     }

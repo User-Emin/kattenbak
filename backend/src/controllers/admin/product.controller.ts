@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { ProductService } from '@/services/product.service';
 import { successResponse } from '@/utils/response.util';
+import { serializeProduct, serializeProducts } from '@/utils/serializer.util';
 
 /**
  * Admin Product Controller
@@ -56,7 +57,7 @@ export class AdminProductController {
 
       res.json(
         successResponse({
-          data: products,
+          data: serializeProducts(products),
           meta: {
             page: pagination.page,
             pageSize: pagination.pageSize,
@@ -83,7 +84,7 @@ export class AdminProductController {
       const { id } = req.params;
       const product = await ProductService.getProductById(id);
 
-      res.json(successResponse({ data: product }));
+      res.json(successResponse({ data: serializeProduct(product) }));
     } catch (error) {
       next(error);
     }
