@@ -46,17 +46,17 @@ export function Header() {
       <header className="sticky top-0 z-50 w-full">
         <div className="bg-gradient-to-br from-brand to-brand-dark">
           <div className="container mx-auto px-6 lg:px-10 max-w-7xl">
-            <div className="flex items-center justify-between h-16 relative">
+            <div className="flex items-center justify-between h-14 relative">
             {/* LOGO - Aligned met container padding */}
             <Link href="/" className="flex items-center hover:opacity-90 transition">
               <img 
                 src="/logo-catsupply.png" 
                 alt="Catsupply Logo" 
-                className="h-40 w-auto object-contain drop-shadow-lg"
+                className="h-32 w-auto object-contain drop-shadow-lg"
                 style={{
                   maxHeight: 'none', 
-                  minHeight: '160px', 
-                  height: '160px',
+                  minHeight: '128px', 
+                  height: '128px',
                 }}
               />
             </Link>

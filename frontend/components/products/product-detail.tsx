@@ -56,26 +56,37 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     setSelectedImage(0); // Reset to first image of variant
   };
 
-  // Sticky cart visibility on scroll
+  // Sticky cart visibility on scroll (desktop) en altijd tonen op mobiel
   useEffect(() => {
     const handleScroll = () => {
       const stickyCart = document.querySelector('[data-sticky-cart]') as HTMLElement;
       const mainCartButton = document.querySelector('[data-main-cart]') as HTMLElement;
-      
+
       if (stickyCart && mainCartButton) {
-        const mainCartRect = mainCartButton.getBoundingClientRect();
-        const isMainCartVisible = mainCartRect.top >= 0 && mainCartRect.bottom <= window.innerHeight;
+        // Check of het mobiel is
+        const isMobile = window.innerWidth < 768;
         
-        if (isMainCartVisible) {
-          // Main cart visible - hide sticky
-          stickyCart.style.opacity = '0';
-          stickyCart.style.transform = 'translateY(100%)';
-          stickyCart.style.pointerEvents = 'none';
-        } else {
-          // Main cart not visible - show sticky
+        if (isMobile) {
+          // Mobiel: altijd tonen
           stickyCart.style.opacity = '1';
           stickyCart.style.transform = 'translateY(0)';
           stickyCart.style.pointerEvents = 'auto';
+        } else {
+          // Desktop: alleen tonen als main cart niet zichtbaar is
+          const mainCartRect = mainCartButton.getBoundingClientRect();
+          const isMainCartVisible = mainCartRect.top >= 0 && mainCartRect.bottom <= window.innerHeight;
+
+          if (isMainCartVisible) {
+            // Main cart visible - hide sticky
+            stickyCart.style.opacity = '0';
+            stickyCart.style.transform = 'translateY(100%)';
+            stickyCart.style.pointerEvents = 'none';
+          } else {
+            // Main cart not visible - show sticky
+            stickyCart.style.opacity = '1';
+            stickyCart.style.transform = 'translateY(0)';
+            stickyCart.style.pointerEvents = 'auto';
+          }
         }
       }
     };
