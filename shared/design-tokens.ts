@@ -15,9 +15,9 @@ export const designTokens = {
     brandLight: '#567080',
     
     // ACCENT - Coolblue Oranje (CTA buttons, conversie)
-    accent: '#f75d0a',
-    accentDark: '#e65400',
-    accentLight: '#ff7f1a',
+    accent: '#f76402',        // Coolblue orange EXACT - Conversie & CTA
+    accentDark: '#e65400',    // Darker orange voor hover
+    accentLight: '#ff7f1a',   // Lighter voor accents
     
     white: '#ffffff',
     black: '#000000',

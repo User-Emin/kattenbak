@@ -55,9 +55,9 @@ export default {
           light: '#567080',
           dark: '#314552',
         },
-        // ACCENT - Coolblue Oranje (#f75d0a) voor action buttons
+        // ACCENT - Coolblue Oranje (#f76402) voor action buttons
         accent: {
-          DEFAULT: '#f75d0a',      // Coolblue oranje
+          DEFAULT: '#f76402',      // Coolblue oranje EXACT
           light: '#ff7f1a',
           dark: '#e65400',
         },

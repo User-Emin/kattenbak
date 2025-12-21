@@ -62,13 +62,13 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
       {/* Gradient fade effect */}
       <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-transparent to-white pointer-events-none -translate-y-full" />
       
-      {/* Main bar */}
-      <div className="bg-white border-t-2 border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur-sm">
+      {/* Main bar - RUSTIGER DESIGN */}
+      <div className="bg-white border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex items-center justify-between gap-4">
-            {/* Product info */}
+            {/* Product info - RUSTIGER */}
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div className="w-12 h-12 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden">
+              <div className="w-12 h-12 bg-gray-50 flex-shrink-0 overflow-hidden">
                 <img
                   src={product.images?.[0] || '/images/placeholder.jpg'}
                   alt={product.name}
@@ -76,22 +76,22 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
                 />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-gray-900 text-sm truncate">
+                <h3 className="font-medium text-gray-700 text-sm truncate">
                   {product.name}
                 </h3>
-                <p className="text-lg font-bold text-brand">
+                <p className="text-base font-semibold text-gray-900">
                   {formatCurrency(product.price)}
                 </p>
               </div>
             </div>
 
-            {/* Quantity + CTA */}
+            {/* Quantity + CTA - RECHTHOEK ORANJE */}
             <div className="flex items-center gap-3 flex-shrink-0">
               {/* Quantity selector - compact */}
-              <div className="hidden sm:flex items-center gap-2 bg-gray-50 rounded-lg px-2 py-1">
+              <div className="hidden sm:flex items-center gap-2 border border-gray-300 px-2 py-1">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-7 h-7 rounded flex items-center justify-center hover:bg-white transition-colors text-gray-600 font-semibold"
+                  className="w-7 h-7 flex items-center justify-center hover:bg-gray-50 transition-colors text-gray-600 font-semibold"
                   aria-label="Verminder aantal"
                 >
                   -
@@ -101,24 +101,22 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-7 h-7 rounded flex items-center justify-center hover:bg-white transition-colors text-gray-600 font-semibold"
+                  className="w-7 h-7 flex items-center justify-center hover:bg-gray-50 transition-colors text-gray-600 font-semibold"
                   aria-label="Verhoog aantal"
                 >
                   +
                 </button>
               </div>
 
-              {/* Add to cart button */}
-              <Button
-                variant="cta"
-                size="lg"
+              {/* Add to cart button - RECHTHOEK ORANJE */}
+              <button
                 onClick={handleAddToCart}
-                leftIcon={<ShoppingCart className="h-5 w-5" />}
-                className="shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-accent hover:bg-accent-dark text-white font-bold px-6 py-2.5 rounded-none transition-colors flex items-center gap-2"
               >
+                <ShoppingCart className="h-4 w-4" />
                 <span className="hidden sm:inline">In Winkelwagen</span>
                 <span className="sm:hidden">Toevoegen</span>
-              </Button>
+              </button>
             </div>
           </div>
         </div>

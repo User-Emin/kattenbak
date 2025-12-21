@@ -64,29 +64,29 @@ export function ProductSpecsComparison() {
         return (
           <div 
             key={index} 
-            className="border-t border-gray-200 first:border-t-0 bg-gray-50"
+            className="border-b border-gray-200 last:border-b-0"
           >
-            {/* Accordion Header - DIKKE TEKST + "Meer" label */}
+            {/* Accordion Header - RUSTIG & ZAKELIJK */}
             <button
               onClick={() => toggleSpec(index)}
-              className="w-full flex items-center justify-between py-3 px-2 text-left hover:bg-gray-100/50 transition-colors"
+              className="w-full flex items-center justify-between py-3 px-3 text-left hover:bg-gray-50 transition-colors"
             >
-              <div className="flex items-center gap-2 flex-1">
-                <Icon className="h-5 w-5 text-brand flex-shrink-0" />
-                <span className="font-semibold text-sm md:text-base text-gray-900">{spec.title}</span>
+              <div className="flex items-center gap-2.5 flex-1">
+                <Icon className="h-4 w-4 text-accent flex-shrink-0" />
+                <span className="font-medium text-sm text-gray-700">{spec.title}</span>
               </div>
               
               <ChevronDown 
-                className={`h-4 w-4 text-gray-600 transition-transform duration-200 flex-shrink-0 ${
+                className={`h-4 w-4 text-gray-400 transition-transform duration-200 flex-shrink-0 ${
                   isOpen ? 'rotate-180' : ''
                 }`}
               />
             </button>
 
-            {/* Accordion Content - DIKKE BESCHRIJVING */}
+            {/* Accordion Content - RUSTIG */}
             {isOpen && (
-              <div className="px-3 pb-3 bg-gray-50 animate-in slide-in-from-top-2 duration-200">
-                <p className="text-sm md:text-base font-semibold text-gray-700 leading-relaxed">
+              <div className="px-3 pb-3 bg-white animate-in slide-in-from-top-2 duration-200">
+                <p className="text-sm text-gray-600 leading-relaxed">
                   {spec.description}
                 </p>
                 
@@ -134,27 +134,27 @@ export function ProductSpecsComparison() {
         return (
           <div 
             key={actualIndex} 
-            className="border-t border-gray-200 bg-gray-50 animate-in slide-in-from-top-2 duration-200"
+            className="border-b border-gray-200 last:border-b-0 animate-in slide-in-from-top-2 duration-200"
           >
             <button
               onClick={() => toggleSpec(actualIndex)}
-              className="w-full flex items-center justify-between py-3 px-2 text-left hover:bg-gray-100/50 transition-colors"
+              className="w-full flex items-center justify-between py-3 px-3 text-left hover:bg-gray-50 transition-colors"
             >
-              <div className="flex items-center gap-2 flex-1">
-                <Icon className="h-5 w-5 text-brand flex-shrink-0" />
-                <span className="font-semibold text-sm md:text-base text-gray-900">{spec.title}</span>
+              <div className="flex items-center gap-2.5 flex-1">
+                <Icon className="h-4 w-4 text-accent flex-shrink-0" />
+                <span className="font-medium text-sm text-gray-700">{spec.title}</span>
               </div>
               
               <ChevronDown 
-                className={`h-4 w-4 text-gray-600 transition-transform duration-200 flex-shrink-0 ${
+                className={`h-4 w-4 text-gray-400 transition-transform duration-200 flex-shrink-0 ${
                   isOpen ? 'rotate-180' : ''
                 }`}
               />
             </button>
 
             {isOpen && (
-              <div className="px-3 pb-3 bg-gray-50 animate-in slide-in-from-top-2 duration-200">
-                <p className="text-sm md:text-base font-semibold text-gray-700 leading-relaxed">
+              <div className="px-3 pb-3 bg-white animate-in slide-in-from-top-2 duration-200">
+                <p className="text-sm text-gray-600 leading-relaxed">
                   {spec.description}
                 </p>
                 

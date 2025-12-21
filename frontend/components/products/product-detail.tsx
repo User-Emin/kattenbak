@@ -50,6 +50,8 @@ interface ProductUsp {
   image: string;
 }
 
+import { ProductUspBanner } from "@/components/products/product-usp-banner";
+
 interface ProductDetailProps {
   slug: string;
 }
@@ -142,6 +144,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* COOLBLUE USP BANNER - ONDER NAVBAR */}
+      <ProductUspBanner />
+      
       {/* COOLBLUE-STYLE: Compact container, max-w-6xl, EXPLICIETE #FFFFFF achtergrond */}
       <div className="max-w-6xl mx-auto px-4 py-6 bg-[#FFFFFF]">
         {/* Breadcrumb - COOLBLUE COMPACT */}
@@ -157,13 +162,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6">
           {/* Product Images - COOLBLUE: Vierkant, compact, geen rounding */}
           <div className="space-y-3">
-            {/* COOLBLUE: Vierkante image, border, NO rounding */}
-            <div className="relative aspect-square bg-white border border-gray-200 overflow-hidden">
+            {/* COOLBLUE: Vierkante image, NO border, volledig zichtbaar */}
+            <div className="relative aspect-square bg-white overflow-hidden">
               <ProductImage
                 src={displayImages[selectedImage]}
                 alt={product.name}
                 fill
-                className="object-contain p-4"
+                className="object-contain"
                 priority
                 enableZoom={true}
                 zoomScale={2.5}
@@ -251,27 +256,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
                 </Button>
               </div>
-
-              {/* COOLBLUE: USPs compact onder button */}
-              <div className="space-y-2 text-xs text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-600" />
-                  <span>Morgen gratis bezorgd</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-600" />
-                  <span>14 dagen bedenktijd</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-600" />
-                  <span>Veilig betalen</span>
-                </div>
-              </div>
             </div>
 
-            {/* Product Specs - DIRECT OP ACHTERGROND */}
+            {/* Product Specs - DIRECT OP ACHTERGROND, LICHTERE TITEL */}
             <div className="space-y-3">
-              <h3 className="font-bold text-sm text-gray-900">Product specificaties</h3>
+              <h3 className="font-medium text-sm text-gray-700">Product specificaties</h3>
               <ProductSpecsComparison />
             </div>
           </div>
