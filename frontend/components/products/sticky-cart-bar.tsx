@@ -59,9 +59,6 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
           : 'translate-y-full opacity-0 pointer-events-none'
       }`}
     >
-      {/* Gradient fade effect */}
-      <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-transparent to-white pointer-events-none -translate-y-full" />
-      
       {/* Main bar - RUSTIGER DESIGN */}
       <div className="bg-white border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">

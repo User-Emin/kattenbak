@@ -11,17 +11,17 @@ export function ProductUspBanner() {
   const usps = [
     {
       icon: Truck,
-      text: "Gratis verzending",
-      highlight: "gratis",
+      text: "verzending",
+      highlight: "Gratis",
     },
     {
       icon: Shield,
-      text: "30 dagen bedenktijd",
+      text: "bedenktijd",
       highlight: "30 dagen",
     },
     {
       icon: Package,
-      text: "Veilig betalen",
+      text: "betalen",
       highlight: "Veilig",
     },
   ];
@@ -39,7 +39,7 @@ export function ProductUspBanner() {
                 </div>
                 <span className="text-sm text-gray-700">
                   <strong className="font-semibold text-gray-900">{usp.highlight}</strong>
-                  {usp.text.replace(usp.highlight, '')}
+                  {' '}{usp.text}
                 </span>
               </div>
             );
