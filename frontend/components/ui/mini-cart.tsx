@@ -122,8 +122,13 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
             </Button>
             
             <button
-              onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
-              className="w-full px-6 py-3 bg-brand hover:bg-brand-dark text-white font-semibold rounded transition whitespace-nowrap"
+              onClick={() => {
+                const firstItem = items[0];
+                if (firstItem) {
+                  handleNavigate(`/checkout?product=${firstItem.product.id}&quantity=${firstItem.quantity}`);
+                }
+              }}
+              className="w-full px-6 py-3 bg-gradient-to-br from-cart to-cart-hover text-white font-semibold rounded transition whitespace-nowrap hover:shadow-cart"
             >
               Bestelling Afronden
             </button>
