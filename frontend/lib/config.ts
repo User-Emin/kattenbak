@@ -4,7 +4,7 @@
  * Maximaal DRY, maintainable en type-safe
  */
 
-// API Configuration - ROBUST & MAINTAINABLE - DRY
+// API Configuration - ROBUST & MAINTAINABLE - DRY - PRODUCTION SSL
 // DRY: Runtime API URL detection (client-side only via apiFetch)
 const getRuntimeApiUrl = (): string => {
   // Server-side: gebruik env var
@@ -18,8 +18,8 @@ const getRuntimeApiUrl = (): string => {
     return 'http://localhost:3101/api/v1';
   }
   
-  // Production: use same domain
-  return `${window.location.protocol}//${hostname}:3101/api/v1`;
+  // Production: use same domain via NGINX reverse proxy (SSL terminated)
+  return `${window.location.protocol}//${hostname}/api/v1`;
 };
 
 export const API_CONFIG = {
