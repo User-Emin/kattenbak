@@ -9,15 +9,15 @@ export const designTokens = {
     primary: '#1a1a1a',
     secondary: '#fafafa',
     
-    // Blauw - Navbar, links, trust badges
-    accent: '#2ab8b8',
-    accentDark: '#239999',
-    accentLight: '#5dd5d5',
+    // BRAND - Serieuze blue-gray (navbar, trust elements)
+    brand: '#415b6b',
+    brandDark: '#314552',
+    brandLight: '#567080',
     
-  // Goud/Geel - CTA buttons, conversie elementen
-  cta: '#f4d673',        // Base goud
-  ctaDark: '#e6c255',    // Hover state (donkerder)
-  ctaLight: '#ffebab',   // Light variant (lichter geel)
+    // ACCENT - Oranje (CTA buttons, conversie)
+    accent: '#f76402',
+    accentDark: '#d95501',
+    accentLight: '#ff7f1a'
     
     white: '#ffffff',
     black: '#000000',

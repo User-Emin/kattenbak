@@ -49,17 +49,17 @@ export default {
           light: '#ffffff',
           dark: '#f5f5f5',
         },
-        // Donker blauw voor navbar en structurele elementen
+        // BRAND - Serieuze blue-gray (#415b6b) voor navbar en structurele elementen
         brand: {
-          DEFAULT: '#005980',      // Donker blauw voor navbar
-          light: '#0077a3',
-          dark: '#003d5c',
+          DEFAULT: '#415b6b',      // Main brand color
+          light: '#567080',
+          dark: '#314552',
         },
-        // ZWART voor action buttons - MAXIMAAL DYNAMISCH (was cyaan #00fbff)
+        // ACCENT - Oranje (#f76402) voor action buttons
         accent: {
-          DEFAULT: '#000000',      // ZWART als base
-          light: '#1a1a1a',        // Lichter zwart
-          dark: '#000000',         // Pure zwart
+          DEFAULT: '#f76402',      // Main accent/CTA color
+          light: '#ff7f1a',
+          dark: '#d95501',
         },
         // Verwijder custom cyan - gebruik default Tailwind
         // cyan removed - primary is now BLACK/GRAY
