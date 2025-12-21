@@ -93,8 +93,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Check initial state
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll); // Ook bij resize checken
     
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   const handleAddToCart = async () => {
