@@ -156,24 +156,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           <span className="text-gray-900">{product.name}</span>
         </nav>
 
+        {/* COOLBLUE LAYOUT: Naam BOVEN afbeelding */}
+        <h1 className="text-2xl font-semibold mb-4 text-gray-900">{product.name}</h1>
+
         <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6">
-          {/* Product Images - COOLBLUE: Hele ruimte, titel OVER afbeelding */}
+          {/* Product Images - COOLBLUE: Vierkant, compact */}
           <div className="space-y-3">
-            {/* COOLBLUE: Afbeelding vult hele ruimte + titel overlay */}
+            {/* COOLBLUE: Vierkante image, volledig zichtbaar */}
             <div className="relative aspect-square bg-white overflow-hidden">
               <ProductImage
                 src={displayImages[selectedImage]}
                 alt={product.name}
                 fill
-                className="object-cover"
+                className="object-contain"
                 priority
                 enableZoom={true}
                 zoomScale={2.5}
               />
-              {/* Titel OVER afbeelding - links beneden */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                <h1 className="text-xl font-semibold text-white">{product.name}</h1>
-              </div>
             </div>
 
             {/* COOLBLUE: Kleine vierkante thumbnails */}
@@ -218,16 +217,36 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             )}
 
-            {/* Add to Cart - ALLEEN BUTTON */}
-            <div className="space-y-3" ref={addToCartButtonRef}>
-              {/* COOLBLUE: Vierkante button, DRY accent color */}
+            {/* Add to Cart - COOLBLUE EYECATCHERS */}
+            <div className="space-y-4" ref={addToCartButtonRef}>
+              {/* COOLBLUE: Vierkante button, korter */}
               <Button
                 onClick={handleAddToCart}
                 disabled={isAdding || product.stock === 0}
                 className="w-full h-12 font-bold bg-accent hover:bg-accent-dark text-white rounded-none transition"
               >
-                {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
+                {isAdding ? 'Toevoegen...' : 'In mijn winkelwagen'}
               </Button>
+              
+              {/* COOLBLUE EYECATCHERS - onder button */}
+              <div className="space-y-2 text-xs text-gray-700">
+                <div className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                  <span><strong>Morgen</strong> bezorgd</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                  <span>Je krijgt <strong>30 dagen</strong> bedenktijd</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                  <span><strong>Gratis</strong> ruilen binnen 30 dagen</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                  <span>Klantbeoordeling <strong>9,2/10</strong></span>
+                </div>
+              </div>
             </div>
 
             {/* Product Specs - DIRECT OP ACHTERGROND, LICHTERE TITEL */}
@@ -240,29 +259,63 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Product Description - DIRECT ZICHTBAAR CENTRAAL */}
-        <div className="max-w-4xl mx-auto text-center mb-12">
+        {/* Product Description - COOLBLUE "PRODUCTINFORMATIE" */}
+        <div className="max-w-4xl mx-auto mb-12">
           <SectionHeading className="mb-6" size="sm">
-            Over dit product
+            Productinformatie
           </SectionHeading>
           
-          {/* DRY: Product Demo Video - EXACT zoals homepage, direct onder titel */}
+          {/* Plus- en minpunten */}
+          <div className="mb-8 p-6 bg-gray-50 rounded-sm">
+            <h3 className="font-semibold text-lg mb-4 text-gray-900">Plus- en minpunten</h3>
+            <p className="text-sm text-gray-600 mb-3 italic">Volgens onze kattenbak specialist</p>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">Automatische reiniging na elk gebruik bespaart tijd</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">Fluisterstille werking (32dB) stoort niet</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">App bediening voor real-time monitoring</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <span className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5">−</span>
+                  <span className="text-sm text-gray-700">Geschikt voor katten tot 7kg</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5">−</span>
+                  <span className="text-sm text-gray-700">Vereist regelmatige lediging van afvalbak</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Omschrijving */}
+          <div className="prose prose-sm max-w-none">
+            <h3 className="font-semibold text-base mb-3 text-gray-900">Omschrijving</h3>
+            <p className="text-sm text-gray-700 leading-relaxed">{product.description}</p>
+          </div>
+          
+          {/* DRY: Product Demo Video - EXACT zoals homepage, direct onder omschrijving */}
           {product.videoUrl && (
-            <div className="mb-12">
+            <div className="mt-8">
               <VideoPlayer
                 videoUrl={product.videoUrl}
                 posterUrl={product.images?.[0] || ''}
                 type="product"
                 controls
-                className="w-full aspect-video rounded-lg overflow-hidden shadow-md border border-gray-200"
+                className="w-full aspect-video rounded-sm overflow-hidden border border-gray-200"
               />
-              <p className="text-center text-sm text-gray-500 mt-4">
-                🎥 Bekijk de demo video
-              </p>
             </div>
           )}
-          
-          <p className="text-base md:text-lg font-semibold text-gray-700 leading-relaxed">{product.description}</p>
         </div>
 
         <Separator variant="float" spacing="xl" />

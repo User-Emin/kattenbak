@@ -109,20 +109,37 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* Floating Chat Button - ALWAYS VISIBLE */}
+      {/* Floating Chat Button - COOLBLUE GOLF EFFECT + HEADSET SYMBOOL */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={`fixed right-4 z-[100] ${buttonBottomClass} transition-all duration-300
-                   bg-gradient-to-br from-brand to-brand-dark text-white 
-                   rounded-full p-4 shadow-2xl hover:scale-110 hover:shadow-brand/50
-                   focus:outline-none focus:ring-4 focus:ring-brand/30
-                   active:scale-95`}
+                   bg-accent hover:bg-accent-dark text-white 
+                   w-14 h-14 rounded-none shadow-lg hover:shadow-xl
+                   focus:outline-none focus:ring-2 focus:ring-accent/50
+                   active:scale-95 flex items-center justify-center
+                   relative overflow-hidden group`}
         aria-label="Open chat"
       >
+        {/* Golf effect */}
+        <span className="absolute inset-0 bg-white/20 rounded-full scale-0 group-hover:scale-150 transition-transform duration-500 ease-out"></span>
+        <span className="absolute inset-0 bg-white/10 rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 ease-out delay-100"></span>
+        
+        {/* Headset icon (custom) */}
         {isExpanded ? (
-          <X className="w-6 h-6" />
+          <X className="w-6 h-6 relative z-10" />
         ) : (
-          <MessageCircle className="w-6 h-6" />
+          <svg 
+            className="w-6 h-6 relative z-10" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+          </svg>
         )}
       </button>
 
