@@ -20,6 +20,7 @@ export default function CartPage() {
   }, []);
 
   // Tijdens SSR of mounting, toon loading state
+  // BELANGRIJK: We moeten wachten tot mounted EN items zijn geladen
   if (!mounted) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -31,6 +32,7 @@ export default function CartPage() {
     );
   }
 
+  // Na mounting: check of winkelwagen leeg is
   if (itemCount === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">

@@ -97,8 +97,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [items, mounted]);
 
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const itemCount = mounted ? items.reduce((sum, item) => sum + item.quantity, 0) : 0;
+  const subtotal = mounted ? items.reduce((sum, item) => sum + item.product.price * item.quantity, 0) : 0;
 
   const addItem = useCallback((product: Product, quantity: number = 1) => {
     setItems((prev) => {
