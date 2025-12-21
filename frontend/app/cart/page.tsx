@@ -142,8 +142,8 @@ export default function CartPage() {
                 <span className="text-xl font-light">{formatPrice(total)}</span>
               </div>
 
-              <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
-                <button className="w-full px-6 py-3.5 bg-brand hover:bg-brand-dark text-white font-bold rounded transition text-base flex items-center justify-center gap-2">
+              <Link href={items[0] ? `/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}` : '/checkout'}>
+                <button className="w-full px-6 py-3.5 bg-gradient-to-br from-cart to-cart-hover text-white font-bold rounded transition text-base flex items-center justify-center gap-2 hover:shadow-cart">
                   Afrekenen
                   <ArrowRight className="h-5 w-5" />
                 </button>
