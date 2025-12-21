@@ -202,88 +202,74 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               <div className="text-xs text-gray-600 mt-2">Incl. BTW</div>
             </div>
 
-              {/* Marketing USPs */}
-
-              {/* Color Selector - DRY: Alleen als er variants zijn */}
-              {product.variants && product.variants.length > 0 && (
-                <div className="mb-6">
-                  <ColorSelector
-                    variants={product.variants}
-                    selectedVariant={selectedVariant}
-                    onSelect={(variant) => {
-                      setSelectedVariant(variant);
-                      // DRY: Switch images if variant has custom images
-                      if (variant.images && variant.images.length > 0) {
-                        setSelectedImage(0);
-                      }
-                    }}
-                  />
-                </div>
-              )}
-
-              {/* Marketing USPs - Minimaal, zonder kaartje */}
-              <div className="mb-6 space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-1 h-1 bg-brand rounded-full"></div>
-                  <span className="text-sm font-semibold text-gray-600">14 dagen bedenktijd</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-1 h-1 bg-brand rounded-full"></div>
-                  <span className="text-sm font-semibold text-gray-600">Veilig betalen met Mollie</span>
-                </div>
+            {/* COOLBLUE: Color selector in box */}
+            {product.variants && product.variants.length > 0 && (
+              <div className="border border-gray-300 p-4 bg-white">
+                <ColorSelector
+                  variants={product.variants}
+                  selectedVariant={selectedVariant}
+                  onSelect={(variant) => {
+                    setSelectedVariant(variant);
+                    if (variant.images && variant.images.length > 0) {
+                      setSelectedImage(0);
+                    }
+                  }}
+                />
               </div>
+            )}
 
-              {/* CTA Button - DIK TEKST, GEEN PIJL */}
-              <div ref={addToCartButtonRef} className="mb-8">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={isAdding}
-                  className="w-full h-16 text-lg font-bold text-white bg-black hover:bg-gray-900 rounded-full transition-all duration-200 mb-4"
-                >
-                  <div className="flex items-center justify-center gap-3">
-                    {isAdding ? (
-                      <>
-                        <div className="h-5 w-5 animate-spin rounded-full border-3 border-current border-t-transparent" />
-                        <span className="tracking-wide">Toevoegen...</span>
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingCart className="h-6 w-6" />
-                        <span className="tracking-wide">In Winkelwagen</span>
-                      </>
-                    )}
-                  </div>
-                </button>
-
-                {/* Aantal Selector - ALTIJD HORIZONTAAL, HOVER NAVBAR BLAUW */}
-                <div className="flex flex-row items-center justify-center gap-3">
+            {/* COOLBLUE: Add to cart BOX - vierkant */}
+            <div className="border border-gray-300 p-4 bg-white">
+              <div className="flex items-stretch gap-2 mb-3">
+                {/* Quantity - COOLBLUE style */}
+                <div className="flex items-center border border-gray-300">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
-                    className="w-12 h-12 rounded-full border-2 border-gray-400 hover:border-brand hover:bg-brand/5 flex items-center justify-center transition disabled:opacity-30 bg-white"
-                    aria-label="Verlaag aantal"
+                    className="w-10 h-12 flex items-center justify-center hover:bg-gray-100 disabled:opacity-30"
                   >
-                    <Minus className="h-4 w-4 text-gray-700" />
+                    <Minus className="h-4 w-4" />
                   </button>
-                  
-                  <span className="text-2xl font-bold text-gray-900 min-w-[3rem] text-center">
-                    {quantity}
-                  </span>
-                  
+                  <div className="w-12 h-12 flex items-center justify-center font-bold border-x border-gray-300">{quantity}</div>
                   <button
-                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                    onClick={() => setQuantity(quantity + 1)}
                     disabled={quantity >= product.stock}
-                    className="w-12 h-12 rounded-full border-2 border-gray-400 hover:border-brand hover:bg-brand/5 flex items-center justify-center transition disabled:opacity-30 bg-white"
-                    aria-label="Verhoog aantal"
+                    className="w-10 h-12 flex items-center justify-center hover:bg-gray-100 disabled:opacity-30"
                   >
-                    <Plus className="h-4 w-4 text-gray-700" />
+                    <Plus className="h-4 w-4" />
                   </button>
                 </div>
+
+                {/* COOLBLUE: Vierkante button, NO rounding */}
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={isAdding || product.stock === 0}
+                  className="flex-1 h-12 font-bold bg-accent hover:bg-accent-dark text-white rounded-none"
+                >
+                  {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
+                </Button>
               </div>
 
-              <Separator variant="float" spacing="md" />
+              {/* COOLBLUE: USPs compact onder button */}
+              <div className="space-y-1 text-xs text-gray-600">
+                <div className="flex items-center gap-1.5">
+                  <Check className="h-3 w-3 text-green-600" />
+                  <span>Morgen gratis bezorgd</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Check className="h-3 w-3 text-green-600" />
+                  <span>14 dagen bedenktijd</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Check className="h-3 w-3 text-green-600" />
+                  <span>Veilig betalen</span>
+                </div>
+              </div>
+            </div>
 
-              {/* Product Specs Comparison - ACCORDION BALKEN */}
+            {/* COOLBLUE: Product Specs in box */}
+            <div className="border border-gray-300 p-4 bg-white">
+              <h3 className="font-bold text-sm mb-3 text-gray-900">Product specificaties</h3>
               <ProductSpecsComparison />
             </div>
           </div>
@@ -326,7 +312,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         )}
 
         <Separator variant="float" spacing="xl" />
-
       </div>
 
       {/* Sticky Cart Bar - SMOOTH BOTTOM BANNER */}
