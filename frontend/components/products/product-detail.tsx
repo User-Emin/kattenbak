@@ -141,79 +141,66 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const discount = hasDiscount ? Math.round(((product.compareAtPrice! - finalPrice) / product.compareAtPrice!) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-white py-8">
-      <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
-        {/* Breadcrumb - DIKKE TEKST */}
-        <nav className="mb-8 text-sm">
-          <Link href="/" className="text-brand hover:text-brand-dark transition font-semibold">Home</Link>
-          <span className="mx-2 text-gray-400 font-semibold">/</span>
-          <span className="text-gray-900 font-semibold">{product.name}</span>
+    <div className="min-h-screen bg-white">
+      {/* COOLBLUE-STYLE: Compact container, max-w-6xl */}
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        {/* Breadcrumb - COOLBLUE COMPACT */}
+        <nav className="mb-4 text-xs text-gray-600">
+          <Link href="/" className="hover:text-brand">Home</Link>
+          <span className="mx-1">/</span>
+          <span className="text-gray-900">{product.name}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Product Images - VIERKANT & COMPACT */}
-          <div className="space-y-4">
-            {/* Main Product Image - Vierkantiger (rounded-lg) */}
-            <div className="relative aspect-square bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200">
+        {/* COOLBLUE LAYOUT: Naam BOVEN afbeelding */}
+        <h1 className="text-2xl font-bold mb-4 text-gray-900">{product.name}</h1>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6">
+          {/* Product Images - COOLBLUE: Vierkant, compact, geen rounding */}
+          <div className="space-y-3">
+            {/* COOLBLUE: Vierkante image, border, NO rounding */}
+            <div className="relative aspect-square bg-white border border-gray-200 overflow-hidden">
               <ProductImage
                 src={displayImages[selectedImage]}
                 alt={product.name}
                 fill
-                className="object-cover"
+                className="object-contain p-4"
                 priority
                 enableZoom={true}
                 zoomScale={2.5}
               />
             </div>
 
-            {/* Thumbnail Gallery - Vierkantiger (rounded-md) */}
+            {/* COOLBLUE: Kleine vierkante thumbnails */}
             {displayImages.length > 1 && (
-              <div className="overflow-x-auto scrollbar-hide -mx-1 px-1">
-                <div className="flex gap-3 min-w-min">
-                  {displayImages.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedImage(idx)}
-                      className={`relative flex-shrink-0 w-24 h-24 bg-white rounded-md overflow-hidden border-2 transition-all ${
-                        selectedImage === idx ? 'border-brand shadow-sm' : 'border-gray-300 hover:border-gray-400'
-                      }`}
-                    >
-                      <ProductImage src={img} alt={`${product.name} ${idx + 1}`} fill className="object-cover" />
-                    </button>
-                  ))}
-                </div>
+              <div className="flex gap-2">
+                {displayImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(idx)}
+                    className={`relative w-16 h-16 bg-white border overflow-hidden transition ${
+                      selectedImage === idx ? 'border-brand border-2' : 'border-gray-300 hover:border-gray-400'
+                    }`}
+                  >
+                    <ProductImage src={img} alt={`${product.name} ${idx + 1}`} fill className="object-contain p-1" />
+                  </button>
+                ))}
               </div>
             )}
           </div>
 
-          {/* Product Info - COMPACT & BOXED */}
-          <div className="space-y-6">
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              {/* Productnaam - COMPACT */}
-              <h1 className="text-2xl md:text-3xl font-bold mb-4 leading-tight text-gray-900">{product.name}</h1>
-              
-              {/* USPs - COMPACT */}
-              <div className="space-y-2 mb-4">
+          {/* COOLBLUE: Info rechts - strakke boxes met borders */}
+          <div className="space-y-4">
+            {/* COOLBLUE: Prijs BOX - prominent, vierkant */}
+            <div className="border border-gray-300 p-4 bg-white">
+              <div className="text-3xl font-bold text-gray-900 mb-2">{formatPrice(finalPrice)}</div>
+              {hasDiscount && (
                 <div className="flex items-center gap-2">
-                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                  <span className="text-sm font-medium text-gray-700">Gratis verzending vanaf €50</span>
+                  <span className="text-sm text-gray-500 line-through">{formatPrice(product.compareAtPrice!)}</span>
+                  <span className="text-sm font-bold text-green-600">-{discount}%</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                  <span className="text-sm font-medium text-gray-700">10.5L capaciteit - Grootste afvalbak</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
-                  <span className="text-sm font-medium text-gray-700">Ultra-stil motor (&lt;40 decibel)</span>
-                </div>
-              </div>
-
-              <Separator variant="float" spacing="sm" />
-
-              {/* Prijs - COMPACT & PROMINENT */}
-              <div className="my-4">
-                <div className="text-3xl md:text-4xl font-bold text-gray-900">{formatPrice(finalPrice)}</div>
-              </div>
+              )}
+              <div className="text-xs text-gray-600 mt-2">Incl. BTW</div>
+            </div>
 
               {/* Marketing USPs */}
 
