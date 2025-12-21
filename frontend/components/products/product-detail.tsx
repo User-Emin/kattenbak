@@ -188,23 +188,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
           </div>
 
-          {/* COOLBLUE: Info rechts - strakke boxes met borders */}
-          <div className="space-y-4">
-            {/* COOLBLUE: Prijs BOX - prominent, vierkant */}
-            <div className="border border-gray-300 p-4 bg-white">
-              <div className="text-3xl font-bold text-gray-900 mb-2">{formatPrice(finalPrice)}</div>
+          {/* COOLBLUE: Info rechts - DIRECT OP ACHTERGROND (GEEN BORDERS!) */}
+          <div className="space-y-6">
+            {/* Prijs - DIRECT OP ACHTERGROND */}
+            <div className="space-y-2">
+              <div className="text-3xl font-bold text-gray-900">{formatPrice(finalPrice)}</div>
               {hasDiscount && (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500 line-through">{formatPrice(product.compareAtPrice!)}</span>
-                  <span className="text-sm font-bold text-green-600">-{discount}%</span>
+                  <span className="text-lg text-gray-500 line-through">{formatPrice(product.compareAtPrice!)}</span>
+                  <span className="bg-red-100 text-red-700 px-2 py-1 text-sm font-bold">-{discount}%</span>
                 </div>
               )}
-              <div className="text-xs text-gray-600 mt-2">Incl. BTW</div>
+              <p className="text-sm text-gray-600">Incl. BTW</p>
             </div>
 
-            {/* COOLBLUE: Color selector in box */}
+            {/* Color Selector - DIRECT OP ACHTERGROND */}
             {product.variants && product.variants.length > 0 && (
-              <div className="border border-gray-300 p-4 bg-white">
+              <div className="space-y-3">
                 <ColorSelector
                   variants={product.variants}
                   selectedVariant={selectedVariant}
@@ -218,15 +218,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             )}
 
-            {/* COOLBLUE: Add to cart BOX - vierkant */}
-            <div className="border border-gray-300 p-4 bg-white">
-              <div className="flex items-stretch gap-2 mb-3">
+            {/* Add to Cart - DIRECT OP ACHTERGROND */}
+            <div className="space-y-3" ref={addToCartButtonRef}>
+              <div className="flex items-stretch gap-2">
                 {/* Quantity - COOLBLUE style */}
-                <div className="flex items-center border border-gray-300">
+                <div className="flex items-center border border-gray-300 bg-white">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
-                    className="w-10 h-12 flex items-center justify-center hover:bg-gray-100 disabled:opacity-30"
+                    className="w-10 h-12 flex items-center justify-center hover:bg-gray-100 disabled:opacity-30 transition"
+                    aria-label="Verminder aantal"
                   >
                     <Minus className="h-4 w-4" />
                   </button>
@@ -234,42 +235,43 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   <button
                     onClick={() => setQuantity(quantity + 1)}
                     disabled={quantity >= product.stock}
-                    className="w-10 h-12 flex items-center justify-center hover:bg-gray-100 disabled:opacity-30"
+                    className="w-10 h-12 flex items-center justify-center hover:bg-gray-100 disabled:opacity-30 transition"
+                    aria-label="Verhoog aantal"
                   >
                     <Plus className="h-4 w-4" />
                   </button>
                 </div>
 
-                {/* COOLBLUE: Vierkante button, NO rounding */}
+                {/* COOLBLUE: Vierkante button, DRY accent color */}
                 <Button
                   onClick={handleAddToCart}
                   disabled={isAdding || product.stock === 0}
-                  className="flex-1 h-12 font-bold bg-accent hover:bg-accent-dark text-white rounded-none"
+                  className="flex-1 h-12 font-bold bg-accent hover:bg-accent-dark text-white rounded-none transition"
                 >
                   {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
                 </Button>
               </div>
 
               {/* COOLBLUE: USPs compact onder button */}
-              <div className="space-y-1 text-xs text-gray-600">
-                <div className="flex items-center gap-1.5">
-                  <Check className="h-3 w-3 text-green-600" />
+              <div className="space-y-2 text-xs text-gray-600">
+                <div className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-600" />
                   <span>Morgen gratis bezorgd</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Check className="h-3 w-3 text-green-600" />
+                <div className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-600" />
                   <span>14 dagen bedenktijd</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Check className="h-3 w-3 text-green-600" />
+                <div className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-600" />
                   <span>Veilig betalen</span>
                 </div>
               </div>
             </div>
 
-            {/* COOLBLUE: Product Specs in box */}
-            <div className="border border-gray-300 p-4 bg-white">
-              <h3 className="font-bold text-sm mb-3 text-gray-900">Product specificaties</h3>
+            {/* Product Specs - DIRECT OP ACHTERGROND */}
+            <div className="space-y-3">
+              <h3 className="font-bold text-sm text-gray-900">Product specificaties</h3>
               <ProductSpecsComparison />
             </div>
           </div>
