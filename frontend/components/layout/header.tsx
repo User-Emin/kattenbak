@@ -9,7 +9,7 @@ import { MiniCart } from "@/components/ui/mini-cart";
 import { USPBanner } from "@/components/ui/usp-banner";
 
 export function Header() {
-  const { itemCount } = useCart();
+  const cart = useCart();
   const pathname = usePathname();
   const router = useRouter();
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -20,6 +20,9 @@ export function Header() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // CRITICAL: Only access itemCount AFTER mount to prevent hydration mismatch
+  const itemCount = mounted ? cart.itemCount : 0;
 
   const isOnCartPage = pathname === '/cart';
   

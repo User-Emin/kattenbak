@@ -26,7 +26,9 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
     router.push(path); // Navigeer naar pagina
   };
 
-  if (itemCount === 0) {
+  // CRITICAL: Use items.length instead of itemCount for rendering logic
+  // to prevent hydration mismatch during SSR/hydration
+  if (items.length === 0) {
     return (
       <div className="p-8 text-center">
         <ShoppingCart className="h-12 w-12 mx-auto mb-4 text-gray-300" />
@@ -42,7 +44,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
     <div className="flex flex-col h-full font-sans">
       {/* Scrollable items section */}
       <div className="flex-1 overflow-y-auto p-6">
-        <h2 className="text-xl font-semibold mb-6">Winkelwagen ({itemCount})</h2>
+        <h2 className="text-xl font-semibold mb-6">Winkelwagen ({items.length})</h2>
         
         <div className="space-y-4">
           {items.map((item) => (

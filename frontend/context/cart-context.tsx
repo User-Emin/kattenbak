@@ -97,6 +97,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [items, mounted]);
 
+  // CRITICAL: Return stable 0 values during SSR to prevent hydration mismatch
+  // Client-side values will be calculated after mount + localStorage load
   const itemCount = mounted ? items.reduce((sum, item) => sum + item.quantity, 0) : 0;
   const subtotal = mounted ? items.reduce((sum, item) => sum + item.product.price * item.quantity, 0) : 0;
 
