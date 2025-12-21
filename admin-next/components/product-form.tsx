@@ -22,6 +22,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { ImageUpload } from '@/components/image-upload';
 import { VideoUpload } from '@/components/video-upload';
+import { VariantManager } from '@/components/variant-manager';
 import { Badge } from '@/components/ui/badge';
 import { Product, ProductFormData } from '@/types/product';
 import { Loader2, CheckCircle, XCircle } from 'lucide-react';
@@ -63,6 +64,7 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
       dimensions: initialData.dimensions || { length: 0, width: 0, height: 0 },
       images: initialData.images,
       videoUrl: initialData.videoUrl || '', // DRY: Video URL
+      variants: initialData.variants || [], // DRY: Variants
       metaTitle: initialData.metaTitle || '',
       metaDescription: initialData.metaDescription || '',
       isActive: initialData.isActive,
@@ -83,6 +85,7 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
       dimensions: { length: 0, width: 0, height: 0 },
       images: [],
       videoUrl: '', // DRY: Default empty
+      variants: [], // DRY: Default empty
       metaTitle: '',
       metaDescription: '',
       isActive: true,
@@ -249,6 +252,32 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
                   <FormDescription>
                     Upload een video bestand (MP4, WebM, OGG) of voeg een YouTube/Vimeo link toe.
                     Video verschijnt op product pagina en homepage (als featured product).
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Variants - Color/Size Options */}
+        <Card>
+          <CardContent className="pt-6 space-y-4">
+            <h2 className="text-lg font-semibold">Varianten (Kleuren/Maten)</h2>
+            
+            <FormField
+              control={form.control}
+              name="variants"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <VariantManager
+                      variants={field.value || []}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Voeg kleur- of maatopties toe. Elke variant kan een eigen prijs, voorraad en afbeeldingen hebben.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

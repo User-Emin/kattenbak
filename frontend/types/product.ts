@@ -24,6 +24,7 @@ export interface Product {
   metaDescription: string | null;
   isActive: boolean;
   isFeatured: boolean;
+  variants?: ProductVariant[]; // DRY: Color/size variants
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
@@ -33,6 +34,19 @@ export interface Product {
     name: string;
     slug: string;
   };
+}
+
+// DRY: Product Variant (Color/Size)
+export interface ProductVariant {
+  id: string;
+  productId?: string;
+  name: string; // e.g. "Premium Wit"
+  colorName: string; // e.g. "Wit"
+  colorHex: string; // e.g. "#ffffff"
+  price: number; // Price difference (+/- from base price)
+  stock: number;
+  sku: string;
+  images: string[]; // Variant-specific images
 }
 
 export interface CreateOrderData {

@@ -10,11 +10,12 @@ import { Separator } from "@/components/ui/separator";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ChatPopup } from "@/components/ui/chat-popup";
 import { StickyCartBar } from "@/components/products/sticky-cart-bar";
+import { ColorSelector } from "@/components/products/color-selector";
 import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/utils";
 import { ShoppingCart, Plus, Minus, Check } from "lucide-react";
 import Link from "next/link";
-import type { Product } from "@/types/product";
+import type { Product, ProductVariant } from "@/types/product";
 import { API_CONFIG, apiFetch } from "@/lib/config";
 import { getProductImage, IMAGE_CONFIG } from "@/lib/image-config";
 import { ProductHighlights } from "@/components/products/product-highlights";
@@ -61,6 +62,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const addToCartButtonRef = useRef<HTMLDivElement>(null);
 
@@ -70,6 +72,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       .then(data => {
         if (data.success && data.data) {
           setProduct(data.data);
+          // DRY: Auto-select first variant if available
+          if (data.data.variants && data.data.variants.length > 0) {
+            setSelectedVariant(data.data.variants[0]);
+          }
         }
         setLoading(false);
       })
@@ -120,8 +126,19 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const images = Array.isArray(product.images) && product.images.length > 0 
     ? product.images 
     : [IMAGE_CONFIG.product.main];
-  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
-  const discount = hasDiscount ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100) : 0;
+  
+  // DRY: If variant is selected and has images, use those instead
+  const displayImages = selectedVariant && selectedVariant.images && selectedVariant.images.length > 0
+    ? selectedVariant.images
+    : images;
+  
+  // DRY: Calculate final price (base + variant adjustment)
+  const finalPrice = selectedVariant 
+    ? product.price + selectedVariant.price 
+    : product.price;
+  
+  const hasDiscount = product.compareAtPrice && product.compareAtPrice > finalPrice;
+  const discount = hasDiscount ? Math.round(((product.compareAtPrice! - finalPrice) / product.compareAtPrice!) * 100) : 0;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -139,7 +156,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             {/* Main Product Image - Klik voor lightbox met zoom */}
             <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-sm">
               <ProductImage
-                src={images[selectedImage]}
+                src={displayImages[selectedImage]}
                 alt={product.name}
                 fill
                 className="object-cover"
@@ -150,10 +167,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             </div>
 
             {/* Thumbnail Gallery - DRY: Horizontaal scrollable, altijd alle images */}
-            {images.length > 1 && (
+            {displayImages.length > 1 && (
               <div className="overflow-x-auto scrollbar-hide -mx-1 px-1">
                 <div className="flex gap-3 min-w-min">
-                  {images.map((img, idx) => (
+                  {displayImages.map((img, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
@@ -195,10 +212,27 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               {/* Prijs - COMPACT */}
               <div className="mb-6">
-                <div className="text-4xl md:text-5xl font-bold text-gray-900">{formatPrice(product.price)}</div>
+                <div className="text-4xl md:text-5xl font-bold text-gray-900">{formatPrice(finalPrice)}</div>
               </div>
 
               {/* Marketing USPs */}
+
+              {/* Color Selector - DRY: Alleen als er variants zijn */}
+              {product.variants && product.variants.length > 0 && (
+                <div className="mb-6">
+                  <ColorSelector
+                    variants={product.variants}
+                    selectedVariant={selectedVariant}
+                    onSelect={(variant) => {
+                      setSelectedVariant(variant);
+                      // DRY: Switch images if variant has custom images
+                      if (variant.images && variant.images.length > 0) {
+                        setSelectedImage(0);
+                      }
+                    }}
+                  />
+                </div>
+              )}
 
               {/* Marketing USPs - Minimaal, zonder kaartje */}
               <div className="mb-6 space-y-2">
