@@ -5,8 +5,27 @@
  */
 
 // API Configuration - ROBUST & MAINTAINABLE - DRY
+// DRY: Runtime API URL detection (client-side only via apiFetch)
+const getApiUrl = (): string => {
+  // Server-side: gebruik env var
+  if (typeof window === 'undefined') {
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3101/api/v1';
+  }
+  
+  // Client-side: dynamic based on hostname
+  const hostname = window.location.hostname;
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:3101/api/v1';
+  }
+  
+  // Production: use same domain
+  return `${window.location.protocol}//${hostname}:3101/api/v1`;
+};
+
 export const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3101/api/v1',
+  get BASE_URL() {
+    return getApiUrl();
+  },
   ENDPOINTS: {
     // Products - DRY: No /api/v1 prefix (already in BASE_URL)
     PRODUCTS: '/products',
