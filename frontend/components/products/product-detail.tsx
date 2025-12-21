@@ -319,7 +319,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       <button
                         onClick={handleAddToCart}
                         disabled={isAdding}
-                        className="w-full px-6 py-3.5 bg-gradient-to-br from-brand to-brand-dark text-white font-bold rounded transition text-base disabled:opacity-50 flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-brand/30"
+                        className="w-full px-6 py-3.5 bg-gradient-to-br from-cart to-cart-hover text-white font-bold rounded transition text-base disabled:opacity-50 flex items-center justify-center gap-2 hover:shadow-cart"
                       >
                         {isAdding ? (
                           <>
@@ -379,7 +379,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       <button
                         onClick={handleAddToCart}
                         disabled={isAdding}
-                        className="flex-1 px-6 py-3 bg-gradient-to-br from-brand to-brand-dark text-white font-bold rounded transition text-base disabled:opacity-50 flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-brand/30"
+                        className="flex-1 px-6 py-3 bg-gradient-to-br from-cart to-cart-hover text-white font-bold rounded transition text-base disabled:opacity-50 flex items-center justify-center gap-2 hover:shadow-cart"
                       >
                         {isAdding ? (
                           <>
@@ -696,7 +696,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <button
                   onClick={handleAddToCart}
                   disabled={isAdding}
-                  className="h-10 px-8 bg-gradient-to-br from-brand to-brand-dark text-white font-bold rounded text-sm transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 whitespace-nowrap hover:shadow-lg hover:shadow-brand/30"
+                  className="h-10 px-8 bg-gradient-to-br from-cart to-cart-hover text-white font-bold rounded text-sm transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 whitespace-nowrap hover:shadow-cart"
                 >
                   {isAdding ? (
                     <>
