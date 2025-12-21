@@ -142,17 +142,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* COOLBLUE-STYLE: Compact container, max-w-6xl */}
-      <div className="max-w-6xl mx-auto px-4 py-6">
+      {/* COOLBLUE-STYLE: Compact container, max-w-6xl, EXPLICIETE #FFFFFF achtergrond */}
+      <div className="max-w-6xl mx-auto px-4 py-6 bg-[#FFFFFF]">
         {/* Breadcrumb - COOLBLUE COMPACT */}
         <nav className="mb-4 text-xs text-gray-600">
-          <Link href="/" className="hover:text-brand">Home</Link>
+          <Link href="/" className="hover:text-brand transition">Home</Link>
           <span className="mx-1">/</span>
           <span className="text-gray-900">{product.name}</span>
         </nav>
 
-        {/* COOLBLUE LAYOUT: Naam BOVEN afbeelding */}
-        <h1 className="text-2xl font-bold mb-4 text-gray-900">{product.name}</h1>
+        {/* COOLBLUE LAYOUT: Naam BOVEN afbeelding - MEDIUM weight (niet bold) */}
+        <h1 className="text-2xl font-semibold mb-4 text-gray-900">{product.name}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6">
           {/* Product Images - COOLBLUE: Vierkant, compact, geen rounding */}
