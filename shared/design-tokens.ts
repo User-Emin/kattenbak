@@ -14,10 +14,10 @@ export const designTokens = {
     brandDark: '#314552',
     brandLight: '#567080',
     
-    // ACCENT - Oranje (CTA buttons, conversie)
-    accent: '#f76402',
-    accentDark: '#d95501',
-    accentLight: '#ff7f1a'
+    // ACCENT - Coolblue Oranje (CTA buttons, conversie)
+    accent: '#f75d0a',
+    accentDark: '#e65400',
+    accentLight: '#ff7f1a',
     
     white: '#ffffff',
     black: '#000000',
