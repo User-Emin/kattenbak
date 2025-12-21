@@ -8,9 +8,28 @@ import { formatPrice } from '@/lib/utils';
 import { getProductImage } from '@/lib/image-config';
 import { X, Plus, Minus, ShoppingCart, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function CartPage() {
   const { items, itemCount, subtotal, removeItem, updateQuantity } = useCart();
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch - wacht tot client-side gemount is
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Tijdens SSR of mounting, toon loading state
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <ShoppingCart className="h-20 w-20 mx-auto mb-4 text-gray-300 animate-pulse" />
+          <p className="text-gray-600">Winkelwagen laden...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (itemCount === 0) {
     return (
