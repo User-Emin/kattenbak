@@ -52,9 +52,17 @@ const COOKIE_MAX_AGE = 7; // dagen
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>([]);
   const [customerData, setCustomerData] = useState<CustomerData | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch - alleen client-side renderen
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Load cart from localStorage on mount
   useEffect(() => {
+    if (!mounted) return; // Wacht tot component gemount is
+    
     const stored = localStorage.getItem(CART_STORAGE_KEY);
     if (stored) {
       try {
@@ -70,10 +78,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (data) {
       setCustomerData(data);
     }
-  }, []);
+  }, [mounted]);
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
+    if (!mounted) return; // Alleen client-side
+    
     if (items.length > 0) {
       localStorage.setItem(
         CART_STORAGE_KEY,
@@ -85,7 +95,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else {
       localStorage.removeItem(CART_STORAGE_KEY);
     }
-  }, [items]);
+  }, [items, mounted]);
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
