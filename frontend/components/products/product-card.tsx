@@ -56,12 +56,12 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           {/* Badges */}
           <div className="absolute top-3 right-3 flex flex-col gap-2">
             {hasDiscount && (
-              <div className="bg-accent text-white text-sm font-bold px-3 py-1.5 rounded-full shadow-lg animate-scale-in">
+              <div className="bg-accent text-white text-sm font-bold px-3 py-1.5 shadow-lg animate-scale-in">
                 -{discountPercentage}%
               </div>
             )}
             {product.isFeatured && (
-              <div className="bg-primary text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
+              <div className="bg-primary text-white text-xs font-medium px-3 py-1.5 shadow-lg flex items-center gap-1">
                 <Star className="h-3 w-3 fill-accent text-accent" />
                 <span>Featured</span>
               </div>
@@ -71,7 +71,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           {/* Out of stock overlay */}
           {product.stock === 0 && (
             <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
-              <span className="bg-white text-foreground px-6 py-3 rounded-lg font-bold shadow-xl">
+              <span className="bg-white text-foreground px-6 py-3 font-bold shadow-xl">
                 Tijdelijk uitverkocht
               </span>
             </div>

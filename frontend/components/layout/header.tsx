@@ -8,7 +8,6 @@ import { ShoppingCart, Menu, X } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { MiniCart } from "@/components/ui/mini-cart";
-import { MovingBanner } from "@/components/ui/moving-banner";
 
 export function Header() {
   const { itemCount } = useCart();
@@ -42,12 +41,8 @@ export function Header() {
 
   return (
     <>
-      {/* Moving USP Banner + Navbar - Sticky als groep (DRY) */}
-      <div className="sticky top-0 z-50">
-        <MovingBanner />
-        
-        {/* Navbar - Direct onder banner */}
-        <header className="bg-brand shadow-md">
+      {/* COOLBLUE: Navbar zonder banner - direct sticky */}
+      <header className="sticky top-0 z-50 bg-brand shadow-md">
         <div className="container mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-18">
             {/* Logo - BALANCED: Goed zichtbaar, correct formaat */}
@@ -137,8 +132,7 @@ export function Header() {
             </nav>
           )}
         </div>
-        </header>
-      </div>
+      </header>
 
       {/* Cart Sidebar */}
       {isCartOpen && (

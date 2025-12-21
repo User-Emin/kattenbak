@@ -38,7 +38,7 @@ export function ColorSelector({ variants, selectedVariant, onSelect }: ColorSele
             type="button"
             onClick={() => onSelect(variant)}
             className={`
-              relative w-12 h-12 rounded-lg border-2 transition-all
+              relative w-12 h-12 border-2 transition-all
               ${
                 selectedVariant?.id === variant.id
                   ? 'border-brand shadow-lg scale-110'
