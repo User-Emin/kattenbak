@@ -55,11 +55,11 @@ export default {
           light: '#567080',
           dark: '#314552',
         },
-        // ACCENT - Oranje (#f76402) voor action buttons
+        // ACCENT - Coolblue Oranje (#f75d0a) voor action buttons
         accent: {
-          DEFAULT: '#f76402',      // Main accent/CTA color
+          DEFAULT: '#f75d0a',      // Coolblue oranje
           light: '#ff7f1a',
-          dark: '#d95501',
+          dark: '#e65400',
         },
         // Verwijder custom cyan - gebruik default Tailwind
         // cyan removed - primary is now BLACK/GRAY
