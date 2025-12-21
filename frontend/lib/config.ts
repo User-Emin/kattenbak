@@ -6,7 +6,7 @@
 
 // API Configuration - ROBUST & MAINTAINABLE - DRY
 // DRY: Runtime API URL detection (client-side only via apiFetch)
-const getApiUrl = (): string => {
+const getRuntimeApiUrl = (): string => {
   // Server-side: gebruik env var
   if (typeof window === 'undefined') {
     return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3101/api/v1';
@@ -24,7 +24,7 @@ const getApiUrl = (): string => {
 
 export const API_CONFIG = {
   get BASE_URL() {
-    return getApiUrl();
+    return getRuntimeApiUrl();
   },
   ENDPOINTS: {
     // Products - DRY: No /api/v1 prefix (already in BASE_URL)
