@@ -14,6 +14,12 @@ export function Header() {
   const router = useRouter();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch - wacht tot client-side mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const isOnCartPage = pathname === '/cart';
   
@@ -84,7 +90,7 @@ export function Header() {
               title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
             >
               <ShoppingCart className="h-6 w-6 text-white" />
-              {itemCount > 0 && (
+              {mounted && itemCount > 0 && (
                 <span className="absolute -top-2 -right-2 min-w-[18px] h-4 bg-accent text-white text-xs rounded-full flex items-center justify-center font-bold px-1">
                   {itemCount}
                 </span>
@@ -102,7 +108,7 @@ export function Header() {
                 title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
               >
                 <ShoppingCart className="h-5 w-5 text-white" />
-                {itemCount > 0 && (
+                {mounted && itemCount > 0 && (
                   <span className="absolute -top-2 -right-2 min-w-[16px] h-4 bg-accent text-white text-xs rounded-full flex items-center justify-center font-bold px-1">
                     {itemCount}
                   </span>
