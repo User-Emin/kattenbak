@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // CRITICAL: generateBuildId to force new chunk names on every build
+  generateBuildId: async () => {
+    return `build-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  },
   // output: "standalone", // DISABLED - causes PM2 issues, use regular mode
   images: {
     unoptimized: true,
