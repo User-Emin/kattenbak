@@ -104,7 +104,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-2 border-brand border-t-transparent" />
       </div>
     );
@@ -112,7 +112,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-medium mb-4">Product niet gevonden</h1>
           <Link href="/">
@@ -141,8 +141,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const discount = hasDiscount ? Math.round(((product.compareAtPrice! - finalPrice) / product.compareAtPrice!) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
+    <div className="min-h-screen bg-white py-8">
+      <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
         {/* Breadcrumb - DIKKE TEKST */}
         <nav className="mb-8 text-sm">
           <Link href="/" className="text-brand hover:text-brand-dark transition font-semibold">Home</Link>
@@ -150,11 +150,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           <span className="text-gray-900 font-semibold">{product.name}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Product Images - Met zoom op hover */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Product Images - VIERKANT & COMPACT */}
           <div className="space-y-4">
-            {/* Main Product Image - Klik voor lightbox met zoom */}
-            <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-sm">
+            {/* Main Product Image - Vierkantiger (rounded-lg) */}
+            <div className="relative aspect-square bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200">
               <ProductImage
                 src={displayImages[selectedImage]}
                 alt={product.name}
@@ -166,7 +166,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               />
             </div>
 
-            {/* Thumbnail Gallery - DRY: Horizontaal scrollable, altijd alle images */}
+            {/* Thumbnail Gallery - Vierkantiger (rounded-md) */}
             {displayImages.length > 1 && (
               <div className="overflow-x-auto scrollbar-hide -mx-1 px-1">
                 <div className="flex gap-3 min-w-min">
@@ -174,8 +174,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`relative flex-shrink-0 w-24 h-24 bg-white rounded-2xl overflow-hidden border-2 transition-all ${
-                        selectedImage === idx ? 'border-brand shadow-sm' : 'border-transparent hover:border-gray-200'
+                      className={`relative flex-shrink-0 w-24 h-24 bg-white rounded-md overflow-hidden border-2 transition-all ${
+                        selectedImage === idx ? 'border-brand shadow-sm' : 'border-gray-300 hover:border-gray-400'
                       }`}
                     >
                       <ProductImage src={img} alt={`${product.name} ${idx + 1}`} fill className="object-cover" />
@@ -186,33 +186,33 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
           </div>
 
-          {/* Product Info - Direct op achtergrond */}
-          <div className="space-y-8">
-            <div>
-              {/* Productnaam - VOLLEDIG AUTOMATISCH - DUNNE FONT */}
-              <h1 className="text-2xl md:text-3xl font-semibold mb-6 leading-tight text-gray-900 tracking-tight">{product.name}</h1>
+          {/* Product Info - COMPACT & BOXED */}
+          <div className="space-y-6">
+            <div className="bg-white border border-gray-200 rounded-lg p-6">
+              {/* Productnaam - COMPACT */}
+              <h1 className="text-2xl md:text-3xl font-bold mb-4 leading-tight text-gray-900">{product.name}</h1>
               
-              {/* USPs - DUNNE FONT + ORIGINEEL */}
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-3">
-                  <Check className="h-6 w-6 text-brand flex-shrink-0" />
-                  <span className="text-base font-semibold text-gray-900">Gratis verzending vanaf €50</span>
+              {/* USPs - COMPACT */}
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center gap-2">
+                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                  <span className="text-sm font-medium text-gray-700">Gratis verzending vanaf €50</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Check className="h-6 w-6 text-brand flex-shrink-0" />
-                  <span className="text-base font-semibold text-gray-900">10.5L capaciteit - Grootste afvalbak</span>
+                <div className="flex items-center gap-2">
+                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                  <span className="text-sm font-medium text-gray-700">10.5L capaciteit - Grootste afvalbak</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Check className="h-6 w-6 text-brand flex-shrink-0" />
-                  <span className="text-base font-semibold text-gray-900">Ultra-stil motor (&lt;40 decibel)</span>
+                <div className="flex items-center gap-2">
+                  <Check className="h-5 w-5 text-brand flex-shrink-0" />
+                  <span className="text-sm font-medium text-gray-700">Ultra-stil motor (&lt;40 decibel)</span>
                 </div>
               </div>
 
-              <Separator variant="float" spacing="md" />
+              <Separator variant="float" spacing="sm" />
 
-              {/* Prijs - COMPACT */}
-              <div className="mb-6">
-                <div className="text-4xl md:text-5xl font-bold text-gray-900">{formatPrice(finalPrice)}</div>
+              {/* Prijs - COMPACT & PROMINENT */}
+              <div className="my-4">
+                <div className="text-3xl md:text-4xl font-bold text-gray-900">{formatPrice(finalPrice)}</div>
               </div>
 
               {/* Marketing USPs */}
@@ -318,7 +318,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 posterUrl={product.images?.[0] || ''}
                 type="product"
                 controls
-                className="w-full aspect-video rounded-2xl overflow-hidden shadow-lg"
+                className="w-full aspect-video rounded-lg overflow-hidden shadow-md border border-gray-200"
               />
               <p className="text-center text-sm text-gray-500 mt-4">
                 🎥 Bekijk de demo video

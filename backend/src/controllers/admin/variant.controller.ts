@@ -1,0 +1,116 @@
+/**
+ * VARIANT CONTROLLER - Admin endpoints
+ * DRY, secure, type-safe
+ */
+
+import { Request, Response, NextFunction } from 'express';
+import { VariantService } from '@/services/variant.service';
+import { successResponse } from '@/utils/response.util';
+import { z } from 'zod';
+
+// DRY: Validation schemas
+const createVariantSchema = z.object({
+  productId: z.string().min(1),
+  name: z.string().min(1),
+  colorName: z.string().min(1),
+  colorHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
+  priceAdjustment: z.number(),
+  sku: z.string().min(1),
+  stock: z.number().int().min(0),
+  images: z.array(z.string()).optional(),
+  isActive: z.boolean().optional(),
+});
+
+const updateVariantSchema = z.object({
+  name: z.string().min(1).optional(),
+  colorName: z.string().min(1).optional(),
+  colorHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
+  priceAdjustment: z.number().optional(),
+  sku: z.string().min(1).optional(),
+  stock: z.number().int().min(0).optional(),
+  images: z.array(z.string()).optional(),
+  isActive: z.boolean().optional(),
+});
+
+export class VariantController {
+  /**
+   * GET /api/v1/admin/variants?productId=xxx
+   * Get variants by product ID
+   */
+  static async getVariantsByProduct(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { productId } = req.query;
+
+      if (!productId || typeof productId !== 'string') {
+        return res.status(400).json({ error: 'productId is required' });
+      }
+
+      const variants = await VariantService.getVariantsByProductId(productId);
+
+      res.json(successResponse({ data: { variants } }));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * GET /api/v1/admin/variants/:id
+   * Get variant by ID
+   */
+  static async getVariantById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const variant = await VariantService.getVariantById(id);
+
+      res.json(successResponse({ data: variant }));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * POST /api/v1/admin/variants
+   * Create new variant
+   */
+  static async createVariant(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = createVariantSchema.parse(req.body);
+      const variant = await VariantService.createVariant(data);
+
+      res.status(201).json(successResponse({ data: variant }));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * PUT /api/v1/admin/variants/:id
+   * Update variant
+   */
+  static async updateVariant(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const data = updateVariantSchema.parse(req.body);
+      const variant = await VariantService.updateVariant(id, data);
+
+      res.json(successResponse({ data: variant }));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * DELETE /api/v1/admin/variants/:id
+   * Delete variant
+   */
+  static async deleteVariant(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      await VariantService.deleteVariant(id);
+
+      res.json(successResponse({ data: { success: true } }));
+    } catch (error) {
+      next(error);
+    }
+  }
+}
