@@ -23,6 +23,7 @@ export function ChatPopup() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
+  const [showPulse, setShowPulse] = useState(false);
 
   // Sticky cart detection
   useEffect(() => {
@@ -45,6 +46,42 @@ export function ChatPopup() {
     checkStickyCart(); // Initial check
     
     return () => clearInterval(interval);
+  }, []);
+
+  // "Klik mij" golf effect bij scrollen
+  useEffect(() => {
+    let pulseTimeout: NodeJS.Timeout;
+    let scrollTimeout: NodeJS.Timeout;
+    
+    const handleScroll = () => {
+      // Clear existing timeout
+      clearTimeout(scrollTimeout);
+      
+      // Start pulse na 1s stilstand
+      scrollTimeout = setTimeout(() => {
+        setShowPulse(true);
+        
+        // Stop pulse na 3s
+        pulseTimeout = setTimeout(() => {
+          setShowPulse(false);
+        }, 3000);
+      }, 1000);
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Initial pulse na 2s
+    const initialPulse = setTimeout(() => {
+      setShowPulse(true);
+      setTimeout(() => setShowPulse(false), 3000);
+    }, 2000);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(pulseTimeout);
+      clearTimeout(scrollTimeout);
+      clearTimeout(initialPulse);
+    };
   }, []);
 
   const handleSendMessage = async () => {
@@ -102,38 +139,50 @@ export function ChatPopup() {
     }
   };
 
-  // Calculate button position based on sticky cart
+  // Calculate button position: NET BOVEN sticky cart (90px = sticky cart height)
   const buttonBottomClass = stickyCartVisible 
-    ? 'bottom-32 md:bottom-24' // 8rem = sticky cart height
-    : 'bottom-8 md:bottom-8';
+    ? 'bottom-[90px]' // Net boven sticky cart
+    : 'bottom-6';     // Normaal rechtsbeneden
 
   return (
     <>
-      {/* Floating Chat Button - COOLBLUE GOLF EFFECT + HEADSET SYMBOOL */}
+      {/* Floating Chat Button - RECHTSBENEDEN + "KLIK MIJ" GOLF EFFECT */}
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className={`fixed right-4 z-[100] ${buttonBottomClass} transition-all duration-300
+        onClick={() => {
+          setIsExpanded(!isExpanded);
+          setShowPulse(false); // Stop pulse bij klik
+        }}
+        className={`fixed right-6 z-[100] ${buttonBottomClass} transition-all duration-500 ease-out
                    bg-accent hover:bg-accent-dark text-white 
-                   w-14 h-14 rounded-none shadow-lg hover:shadow-xl
+                   w-16 h-16 rounded-none shadow-lg hover:shadow-2xl
                    focus:outline-none focus:ring-2 focus:ring-accent/50
-                   active:scale-95 flex items-center justify-center
-                   relative overflow-hidden group`}
+                   flex items-center justify-center
+                   relative overflow-visible group
+                   ${showPulse ? 'animate-pulse-subtle' : ''}`}
         aria-label="Open chat"
       >
-        {/* Golf effect */}
-        <span className="absolute inset-0 bg-white/20 rounded-full scale-0 group-hover:scale-150 transition-transform duration-500 ease-out"></span>
-        <span className="absolute inset-0 bg-white/10 rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 ease-out delay-100"></span>
+        {/* "KLIK MIJ" Golf effect - alleen bij scroll */}
+        {showPulse && !isExpanded && (
+          <>
+            <span className="absolute inset-0 bg-accent/40 scale-100 animate-ping-slow rounded-none"></span>
+            <span className="absolute inset-0 bg-accent/20 scale-100 animate-ping-slower rounded-none"></span>
+          </>
+        )}
         
-        {/* Headset icon (custom) */}
+        {/* Hover golf effect */}
+        <span className="absolute inset-0 bg-white/20 scale-0 group-hover:scale-150 transition-transform duration-500 ease-out origin-center"></span>
+        <span className="absolute inset-0 bg-white/10 scale-0 group-hover:scale-150 transition-transform duration-700 ease-out delay-100 origin-center"></span>
+        
+        {/* Headset icon (custom smooth vector) */}
         {isExpanded ? (
-          <X className="w-6 h-6 relative z-10" />
+          <X className="w-7 h-7 relative z-10 transition-transform duration-200" />
         ) : (
           <svg 
-            className="w-6 h-6 relative z-10" 
+            className="w-7 h-7 relative z-10 transition-transform duration-200 group-hover:scale-110" 
             viewBox="0 0 24 24" 
             fill="none" 
             stroke="currentColor" 
-            strokeWidth="2" 
+            strokeWidth="2.5" 
             strokeLinecap="round" 
             strokeLinejoin="round"
           >
