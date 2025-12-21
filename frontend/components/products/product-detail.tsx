@@ -159,10 +159,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         {/* COOLBLUE LAYOUT: Naam BOVEN afbeelding */}
         <h1 className="text-2xl font-semibold mb-4 text-gray-900">{product.name}</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6">
-          {/* Product Images - COOLBLUE: Vierkant, compact */}
+        <div className="grid grid-cols-1 lg:grid-cols-[500px_1fr] gap-8">
+          {/* Product Images - COOLBLUE: GROTER en BREDER */}
           <div className="space-y-3">
-            {/* COOLBLUE: Vierkante image, volledig zichtbaar */}
+            {/* COOLBLUE: Vierkante image, volledig zichtbaar, GROOT */}
             <div className="relative aspect-square bg-white overflow-hidden">
               <ProductImage
                 src={displayImages[selectedImage]}
@@ -193,8 +193,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
           </div>
 
-          {/* COOLBLUE: Info rechts - DIRECT OP ACHTERGROND (GEEN BORDERS!) */}
-          <div className="space-y-6">
+          {/* COOLBLUE: Info rechts - MEER NAAR RECHTS */}
+          <div className="space-y-6 lg:pl-8">
             {/* Prijs - RUSTIGER */}
             <div className="space-y-2">
               <div className="text-2xl font-semibold text-gray-900">{formatPrice(finalPrice)}</div>
@@ -219,13 +219,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
             {/* Add to Cart - COOLBLUE EYECATCHERS */}
             <div className="space-y-4" ref={addToCartButtonRef}>
-              {/* COOLBLUE: Vierkante button, korter */}
+              {/* COOLBLUE: Vierkante button, KORT zoals Coolblue exact */}
               <Button
                 onClick={handleAddToCart}
                 disabled={isAdding || product.stock === 0}
                 className="w-full h-12 font-bold bg-accent hover:bg-accent-dark text-white rounded-none transition"
               >
-                {isAdding ? 'Toevoegen...' : 'In mijn winkelwagen'}
+                {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
               </Button>
               
               {/* COOLBLUE EYECATCHERS - onder button */}
