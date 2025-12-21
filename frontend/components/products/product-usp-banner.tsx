@@ -29,15 +29,16 @@ export function ProductUspBanner() {
   return (
     <div className="bg-white border-b border-gray-200 py-3">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-center md:justify-start gap-6 md:gap-8 flex-wrap">
+        <div className="flex items-center justify-center md:justify-start gap-8 flex-wrap">
           {usps.map((usp, idx) => {
             const Icon = usp.icon;
             return (
-              <div key={idx} className="flex items-center gap-2">
-                <div className="flex-shrink-0 w-5 h-5 text-accent">
-                  <Icon className="w-full h-full" strokeWidth={2} />
+              <div key={idx} className="flex items-center gap-2.5">
+                {/* CONSISTENT: Alle iconen zelfde grootte en spacing */}
+                <div className="flex-shrink-0 w-5 h-5 text-accent flex items-center justify-center">
+                  <Icon className="w-5 h-5" strokeWidth={2.5} />
                 </div>
-                <span className="text-sm text-gray-700">
+                <span className="text-sm text-gray-700 whitespace-nowrap">
                   <strong className="font-semibold text-gray-900">{usp.highlight}</strong>
                   {' '}{usp.text}
                 </span>

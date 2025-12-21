@@ -219,16 +219,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
             {/* Add to Cart - COOLBLUE EYECATCHERS */}
             <div className="space-y-4" ref={addToCartButtonRef}>
-              {/* COOLBLUE: Vierkante button, KORT zoals Coolblue exact */}
-              <Button
+              {/* COOLBLUE: ECHT ORANJE BUTTON zoals sticky cart! */}
+              <button
                 onClick={handleAddToCart}
                 disabled={isAdding || product.stock === 0}
-                className="w-full h-12 font-bold bg-accent hover:bg-accent-dark text-white rounded-none transition"
+                className="w-full h-12 bg-accent hover:bg-accent-dark text-white font-bold px-6 py-2.5 rounded-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
-              </Button>
+              </button>
               
-              {/* COOLBLUE EYECATCHERS - onder button */}
+              {/* COOLBLUE EYECATCHERS - onder button (ZONDER klantbeoordeling) */}
               <div className="space-y-2 text-xs text-gray-700">
                 <div className="flex items-center gap-2">
                   <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
@@ -241,10 +241,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <div className="flex items-center gap-2">
                   <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
                   <span><strong>Gratis</strong> ruilen binnen 30 dagen</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span>Klantbeoordeling <strong>9,2/10</strong></span>
                 </div>
               </div>
             </div>
