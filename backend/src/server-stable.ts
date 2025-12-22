@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import adminAuthRoutes from './routes/admin-auth.routes';
+import adminRoutes from './routes/admin'; // ✅ FIX: Import admin routes
 
 // Load environment variables
 dotenv.config();
@@ -213,6 +214,9 @@ app.get('/api/v1/contact', (req: Request, res: Response) => {
 
 // SECURITY: Admin authentication routes (JWT + bcrypt)
 app.use('/api/v1/admin/auth', adminAuthRoutes);
+
+// ADMIN API: Full admin panel routes (products, orders, returns, etc.)
+app.use('/api/v1/admin', adminRoutes);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json(error(`Route ${req.method} ${req.path} not found`));
