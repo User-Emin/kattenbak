@@ -158,10 +158,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           <span className="text-sm text-gray-900">{product.name}</span>
         </nav>
 
+        {/* Titel BOVEN afbeelding (niet overlay) */}
+        <h1 className="text-2xl font-semibold mb-4 text-gray-900">{product.name}</h1>
+
         <div className="grid grid-cols-1 lg:grid-cols-[500px_1fr] gap-6">
-          {/* Product Images - NAAM OP AFBEELDING */}
+          {/* Product Images - GEEN overlay titel meer */}
           <div className="space-y-3">
-            {/* COOLBLUE: Titel OP de afbeelding als overlay */}
+            {/* Afbeelding zonder titel overlay */}
             <div className="relative aspect-square bg-white overflow-hidden">
               <ProductImage
                 src={displayImages[selectedImage]}
@@ -172,10 +175,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 enableZoom={true}
                 zoomScale={2.5}
               />
-              {/* Naam overlay - direct op afbeelding */}
-              <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent p-4">
-                <h1 className="text-2xl font-semibold text-white drop-shadow-lg">{product.name}</h1>
-              </div>
             </div>
 
             {/* COOLBLUE: Kleine vierkante thumbnails */}
