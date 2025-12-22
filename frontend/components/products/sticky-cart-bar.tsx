@@ -58,6 +58,7 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
           ? 'translate-y-0 opacity-100' 
           : 'translate-y-full opacity-0 pointer-events-none'
       }`}
+      style={{ paddingBottom: '80px' }} // Ruimte voor chat button (64px + 16px margin)
     >
       {/* Main bar - RUSTIGER DESIGN */}
       <div className="bg-white border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">

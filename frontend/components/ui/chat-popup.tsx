@@ -139,20 +139,16 @@ export function ChatPopup() {
     }
   };
 
-  // Calculate button position: NET BOVEN sticky cart (90px = sticky cart height)
-  const buttonBottomClass = stickyCartVisible 
-    ? 'bottom-[90px]' // Net boven sticky cart
-    : 'bottom-6';     // Normaal rechtsbeneden
-
+  // Chat button blijft ALTIJD rechtsbeneden viewport (geen beweging!)
   return (
     <>
-      {/* Floating Chat Button - RECHTSBENEDEN + "KLIK MIJ" GOLF EFFECT */}
+      {/* Floating Chat Button - VAST RECHTSBENEDEN VIEWPORT */}
       <button
         onClick={() => {
           setIsExpanded(!isExpanded);
           setShowPulse(false); // Stop pulse bij klik
         }}
-        className={`fixed right-6 z-[100] ${buttonBottomClass} transition-all duration-500 ease-out
+        className={`fixed right-6 bottom-6 z-[100] transition-all duration-500 ease-out
                    bg-accent hover:bg-accent-dark text-white 
                    w-16 h-16 rounded-none shadow-lg hover:shadow-2xl
                    focus:outline-none focus:ring-2 focus:ring-accent/50
