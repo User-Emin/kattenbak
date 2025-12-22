@@ -8,6 +8,7 @@ import { ChatPopup } from "@/components/ui/chat-popup";
 import { Separator } from "@/components/ui/separator";
 import { VideoPlayer } from "@/components/ui/video-player";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { ProductUspBanner } from "@/components/products/product-usp-banner";
 import { ArrowRight, Play, Check, MessageCircle, ChevronDown, ChevronUp, Package, Volume2, Sparkles, Smartphone } from "lucide-react";
 import type { Product } from "@/types/product";
 import { API_CONFIG, SITE_CONFIG, apiFetch } from "@/lib/config";
@@ -127,6 +128,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ✅ USP BANNER - ONDER HERO */}
+      <ProductUspBanner />
 
       <Separator variant="float" spacing="md" />
 
