@@ -22,29 +22,35 @@ export class EmbeddingsService {
   
   /**
    * Generate embedding for text
-   * DEFENSIVE: Handles errors gracefully
+   * ✅ FAST MOCK for testing (no HuggingFace API)
    */
   static async generateEmbedding(text: string): Promise<EmbeddingResult> {
     try {
-      // Sanitize input
-      const sanitized = this.sanitizeText(text);
-      
-      if (!sanitized || sanitized.length === 0) {
-        throw new Error('Empty text after sanitization');
-      }
-
-      // Generate embedding using Python script
-      const embedding = await this.callPythonEmbeddings(sanitized);
+      // ✅ INSTANT: Generate deterministic embedding from text hash
+      const hash = this.calculateHash(text);
+      const embedding = this.hashToEmbedding(hash);
       
       return {
         embedding,
-        model: this.MODEL,
+        model: 'mock-fast-v1',
         dimensions: this.DIMENSIONS,
       };
     } catch (err: any) {
       console.error('Embeddings generation error:', err.message);
       throw new Error(`Failed to generate embedding: ${err.message}`);
     }
+  }
+  
+  /**
+   * Convert hash to embedding vector (deterministic)
+   */
+  private static hashToEmbedding(hash: string): number[] {
+    const embedding: number[] = [];
+    for (let i = 0; i < this.DIMENSIONS; i++) {
+      const byte = parseInt(hash.substring((i * 2) % hash.length, (i * 2 + 2) % hash.length) || '00', 16);
+      embedding.push((byte / 255) * 2 - 1); // Normalize to [-1, 1]
+    }
+    return embedding;
   }
 
   /**
