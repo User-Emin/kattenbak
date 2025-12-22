@@ -4,9 +4,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import fs from 'fs';
-import path from 'path';
-import adminAuthRoutes from './routes/admin-auth.routes';
-import adminRoutes from './routes/admin'; // ✅ FIX: Import admin routes
+// import adminAuthRoutes from './routes/admin-auth.routes'; // DISABLED
+// import adminRoutes from './routes/admin'; // DISABLED
 import ragRoutes from './routes/rag.routes'; // ✅ RAG Chat routes
 
 // Load environment variables
