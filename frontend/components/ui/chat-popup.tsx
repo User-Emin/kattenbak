@@ -118,13 +118,14 @@ export function ChatPopup() {
   // Chat button blijft ALTIJD rechtsbeneden viewport (geen beweging!)
   return (
     <>
-      {/* Floating Chat Button - ROND rechtsbeneden viewport */}
+      {/* Floating Chat Button - ROND rechtsbeneden viewport - FORCE FIXED! */}
       <button
         onClick={() => {
           setIsExpanded(!isExpanded);
           setShowPulse(false); // Stop pulse bij klik
         }}
-        className={`fixed right-6 bottom-6 z-[100] transition-all duration-500 ease-out
+        style={{ position: 'fixed' }}
+        className={`right-6 bottom-6 z-[100] transition-all duration-500 ease-out
                    bg-accent hover:bg-accent-dark text-white 
                    w-16 h-16 rounded-full shadow-lg hover:shadow-2xl
                    focus:outline-none focus:ring-2 focus:ring-accent/50
