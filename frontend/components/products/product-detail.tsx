@@ -225,7 +225,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding || product.stock === 0}
-                className="w-full h-12 bg-accent hover:bg-accent-dark text-white font-bold px-6 py-2.5 rounded-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-12 bg-accent hover:bg-accent-dark text-white font-bold px-6 py-2.5 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
               </button>

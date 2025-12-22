@@ -105,10 +105,10 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
                 </button>
               </div>
 
-              {/* Add to cart button - RECHTHOEK ORANJE */}
+              {/* Add to cart button - SUBTIELE RONDE HOEKEN */}
               <button
                 onClick={handleAddToCart}
-                className="bg-accent hover:bg-accent-dark text-white font-bold px-6 py-2.5 rounded-none transition-colors flex items-center gap-2"
+                className="bg-accent hover:bg-accent-dark text-white font-bold px-6 py-2.5 rounded-sm transition-colors flex items-center gap-2"
               >
                 <ShoppingCart className="h-4 w-4" />
                 <span className="hidden sm:inline">In Winkelwagen</span>
