@@ -3,11 +3,39 @@ import type { Application, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 import adminAuthRoutes from './routes/admin-auth.routes';
 import adminRoutes from './routes/admin'; // ✅ FIX: Import admin routes
+import ragRoutes from './routes/rag.routes'; // ✅ RAG Chat routes
 
 // Load environment variables
 dotenv.config();
+
+/**
+ * SECURE: Load Claude API key from /Emin/claudekey (NOOIT in git/chat!)
+ */
+const CLAUDE_KEY_PATH = '/Emin/claudekey';
+let CLAUDE_API_KEY = '';
+
+try {
+  if (fs.existsSync(CLAUDE_KEY_PATH)) {
+    const keyContent = fs.readFileSync(CLAUDE_KEY_PATH, 'utf-8');
+    // Extract key from file (skip comments/placeholders)
+    const keyMatch = keyContent.match(/sk-ant-api03-[A-Za-z0-9_-]+/);
+    if (keyMatch) {
+      CLAUDE_API_KEY = keyMatch[0];
+      process.env.CLAUDE_API_KEY = CLAUDE_API_KEY;
+      console.log('✅ Claude API key loaded from /Emin/claudekey (SECURE)');
+    } else {
+      console.warn('⚠️  Claude key file exists but contains placeholder');
+    }
+  } else {
+    console.warn('⚠️  Claude key file not found at', CLAUDE_KEY_PATH);
+  }
+} catch (err: any) {
+  console.error('❌ Error loading Claude key:', err.message);
+}
 
 const app: Application = express();
 const PORT = 3101;
@@ -217,6 +245,9 @@ app.use('/api/v1/admin/auth', adminAuthRoutes);
 
 // ADMIN API: Full admin panel routes (products, orders, returns, etc.)
 app.use('/api/v1/admin', adminRoutes);
+
+// ✅ RAG API: AI Chat (Claude + Vector Store)
+app.use('/api/v1/rag', ragRoutes);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json(error(`Route ${req.method} ${req.path} not found`));
