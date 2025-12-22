@@ -140,17 +140,19 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
             <Button 
               size="lg" 
               fullWidth 
+              variant="outline"
               className="border-2 border-gray-300 hover:border-accent bg-white text-gray-900 font-semibold rounded-sm"
               onClick={() => handleNavigate('/cart')}
             >
               {SHARED_CONTENT.buttons.viewCart}
             </Button>
           
-          {/* ✅ ORANJE BUTTON MET WITTE TEKST - Dynamisch via design tokens */}
+          {/* ✅ ORANJE BUTTON MET WITTE TEKST - Gebruik CTA variant */}
           <Button 
             size="lg" 
             fullWidth 
-            className="bg-[#f76402] hover:bg-[#e55a02] text-white font-semibold shadow-lg rounded-sm"
+            variant="cta"
+            className="rounded-sm"
             onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
           >
             {SHARED_CONTENT.buttons.checkout}
