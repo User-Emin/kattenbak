@@ -161,8 +161,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         {/* Titel BOVEN afbeelding (niet overlay) */}
         <h1 className="text-2xl font-semibold mb-4 text-gray-900">{product.name}</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[500px_1fr] gap-6">
-          {/* Product Images - GEEN overlay titel meer */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
+          {/* Product Images - BREED zoals Coolblue */}
           <div className="space-y-3">
             {/* Afbeelding zonder titel overlay */}
             <div className="relative aspect-square bg-white overflow-hidden">
