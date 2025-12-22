@@ -22,7 +22,7 @@ export default function CartPage() {
             Ontdek onze premium zelfreinigende kattenbak
           </p>
           <Link href="/">
-            <Button size="lg" variant="primary" rightIcon={<ArrowRight className="h-5 w-5" />}>
+            <Button size="lg" className="bg-accent hover:bg-accent-dark text-white font-semibold px-8 rounded" rightIcon={<ArrowRight className="h-5 w-5" />}>
               Verder Winkelen
             </Button>
           </Link>
@@ -82,7 +82,7 @@ export default function CartPage() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
+                          className="w-9 h-9 sm:w-10 sm:h-10 rounded border-2 border-gray-300 hover:border-accent flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
                         >
                           <Minus className="h-3 w-3 sm:h-4 sm:w-4" />
                         </button>
@@ -93,7 +93,7 @@ export default function CartPage() {
 
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
+                          className="w-9 h-9 sm:w-10 sm:h-10 rounded border-2 border-gray-300 hover:border-accent flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
                           disabled={item.quantity >= item.product.stock}
                         >
                           <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -114,9 +114,9 @@ export default function CartPage() {
             ))}
           </div>
 
-          {/* Order Summary - ZELFDE MARGIN ALS PRODUCTEN */}
+          {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-50 p-4 sm:p-6 lg:p-8 rounded-lg sticky top-8">
+            <div className="bg-white border border-gray-200 p-4 sm:p-6 lg:p-8 rounded sticky top-24">
               <h2 className="text-xl font-semibold mb-6">Overzicht</h2>
 
               <div className="space-y-3 mb-6">
@@ -144,8 +144,9 @@ export default function CartPage() {
               </div>
 
               <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
-                <Button variant="cta" size="lg" fullWidth rightIcon={<ArrowRight className="h-5 w-5" />}>
-                  Afrekenen
+                <Button className="w-full bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-6 rounded flex items-center justify-center gap-2" size="lg">
+                  <span>Afrekenen</span>
+                  <ArrowRight className="h-5 w-5" />
                 </Button>
               </Link>
 

@@ -33,7 +33,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
       <div className={`p-8 text-center ${COMPONENT_COLORS.sidebar.bg}`}>
         <ShoppingCart className="h-12 w-12 mx-auto mb-4 text-gray-300" />
         <p className="text-gray-600 mb-4">Je winkelwagen is leeg</p>
-        <Button variant="outline" onClick={() => handleNavigate('/')}>
+        <Button variant="outline" className="border-2 border-gray-300 hover:border-accent rounded px-6" onClick={() => handleNavigate('/')}>
           Verder winkelen
         </Button>
       </div>
@@ -69,7 +69,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                    className={`w-9 h-9 rounded-lg border-2 ${COMPONENT_COLORS.sidebar.border} hover:border-gray-400 flex items-center justify-center hover:bg-gray-100 transition active:scale-95 ${COMPONENT_COLORS.sidebar.text}`}
+                    className={`w-9 h-9 rounded border-2 ${COMPONENT_COLORS.sidebar.border} hover:border-accent flex items-center justify-center hover:bg-gray-100 transition active:scale-95 ${COMPONENT_COLORS.sidebar.text}`}
                     aria-label="Verlaag aantal"
                   >
                     <Minus className="h-3 w-3" />
@@ -81,7 +81,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
                   
                   <button
                     onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                    className={`w-9 h-9 rounded-lg border-2 ${COMPONENT_COLORS.sidebar.border} hover:border-gray-400 flex items-center justify-center hover:bg-gray-100 transition active:scale-95 ${COMPONENT_COLORS.sidebar.text}`}
+                    className={`w-9 h-9 rounded border-2 ${COMPONENT_COLORS.sidebar.border} hover:border-accent flex items-center justify-center hover:bg-gray-100 transition active:scale-95 ${COMPONENT_COLORS.sidebar.text}`}
                     aria-label="Verhoog aantal"
                     disabled={item.quantity >= item.product.stock}
                   >
@@ -114,7 +114,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
             <Button 
               size="lg" 
               fullWidth 
-              className={COMPONENT_COLORS.sidebar.button}
+              className="border-2 border-gray-300 hover:border-accent bg-white text-gray-900 font-semibold rounded"
               onClick={() => handleNavigate('/cart')}
             >
               {SHARED_CONTENT.buttons.viewCart}
@@ -123,7 +123,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
             <Button 
               size="lg" 
               fullWidth 
-              className={COMPONENT_COLORS.sidebar.ctaButton}
+              className="bg-accent hover:bg-accent-dark text-white font-semibold rounded"
               onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
             >
               {SHARED_CONTENT.buttons.checkout}

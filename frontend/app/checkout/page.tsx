@@ -151,10 +151,10 @@ function CheckoutContent() {
   const total = subtotal + shipping + tax;
 
   return (
-    <div className="bg-gray-50 min-h-screen py-12">
+    <div className="bg-white min-h-screen py-12">
       <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-semibold mb-3 text-gray-900">Afrekenen</h1>
+          <h1 className="text-3xl md:text-4xl font-semibold mb-2 text-gray-900">Afrekenen</h1>
           <p className="text-gray-600 text-base">Vul je gegevens in voor een snelle checkout</p>
         </div>
 
@@ -373,8 +373,18 @@ function CheckoutContent() {
 
                 {/* CTA Button rechts - Prominent */}
                 <div className="mt-6">
-                  <Button type="submit" variant="cta" size="lg" fullWidth disabled={isProcessing} loading={isProcessing} leftIcon={<CreditCard className="h-5 w-5" />}>
-                    Betalen - {formatPrice(total)}
+                  <Button type="submit" className="w-full bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-6 rounded flex items-center justify-center gap-2" size="lg" disabled={isProcessing}>
+                    {isProcessing ? (
+                      <>
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                        <span>Verwerken...</span>
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard className="h-5 w-5" />
+                        <span>Betalen - {formatPrice(total)}</span>
+                      </>
+                    )}
                   </Button>
                   <p className="text-xs text-gray-500 text-center mt-3">
                     Veilig betalen via Mollie

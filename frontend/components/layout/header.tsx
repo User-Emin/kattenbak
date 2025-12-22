@@ -41,8 +41,8 @@ export function Header() {
 
   return (
     <>
-      {/* COOLBLUE: Navbar zonder banner - direct sticky */}
-      <header className="sticky top-0 z-50 bg-brand shadow-md">
+      {/* COOLBLUE: Navbar ZONDER shadow - clean */}
+      <header className="sticky top-0 z-50 bg-brand">
         <div className="container mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-18">
             {/* Logo - BALANCED: Goed zichtbaar, correct formaat */}
