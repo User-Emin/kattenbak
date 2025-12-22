@@ -64,19 +64,20 @@ export default {
         // Verwijder custom cyan - gebruik default Tailwind
         // cyan removed - primary is now BLACK/GRAY
       },
+      // ✅ SUBTIELE RONDE HOEKEN (Coolblue style - niet stug!)
       borderRadius: {
-        'none': '0',      // ✅ VIERKANT
-        'sm': '0',        // ✅ Force vierkant
-        'DEFAULT': '0',   // ✅ Force vierkant
-        'md': '0',        // ✅ Force vierkant  
-        'lg': '0',        // ✅ Force vierkant
-        'xl': '0',        // ✅ Force vierkant
-        '2xl': '0',       // ✅ Force vierkant
-        '3xl': '0',       // ✅ Force vierkant
-        '4xl': '0',       // ✅ Force vierkant (was 2rem)
-        '5xl': '0',       // ✅ Force vierkant (was 2.5rem)
-        'pill': '0',      // ✅ Force vierkant (was 9999px)
-        'full': '0',      // ✅ Force vierkant (no circles!)
+        'none': '0',          // Voor specifieke vierkante elementen
+        'sm': '0.25rem',      // 4px - Subtiele ronde hoek (buttons, inputs)
+        'DEFAULT': '0.5rem',  // 8px - Default ronde hoek (cards, containers)
+        'md': '0.5rem',       // 8px - Cards
+        'lg': '0.75rem',      // 12px - Grote cards
+        'xl': '1rem',         // 16px - Hero sections
+        '2xl': '0',           // Disabled
+        '3xl': '0',           // Disabled
+        '4xl': '0',           // Disabled
+        '5xl': '0',           // Disabled
+        'pill': '0',          // Disabled
+        'full': '9999px',     // ✅ ROND voor chat button!
       },
       fontFamily: {
         sans: ['var(--font-roboto-flex)', 'system-ui', 'sans-serif'],

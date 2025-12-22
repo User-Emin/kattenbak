@@ -137,20 +137,20 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
         
         {/* Buttons - Oranje met witte tekst */}
         <div className="space-y-3">
-          <Button 
-            size="lg" 
-            fullWidth 
-            className="border-2 border-gray-300 hover:border-accent bg-white text-gray-900 font-semibold"
-            onClick={() => handleNavigate('/cart')}
-          >
-            {SHARED_CONTENT.buttons.viewCart}
-          </Button>
+            <Button 
+              size="lg" 
+              fullWidth 
+              className="border-2 border-gray-300 hover:border-accent bg-white text-gray-900 font-semibold rounded-sm"
+              onClick={() => handleNavigate('/cart')}
+            >
+              {SHARED_CONTENT.buttons.viewCart}
+            </Button>
           
-          {/* ✅ ORANJE BUTTON MET WITTE TEKST */}
+          {/* ✅ ORANJE BUTTON MET WITTE TEKST - Dynamisch via design tokens */}
           <Button 
             size="lg" 
             fullWidth 
-            className="bg-[#f76402] hover:bg-[#e55a02] text-white font-semibold shadow-lg"
+            className="bg-[#f76402] hover:bg-[#e55a02] text-white font-semibold shadow-lg rounded-sm"
             onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
           >
             {SHARED_CONTENT.buttons.checkout}

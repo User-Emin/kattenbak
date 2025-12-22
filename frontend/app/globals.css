@@ -8,12 +8,12 @@
   }
 }
 
-/* ✅ COOLBLUE BUTTON STYLES - Vierkant overal */
+/* ✅ COOLBLUE BUTTON STYLES - Subtiele ronde hoeken */
 @layer components {
   .btn {
     @apply px-6 py-3 font-medium transition-all duration-200;
     @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    border-radius: 0 !important;
+    @apply rounded-sm; /* 4px subtiele hoek */
   }
   
   .btn-primary {
@@ -27,16 +27,13 @@
     @apply hover:bg-[#354852] active:bg-[#2a3a43];
     @apply focus:ring-[#415b6b];
   }
-}
-
-/* ✅ FORCE VIERKANT */
-button[class*="rounded"],
-a[class*="rounded"],
-.checkout-button,
-.payment-button,
-.order-button,
-.cart-button {
-  border-radius: 0 !important;
+  
+  /* ✅ Checkout/Cart buttons - ORANJE met witte tekst */
+  .checkout-button,
+  .cart-button {
+    @apply bg-[#f76402] text-white hover:bg-[#e55a02];
+    @apply rounded-sm; /* Subtiele hoek */
+  }
 }
 
 /* DRY: Verberg hCaptcha badge (we tonen eigen disclosure tekst) */
