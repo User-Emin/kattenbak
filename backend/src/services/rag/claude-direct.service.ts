@@ -54,9 +54,9 @@ export class ClaudeDirectService {
       console.log('🔮 Generating embedding...');
       const { embedding } = await EmbeddingsService.generateEmbedding(question);
       
-      // 2. Search vector store (✅ LOW threshold for mock embeddings)
+      // 2. Search vector store (✅ NO threshold for mock - return all matches)
       console.log('🔍 Searching documents...');
-      const results = await VectorStoreService.similaritySearch(embedding, 5, 0.1); // ✅ 0.1 for mock
+      const results = await VectorStoreService.similaritySearch(embedding, 5, 0); // ✅ 0 = no filter
       
       if (results.length === 0) {
         return {
