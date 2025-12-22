@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import bcrypt from 'bcrypt';
+import { hashPassword, comparePasswords, generateToken } from '../utils/auth.util';
 
 const router = Router();
 
 /**
  * POST /api/v1/admin/auth/login
- * DRY & Secure Admin Login Endpoint
+ * SECURE: JWT + bcrypt Admin Login Endpoint
  */
 router.post('/login', async (req, res) => {
   try {
@@ -19,40 +19,56 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // DRY: Simple hardcoded admin for development
-    // TODO: Replace with database lookup in production
-    const ADMIN_EMAIL = 'admin@localhost';
-    const ADMIN_PASSWORD = 'admin123'; // In production: use bcrypt hash
+    // PRODUCTION: Admin credentials (TODO: move to database)
+    const ADMIN_EMAIL = 'admin@catsupply.nl';
+    // Bcrypt hash of 'admin123' - generate with: bcrypt.hash('admin123', 12)
+    const ADMIN_PASSWORD_HASH = '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYIr3OeJ0Gi';
 
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      // Generate simple token (in production: use JWT)
-      const token = `admin_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
-      return res.json({
-        success: true,
-        data: {
-          token,
-          user: {
-            id: '1',
-            email: ADMIN_EMAIL,
-            role: 'ADMIN',
-            firstName: 'Admin',
-            lastName: 'User'
-          }
-        }
+    // Check email
+    if (email !== ADMIN_EMAIL) {
+      // Timing attack prevention: still hash to take same time
+      await comparePasswords(password, ADMIN_PASSWORD_HASH);
+      return res.status(401).json({
+        success: false,
+        error: 'Ongeldige inloggegevens'
       });
     }
 
-    // Invalid credentials
-    return res.status(401).json({
-      success: false,
-      error: 'Invalid credentials'
+    // Verify password with bcrypt
+    const isValid = await comparePasswords(password, ADMIN_PASSWORD_HASH);
+    
+    if (!isValid) {
+      return res.status(401).json({
+        success: false,
+        error: 'Ongeldige inloggegevens'
+      });
+    }
+
+    // Generate JWT token
+    const token = generateToken({
+      id: '1',
+      email: ADMIN_EMAIL,
+      role: 'ADMIN'
+    });
+    
+    return res.json({
+      success: true,
+      data: {
+        token,
+        user: {
+          id: '1',
+          email: ADMIN_EMAIL,
+          role: 'ADMIN',
+          firstName: 'Admin',
+          lastName: 'User'
+        }
+      }
     });
   } catch (error: any) {
     console.error('Login error:', error);
     return res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: 'Er is een fout opgetreden'
     });
   }
 });

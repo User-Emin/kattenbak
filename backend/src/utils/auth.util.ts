@@ -1,23 +1,23 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { env } from '@/config/env.config';
-import { UserRole } from '@prisma/client';
 
+// DRY: Type for JWT payload
 export interface JWTPayload {
   id: string;
   email: string;
-  role: UserRole;
+  role: string; // Changed from UserRole to string for flexibility
 }
 
 /**
- * Hash password with bcrypt
+ * Hash password with bcrypt (12 rounds = secure + fast)
  */
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12);
 }
 
 /**
- * Compare password with hash
+ * Compare password with hash (timing-attack safe)
  */
 export async function comparePasswords(
   password: string,
@@ -27,7 +27,7 @@ export async function comparePasswords(
 }
 
 /**
- * Generate JWT token
+ * Generate JWT token with expiry
  */
 export function generateToken(payload: JWTPayload): string {
   return jwt.sign(payload, env.JWT_SECRET, {
@@ -36,7 +36,7 @@ export function generateToken(payload: JWTPayload): string {
 }
 
 /**
- * Verify JWT token
+ * Verify JWT token (returns null if invalid/expired)
  */
 export function verifyToken(token: string): JWTPayload | null {
   try {
