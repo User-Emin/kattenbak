@@ -138,10 +138,10 @@ export function Header() {
       {isCartOpen && (
         <>
           <div
-            className="fixed inset-0 bg-black/20 z-40 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/20 z-[150] backdrop-blur-sm"
             onClick={closeCart}
           />
-          <div className="fixed right-0 top-0 h-screen w-full max-w-md bg-white shadow-2xl z-50 animate-slide-in-right flex flex-col">
+          <div className="fixed right-0 top-0 h-screen w-full max-w-md bg-white shadow-2xl z-[160] animate-slide-in-right flex flex-col">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
               <h2 className="text-xl font-medium">Winkelwagen</h2>
               <button onClick={closeCart} className="p-2 hover:bg-gray-100 rounded-lg transition">
