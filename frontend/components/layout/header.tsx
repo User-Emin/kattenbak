@@ -119,13 +119,13 @@ export function Header() {
           {isMobileMenuOpen && (
             <nav className="md:hidden pb-4 border-t border-white/20 mt-2 pt-4">
               <div className="flex flex-col gap-2">
-                <Link href="/" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded-lg" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Home
                 </Link>
-                <Link href="/over-ons" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded-lg" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/over-ons" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Over Ons
                 </Link>
-                <Link href="/contact" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded-lg" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/contact" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Contact
                 </Link>
               </div>
@@ -144,7 +144,7 @@ export function Header() {
           <div className="fixed right-0 top-0 h-screen w-full max-w-md bg-white shadow-2xl z-[160] animate-slide-in-right flex flex-col">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
               <h2 className="text-xl font-medium">Winkelwagen</h2>
-              <button onClick={closeCart} className="p-2 hover:bg-gray-100 rounded-lg transition">
+              <button onClick={closeCart} className="p-2 hover:bg-gray-100 rounded transition">
                 <X className="h-6 w-6" />
               </button>
             </div>

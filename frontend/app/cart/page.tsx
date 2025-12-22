@@ -47,8 +47,8 @@ export default function CartPage() {
             {items.map((item, index) => (
               <div key={item.product.id}>
                 <div className="flex gap-3 sm:gap-6">
-                  {/* COMPACT IMAGE - mobiel 80x80, desktop 128x128 */}
-                  <div className="relative w-20 h-20 sm:w-32 sm:h-32 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0">
+                  {/* COMPACT IMAGE */}
+                  <div className="relative w-20 h-20 sm:w-32 sm:h-32 bg-gray-50 rounded overflow-hidden flex-shrink-0">
                     <ProductImage
                       src={getProductImage(item.product.images)}
                       alt={item.product.name}
