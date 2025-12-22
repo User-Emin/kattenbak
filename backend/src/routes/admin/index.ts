@@ -6,8 +6,8 @@ import categoryRoutes from './category.routes';
 import shipmentRoutes from './shipment.routes';
 import uploadRoutes from './upload.routes';
 import settingsRoutes from './settings.routes'; // NEW: Site Settings
-import returnsRoutes from './returns.routes'; // NEW: Returns
-import variantRoutes from './variants.routes'; // NEW: Product Variants
+// REMOVED: returns.routes (uses MyParcel service -> database)
+// REMOVED: variants.routes (uses variant.service -> database)
 // REMOVED: products-video.routes (uses Prisma)
 
 /**
@@ -24,7 +24,7 @@ router.use('/categories', categoryRoutes);
 router.use('/shipments', shipmentRoutes);
 router.use('/upload', uploadRoutes); // NEW: File upload
 router.use('/settings', settingsRoutes); // NEW: Site Settings
-router.use('/returns', returnsRoutes); // NEW: Returns
-router.use('/variants', variantRoutes); // NEW: Product Variants
+// router.use('/returns', returnsRoutes); // DISABLED: Uses database
+// router.use('/variants', variantRoutes); // DISABLED: Uses database
 
 export default router;
