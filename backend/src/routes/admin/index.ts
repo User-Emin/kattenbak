@@ -8,6 +8,7 @@ import uploadRoutes from './upload.routes';
 import settingsRoutes from './settings.routes'; // NEW: Site Settings
 import returnsRoutes from './returns.routes'; // NEW: Returns
 import variantRoutes from './variants.routes'; // NEW: Product Variants
+// REMOVED: products-video.routes (uses Prisma)
 
 /**
  * ADMIN ROUTES INDEX - DRY & Complete
