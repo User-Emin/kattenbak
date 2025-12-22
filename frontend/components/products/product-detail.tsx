@@ -149,15 +149,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       
       {/* COOLBLUE-STYLE: Compact container, max-w-6xl, EXPLICIETE #FFFFFF achtergrond */}
       <div className="max-w-6xl mx-auto px-4 py-6 bg-[#FFFFFF]">
-        {/* Breadcrumb - COOLBLUE COMPACT */}
-        <nav className="mb-4 text-xs text-gray-600">
-          <Link href="/" className="hover:text-brand transition">Home</Link>
-          <span className="mx-1">/</span>
-          <span className="text-gray-900">{product.name}</span>
+        {/* Breadcrumb - compact */}
+        <nav className="mb-3">
+          <Link href="/" className="text-sm text-gray-600 hover:text-brand transition-colors">
+            Home
+          </Link>
+          <span className="text-gray-400 mx-2">/</span>
+          <span className="text-sm text-gray-900">{product.name}</span>
         </nav>
-
-        {/* COOLBLUE LAYOUT: Naam BOVEN afbeelding */}
-        <h1 className="text-2xl font-semibold mb-4 text-gray-900">{product.name}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-[500px_1fr] gap-6">
           {/* Product Images - NAAM OP AFBEELDING */}
