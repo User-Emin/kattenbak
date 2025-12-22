@@ -2,13 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ✅ COOLBLUE BUTTON STYLES - Vierkant overal */
-@import './buttons.css';
-
 @layer base {
   body {
     @apply bg-gray-50 text-gray-900;
   }
+}
+
+/* ✅ COOLBLUE BUTTON STYLES - Vierkant overal */
+@layer components {
+  .btn {
+    @apply px-6 py-3 font-medium transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    border-radius: 0 !important;
+  }
+  
+  .btn-primary {
+    @apply bg-[#f76402] text-white;
+    @apply hover:bg-[#e55a02] active:bg-[#d44f02];
+    @apply focus:ring-[#f76402];
+  }
+  
+  .btn-secondary {
+    @apply bg-[#415b6b] text-white;
+    @apply hover:bg-[#354852] active:bg-[#2a3a43];
+    @apply focus:ring-[#415b6b];
+  }
+}
+
+/* ✅ FORCE VIERKANT */
+button[class*="rounded"],
+a[class*="rounded"],
+.checkout-button,
+.payment-button,
+.order-button,
+.cart-button {
+  border-radius: 0 !important;
 }
 
 /* DRY: Verberg hCaptcha badge (we tonen eigen disclosure tekst) */
