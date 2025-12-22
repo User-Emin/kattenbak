@@ -71,11 +71,12 @@ apiClient.interceptors.response.use(
     if (error.response) {
       const { status, data } = error.response;
 
-      // 401: Unauthorized - Clear token and redirect to login
+      // 401: Unauthorized - Clear token and redirect to login (with basePath)
       if (status === 401 && typeof window !== 'undefined') {
         localStorage.removeItem('admin_token');
         localStorage.removeItem('admin_user');
-        window.location.href = '/login';
+        document.cookie = 'token=; path=/; max-age=0';
+        window.location.href = '/admin/login';
       }
 
       // Return structured error with all details

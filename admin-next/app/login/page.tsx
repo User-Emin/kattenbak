@@ -59,12 +59,12 @@ export default function LoginPage() {
       // Success feedback
       toast.success('Login successful! Redirecting...');
       
-      // DRY: Force redirect to dashboard
-      console.log('Login success! Redirecting to /dashboard...');
+      // DRY: Force redirect to dashboard (with basePath)
+      console.log('Login success! Redirecting to /admin/dashboard...');
       
       // Use window.location for hard redirect (ensures middleware runs)
       setTimeout(() => {
-        window.location.href = '/dashboard';
+        window.location.href = '/admin/dashboard';
       }, 500); // Small delay for toast visibility
       
     } catch (error: any) {

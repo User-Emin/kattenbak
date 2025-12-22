@@ -82,7 +82,9 @@ export const logout = () => {
   if (typeof window !== 'undefined') {
     localStorage.removeItem('admin_token');
     localStorage.removeItem('admin_user');
-    window.location.href = '/login';
+    // Clear cookie
+    document.cookie = 'token=; path=/; max-age=0';
+    window.location.href = '/admin/login';
   }
 };
 
