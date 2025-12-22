@@ -3,6 +3,7 @@ import type { Application, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import adminAuthRoutes from './routes/admin-auth.routes';
 
 // Load environment variables
 dotenv.config();
@@ -209,6 +210,9 @@ app.post('/api/v1/contact', async (req: Request, res: Response) => {
 app.get('/api/v1/contact', (req: Request, res: Response) => {
   res.json(success({ messages: contactMessages.reverse(), total: contactMessages.length }));
 });
+
+// SECURITY: Admin authentication routes (JWT + bcrypt)
+app.use('/api/v1/admin/auth', adminAuthRoutes);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json(error(`Route ${req.method} ${req.path} not found`));
