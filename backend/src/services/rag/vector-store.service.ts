@@ -141,6 +141,13 @@ export class VectorStoreService {
   }
   
   /**
+   * Get all documents (for keyword search)
+   */
+  static getAllDocuments(): any[] {
+    return this.documents;
+  }
+  
+  /**
    * Get document count
    */
   static getCount(): number {
