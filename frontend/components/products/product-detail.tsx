@@ -159,10 +159,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         {/* COOLBLUE LAYOUT: Naam BOVEN afbeelding */}
         <h1 className="text-2xl font-semibold mb-4 text-gray-900">{product.name}</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[500px_1fr] gap-8">
-          {/* Product Images - COOLBLUE: GROTER en BREDER */}
+        <div className="grid grid-cols-1 lg:grid-cols-[500px_1fr] gap-6">
+          {/* Product Images - NAAM OP AFBEELDING */}
           <div className="space-y-3">
-            {/* COOLBLUE: Vierkante image, volledig zichtbaar, GROOT */}
+            {/* COOLBLUE: Titel OP de afbeelding als overlay */}
             <div className="relative aspect-square bg-white overflow-hidden">
               <ProductImage
                 src={displayImages[selectedImage]}
@@ -173,6 +173,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 enableZoom={true}
                 zoomScale={2.5}
               />
+              {/* Naam overlay - direct op afbeelding */}
+              <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent p-4">
+                <h1 className="text-2xl font-semibold text-white drop-shadow-lg">{product.name}</h1>
+              </div>
             </div>
 
             {/* COOLBLUE: Kleine vierkante thumbnails */}
@@ -193,10 +197,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
           </div>
 
-          {/* COOLBLUE: Info rechts - MEER NAAR RECHTS */}
-          <div className="space-y-6 lg:pl-8">
+          {/* COOLBLUE: Info rechts - COMPACT */}
+          <div className="space-y-5 lg:pl-6">
             {/* Prijs - RUSTIGER */}
-            <div className="space-y-2">
+            <div className="space-y-1">
               <div className="text-2xl font-semibold text-gray-900">{formatPrice(finalPrice)}</div>
               <p className="text-xs text-gray-600">Incl. BTW</p>
             </div>

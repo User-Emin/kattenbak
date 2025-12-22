@@ -142,7 +142,7 @@ export function ChatPopup() {
   // Chat button blijft ALTIJD rechtsbeneden viewport (geen beweging!)
   return (
     <>
-      {/* Floating Chat Button - VAST RECHTSBENEDEN VIEWPORT */}
+      {/* Floating Chat Button - ROND rechtsbeneden viewport */}
       <button
         onClick={() => {
           setIsExpanded(!isExpanded);
@@ -150,7 +150,7 @@ export function ChatPopup() {
         }}
         className={`fixed right-6 bottom-6 z-[100] transition-all duration-500 ease-out
                    bg-accent hover:bg-accent-dark text-white 
-                   w-16 h-16 rounded-none shadow-lg hover:shadow-2xl
+                   w-16 h-16 rounded-full shadow-lg hover:shadow-2xl
                    focus:outline-none focus:ring-2 focus:ring-accent/50
                    flex items-center justify-center
                    relative overflow-visible group
@@ -160,14 +160,14 @@ export function ChatPopup() {
         {/* "KLIK MIJ" Golf effect - alleen bij scroll */}
         {showPulse && !isExpanded && (
           <>
-            <span className="absolute inset-0 bg-accent/40 scale-100 animate-ping-slow rounded-none"></span>
-            <span className="absolute inset-0 bg-accent/20 scale-100 animate-ping-slower rounded-none"></span>
+            <span className="absolute inset-0 bg-accent/40 rounded-full scale-100 animate-ping-slow"></span>
+            <span className="absolute inset-0 bg-accent/20 rounded-full scale-100 animate-ping-slower"></span>
           </>
         )}
         
         {/* Hover golf effect */}
-        <span className="absolute inset-0 bg-white/20 scale-0 group-hover:scale-150 transition-transform duration-500 ease-out origin-center"></span>
-        <span className="absolute inset-0 bg-white/10 scale-0 group-hover:scale-150 transition-transform duration-700 ease-out delay-100 origin-center"></span>
+        <span className="absolute inset-0 bg-white/20 rounded-full scale-0 group-hover:scale-150 transition-transform duration-500 ease-out origin-center"></span>
+        <span className="absolute inset-0 bg-white/10 rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 ease-out delay-100 origin-center"></span>
         
         {/* Headset icon (custom smooth vector) */}
         {isExpanded ? (

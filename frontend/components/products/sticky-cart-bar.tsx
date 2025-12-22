@@ -58,9 +58,8 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
           ? 'translate-y-0 opacity-100' 
           : 'translate-y-full opacity-0 pointer-events-none'
       }`}
-      style={{ paddingBottom: '80px' }} // Ruimte voor chat button (64px + 16px margin)
     >
-      {/* Main bar - RUSTIGER DESIGN */}
+      {/* Main bar - ZONDER extra padding */}
       <div className="bg-white border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex items-center justify-between gap-4">
