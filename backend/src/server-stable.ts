@@ -241,10 +241,10 @@ app.get('/api/v1/contact', (req: Request, res: Response) => {
 });
 
 // SECURITY: Admin authentication routes (JWT + bcrypt)
-app.use('/api/v1/admin/auth', adminAuthRoutes);
+// app.use('/api/v1/admin/auth', adminAuthRoutes); // DISABLED: Path alias issues
 
 // ADMIN API: Full admin panel routes (products, orders, returns, etc.)
-app.use('/api/v1/admin', adminRoutes);
+// app.use('/api/v1/admin', adminRoutes); // DISABLED: Path alias issues
 
 // ✅ RAG API: AI Chat (Claude + Vector Store)
 app.use('/api/v1/rag', ragRoutes);
