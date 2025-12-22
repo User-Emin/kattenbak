@@ -120,7 +120,7 @@ Geef een kort, duidelijk antwoord op basis van bovenstaande productinformatie.`;
    * Call Claude REST API directly
    */
   private static async callClaude(systemPrompt: string, userPrompt: string): Promise<string> {
-    if (!this.API_KEY || !this.API_KEY.startsWith('sk-ant-')) {
+    if (!this.API_KEY || !this.API_KEY.startsWith('sk-ant-api')) { // ✅ sk-ant-api03...
       throw new Error('Claude API key not configured');
     }
     
@@ -182,7 +182,7 @@ Geef een kort, duidelijk antwoord op basis van bovenstaande productinformatie.`;
     };
     
     // Check Claude API
-    if (this.API_KEY && this.API_KEY.startsWith('sk-ant-')) {
+    if (this.API_KEY && this.API_KEY.startsWith('sk-ant-api')) { // ✅ sk-ant-api03...
       try {
         const response = await fetch(this.API_URL, {
           method: 'POST',
