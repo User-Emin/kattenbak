@@ -18,7 +18,7 @@ export interface EmbeddingResult {
 
 export class EmbeddingsService {
   private static readonly MODEL = 'intfloat/multilingual-e5-base'; // BEST for Dutch
-  private static readonly DIMENSIONS = 768; // Higher quality
+  private static readonly DIMENSIONS = 5; // ✅ FAST MOCK: Match vector store dimensions
   
   /**
    * Generate embedding for text
