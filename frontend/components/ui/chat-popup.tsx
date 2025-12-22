@@ -22,31 +22,7 @@ export function ChatPopup() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [stickyCartVisible, setStickyCartVisible] = useState(false);
   const [showPulse, setShowPulse] = useState(false);
-
-  // Sticky cart detection
-  useEffect(() => {
-    const checkStickyCart = () => {
-      const stickyBar = document.querySelector('[data-sticky-cart]') as HTMLElement;
-      
-      if (stickyBar) {
-        const hasOpacity = stickyBar.classList.contains('opacity-100');
-        const hasPointerEvents = !stickyBar.classList.contains('pointer-events-none');
-        const isVisible = hasOpacity && hasPointerEvents;
-        
-        setStickyCartVisible(prev => prev !== isVisible ? isVisible : prev);
-      } else {
-        setStickyCartVisible(prev => prev !== false ? false : prev);
-      }
-    };
-    
-    // Poll every 100ms voor stabiele detectie
-    const interval = setInterval(checkStickyCart, 100);
-    checkStickyCart(); // Initial check
-    
-    return () => clearInterval(interval);
-  }, []);
 
   // "Klik mij" golf effect bij scrollen
   useEffect(() => {
