@@ -1,6 +1,6 @@
 "use client";
 
-import { Package, Shield, Truck } from "lucide-react";
+import { Shield, Truck, Lock } from "lucide-react";
 import { useState, useEffect } from "react";
 
 /**
@@ -24,7 +24,7 @@ export function ProductUspBanner() {
       highlight: "30 dagen",
     },
     {
-      icon: Package,
+      icon: Lock,
       text: "betalen",
       highlight: "Veilig",
     },
