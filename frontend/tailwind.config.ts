@@ -65,9 +65,18 @@ export default {
         // cyan removed - primary is now BLACK/GRAY
       },
       borderRadius: {
-        'pill': '9999px',          // Volledige pill vorm
-        '4xl': '2rem',             // Extra rond voor cards
-        '5xl': '2.5rem',           // Zeer rond
+        'none': '0',      // ✅ VIERKANT
+        'sm': '0',        // ✅ Force vierkant
+        'DEFAULT': '0',   // ✅ Force vierkant
+        'md': '0',        // ✅ Force vierkant  
+        'lg': '0',        // ✅ Force vierkant
+        'xl': '0',        // ✅ Force vierkant
+        '2xl': '0',       // ✅ Force vierkant
+        '3xl': '0',       // ✅ Force vierkant
+        '4xl': '0',       // ✅ Force vierkant (was 2rem)
+        '5xl': '0',       // ✅ Force vierkant (was 2.5rem)
+        'pill': '0',      // ✅ Force vierkant (was 9999px)
+        'full': '0',      // ✅ Force vierkant (no circles!)
       },
       fontFamily: {
         sans: ['var(--font-roboto-flex)', 'system-ui', 'sans-serif'],
