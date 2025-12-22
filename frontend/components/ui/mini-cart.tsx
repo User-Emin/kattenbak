@@ -102,38 +102,64 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
         </div>
       </div>
 
-      {/* Fixed footer with buttons - altijd zichtbaar */}
-      <div className={`flex-shrink-0 ${COMPONENT_COLORS.sidebar.bg} border-t ${COMPONENT_COLORS.sidebar.border}`}>
-        <div className="p-6 pt-5">
-          <div className="flex justify-between items-center mb-5">
-            <span className={`font-semibold ${COMPONENT_COLORS.sidebar.text} text-lg`}>Subtotaal</span>
-            <span className={`text-2xl font-medium ${COMPONENT_COLORS.sidebar.text}`}>{formatPrice(subtotal)}</span>
+      {/* Fixed footer - DIRECT OP ACHTERGROND (geen Card!) */}
+      <div className={`flex-shrink-0 ${COMPONENT_COLORS.sidebar.bg} border-t ${COMPONENT_COLORS.sidebar.border} p-6 pt-5`}>
+        {/* Overzicht Section - Direct op achtergrond */}
+        <div className="space-y-2 mb-5">
+          <h3 className={`font-semibold ${COMPONENT_COLORS.sidebar.text} text-base mb-3`}>Overzicht</h3>
+          
+          {/* Subtotaal */}
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600 text-sm">Subtotaal</span>
+            <span className={`font-medium ${COMPONENT_COLORS.sidebar.text}`}>{formatPrice(subtotal)}</span>
           </div>
           
-          <div className="space-y-3">
-            <Button 
-              size="lg" 
-              fullWidth 
-              className="border-2 border-gray-300 hover:border-accent bg-white text-gray-900 font-semibold rounded"
-              onClick={() => handleNavigate('/cart')}
-            >
-              {SHARED_CONTENT.buttons.viewCart}
-            </Button>
-            
-            <Button 
-              size="lg" 
-              fullWidth 
-              className="bg-accent hover:bg-accent-dark text-white font-semibold rounded"
-              onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
-            >
-              {SHARED_CONTENT.buttons.checkout}
-            </Button>
+          {/* Verzendkosten */}
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600 text-sm">Verzendkosten</span>
+            <span className="text-sm font-medium text-green-600">Gratis</span>
           </div>
           
-          <p className={`text-xs text-gray-500 text-center mt-4`}>
-            Verzendkosten worden berekend bij checkout
-          </p>
+          {/* BTW (21%) */}
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600 text-sm">BTW (21%)</span>
+            <span className={`font-medium ${COMPONENT_COLORS.sidebar.text}`}>{formatPrice(subtotal * 0.21)}</span>
+          </div>
+          
+          <Separator className="my-3" />
+          
+          {/* Totaal */}
+          <div className="flex justify-between items-center">
+            <span className={`font-bold ${COMPONENT_COLORS.sidebar.text} text-lg`}>Totaal</span>
+            <span className={`text-2xl font-bold ${COMPONENT_COLORS.sidebar.text}`}>{formatPrice(subtotal * 1.21)}</span>
+          </div>
         </div>
+        
+        {/* Buttons - Oranje met witte tekst */}
+        <div className="space-y-3">
+          <Button 
+            size="lg" 
+            fullWidth 
+            className="border-2 border-gray-300 hover:border-accent bg-white text-gray-900 font-semibold"
+            onClick={() => handleNavigate('/cart')}
+          >
+            {SHARED_CONTENT.buttons.viewCart}
+          </Button>
+          
+          {/* ✅ ORANJE BUTTON MET WITTE TEKST */}
+          <Button 
+            size="lg" 
+            fullWidth 
+            className="bg-[#f76402] hover:bg-[#e55a02] text-white font-semibold shadow-lg"
+            onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
+          >
+            {SHARED_CONTENT.buttons.checkout}
+          </Button>
+        </div>
+        
+        <p className="text-xs text-gray-500 text-center mt-4">
+          Gratis verzending • 30 dagen bedenktijd
+        </p>
       </div>
     </div>
   );
