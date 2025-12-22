@@ -146,7 +146,7 @@ export function ChatPopup() {
         <span className="absolute inset-0 bg-white/20 rounded-full scale-0 group-hover:scale-150 transition-transform duration-500 ease-out origin-center"></span>
         <span className="absolute inset-0 bg-white/10 rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 ease-out delay-100 origin-center"></span>
         
-        {/* Headset icon (custom smooth vector) */}
+        {/* Chat bubble icon (chatwolk - custom smooth vector) */}
         {isExpanded ? (
           <X className="w-7 h-7 relative z-10 transition-transform duration-200" />
         ) : (
@@ -159,8 +159,7 @@ export function ChatPopup() {
             strokeLinecap="round" 
             strokeLinejoin="round"
           >
-            <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
-            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
           </svg>
         )}
       </button>
