@@ -114,6 +114,21 @@ app.get('/api/v1/products/slug/:slug', (req: Request, res: Response) => {
   res.json(success(mockProduct));
 });
 
+// ADMIN: PUT /api/v1/products/:id - Update product
+app.put('/api/v1/products/:id', (req: Request, res: Response) => {
+  console.log('📝 Admin PUT /products/:id - Update product:', req.body);
+  
+  // Update mockProduct with new data
+  const updates = req.body;
+  Object.assign(mockProduct, {
+    ...updates,
+    updatedAt: new Date().toISOString(),
+  });
+  
+  console.log('✅ Product updated:', mockProduct.name);
+  res.json(success(mockProduct));
+});
+
 app.post('/api/v1/orders', (req: Request, res: Response) => {
   const orderData = req.body;
   const order = {
