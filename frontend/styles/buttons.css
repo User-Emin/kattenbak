@@ -1,0 +1,66 @@
+/* GLOBAL COOLBLUE BUTTON STYLES */
+/* Vierkante buttons overal - geen rounded! */
+
+@layer components {
+  /* ✅ BASE BUTTON - Vierkant (Coolblue style) */
+  .btn {
+    @apply px-6 py-3 font-medium transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    /* ✅ VIERKANT - border-radius: 0 */
+    border-radius: 0 !important;
+  }
+  
+  /* ✅ PRIMARY - Orange CTA (Coolblue accent) */
+  .btn-primary {
+    @apply bg-[#f76402] text-white;
+    @apply hover:bg-[#e55a02] active:bg-[#d44f02];
+    @apply focus:ring-[#f76402];
+  }
+  
+  /* ✅ SECONDARY - Navy (Coolblue brand) */
+  .btn-secondary {
+    @apply bg-[#415b6b] text-white;
+    @apply hover:bg-[#354852] active:bg-[#2a3a43];
+    @apply focus:ring-[#415b6b];
+  }
+  
+  /* ✅ OUTLINE */
+  .btn-outline {
+    @apply border-2 border-[#415b6b] text-[#415b6b] bg-white;
+    @apply hover:bg-[#415b6b] hover:text-white;
+  }
+  
+  /* ✅ SIZES */
+  .btn-sm {
+    @apply px-4 py-2 text-sm;
+  }
+  
+  .btn-lg {
+    @apply px-8 py-4 text-lg;
+  }
+  
+  /* ✅ FULL WIDTH */
+  .btn-block {
+    @apply w-full;
+  }
+  
+  /* ✅ DISABLED */
+  .btn:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+/* ✅ OVERRIDE SHADCN/UI BUTTONS - Force vierkant */
+button[class*="rounded"],
+a[class*="rounded"] {
+  border-radius: 0 !important;
+}
+
+/* ✅ SPECIFIC OVERRIDES voor checkout/betalen */
+.checkout-button,
+.payment-button,
+.order-button,
+.cart-button {
+  border-radius: 0 !important;
+  @apply bg-[#f76402] hover:bg-[#e55a02];
+}
