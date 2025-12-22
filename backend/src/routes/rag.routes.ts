@@ -1,19 +1,28 @@
 /**
- * RAG API ROUTES
- * SIMPLE KEYWORD RETRIEVAL (no embeddings)
- * Security via rate limiting + input validation
+ * 🚀 ENTERPRISE RAG API ROUTES
+ * 
+ * Features:
+ * - 5 RAG Techniques (embeddings, rewriting, filtering, reranking, secure LLM)
+ * - 6-Layer Security (input validation, isolation, sandboxing, validation, safeguards, filtering)
+ * - Comprehensive metrics (MRR, NDCG, RAGAS, OPI)
+ * - Full observability (latency breakdown per technique)
+ * 
+ * Security: Rate limiting + 6-layer defense
  */
 
 import { Router, Request, Response } from 'express';
-import { ClaudeSimpleService } from '../services/rag/claude-simple.service';
+import { EnhancedRAGPipelineService } from '../services/rag/enhanced-rag-pipeline.service';
 import { RAGSecurityMiddleware } from '../middleware/rag-security.middleware';
 import { VectorStoreService } from '../services/rag/vector-store.service';
+import { EmbeddingsHuggingFaceService } from '../services/rag/embeddings-huggingface.service';
+import { QueryRewritingService } from '../services/rag/query-rewriting.service';
+import { SecureLLMService } from '../services/rag/secure-llm.service';
 
 const router = Router();
 
 /**
  * POST /api/v1/rag/chat
- * Ask question using RAG (keyword search + Claude)
+ * Ask question using Enhanced RAG Pipeline
  */
 router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, res: Response) => {
   try {
@@ -26,19 +35,24 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
       });
     }
     
-    // Simple keyword retrieval + Claude API
-    const response = await ClaudeSimpleService.answerQuestion(sanitizedQuery);
-    
-    res.json({
-      success: true,
-      data: {
-        answer: response.answer,
-        latency_ms: response.latency_ms,
-        model: response.model,
-        sources_count: response.sources.length,
-        backend: response.backend
+    // Enhanced RAG Pipeline (5 techniques + 6-layer security)
+    const response = await EnhancedRAGPipelineService.query({
+      query: sanitizedQuery,
+      conversation_history: req.body.conversation_history,
+      options: {
+        // Enable all techniques by default
+        enable_query_rewriting: true,
+        enable_hierarchical_filter: true,
+        enable_embeddings: true,
+        enable_reranking: true,
+        
+        // Allow client to override via query params
+        ...(req.query.techniques ? JSON.parse(req.query.techniques as string) : {})
       }
     });
+    
+    // Return response (already processed through Layer 6)
+    res.json(response);
     
   } catch (error: any) {
     console.error('RAG chat error:', error.message);
@@ -51,14 +65,20 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
 
 /**
  * GET /api/v1/rag/health
- * Health check endpoint
+ * Comprehensive health check
  */
 router.get('/health', async (req: Request, res: Response) => {
   try {
-    const health = await ClaudeSimpleService.healthCheck();
-    const docCount = VectorStoreService.getCount();
+    // Check all components
+    const pipelineHealth = await EnhancedRAGPipelineService.healthCheck();
+    const embeddingsHealth = await EmbeddingsHuggingFaceService.healthCheck();
+    const rewritingHealth = await QueryRewritingService.healthCheck();
+    const llmHealth = await SecureLLMService.healthCheck();
     
-    const allHealthy = health.claude && health.vectorStore && health.retrieval;
+    const docCount = VectorStoreService.getCount();
+    const cacheStats = EmbeddingsHuggingFaceService.getCacheStats();
+    
+    const allHealthy = pipelineHealth.status === 'healthy';
     
     res.status(allHealthy ? 200 : 503).json({
       success: allHealthy,
@@ -67,8 +87,20 @@ router.get('/health', async (req: Request, res: Response) => {
         storage: 'in-memory + file',
         documents_loaded: docCount,
         model: 'claude-3-5-haiku-20241022',
-        retrieval: 'keyword-based (no embeddings)',
-        components: health
+        embeddings: 'multilingual-e5-base (HuggingFace)',
+        techniques: ['embeddings', 'query_rewriting', 'hierarchical_filtering', 'reranking', 'secure_llm'],
+        security_layers: 6,
+        components: {
+          pipeline: pipelineHealth.status,
+          embeddings: embeddingsHealth.status,
+          rewriting: rewritingHealth.status,
+          llm: llmHealth.status,
+          vector_store: docCount > 0 ? 'healthy' : 'empty'
+        },
+        cache: {
+          embeddings_cached: cacheStats.size,
+          cache_max: cacheStats.maxSize
+        }
       }
     });
   } catch (error: any) {

@@ -114,25 +114,25 @@ export default function CartPage() {
             ))}
           </div>
 
-          {/* Order Summary */}
+          {/* Order Summary - Direct in achtergrond zoals USPs */}
           <div className="lg:col-span-1">
-            <div className="bg-white border border-gray-200 p-4 sm:p-6 lg:p-8 rounded sticky top-24">
+            <div className="bg-gray-50 p-4 sm:p-6 lg:p-8 sticky top-24">
               <h2 className="text-xl font-semibold mb-6">Overzicht</h2>
 
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotaal</span>
-                  <span>{formatPrice(subtotal)}</span>
+                  <span className="font-medium">{formatPrice(subtotal)}</span>
                 </div>
 
                 <div className="flex justify-between">
                   <span className="text-gray-600">Verzendkosten</span>
-                  <span>{shipping === 0 ? 'Gratis' : formatPrice(shipping)}</span>
+                  <span className="font-medium">{shipping === 0 ? 'Gratis' : formatPrice(shipping)}</span>
                 </div>
 
                 <div className="flex justify-between">
                   <span className="text-gray-600">BTW (21%)</span>
-                  <span>{formatPrice(tax)}</span>
+                  <span className="font-medium">{formatPrice(tax)}</span>
                 </div>
               </div>
 
@@ -144,7 +144,7 @@ export default function CartPage() {
               </div>
 
               <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
-                <Button className="w-full bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-6 rounded flex items-center justify-center gap-2" size="lg">
+                <Button className="w-full bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-6 rounded-md flex items-center justify-center gap-2" size="lg">
                   <span>Afrekenen</span>
                   <ArrowRight className="h-5 w-5" />
                 </Button>

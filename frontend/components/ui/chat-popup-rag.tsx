@@ -135,12 +135,12 @@ export function ChatPopup() {
             onClick={() => setIsExpanded(false)}
           />
           
-          {/* Chat Modal */}
+          {/* Chat Modal - Ronde hoeken zoals productdetail */}
           <div className="fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
-            <div className="pointer-events-auto w-full max-w-md max-h-[90vh] md:max-h-[600px] bg-white rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
+            <div className="pointer-events-auto w-full max-w-md max-h-[90vh] md:max-h-[600px] bg-white rounded-md shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
               
               {/* Header */}
-              <div className="bg-gradient-to-br from-brand to-brand-dark p-6 rounded-t-2xl text-white">
+              <div className="bg-gradient-to-br from-brand to-brand-dark p-6 rounded-t-md text-white">
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className="text-xl font-bold">AI Assistent</h3>
@@ -164,19 +164,19 @@ export function ChatPopup() {
                     <div className="mt-4 space-y-2">
                       <button
                         onClick={() => setInput("Hoeveel liter is de afvalbak?")}
-                        className="block w-full text-left px-4 py-2 bg-white rounded-lg text-sm hover:bg-brand/5 transition-colors"
+                        className="block w-full text-left px-4 py-2 bg-white rounded-md text-sm hover:bg-brand/5 transition-colors"
                       >
                         Hoeveel liter is de afvalbak?
                       </button>
                       <button
                         onClick={() => setInput("Heeft deze kattenbak een app?")}
-                        className="block w-full text-left px-4 py-2 bg-white rounded-lg text-sm hover:bg-brand/5 transition-colors"
+                        className="block w-full text-left px-4 py-2 bg-white rounded-md text-sm hover:bg-brand/5 transition-colors"
                       >
                         Heeft deze kattenbak een app?
                       </button>
                       <button
                         onClick={() => setInput("Is het veilig voor mijn kat?")}
-                        className="block w-full text-left px-4 py-2 bg-white rounded-lg text-sm hover:bg-brand/5 transition-colors"
+                        className="block w-full text-left px-4 py-2 bg-white rounded-md text-sm hover:bg-brand/5 transition-colors"
                       >
                         Is het veilig voor mijn kat?
                       </button>
@@ -190,7 +190,7 @@ export function ChatPopup() {
                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                      className={`max-w-[85%] rounded-md px-4 py-3 ${
                         msg.role === 'user'
                           ? 'bg-brand text-white'
                           : 'bg-white border border-gray-200'
@@ -206,21 +206,21 @@ export function ChatPopup() {
                 
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3">
+                    <div className="bg-white border border-gray-200 rounded-md px-4 py-3">
                       <Loader2 className="w-5 h-5 animate-spin text-brand" />
                     </div>
                   </div>
                 )}
                 
                 {error && (
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700">
+                  <div className="bg-red-50 border border-red-200 rounded-md p-3 text-sm text-red-700">
                     {error}
                   </div>
                 )}
               </div>
 
               {/* Input */}
-              <div className="p-4 bg-white border-t border-gray-200 rounded-b-2xl">
+              <div className="p-4 bg-white border-t border-gray-200 rounded-b-md">
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -228,13 +228,13 @@ export function ChatPopup() {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Stel je vraag..."
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand text-sm"
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand text-sm"
                     disabled={isLoading}
                   />
                   <Button
                     onClick={handleSendMessage}
                     disabled={!input.trim() || isLoading}
-                    className="px-6 rounded-xl"
+                    className="px-6 rounded-md"
                   >
                     {isLoading ? (
                       <Loader2 className="w-5 h-5 animate-spin" />
