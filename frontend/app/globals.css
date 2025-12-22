@@ -36,6 +36,27 @@
   }
 }
 
+/* ✅ GLOBALE RONDE HOEKEN - Alle buttons en elementen */
+@layer utilities {
+  /* ALLE buttons krijgen ronde hoeken (tenzij expliciet rounded-none) */
+  button:not(.rounded-full):not(.rounded-none) {
+    border-radius: 0.25rem !important; /* 4px */
+  }
+  
+  /* ALLE input elementen krijgen ronde hoeken */
+  input:not([type="radio"]):not([type="checkbox"]):not(.rounded-none),
+  textarea:not(.rounded-none),
+  select:not(.rounded-none) {
+    border-radius: 0.25rem !important; /* 4px */
+  }
+  
+  /* ALLE cards en containers krijgen ronde hoeken */
+  [class*="card"]:not(.rounded-none),
+  [class*="container"]:not(.rounded-none) {
+    border-radius: 0.5rem !important; /* 8px */
+  }
+}
+
 /* DRY: Verberg hCaptcha badge (we tonen eigen disclosure tekst) */
 .h-captcha {
   display: none !important;
