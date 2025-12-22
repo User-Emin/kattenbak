@@ -27,9 +27,13 @@ interface ClaudeResponse {
 
 export class ClaudeSimpleService {
   private static readonly API_URL = 'https://api.anthropic.com/v1/messages';
-  private static readonly API_KEY = process.env.CLAUDE_API_KEY || '';
   private static readonly MODEL = 'claude-3-5-haiku-20241022'; // Fast + accurate
   private static readonly API_VERSION = '2023-06-01';
+  
+  // ✅ RUNTIME: Get API key when needed (not at class load time)
+  private static get API_KEY(): string {
+    return process.env.CLAUDE_API_KEY || '';
+  }
   
   /**
    * Main RAG pipeline (SIMPLE + FAST)
