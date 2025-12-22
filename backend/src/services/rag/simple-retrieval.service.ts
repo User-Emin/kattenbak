@@ -177,3 +177,6 @@ export class SimpleRetrievalService {
     console.log('✅ Retrieval test complete\n');
   }
 }
+
+
+

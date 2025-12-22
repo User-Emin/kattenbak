@@ -25,7 +25,7 @@ interface ClaudeResponse {
   };
 }
 
-export class ClaudeDirectService {
+export class ClaudeSimpleService {
   private static readonly API_URL = 'https://api.anthropic.com/v1/messages';
   private static readonly API_KEY = process.env.CLAUDE_API_KEY || '';
   private static readonly MODEL = 'claude-3-5-haiku-20241022'; // Fast + accurate
@@ -221,3 +221,6 @@ Geef een kort, helder antwoord op basis van bovenstaande productinformatie. Als 
     return health;
   }
 }
+
+
+
