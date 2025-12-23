@@ -15,12 +15,42 @@ interface VideoPlayerProps {
 }
 
 /**
+ * Helper: Check if URL is YouTube or Vimeo
+ */
+function isYouTubeUrl(url: string): boolean {
+  return /youtube\.com|youtu\.be/.test(url);
+}
+
+function isVimeoUrl(url: string): boolean {
+  return /vimeo\.com/.test(url);
+}
+
+/**
+ * Helper: Convert YouTube URL to embed URL
+ */
+function getYouTubeEmbedUrl(url: string): string {
+  const videoId = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?]+)/)?.[1];
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+}
+
+/**
+ * Helper: Convert Vimeo URL to embed URL
+ */
+function getVimeoEmbedUrl(url: string): string {
+  const videoId = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)?.[1];
+  return videoId ? `https://player.vimeo.com/video/${videoId}` : url;
+}
+
+/**
  * Universal Video Player
  * - Hero: autoplay, muted, loop, no controls
  * - Product: play button, full controls, sound
  * - Demo: same as product (DRY)
  * 
- * Supports: MP4 up to 50MB with lazy loading
+ * Supports: 
+ * - Local MP4/WebM videos (up to 100MB)
+ * - YouTube embeds
+ * - Vimeo embeds
  */
 export function VideoPlayer({
   videoUrl,
@@ -43,6 +73,30 @@ export function VideoPlayer({
     return (
       <div className={`relative w-full bg-gray-100 flex items-center justify-center ${className}`}>
         <p className="text-gray-500 text-sm">Geen video beschikbaar</p>
+      </div>
+    );
+  }
+
+  // Check if YouTube or Vimeo
+  const isYouTube = isYouTubeUrl(videoUrl);
+  const isVimeo = isVimeoUrl(videoUrl);
+  const isExternal = isYouTube || isVimeo;
+
+  // If YouTube or Vimeo, use iframe
+  if (isExternal) {
+    const embedUrl = isYouTube 
+      ? getYouTubeEmbedUrl(videoUrl) 
+      : getVimeoEmbedUrl(videoUrl);
+
+    return (
+      <div className={`relative w-full aspect-video ${className}`}>
+        <iframe
+          src={embedUrl}
+          className="absolute inset-0 w-full h-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          title="Video player"
+        />
       </div>
     );
   }
