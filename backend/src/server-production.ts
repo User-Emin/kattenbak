@@ -15,6 +15,9 @@ import adminReturnsRoutes from './routes/admin/returns.routes';
 import adminUploadRoutes from './routes/admin/upload.routes';
 import ragRoutes from './routes/rag.routes';
 
+// Public Routes (Webshop)
+import ordersRoutes from './routes/orders.routes';
+
 // Data Transformers
 import { transformProducts, transformProduct } from './lib/transformers';
 
@@ -237,6 +240,11 @@ app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
     });
   }
 });
+
+/**
+ * PUBLIC ROUTES (Webshop Orders + Payment)
+ */
+app.use('/api/v1/orders', ordersRoutes);
 
 /**
  * ADMIN ROUTES (SECURE)
