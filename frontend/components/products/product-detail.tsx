@@ -84,15 +84,24 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       .catch(() => setLoading(false));
   }, [slug]);
 
-  // DRY: Fetch site settings voor productUsps
+  // TEMP: Hardcoded USPs (settings endpoint niet beschikbaar)
+  // TODO: Re-enable when /api/v1/admin/settings is implemented
   useEffect(() => {
-    apiFetch<{ success: boolean; data: SiteSettings }>(API_CONFIG.ENDPOINTS.SETTINGS)
-      .then(data => {
-        if (data.success && data.data) {
-          setSettings(data.data);
+    // Hardcoded product USPs
+    setSettings({
+      productUsps: {
+        usp1: {
+          title: "10.5L Capaciteit",
+          description: "De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.",
+          icon: "capacity"
+        },
+        usp2: {
+          title: "Ultra-Quiet Motor",
+          description: "Werkt onder 40 decibel. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.",
+          icon: "quiet"
         }
-      })
-      .catch(() => {});
+      }
+    } as SiteSettings);
   }, []);
 
   const handleAddToCart = async () => {
