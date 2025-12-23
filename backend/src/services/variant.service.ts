@@ -4,8 +4,6 @@
  */
 
 import { prisma } from '@/config/database.config';
-import { Prisma } from '@prisma/client';
-import { AppError } from '@/utils/error.util';
 
 export interface CreateVariantData {
   productId: string;

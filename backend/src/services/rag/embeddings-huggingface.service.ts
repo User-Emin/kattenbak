@@ -117,7 +117,9 @@ export class EmbeddingsHuggingFaceService {
       // 6. Cache result (LRU: remove oldest if full)
       if (this.CACHE.size >= this.CACHE_MAX_SIZE) {
         const firstKey = this.CACHE.keys().next().value;
-        this.CACHE.delete(firstKey);
+        if (firstKey) {
+          this.CACHE.delete(firstKey);
+        }
       }
       this.CACHE.set(cacheKey, embedding);
 

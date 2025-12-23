@@ -144,8 +144,10 @@ export async function transcodeVideo(
       
       // Progress tracking
       if (onProgress && metadata.duration > 0) {
-        command.on('progress', (progress) => {
-          const percent = (progress.timemark / metadata.duration) * 100;
+        command.on('progress', (progress: { timemark: string }) => {
+          const timeParts = progress.timemark.split(':');
+          const seconds = parseInt(timeParts[0]) * 3600 + parseInt(timeParts[1]) * 60 + parseFloat(timeParts[2]);
+          const percent = (seconds / metadata.duration) * 100;
           onProgress(Math.min(percent, 100));
         });
       }

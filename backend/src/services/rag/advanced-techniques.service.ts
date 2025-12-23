@@ -274,7 +274,7 @@ export class HierarchicalRAG {
     
     // Level 3: Pick best from each category
     const finalResults: any[] = [];
-    for (const [category, docs] of Object.entries(categorized)) {
+    for (const [_category, docs] of Object.entries(categorized)) {
       if (docs.length > 0) {
         finalResults.push(...docs.slice(0, Math.ceil(topK / 2)));
       }
@@ -377,15 +377,11 @@ export class AgenticRAG {
     reasoning.push(`Query classified as: ${queryType}`);
     
     // Step 3: Choose retrieval strategy based on type
-    let strategy: string;
     if (queryType === 'comparison') {
-      strategy = 'comparison_focused';
       reasoning.push('Using comparison-focused retrieval');
     } else if (queryType === 'technical') {
-      strategy = 'technical_specs';
       reasoning.push('Using technical specification retrieval');
     } else {
-      strategy = 'general';
       reasoning.push('Using general retrieval');
     }
     

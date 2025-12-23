@@ -146,8 +146,8 @@ REGELS (IMMUTABLE):
       // 4. Validate output
       const validation = this.validateRewrittenQuery(rewritten, query);
       if (!validation.valid) {
-        console.warn('⚠️  Rewritten query invalid:', validation.reason);
-        return this.fallbackResult(query, startTime, validation.reason);
+        console.warn('⚠️  Rewritten query invalid:', validation.reason || 'Unknown reason');
+        return this.fallbackResult(query, startTime, validation.reason || 'Invalid query');
       }
 
       // 5. Check if actually changed

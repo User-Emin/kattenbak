@@ -12,7 +12,6 @@
 
 import crypto from 'crypto';
 import fs from 'fs/promises';
-import path from 'path';
 
 // DRY: Encryption configuration
 const ALGORITHM = 'aes-256-gcm';
