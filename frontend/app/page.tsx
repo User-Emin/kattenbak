@@ -131,9 +131,9 @@ export default function HomePage() {
 
       <Separator variant="float" spacing="sm" />
 
-      {/* Video/Demo Section - Consistent styling met rest van pagina */}
-      <section id="video" className="py-12 md:py-16 bg-gray-50">
-        <div className="container mx-auto px-6 lg:px-12 max-w-5xl">
+      {/* Video/Demo Section - WIT zoals rest van pagina */}
+      <section id="video" className="py-12 md:py-16 bg-white">
+        <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">Zie Het in Actie</h2>
             <p className="text-base text-gray-600">
@@ -148,11 +148,11 @@ export default function HomePage() {
               posterUrl={hero.image}
               type="demo"
               controls
-              className="rounded-lg overflow-hidden shadow-lg"
+              className="rounded-sm overflow-hidden border border-gray-200"
             />
           ) : (
             /* Fallback: Video placeholder als geen video geüpload */
-            <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg overflow-hidden shadow-lg group cursor-pointer">
+            <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 rounded-sm overflow-hidden shadow-sm group cursor-pointer">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-white/30 transition-all border-2 border-white/40">
                   <Play className="h-10 w-10 ml-1 drop-shadow-lg" />
@@ -169,8 +169,8 @@ export default function HomePage() {
 
       <Separator variant="float" spacing="sm" />
 
-      {/* FAQ Section - ORANJE HOVER: Strakke accordion met oranje accenten */}
-      <section className="py-12 md:py-16 bg-gray-50">
+      {/* FAQ Section - WIT zoals rest van pagina */}
+      <section className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
