@@ -303,14 +303,18 @@ export function VideoUpload({ value = '', onChange, maxSizeMB = 100 }: VideoUplo
           {/* Video Preview */}
           {value && value.trim() !== '' && (
             <div className="mt-4 aspect-video bg-gray-100 rounded-lg overflow-hidden">
-              {isValidVideoUrl(value) ? (
+              {value.includes('youtube') || value.includes('youtu.be') ? (
                 <iframe
                   src={value.includes('youtube') 
                     ? `https://www.youtube.com/embed/${value.split('v=')[1]?.split('&')[0]}`
-                    : value.includes('vimeo')
-                    ? `https://player.vimeo.com/video/${value.match(/vimeo\.com\/(?:video\/)?(\d+)/)?.[1]}`
-                    : value
+                    : `https://www.youtube.com/embed/${value.split('youtu.be/')[1]?.split('?')[0]}`
                   }
+                  className="w-full h-full"
+                  allowFullScreen
+                />
+              ) : value.includes('vimeo') ? (
+                <iframe
+                  src={`https://player.vimeo.com/video/${value.match(/vimeo\.com\/(?:video\/)?(\d+)/)?.[1]}`}
                   className="w-full h-full"
                   allowFullScreen
                 />
