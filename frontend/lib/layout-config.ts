@@ -15,15 +15,15 @@ export const LAYOUT_CONFIG = {
   
   logo: {
     // Dynamic logo size - independently adjustable
-    height: 'h-24', // 96px - dynamisch aanpasbaar
-    heightPx: 96,
-    width: 300,
-    aspectRatio: 100, // Voor Next.js Image width/height
+    height: 'h-48', // 192px - 2x groter! (was h-24/96px)
+    heightPx: 192,
+    width: 600, // 2x groter (was 300px)
+    aspectRatio: 200, // Voor Next.js Image width/height (was 100)
     
     // CSS trick: negatieve margin om uit navbar te steken
     // Formula: -(logoHeight - navbarHeight) / 2
-    // Example: -(96px - 64px) / 2 = -16px = -my-4
-    negativeMargin: '-my-4', // Logo steekt uit navbar
+    // Current: -(192px - 64px) / 2 = -64px = -my-16
+    negativeMargin: '-my-16', // Logo steekt flink uit navbar (was -my-4)
     
     // z-index voor logo boven content
     zIndex: 'relative z-10',
