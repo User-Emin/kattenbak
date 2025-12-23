@@ -8,6 +8,7 @@ import { ShoppingCart, Menu, X } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { MiniCart } from "@/components/ui/mini-cart";
+import { LAYOUT_CONFIG } from "@/lib/layout-config";
 
 export function Header() {
   const { itemCount } = useCart();
@@ -41,18 +42,18 @@ export function Header() {
 
   return (
     <>
-      {/* GRIJZE NAVBAR: DUN met MEGA GROOT uitstekend logo */}
-      <header className="sticky top-0 z-50 bg-brand shadow-md">
+      {/* NAVBAR: FIXED HEIGHT - onafhankelijk van logo */}
+      <header className={`sticky top-0 z-50 ${LAYOUT_CONFIG.navbar.background} ${LAYOUT_CONFIG.navbar.shadow}`}>
         <div className="container mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo - GROOT: h-24 goed zichtbaar */}
-            <Link href="/" className="flex items-center hover:opacity-90 transition">
+          <div className={`flex items-center justify-between ${LAYOUT_CONFIG.navbar.height}`}>
+            {/* Logo - DYNAMIC SIZE met negatieve margin om uit te steken */}
+            <Link href="/" className={`flex items-center hover:opacity-90 transition ${LAYOUT_CONFIG.logo.negativeMargin} ${LAYOUT_CONFIG.logo.zIndex}`}>
               <Image
                 src="/images/logo-catsupply.png"
                 alt="Catsupply"
-                width={300}
-                height={100}
-                className="h-24 w-auto"
+                width={LAYOUT_CONFIG.logo.width}
+                height={LAYOUT_CONFIG.logo.aspectRatio}
+                className={`${LAYOUT_CONFIG.logo.height} w-auto`}
                 priority
               />
             </Link>
