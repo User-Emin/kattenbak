@@ -41,18 +41,18 @@ export function Header() {
 
   return (
     <>
-      {/* GRIJZE NAVBAR: Origineel met MEGA GROOT logo */}
+      {/* GRIJZE NAVBAR: DUN met MEGA GROOT uitstekend logo */}
       <header className="sticky top-0 z-50 bg-brand shadow-md">
         <div className="container mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between py-3">
-            {/* Logo - MEGA GROOT: h-28 voor maximale zichtbaarheid */}
-            <Link href="/" className="flex items-center hover:opacity-90 transition">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo - MEGA GROOT maar steekt uit navbar met negatieve margin */}
+            <Link href="/" className="flex items-center hover:opacity-90 transition relative z-10 -my-6">
               <Image
                 src="/images/logo-catsupply.png"
                 alt="Catsupply"
                 width={350}
                 height={120}
-                className="h-28 w-auto"
+                className="h-28 w-auto drop-shadow-lg"
                 priority
               />
             </Link>
