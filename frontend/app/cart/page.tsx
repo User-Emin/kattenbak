@@ -129,18 +129,16 @@ export default function CartPage() {
                   <span className="text-gray-600">Verzendkosten</span>
                   <span className="font-medium">{shipping === 0 ? 'Gratis' : formatPrice(shipping)}</span>
                 </div>
-
-                <div className="flex justify-between">
-                  <span className="text-gray-600">BTW (21%)</span>
-                  <span className="font-medium">{formatPrice(tax)}</span>
-                </div>
               </div>
 
               <Separator variant="float" spacing="sm" />
 
-              <div className="flex justify-between items-center mb-6">
-                <span className="text-lg font-semibold">Totaal</span>
-                <span className="text-2xl font-semibold">{formatPrice(total)}</span>
+              <div className="space-y-1 mb-6">
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-semibold">Totaal</span>
+                  <span className="text-2xl font-semibold">{formatPrice(total)}</span>
+                </div>
+                <p className="text-xs text-gray-500 text-right">Incl. 21% BTW ({formatPrice(tax)})</p>
               </div>
 
               <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>

@@ -346,17 +346,16 @@ function CheckoutContent() {
                     <span>Verzendkosten</span>
                     <span className="font-semibold">{shipping === 0 ? "Gratis" : formatPrice(shipping)}</span>
                   </div>
-                  <div className="flex justify-between text-gray-700">
-                    <span>BTW (21%)</span>
-                    <span className="font-semibold">{formatPrice(tax)}</span>
-                  </div>
                 </div>
 
                 <Separator variant="float" spacing="sm" />
 
-                <div className="flex justify-between items-center text-xl font-semibold text-gray-900 my-6">
-                  <span>Totaal</span>
-                  <span className="text-2xl text-brand">{formatPrice(total)}</span>
+                <div className="space-y-2 my-6">
+                  <div className="flex justify-between items-center text-xl font-semibold text-gray-900">
+                    <span>Totaal</span>
+                    <span className="text-2xl text-brand">{formatPrice(total)}</span>
+                  </div>
+                  <p className="text-sm text-gray-600 text-right">Incl. 21% BTW ({formatPrice(tax)})</p>
                 </div>
 
                 <Separator variant="float" spacing="md" />
