@@ -15,6 +15,9 @@ import adminReturnsRoutes from './routes/admin/returns.routes';
 import adminUploadRoutes from './routes/admin/upload.routes';
 import ragRoutes from './routes/rag.routes';
 
+// Data Transformers
+import { transformProducts, transformProduct } from './lib/transformers';
+
 // Load environment variables
 dotenv.config();
 
@@ -127,7 +130,9 @@ app.get('/api/v1/products', async (req: Request, res: Response) => {
       orderBy: { createdAt: 'desc' }
     });
     
-    res.json({ success: true, data: products });
+    // Transform Decimal to number
+    const transformed = transformProducts(products);
+    res.json({ success: true, data: transformed });
   } catch (error: any) {
     console.error('Get products error:', error);
     res.status(500).json({ 
@@ -154,7 +159,9 @@ app.get('/api/v1/products/featured', async (req: Request, res: Response) => {
       take: 10
     });
     
-    res.json({ success: true, data: products });
+    // Transform Decimal to number
+    const transformed = transformProducts(products);
+    res.json({ success: true, data: transformed });
   } catch (error: any) {
     console.error('Get featured products error:', error);
     res.status(500).json({ 
@@ -187,7 +194,9 @@ app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
       });
     }
     
-    res.json({ success: true, data: product });
+    // Transform Decimal to number
+    const transformed = transformProduct(product);
+    res.json({ success: true, data: transformed });
   } catch (error: any) {
     console.error('Get product by slug error:', error);
     res.status(500).json({ 
@@ -217,7 +226,9 @@ app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
       });
     }
     
-    res.json({ success: true, data: product });
+    // Transform Decimal to number
+    const transformed = transformProduct(product);
+    res.json({ success: true, data: transformed });
   } catch (error: any) {
     console.error('Get product error:', error);
     res.status(500).json({ 
