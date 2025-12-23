@@ -153,12 +153,10 @@ export default function HomePage() {
             </div>
             <div>
               <div className="flex items-start gap-4 mb-4">
-                <div className="p-3 bg-[#0071ce]/10 rounded-lg">
-                  <Package className="h-6 w-6 text-[#0071ce]" />
-                </div>
+                <Package className="h-8 w-8 text-[#f76402] flex-shrink-0" />
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    <strong className="text-[#0071ce]">10.5L</strong> Capaciteit
+                    <strong className="text-[#f76402]">10.5L</strong> Capaciteit
                   </h3>
                   <p className="text-gray-700 leading-relaxed">
                     De <strong>grootste afvalbak</strong> in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.
@@ -172,12 +170,10 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="order-2 md:order-1">
               <div className="flex items-start gap-4 mb-4">
-                <div className="p-3 bg-[#0071ce]/10 rounded-lg">
-                  <Volume2 className="h-6 w-6 text-[#0071ce]" />
-                </div>
+                <Volume2 className="h-8 w-8 text-[#f76402] flex-shrink-0" />
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    <strong className="text-[#0071ce]">Ultra-Quiet</strong> Motor
+                    <strong className="text-[#f76402]">Ultra-Quiet</strong> Motor
                   </h3>
                   <p className="text-gray-700 leading-relaxed">
                     Werkt onder <strong>40 decibel</strong>. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.
