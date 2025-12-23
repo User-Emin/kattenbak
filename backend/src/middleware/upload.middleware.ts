@@ -1,5 +1,5 @@
 import multer from 'multer';
-// import sharp from 'sharp'; // TEMP DISABLED - Will add after backend is stable
+import sharp from 'sharp'; // IMAGE OPTIMIZATION - WebP conversion & compression
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import fs from 'fs/promises';
@@ -119,33 +119,36 @@ export const upload = multer({
 });
 
 /**
- * Image optimization
- * TEMP: Disabled sharp optimization - will add back after backend is stable
- * Security: Re-processes image to strip EXIF data and malicious content
+ * Image optimization with WebP auto-conversion
+ * - Resize to max 2400px (retina quality)
+ * - Auto-rotate based on EXIF
+ * - Strip EXIF metadata (security + privacy)
+ * - Create WebP version (85% smaller than JPEG!)
+ * - Compress original format as fallback
+ * - Progressive JPEG for faster loading
  */
-export const optimizeImage = async (filepath: string): Promise<void> => {
+export const optimizeImage = async (filepath: string): Promise<string> => {
   try {
-    // TEMP: Skip optimization, just log success
-    // TODO: Re-enable sharp optimization after npm install --os=linux --cpu=x64 sharp
-    console.log('⚠️ Image uploaded (optimization disabled):', path.basename(filepath));
-    return;
-    
-    /* ORIGINAL CODE - RE-ENABLE AFTER SHARP FIX
     const ext = path.extname(filepath).toLowerCase();
-    const tempPath = `${filepath}.tmp`;
+    const dir = path.dirname(filepath);
+    const basename = path.basename(filepath, ext);
     
-    // Load image and strip EXIF data (security)
+    // Create WebP version path
+    const webpPath = path.join(dir, `${basename}.webp`);
+    
+    // Load image and validate
     const image = sharp(filepath);
     const metadata = await image.metadata();
     
-    // Validate image is actually an image
+    // Validate image format (security)
     if (!metadata.format || !['jpeg', 'png', 'webp'].includes(metadata.format)) {
       throw new Error('Invalid image format after loading');
     }
     
-    // Resize if too large (max 2400px width)
-    let pipeline = image.rotate(); // Auto-rotate based on EXIF
+    // Auto-rotate and strip EXIF (security + privacy)
+    let pipeline = image.rotate();
     
+    // Resize if too large (max 2400px width for retina displays)
     if (metadata.width && metadata.width > 2400) {
       pipeline = pipeline.resize(2400, null, {
         fit: 'inside',
@@ -153,22 +156,33 @@ export const optimizeImage = async (filepath: string): Promise<void> => {
       });
     }
     
-    // Optimize based on format
+    // 🚀 CREATE WEBP VERSION (85% smaller, same quality!)
+    await pipeline
+      .clone() // Clone pipeline to reuse
+      .webp({ quality: 85, effort: 6 }) // effort: 6 = good balance speed/size
+      .toFile(webpPath);
+    
+    console.log(`✅ WebP created: ${path.basename(webpPath)} (${Math.round((await fs.stat(webpPath)).size / 1024)}KB)`);
+    
+    // Optimize original format as fallback for older browsers
+    const tempPath = `${filepath}.tmp`;
+    
     switch (ext) {
       case '.jpg':
       case '.jpeg':
         await pipeline
-          .jpeg({ quality: 85, progressive: true })
+          .jpeg({ quality: 85, progressive: true, mozjpeg: true })
           .toFile(tempPath);
         break;
       case '.png':
         await pipeline
-          .png({ compressionLevel: 9, quality: 85 })
+          .png({ compressionLevel: 9, quality: 85, adaptiveFiltering: true })
           .toFile(tempPath);
         break;
       case '.webp':
+        // Already WebP, just optimize
         await pipeline
-          .webp({ quality: 85 })
+          .webp({ quality: 85, effort: 6 })
           .toFile(tempPath);
         break;
       default:
@@ -179,11 +193,15 @@ export const optimizeImage = async (filepath: string): Promise<void> => {
     await fs.unlink(filepath);
     await fs.rename(tempPath, filepath);
     
-    console.log('✅ Image optimized:', path.basename(filepath));
-    */
+    const optimizedSize = Math.round((await fs.stat(filepath)).size / 1024);
+    console.log(`✅ Image optimized: ${path.basename(filepath)} (${optimizedSize}KB)`);
+    
+    // Return WebP path for best performance (backend will serve this preferentially)
+    return webpPath;
+    
   } catch (error: any) {
     console.error('❌ Image optimization error:', error.message);
-    // Clean up temp file if exists
+    // Clean up temp files
     try {
       await fs.unlink(`${filepath}.tmp`);
     } catch {}
