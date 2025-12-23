@@ -330,6 +330,96 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
+        {/* Comparison Table - Vergelijk de Verschillen */}
+        <div className="max-w-5xl mx-auto mb-12">
+          <SectionHeading className="mb-6 text-center" size="md">
+            Vergelijk de Verschillen
+          </SectionHeading>
+          <p className="text-center text-base text-gray-600 mb-8">
+            Ontdek waarom onze kattenbak superieur is
+          </p>
+
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="py-4 px-4 text-left text-sm font-semibold text-gray-700 bg-gray-50">Feature</th>
+                    <th className="py-4 px-4 text-center text-sm font-semibold text-white bg-[#f76402]">Onze Kattenbak</th>
+                    <th className="py-4 px-4 text-center text-sm font-semibold text-gray-700 bg-gray-50">Andere Merken</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  <tr className="hover:bg-gray-50/50 transition-colors">
+                    <td className="py-4 px-4 text-sm text-gray-700">Zelfreinigende Functie</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Open-Top, Low-Stress Design</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Dubbele Veiligheidssensoren</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors">
+                    <td className="py-4 px-4 text-sm text-gray-700">App Bediening & Gezondheidsmonitoring</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">High-Efficiency Filter</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-orange-50">
+                    <td className="py-4 px-4 text-sm font-bold text-gray-900">Afvalbak Capaciteit</td>
+                    <td className="py-4 px-4 text-center">
+                      <span className="text-lg font-bold text-[#f76402]">10.5L</span>
+                    </td>
+                    <td className="py-4 px-4 text-center text-sm text-gray-500">7-9L</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Anti-Splash Hoge Wanden</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Makkelijk Te Demonteren</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors">
+                    <td className="py-4 px-4 text-sm text-gray-700">Alle Soorten Kattenbakvulling</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Compact Design, Groot Interieur</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors">
+                    <td className="py-4 px-4 text-sm text-gray-700">Ultra-Quiet Motor (&lt;40dB)</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Modulair Design (OEM-Friendly)</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <Separator variant="float" spacing="xl" />
+
         {/* Product USPs - DRY: Zigzag layout met dynamische content */}
         {settings?.productUsps && (
           <div className="container mx-auto px-6 lg:px-12">
