@@ -45,14 +45,14 @@ export function Header() {
       <header className="sticky top-0 z-50 bg-brand">
         <div className="container mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-18">
-            {/* Logo - BALANCED: Goed zichtbaar, correct formaat */}
+            {/* Logo - GROOT: Nieuwe Catsupply grijs logo */}
             <Link href="/" className="flex items-center hover:opacity-90 transition">
               <Image
-                src="/logo.png"
+                src="/images/logo-catsupply.png"
                 alt="Catsupply"
-                width={180}
-                height={180}
-                className="h-14 w-auto"
+                width={220}
+                height={80}
+                className="h-16 w-auto"
                 priority
               />
             </Link>

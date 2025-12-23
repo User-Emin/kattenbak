@@ -1,32 +1,39 @@
 /**
- * COOLBLUE-STYLE USP BANNER
- * Compact, horizontal, under navbar
+ * COMPACT USP BANNER - Direct onder navbar
+ * 3 USPs met dikgedrukte keywords zoals in product detail
  */
 
 'use client';
 
-import { Truck, RotateCcw, Shield, Clock } from 'lucide-react';
+import { Truck, RotateCcw, Shield } from 'lucide-react';
 
 export function UspBannerCoolblue() {
   return (
-    <div className="bg-gray-50 border-y border-gray-200">
-      <div className="max-w-6xl mx-auto px-4 py-2">
-        <div className="flex items-center justify-center gap-8 text-xs">
-          <div className="flex items-center gap-1.5">
-            <Truck className="h-4 w-4 text-brand" />
-            <span className="font-medium">Gratis verzending vanaf €50</span>
+    <div className="bg-[#f5f5f5] border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 py-3">
+        <div className="flex items-center justify-center gap-6 md:gap-10 text-sm flex-wrap">
+          {/* USP 1: Gratis verzending */}
+          <div className="flex items-center gap-2">
+            <Truck className="h-5 w-5 text-[#0071ce] flex-shrink-0" />
+            <span className="text-gray-800">
+              <strong className="font-bold">Gratis verzending</strong> vanaf €50
+            </span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Clock className="h-4 w-4 text-brand" />
-            <span className="font-medium">Morgen in huis</span>
+          
+          {/* USP 2: 14 dagen bedenktijd */}
+          <div className="flex items-center gap-2">
+            <RotateCcw className="h-5 w-5 text-[#0071ce] flex-shrink-0" />
+            <span className="text-gray-800">
+              <strong className="font-bold">14 dagen</strong> bedenktijd
+            </span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <RotateCcw className="h-4 w-4 text-brand" />
-            <span className="font-medium">14 dagen bedenktijd</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Shield className="h-4 w-4 text-brand" />
-            <span className="font-medium">2 jaar garantie</span>
+          
+          {/* USP 3: 2 jaar garantie */}
+          <div className="flex items-center gap-2">
+            <Shield className="h-5 w-5 text-[#0071ce] flex-shrink-0" />
+            <span className="text-gray-800">
+              <strong className="font-bold">2 jaar</strong> garantie
+            </span>
           </div>
         </div>
       </div>
