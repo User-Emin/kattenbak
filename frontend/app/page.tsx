@@ -131,89 +131,7 @@ export default function HomePage() {
 
       <Separator variant="float" spacing="sm" />
 
-      {/* Video/Demo Section - WIT zoals rest van pagina */}
-      <section id="video" className="py-12 md:py-16 bg-white">
-        <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">Zie Het in Actie</h2>
-            <p className="text-base text-gray-600">
-              <strong>2:30 min</strong> demo video
-            </p>
-          </div>
-          
-          {/* Video Player - DYNAMISCH: Toont geüploade video van product */}
-          {product?.videoUrl ? (
-            <VideoPlayer
-              videoUrl={product.videoUrl}
-              posterUrl={hero.image}
-              type="demo"
-              controls
-              className="rounded-sm overflow-hidden border border-gray-200"
-            />
-          ) : (
-            /* Fallback: Video placeholder als geen video geüpload */
-            <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 rounded-sm overflow-hidden shadow-sm group cursor-pointer">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-white/30 transition-all border-2 border-white/40">
-                  <Play className="h-10 w-10 ml-1 drop-shadow-lg" />
-                </div>
-              </div>
-              <div className="absolute bottom-6 left-6 text-white">
-                <p className="text-sm font-semibold opacity-90 mb-1">Product Demo</p>
-                <p className="text-3xl font-bold drop-shadow-lg">2:30 min</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      <Separator variant="float" spacing="sm" />
-
-      {/* FAQ Section - WIT zoals rest van pagina */}
-      <section className="py-12 md:py-16 bg-white">
-        <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
-              Veelgestelde Vragen over de Automatische Kattenbak
-            </h2>
-            <p className="text-base text-gray-600">
-              Alles over <strong>zelfreiniging</strong>, <strong>capaciteit</strong>, <strong>app-bediening</strong> en <strong>gezondheidsmonitoring</strong>
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            {faqs.map((faq, i) => (
-              <div 
-                key={i} 
-                className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-[#f76402] hover:shadow-sm transition-all"
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors group"
-                >
-                  <span className="font-semibold text-base text-gray-900 pr-4 group-hover:text-[#f76402] transition-colors">
-                    {faq.q}
-                  </span>
-                  {openFaq === i ? (
-                    <ChevronUp className="h-5 w-5 text-[#f76402] flex-shrink-0" />
-                  ) : (
-                    <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0 group-hover:text-[#f76402] transition-colors" />
-                  )}
-                </button>
-                {openFaq === i && (
-                  <div className="px-6 pb-5 pt-2 border-t border-gray-100 bg-gray-50/30">
-                    <p className="text-gray-700 leading-relaxed">{faq.a}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <Separator variant="float" spacing="sm" />
-
-      {/* USP Features - Met afbeeldingen onderaan */}
+      {/* USP Features - DIRECT NA HERO: Met afbeeldingen */}
       <section className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2 text-center">
@@ -271,6 +189,88 @@ export default function HomePage() {
                 className="object-cover"
               />
             </div>
+          </div>
+        </div>
+      </section>
+
+      <Separator variant="float" spacing="sm" />
+
+      {/* Video/Demo Section - NA USPs: Exact zoals product detail */}
+      <section id="video" className="py-12 md:py-16 bg-white">
+        <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">Zie Het in Actie</h2>
+            <p className="text-base text-gray-600">
+              <strong>2:30 min</strong> demo video
+            </p>
+          </div>
+          
+          {/* Video Player - EXACT ZOALS PRODUCT DETAIL: w-full aspect-video */}
+          {product?.videoUrl ? (
+            <VideoPlayer
+              videoUrl={product.videoUrl}
+              posterUrl={hero.image}
+              type="demo"
+              controls
+              className="w-full aspect-video rounded-sm overflow-hidden border border-gray-200"
+            />
+          ) : (
+            /* Fallback: Video placeholder als geen video geüpload */
+            <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 rounded-sm overflow-hidden border border-gray-200 group cursor-pointer">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-white/30 transition-all border-2 border-white/40">
+                  <Play className="h-10 w-10 ml-1 drop-shadow-lg" />
+                </div>
+              </div>
+              <div className="absolute bottom-6 left-6 text-white">
+                <p className="text-sm font-semibold opacity-90 mb-1">Product Demo</p>
+                <p className="text-3xl font-bold drop-shadow-lg">2:30 min</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Separator variant="float" spacing="sm" />
+
+      {/* FAQ Section - ALS LAATSTE */}
+      <section className="py-12 md:py-16 bg-white">
+        <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
+              Veelgestelde Vragen over de Automatische Kattenbak
+            </h2>
+            <p className="text-base text-gray-600">
+              Alles over <strong>zelfreiniging</strong>, <strong>capaciteit</strong>, <strong>app-bediening</strong> en <strong>gezondheidsmonitoring</strong>
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {faqs.map((faq, i) => (
+              <div 
+                key={i} 
+                className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-[#f76402] hover:shadow-sm transition-all"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors group"
+                >
+                  <span className="font-semibold text-base text-gray-900 pr-4 group-hover:text-[#f76402] transition-colors">
+                    {faq.q}
+                  </span>
+                  {openFaq === i ? (
+                    <ChevronUp className="h-5 w-5 text-[#f76402] flex-shrink-0" />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0 group-hover:text-[#f76402] transition-colors" />
+                  )}
+                </button>
+                {openFaq === i && (
+                  <div className="px-6 pb-5 pt-2 border-t border-gray-100 bg-gray-50/30">
+                    <p className="text-gray-700 leading-relaxed">{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
