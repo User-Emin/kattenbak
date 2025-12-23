@@ -9,13 +9,15 @@
 const getRuntimeApiUrl = (): string => {
   // Server-side: gebruik env var
   if (typeof window === 'undefined') {
-    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3101/api/v1';
+    return process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
   }
   
   // Client-side: dynamic based on hostname
   const hostname = window.location.hostname;
+  
+  // DEVELOPMENT: gebruik productie API (lokale backend niet nodig)
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'http://localhost:3101/api/v1';
+    return 'https://catsupply.nl/api/v1';
   }
   
   // Production: use same domain via NGINX reverse proxy (SSL terminated)
