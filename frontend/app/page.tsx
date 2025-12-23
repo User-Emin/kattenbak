@@ -131,48 +131,66 @@ export default function HomePage() {
 
       {/* USP Banner removed - only on product detail pages */}
 
-      {/* USP Section - COMPACT + MINDER SPACING - MOBILE FIRST */}
-      <section className="py-8 md:py-12 bg-white text-center">
+      {/* USP Features - COOLBLUE STYLE: Clean grid met dikgedrukte keywords */}
+      <section className="py-12 md:py-16 bg-gray-50">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-          <SectionHeading className="mb-12 md:mb-16 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center">
             Waarom Kiezen Voor Deze Kattenbak?
-          </SectionHeading>
+          </h2>
+          <p className="text-base text-gray-600 mb-10 text-center">
+            De belangrijkste features op een rij
+          </p>
           
-          {/* Feature 1 - ICONS NAAST TITEL (ook mobiel) */}
-          <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center text-center md:text-left mb-6 md:mb-10">
-            <div>
-              <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
-                <Package className="h-10 w-10 text-brand flex-shrink-0" />
-                <h3 className="text-xl font-semibold text-gray-900">{usps.feature1.title}</h3>
+          {/* Features Grid - 2 kolommen, strak design */}
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
+            {/* Feature 1: 10.5L Capaciteit */}
+            <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="p-3 bg-[#0071ce]/10 rounded-lg">
+                  <Package className="h-6 w-6 text-[#0071ce]" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    <strong className="text-[#0071ce]">10.5L</strong> Capaciteit
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    De <strong>grootste afvalbak</strong> in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.
+                  </p>
+                </div>
               </div>
-              <p className="text-base md:text-lg font-semibold text-gray-700 leading-relaxed">{usps.feature1.description}</p>
+              <div className="relative aspect-video rounded-lg overflow-hidden">
+                <Image
+                  src={usps.feature1.image}
+                  alt="10.5L Capaciteit"
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </div>
-            <div className="relative aspect-video rounded-xl overflow-hidden shadow-md">
-              <Image
-                src={usps.feature1.image}
-                alt={usps.feature1.title}
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
 
-          {/* Feature 2 - COMPACT ZIGZAG RECHTS, USP TITEL CENTRAAL */}
-          <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center text-center md:text-left">
-            <div className="order-2 md:order-1 relative aspect-video rounded-xl overflow-hidden shadow-md">
-              <Image
-                src={usps.feature2.image}
-                alt={usps.feature2.title}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="order-1 md:order-2">
-              <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
-                <Volume2 className="h-10 w-10 text-brand flex-shrink-0" />
-                <h3 className="text-xl font-semibold text-gray-900">{usps.feature2.title}</h3>
+            {/* Feature 2: Ultra-Quiet Motor */}
+            <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="p-3 bg-[#0071ce]/10 rounded-lg">
+                  <Volume2 className="h-6 w-6 text-[#0071ce]" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    <strong className="text-[#0071ce]">Ultra-Quiet</strong> Motor
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    Werkt onder <strong>40 decibel</strong>. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.
+                  </p>
+                </div>
               </div>
-              <p className="text-base md:text-lg font-semibold text-gray-700 leading-relaxed">{usps.feature2.description}</p>
+              <div className="relative aspect-video rounded-lg overflow-hidden">
+                <Image
+                  src={usps.feature2.image}
+                  alt="Ultra-Quiet Motor"
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -180,24 +198,26 @@ export default function HomePage() {
 
       <Separator variant="float" spacing="sm" />
 
-      {/* Video/Demo Section - COMPACT */}
-      <section id="video" className="py-8 md:py-12">
+      {/* Video/Demo Section - COOLBLUE STYLE: Strak & professioneel */}
+      <section id="video" className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-6 lg:px-12 max-w-5xl">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-3 text-gray-900">Zie Het in Actie</h2>
-          <p className="text-base text-gray-600 text-center mb-6 md:mb-8">
-            2:30 min demo video
-          </p>
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Zie Het in Actie</h2>
+            <p className="text-base text-gray-600">
+              <strong>2:30 min</strong> demo video
+            </p>
+          </div>
           
-          {/* Video Placeholder - Zwart met witte tekst */}
-          <div className="relative aspect-video bg-black rounded-2xl overflow-hidden shadow-float group cursor-pointer">
+          {/* Video Player - Professional style */}
+          <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg overflow-hidden shadow-lg group cursor-pointer">
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm text-white flex items-center justify-center group-hover:scale-110 transition-transform border-2 border-white/30">
-                <Play className="h-10 w-10 ml-1" />
+              <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-white/30 transition-all border-2 border-white/40">
+                <Play className="h-10 w-10 ml-1 drop-shadow-lg" />
               </div>
             </div>
             <div className="absolute bottom-6 left-6 text-white">
-              <p className="text-sm font-medium opacity-80">Product Demo</p>
-              <p className="text-2xl font-semibold">2:30 min</p>
+              <p className="text-sm font-semibold opacity-90 mb-1">Product Demo</p>
+              <p className="text-3xl font-bold drop-shadow-lg">2:30 min</p>
             </div>
           </div>
         </div>
@@ -205,32 +225,40 @@ export default function HomePage() {
 
       <Separator variant="float" spacing="sm" />
 
-      {/* FAQ Section - REALISTISCH & INFORMATIEF */}
-      <section className="py-8 md:py-12">
-        <div className="container mx-auto px-6 lg:px-12 max-w-3xl">
-          <SectionHeading className="mb-3">Veelgestelde Vragen over de Automatische Kattenbak</SectionHeading>
-          <p className="text-base text-gray-600 text-center mb-6 md:mb-8">
-            Alles over zelfreiniging, capaciteit, app-bediening en gezondheidsmonitoring
-          </p>
+      {/* FAQ Section - COOLBLUE STYLE: Strakke accordion met professionele look */}
+      <section className="py-12 md:py-16 bg-gray-50">
+        <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              Veelgestelde Vragen over de Automatische Kattenbak
+            </h2>
+            <p className="text-base text-gray-600">
+              Alles over <strong>zelfreiniging</strong>, <strong>capaciteit</strong>, <strong>app-bediening</strong> en <strong>gezondheidsmonitoring</strong>
+            </p>
+          </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqs.map((faq, i) => (
-              <div key={i} className="border border-gray-200 rounded-xl overflow-hidden hover:border-accent transition-colors">
+              <div 
+                key={i} 
+                className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-[#0071ce] hover:shadow-sm transition-all"
+              >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                  className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors group"
                 >
-                  <span className="font-medium text-base md:text-lg">{faq.q}</span>
+                  <span className="font-semibold text-base text-gray-900 pr-4 group-hover:text-[#0071ce] transition-colors">
+                    {faq.q}
+                  </span>
                   {openFaq === i ? (
-                    <ChevronUp className="h-5 w-5 text-accent flex-shrink-0" />
+                    <ChevronUp className="h-5 w-5 text-[#0071ce] flex-shrink-0" />
                   ) : (
-                    <ChevronDown className="h-5 w-5 flex-shrink-0" />
+                    <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0 group-hover:text-[#0071ce] transition-colors" />
                   )}
                 </button>
                 {openFaq === i && (
-                  <div className="px-6 pb-4">
-                    <Separator variant="float" spacing="sm" />
-                    <p className="text-gray-600 leading-relaxed">{faq.a}</p>
+                  <div className="px-6 pb-5 pt-2 border-t border-gray-100 bg-gray-50/30">
+                    <p className="text-gray-700 leading-relaxed">{faq.a}</p>
                   </div>
                 )}
               </div>
