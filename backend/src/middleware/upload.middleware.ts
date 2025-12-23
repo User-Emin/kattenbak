@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import fs from 'fs/promises';
 import { Request } from 'express';
+import { encryptAndSaveFile } from '../utils/encryption.util'; // MEDIA ENCRYPTION
 
 /**
  * SECURE IMAGE UPLOAD CONFIGURATION
@@ -13,6 +14,7 @@ import { Request } from 'express';
  * - Unique filenames (UUID)
  * - Path traversal prevention
  * - Image optimization
+ * - AES-256-GCM encryption at rest
  */
 
 // Allowed image types
@@ -119,13 +121,14 @@ export const upload = multer({
 });
 
 /**
- * Image optimization with WebP auto-conversion
+ * Image optimization with WebP auto-conversion + ENCRYPTION
  * - Resize to max 2400px (retina quality)
  * - Auto-rotate based on EXIF
  * - Strip EXIF metadata (security + privacy)
  * - Create WebP version (85% smaller than JPEG!)
  * - Compress original format as fallback
  * - Progressive JPEG for faster loading
+ * - AES-256-GCM encryption at rest
  */
 export const optimizeImage = async (filepath: string): Promise<string> => {
   try {
@@ -157,44 +160,46 @@ export const optimizeImage = async (filepath: string): Promise<string> => {
     }
     
     // 🚀 CREATE WEBP VERSION (85% smaller, same quality!)
-    await pipeline
+    const webpBuffer = await pipeline
       .clone() // Clone pipeline to reuse
       .webp({ quality: 85, effort: 6 }) // effort: 6 = good balance speed/size
-      .toFile(webpPath);
+      .toBuffer();
     
-    console.log(`✅ WebP created: ${path.basename(webpPath)} (${Math.round((await fs.stat(webpPath)).size / 1024)}KB)`);
+    // 🔒 ENCRYPT WebP and save
+    await encryptAndSaveFile(webpBuffer, webpPath);
+    
+    console.log(`✅ WebP encrypted: ${path.basename(webpPath)} (${Math.round(webpBuffer.length / 1024)}KB)`);
     
     // Optimize original format as fallback for older browsers
-    const tempPath = `${filepath}.tmp`;
+    let optimizedBuffer: Buffer;
     
     switch (ext) {
       case '.jpg':
       case '.jpeg':
-        await pipeline
+        optimizedBuffer = await pipeline
           .jpeg({ quality: 85, progressive: true, mozjpeg: true })
-          .toFile(tempPath);
+          .toBuffer();
         break;
       case '.png':
-        await pipeline
+        optimizedBuffer = await pipeline
           .png({ compressionLevel: 9, quality: 85, adaptiveFiltering: true })
-          .toFile(tempPath);
+          .toBuffer();
         break;
       case '.webp':
         // Already WebP, just optimize
-        await pipeline
+        optimizedBuffer = await pipeline
           .webp({ quality: 85, effort: 6 })
-          .toFile(tempPath);
+          .toBuffer();
         break;
       default:
         throw new Error('Unsupported format');
     }
     
-    // Replace original with optimized
-    await fs.unlink(filepath);
-    await fs.rename(tempPath, filepath);
+    // 🔒 ENCRYPT optimized original and save
+    await encryptAndSaveFile(optimizedBuffer, filepath);
     
-    const optimizedSize = Math.round((await fs.stat(filepath)).size / 1024);
-    console.log(`✅ Image optimized: ${path.basename(filepath)} (${optimizedSize}KB)`);
+    const optimizedSize = Math.round(optimizedBuffer.length / 1024);
+    console.log(`✅ Image encrypted: ${path.basename(filepath)} (${optimizedSize}KB)`);
     
     // Return WebP path for best performance (backend will serve this preferentially)
     return webpPath;
