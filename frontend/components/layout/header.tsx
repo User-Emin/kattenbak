@@ -45,14 +45,14 @@ export function Header() {
       <header className="sticky top-0 z-50 bg-brand shadow-md">
         <div className="container mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-16">
-            {/* Logo - MEGA GROOT maar steekt uit navbar met negatieve margin */}
-            <Link href="/" className="flex items-center hover:opacity-90 transition relative z-10 -my-6">
+            {/* Logo - Proportioneel: iets groter dan nav tekst */}
+            <Link href="/" className="flex items-center hover:opacity-90 transition">
               <Image
                 src="/images/logo-catsupply.png"
                 alt="Catsupply"
-                width={350}
-                height={120}
-                className="h-28 w-auto drop-shadow-lg"
+                width={180}
+                height={60}
+                className="h-12 w-auto"
                 priority
               />
             </Link>
