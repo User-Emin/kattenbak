@@ -44,15 +44,15 @@ export function Header() {
       {/* GRIJZE NAVBAR: DUN met MEGA GROOT uitstekend logo */}
       <header className="sticky top-0 z-50 bg-brand shadow-md">
         <div className="container mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo - Proportioneel: iets groter dan nav tekst */}
+          <div className="flex items-center justify-between h-20">
+            {/* Logo - GROOT: h-24 goed zichtbaar */}
             <Link href="/" className="flex items-center hover:opacity-90 transition">
               <Image
                 src="/images/logo-catsupply.png"
                 alt="Catsupply"
-                width={180}
-                height={60}
-                className="h-12 w-auto"
+                width={300}
+                height={100}
+                className="h-24 w-auto"
                 priority
               />
             </Link>
