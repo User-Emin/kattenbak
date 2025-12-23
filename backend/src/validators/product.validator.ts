@@ -76,7 +76,12 @@ export const ProductCreateSchema = z.object({
   }).optional().nullable(),
   
   images: z.array(
-    z.string().url('Ongeldige afbeelding URL')
+    z.string()
+      .min(1, 'Afbeelding pad mag niet leeg zijn')
+      .refine(
+        (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
+        'Afbeelding moet een geldige URL of pad zijn (moet beginnen met / of http(s)://)'
+      )
   ).max(10, 'Maximaal 10 afbeeldingen toegestaan').default([]),
   
   heroVideoUrl: z.string().url().optional().nullable(),
@@ -118,7 +123,14 @@ export const ProductVariantCreateSchema = z.object({
   priceAdjustment: z.number().min(-999999).max(999999).multipleOf(0.01).default(0),
   sku: z.string().regex(/^[A-Z0-9-]+$/).min(2).max(50),
   stock: z.number().int().min(0).max(999999),
-  images: z.array(z.string().url()).max(10).default([]),
+  images: z.array(
+    z.string()
+      .min(1)
+      .refine(
+        (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
+        'Afbeelding moet een geldige URL of pad zijn'
+      )
+  ).max(10).default([]),
   isActive: z.boolean().default(true)
 });
 
