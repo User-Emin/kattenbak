@@ -4,10 +4,14 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import fs from 'fs';
-// import adminAuthRoutes from './routes/admin-auth.routes'; // DISABLED
-// import adminRoutes from './routes/admin'; // DISABLED
-import adminAuthRoutes from './routes/admin-auth.routes'; // ✅ ENABLED
-import ragRoutes from './routes/rag.routes'; // ✅ RAG Chat routes
+// Admin Routes (SECURE)
+import adminAuthRoutes from './routes/admin-auth.routes';
+import adminProductsRoutes from './routes/admin/products.routes';
+import adminVariantsRoutes from './routes/admin/variants.routes';
+import adminOrdersRoutes from './routes/admin/orders.routes';
+import adminReturnsRoutes from './routes/admin/returns.routes';
+import adminUploadRoutes from './routes/admin/upload.routes';
+import ragRoutes from './routes/rag.routes';
 
 // Load environment variables
 dotenv.config();
@@ -254,6 +258,16 @@ app.use('/api/v1/admin/auth', adminAuthRoutes); // ✅ ENABLED
 
 // ADMIN API: Full admin panel routes (products, orders, returns, etc.)
 // app.use('/api/v1/admin', adminRoutes); // DISABLED: Will be enabled phase 2
+
+// ✅ Admin Authentication Routes
+app.use('/api/v1/admin/auth', adminAuthRoutes);
+
+// ✅ Admin Management Routes (SECURE: JWT + Admin role required)
+app.use('/api/v1/admin/products', adminProductsRoutes);
+app.use('/api/v1/admin/variants', adminVariantsRoutes);
+app.use('/api/v1/admin/orders', adminOrdersRoutes);
+app.use('/api/v1/admin/returns', adminReturnsRoutes);
+app.use('/api/v1/admin/upload', adminUploadRoutes);
 
 // ✅ RAG API: AI Chat (Claude + Vector Store)
 app.use('/api/v1/rag', ragRoutes);

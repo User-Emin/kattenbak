@@ -1,114 +1,182 @@
-/**
- * FILE UPLOAD ROUTES - DRY Backend Handler
- * Transparant: Receive files → Save to disk → Return public URLs
- */
-
-import { Router, Request, Response } from 'express';
-import multer from 'multer';
-import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
-import fs from 'fs';
+import { Router } from 'express';
+import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
+import { upload, optimizeImage, deleteFile, getPublicUrl, validateFileSize } from '../../middleware/upload.middleware';
 
 const router = Router();
 
-// DRY: Configure upload directory
-const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
+/**
+ * Security: ALL upload routes require authentication + admin role
+ */
+router.use(authMiddleware);
+router.use(adminMiddleware);
+router.use(rateLimitMiddleware({ windowMs: 15 * 60 * 1000, max: 50 })); // Lower limit for uploads
 
-// Ensure upload directory exists
-if (!fs.existsSync(UPLOAD_DIR)) {
-  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-}
-
-// DRY: Multer configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, UPLOAD_DIR);
-  },
-  filename: (req, file, cb) => {
-    // Generate unique filename
-    const uniqueName = `${uuidv4()}${path.extname(file.originalname)}`;
-    cb(null, uniqueName);
-  },
-});
-
-// DRY: File filter - images only
-const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-  const allowedTypes = /jpeg|jpg|png|gif|webp/;
-  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = allowedTypes.test(file.mimetype);
-
-  if (mimetype && extname) {
-    cb(null, true);
-  } else {
-    cb(new Error('Alleen afbeeldingen zijn toegestaan (jpg, png, gif, webp)'));
+/**
+ * POST /api/v1/admin/upload/images
+ * Upload multiple product images
+ * Security:
+ * - File type validation
+ * - Size limits (10MB per file)
+ * - Image optimization
+ * - EXIF stripping
+ * - UUID filenames
+ */
+router.post('/images', upload.array('images', 10), async (req, res) => {
+  const uploadedFiles: Express.Multer.File[] = [];
+  
+  try {
+    const files = req.files as Express.Multer.File[];
+    
+    if (!files || files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Geen bestanden geüpload'
+      });
+    }
+    
+    // Validate all files before processing
+    for (const file of files) {
+      if (!validateFileSize(file.size)) {
+        // Clean up all uploaded files
+        for (const f of files) {
+          await deleteFile(f.path);
+        }
+        return res.status(400).json({
+          success: false,
+          error: `Bestand te groot: ${file.originalname} (max 10MB)`
+        });
+      }
+      uploadedFiles.push(file);
+    }
+    
+    // Process each image (optimize, strip EXIF)
+    const processedFiles = await Promise.all(
+      uploadedFiles.map(async (file) => {
+        try {
+          // Optimize image (security: strips EXIF, re-encodes)
+          await optimizeImage(file.path);
+          
+          return {
+            filename: file.filename,
+            originalName: file.originalname,
+            url: getPublicUrl(file.filename),
+            size: file.size,
+            mimetype: file.mimetype
+          };
+        } catch (error: any) {
+          console.error(`Failed to process ${file.filename}:`, error);
+          // Delete failed file
+          await deleteFile(file.path);
+          throw error;
+        }
+      })
+    );
+    
+    // Audit log
+    console.log(`[AUDIT] Images uploaded by admin: ${(req as any).user.email}`, {
+      count: processedFiles.length,
+      files: processedFiles.map(f => f.filename)
+    });
+    
+    return res.json({
+      success: true,
+      data: processedFiles
+    });
+  } catch (error: any) {
+    console.error('Upload error:', error);
+    
+    // Clean up all uploaded files on error
+    for (const file of uploadedFiles) {
+      await deleteFile(file.path);
+    }
+    
+    return res.status(500).json({
+      success: false,
+      error: error.message || 'Fout bij uploaden afbeeldingen'
+    });
   }
-};
-
-// DRY: Upload middleware
-const upload = multer({
-  storage,
-  fileFilter,
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB max
-  },
 });
 
 /**
- * POST /admin/upload
- * Upload single file
+ * POST /api/v1/admin/upload/video
+ * Upload product video (hero or demo)
+ * Security: Same as images but larger size limit (50MB)
  */
-router.post('/', upload.single('file'), (req: Request, res: Response) => {
-  if (!req.file) {
-    return res.status(400).json({
+router.post('/video', upload.single('video'), async (req, res) => {
+  try {
+    const file = req.file;
+    
+    if (!file) {
+      return res.status(400).json({
+        success: false,
+        error: 'Geen video geüpload'
+      });
+    }
+    
+    // TODO: Add video validation and optimization
+    
+    console.log(`[AUDIT] Video uploaded by admin: ${(req as any).user.email}`, {
+      filename: file.filename,
+      size: file.size
+    });
+    
+    return res.json({
+      success: true,
+      data: {
+        filename: file.filename,
+        url: getPublicUrl(file.filename),
+        size: file.size,
+        mimetype: file.mimetype
+      }
+    });
+  } catch (error: any) {
+    console.error('Video upload error:', error);
+    
+    if (req.file) {
+      await deleteFile(req.file.path);
+    }
+    
+    return res.status(500).json({
       success: false,
-      error: 'Geen bestand geüpload',
+      error: error.message || 'Fout bij uploaden video'
     });
   }
-
-  // Return public URL
-  const publicUrl = `/uploads/${req.file.filename}`;
-
-  res.json({
-    success: true,
-    data: {
-      url: publicUrl,
-      filename: req.file.filename,
-      size: req.file.size,
-      mimetype: req.file.mimetype,
-    },
-  });
 });
 
 /**
- * POST /admin/upload/multiple
- * Upload multiple files
+ * DELETE /api/v1/admin/upload/:filename
+ * Delete uploaded file
  */
-router.post('/multiple', upload.array('files', 10), (req: Request, res: Response) => {
-  const files = req.files as Express.Multer.File[];
-
-  if (!files || files.length === 0) {
-    return res.status(400).json({
+router.delete('/:filename', async (req, res) => {
+  try {
+    const { filename } = req.params;
+    
+    // Security: Validate filename (no path traversal)
+    if (!filename || filename.includes('..') || filename.includes('/')) {
+      return res.status(400).json({
+        success: false,
+        error: 'Ongeldige bestandsnaam'
+      });
+    }
+    
+    const filepath = `/var/www/uploads/products/${filename}`;
+    await deleteFile(filepath);
+    
+    console.log(`[AUDIT] File deleted by admin: ${(req as any).user.email}`, {
+      filename
+    });
+    
+    return res.json({
+      success: true,
+      message: 'Bestand verwijderd'
+    });
+  } catch (error: any) {
+    console.error('Delete file error:', error);
+    return res.status(500).json({
       success: false,
-      error: 'Geen bestanden geüpload',
+      error: 'Fout bij verwijderen bestand'
     });
   }
-
-  // Return public URLs
-  const uploadedFiles = files.map(file => ({
-    url: `/uploads/${file.filename}`,
-    filename: file.filename,
-    size: file.size,
-    mimetype: file.mimetype,
-  }));
-
-  res.json({
-    success: true,
-    data: uploadedFiles,
-  });
 });
 
 export default router;
-
-
-
-

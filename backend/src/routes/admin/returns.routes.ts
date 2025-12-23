@@ -1,249 +1,172 @@
-import { Router, Request, Response } from 'express';
-import { MyParcelReturnService } from '@/services/myparcel-return.service';
-import { EmailService } from '@/services/email.service';
-import { PDFGeneratorService } from '@/services/pdf-generator.service';
-import { logger } from '@/config/logger.config';
-import { env } from '@/config/env.config';
-import axios from 'axios';
+import { Router } from 'express';
+import { PrismaClient } from '@prisma/client';
+import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
 
 const router = Router();
+const prisma = new PrismaClient();
 
-/**
- * ADMIN RETURN ROUTES - DRY & Complete
- * Admin panel return management
- */
-
-// DRY: Mock returns data
-const MOCK_RETURNS = [
-  {
-    id: 'RET-001',
-    orderId: '1',
-    orderNumber: 'ORD-2024-001',
-    customerName: 'Jan Pietersen',
-    customerEmail: 'jan@example.com',
-    status: 'LABEL_CREATED',
-    reason: 'Product niet zoals verwacht',
-    trackingCode: 'TRACK123456',
-    trackingUrl: 'https://postnl.nl/tracktrace/?B=TRACK123456',
-    createdAt: new Date('2024-12-10').toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+// Security: Auth + Admin required
+router.use(authMiddleware);
+router.use(adminMiddleware);
+router.use(rateLimitMiddleware({ windowMs: 15 * 60 * 1000, max: 100 }));
 
 /**
  * GET /api/v1/admin/returns
- * List all returns
+ * Get all returns
  */
-router.get('/', (req: Request, res: Response) => {
-  const page = parseInt(req.query.page as string) || 1;
-  const pageSize = parseInt(req.query.pageSize as string) || 10;
-
-  res.json({
-    success: true,
-    data: MOCK_RETURNS,
-    meta: { page, pageSize, total: MOCK_RETURNS.length, totalPages: 1 },
-  });
+router.get('/', async (req, res) => {
+  try {
+    const { status, page = '1', pageSize = '20' } = req.query;
+    
+    const skip = (parseInt(page as string) - 1) * parseInt(pageSize as string);
+    
+    const where: any = {};
+    if (status) where.status = status;
+    
+    const [returns, total] = await Promise.all([
+      prisma.return.findMany({
+        where,
+        skip,
+        take: parseInt(pageSize as string),
+        include: {
+          order: {
+            include: {
+              items: {
+                include: {
+                  product: {
+                    select: {
+                      id: true,
+                      name: true,
+                      images: true
+                    }
+                  }
+                }
+              },
+              shippingAddress: true
+            }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      }),
+      prisma.return.count({ where })
+    ]);
+    
+    return res.json({
+      success: true,
+      data: returns,
+      meta: {
+        page: parseInt(page as string),
+        pageSize: parseInt(pageSize as string),
+        total,
+        totalPages: Math.ceil(total / parseInt(pageSize as string))
+      }
+    });
+  } catch (error: any) {
+    console.error('Get returns error:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Fout bij ophalen retouren'
+    });
+  }
 });
 
 /**
  * GET /api/v1/admin/returns/:id
  * Get single return
  */
-router.get('/:id', (req: Request, res: Response) => {
-  const returnData = MOCK_RETURNS.find((r) => r.id === req.params.id);
-
-  if (!returnData) {
-    return res.status(404).json({
-      success: false,
-      error: 'Return not found',
-    });
-  }
-
-  res.json({
-    success: true,
-    data: returnData,
-  });
-});
-
-/**
- * POST /api/v1/admin/returns/create
- * Admin manually creates return label
- * DRY: Uses same service as customer-initiated returns
- */
-router.post('/create', async (req: Request, res: Response) => {
+router.get('/:id', async (req, res) => {
   try {
-    const {
-      orderId,
-      orderNumber,
-      customerName,
-      customerEmail,
-      shippingAddress,
-      reason,
-      sendEmail = false, // Admin decides whether to send email
-    } = req.body;
-
-    // Validate
-    if (!orderId || !orderNumber || !customerEmail || !shippingAddress) {
-      return res.status(400).json({
-        success: false,
-        error: 'Missing required fields',
-      });
-    }
-
-    logger.info(`Admin creating return label for order ${orderNumber}`);
-
-    // Create return label
-    const returnLabel = await MyParcelReturnService.createReturnLabel({
-      orderId,
-      orderNumber,
-      customerName,
-      customerEmail,
-      shippingAddress,
-      reason,
+    const returnRecord = await prisma.return.findUnique({
+      where: { id: req.params.id },
+      include: {
+        order: {
+          include: {
+            items: {
+              include: {
+                product: true
+              }
+            },
+            payment: true,
+            shippingAddress: true
+          }
+        }
+      }
     });
-
-    // Generate instructions PDF
-    const returnDeadline = new Date();
-    returnDeadline.setDate(returnDeadline.getDate() + 14);
-
-    const instructionsPdf = await PDFGeneratorService.generateReturnInstructions({
-      customerName,
-      orderNumber,
-      orderDate: new Date().toLocaleDateString('nl-NL'),
-      returnDeadline: returnDeadline.toLocaleDateString('nl-NL'),
-      trackingCode: returnLabel.trackingCode,
-      returnAddress: env.MYPARCEL_RETURN_ADDRESS,
-    });
-
-    // Download label PDF
-    let labelPdfBuffer: Buffer | undefined;
-    try {
-      const labelResponse = await axios.get(returnLabel.labelUrl, {
-        responseType: 'arraybuffer',
-        headers: {
-          'Authorization': `Bearer ${env.MYPARCEL_API_KEY}`,
-        },
-      });
-      labelPdfBuffer = Buffer.from(labelResponse.data);
-    } catch (error) {
-      logger.warn('Could not download return label PDF');
-    }
-
-    // Send email if requested
-    if (sendEmail) {
-      await EmailService.sendReturnLabelEmail({
-        customerName,
-        customerEmail,
-        orderNumber,
-        trackingCode: returnLabel.trackingCode,
-        trackingUrl: returnLabel.trackingUrl,
-        labelPdfBuffer,
-        instructionsPdfBuffer: instructionsPdf,
-      });
-    }
-
-    res.json({
-      success: true,
-      data: {
-        returnId: returnLabel.returnId,
-        myparcelId: returnLabel.myparcelId,
-        trackingCode: returnLabel.trackingCode,
-        trackingUrl: returnLabel.trackingUrl,
-        labelUrl: returnLabel.labelUrl,
-        emailSent: sendEmail,
-        createdAt: returnLabel.createdAt,
-      },
-      message: 'Return label created by admin',
-    });
-  } catch (error: any) {
-    logger.error('Admin return creation failed:', error);
-
-    res.status(500).json({
-      success: false,
-      error: error.message || 'Failed to create return label',
-    });
-  }
-});
-
-/**
- * POST /api/v1/admin/returns/:id/send-email
- * Admin manually sends return email
- * DRY: Reuse email service
- */
-router.post('/:id/send-email', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const returnData = MOCK_RETURNS.find((r) => r.id === id);
-
-    if (!returnData) {
+    
+    if (!returnRecord) {
       return res.status(404).json({
         success: false,
-        error: 'Return not found',
+        error: 'Retour niet gevonden'
       });
     }
-
-    // Generate PDFs
-    const returnDeadline = new Date();
-    returnDeadline.setDate(returnDeadline.getDate() + 14);
-
-    const instructionsPdf = await PDFGeneratorService.generateReturnInstructions({
-      customerName: returnData.customerName,
-      orderNumber: returnData.orderNumber,
-      orderDate: new Date(returnData.createdAt).toLocaleDateString('nl-NL'),
-      returnDeadline: returnDeadline.toLocaleDateString('nl-NL'),
-      trackingCode: returnData.trackingCode,
-      returnAddress: env.MYPARCEL_RETURN_ADDRESS,
-    });
-
-    // Send email
-    await EmailService.sendReturnLabelEmail({
-      customerName: returnData.customerName,
-      customerEmail: returnData.customerEmail,
-      orderNumber: returnData.orderNumber,
-      trackingCode: returnData.trackingCode,
-      trackingUrl: returnData.trackingUrl,
-      instructionsPdfBuffer: instructionsPdf,
-    });
-
-    res.json({
+    
+    return res.json({
       success: true,
-      message: 'Return email sent successfully',
+      data: returnRecord
     });
   } catch (error: any) {
-    logger.error('Admin send return email failed:', error);
-
-    res.status(500).json({
+    console.error('Get return error:', error);
+    return res.status(500).json({
       success: false,
-      error: error.message || 'Failed to send return email',
+      error: 'Fout bij ophalen retour'
     });
   }
 });
 
 /**
- * PUT /api/v1/admin/returns/:id
+ * PUT /api/v1/admin/returns/:id/status
  * Update return status
  */
-router.put('/:id', (req: Request, res: Response) => {
-  const returnData = MOCK_RETURNS.find((r) => r.id === req.params.id);
-
-  if (!returnData) {
-    return res.status(404).json({
+router.put('/:id/status', async (req, res) => {
+  try {
+    const { status, adminNotes, inspectionNotes, productCondition } = req.body;
+    
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        error: 'Status is verplicht'
+      });
+    }
+    
+    const data: any = {
+      status,
+      adminNotes: adminNotes || undefined,
+      inspectionNotes: inspectionNotes || undefined,
+      productCondition: productCondition || undefined
+    };
+    
+    // Set timestamps based on status
+    if (status === 'RECEIVED') data.receivedAt = new Date();
+    if (status === 'INSPECTED') data.inspectedAt = new Date();
+    if (status === 'APPROVED') data.approvedAt = new Date();
+    if (status === 'REJECTED') data.rejectedAt = new Date();
+    if (status === 'REFUND_PROCESSED') data.refundedAt = new Date();
+    if (status === 'CLOSED') data.closedAt = new Date();
+    
+    const returnRecord = await prisma.return.update({
+      where: { id: req.params.id },
+      data,
+      include: {
+        order: true
+      }
+    });
+    
+    console.log(`[AUDIT] Return status updated by admin: ${(req as any).user.email}`, {
+      returnId: returnRecord.id,
+      newStatus: status
+    });
+    
+    return res.json({
+      success: true,
+      data: returnRecord
+    });
+  } catch (error: any) {
+    console.error('Update return status error:', error);
+    return res.status(500).json({
       success: false,
-      error: 'Return not found',
+      error: 'Fout bij bijwerken retour status'
     });
   }
-
-  // Update mock data
-  Object.assign(returnData, req.body, { updatedAt: new Date().toISOString() });
-
-  res.json({
-    success: true,
-    data: returnData,
-    message: 'Return updated successfully',
-  });
 });
 
 export default router;
-
-
-
