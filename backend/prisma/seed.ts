@@ -48,12 +48,12 @@ Kenmerken:
         length: 55,
         width: 45,
         height: 35
-      },
+      } as any,
       images: [
         '/images/product-main.jpg',
         '/images/product-detail-1.jpg',
         '/images/product-detail-2.jpg'
-      ],
+      ] as any,
       metaTitle: 'Automatische Kattenbak Premium - Zelfreinigende Kattenbak | Catsupply',
       metaDescription: 'Premium zelfreinigende kattenbak met app-bediening en gezondheidsmonitoring. Automatische reiniging, fluisterstil, en veilig voor katten tot 7kg.',
       isActive: true,
@@ -91,7 +91,7 @@ Kenmerken:
       data: {
         ...variantData,
         productId: product.id,
-        images: [],
+        images: [] as any,
         isActive: true
       }
     });
