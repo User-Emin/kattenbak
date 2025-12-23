@@ -7,6 +7,8 @@ import {
   ProductQuerySchema,
   validateAndSanitizeProduct 
 } from '../../validators/product.validator';
+import { logAuditAction } from '../../lib/audit';
+import { transformProduct, transformProducts } from '../../lib/transformers';
 import { z } from 'zod';
 
 const router = Router();
@@ -72,9 +74,12 @@ router.get('/', async (req, res) => {
       prisma.product.count({ where })
     ]);
     
+    // Transform Decimal to number for frontend
+    const transformed = transformProducts(products);
+    
     return res.json({
       success: true,
-      data: products,
+      data: transformed,
       meta: {
         page: query.page,
         pageSize: query.pageSize,
@@ -124,9 +129,12 @@ router.get('/:id', async (req, res) => {
       });
     }
     
+    // Transform Decimal to number
+    const transformed = transformProduct(product);
+    
     return res.json({
       success: true,
-      data: product
+      data: transformed
     });
   } catch (error: any) {
     console.error('Get product error:', error);
@@ -192,9 +200,12 @@ router.post('/', async (req, res) => {
       name: product.name
     });
     
+    // Transform Decimal to number
+    const transformed = transformProduct(product);
+    
     return res.status(201).json({
       success: true,
-      data: product
+      data: transformed
     });
   } catch (error: any) {
     if (error instanceof z.ZodError) {
@@ -286,9 +297,12 @@ router.put('/:id', async (req, res) => {
       changes: Object.keys(data)
     });
     
+    // Transform Decimal to number
+    const transformed = transformProduct(product);
+    
     return res.json({
       success: true,
-      data: product
+      data: transformed
     });
   } catch (error: any) {
     if (error instanceof z.ZodError) {

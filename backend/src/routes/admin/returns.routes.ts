@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
+import { transformOrder } from '../../lib/transformers';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -51,9 +52,15 @@ router.get('/', async (req, res) => {
       prisma.return.count({ where })
     ]);
     
+    // Transform nested order data (contains Decimal fields)
+    const transformed = returns.map(ret => ({
+      ...ret,
+      order: ret.order ? transformOrder(ret.order) : null
+    }));
+    
     return res.json({
       success: true,
-      data: returns,
+      data: transformed,
       meta: {
         page: parseInt(page as string),
         pageSize: parseInt(pageSize as string),
@@ -100,9 +107,15 @@ router.get('/:id', async (req, res) => {
       });
     }
     
+    // Transform nested order data
+    const transformed = {
+      ...returnRecord,
+      order: returnRecord.order ? transformOrder(returnRecord.order) : null
+    };
+    
     return res.json({
       success: true,
-      data: returnRecord
+      data: transformed
     });
   } catch (error: any) {
     console.error('Get return error:', error);

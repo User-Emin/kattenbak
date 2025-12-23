@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
+import { transformOrder, transformOrders } from '../../lib/transformers';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -50,9 +51,12 @@ router.get('/', async (req, res) => {
       prisma.order.count({ where })
     ]);
     
+    // Transform Decimal to number
+    const transformed = transformOrders(orders);
+    
     return res.json({
       success: true,
-      data: orders,
+      data: transformed,
       meta: {
         page: parseInt(page as string),
         pageSize: parseInt(pageSize as string),
@@ -98,9 +102,12 @@ router.get('/:id', async (req, res) => {
       });
     }
     
+    // Transform Decimal to number
+    const transformed = transformOrder(order);
+    
     return res.json({
       success: true,
-      data: order
+      data: transformed
     });
   } catch (error: any) {
     console.error('Get order error:', error);

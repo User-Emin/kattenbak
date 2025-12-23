@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
 import { ProductVariantCreateSchema, ProductVariantUpdateSchema } from '../../validators/product.validator';
+import { transformVariant, transformVariants } from '../../lib/transformers';
 import { z } from 'zod';
 
 const router = Router();
@@ -37,9 +38,12 @@ router.get('/', async (req, res) => {
       orderBy: { createdAt: 'desc' }
     });
     
+    // Transform Decimal to number
+    const transformed = transformVariants(variants);
+    
     return res.json({
       success: true,
-      data: variants
+      data: transformed
     });
   } catch (error: any) {
     console.error('Get variants error:', error);
@@ -70,9 +74,12 @@ router.get('/:id', async (req, res) => {
       });
     }
     
+    // Transform Decimal to number
+    const transformed = transformVariant(variant);
+    
     return res.json({
       success: true,
-      data: variant
+      data: transformed
     });
   } catch (error: any) {
     console.error('Get variant error:', error);
@@ -128,9 +135,12 @@ router.post('/', async (req, res) => {
       productId: data.productId
     });
     
+    // Transform Decimal to number
+    const transformed = transformVariant(variant);
+    
     return res.status(201).json({
       success: true,
-      data: variant
+      data: transformed
     });
   } catch (error: any) {
     if (error instanceof z.ZodError) {
@@ -194,9 +204,12 @@ router.put('/:id', async (req, res) => {
       variantId: variant.id
     });
     
+    // Transform Decimal to number
+    const transformed = transformVariant(variant);
+    
     return res.json({
       success: true,
-      data: variant
+      data: transformed
     });
   } catch (error: any) {
     if (error instanceof z.ZodError) {
