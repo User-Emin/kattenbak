@@ -24,9 +24,9 @@ export function ColorSelector({ variants, selectedVariant, onSelect }: ColorSele
         <label className="text-sm font-medium text-gray-700">
           Kleur: <span className="text-gray-900">{selectedVariant?.colorName || 'Selecteer'}</span>
         </label>
-        {selectedVariant && selectedVariant.price !== 0 && (
+        {selectedVariant && selectedVariant.priceAdjustment && selectedVariant.priceAdjustment !== '0' && (
           <span className="text-sm text-gray-600">
-            {selectedVariant.price > 0 ? '+' : ''}€{selectedVariant.price.toFixed(2)}
+            {parseFloat(selectedVariant.priceAdjustment) > 0 ? '+' : ''}€{parseFloat(selectedVariant.priceAdjustment).toFixed(2)}
           </span>
         )}
       </div>
