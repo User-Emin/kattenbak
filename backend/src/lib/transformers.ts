@@ -34,11 +34,14 @@ export const transformProduct = (product: any): any => {
 
 /**
  * Transform ProductVariant from Prisma to API format
+ * Maps priceAdjustment to both priceAdjustment AND price for frontend compatibility
  */
 export const transformVariant = (variant: any): any => {
+  const adjustment = decimalToNumber(variant.priceAdjustment);
   return {
     ...variant,
-    priceAdjustment: decimalToNumber(variant.priceAdjustment),
+    priceAdjustment: adjustment,
+    price: adjustment, // Frontend expects 'price'
     sortOrder: variant.sortOrder || 0,
   };
 };
