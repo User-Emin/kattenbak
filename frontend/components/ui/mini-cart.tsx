@@ -122,12 +122,12 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
           
           <Separator className="my-3" />
           
-          {/* Totaal */}
+          {/* Totaal - DRY: Prijzen zijn INCL. BTW */}
           <div className="flex justify-between items-center">
             <span className={`font-bold ${COMPONENT_COLORS.sidebar.text} text-lg`}>Totaal</span>
-            <span className={`text-2xl font-bold ${COMPONENT_COLORS.sidebar.text}`}>{formatPrice(subtotal * 1.21)}</span>
+            <span className={`text-2xl font-bold ${COMPONENT_COLORS.sidebar.text}`}>{formatPrice(subtotal)}</span>
           </div>
-          <p className="text-xs text-gray-500 text-right mt-1">Incl. 21% BTW ({formatPrice(subtotal * 0.21)})</p>
+          <p className="text-xs text-gray-500 text-right mt-1">Incl. 21% BTW ({formatPrice(subtotal - (subtotal / 1.21))})</p>
         </div>
         
         {/* Buttons - Oranje met witte tekst */}

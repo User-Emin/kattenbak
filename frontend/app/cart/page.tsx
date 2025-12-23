@@ -31,9 +31,14 @@ export default function CartPage() {
     );
   }
 
+  // DRY: Nederlandse consumentenprijzen zijn INCLUSIEF BTW
+  // Subtotal van cart = som van alle product.price (incl. BTW)
   const shipping = subtotal >= 50 ? 0 : 5.95;
-  const tax = (subtotal + shipping) * 0.21;
-  const total = subtotal + shipping + tax;
+  
+  // BTW berekening: uit INCLUSIEF prijs halen
+  const total = subtotal + shipping; // Eindprijs
+  const priceExclVAT = total / 1.21; // Prijs excl. BTW
+  const tax = total - priceExclVAT; // BTW bedrag
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">

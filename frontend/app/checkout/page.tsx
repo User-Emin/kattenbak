@@ -145,10 +145,16 @@ function CheckoutContent() {
 
   if (!product) return null;
 
-  const subtotal = product.price * quantity;
+  // DRY: Nederlandse consumentenprijzen zijn INCLUSIEF BTW
+  // Product.price = €299,99 INCL. BTW
+  // We moeten BTW component berekenen voor transparantie
+  const subtotal = product.price * quantity; // Incl. BTW
   const shipping = subtotal >= 50 ? 0 : 5.95;
-  const tax = (subtotal + shipping) * 0.21;
-  const total = subtotal + shipping + tax;
+  
+  // BTW berekening: uit INCLUSIEF prijs halen
+  const total = subtotal + shipping; // Eindprijs
+  const priceExclVAT = total / 1.21; // Prijs excl. BTW
+  const tax = total - priceExclVAT; // BTW bedrag
 
   return (
     <div className="bg-white min-h-screen py-12">
