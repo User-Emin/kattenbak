@@ -84,8 +84,20 @@ export const ProductCreateSchema = z.object({
       )
   ).max(10, 'Maximaal 10 afbeeldingen toegestaan').default([]),
   
-  heroVideoUrl: z.string().url().optional().nullable(),
-  videoUrl: z.string().url().optional().nullable(),
+  heroVideoUrl: z.string()
+    .refine(
+      (val) => !val || val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
+      'Video URL moet een geldige URL of pad zijn (moet beginnen met / of http(s)://)'
+    )
+    .optional()
+    .nullable(),
+  videoUrl: z.string()
+    .refine(
+      (val) => !val || val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
+      'Video URL moet een geldige URL of pad zijn (moet beginnen met / of http(s)://)'
+    )
+    .optional()
+    .nullable(),
   
   metaTitle: z.string().max(200).optional().nullable(),
   metaDescription: z.string().max(500).optional().nullable(),
