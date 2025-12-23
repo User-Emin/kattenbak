@@ -9,9 +9,10 @@ import { Product, ProductVariant, Prisma } from '@prisma/client';
 /**
  * Transform Prisma Decimal to number
  * Prisma Decimal → JSON string → number
+ * Returns 0 for null/undefined to ensure valid number type
  */
-const decimalToNumber = (decimal: Prisma.Decimal | null | undefined): number | null => {
-  if (!decimal) return null;
+const decimalToNumber = (decimal: Prisma.Decimal | null | undefined): number => {
+  if (!decimal) return 0;
   return parseFloat(decimal.toString());
 };
 
