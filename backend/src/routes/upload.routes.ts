@@ -14,28 +14,30 @@ const router = Router();
  * - medium (600x600) - for product pages
  * - large (1200x1200) - for zoom/lightbox
  */
-router.post('/product', upload.single('image'), async (req: Request, res: Response, next: NextFunction) => {
+router.post('/product', upload.single('image'), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     if (!req.file) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'No image file provided',
       });
+      return;
     }
 
     // Validate dimensions
     const isValid = await validateImageDimensions(req.file.path);
     if (!isValid) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'Image must be at least 400x400 pixels',
       });
+      return;
     }
 
     // Process image - convert to WebP + create sizes
     const imageUrls = await processImage(req.file.path, req.file.filename);
 
-    res.json(successResponse({
+    successResponse(res, {
       message: 'Image uploaded successfully',
       images: imageUrls,
       sizes: {
@@ -43,7 +45,7 @@ router.post('/product', upload.single('image'), async (req: Request, res: Respon
         medium: '600x600 (WebP)',
         large: '1200x1200 (WebP)',
       },
-    }));
+    });
   } catch (error) {
     next(error);
   }
@@ -54,13 +56,14 @@ router.post('/product', upload.single('image'), async (req: Request, res: Respon
  * POST /api/v1/upload/products
  * Max 5 images per request
  */
-router.post('/products', upload.array('images', 5), async (req: Request, res: Response, next: NextFunction) => {
+router.post('/products', upload.array('images', 5), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'No image files provided',
       });
+      return;
     }
 
     const processedImages = await Promise.all(
@@ -74,10 +77,10 @@ router.post('/products', upload.array('images', 5), async (req: Request, res: Re
       })
     );
 
-    res.json(successResponse({
+    successResponse(res, {
       message: `${processedImages.length} images uploaded successfully`,
       images: processedImages,
-    }));
+    });
   } catch (error) {
     next(error);
   }

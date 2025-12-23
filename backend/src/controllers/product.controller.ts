@@ -52,17 +52,15 @@ export class ProductController {
         pagination
       );
 
-      res.json(
-        successResponse({
-          products,
-          pagination: {
-            page: pagination.page,
-            pageSize: pagination.pageSize,
-            total,
-            totalPages: Math.ceil(total / pagination.pageSize),
-          },
-        })
-      );
+      successResponse(res, {
+        products,
+        pagination: {
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+          total,
+          totalPages: Math.ceil(total / pagination.pageSize),
+        },
+      });
     } catch (error) {
       next(error);
     }
@@ -81,7 +79,7 @@ export class ProductController {
       const { id } = req.params;
       const product = await ProductService.getProductById(id);
 
-      res.json(successResponse(product));
+      successResponse(res, product);
     } catch (error) {
       next(error);
     }
@@ -100,7 +98,7 @@ export class ProductController {
       const { slug } = req.params;
       const product = await ProductService.getProductBySlug(slug);
 
-      res.json(successResponse(product));
+      successResponse(res, product);
     } catch (error) {
       next(error);
     }
@@ -119,7 +117,7 @@ export class ProductController {
       const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 8;
       const products = await ProductService.getFeaturedProducts(limit);
 
-      res.json(successResponse(products));
+      successResponse(res, products);
     } catch (error) {
       next(error);
     }
@@ -139,12 +137,13 @@ export class ProductController {
       const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
 
       if (!query) {
-        return res.json(successResponse([]));
+        successResponse(res, []);
+        return;
       }
 
       const products = await ProductService.searchProducts(query, limit);
 
-      res.json(successResponse(products));
+      successResponse(res, products);
     } catch (error) {
       next(error);
     }

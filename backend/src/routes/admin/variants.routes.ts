@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
 import { ProductVariantCreateSchema, ProductVariantUpdateSchema } from '../../validators/product.validator';
-import { transformVariant, transformVariants } from '../../lib/transformers';
+import { transformVariant } from '../../lib/transformers';
 import { z } from 'zod';
 
 const router = Router();

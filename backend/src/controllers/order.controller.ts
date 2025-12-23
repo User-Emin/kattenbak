@@ -28,19 +28,22 @@ export class OrderController {
       const redirectUrl = `${env.FRONTEND_URL}/order/${order.id}/payment`;
       const payment = await MollieService.createPayment(
         order.id,
-        order.total,
+        Number(order.total),
         `Order ${order.orderNumber}`,
         redirectUrl
       );
 
-      res.status(201).json(
-        successResponse({
+      successResponse(
+        res,
+        {
           order,
           payment: {
             id: payment.id,
             checkoutUrl: payment.checkoutUrl,
           },
-        })
+        },
+        'Order created successfully',
+        201
       );
     } catch (error) {
       next(error);
@@ -60,7 +63,7 @@ export class OrderController {
       const { id } = req.params;
       const order = await OrderService.getOrderById(id);
 
-      res.json(successResponse(order));
+      successResponse(res, order);
     } catch (error) {
       next(error);
     }

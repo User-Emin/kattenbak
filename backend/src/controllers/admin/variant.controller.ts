@@ -37,17 +37,18 @@ export class VariantController {
    * GET /api/v1/admin/variants?productId=xxx
    * Get variants by product ID
    */
-  static async getVariantsByProduct(req: Request, res: Response, next: NextFunction) {
+  static async getVariantsByProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { productId } = req.query;
 
       if (!productId || typeof productId !== 'string') {
-        return res.status(400).json({ error: 'productId is required' });
+        res.status(400).json({ error: 'productId is required' });
+        return;
       }
 
       const variants = await VariantService.getVariantsByProductId(productId);
 
-      res.json(successResponse({ data: { variants } }));
+      successResponse(res, { variants });
     } catch (error) {
       next(error);
     }
@@ -57,12 +58,12 @@ export class VariantController {
    * GET /api/v1/admin/variants/:id
    * Get variant by ID
    */
-  static async getVariantById(req: Request, res: Response, next: NextFunction) {
+  static async getVariantById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
       const variant = await VariantService.getVariantById(id);
 
-      res.json(successResponse({ data: variant }));
+      successResponse(res, variant);
     } catch (error) {
       next(error);
     }
@@ -72,12 +73,12 @@ export class VariantController {
    * POST /api/v1/admin/variants
    * Create new variant
    */
-  static async createVariant(req: Request, res: Response, next: NextFunction) {
+  static async createVariant(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const data = createVariantSchema.parse(req.body);
       const variant = await VariantService.createVariant(data);
 
-      res.status(201).json(successResponse({ data: variant }));
+      successResponse(res, variant, 'Variant created successfully', 201);
     } catch (error) {
       next(error);
     }
@@ -87,13 +88,13 @@ export class VariantController {
    * PUT /api/v1/admin/variants/:id
    * Update variant
    */
-  static async updateVariant(req: Request, res: Response, next: NextFunction) {
+  static async updateVariant(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
       const data = updateVariantSchema.parse(req.body);
       const variant = await VariantService.updateVariant(id, data);
 
-      res.json(successResponse({ data: variant }));
+      successResponse(res, variant);
     } catch (error) {
       next(error);
     }
@@ -103,12 +104,12 @@ export class VariantController {
    * DELETE /api/v1/admin/variants/:id
    * Delete variant
    */
-  static async deleteVariant(req: Request, res: Response, next: NextFunction) {
+  static async deleteVariant(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
       await VariantService.deleteVariant(id);
 
-      res.json(successResponse({ data: { success: true } }));
+      successResponse(res, { success: true }, 'Variant deleted successfully');
     } catch (error) {
       next(error);
     }

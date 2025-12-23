@@ -68,3 +68,13 @@ Console logs bekijken voor exacte error message en payload.
 **Team Status:** Unanimous - doorgang voor volledige fix ✅
 
 
+
+
+
+
+
+
+
+
+
+

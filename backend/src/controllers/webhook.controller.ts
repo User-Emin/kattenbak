@@ -21,10 +21,11 @@ export class WebhookController {
       const { id: mollieId } = req.body;
 
       if (!mollieId) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           message: 'Missing payment ID',
         });
+        return;
       }
 
       logger.info(`Mollie webhook received: ${mollieId}`);
@@ -35,7 +36,7 @@ export class WebhookController {
       });
 
       // Respond immediately to Mollie
-      res.status(200).json(successResponse({ received: true }));
+      successResponse(res, { received: true });
     } catch (error) {
       next(error);
     }
@@ -58,7 +59,7 @@ export class WebhookController {
       // TODO: Implement MyParcel webhook processing
       // For now, just acknowledge receipt
 
-      res.status(200).json(successResponse({ received: true }));
+      successResponse(res, { received: true });
     } catch (error) {
       next(error);
     }

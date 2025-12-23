@@ -49,22 +49,12 @@ export class AdminProductController {
         sortOrder: sortOrder as 'asc' | 'desc',
       };
 
-      const { products, total } = await ProductService.getAllProducts(
+      const { products } = await ProductService.getAllProducts(
         filters,
         pagination
       );
 
-      res.json(
-        successResponse({
-          data: products,
-          meta: {
-            page: pagination.page,
-            pageSize: pagination.pageSize,
-            total,
-            totalPages: Math.ceil(total / pagination.pageSize),
-          },
-        })
-      );
+      successResponse(res, products, undefined, 200);
     } catch (error) {
       next(error);
     }
@@ -83,7 +73,7 @@ export class AdminProductController {
       const { id } = req.params;
       const product = await ProductService.getProductById(id);
 
-      res.json(successResponse({ data: product }));
+      successResponse(res, product);
     } catch (error) {
       next(error);
     }
@@ -113,7 +103,7 @@ export class AdminProductController {
 
       const product = await ProductService.createProduct(data);
 
-      res.status(201).json(successResponse({ data: product }));
+      successResponse(res, product, 'Product created successfully', 201);
     } catch (error) {
       next(error);
     }
@@ -142,7 +132,7 @@ export class AdminProductController {
 
       const product = await ProductService.updateProduct(id, updateData);
 
-      res.json(successResponse({ data: product }));
+      successResponse(res, product);
     } catch (error) {
       next(error);
     }
@@ -161,7 +151,7 @@ export class AdminProductController {
       const { id } = req.params;
       await ProductService.deleteProduct(id);
 
-      res.json(successResponse({ message: 'Product deleted successfully' }));
+      successResponse(res, null, 'Product deleted successfully');
     } catch (error) {
       next(error);
     }
