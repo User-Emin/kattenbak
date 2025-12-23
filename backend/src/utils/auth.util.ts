@@ -32,7 +32,7 @@ export async function comparePasswords(
 export function generateToken(payload: JWTPayload): string {
   return jwt.sign(payload, env.JWT_SECRET, {
     expiresIn: env.JWT_EXPIRES_IN,
-  });
+  } as jwt.SignOptions);
 }
 
 /**
