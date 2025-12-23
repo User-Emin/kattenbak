@@ -80,7 +80,16 @@ if (ENV.isDevelopment && ENV.mollieKeyType === 'LIVE') {
 }
 
 app.use(helmet());
-app.use(cors({ origin: ['http://localhost:3100', 'http://localhost:3102'], credentials: true }));
+app.use(cors({ 
+  origin: [
+    'http://localhost:3100',
+    'http://localhost:3102',
+    'https://catsupply.nl',
+    'http://185.224.139.74:3102',
+    'http://185.224.139.74:3100'
+  ], 
+  credentials: true 
+}));
 app.use(express.json());
 
 // Mock Product - Premium Zelfreinigende Kattenbak
