@@ -129,16 +129,199 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* USP Banner removed - only on product detail pages */}
+      {/* Comparison Table - Waarom deze kattenbak beter is */}
+      <section className="py-12 md:py-16 bg-white">
+        <div className="container mx-auto px-6 lg:px-12 max-w-5xl">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
+              Vergelijk de Verschillen
+            </h2>
+            <p className="text-base text-gray-600">
+              Ontdek waarom onze kattenbak superieur is
+            </p>
+          </div>
 
-      {/* USP Features - ZIGZAG: Direct op background, lichtere titels */}
+          {/* Comparison Table */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="py-4 px-4 text-left text-sm font-semibold text-gray-700 bg-gray-50">Feature</th>
+                    <th className="py-4 px-4 text-center text-sm font-semibold text-white bg-[#f76402]">Onze Kattenbak</th>
+                    <th className="py-4 px-4 text-center text-sm font-semibold text-gray-700 bg-gray-50">Andere Merken</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  <tr className="hover:bg-gray-50/50 transition-colors">
+                    <td className="py-4 px-4 text-sm text-gray-700">Zelfreinigende Functie</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Open-Top, Low-Stress Design</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Dubbele Veiligheidssensoren</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors">
+                    <td className="py-4 px-4 text-sm text-gray-700">App Bediening & Gezondheidsmonitoring</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">High-Efficiency Filter</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-orange-50">
+                    <td className="py-4 px-4 text-sm font-bold text-gray-900">Afvalbak Capaciteit</td>
+                    <td className="py-4 px-4 text-center">
+                      <span className="text-lg font-bold text-[#f76402]">10.5L</span>
+                    </td>
+                    <td className="py-4 px-4 text-center text-sm text-gray-500">7-9L</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Anti-Splash Hoge Wanden</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Makkelijk Te Demonteren</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors">
+                    <td className="py-4 px-4 text-sm text-gray-700">Alle Soorten Kattenbakvulling</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Compact Design, Groot Interieur</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors">
+                    <td className="py-4 px-4 text-sm text-gray-700">Ultra-Quiet Motor (&lt;40dB)</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
+                  </tr>
+                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Modulair Design (OEM-Friendly)</td>
+                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                    <td className="py-4 px-4 text-center text-gray-400">×</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="text-center mt-8">
+            <Link href={`/product/${productSlug}`}>
+              <button className="h-12 px-8 text-sm font-semibold text-white bg-[#f76402] hover:bg-[#e55a02] rounded-sm shadow-lg transition-all duration-200">
+                Bekijk Alle Details
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <Separator variant="float" spacing="sm" />
+
+      {/* Video/Demo Section - Consistent styling met rest van pagina */}
+      <section id="video" className="py-12 md:py-16 bg-gray-50">
+        <div className="container mx-auto px-6 lg:px-12 max-w-5xl">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">Zie Het in Actie</h2>
+            <p className="text-base text-gray-600">
+              <strong>2:30 min</strong> demo video
+            </p>
+          </div>
+          
+          {/* Video Player - DYNAMISCH: Toont geüploade video van product */}
+          {product?.videoUrl ? (
+            <VideoPlayer
+              videoUrl={product.videoUrl}
+              posterUrl={hero.image}
+              type="demo"
+              controls
+              className="rounded-lg overflow-hidden shadow-lg"
+            />
+          ) : (
+            /* Fallback: Video placeholder als geen video geüpload */
+            <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg overflow-hidden shadow-lg group cursor-pointer">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-white/30 transition-all border-2 border-white/40">
+                  <Play className="h-10 w-10 ml-1 drop-shadow-lg" />
+                </div>
+              </div>
+              <div className="absolute bottom-6 left-6 text-white">
+                <p className="text-sm font-semibold opacity-90 mb-1">Product Demo</p>
+                <p className="text-3xl font-bold drop-shadow-lg">2:30 min</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Separator variant="float" spacing="sm" />
+
+      {/* FAQ Section - ORANJE HOVER: Strakke accordion met oranje accenten */}
       <section className="py-12 md:py-16 bg-gray-50">
+        <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
+              Veelgestelde Vragen over de Automatische Kattenbak
+            </h2>
+            <p className="text-base text-gray-600">
+              Alles over <strong>zelfreiniging</strong>, <strong>capaciteit</strong>, <strong>app-bediening</strong> en <strong>gezondheidsmonitoring</strong>
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {faqs.map((faq, i) => (
+              <div 
+                key={i} 
+                className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-[#f76402] hover:shadow-sm transition-all"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors group"
+                >
+                  <span className="font-semibold text-base text-gray-900 pr-4 group-hover:text-[#f76402] transition-colors">
+                    {faq.q}
+                  </span>
+                  {openFaq === i ? (
+                    <ChevronUp className="h-5 w-5 text-[#f76402] flex-shrink-0" />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0 group-hover:text-[#f76402] transition-colors" />
+                  )}
+                </button>
+                {openFaq === i && (
+                  <div className="px-6 pb-5 pt-2 border-t border-gray-100 bg-gray-50/30">
+                    <p className="text-gray-700 leading-relaxed">{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Separator variant="float" spacing="sm" />
+
+      {/* USP Features - Met afbeeldingen onderaan */}
+      <section className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2 text-center">
             Waarom Kiezen Voor Deze Kattenbak?
           </h2>
           <p className="text-base text-gray-600 mb-10 text-center">
-            De belangrijkste features op een rij
+            De belangrijkste features met visuele demonstraties
           </p>
           
           {/* Feature 1 - Links: Image, Rechts: Content */}
@@ -189,77 +372,6 @@ export default function HomePage() {
                 className="object-cover"
               />
             </div>
-          </div>
-        </div>
-      </section>
-
-      <Separator variant="float" spacing="sm" />
-
-      {/* Video/Demo Section - COOLBLUE STYLE: Strak & professioneel */}
-      <section id="video" className="py-12 md:py-16 bg-white">
-        <div className="container mx-auto px-6 lg:px-12 max-w-5xl">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Zie Het in Actie</h2>
-            <p className="text-base text-gray-600">
-              <strong>2:30 min</strong> demo video
-            </p>
-          </div>
-          
-          {/* Video Player - Professional style */}
-          <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg overflow-hidden shadow-lg group cursor-pointer">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-white/30 transition-all border-2 border-white/40">
-                <Play className="h-10 w-10 ml-1 drop-shadow-lg" />
-              </div>
-            </div>
-            <div className="absolute bottom-6 left-6 text-white">
-              <p className="text-sm font-semibold opacity-90 mb-1">Product Demo</p>
-              <p className="text-3xl font-bold drop-shadow-lg">2:30 min</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Separator variant="float" spacing="sm" />
-
-      {/* FAQ Section - ORANJE HOVER: Strakke accordion met oranje accenten */}
-      <section className="py-12 md:py-16 bg-gray-50">
-        <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
-              Veelgestelde Vragen over de Automatische Kattenbak
-            </h2>
-            <p className="text-base text-gray-600">
-              Alles over <strong>zelfreiniging</strong>, <strong>capaciteit</strong>, <strong>app-bediening</strong> en <strong>gezondheidsmonitoring</strong>
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            {faqs.map((faq, i) => (
-              <div 
-                key={i} 
-                className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-[#f76402] hover:shadow-sm transition-all"
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors group"
-                >
-                  <span className="font-semibold text-base text-gray-900 pr-4 group-hover:text-[#f76402] transition-colors">
-                    {faq.q}
-                  </span>
-                  {openFaq === i ? (
-                    <ChevronUp className="h-5 w-5 text-[#f76402] flex-shrink-0" />
-                  ) : (
-                    <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0 group-hover:text-[#f76402] transition-colors" />
-                  )}
-                </button>
-                {openFaq === i && (
-                  <div className="px-6 pb-5 pt-2 border-t border-gray-100 bg-gray-50/30">
-                    <p className="text-gray-700 leading-relaxed">{faq.a}</p>
-                  </div>
-                )}
-              </div>
-            ))}
           </div>
         </div>
       </section>

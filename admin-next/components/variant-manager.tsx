@@ -30,7 +30,7 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
     name: '',
     colorName: '',
     colorHex: '#000000',
-    price: 0,
+    priceAdjustment: 0,
     stock: 0,
     sku: '',
     images: [],
@@ -45,7 +45,7 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
       name: newVariant.name!,
       colorName: newVariant.colorName!,
       colorHex: newVariant.colorHex || '#000000',
-      price: newVariant.price || 0,
+      priceAdjustment: newVariant.priceAdjustment || 0,
       stock: newVariant.stock || 0,
       sku: newVariant.sku || '',
       images: newVariant.images || [],
@@ -58,7 +58,7 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
       name: '',
       colorName: '',
       colorHex: '#000000',
-      price: 0,
+      priceAdjustment: 0,
       stock: 0,
       sku: '',
       images: [],
@@ -158,11 +158,11 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
                 <Input
                   type="number"
                   step="0.01"
-                  value={newVariant.price}
+                  value={newVariant.priceAdjustment}
                   onChange={(e) =>
                     setNewVariant({
                       ...newVariant,
-                      price: parseFloat(e.target.value) || 0,
+                      priceAdjustment: parseFloat(e.target.value) || 0,
                     })
                   }
                   placeholder="0.00"
@@ -266,10 +266,10 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
                   <Input
                     type="number"
                     step="0.01"
-                    value={variant.price}
+                    value={variant.priceAdjustment}
                     onChange={(e) =>
                       handleUpdate(variant.id, {
-                        price: parseFloat(e.target.value) || 0,
+                        priceAdjustment: parseFloat(e.target.value) || 0,
                       })
                     }
                     placeholder="Prijs aanpassing"
@@ -319,10 +319,10 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
                       <span>{variant.colorName}</span>
                       {variant.sku && <span>• SKU: {variant.sku}</span>}
                       <span>• Voorraad: {variant.stock}</span>
-                      {variant.price !== 0 && (
+                      {variant.priceAdjustment !== 0 && (
                         <span>
-                          • Prijs: {variant.price > 0 ? '+' : ''}€
-                          {variant.price.toFixed(2)}
+                          • Prijs: {variant.priceAdjustment > 0 ? '+' : ''}€
+                          {variant.priceAdjustment.toFixed(2)}
                         </span>
                       )}
                     </div>

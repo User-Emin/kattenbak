@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
-import { upload, optimizeImage, deleteFile, getPublicUrl, validateFileSize } from '../../middleware/upload.middleware';
+import { upload, videoUpload, optimizeImage, deleteFile, getPublicUrl, getVideoPublicUrl, validateFileSize, validateVideoSize } from '../../middleware/upload.middleware';
 
 const router = Router();
 
@@ -100,9 +100,13 @@ router.post('/images', upload.array('images', 10), async (req, res) => {
 /**
  * POST /api/v1/admin/upload/video
  * Upload product video (hero or demo)
- * Security: Same as images but larger size limit (50MB)
+ * Security:
+ * - File type validation (MP4, WebM, MOV, AVI, MKV)
+ * - Size limit (100MB)
+ * - UUID filenames
+ * - Secure storage
  */
-router.post('/video', upload.single('video'), async (req, res) => {
+router.post('/video', videoUpload.single('video'), async (req, res) => {
   try {
     const file = req.file;
     
@@ -113,18 +117,28 @@ router.post('/video', upload.single('video'), async (req, res) => {
       });
     }
     
-    // TODO: Add video validation and optimization
+    // Validate video size
+    if (!validateVideoSize(file.size)) {
+      await deleteFile(file.path);
+      return res.status(400).json({
+        success: false,
+        error: `Video te groot (max 100MB). Ontvangen: ${(file.size / (1024 * 1024)).toFixed(2)}MB`
+      });
+    }
     
+    // Audit log
     console.log(`[AUDIT] Video uploaded by admin: ${(req as any).user.email}`, {
       filename: file.filename,
-      size: file.size
+      size: `${(file.size / (1024 * 1024)).toFixed(2)}MB`,
+      mimetype: file.mimetype
     });
     
     return res.json({
       success: true,
       data: {
         filename: file.filename,
-        url: getPublicUrl(file.filename),
+        originalName: file.originalname,
+        url: getVideoPublicUrl(file.filename),
         size: file.size,
         mimetype: file.mimetype
       }

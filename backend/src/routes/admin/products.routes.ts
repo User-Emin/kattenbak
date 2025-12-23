@@ -230,6 +230,9 @@ router.post('/', async (req, res) => {
  */
 router.put('/:id', async (req, res) => {
   try {
+    // 🔍 DEBUG: Log incoming request body
+    console.log('[PRODUCT UPDATE] Received payload:', JSON.stringify(req.body, null, 2));
+    
     // Validate input
     let data = ProductUpdateSchema.parse(req.body);
     
@@ -306,6 +309,10 @@ router.put('/:id', async (req, res) => {
     });
   } catch (error: any) {
     if (error instanceof z.ZodError) {
+      // 🔍 DEBUG: Log Zod validation errors
+      console.error('[PRODUCT UPDATE] Zod validation failed:', JSON.stringify(error.errors, null, 2));
+      console.error('[PRODUCT UPDATE] Received body:', JSON.stringify(req.body, null, 2));
+      
       return res.status(400).json({
         success: false,
         error: 'Ongeldige product data',

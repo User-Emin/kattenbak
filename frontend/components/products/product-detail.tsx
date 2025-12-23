@@ -266,6 +266,22 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
+        {/* DRY: Product Demo Video - BOVEN Productinformatie */}
+        {product.videoUrl && (
+          <div className="max-w-4xl mx-auto mb-12">
+            <SectionHeading className="mb-6" size="sm">
+              Zie Het in Actie
+            </SectionHeading>
+            <VideoPlayer
+              videoUrl={product.videoUrl}
+              posterUrl={product.images?.[0] || ''}
+              type="product"
+              controls
+              className="w-full aspect-video rounded-sm overflow-hidden border border-gray-200"
+            />
+          </div>
+        )}
+
         {/* Product Description - COOLBLUE "PRODUCTINFORMATIE" */}
         <div className="max-w-4xl mx-auto mb-12">
           <SectionHeading className="mb-6" size="sm">
@@ -310,19 +326,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             <h3 className="font-semibold text-base mb-3 text-gray-900">Omschrijving</h3>
             <p className="text-sm text-gray-700 leading-relaxed">{product.description}</p>
           </div>
-          
-          {/* DRY: Product Demo Video - EXACT zoals homepage, direct onder omschrijving */}
-          {product.videoUrl && (
-            <div className="mt-8">
-              <VideoPlayer
-                videoUrl={product.videoUrl}
-                posterUrl={product.images?.[0] || ''}
-                type="product"
-                controls
-                className="w-full aspect-video rounded-sm overflow-hidden border border-gray-200"
-              />
-            </div>
-          )}
         </div>
 
         <Separator variant="float" spacing="xl" />

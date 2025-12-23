@@ -44,7 +44,7 @@ export const ProductCreateSchema = z.object({
     .nullable(),
   
   costPrice: z.number()
-    .positive()
+    .min(0, 'Kostprijs kan niet negatief zijn')
     .max(999999.99)
     .multipleOf(0.01)
     .optional()

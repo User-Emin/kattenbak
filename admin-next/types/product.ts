@@ -47,10 +47,11 @@ export interface ProductVariant {
   name: string; // e.g. "Premium Wit"
   colorName: string; // e.g. "Wit"
   colorHex: string; // e.g. "#ffffff"
-  price: number; // Price difference (+/- from base price)
+  priceAdjustment: number; // Price difference (+/- from base price)
   stock: number;
   sku: string;
   images: string[]; // Variant-specific images
+  isActive?: boolean; // Optional field for backend compatibility
 }
 
 export interface ProductFormData {

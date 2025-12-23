@@ -122,7 +122,7 @@ export const productValidationSchema = z.object({
       name: z.string().min(1, 'Variant naam verplicht'),
       colorName: z.string().min(1, 'Kleur naam verplicht'),
       colorHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Ongeldige hex kleur'),
-      price: z.coerce.number(),
+      priceAdjustment: z.coerce.number(),
       stock: z.coerce.number().int().min(0),
       sku: z.string().min(1, 'Variant SKU verplicht'),
       images: z.array(
@@ -133,6 +133,7 @@ export const productValidationSchema = z.object({
             'Afbeelding moet een geldige URL of pad zijn'
           )
       ).default([]),
+      isActive: z.boolean().optional(),
     })
   ).optional(),
   

@@ -22,8 +22,32 @@ export default function ProductEditPage() {
   const updateMutation = useUpdateProduct();
 
   const handleSubmit = async (formData: ProductFormData) => {
+    // 🔥 TRANSFORM: Remove read-only fields and fix schema mismatch
+    const { 
+      id, 
+      createdAt, 
+      updatedAt, 
+      publishedAt,
+      category,  // Remove nested category object
+      variants,  // Will be handled separately if needed
+      ...updateData 
+    } = formData as any;
+    
+    // Extract categoryId from category object if present
+    const apiData: any = {
+      ...updateData,
+      categoryId: category?.id || formData.categoryId || undefined,
+    };
+    
+    // Clean undefined/null values
+    Object.keys(apiData).forEach(key => {
+      if (apiData[key] === undefined) {
+        delete apiData[key];
+      }
+    });
+
     await updateMutation.mutateAsync(
-      { id: productId, data: formData },
+      { id: productId, data: apiData },
       {
         onSuccess: () => {
           // Auto-redirect na success
