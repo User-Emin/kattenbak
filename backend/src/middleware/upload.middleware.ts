@@ -5,6 +5,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import { Request } from 'express';
 import { encryptAndSaveFile } from '../utils/encryption.util'; // MEDIA ENCRYPTION
+import { processVideoComplete } from '../utils/ffmpeg.util'; // VIDEO TRANSCODING
 
 /**
  * SECURE IMAGE UPLOAD CONFIGURATION
@@ -15,6 +16,7 @@ import { encryptAndSaveFile } from '../utils/encryption.util'; // MEDIA ENCRYPTI
  * - Path traversal prevention
  * - Image optimization
  * - AES-256-GCM encryption at rest
+ * - FFmpeg video transcoding & compression
  */
 
 // Allowed image types
