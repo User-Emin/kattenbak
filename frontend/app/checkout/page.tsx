@@ -371,9 +371,9 @@ function CheckoutContent() {
 
                 <Separator variant="float" spacing="sm" />
 
-                {/* CTA Button rechts - Prominent */}
+                {/* CTA Button rechts - Prominent ORANJE */}
                 <div className="mt-6">
-                  <Button type="submit" className="w-full bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-6 rounded flex items-center justify-center gap-2" size="lg" disabled={isProcessing}>
+                  <Button type="submit" className="w-full bg-[#f76402] hover:bg-[#e55a02] text-white font-semibold py-3 px-6 rounded-md flex items-center justify-center gap-2" size="lg" disabled={isProcessing}>
                     {isProcessing ? (
                       <>
                         <Loader2 className="h-5 w-5 animate-spin" />

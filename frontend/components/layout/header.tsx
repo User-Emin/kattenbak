@@ -81,7 +81,7 @@ export function Header() {
             >
               <ShoppingCart className="h-6 w-6 text-white" />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-black text-white text-xs rounded-full flex items-center justify-center font-bold px-1.5">
+                  <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-1.5">
                     {itemCount}
                   </span>
                 )}
@@ -99,7 +99,7 @@ export function Header() {
               >
                 <ShoppingCart className="h-6 w-6 text-white" />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-black text-white text-xs rounded-full flex items-center justify-center font-bold px-1.5">
+                  <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-1.5">
                     {itemCount}
                   </span>
                 )}

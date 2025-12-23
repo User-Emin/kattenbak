@@ -22,7 +22,7 @@ export default function CartPage() {
             Ontdek onze premium zelfreinigende kattenbak
           </p>
           <Link href="/">
-            <Button size="lg" className="bg-accent hover:bg-accent-dark text-white font-semibold px-8 rounded" rightIcon={<ArrowRight className="h-5 w-5" />}>
+            <Button size="lg" className="bg-[#f76402] hover:bg-[#e55a02] text-white font-semibold px-8 rounded-md" rightIcon={<ArrowRight className="h-5 w-5" />}>
               Verder Winkelen
             </Button>
           </Link>
@@ -144,7 +144,7 @@ export default function CartPage() {
               </div>
 
               <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
-                <Button className="w-full bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-6 rounded-md flex items-center justify-center gap-2" size="lg">
+                <Button className="w-full bg-[#f76402] hover:bg-[#e55a02] text-white font-semibold py-3 px-6 rounded-md flex items-center justify-center gap-2" size="lg">
                   <span>Afrekenen</span>
                   <ArrowRight className="h-5 w-5" />
                 </Button>

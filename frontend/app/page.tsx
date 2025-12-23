@@ -8,7 +8,7 @@ import { ChatPopup } from "@/components/ui/chat-popup";
 import { Separator } from "@/components/ui/separator";
 import { VideoPlayer } from "@/components/ui/video-player";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { ProductUspBanner } from "@/components/products/product-usp-banner";
+// ProductUspBanner only on product detail pages
 import { ArrowRight, Play, Check, MessageCircle, ChevronDown, ChevronUp, Package, Volume2, Sparkles, Smartphone } from "lucide-react";
 import type { Product } from "@/types/product";
 import { API_CONFIG, SITE_CONFIG, apiFetch } from "@/lib/config";
@@ -129,10 +129,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ✅ USP BANNER - ONDER HERO */}
-      <ProductUspBanner />
-
-      <Separator variant="float" spacing="md" />
+      {/* USP Banner removed - only on product detail pages */}
 
       {/* USP Section - COMPACT + MINDER SPACING - MOBILE FIRST */}
       <section className="py-8 md:py-12 bg-white text-center">
