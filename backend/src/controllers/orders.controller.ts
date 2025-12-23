@@ -62,7 +62,7 @@ export class OrdersController {
             value: total.toFixed(2),
           },
           description: `Kattenbak Order ${order.orderNumber}`,
-          redirectUrl: `${env.FRONTEND_URL}/checkout/success?orderId=${order.id}`,
+          redirectUrl: `${env.FRONTEND_URL}/success?orderId=${order.id}`,
           metadata: {
             orderId: order.id,
             orderNumber: order.orderNumber,
