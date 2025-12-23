@@ -45,6 +45,7 @@ interface CartContextValue {
 const CartContext = createContext<CartContextValue | undefined>(undefined);
 
 const CART_STORAGE_KEY = 'kattenbak_cart';
+const CART_VERSION = 'v2'; // Version for UUID migration
 const CUSTOMER_DATA_COOKIE = 'kb_customer_data';
 const CONSENT_COOKIE = 'kb_consent';
 const COOKIE_MAX_AGE = 7; // dagen
@@ -59,9 +60,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        setItems(parsed.items || []);
+        
+        // Version check: Clear old cart if version mismatch (UUID migration)
+        if (parsed.version !== CART_VERSION) {
+          console.log('🔄 Cart version mismatch - clearing old data');
+          localStorage.removeItem(CART_STORAGE_KEY);
+          setItems([]);
+        } else {
+          setItems(parsed.items || []);
+        }
       } catch (e) {
         console.error('Failed to parse cart data');
+        localStorage.removeItem(CART_STORAGE_KEY);
       }
     }
 
@@ -78,6 +88,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem(
         CART_STORAGE_KEY,
         JSON.stringify({
+          version: CART_VERSION,
           items,
           updated: new Date().toISOString(),
         })
