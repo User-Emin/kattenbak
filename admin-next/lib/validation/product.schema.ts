@@ -12,9 +12,6 @@ const sanitizeString = (val: string) => {
     .trim();
 };
 
-// DRY: URL validation
-const urlSchema = z.string().url('Ongeldige URL').or(z.string().startsWith('/'));
-
 // DRY: Product validation with sanitization
 export const productValidationSchema = z.object({
   sku: z.string()
@@ -75,8 +72,15 @@ export const productValidationSchema = z.object({
     .max(999999)
     .optional(),
   
-  // DRY: Images with URL validation
-  images: z.array(urlSchema)
+  // DRY: Images with URL or path validation
+  images: z.array(
+    z.string()
+      .min(1, 'Afbeelding pad mag niet leeg zijn')
+      .refine(
+        (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
+        'Afbeelding moet een geldige URL of pad zijn (begin met / of http(s)://)'
+      )
+  )
     .min(1, 'Minimaal 1 afbeelding is verplicht')
     .max(20, 'Maximaal 20 afbeeldingen toegestaan'),
   
@@ -110,6 +114,29 @@ export const productValidationSchema = z.object({
     width: z.coerce.number().min(0).max(9999),
     height: z.coerce.number().min(0).max(9999),
   }).optional(),
+  
+  // DRY: Product variants (color/size)
+  variants: z.array(
+    z.object({
+      id: z.string().optional(),
+      name: z.string().min(1, 'Variant naam verplicht'),
+      colorName: z.string().min(1, 'Kleur naam verplicht'),
+      colorHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Ongeldige hex kleur'),
+      price: z.coerce.number(),
+      stock: z.coerce.number().int().min(0),
+      sku: z.string().min(1, 'Variant SKU verplicht'),
+      images: z.array(
+        z.string()
+          .min(1)
+          .refine(
+            (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
+            'Afbeelding moet een geldige URL of pad zijn'
+          )
+      ).default([]),
+    })
+  ).optional(),
+  
+  categoryId: z.string().optional(),
 });
 
 export type ProductValidation = z.infer<typeof productValidationSchema>;
