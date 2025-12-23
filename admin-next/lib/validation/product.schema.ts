@@ -80,12 +80,17 @@ export const productValidationSchema = z.object({
     .min(1, 'Minimaal 1 afbeelding is verplicht')
     .max(20, 'Maximaal 20 afbeeldingen toegestaan'),
   
-  // DRY: Optional video URL (YouTube/Vimeo)
+  // DRY: Optional video URL (YouTube/Vimeo) - truly optional
   videoUrl: z.string()
-    .url('Ongeldige video URL')
     .optional()
-    .or(z.literal(''))
-    .transform(val => val || undefined),
+    .transform(val => {
+      if (!val || val.trim() === '') return undefined;
+      return val;
+    })
+    .refine(
+      (val) => !val || val.startsWith('http://') || val.startsWith('https://') || val.startsWith('/'),
+      'Video URL moet een geldige URL zijn'
+    ),
   
   metaTitle: z.string()
     .max(200, 'Meta title te lang')
