@@ -131,26 +131,33 @@ export default function HomePage() {
 
       {/* USP Banner removed - only on product detail pages */}
 
-      {/* USP Features - COOLBLUE STYLE: Clean grid met dikgedrukte keywords */}
+      {/* USP Features - ZIGZAG: Direct op background, lichtere titels */}
       <section className="py-12 md:py-16 bg-gray-50">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center">
+          <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2 text-center">
             Waarom Kiezen Voor Deze Kattenbak?
           </h2>
           <p className="text-base text-gray-600 mb-10 text-center">
             De belangrijkste features op een rij
           </p>
           
-          {/* Features Grid - 2 kolommen, strak design */}
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            {/* Feature 1: 10.5L Capaciteit */}
-            <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+          {/* Feature 1 - Links: Image, Rechts: Content */}
+          <div className="grid md:grid-cols-2 gap-8 items-center mb-12">
+            <div className="relative aspect-video rounded-lg overflow-hidden shadow-sm">
+              <Image
+                src={usps.feature1.image}
+                alt="10.5L Capaciteit"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div>
               <div className="flex items-start gap-4 mb-4">
                 <div className="p-3 bg-[#0071ce]/10 rounded-lg">
                   <Package className="h-6 w-6 text-[#0071ce]" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
                     <strong className="text-[#0071ce]">10.5L</strong> Capaciteit
                   </h3>
                   <p className="text-gray-700 leading-relaxed">
@@ -158,24 +165,18 @@ export default function HomePage() {
                   </p>
                 </div>
               </div>
-              <div className="relative aspect-video rounded-lg overflow-hidden">
-                <Image
-                  src={usps.feature1.image}
-                  alt="10.5L Capaciteit"
-                  fill
-                  className="object-cover"
-                />
-              </div>
             </div>
+          </div>
 
-            {/* Feature 2: Ultra-Quiet Motor */}
-            <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+          {/* Feature 2 - ZIGZAG: Links: Content, Rechts: Image */}
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="order-2 md:order-1">
               <div className="flex items-start gap-4 mb-4">
                 <div className="p-3 bg-[#0071ce]/10 rounded-lg">
                   <Volume2 className="h-6 w-6 text-[#0071ce]" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
                     <strong className="text-[#0071ce]">Ultra-Quiet</strong> Motor
                   </h3>
                   <p className="text-gray-700 leading-relaxed">
@@ -183,14 +184,14 @@ export default function HomePage() {
                   </p>
                 </div>
               </div>
-              <div className="relative aspect-video rounded-lg overflow-hidden">
-                <Image
-                  src={usps.feature2.image}
-                  alt="Ultra-Quiet Motor"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+            </div>
+            <div className="order-1 md:order-2 relative aspect-video rounded-lg overflow-hidden shadow-sm">
+              <Image
+                src={usps.feature2.image}
+                alt="Ultra-Quiet Motor"
+                fill
+                className="object-cover"
+              />
             </div>
           </div>
         </div>
@@ -225,11 +226,11 @@ export default function HomePage() {
 
       <Separator variant="float" spacing="sm" />
 
-      {/* FAQ Section - COOLBLUE STYLE: Strakke accordion met professionele look */}
+      {/* FAQ Section - ORANJE HOVER: Strakke accordion met oranje accenten */}
       <section className="py-12 md:py-16 bg-gray-50">
         <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
               Veelgestelde Vragen over de Automatische Kattenbak
             </h2>
             <p className="text-base text-gray-600">
@@ -241,19 +242,19 @@ export default function HomePage() {
             {faqs.map((faq, i) => (
               <div 
                 key={i} 
-                className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-[#0071ce] hover:shadow-sm transition-all"
+                className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-[#f76402] hover:shadow-sm transition-all"
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors group"
                 >
-                  <span className="font-semibold text-base text-gray-900 pr-4 group-hover:text-[#0071ce] transition-colors">
+                  <span className="font-semibold text-base text-gray-900 pr-4 group-hover:text-[#f76402] transition-colors">
                     {faq.q}
                   </span>
                   {openFaq === i ? (
-                    <ChevronUp className="h-5 w-5 text-[#0071ce] flex-shrink-0" />
+                    <ChevronUp className="h-5 w-5 text-[#f76402] flex-shrink-0" />
                   ) : (
-                    <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0 group-hover:text-[#0071ce] transition-colors" />
+                    <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0 group-hover:text-[#f76402] transition-colors" />
                   )}
                 </button>
                 {openFaq === i && (
