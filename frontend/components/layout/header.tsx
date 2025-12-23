@@ -41,36 +41,36 @@ export function Header() {
 
   return (
     <>
-      {/* MINIMALE NAVBAR: Super dun met groot uitstekend logo */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+      {/* GRIJZE NAVBAR: Origineel met MEGA GROOT logo */}
+      <header className="sticky top-0 z-50 bg-brand shadow-md">
         <div className="container mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo - GROOT maar past in dunne navbar */}
-            <Link href="/" className="flex items-center hover:opacity-90 transition -my-2">
+          <div className="flex items-center justify-between py-3">
+            {/* Logo - MEGA GROOT: h-28 voor maximale zichtbaarheid */}
+            <Link href="/" className="flex items-center hover:opacity-90 transition">
               <Image
                 src="/images/logo-catsupply.png"
                 alt="Catsupply"
-                width={280}
-                height={90}
-                className="h-20 w-auto"
+                width={350}
+                height={120}
+                className="h-28 w-auto"
                 priority
               />
             </Link>
 
-            {/* Desktop Navigation - Compact */}
-            <nav className="hidden md:flex items-center gap-6">
-              <Link href="/" className="text-gray-700 hover:text-brand transition text-sm font-medium">
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-8">
+              <Link href="/" className="text-white hover:text-white/80 transition font-medium text-base">
                 Home
               </Link>
-              <Link href="/over-ons" className="text-gray-700 hover:text-brand transition text-sm font-medium">
+              <Link href="/over-ons" className="text-white hover:text-white/80 transition font-medium text-base">
                 Over Ons
               </Link>
-              <Link href="/contact" className="text-gray-700 hover:text-brand transition text-sm font-medium">
+              <Link href="/contact" className="text-white hover:text-white/80 transition font-medium text-base">
                 Contact
               </Link>
             </nav>
 
-            {/* Desktop: Cart Icon - Compact */}
+            {/* Desktop: Cart Icon */}
             <button
               onClick={isOnCartPage ? () => {} : handleCartToggle}
               className={`hidden md:block relative transition ${
@@ -79,16 +79,16 @@ export function Header() {
               aria-label="Winkelwagen"
               title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
             >
-              <ShoppingCart className="h-6 w-6 text-brand" />
+              <ShoppingCart className="h-7 w-7 text-white" />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-1.5">
+                  <span className="absolute -top-2 -right-2 min-w-[22px] h-6 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-2">
                     {itemCount}
                   </span>
                 )}
             </button>
 
             {/* Mobile: Cart + Menu Icons */}
-            <div className="md:hidden flex items-center gap-3">
+            <div className="md:hidden flex items-center gap-4">
               <button
                 onClick={isOnCartPage ? () => {} : handleCartToggle}
                 className={`relative transition ${
@@ -97,9 +97,9 @@ export function Header() {
                 aria-label="Winkelwagen"
                 title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
               >
-                <ShoppingCart className="h-6 w-6 text-brand" />
+                <ShoppingCart className="h-7 w-7 text-white" />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-1.5">
+                  <span className="absolute -top-2 -right-2 min-w-[22px] h-6 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-2">
                     {itemCount}
                   </span>
                 )}
@@ -110,22 +110,22 @@ export function Header() {
                 className="hover:opacity-80 transition"
                 aria-label="Menu"
               >
-                {isMobileMenuOpen ? <X className="h-6 w-6 text-brand" /> : <Menu className="h-6 w-6 text-brand" />}
+                {isMobileMenuOpen ? <X className="h-7 w-7 text-white" /> : <Menu className="h-7 w-7 text-white" />}
               </button>
             </div>
           </div>
 
-          {/* Mobile Menu - Compact */}
+          {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <nav className="md:hidden pb-3 border-t border-gray-200 pt-3">
-              <div className="flex flex-col gap-1">
-                <Link href="/" className="text-gray-700 hover:text-brand hover:bg-gray-50 transition text-sm font-medium px-4 py-2 rounded" onClick={() => setIsMobileMenuOpen(false)}>
+            <nav className="md:hidden pb-4 border-t border-white/20 mt-3 pt-4">
+              <div className="flex flex-col gap-2">
+                <Link href="/" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Home
                 </Link>
-                <Link href="/over-ons" className="text-gray-700 hover:text-brand hover:bg-gray-50 transition text-sm font-medium px-4 py-2 rounded" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/over-ons" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Over Ons
                 </Link>
-                <Link href="/contact" className="text-gray-700 hover:text-brand hover:bg-gray-50 transition text-sm font-medium px-4 py-2 rounded" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/contact" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Contact
                 </Link>
               </div>
