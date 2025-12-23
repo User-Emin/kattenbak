@@ -22,6 +22,20 @@ export function HeroVideo({ videoUrl, posterUrl, className = '' }: HeroVideoProp
   const [hasError, setHasError] = useState(false);
   const [showPoster, setShowPoster] = useState(true);
 
+  // DRY: Security - Prevent empty string in src
+  if (!videoUrl || videoUrl.trim() === '') {
+    if (posterUrl && posterUrl.trim() !== '') {
+      return (
+        <img
+          src={posterUrl}
+          alt="Hero"
+          className={`w-full h-full object-cover ${className}`}
+        />
+      );
+    }
+    return null; // No video or poster
+  }
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -53,7 +67,7 @@ export function HeroVideo({ videoUrl, posterUrl, className = '' }: HeroVideoProp
     };
   }, [videoUrl]);
 
-  if (hasError && posterUrl) {
+  if (hasError && posterUrl && posterUrl.trim() !== '') {
     return (
       <img
         src={posterUrl}
@@ -66,7 +80,7 @@ export function HeroVideo({ videoUrl, posterUrl, className = '' }: HeroVideoProp
   return (
     <div className="relative w-full h-full">
       {/* Poster voor instant display */}
-      {showPoster && posterUrl && (
+      {showPoster && posterUrl && posterUrl.trim() !== '' && (
         <img
           src={posterUrl}
           alt="Hero"
@@ -83,14 +97,14 @@ export function HeroVideo({ videoUrl, posterUrl, className = '' }: HeroVideoProp
         loop
         playsInline
         preload="metadata"
-        poster={posterUrl}
+        poster={posterUrl && posterUrl.trim() !== '' ? posterUrl : undefined}
         style={{
           // Browser hints voor streaming
           objectFit: 'cover',
           willChange: 'auto'
         }}
       >
-        <source src={videoUrl} type="video/mp4" />
+        <source src={videoUrl || undefined} type="video/mp4" />
       </video>
     </div>
   );

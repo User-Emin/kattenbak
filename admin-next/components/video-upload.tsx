@@ -300,7 +300,7 @@ export function VideoUpload({ value = '', onChange, maxSizeMB = 100 }: VideoUplo
           </div>
 
           {/* Video Preview */}
-          {value && (
+          {value && value.trim() !== '' && (
             <div className="mt-4 aspect-video bg-gray-100 rounded-lg overflow-hidden">
               {isValidVideoUrl(value) ? (
                 <iframe
@@ -314,7 +314,14 @@ export function VideoUpload({ value = '', onChange, maxSizeMB = 100 }: VideoUplo
                   allowFullScreen
                 />
               ) : (
-                <video src={value} controls className="w-full h-full" />
+                <video 
+                  src={value || undefined} 
+                  controls 
+                  className="w-full h-full"
+                  onError={(e) => {
+                    console.error('Video load error:', value);
+                  }}
+                />
               )}
             </div>
           )}

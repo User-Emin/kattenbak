@@ -149,13 +149,13 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
       {/* Image previews */}
       {value.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {value.map((image, index) => (
+          {value.filter(img => img && img.trim() !== '').map((image, index) => (
             <div
               key={index}
               className="relative aspect-square rounded-lg border bg-muted overflow-hidden group"
             >
               <img
-                src={image}
+                src={image || 'https://placehold.co/400x400/666/fff?text=Geen+afbeelding'}
                 alt={`Afbeelding ${index + 1}`}
                 className="w-full h-full object-cover"
                 onError={(e) => {

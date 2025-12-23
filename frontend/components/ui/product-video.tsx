@@ -18,6 +18,11 @@ interface ProductVideoProps {
 export function ProductVideo({ videoUrl, productName, className = '' }: ProductVideoProps) {
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // DRY: Security - Prevent empty string in src
+  if (!videoUrl || videoUrl.trim() === '') {
+    return null; // Don't render anything if no video
+  }
+
   // Check if it's a local video file (MP4, WebM, OGG, etc.)
   const isLocalVideo = /\.(mp4|webm|ogg|mov)$/i.test(videoUrl);
   
@@ -43,13 +48,13 @@ export function ProductVideo({ videoUrl, productName, className = '' }: ProductV
     return (
       <div className={`relative w-full aspect-video rounded-lg overflow-hidden bg-gray-100 ${className}`}>
         <video
-          src={videoUrl}
-          poster={`${videoUrl.replace(/\.[^.]+$/, '')}-thumbnail.jpg`}
+          src={videoUrl || undefined}
+          poster={videoUrl ? `${videoUrl.replace(/\.[^.]+$/, '')}-thumbnail.jpg` : undefined}
           controls
           className="w-full h-full object-cover"
           preload="metadata"
         >
-          <source src={videoUrl} type={`video/${videoUrl.split('.').pop()}`} />
+          <source src={videoUrl || undefined} type={`video/${videoUrl.split('.').pop()}`} />
           Je browser ondersteunt geen HTML5 video.
         </video>
         

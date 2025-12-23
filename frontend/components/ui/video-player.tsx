@@ -38,6 +38,15 @@ export function VideoPlayer({
   const [showControls, setShowControls] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // DRY: Security - Prevent empty string in src
+  if (!videoUrl || videoUrl.trim() === '') {
+    return (
+      <div className={`relative w-full bg-gray-100 flex items-center justify-center ${className}`}>
+        <p className="text-gray-500 text-sm">Geen video beschikbaar</p>
+      </div>
+    );
+  }
+
   // Hero specifiek: altijd muted, loop, autoplay
   const isHero = type === 'hero';
   const finalMuted = isHero ? true : isMuted;
