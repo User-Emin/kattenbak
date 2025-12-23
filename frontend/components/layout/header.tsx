@@ -41,31 +41,31 @@ export function Header() {
 
   return (
     <>
-      {/* COOLBLUE: Navbar ZONDER shadow - clean */}
-      <header className="sticky top-0 z-50 bg-brand">
+      {/* NAVBAR: Wit met groot logo & brand accent */}
+      <header className="sticky top-0 z-50 bg-white border-b-4 border-brand shadow-sm">
         <div className="container mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-18">
-            {/* Logo - GROOT: Nieuwe Catsupply grijs logo */}
-            <Link href="/" className="flex items-center hover:opacity-90 transition">
+          <div className="flex items-center justify-between h-24">
+            {/* Logo - EXTRA GROOT: h-20 voor maximale zichtbaarheid */}
+            <Link href="/" className="flex items-center hover:opacity-90 transition py-2">
               <Image
                 src="/images/logo-catsupply.png"
                 alt="Catsupply"
-                width={220}
-                height={80}
-                className="h-16 w-auto"
+                width={300}
+                height={100}
+                className="h-20 w-auto"
                 priority
               />
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
-              <Link href="/" className="text-white hover:text-white/80 transition font-medium">
+              <Link href="/" className="text-gray-800 hover:text-brand transition font-semibold">
                 Home
               </Link>
-              <Link href="/over-ons" className="text-white hover:text-white/80 transition font-medium">
+              <Link href="/over-ons" className="text-gray-800 hover:text-brand transition font-semibold">
                 Over Ons
               </Link>
-              <Link href="/contact" className="text-white hover:text-white/80 transition font-medium">
+              <Link href="/contact" className="text-gray-800 hover:text-brand transition font-semibold">
                 Contact
               </Link>
             </nav>
@@ -79,9 +79,9 @@ export function Header() {
               aria-label="Winkelwagen"
               title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
             >
-              <ShoppingCart className="h-6 w-6 text-white" />
+              <ShoppingCart className="h-7 w-7 text-brand" />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-1.5">
+                  <span className="absolute -top-2 -right-2 min-w-[22px] h-6 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-2">
                     {itemCount}
                   </span>
                 )}
@@ -97,9 +97,9 @@ export function Header() {
                 aria-label="Winkelwagen"
                 title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
               >
-                <ShoppingCart className="h-6 w-6 text-white" />
+                <ShoppingCart className="h-7 w-7 text-brand" />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 min-w-[20px] h-5 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-1.5">
+                  <span className="absolute -top-2 -right-2 min-w-[22px] h-6 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-2">
                     {itemCount}
                   </span>
                 )}
@@ -110,22 +110,22 @@ export function Header() {
                 className="hover:opacity-80 transition"
                 aria-label="Menu"
               >
-                {isMobileMenuOpen ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
+                {isMobileMenuOpen ? <X className="h-7 w-7 text-brand" /> : <Menu className="h-7 w-7 text-brand" />}
               </button>
             </div>
           </div>
 
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <nav className="md:hidden pb-4 border-t border-white/20 mt-2 pt-4">
+            <nav className="md:hidden pb-4 border-t border-gray-200 mt-2 pt-4">
               <div className="flex flex-col gap-2">
-                <Link href="/" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/" className="text-gray-800 hover:text-brand hover:bg-gray-50 transition font-semibold px-4 py-3 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Home
                 </Link>
-                <Link href="/over-ons" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/over-ons" className="text-gray-800 hover:text-brand hover:bg-gray-50 transition font-semibold px-4 py-3 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Over Ons
                 </Link>
-                <Link href="/contact" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/contact" className="text-gray-800 hover:text-brand hover:bg-gray-50 transition font-semibold px-4 py-3 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Contact
                 </Link>
               </div>
