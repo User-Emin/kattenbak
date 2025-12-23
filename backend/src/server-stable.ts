@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 // import adminAuthRoutes from './routes/admin-auth.routes'; // DISABLED
 // import adminRoutes from './routes/admin'; // DISABLED
+import adminAuthRoutes from './routes/admin-auth.routes'; // ✅ ENABLED
 import ragRoutes from './routes/rag.routes'; // ✅ RAG Chat routes
 
 // Load environment variables
@@ -249,10 +250,10 @@ app.get('/api/v1/contact', (req: Request, res: Response) => {
 });
 
 // SECURITY: Admin authentication routes (JWT + bcrypt)
-// app.use('/api/v1/admin/auth', adminAuthRoutes); // DISABLED: Path alias issues
+app.use('/api/v1/admin/auth', adminAuthRoutes); // ✅ ENABLED
 
 // ADMIN API: Full admin panel routes (products, orders, returns, etc.)
-// app.use('/api/v1/admin', adminRoutes); // DISABLED: Path alias issues
+// app.use('/api/v1/admin', adminRoutes); // DISABLED: Will be enabled phase 2
 
 // ✅ RAG API: AI Chat (Claude + Vector Store)
 app.use('/api/v1/rag', ragRoutes);
