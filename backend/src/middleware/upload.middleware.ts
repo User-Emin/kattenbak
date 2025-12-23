@@ -1,5 +1,5 @@
 import multer from 'multer';
-import sharp from 'sharp';
+// import sharp from 'sharp'; // TEMP DISABLED - Will add after backend is stable
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import fs from 'fs/promises';
@@ -104,10 +104,17 @@ export const upload = multer({
 
 /**
  * Image optimization
+ * TEMP: Disabled sharp optimization - will add back after backend is stable
  * Security: Re-processes image to strip EXIF data and malicious content
  */
 export const optimizeImage = async (filepath: string): Promise<void> => {
   try {
+    // TEMP: Skip optimization, just log success
+    // TODO: Re-enable sharp optimization after npm install --os=linux --cpu=x64 sharp
+    console.log('⚠️ Image uploaded (optimization disabled):', path.basename(filepath));
+    return;
+    
+    /* ORIGINAL CODE - RE-ENABLE AFTER SHARP FIX
     const ext = path.extname(filepath).toLowerCase();
     const tempPath = `${filepath}.tmp`;
     
@@ -157,6 +164,7 @@ export const optimizeImage = async (filepath: string): Promise<void> => {
     await fs.rename(tempPath, filepath);
     
     console.log('✅ Image optimized:', path.basename(filepath));
+    */
   } catch (error: any) {
     console.error('❌ Image optimization error:', error.message);
     // Clean up temp file if exists
