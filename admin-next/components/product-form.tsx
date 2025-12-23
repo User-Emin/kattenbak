@@ -69,6 +69,7 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
       metaDescription: initialData.metaDescription || '',
       isActive: initialData.isActive,
       isFeatured: initialData.isFeatured,
+      categoryId: initialData.categoryId || undefined, // DRY: Category ID from existing product
     } : {
       sku: '',
       name: '',
@@ -90,6 +91,7 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
       metaDescription: '',
       isActive: true,
       isFeatured: false,
+      categoryId: undefined, // DRY: No category selected for new products
     },
   });
 
