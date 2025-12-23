@@ -21,8 +21,8 @@ router.post('/login', async (req, res) => {
 
     // PRODUCTION: Admin credentials (TODO: move to database)
     const ADMIN_EMAIL = 'admin@catsupply.nl';
-    // Bcrypt hash of 'admin123' - generate with: bcrypt.hash('admin123', 12)
-    const ADMIN_PASSWORD_HASH = '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYIr3OeJ0Gi';
+    // Bcrypt hash of 'admin123' - FIXED: Generated on server
+    const ADMIN_PASSWORD_HASH = '$2a$12$SQAWDBghvnkgmzfn5PLcfuw.ur63toKdyEfbFQ6i1oUaLo3ShJOcG';
 
     // Check email
     if (email !== ADMIN_EMAIL) {
