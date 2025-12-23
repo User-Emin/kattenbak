@@ -148,6 +148,90 @@
       "content": "Voor één kat: gemiddeld 7-10 dagen. Voor twee katten: 3-5 dagen. De app stuurt een melding wanneer de bak bijna vol is. De 10.5L capaciteit is veel groter dan standaard bakken.",
       "keywords": ["legen", "frequentie", "vaak", "capaciteit"],
       "importance": "high"
+    },
+    {
+      "type": "comparison",
+      "title": "Zelfreinigende Functie - Vergelijking",
+      "content": "Onze kattenbak: ✓ Volledig automatische zelfreiniging. Andere merken (rond): ✓ Hebben ook zelfreiniging. Andere merken (vierkant): ✓ Handmatige reiniging vereist.",
+      "keywords": ["zelfreinigend", "vergelijking", "automatisch", "competitors"],
+      "importance": "high"
+    },
+    {
+      "type": "comparison",
+      "title": "Open-Top Low-Stress Design - Uniek Voordeel",
+      "content": "Onze kattenbak: ✓ Open-top design zonder deksel, stress-vrij voor katten. Andere merken (rond): ✗ Gesloten design met deksel. Andere merken (vierkant): ✓ Sommige hebben open design.",
+      "keywords": ["open-top", "low-stress", "geen deksel", "unique", "vergelijking"],
+      "importance": "critical"
+    },
+    {
+      "type": "comparison",
+      "title": "Dubbele Veiligheidssensoren - Premium Veiligheid",
+      "content": "Onze kattenbak: ✓ Dubbele onafhankelijke veiligheidssensoren voor maximale bescherming. Andere merken (rond): ✗ Geen dubbele sensoren. Andere merken (vierkant): ✗ Standaard of geen sensoren.",
+      "keywords": ["veiligheidssensoren", "dubbel", "veiligheid", "premium", "unique"],
+      "importance": "critical"
+    },
+    {
+      "type": "comparison",
+      "title": "App Control & Health Monitoring - Smart Features",
+      "content": "Onze kattenbak: ✓ Volledige app-bediening met gezondheidsmonitoring. Andere merken (rond): ✓ Basis app-functionaliteit. Andere merken (vierkant): ✗ Geen app-ondersteuning.",
+      "keywords": ["app", "monitoring", "smart", "gezondheid", "vergelijking"],
+      "importance": "high"
+    },
+    {
+      "type": "comparison",
+      "title": "High-Efficiency Filter - Superieure Geurcontrole",
+      "content": "Onze kattenbak: ✓ High-efficiency filter systeem voor maximale geurcontrole. Andere merken (rond): ✗ Standaard of geen filter. Andere merken (vierkant): ✗ Basis of geen filter.",
+      "keywords": ["filter", "geurcontrole", "efficiency", "unique"],
+      "importance": "high"
+    },
+    {
+      "type": "comparison",
+      "title": "10.5L Afvalbak Capaciteit - Grootste in Klasse",
+      "content": "Onze kattenbak: 10.5L extra grote capaciteit. Andere merken (rond): 9L capaciteit. Andere merken (vierkant): 7L capaciteit. Onze bak is 16% groter dan ronde concurrenten en 50% groter dan vierkante alternatieven.",
+      "keywords": ["capaciteit", "10.5L", "groot", "XL", "beste", "vergelijking"],
+      "importance": "critical"
+    },
+    {
+      "type": "comparison",
+      "title": "Anti-Splash Hoge Wanden - Schone Vloeren",
+      "content": "Onze kattenbak: ✓ Anti-splash hoge zijwanden voorkomen morsen. Andere merken (rond): ✗ Lagere wanden, meer morsen. Andere merken (vierkant): ✗ Standaard wanden.",
+      "keywords": ["anti-splash", "hoge wanden", "schoon", "morsen", "unique"],
+      "importance": "high"
+    },
+    {
+      "type": "comparison",
+      "title": "Makkelijk Te Demonteren - Onderhoudsvriendelijk",
+      "content": "Onze kattenbak: ✓ Modulair design, eenvoudig uit elkaar te halen voor reiniging. Andere merken (rond): ✗ Moeilijk te demonteren. Andere merken (vierkant): ✓ Sommige zijn demonteerbaar.",
+      "keywords": ["demonteren", "onderhoud", "schoonmaken", "modulair", "unique"],
+      "importance": "medium"
+    },
+    {
+      "type": "comparison",
+      "title": "Alle Soorten Kattenbakvulling - Universeel Compatible",
+      "content": "Onze kattenbak: ✓ Werkt met alle soorten kattenbakvulling (klonterend, silica, natuurlijk). Andere merken (rond): ✓ Meeste soorten. Andere merken (vierkant): ✗ Specifieke vulling vereist.",
+      "keywords": ["vulling", "compatibel", "universeel", "flexibel"],
+      "importance": "high"
+    },
+    {
+      "type": "comparison",
+      "title": "Compact Footprint, Groot Interieur - Space Efficient",
+      "content": "Onze kattenbak: ✓ Compacte buitenkant met ruim interieur, ideaal voor kleine ruimtes. Andere merken (rond): ✗ Groot en omvangrijk. Andere merken (vierkant): ✗ Vierkant neemt veel ruimte in.",
+      "keywords": ["compact", "ruimtebesparend", "groot interieur", "efficient", "unique"],
+      "importance": "high"
+    },
+    {
+      "type": "comparison",
+      "title": "Ultra-Quiet Motor (<40dB) - Fluisterstil",
+      "content": "Onze kattenbak: ✓ Ultra-stille motor onder 40 decibel, stiller dan normaal praten. Andere merken (rond): ✓ Sommige zijn stil. Andere merken (vierkant): ✗ Vaak luidere motoren of handmatig.",
+      "keywords": ["stil", "quiet", "40dB", "geluidloos", "motor"],
+      "importance": "high"
+    },
+    {
+      "type": "comparison",
+      "title": "Modulair Design (OEM-Friendly) - Toekomstbestendig",
+      "content": "Onze kattenbak: ✓ Modulair OEM-vriendelijk design, onderdelen vervangbaar en upgradebaar. Andere merken (rond): ✗ Niet modulair, moeilijk te upgraden. Andere merken (vierkant): ✗ Vast ontwerp.",
+      "keywords": ["modulair", "OEM", "upgradebaar", "toekomstbestendig", "unique"],
+      "importance": "medium"
     }
   ]
 }
