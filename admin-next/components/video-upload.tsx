@@ -34,11 +34,12 @@ export function VideoUpload({ value = '', onChange, maxSizeMB = 100 }: VideoUplo
   const ALLOWED_FORMATS = ['.mp4', '.webm', '.mov', '.avi', '.mkv', '.m4v'];
   const ALLOWED_MIME_TYPES = ['video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska'];
 
-  // Validate video URL (YouTube/Vimeo)
+  // Validate video URL (YouTube/Vimeo OR local /uploads/ path)
   const isValidVideoUrl = (url: string): boolean => {
     const youtubeRegex = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const vimeoRegex = /vimeo\.com\/(?:video\/)?(\d+)/;
-    return youtubeRegex.test(url) || vimeoRegex.test(url);
+    const localVideoRegex = /^\/uploads\/videos\/.+\.(mp4|webm|mov|avi|mkv|m4v)$/;
+    return youtubeRegex.test(url) || vimeoRegex.test(url) || localVideoRegex.test(url);
   };
 
   // Handle file selection
