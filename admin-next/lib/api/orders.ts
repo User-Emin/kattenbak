@@ -17,15 +17,15 @@ export const getOrders = async (params?: {
   sortOrder?: 'asc' | 'desc';
 }) => {
   try {
-    // ✅ FIX: Correct endpoint is /orders (not /admin/orders)
-    const response = await apiClient.get('/orders', { params });
+    // ✅ FIX: Use admin endpoint with auth middleware
+    const response = await apiClient.get('/admin/orders', { params });
     return response.data;
   } catch (error: any) {
     // ✅ FIX: Re-throw with detailed error info (not empty {})
     console.error('getOrders API error:', {
       message: error.message || 'Unknown error',
       status: error.status || error.response?.status || 0,
-      url: error.url || error.config?.url || '/orders',
+      url: error.url || error.config?.url || '/admin/orders',
       details: error.details || error.response?.data || error,
     });
     throw error; // Re-throw for component to handle
@@ -37,15 +37,15 @@ export const getOrders = async (params?: {
  */
 export const getOrder = async (id: string) => {
   try {
-    // ✅ FIX: Correct endpoint
-    const response = await apiClient.get(`/orders/${id}`);
+    // ✅ FIX: Use admin endpoint
+    const response = await apiClient.get(`/admin/orders/${id}`);
     return response.data;
   } catch (error: any) {
     // ✅ FIX: Detailed error logging
     console.error('getOrder API error:', {
       message: error.message || 'Unknown error',
       status: error.status || error.response?.status || 0,
-      url: error.url || error.config?.url || `/orders/${id}`,
+      url: error.url || error.config?.url || `/admin/orders/${id}`,
       details: error.details || error.response?.data || error,
     });
     throw error;
