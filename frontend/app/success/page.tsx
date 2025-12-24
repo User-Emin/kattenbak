@@ -1,11 +1,16 @@
+"use client";
+
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Mail, Package, Truck, Home } from "lucide-react";
+import { Mail, Package, Truck, Home, Loader2 } from "lucide-react";
+import { ordersApi } from "@/lib/api/orders";
 
 /**
- * SUCCESS PAGE - Bedank pagina
- * DRY | Modulair | Maintainable | Geen redundantie
+ * SUCCESS PAGE - Bedank pagina met OrderID
+ * DRY | Modulair | Secure | Email notificatie
  */
 
 // DRY: Herbruikbare Step component - Modulair & Type-safe
@@ -43,17 +48,63 @@ const NEXT_STEPS = [
   }
 ] as const;
 
-export default function SuccessPage() {
+function SuccessContent() {
+  const searchParams = useSearchParams();
+  const [orderNumber, setOrderNumber] = useState<string | null>(null);
+  const [customerEmail, setCustomerEmail] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      try {
+        const orderId = searchParams.get("orderId");
+        if (orderId) {
+          const response = await ordersApi.getById(orderId);
+          const order = response.data || response;
+          setOrderNumber(order.orderNumber);
+          setCustomerEmail(order.customerEmail || order.customer?.email);
+        }
+      } catch (error) {
+        console.error("Failed to fetch order:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchOrderDetails();
+  }, [searchParams]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-brand" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-6">
       <div className="max-w-2xl w-full text-center">
-        {/* Heading - Zonder icon */}
+        {/* Heading */}
         <h1 className="text-4xl font-semibold mb-3 text-gray-900">
           Bedankt voor je bestelling!
         </h1>
-        <p className="text-lg text-gray-600 mb-8">
+        <p className="text-lg text-gray-600 mb-4">
           We hebben je bestelling ontvangen en verwerken deze zo snel mogelijk.
         </p>
+
+        {/* Order Number - PROMINENT */}
+        {orderNumber && (
+          <div className="mb-8 p-4 bg-white rounded-lg border-2 border-brand/20 inline-block">
+            <p className="text-sm text-gray-600 mb-1">Jouw bestelnummer</p>
+            <p className="text-2xl font-bold text-brand">{orderNumber}</p>
+            {customerEmail && (
+              <p className="text-sm text-gray-500 mt-2">
+                Bevestigingsmail verzonden naar: <strong>{customerEmail}</strong>
+              </p>
+            )}
+          </div>
+        )}
 
         <Separator variant="float" spacing="lg" />
 
@@ -87,5 +138,17 @@ export default function SuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-brand" />
+      </div>
+    }>
+      <SuccessContent />
+    </Suspense>
   );
 }

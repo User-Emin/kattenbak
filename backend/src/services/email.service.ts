@@ -134,6 +134,185 @@ export class EmailService {
   }
 
   /**
+   * Send order confirmation email
+   * DRY: Order template with all details
+   */
+  static async sendOrderConfirmation(data: {
+    customerEmail: string;
+    customerName: string;
+    orderNumber: string;
+    orderId: string;
+    items: Array<{
+      name: string;
+      quantity: number;
+      price: number;
+    }>;
+    subtotal: number;
+    shippingCost: number;
+    tax: number;
+    total: number;
+    shippingAddress: {
+      street: string;
+      houseNumber: string;
+      addition?: string;
+      postalCode: string;
+      city: string;
+      country: string;
+    };
+  }): Promise<void> {
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: #fb923c; color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+    .content { background: #ffffff; padding: 30px; border: 1px solid #e5e7eb; }
+    .order-number { background: #fef3c7; border: 2px solid #fbbf24; padding: 20px; text-align: center; 
+                     margin: 20px 0; border-radius: 8px; }
+    .order-number h2 { margin: 0; color: #92400e; font-size: 28px; }
+    .items-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .items-table th { background: #f3f4f6; padding: 12px; text-align: left; border-bottom: 2px solid #e5e7eb; }
+    .items-table td { padding: 12px; border-bottom: 1px solid #e5e7eb; }
+    .total-row { font-weight: bold; background: #fef3c7; }
+    .info-box { background: #f9fafb; padding: 15px; border-left: 4px solid #fb923c; margin: 15px 0; }
+    .footer { text-align: center; color: #6b7280; font-size: 14px; margin-top: 30px; padding: 20px; }
+    .button { display: inline-block; background: #fb923c; color: white; padding: 14px 32px; 
+              text-decoration: none; border-radius: 6px; margin: 15px 0; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎉 Bedankt voor je bestelling!</h1>
+      <p style="margin: 10px 0 0 0; font-size: 16px;">We zijn al bezig met je pakket</p>
+    </div>
+    
+    <div class="content">
+      <p>Beste ${data.customerName},</p>
+      
+      <p>Super! We hebben je bestelling ontvangen en gaan deze zo snel mogelijk verwerken.</p>
+      
+      <div class="order-number">
+        <p style="margin: 0; font-size: 14px; color: #78350f;">Jouw bestelnummer</p>
+        <h2>${data.orderNumber}</h2>
+      </div>
+      
+      <h2 style="color: #1f2937; margin-top: 30px;">📦 Besteloverzicht</h2>
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Aantal</th>
+            <th>Prijs</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.items.map(item => `
+          <tr>
+            <td>${item.name}</td>
+            <td>${item.quantity}x</td>
+            <td>€${item.price.toFixed(2)}</td>
+          </tr>
+          `).join('')}
+          <tr>
+            <td colspan="2">Subtotaal</td>
+            <td>€${data.subtotal.toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td colspan="2">Verzendkosten</td>
+            <td>€${data.shippingCost.toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td colspan="2">BTW (21%)</td>
+            <td>€${data.tax.toFixed(2)}</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="2"><strong>Totaal</strong></td>
+            <td><strong>€${data.total.toFixed(2)}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="info-box">
+        <strong>📍 Verzendadres:</strong><br>
+        ${data.shippingAddress.street} ${data.shippingAddress.houseNumber}${data.shippingAddress.addition || ''}<br>
+        ${data.shippingAddress.postalCode} ${data.shippingAddress.city}<br>
+        ${data.shippingAddress.country}
+      </div>
+      
+      <h2 style="color: #1f2937; margin-top: 30px;">🚚 Wat gebeurt er nu?</h2>
+      <ol style="line-height: 2;">
+        <li><strong>Verwerking:</strong> We pakken je bestelling in en maken deze verzendklaar</li>
+        <li><strong>Verzending:</strong> Je ontvangt een track & trace code zodra je pakket onderweg is</li>
+        <li><strong>Levering:</strong> Morgen al in huis! 📦</li>
+      </ol>
+      
+      <p style="text-align: center; margin-top: 30px;">
+        <a href="${env.FRONTEND_URL}/orders/${data.orderId}" class="button">🔍 Bekijk Bestelling</a>
+      </p>
+      
+      <p style="margin-top: 30px; color: #6b7280; font-size: 14px; text-align: center;">
+        Vragen over je bestelling? Wij helpen je graag!
+      </p>
+    </div>
+    
+    <div class="footer">
+      <p>📧 <a href="mailto:info@catsupply.nl">info@catsupply.nl</a> | 📞 +31 20 123 4567</p>
+      <p>&copy; ${new Date().getFullYear()} CatSupply - Premium Automatische Kattenbakken</p>
+    </div>
+  </div>
+</body>
+</html>
+    `;
+
+    const text = `
+Bedankt voor je bestelling!
+
+Beste ${data.customerName},
+
+We hebben je bestelling ontvangen en gaan deze zo snel mogelijk verwerken.
+
+BESTELNUMMER: ${data.orderNumber}
+
+BESTELOVERZICHT:
+${data.items.map(item => `- ${item.name} (${item.quantity}x) - €${item.price.toFixed(2)}`).join('\n')}
+
+Subtotaal: €${data.subtotal.toFixed(2)}
+Verzendkosten: €${data.shippingCost.toFixed(2)}
+BTW (21%): €${data.tax.toFixed(2)}
+TOTAAL: €${data.total.toFixed(2)}
+
+VERZENDADRES:
+${data.shippingAddress.street} ${data.shippingAddress.houseNumber}${data.shippingAddress.addition || ''}
+${data.shippingAddress.postalCode} ${data.shippingAddress.city}
+${data.shippingAddress.country}
+
+WAT GEBEURT ER NU?
+1. We pakken je bestelling in en maken deze verzendklaar
+2. Je ontvangt een track & trace code zodra je pakket onderweg is
+3. Morgen al in huis!
+
+Bekijk je bestelling: ${env.FRONTEND_URL}/orders/${data.orderId}
+
+Vragen? Neem contact op via info@catsupply.nl
+
+Met vriendelijke groet,
+Team CatSupply
+    `;
+
+    await this.send({
+      to: data.customerEmail,
+      subject: `✅ Bestelling Bevestigd - ${data.orderNumber}`,
+      html,
+      text,
+    });
+  }
+
+  /**
    * Send return label email
    * DRY: Template-based email for return requests
    */

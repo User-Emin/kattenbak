@@ -7,6 +7,7 @@ import { Request, Response, NextFunction } from 'express';
 import { logger } from '@/config/logger.config';
 import { createMollieClient } from '@mollie/api-client';
 import { env } from '@/config/env.config';
+import { EmailService } from '@/services/email.service';
 
 // DRY: In-memory mock orders (development)
 let ordersState: any[] = [];
@@ -85,6 +86,36 @@ export class OrdersController {
           paymentId: payment.id, 
           orderId: order.id 
         });
+
+        // 📧 Send order confirmation email
+        try {
+          await EmailService.sendOrderConfirmation({
+            customerEmail: customer.email,
+            customerName: `${customer.firstName} ${customer.lastName}`,
+            orderNumber: order.orderNumber,
+            orderId: order.id,
+            items: items.map((item: any) => ({
+              name: item.productName || item.name || 'Product',
+              quantity: item.quantity,
+              price: item.price,
+            })),
+            subtotal: parseFloat(order.subtotal),
+            shippingCost: parseFloat(order.shippingCost),
+            tax: parseFloat(order.subtotal) * 0.21, // 21% BTW
+            total: parseFloat(order.total),
+            shippingAddress: {
+              street: shipping.address.split(' ')[0] || '',
+              houseNumber: shipping.address.split(' ')[1] || '',
+              postalCode: shipping.postalCode,
+              city: shipping.city,
+              country: shipping.country || 'NL',
+            },
+          });
+          logger.info('Order confirmation email sent:', { orderId: order.id });
+        } catch (emailError: any) {
+          logger.error('Failed to send order confirmation email:', emailError);
+          // Don't fail the order if email fails
+        }
 
         res.status(201).json({
           success: true,
