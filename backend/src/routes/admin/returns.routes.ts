@@ -164,7 +164,7 @@ router.put('/:id/status', async (req, res) => {
       include: {
         order: {
           include: {
-            payments: true
+            payment: true
           }
         }
       }

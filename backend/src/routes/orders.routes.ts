@@ -135,7 +135,7 @@ router.get('/by-number/:orderNumber', async (req: Request, res: Response, next: 
           },
         },
         shippingAddress: true,
-        payments: true,
+        payment: true,
       },
     });
 
@@ -163,7 +163,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
           },
         },
         shippingAddress: true,
-        payments: true,
+        payment: true,
       },
       orderBy: { createdAt: 'desc' },
     });

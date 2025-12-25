@@ -171,7 +171,7 @@ router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
       include: {
         items: true,
         shippingAddress: true,
-        payments: true,
+        payment: true,
       },
     });
 
