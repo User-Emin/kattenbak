@@ -5,6 +5,7 @@ import { logger } from '@/config/logger.config';
 import { NotFoundError, InternalServerError } from '@/utils/errors.util';
 import { Payment, PaymentStatus, PaymentMethod } from '@prisma/client';
 import { EmailService } from '@/services/email.service';
+import { MyParcelService } from '@/services/myparcel.service';
 
 /**
  * Mollie Payment Service
@@ -199,6 +200,15 @@ export class MollieService {
             });
 
             logger.info(`Order confirmation email sent: ${order.orderNumber}`);
+            
+            // ✅ AUTO-SHIPMENT: Create MyParcel shipment after successful payment
+            try {
+              const shipment = await MyParcelService.createShipment(order.id);
+              logger.info(`MyParcel shipment created for order ${order.orderNumber}: ${shipment.myparcelId}`);
+            } catch (shipmentError) {
+              // Don't fail webhook if shipment creation fails - admin can create manually
+              logger.error(`Failed to auto-create MyParcel shipment for order ${order.orderNumber}:`, shipmentError);
+            }
           }
         } catch (emailError) {
           // Don't fail webhook if email fails - just log it
