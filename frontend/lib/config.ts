@@ -77,11 +77,11 @@ export const PAYMENT_CONFIG = {
   WEBHOOK_URL: `${SITE_CONFIG.URL}/api/webhooks/mollie`,
 } as const;
 
-// Shipping Configuration
+// Shipping Configuration - DRY: GRATIS VERZENDING ALTIJD
 export const SHIPPING_CONFIG = {
-  FREE_SHIPPING_THRESHOLD: 50,
-  DEFAULT_COST: 5.95,
-  TAX_RATE: 0.21, // 21% BTW
+  FREE_SHIPPING_THRESHOLD: 0,  // GRATIS vanaf €0 = altijd gratis
+  DEFAULT_COST: 0,              // Altijd €0 verzendkosten
+  TAX_RATE: 0.21,               // 21% BTW
 } as const;
 
 // Cookie Configuration

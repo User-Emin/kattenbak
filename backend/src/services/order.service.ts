@@ -108,8 +108,8 @@ export class OrderService {
       };
     });
 
-    // Calculate shipping (simple: free above 50, else 5.95)
-    const shippingCost = subtotal.greaterThan(50) ? new Decimal(0) : new Decimal(5.95);
+    // DRY: GRATIS VERZENDING ALTIJD (zoals frontend config)
+    const shippingCost = new Decimal(0);
     
     // ✅ FIX: Prices are INCL. BTW (21%)
     // We need to EXTRACT BTW, not ADD it!
