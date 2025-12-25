@@ -147,8 +147,3 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 router.post('/webhook/mollie', WebhookController.handleMollieWebhook);
 
 export default router;
-
-export default router;
-
-
-
