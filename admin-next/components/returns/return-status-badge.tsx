@@ -67,12 +67,12 @@ export function ReturnStatusBadge({
     md: 'h-4 w-4',
     lg: 'h-5 w-5',
   };
-
+  
   return (
     <span
       className={`inline-flex items-center gap-2 rounded-full font-medium border ${STATUS_COLORS[status]} ${sizeClasses[size]}`}
     >
-      {showIcon && <Icon className={iconSizes[size]} />}
+      {showIcon && Icon && <Icon className={iconSizes[size]} />}
       {RETURN_STATUS_LABELS[status]}
     </span>
   );

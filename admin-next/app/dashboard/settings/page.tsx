@@ -28,9 +28,10 @@ export default function SettingsPage() {
 
   // Update local form when data loads
   useEffect(() => {
-    if (settings) {
+    if (settings && JSON.stringify(settings) !== JSON.stringify(formData)) {
       setFormData(settings);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings]);
 
   // DRY: Update mutation

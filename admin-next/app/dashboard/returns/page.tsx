@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,11 +20,7 @@ export default function AdminReturnsPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<ReturnStatus | ''>('');
 
-  useEffect(() => {
-    fetchReturns();
-  }, [statusFilter]);
-
-  async function fetchReturns() {
+  const fetchReturns = useCallback(async () => {
     setLoading(true);
     
     // TODO: Replace with real API call
@@ -57,7 +53,11 @@ export default function AdminReturnsPage() {
 
     setReturns(mockReturns);
     setLoading(false);
-  }
+  }, [statusFilter]);
+
+  useEffect(() => {
+    fetchReturns();
+  }, [fetchReturns]);
 
   // DRY: Filter logic
   const filteredReturns = returns.filter((ret) => {
