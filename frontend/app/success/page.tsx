@@ -59,10 +59,9 @@ function SuccessContent() {
       try {
         const orderId = searchParams.get("orderId");
         if (orderId) {
-          const response = await ordersApi.getById(orderId);
-          const order = response.data || response;
+          const order = await ordersApi.getById(orderId);
           setOrderNumber(order.orderNumber);
-          setCustomerEmail(order.customerEmail || order.customer?.email);
+          setCustomerEmail(order.customerEmail || (order as any).customer?.email);
         }
       } catch (error) {
         console.error("Failed to fetch order:", error);

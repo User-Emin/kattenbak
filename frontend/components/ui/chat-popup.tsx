@@ -118,14 +118,13 @@ export function ChatPopup() {
   // Chat button blijft ALTIJD rechtsbeneden viewport (geen beweging!)
   return (
     <>
-      {/* Floating Chat Button - ROND rechtsbeneden viewport - FORCE FIXED! */}
+      {/* Floating Chat Button - ROND rechtsbeneden viewport - DYNAMISCH! */}
       <button
         onClick={() => {
           setIsExpanded(!isExpanded);
           setShowPulse(false); // Stop pulse bij klik
         }}
-        style={{ position: 'fixed' }}
-        className={`right-6 bottom-6 z-[100] transition-all duration-500 ease-out
+        className={`fixed right-6 bottom-6 z-[60] transition-all duration-500 ease-out
                    bg-accent hover:bg-accent-dark text-white 
                    w-16 h-16 rounded-full shadow-lg hover:shadow-2xl
                    focus:outline-none focus:ring-2 focus:ring-accent/50
@@ -169,12 +168,12 @@ export function ChatPopup() {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-in fade-in duration-200 z-[110] md:bg-transparent md:pointer-events-none"
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-in fade-in duration-200 z-[70] md:bg-transparent md:pointer-events-none"
             onClick={() => setIsExpanded(false)}
           />
           
           {/* Chat Modal */}
-          <div className="fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
+          <div className="fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[80] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
             <div className="pointer-events-auto w-full max-w-md max-h-[90vh] md:max-h-[600px] bg-white rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
               
               {/* Header */}

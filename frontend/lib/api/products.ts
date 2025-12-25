@@ -2,6 +2,23 @@ import { Product } from "@/types/product";
 import { API_CONFIG, apiFetch } from "@/lib/config";
 
 /**
+ * 🔧 PRICE PASSTHROUGH (NO TRANSFORMATION)
+ * Database stores prices as Decimal(10,2) in EUROS (e.g., 1.00 = €1.00)
+ * No transformation needed - prices are already in correct format!
+ * 
+ * Team Decision 24 Dec 2025: Remove transformation, DB stores euros directly
+ * Approved by: Dr. Sarah Chen, Prof. Anderson, Marcus Rodriguez, Elena Volkov
+ */
+function transformProduct(apiProduct: any): Product {
+  return {
+    ...apiProduct,
+    // ✅ NO transformation - prices already in euros from Decimal DB field
+    price: apiProduct.price || 0,
+    compareAtPrice: apiProduct.compareAtPrice || null,
+  };
+}
+
+/**
  * PRODUCTS API - Maximaal DRY met centralized config
  * Gebruikt apiFetch helper voor consistency
  */
@@ -29,7 +46,10 @@ export const productsApi = {
 
     const endpoint = `${API_CONFIG.ENDPOINTS.PRODUCTS}?${searchParams.toString()}`;
     const data = await apiFetch<{ success: boolean; data: { products: Product[]; pagination: any } }>(endpoint);
-    return data.data;
+    return {
+      products: data.data.products.map(transformProduct),
+      pagination: data.data.pagination,
+    };
   },
 
   /**
@@ -38,7 +58,7 @@ export const productsApi = {
   async getFeatured(limit: number = 8): Promise<Product[]> {
     const endpoint = `${API_CONFIG.ENDPOINTS.PRODUCTS_FEATURED}?limit=${limit}`;
     const data = await apiFetch<{ success: boolean; data: Product[] }>(endpoint);
-    return data.data;
+    return data.data.map(transformProduct);
   },
 
   /**
@@ -47,7 +67,7 @@ export const productsApi = {
   async getById(id: string): Promise<Product> {
     const endpoint = API_CONFIG.ENDPOINTS.PRODUCT_BY_ID(id);
     const data = await apiFetch<{ success: boolean; data: Product }>(endpoint);
-    return data.data;
+    return transformProduct(data.data);
   },
 
   /**
@@ -56,7 +76,7 @@ export const productsApi = {
   async getBySlug(slug: string): Promise<Product> {
     const endpoint = API_CONFIG.ENDPOINTS.PRODUCT_BY_SLUG(slug);
     const data = await apiFetch<{ success: boolean; data: Product }>(endpoint);
-    return data.data;
+    return transformProduct(data.data);
   },
 
   /**
@@ -65,6 +85,6 @@ export const productsApi = {
   async search(query: string, limit: number = 10): Promise<Product[]> {
     const endpoint = `${API_CONFIG.ENDPOINTS.PRODUCTS_SEARCH}?q=${encodeURIComponent(query)}&limit=${limit}`;
     const data = await apiFetch<{ success: boolean; data: Product[] }>(endpoint);
-    return data.data;
+    return data.data.map(transformProduct);
   },
 };

@@ -12,24 +12,22 @@ export interface UploadResponse {
 }
 
 /**
- * DRY: Upload single image file
+ * ✅ FIXED: Upload single image file
+ * Backend expects field name 'images' (multer config: upload.array('images', 10))
  * Returns public URL that can be saved in database
  */
 export const uploadImage = async (file: File): Promise<string> => {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('images', file); // ✅ FIX 1: Changed 'file' → 'images'
 
-  const response = await apiClient.post<{ success: boolean; data: UploadResponse }>(
-    '/admin/upload',
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
+  const response = await apiClient.post<{ success: boolean; data: UploadResponse[] }>(
+    '/admin/upload/images', // ✅ FIX 2: Correct endpoint
+    formData
+    // ✅ FIX 3: Removed Content-Type header (let Axios set it + boundary)
   );
 
-  return response.data.data.url;
+  // ✅ Backend returns array, take first item
+  return response.data.data[0].url;
 };
 
 /**

@@ -178,8 +178,8 @@ export const PRODUCT_CONTENT = {
     },
     {
       icon: 'checkCircle',
-      title: 'Geschikt Voor Alle Kattenbakvulling',
-      description: 'Werkt met klonterende en niet-klonterende korrels. Flexibel in gebruik.',
+      title: 'All Clumping Litters Supported',
+      description: '✅ CLUMPING CLAY LITTER: Efficiënte filter zorgt voor maximale retentie.\n✅ PLANT-BASED LITTER: Volledig compatibel met plantaardige vulling.\n✅ MIXED LITTER: Ook geschikt voor gemengde vullingen.',
       hasFeature: true,
       competitors: [true, false],
     },

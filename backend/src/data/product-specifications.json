@@ -74,10 +74,10 @@
     },
     {
       "type": "usability",
-      "title": "Universeel Compatible met Alle Kattenbakvulling",
-      "content": "Werkt perfect met vrijwel alle soorten kattenbakvulling: klonterend (aanbevolen), niet-klonterend, silica gel, natuurlijk, houtkorrels, maïskorrels. Geen speciale of dure vulling vereist. Voor beste resultaat adviseren we klonterende vulling met korrelgrootte 2-4mm. Gebruik 3-4 liter vulling voor optimale werking.",
-      "keywords": ["vulling", "litter", "compatibel", "soorten", "klonterend", "silica", "universeel"],
-      "importance": "high"
+      "title": "All Clumping Litters Supported - 3 Hoofdtypen",
+      "content": "✅ CLUMPING CLAY LITTER: Efficiënte filter zorgt voor maximale retentie van klonterend kleikorrelgrit en minder frequent bijvullen. Perfect voor dagelijks gebruik.\n✅ PLANT-BASED LITTER: Volledig compatibel met plantaardige vulling zoals houtkorrels, maïskorrels, tarwekorrels. Milieuvriendelijk en natuurlijk.\n✅ MIXED LITTER: Ook geschikt voor gemengde vullingen en hybride formules. Universeel inzetbaar.\nGeen speciale of dure vulling vereist. Voor beste resultaat adviseren we klonterende vulling met korrelgrootte 2-4mm. Gebruik 3-4 liter vulling voor optimale werking.",
+      "keywords": ["vulling", "litter", "compatibel", "soorten", "clumping clay litter", "plant-based litter", "mixed litter", "klonterend", "plantaardig", "gemengd", "universeel"],
+      "importance": "critical"
     },
     {
       "type": "comparison",
@@ -145,9 +145,9 @@
     {
       "type": "faq",
       "title": "Werkt het met mijn huidige kattenbakvulling?",
-      "content": "Ja, werkt met vrijwel alle soorten: klonterend (beste resultaat), niet-klonterend, silica gel, natuurlijk, houtkorrels, maïskorrels. Geen speciale vulling vereist. Voor beste resultaat adviseren we klonterende vulling met korrelgrootte 2-4mm. Gebruik 3-4 liter vulling. Goedkope supermarkt vulling werkt prima!",
-      "keywords": ["vulling", "litter", "compatibel", "soorten", "klonterend", "silica", "werkt het"],
-      "importance": "high"
+      "content": "Ja! Ondersteunt ALL CLUMPING LITTERS:\n🟤 CLUMPING CLAY LITTER (Klonterend Kleikorrelgrit): Beste resultaat, meest populair, supermarkt vulling werkt prima!\n🟢 PLANT-BASED LITTER (Plantaardige Vulling): Houtkorrels, maïskorrels, tarwekorrels - 100% milieuvriendelijk.\n🔵 MIXED LITTER (Gemengde Vulling): Hybride formules en combinaties werken ook perfect.\nGeen speciale vulling vereist. Adviseer: korrelgrootte 2-4mm, gebruik 3-4 liter voor optimale werking.",
+      "keywords": ["vulling", "litter", "compatibel", "soorten", "clumping clay litter", "plant-based litter", "mixed litter", "klonterend", "plantaardig", "gemengd", "werkt het"],
+      "importance": "critical"
     },
     {
       "type": "faq",

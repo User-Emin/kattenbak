@@ -17,6 +17,7 @@ import { ShoppingCart, Plus, Minus, Check } from "lucide-react";
 import Link from "next/link";
 import type { Product, ProductVariant } from "@/types/product";
 import { API_CONFIG, apiFetch } from "@/lib/config";
+import { productsApi } from "@/lib/api/products";
 import { getProductImage, IMAGE_CONFIG } from "@/lib/image-config";
 import { ProductHighlights } from "@/components/products/product-highlights";
 import { ProductSpecsComparison } from "@/components/products/product-specs-comparison";
@@ -68,40 +69,70 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const addToCartButtonRef = useRef<HTMLDivElement>(null);
 
-  // DRY: Fetch product data
+  // DRY: Fetch product data using productsApi (includes price transformation!)
   useEffect(() => {
-    apiFetch<{ success: boolean; data: Product }>(API_CONFIG.ENDPOINTS.PRODUCT_BY_SLUG(slug))
-      .then(data => {
-        if (data.success && data.data) {
-          setProduct(data.data);
-          // DRY: Auto-select first variant if available
-          if (data.data.variants && data.data.variants.length > 0) {
-            setSelectedVariant(data.data.variants[0]);
-          }
+    productsApi.getBySlug(slug)
+      .then(product => {
+        setProduct(product);
+        // DRY: Auto-select first variant if available
+        if (product.variants && product.variants.length > 0) {
+          setSelectedVariant(product.variants[0]);
         }
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, [slug]);
 
-  // TEMP: Hardcoded USPs (settings endpoint niet beschikbaar)
-  // TODO: Re-enable when /api/v1/admin/settings is implemented
+  // DRY: Fetch dynamic site settings for USPs
   useEffect(() => {
-    // Hardcoded product USPs
-    setSettings({
-      productUsps: {
-        usp1: {
-          title: "10.5L Capaciteit",
-          description: "De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.",
-          icon: "capacity"
-        },
-        usp2: {
-          title: "Ultra-Quiet Motor",
-          description: "Werkt onder 40 decibel. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.",
-          icon: "quiet"
+    fetch('/api/v1/admin/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data?.productUsps) {
+          setSettings(data.data);
+        } else {
+          // Fallback to default USPs if API fails
+          setSettings({
+            productUsps: {
+              usp1: {
+                title: "10.5L Capaciteit",
+                description: "De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.",
+                icon: "capacity",
+                color: "",
+                image: ""
+              },
+              usp2: {
+                title: "Ultra-Quiet Motor",
+                description: "Werkt onder 40 decibel. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.",
+                icon: "quiet",
+                color: "",
+                image: ""
+              }
+            }
+          } as SiteSettings);
         }
-      }
-    } as SiteSettings);
+      })
+      .catch(() => {
+        // Fallback on error
+        setSettings({
+          productUsps: {
+            usp1: {
+              title: "10.5L Capaciteit",
+              description: "De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.",
+              icon: "capacity",
+              color: "",
+              image: ""
+            },
+            usp2: {
+              title: "Ultra-Quiet Motor",
+              description: "Werkt onder 40 decibel. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.",
+              icon: "quiet",
+              color: "",
+              image: ""
+            }
+          }
+        } as SiteSettings);
+      });
   }, []);
 
   const handleAddToCart = async () => {
@@ -290,8 +321,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           
           {/* Plus- en minpunten */}
           <div className="mb-8 p-6 bg-gray-50 rounded-sm">
-            <h3 className="font-semibold text-lg mb-4 text-gray-900">Plus- en minpunten</h3>
-            <p className="text-sm text-gray-600 mb-3 italic">Volgens onze kattenbak specialist</p>
             
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -325,96 +354,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           <div className="prose prose-sm max-w-none">
             <h3 className="font-semibold text-base mb-3 text-gray-900">Omschrijving</h3>
             <p className="text-sm text-gray-700 leading-relaxed">{product.description}</p>
-          </div>
-        </div>
-
-        <Separator variant="float" spacing="xl" />
-
-        {/* Comparison Table - Vergelijk de Verschillen */}
-        <div className="max-w-5xl mx-auto mb-12">
-          <SectionHeading className="mb-6 text-center" size="md">
-            Vergelijk de Verschillen
-          </SectionHeading>
-          <p className="text-center text-base text-gray-600 mb-8">
-            Ontdek waarom onze kattenbak superieur is
-          </p>
-
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="py-4 px-4 text-left text-sm font-semibold text-gray-700 bg-gray-50">Feature</th>
-                    <th className="py-4 px-4 text-center text-sm font-semibold text-white bg-[#f76402]">Onze Kattenbak</th>
-                    <th className="py-4 px-4 text-center text-sm font-semibold text-gray-700 bg-gray-50">Andere Merken</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  <tr className="hover:bg-gray-50/50 transition-colors">
-                    <td className="py-4 px-4 text-sm text-gray-700">Zelfreinigende Functie</td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
-                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Open-Top, Low-Stress Design</td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
-                    <td className="py-4 px-4 text-center text-gray-400">×</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
-                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Dubbele Veiligheidssensoren</td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
-                    <td className="py-4 px-4 text-center text-gray-400">×</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors">
-                    <td className="py-4 px-4 text-sm text-gray-700">App Bediening & Gezondheidsmonitoring</td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
-                    <td className="py-4 px-4 text-sm font-medium text-gray-900">High-Efficiency Filter</td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
-                    <td className="py-4 px-4 text-center text-gray-400">×</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors bg-orange-50">
-                    <td className="py-4 px-4 text-sm font-bold text-gray-900">Afvalbak Capaciteit</td>
-                    <td className="py-4 px-4 text-center">
-                      <span className="text-lg font-bold text-[#f76402]">10.5L</span>
-                    </td>
-                    <td className="py-4 px-4 text-center text-sm text-gray-500">7-9L</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
-                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Anti-Splash Hoge Wanden</td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
-                    <td className="py-4 px-4 text-center text-gray-400">×</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
-                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Makkelijk Te Demonteren</td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
-                    <td className="py-4 px-4 text-center text-gray-400">×</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors">
-                    <td className="py-4 px-4 text-sm text-gray-700">Alle Soorten Kattenbakvulling</td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
-                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Compact Design, Groot Interieur</td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
-                    <td className="py-4 px-4 text-center text-gray-400">×</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors">
-                    <td className="py-4 px-4 text-sm text-gray-700">Ultra-Quiet Motor (&lt;40dB)</td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-gray-400 mx-auto" /></td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors bg-blue-50/30">
-                    <td className="py-4 px-4 text-sm font-medium text-gray-900">Modulair Design (OEM-Friendly)</td>
-                    <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
-                    <td className="py-4 px-4 text-center text-gray-400">×</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
         </div>
 

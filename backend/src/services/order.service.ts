@@ -111,12 +111,14 @@ export class OrderService {
     // Calculate shipping (simple: free above 50, else 5.95)
     const shippingCost = subtotal.greaterThan(50) ? new Decimal(0) : new Decimal(5.95);
     
-    // Calculate tax (21% BTW)
-    const taxRate = new Decimal(0.21);
-    const tax = subtotal.plus(shippingCost).times(taxRate);
+    // ✅ FIX: Prices are INCL. BTW (21%)
+    // We need to EXTRACT BTW, not ADD it!
+    const totalInclBtw = subtotal.plus(shippingCost);
+    const totalExclBtw = totalInclBtw.div(new Decimal(1.21)); // Remove BTW
+    const tax = totalInclBtw.minus(totalExclBtw);              // Extract BTW amount
     
-    // Total
-    const total = subtotal.plus(shippingCost).plus(tax);
+    // Total (already includes BTW)
+    const total = totalInclBtw;
 
     // Generate order number
     const orderNumber = await this.generateOrderNumber();
