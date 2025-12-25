@@ -65,6 +65,9 @@ const ENV = {
   mollieKeyType: MOLLIE_KEY.startsWith('test_') ? 'TEST' : 'LIVE',
 };
 
+// ✅ SECURITY: Trust proxy for NGINX (fixes rate limiter X-Forwarded-For)
+app.set('trust proxy', true);
+
 // Security middleware
 app.use(helmet());
 app.use(cors({ 

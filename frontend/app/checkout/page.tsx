@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/utils";
+import { SHIPPING_CONFIG } from "@/lib/config";
 import { Product } from "@/types/product";
 import { CreateOrderData } from "@/types/product";
 import { productsApi } from "@/lib/api/products";
@@ -149,7 +150,7 @@ function CheckoutContent() {
   // Product.price = €299,99 INCL. BTW
   // We moeten BTW component berekenen voor transparantie
   const subtotal = product.price * quantity; // Incl. BTW
-  const shipping = subtotal >= 50 ? 0 : 5.95;
+  const shipping = subtotal >= SHIPPING_CONFIG.FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_CONFIG.DEFAULT_COST; // ✅ DRY: Always €0
   
   // BTW berekening: uit INCLUSIEF prijs halen
   const total = subtotal + shipping; // Eindprijs
