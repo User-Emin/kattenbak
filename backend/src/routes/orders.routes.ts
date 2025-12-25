@@ -121,6 +121,37 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+// GET /api/v1/orders/by-number/:orderNumber - Get order by orderNumber
+router.get('/by-number/:orderNumber', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { orderNumber } = req.params;
+    
+    const order = await prisma.order.findUnique({
+      where: { orderNumber },
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
+        shippingAddress: true,
+        payments: true,
+      },
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        error: `Order ${orderNumber} not found`,
+      });
+    }
+
+    successResponse(res, order);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // GET /api/v1/orders - Get all orders (DATABASE)
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {

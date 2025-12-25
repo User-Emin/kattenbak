@@ -17,6 +17,7 @@ import ragRoutes from './routes/rag.routes';
 
 // Public Routes (Webshop)
 import ordersRoutes from './routes/orders.routes';
+import returnsRoutes from './routes/returns.routes';
 
 // Data Transformers
 import { transformProducts, transformProduct } from './lib/transformers';
@@ -245,9 +246,10 @@ app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
 });
 
 /**
- * PUBLIC ROUTES (Webshop Orders + Payment)
+ * PUBLIC ROUTES (Webshop Orders + Payment + Returns)
  */
 app.use('/api/v1/orders', ordersRoutes);
+app.use('/api/v1/returns', returnsRoutes);
 
 /**
  * ADMIN ROUTES (SECURE)
