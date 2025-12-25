@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
 import { transformOrder } from '../../lib/transformers';
+import { MollieService } from '../../services/mollie.service';
+import { logger } from '../../config/logger.config';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -160,9 +162,50 @@ router.put('/:id/status', async (req, res) => {
       where: { id: req.params.id },
       data,
       include: {
-        order: true
+        order: {
+          include: {
+            payments: true
+          }
+        }
       }
     });
+    
+    // ✅ AUTO-REFUND: When return is APPROVED, trigger Mollie refund
+    if (status === 'APPROVED' && returnRecord.order) {
+      const payment = returnRecord.order.payments.find(p => p.status === 'PAID');
+      
+      if (payment && payment.mollieId) {
+        try {
+          logger.info(`Auto-refunding payment for approved return`, {
+            returnId: returnRecord.id,
+            orderId: returnRecord.order.id,
+            mollieId: payment.mollieId
+          });
+          
+          // Trigger Mollie refund
+          await MollieService.refundPayment(payment.mollieId);
+          
+          // Update return status to REFUND_PROCESSED
+          await prisma.return.update({
+            where: { id: returnRecord.id },
+            data: {
+              status: 'REFUND_PROCESSED',
+              refundedAt: new Date(),
+              refundAmount: returnRecord.order.total,
+              refundMethod: 'ORIGINAL_PAYMENT',
+              refundTransactionId: payment.mollieId
+            }
+          });
+          
+          logger.info(`Refund successful`, { returnId: returnRecord.id });
+        } catch (refundError: any) {
+          logger.error(`Auto-refund failed (return still approved):`, refundError);
+          // Don't fail the status update - admin can manually refund
+        }
+      } else {
+        logger.warn(`No paid payment found for return ${returnRecord.id} - skipping auto-refund`);
+      }
+    }
     
     console.log(`[AUDIT] Return status updated by admin: ${(req as any).user.email}`, {
       returnId: returnRecord.id,
