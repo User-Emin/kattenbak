@@ -59,7 +59,7 @@ export async function checkReturnEligibility(
   orderId: string
 ): Promise<ApiResponse<ReturnEligibility>> {
   return apiFetch<ReturnEligibility>(
-    `/api/v1/returns/validate/${orderId}`,
+    `/returns/validate/${orderId}`,
     { method: 'POST' }
   );
 }
@@ -70,7 +70,7 @@ export async function checkReturnEligibility(
 export async function createReturnRequest(
   request: CreateReturnRequest
 ): Promise<ApiResponse<CreateReturnResponse>> {
-  return apiFetch<CreateReturnResponse>('/api/v1/returns', {
+  return apiFetch<CreateReturnResponse>('/returns', {
     method: 'POST',
     body: JSON.stringify(request),
   });
@@ -82,7 +82,7 @@ export async function createReturnRequest(
 export async function getReturn(
   returnId: string
 ): Promise<ApiResponse<Return>> {
-  return apiFetch<Return>(`/api/v1/returns/${returnId}`);
+  return apiFetch<Return>(`/returns/${returnId}`);
 }
 
 /**
@@ -91,7 +91,7 @@ export async function getReturn(
 export async function getOrderReturns(
   orderId: string
 ): Promise<ApiResponse<Return[]>> {
-  return apiFetch<Return[]>(`/api/v1/returns?orderId=${orderId}`);
+  return apiFetch<Return[]>(`/returns?orderId=${orderId}`);
 }
 
 /**
@@ -106,7 +106,7 @@ export function downloadReturnLabel(labelUrl: string): void {
  */
 export function downloadReturnInstructions(returnId: string): void {
   window.open(
-    `${API_BASE}/api/v1/returns/${returnId}/instructions.pdf`,
+    `${API_BASE}/returns/${returnId}/instructions.pdf`,
     '_blank'
   );
 }
