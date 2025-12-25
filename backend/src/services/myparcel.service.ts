@@ -164,33 +164,54 @@ export class MyParcelService {
    */
   static async handleWebhook(data: any): Promise<void> {
     try {
-      const myparcelId = data.shipment_id;
+      // MyParcel webhook payload structure (based on API docs)
+      const myparcelId = data.shipment_id || data.id;
       const status = data.status;
+      const barcode = data.barcode; // Tracking code
+
+      if (!myparcelId) {
+        logger.warn('MyParcel webhook missing shipment_id', { data });
+        return;
+      }
 
       const shipment = await prisma.shipment.findUnique({
         where: { myparcelId },
+        include: { order: true }
       });
 
       if (!shipment) {
-        throw new NotFoundError(`Shipment with MyParcel ID ${myparcelId} not found`);
+        logger.warn(`Shipment with MyParcel ID ${myparcelId} not found in database`);
+        return;
       }
 
       // Map MyParcel status to our status
       let shipmentStatus: ShipmentStatus = ShipmentStatus.PENDING;
+      let orderStatus: string | null = null;
 
-      // MyParcel status codes: 1=pending, 2=in_transit, 3=delivered
+      // MyParcel status codes (from API docs):
+      // 1 = pending, 2 = in_transit, 3 = delivered, 7 = returned, 8 = failed
       switch (status) {
+        case 1:
+          shipmentStatus = ShipmentStatus.PENDING;
+          break;
         case 2:
           shipmentStatus = ShipmentStatus.IN_TRANSIT;
+          orderStatus = 'SHIPPED';
           break;
         case 3:
           shipmentStatus = ShipmentStatus.DELIVERED;
+          orderStatus = 'DELIVERED';
           break;
         case 7:
           shipmentStatus = ShipmentStatus.RETURNED;
+          orderStatus = 'RETURNED';
+          break;
+        case 8:
+          shipmentStatus = ShipmentStatus.FAILED;
           break;
         default:
-          shipmentStatus = ShipmentStatus.IN_TRANSIT;
+          logger.warn(`Unknown MyParcel status: ${status}`);
+          return;
       }
 
       // Update shipment
@@ -198,28 +219,27 @@ export class MyParcelService {
         where: { id: shipment.id },
         data: {
           status: shipmentStatus,
+          ...(barcode && { trackingCode: barcode }),
           ...(shipmentStatus === ShipmentStatus.IN_TRANSIT && { shippedAt: new Date() }),
           ...(shipmentStatus === ShipmentStatus.DELIVERED && { deliveredAt: new Date() }),
         },
       });
 
       // Update order status
-      if (shipmentStatus === ShipmentStatus.DELIVERED) {
+      if (orderStatus && shipment.order) {
         await prisma.order.update({
           where: { id: shipment.orderId },
           data: {
-            status: 'DELIVERED',
-            completedAt: new Date(),
+            status: orderStatus,
+            ...(orderStatus === 'DELIVERED' && { completedAt: new Date() }),
           },
-        });
-      } else if (shipmentStatus === ShipmentStatus.IN_TRANSIT) {
-        await prisma.order.update({
-          where: { id: shipment.orderId },
-          data: { status: 'SHIPPED' },
         });
       }
 
-      logger.info(`Shipment webhook processed: ${myparcelId} -> ${shipmentStatus}`);
+      logger.info(`MyParcel webhook processed: ${myparcelId} -> ${shipmentStatus}`, {
+        orderId: shipment.orderId,
+        orderStatus
+      });
     } catch (error) {
       logger.error('MyParcel webhook processing failed:', error);
       throw error;

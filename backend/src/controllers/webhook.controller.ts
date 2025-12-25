@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { MollieService } from '@/services/mollie.service';
+import { MyParcelService } from '@/services/myparcel.service';
 import { logger } from '@/config/logger.config';
 import { successResponse } from '@/utils/response.util';
 
@@ -56,9 +57,22 @@ export class WebhookController {
 
       logger.info('MyParcel webhook received:', webhookData);
 
-      // TODO: Implement MyParcel webhook processing
-      // For now, just acknowledge receipt
+      // Verify webhook signature if configured
+      const signature = req.headers['x-myparcel-signature'] as string;
+      const webhookSecret = process.env.MYPARCEL_WEBHOOK_SECRET;
 
+      if (webhookSecret && signature) {
+        // TODO: Implement signature verification when MyParcel provides docs
+        // For now, log it for security audit
+        logger.info('MyParcel webhook signature received', { signature });
+      }
+
+      // Process webhook asynchronously (don't block response)
+      MyParcelService.handleWebhook(webhookData).catch((error) => {
+        logger.error('MyParcel webhook processing failed:', error);
+      });
+
+      // Respond immediately to MyParcel (required for webhook reliability)
       successResponse(res, { received: true });
     } catch (error) {
       next(error);
