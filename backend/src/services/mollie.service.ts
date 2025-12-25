@@ -4,6 +4,7 @@ import { env } from '@/config/env.config';
 import { logger } from '@/config/logger.config';
 import { NotFoundError, InternalServerError } from '@/utils/errors.util';
 import { Payment, PaymentStatus, PaymentMethod } from '@prisma/client';
+import { EmailService } from '@/services/email.service';
 
 /**
  * Mollie Payment Service
@@ -155,6 +156,55 @@ export class MollieService {
           });
         }
       });
+
+      // Send confirmation email after successful payment
+      if (status === PaymentStatus.PAID) {
+        try {
+          const order = await prisma.order.findUnique({
+            where: { id: payment.orderId },
+            include: {
+              items: {
+                include: {
+                  product: true,
+                },
+              },
+            },
+          });
+
+          if (order) {
+            const customerName = `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`;
+            
+            await EmailService.sendOrderConfirmation({
+              customerEmail: order.customerEmail,
+              customerName,
+              orderNumber: order.orderNumber,
+              orderId: order.id,
+              items: order.items.map(item => ({
+                name: item.product.name,
+                quantity: item.quantity,
+                price: Number(item.price),
+              })),
+              subtotal: Number(order.subtotal),
+              shippingCost: Number(order.shippingCost),
+              tax: Number(order.tax),
+              total: Number(order.total),
+              shippingAddress: {
+                street: order.shippingAddress.street,
+                houseNumber: order.shippingAddress.houseNumber,
+                addition: order.shippingAddress.addition || undefined,
+                postalCode: order.shippingAddress.postalCode,
+                city: order.shippingAddress.city,
+                country: order.shippingAddress.country,
+              },
+            });
+
+            logger.info(`Order confirmation email sent: ${order.orderNumber}`);
+          }
+        } catch (emailError) {
+          // Don't fail webhook if email fails - just log it
+          logger.error('Failed to send order confirmation email:', emailError);
+        }
+      }
 
       logger.info(`Payment webhook processed: ${mollieId} -> ${status}`);
     } catch (error) {
