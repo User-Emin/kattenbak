@@ -72,13 +72,13 @@ export const productValidationSchema = z.object({
     .max(999999)
     .optional(),
   
-  // DRY: Images with URL or path validation
+  // DRY: Images with URL or path validation (including data: URLs for inline SVG/images)
   images: z.array(
     z.string()
       .min(1, 'Afbeelding pad mag niet leeg zijn')
       .refine(
-        (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
-        'Afbeelding moet een geldige URL of pad zijn (begin met / of http(s)://)'
+        (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://') || val.startsWith('data:'),
+        'Afbeelding moet een geldige URL of pad zijn (begin met /, http(s)://, of data:)'
       )
   )
     .min(1, 'Minimaal 1 afbeelding is verplicht')
@@ -129,8 +129,8 @@ export const productValidationSchema = z.object({
         z.string()
           .min(1)
           .refine(
-            (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
-            'Afbeelding moet een geldige URL of pad zijn'
+            (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://') || val.startsWith('data:'),
+            'Afbeelding moet een geldige URL of pad zijn (/, http(s)://, of data:)'
           )
       ).default([]),
       isActive: z.boolean().optional(),
