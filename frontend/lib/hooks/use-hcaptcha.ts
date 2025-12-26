@@ -85,7 +85,6 @@ export function useHCaptcha() {
     try {
       // ✅ SECURITY: Check if widget already exists
       if (widgetId !== null) {
-        console.log('✅ hCaptcha widget already initialized');
         setIsReady(true);
         return;
       }
@@ -98,14 +97,12 @@ export function useHCaptcha() {
         if (existingContainer) {
           // ✅ Reuse existing container
           containerRef.current = existingContainer as HTMLDivElement;
-          console.log('✅ Reusing existing hCaptcha container');
         } else {
           // ✅ Create new container
           containerRef.current = document.createElement('div');
           containerRef.current.id = 'hcaptcha-container';
           containerRef.current.style.display = 'none';
           document.body.appendChild(containerRef.current);
-          console.log('✅ Created new hCaptcha container');
         }
       }
 
@@ -124,7 +121,6 @@ export function useHCaptcha() {
 
       setWidgetId(id);
       setIsReady(true);
-      console.log('✅ hCaptcha widget initialized:', { widgetId: id, sitekey: HCAPTCHA_CONFIG.SITE_KEY.substring(0, 10) + '...' });
     } catch (error: any) {
       console.error('❌ hCaptcha initialization error:', {
         message: error?.message,
@@ -133,7 +129,6 @@ export function useHCaptcha() {
       
       // ✅ Clear and retry on "Only one captcha" error
       if (error?.message?.includes('Only one captcha')) {
-        console.log('🔄 Clearing existing widget and retrying...');
         if (containerRef.current) {
           containerRef.current.innerHTML = '';
         }
@@ -158,7 +153,6 @@ export function useHCaptcha() {
     }
 
     try {
-      console.log('🔄 Executing hCaptcha...');
       
       // ✅ SECURITY: Execute invisible captcha
       const result = await window.hcaptcha.execute(widgetId, { async: true });
@@ -171,7 +165,6 @@ export function useHCaptcha() {
         return null;
       }
 
-      console.log('✅ hCaptcha token received');
       
       // Reset for next use
       window.hcaptcha.reset(widgetId);
