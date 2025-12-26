@@ -299,20 +299,24 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
     const order = await prisma.order.create({
       data: {
         orderNumber: `ORD${Date.now()}`,
-        customerEmail: orderData.customerEmail,
-        customerFirstName: orderData.shippingAddress?.firstName || '',
-        customerLastName: orderData.shippingAddress?.lastName || '',
+        customerEmail: orderData.customer?.email || orderData.customerEmail,
         subtotal,
         shippingCost,
         tax,
         total,
         status: 'PENDING',
-        paymentMethod: 'mollie',
-        shippingMethod: 'standard',
         customerNotes: orderData.customerNotes || null,
-        metadata: {
-          ip: req.ip,
-          userAgent: req.get('user-agent'),
+        shippingAddress: {
+          create: {
+            firstName: orderData.customer?.firstName || orderData.shippingAddress?.firstName || '',
+            lastName: orderData.customer?.lastName || orderData.shippingAddress?.lastName || '',
+            street: orderData.shipping?.address || '',
+            houseNumber: '',
+            postalCode: orderData.shipping?.postalCode || '',
+            city: orderData.shipping?.city || '',
+            country: orderData.shipping?.country || 'NL',
+            phone: orderData.customer?.phone || '',
+          },
         },
       },
     });
