@@ -610,7 +610,7 @@ app.post('/api/v1/admin/auth/login', async (req: Request, res: Response) => {
     // PRODUCTION: Admin credentials
     const ADMIN_EMAIL = 'admin@catsupply.nl';
     // Bcrypt hash of 'admin124'
-    const ADMIN_PASSWORD_HASH = '$2a$12$SQAWDBghvnkgmzfn5PLcfuw.ur63toKdyEfbFQ6i1oUaLo3ShJOcG';
+    const ADMIN_PASSWORD_HASH = '$2b$12$lRC/k4ipEq8qq5UPSGxi8u4tba90ZAPn1Wj.WczdTT0ngri9FQc.G';
 
     // Check email
     if (email !== ADMIN_EMAIL) {
