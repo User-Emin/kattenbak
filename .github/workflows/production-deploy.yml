@@ -99,8 +99,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
       
       - name: 📚 Install Dependencies
         working-directory: backend
@@ -153,8 +151,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
       
       - name: 📚 Install Dependencies
         working-directory: frontend
@@ -188,8 +184,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: admin-next/package-lock.json
       
       - name: 📚 Install Dependencies
         working-directory: admin-next
