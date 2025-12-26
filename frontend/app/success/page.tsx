@@ -57,7 +57,8 @@ function SuccessContent() {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        const orderId = searchParams.get("orderId");
+        // ✅ FIX: Check both "order" and "orderId" parameters for backwards compatibility
+        const orderId = searchParams.get("order") || searchParams.get("orderId");
         if (orderId) {
           const order = await ordersApi.getById(orderId);
           setOrderNumber(order.orderNumber);

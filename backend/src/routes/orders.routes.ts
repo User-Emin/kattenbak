@@ -75,8 +75,8 @@ router.post(
       // Create order in DATABASE
       const order = await OrderService.createOrder(orderData);
 
-      // Create Mollie payment
-      const redirectUrl = `${env.FRONTEND_URL}/orders/${order.id}`;
+      // Create Mollie payment with SUCCESS page redirect
+      const redirectUrl = `${env.FRONTEND_URL}/success?order=${order.id}`;
       const payment = await MollieService.createPayment(
         order.id,
         Number(order.total),
