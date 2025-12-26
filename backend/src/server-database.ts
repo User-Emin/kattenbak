@@ -323,15 +323,24 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
 
     console.log(`✅ Order created: ${order.orderNumber} | €${total}`);
 
-    // Mock Mollie payment
-    const mollieUrl = `${ENV.FRONTEND_URL}/success?order=${order.id}&payment=test`;
-    const payment = {
-      id: `pay_${Date.now()}`,
-      checkoutUrl: mollieUrl,
-      mollieMode: ENV.isTest ? 'TEST' : 'LIVE',
-    };
+    // ✅ REAL Mollie payment integration
+    const { MollieService } = await import('./services/mollie.service');
+    const redirectUrl = `${ENV.FRONTEND_URL}/success?order=${order.id}`;
+    const molliePayment = await MollieService.createPayment(
+      order.id,
+      total,
+      `Order ${order.orderNumber}`,
+      redirectUrl,
+      orderData.paymentMethod || 'ideal'
+    );
 
-    res.status(201).json(success({ order, payment }));
+    res.status(201).json(success({ 
+      order, 
+      payment: {
+        id: molliePayment.id,
+        checkoutUrl: molliePayment.checkoutUrl,
+      }
+    }));
   } catch (err: any) {
     console.error('Order creation error:', err.message);
     res.status(500).json(error('Could not create order'));
