@@ -587,6 +587,84 @@ app.get('/api/v1/admin/contact', async (req: Request, res: Response) => {
 });
 
 // =============================================================================
+// ADMIN AUTH ENDPOINTS - JWT + Bcrypt
+// =============================================================================
+
+// Import auth utilities
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+// Admin login endpoint
+app.post('/api/v1/admin/auth/login', async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate input
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email en wachtwoord zijn verplicht'
+      });
+    }
+
+    // PRODUCTION: Admin credentials
+    const ADMIN_EMAIL = 'admin@catsupply.nl';
+    // Bcrypt hash of 'admin124'
+    const ADMIN_PASSWORD_HASH = '$2a$12$SQAWDBghvnkgmzfn5PLcfuw.ur63toKdyEfbFQ6i1oUaLo3ShJOcG';
+
+    // Check email
+    if (email !== ADMIN_EMAIL) {
+      // Timing attack prevention
+      await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+      return res.status(401).json({
+        success: false,
+        error: 'Ongeldige inloggegevens'
+      });
+    }
+
+    // Verify password with bcrypt
+    const isValid = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+    
+    if (!isValid) {
+      return res.status(401).json({
+        success: false,
+        error: 'Ongeldige inloggegevens'
+      });
+    }
+
+    // Generate JWT token
+    const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+    const token = jwt.sign(
+      { id: '1', email: ADMIN_EMAIL, role: 'ADMIN' },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+    
+    console.log(`✅ Admin login successful: ${email}`);
+    
+    return res.json({
+      success: true,
+      data: {
+        token,
+        user: {
+          id: '1',
+          email: ADMIN_EMAIL,
+          role: 'ADMIN',
+          firstName: 'Admin',
+          lastName: 'User'
+        }
+      }
+    });
+  } catch (err: any) {
+    console.error('Admin login error:', err.message);
+    return res.status(500).json({
+      success: false,
+      error: 'Er is een fout opgetreden'
+    });
+  }
+});
+
+// =============================================================================
 // RAG ENDPOINTS - AI Chat (No hCaptcha)
 // =============================================================================
 
