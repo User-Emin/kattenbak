@@ -668,9 +668,9 @@ app.post('/api/v1/admin/auth/login', async (req: Request, res: Response) => {
 // RAG ENDPOINTS - AI Chat (No hCaptcha)
 // =============================================================================
 
-// Import RAG routes
-const ragRoutes = require('./routes/rag.routes').default;
-app.use('/api/v1/rag', ragRoutes);
+// Import RAG routes - DISABLED FOR NOW
+// const ragRoutes = require('./routes/rag.routes').default;
+// app.use('/api/v1/rag', ragRoutes);
 
 // =============================================================================
 // ERROR HANDLERS
