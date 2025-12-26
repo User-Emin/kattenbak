@@ -9,7 +9,6 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { MollieService } from './services/mollie.service';
 
 // Load environment
 dotenv.config();
@@ -20,6 +19,10 @@ const PORT = 3101;
 // Prisma client - DIRECT geen @ imports
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+
+// Mollie client - DIRECT geen @ imports  
+const { createMollieClient } = require('@mollie/api-client');
+const mollieClient = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY || '' });
 
 // Middleware
 app.use(cors({ origin: '*', credentials: true }));
@@ -324,21 +327,27 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
 
     console.log(`✅ Order created: ${order.orderNumber} | €${total}`);
 
-    // ✅ REAL Mollie payment integration
+    // ✅ REAL Mollie payment integration (direct client, geen @ imports)
     const redirectUrl = `${ENV.FRONTEND_URL}/success?order=${order.id}`;
-    const molliePayment = await MollieService.createPayment(
-      order.id,
-      total,
-      `Order ${order.orderNumber}`,
+    const payment = await mollieClient.payments.create({
+      amount: {
+        currency: 'EUR',
+        value: total.toFixed(2),
+      },
+      description: `Order ${order.orderNumber}`,
       redirectUrl,
-      orderData.paymentMethod || 'ideal'
-    );
+      webhookUrl: `${ENV.FRONTEND_URL}/api/webhooks/mollie`,
+      metadata: {
+        orderId: order.id,
+      },
+      method: orderData.paymentMethod || 'ideal',
+    });
 
     res.status(201).json(success({ 
       order, 
       payment: {
-        id: molliePayment.id,
-        checkoutUrl: molliePayment.checkoutUrl,
+        id: payment.id,
+        checkoutUrl: payment.getCheckoutUrl(),
       }
     }));
   } catch (err: any) {
