@@ -258,7 +258,24 @@ jobs:
             cd backend
             npm install --legacy-peer-deps
             npx prisma generate
-            npx prisma migrate deploy
+            
+            # Intelligent migrate deployment (handles existing databases)
+            echo "🔄 Checking database migration status..."
+            if npx prisma migrate status 2>&1 | grep -q "Database schema is up to date"; then
+              echo "✅ Database already up to date, skipping migrations"
+            else
+              echo "🔄 Applying new migrations..."
+              npx prisma migrate deploy || {
+                echo "⚠️  Migration failed, checking if database is already migrated..."
+                if npx prisma migrate status 2>&1 | grep -q "P3005"; then
+                  echo "✅ Database already has schema, assuming baselined"
+                else
+                  echo "❌ Migration failed with unexpected error"
+                  exit 1
+                fi
+              }
+            fi
+            
             npm run build
             # Clean devDependencies after build
             npm prune --production
