@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // ✅ Always use basePath for Nginx /admin route (dev + prod)
-  basePath: "/admin",
+  // ✅ basePath for Nginx /admin route in production
+  ...(process.env.NODE_ENV === 'production' && { basePath: "/admin" }),
   
   // SECURITY: Disable dev indicators in production
   devIndicators: {
