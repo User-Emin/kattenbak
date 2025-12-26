@@ -33,7 +33,7 @@ class EnvironmentConfig {
   public readonly IS_DEVELOPMENT = this.NODE_ENV === 'development';
 
   // Server Configuration - DRY: Use PORT or fallback to BACKEND_PORT
-  public readonly PORT = parseInt(process.env.PORT || process.env.BACKEND_PORT || '3101', 10);
+  public readonly PORT = parseInt(process.env.PORT || process.env.BACKEND_PORT || '3100', 10);
   public readonly BACKEND_PORT = this.PORT; // Alias for backwards compatibility
   public readonly BACKEND_URL = process.env.BACKEND_URL || `http://localhost:${this.PORT}`;
 
