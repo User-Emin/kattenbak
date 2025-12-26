@@ -256,22 +256,28 @@ jobs:
             
             echo "🔨 Building backend..."
             cd backend
-            npm install --production --legacy-peer-deps
+            npm install --legacy-peer-deps
             npx prisma generate
             npx prisma migrate deploy
             npm run build
+            # Clean devDependencies after build
+            npm prune --production
             
             echo "🔨 Building frontend..."
             cd ../frontend
-            npm install --production --legacy-peer-deps
+            npm install --legacy-peer-deps
             rm -rf .next
             npm run build
+            # Clean devDependencies after build
+            npm prune --production
             
             echo "🔨 Building admin..."
             cd ../admin-next
-            npm install --production --legacy-peer-deps
+            npm install --legacy-peer-deps
             rm -rf .next
             npm run build
+            # Clean devDependencies after build
+            npm prune --production
             
             echo "✅ All builds complete"
           EOF
