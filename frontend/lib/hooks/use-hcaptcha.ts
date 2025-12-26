@@ -35,13 +35,11 @@ export function useHCaptcha() {
     const canLoad = hasConsent(HCAPTCHA_CONFIG.PRIVACY.consentCategory as any);
     
     if (!canLoad) {
-      console.log('⚠️ hCaptcha not loaded: Cookie consent required');
       return;
     }
 
     // ✅ SECURITY: Prevent duplicate script loading
     if (document.querySelector('script[src*="hcaptcha.com"]')) {
-      console.log('✅ hCaptcha script already loaded');
       initializeWidget();
       return;
     }
@@ -52,7 +50,6 @@ export function useHCaptcha() {
     script.async = true;
     script.defer = true;
     script.onload = () => {
-      console.log('✅ hCaptcha script loaded');
       initializeWidget();
     };
     script.onerror = (error) => {
@@ -65,7 +62,6 @@ export function useHCaptcha() {
       // ✅ Cleanup: Remove widget (keep container for reuse)
       if (widgetId !== null && window.hcaptcha) {
         try {
-          console.log('🧹 Cleaning up hCaptcha widget:', widgetId);
           window.hcaptcha.remove(widgetId);
           setWidgetId(null);
           setIsReady(false);

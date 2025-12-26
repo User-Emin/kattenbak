@@ -154,15 +154,21 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
               key={index}
               className="relative aspect-square rounded-lg border bg-muted overflow-hidden group"
             >
-              <img
-                src={image || 'https://placehold.co/400x400/666/fff?text=Geen+afbeelding'}
-                alt={`Afbeelding ${index + 1}`}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  // Fallback for broken images
-                  (e.target as HTMLImageElement).src = 'https://placehold.co/400x400/666/fff?text=Fout';
-                }}
-              />
+              {image && image.trim() ? (
+                <img
+                  src={image}
+                  alt={`Afbeelding ${index + 1}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback for broken images
+                    (e.target as HTMLImageElement).src = 'https://placehold.co/400x400/666/fff?text=Fout';
+                  }}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-muted">
+                  <ImageIcon className="h-12 w-12 text-muted-foreground" />
+                </div>
+              )}
               <Button
                 type="button"
                 variant="destructive"

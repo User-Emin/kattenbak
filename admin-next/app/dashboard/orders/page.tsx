@@ -56,7 +56,6 @@ export default function OrdersPage() {
       if (response && response.data) {
         setOrders(response.data);
       } else {
-        console.warn('Unexpected response structure:', response);
         setOrders([]);
       }
     } catch (error: any) {

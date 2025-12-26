@@ -66,7 +66,6 @@ export const getProductImage = (images: string[] | null | undefined): string => 
 
 // Helper voor FILL images (geen width/height)
 export const getImageFillProps = (config: { src?: string; alt: string }) => {
-  console.log('🖼️ Loading image:', config.src || 'placeholder');
   return {
     src: config.src || IMAGE_CONFIG.placeholder,
     alt: config.alt,
@@ -74,7 +73,6 @@ export const getImageFillProps = (config: { src?: string; alt: string }) => {
     quality: IMAGE_QUALITY,
     sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
     onError: () => console.error('❌ Image failed to load:', config.src),
-    onLoad: () => console.log('✅ Image loaded:', config.src),
   };
 };
 
@@ -91,5 +89,4 @@ export const getImageFixedProps = (config: {
   height: config.height,
   quality: IMAGE_QUALITY,
   onError: () => console.error('❌ Image failed to load:', config.src),
-  onLoad: () => console.log('✅ Image loaded:', config.src),
 });

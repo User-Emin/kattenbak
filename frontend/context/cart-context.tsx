@@ -63,7 +63,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         
         // Version check: Clear old cart if version mismatch (UUID migration)
         if (parsed.version !== CART_VERSION) {
-          console.log('🔄 Cart version mismatch - clearing old data');
           localStorage.removeItem(CART_STORAGE_KEY);
           setItems([]);
         } else {

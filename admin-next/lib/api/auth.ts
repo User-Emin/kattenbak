@@ -42,16 +42,12 @@ export const loginApi = async (credentials: LoginCredentials) => {
 // DRY: Store auth data in localStorage + Cookie (for middleware)
 export const storeAuth = (token: string, user: AuthUser) => {
   if (typeof window !== 'undefined') {
-    console.log('storeAuth: Storing token...', { tokenLength: token.length, userId: user.id }); // Debug
-    
     // Store in localStorage (for API calls)
     localStorage.setItem('admin_token', token);
     localStorage.setItem('admin_user', JSON.stringify(user));
     
     // CRITICAL: Store in cookie (for middleware)
     document.cookie = `token=${token}; path=/; max-age=604800; SameSite=Lax`;
-    
-    console.log('storeAuth: Cookie set:', document.cookie.includes('token=')); // Debug
   }
 };
 
