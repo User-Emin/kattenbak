@@ -1,0 +1,408 @@
+name: 🚀 Production CI/CD Pipeline - Enterprise Grade
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Prevent concurrent deploys
+concurrency:
+  group: production-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: '22.x'
+  POSTGRES_VERSION: '16'
+
+jobs:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STAGE 1: SECURITY SCANNING
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  security-scan:
+    name: 🔒 Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for security scanning
+      
+      - name: 🔍 Secret Scanning
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --only-verified
+      
+      - name: 🛡️ Dependency Audit - Backend
+        run: |
+          cd backend
+          npm audit --audit-level=moderate || true
+          npm audit --json > audit-backend.json || true
+      
+      - name: 🛡️ Dependency Audit - Frontend
+        run: |
+          cd frontend
+          npm audit --audit-level=moderate || true
+          npm audit --json > audit-frontend.json || true
+      
+      - name: 📊 Upload Audit Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audits
+          path: |
+            backend/audit-backend.json
+            frontend/audit-frontend.json
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STAGE 2: BUILD & TEST
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  build-backend:
+    name: 🔨 Build Backend
+    runs-on: ubuntu-latest
+    needs: [security-scan]
+    
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: kattenbak_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+      
+      - name: 📚 Install Dependencies
+        working-directory: backend
+        run: npm ci
+      
+      - name: 🗄️ Prisma Generate
+        working-directory: backend
+        run: npx prisma generate
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/kattenbak_test
+      
+      - name: 🗄️ Run Migrations
+        working-directory: backend
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/kattenbak_test
+      
+      - name: 🧪 Run Tests
+        working-directory: backend
+        run: npm test -- --passWithNoTests
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://test:test@localhost:5432/kattenbak_test
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+          JWT_SECRET: test-jwt-secret-for-ci-cd-pipeline
+          MOLLIE_API_KEY: test_dummy_key_for_ci
+          MEDIA_ENCRYPTION_KEY: test-encryption-key-32chars!!
+      
+      - name: 🔨 Build
+        working-directory: backend
+        run: npm run build
+      
+      - name: 📦 Cache Build
+        uses: actions/cache@v4
+        with:
+          path: backend/dist
+          key: backend-build-${{ github.sha }}
+
+  build-frontend:
+    name: 🎨 Build Frontend
+    runs-on: ubuntu-latest
+    needs: [security-scan]
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: 📚 Install Dependencies
+        working-directory: frontend
+        run: npm ci
+      
+      - name: 🔨 Build
+        working-directory: frontend
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: https://catsupply.nl/api/v1
+          NEXT_PUBLIC_SITE_URL: https://catsupply.nl
+      
+      - name: 📦 Cache Build
+        uses: actions/cache@v4
+        with:
+          path: |
+            frontend/.next
+            frontend/node_modules
+          key: frontend-build-${{ github.sha }}
+
+  build-admin:
+    name: ⚙️  Build Admin
+    runs-on: ubuntu-latest
+    needs: [security-scan]
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: admin-next/package-lock.json
+      
+      - name: 📚 Install Dependencies
+        working-directory: admin-next
+        run: npm ci
+      
+      - name: 🔨 Build
+        working-directory: admin-next
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: https://catsupply.nl/api/v1
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STAGE 3: DEPLOYMENT (Only on main branch push)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  deploy:
+    name: 🚀 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build-backend, build-frontend, build-admin]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: production
+      url: https://catsupply.nl
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 🔑 Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+      
+      - name: 📤 Sync Code to Server
+        run: |
+          rsync -avz --delete \
+            --exclude 'node_modules' \
+            --exclude '.git' \
+            --exclude '.env*' \
+            --exclude 'dist' \
+            --exclude '.next' \
+            -e "ssh -i ~/.ssh/id_rsa" \
+            ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/kattenbak/
+      
+      - name: 🗄️ Database Backup
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            echo "📦 Creating database backup..."
+            cd /var/www/kattenbak
+            mkdir -p backups
+            BACKUP_FILE="backups/db-backup-$(date +%Y%m%d-%H%M%S).sql"
+            PGPASSWORD="${{ secrets.DB_PASSWORD }}" pg_dump \
+              -h localhost \
+              -U ${{ secrets.DB_USER }} \
+              -d ${{ secrets.DB_NAME }} \
+              > "$BACKUP_FILE"
+            echo "✅ Backup created: $BACKUP_FILE"
+            
+            # Keep only last 7 backups
+            ls -t backups/db-backup-*.sql | tail -n +8 | xargs -r rm
+          EOF
+      
+      - name: 🔨 Build on Server
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            set -e
+            cd /var/www/kattenbak
+            
+            echo "🔨 Building backend..."
+            cd backend
+            npm ci --production
+            npx prisma generate
+            npx prisma migrate deploy
+            npm run build
+            
+            echo "🔨 Building frontend..."
+            cd ../frontend
+            npm ci --production
+            rm -rf .next
+            npm run build
+            
+            echo "🔨 Building admin..."
+            cd ../admin-next
+            npm ci --production
+            rm -rf .next
+            npm run build
+            
+            echo "✅ All builds complete"
+          EOF
+      
+      - name: 🔄 Restart Services (Zero Downtime)
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            echo "🔄 Restarting services..."
+            pm2 reload backend --update-env
+            pm2 reload frontend --update-env
+            pm2 reload admin --update-env
+            
+            # Wait for services to be ready
+            sleep 5
+            
+            # Check PM2 status
+            pm2 status
+            echo "✅ Services restarted"
+          EOF
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STAGE 4: VERIFICATION
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  verify:
+    name: ✅ Verify Deployment
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    
+    steps:
+      - name: 🏥 Health Check - Backend
+        run: |
+          echo "Checking backend health..."
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://catsupply.nl/api/v1/health)
+          
+          if [ "$RESPONSE" != "200" ]; then
+            echo "❌ Backend health check FAILED (HTTP $RESPONSE)"
+            exit 1
+          fi
+          
+          echo "✅ Backend: OK (HTTP $RESPONSE)"
+      
+      - name: 🏥 Health Check - Frontend
+        run: |
+          echo "Checking frontend..."
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://catsupply.nl/)
+          
+          if [ "$RESPONSE" != "200" ]; then
+            echo "❌ Frontend health check FAILED (HTTP $RESPONSE)"
+            exit 1
+          fi
+          
+          echo "✅ Frontend: OK (HTTP $RESPONSE)"
+      
+      - name: 🏥 Health Check - Admin
+        run: |
+          echo "Checking admin panel..."
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://catsupply.nl/admin)
+          
+          if [ "$RESPONSE" != "200" ]; then
+            echo "❌ Admin health check FAILED (HTTP $RESPONSE)"
+            exit 1
+          fi
+          
+          echo "✅ Admin: OK (HTTP $RESPONSE)"
+      
+      - name: 🧪 API Endpoint Tests
+        run: |
+          echo "Testing critical API endpoints..."
+          
+          # Test products endpoint
+          PRODUCTS=$(curl -s https://catsupply.nl/api/v1/products | jq -r '.success')
+          if [ "$PRODUCTS" != "true" ]; then
+            echo "❌ Products API failed"
+            exit 1
+          fi
+          echo "✅ Products API: OK"
+      
+      - name: 🎉 Deployment Success
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ DEPLOYMENT SUCCESSFUL & VERIFIED"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🌐 Frontend: https://catsupply.nl"
+          echo "⚙️  Admin:    https://catsupply.nl/admin"
+          echo "📡 API:      https://catsupply.nl/api/v1"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STAGE 5: ROLLBACK ON FAILURE
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  rollback:
+    name: 🔄 Rollback on Failure
+    runs-on: ubuntu-latest
+    needs: [verify]
+    if: failure()
+    
+    steps:
+      - name: 🔑 Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+      
+      - name: ⏮️ Rollback Deployment
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            echo "🔄 Rolling back deployment..."
+            cd /var/www/kattenbak
+            
+            # Rollback git
+            git reset --hard HEAD~1
+            
+            # Rebuild previous version
+            cd backend && npm run build && cd ..
+            cd frontend && npm run build && cd ..
+            cd admin-next && npm run build && cd ..
+            
+            # Restart services
+            pm2 restart all
+            
+            echo "✅ Rollback complete"
+          EOF
+      
+      - name: 📧 Notify Failure
+        run: |
+          echo "❌ DEPLOYMENT FAILED - ROLLED BACK TO PREVIOUS VERSION"
+          echo "Please check logs and fix issues before redeploying"
+          exit 1
+

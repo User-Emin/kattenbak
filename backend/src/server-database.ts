@@ -485,6 +485,70 @@ app.put('/api/v1/admin/settings', async (req: Request, res: Response) => {
   }
 });
 
+// Helper: Sanitize order for API response (convert Decimals)
+const sanitizeOrder = (order: any) => ({
+  ...order,
+  subtotal: toNumber(order.subtotal),
+  shippingCost: toNumber(order.shippingCost),
+  tax: toNumber(order.tax),
+  total: toNumber(order.total),
+  items: order.items?.map((item: any) => ({
+    ...item,
+    price: toNumber(item.price),
+    quantity: item.quantity,
+    product: item.product ? sanitizeProduct(item.product) : null,
+  })) || [],
+});
+
+// ADMIN: Get all orders
+app.get('/api/v1/admin/orders', async (req: Request, res: Response) => {
+  try {
+    const orders = await prisma.order.findMany({
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
+        shippingAddress: true,
+        payment: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    // DEFENSIVE: Convert Decimals to Numbers
+    const sanitizedOrders = orders.map(sanitizeOrder);
+    res.json(success(sanitizedOrders));
+  } catch (err: any) {
+    console.error('Admin orders error:', err.message);
+    res.status(500).json(error('Could not fetch orders'));
+  }
+});
+
+// ADMIN: Get single order by ID
+app.get('/api/v1/admin/orders/:id', async (req: Request, res: Response) => {
+  try {
+    const order = await prisma.order.findUnique({
+      where: { id: req.params.id },
+      include: {
+        items: true,
+        shippingAddress: true,
+        payment: true,
+      },
+    });
+
+    if (!order) {
+      return res.status(404).json(error('Order not found'));
+    }
+
+    // DEFENSIVE: Convert Decimals to Numbers
+    res.json(success(sanitizeOrder(order)));
+  } catch (err: any) {
+    console.error('Admin order by ID error:', err.message);
+    res.status(500).json(error('Could not fetch order'));
+  }
+});
+
 // ADMIN: Get contact messages
 app.get('/api/v1/admin/contact', async (req: Request, res: Response) => {
   try {

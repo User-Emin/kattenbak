@@ -42,7 +42,7 @@ fi
 echo -e "${GREEN}✓ Server reachable${NC}"
 
 # Check if SSH works
-if ! sshpass -p "Pursangue66@" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 "$SERVER_USER@$SERVER_HOST" "echo OK" &> /dev/null; then
+if ! sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 "$SERVER_USER@$SERVER_HOST" "echo OK" &> /dev/null; then
     echo -e "${RED}❌ SSH connection failed!${NC}"
     exit 1
 fi
@@ -53,7 +53,7 @@ echo -e "${GREEN}✓ SSH connection working${NC}"
 ##############################################################################
 echo -e "\n${YELLOW}[2/7] Creating backup...${NC}"
 
-sshpass -p "Pursangue66@" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
+sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
     set -e
     
     # Remove old backup
@@ -75,7 +75,7 @@ echo -e "${GREEN}✓ Backup complete${NC}"
 ##############################################################################
 echo -e "\n${YELLOW}[3/7] Pulling latest code...${NC}"
 
-sshpass -p "Pursangue66@" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
+sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
     set -e
     cd /var/www/kattenbak
     
@@ -95,7 +95,7 @@ echo -e "${GREEN}✓ Code updated${NC}"
 ##############################################################################
 echo -e "\n${YELLOW}[4/7] Installing dependencies...${NC}"
 
-sshpass -p "Pursangue66@" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
+sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
     set -e
     cd /var/www/kattenbak/frontend
     
@@ -115,7 +115,7 @@ echo -e "${GREEN}✓ Dependencies installed${NC}"
 ##############################################################################
 echo -e "\n${YELLOW}[5/7] Building application...${NC}"
 
-sshpass -p "Pursangue66@" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
+sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
     set -e
     cd /var/www/kattenbak/frontend
     
@@ -136,7 +136,7 @@ echo -e "${GREEN}✓ Build complete${NC}"
 ##############################################################################
 echo -e "\n${YELLOW}[6/7] Deploying with PM2...${NC}"
 
-sshpass -p "Pursangue66@" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
+sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
     set -e
     cd /var/www/kattenbak/frontend
     
@@ -194,7 +194,7 @@ echo " ✓"
 
 # Check PM2 status
 echo -n "Checking PM2 status..."
-PM2_STATUS=$(sshpass -p "Pursangue66@" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" "pm2 jlist" | grep -o '"status":"[^"]*"' | grep -o 'online' || echo "")
+PM2_STATUS=$(sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" "pm2 jlist" | grep -o '"status":"[^"]*"' | grep -o 'online' || echo "")
 
 if [ "$PM2_STATUS" == "online" ]; then
     echo -e " ${GREEN}✓ Process running${NC}"
@@ -203,7 +203,7 @@ else
     
     # Attempt rollback
     echo -e "${YELLOW}Attempting rollback...${NC}"
-    sshpass -p "Pursangue66@" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
+    sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
         if [ -d /var/www/kattenbak/frontend-backup ]; then
             rm -rf /var/www/kattenbak/frontend/.next
             cp -r /var/www/kattenbak/frontend-backup /var/www/kattenbak/frontend/.next
@@ -237,12 +237,12 @@ done
 
 # Check error logs
 echo -n "Checking for errors in logs..."
-ERROR_COUNT=$(sshpass -p "Pursangue66@" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" "tail -n 50 /root/.pm2/logs/frontend-error.log | grep -i 'error' | wc -l" || echo "0")
+ERROR_COUNT=$(sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" "tail -n 50 /root/.pm2/logs/frontend-error.log | grep -i 'error' | wc -l" || echo "0")
 
 if [ "$ERROR_COUNT" -gt 5 ]; then
     echo -e " ${YELLOW}⚠ $ERROR_COUNT errors found in logs${NC}"
     echo -e "${YELLOW}Recent errors:${NC}"
-    sshpass -p "Pursangue66@" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" "tail -n 10 /root/.pm2/logs/frontend-error.log"
+    sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" "tail -n 10 /root/.pm2/logs/frontend-error.log"
 else
     echo -e " ${GREEN}✓ No critical errors${NC}"
 fi

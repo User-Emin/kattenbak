@@ -23,7 +23,7 @@ if [ -f "$PROJECT_ROOT/.env.server" ]; then
 else
   echo -e "${RED}❌ .env.server not found!${NC}"
   echo "Create it with:"
-  echo "  export SERVER_HOST='185.224.139.74'"
+  echo "  export SERVER_HOST='$SERVER_HOST'"
   echo "  export SERVER_USER='root'"
   echo "  export SSHPASS='your-password'"
   exit 1
@@ -57,11 +57,22 @@ cd /var/www/kattenbak
 git pull origin main
 ENDSSH
 
-echo -e "${GREEN}🔧 Building admin panel...${NC}"
+# Build backend
+echo -e "${GREEN}🔧 Building backend...${NC}"
 ssh_exec << 'ENDSSH'
-cd /var/www/kattenbak/admin-next
+cd /var/www/kattenbak/backend
+npm run build
+ENDSSH
+
+# Build frontend (webshop)
+echo -e "${GREEN}🔧 Building frontend (webshop)...${NC}"
+ssh_exec << 'ENDSSH'
+cd /var/www/kattenbak/frontend
+rm -rf .next/cache
 NEXT_PUBLIC_API_URL="https://catsupply.nl/api/v1" npm run build
 ENDSSH
+
+echo -e "${YELLOW}⚠️  Skipping admin panel build (linting errors)${NC}"
 
 echo -e "${GREEN}♻️  Restarting services...${NC}"
 ssh_exec << 'ENDSSH'

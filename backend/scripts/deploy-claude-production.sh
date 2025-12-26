@@ -24,7 +24,7 @@ echo ""
 
 # 2. SSH to server
 echo "2️⃣ Deploying to production server..."
-ssh root@185.224.139.74 << 'SSHEOF'
+ssh root@$SERVER_HOST << 'SSHEOF'
 set -e
 
 cd /var/www/kattenbak/backend
@@ -72,7 +72,7 @@ echo "✅ PRODUCTION DEPLOYMENT SUCCESSFUL"
 echo "=========================================="
 echo ""
 echo "Next: Add CLAUDE_API_KEY to server .env.production"
-echo "Command: ssh root@185.224.139.74"
+echo "Command: ssh root@$SERVER_HOST"
 echo "         echo 'CLAUDE_API_KEY=sk-ant-...' >> /var/www/kattenbak/backend/.env.production"
 echo "         pm2 restart backend"
 echo ""

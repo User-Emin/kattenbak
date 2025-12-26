@@ -89,9 +89,7 @@ app.use(cors({
   origin: [
     'http://localhost:3100',
     'http://localhost:3102',
-    'https://catsupply.nl',
-    'http://185.224.139.74:3102',
-    'http://185.224.139.74:3100'
+    'https://catsupply.nl'
   ], 
   credentials: true 
 }));
