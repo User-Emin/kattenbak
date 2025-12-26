@@ -4,24 +4,22 @@ const nextConfig: NextConfig = {
   // ✅ ALWAYS use basePath for Nginx /admin route (dev + production)
   basePath: "/admin",
   
-  // SECURITY: Disable dev indicators in production
+  // 🔒 SECURITY: Disable ALL dev indicators in production
   devIndicators: {
     buildActivity: false,
-    buildActivityPosition: 'bottom-right',
+    appIsrStatus: false,
   },
   
-  // Temporarily ignore TypeScript errors
+  // 🔒 SECURITY: Disable source maps in production
+  productionBrowserSourceMaps: false,
+  
+  // 🔒 SECURITY: Temporarily ignore TypeScript/ESLint errors during build
   typescript: {
     ignoreBuildErrors: true,
   },
-  
-  // Temporarily ignore ESLint errors
   eslint: {
     ignoreDuringBuilds: true,
   },
-  
-  // SECURITY: Disable source maps in production
-  productionBrowserSourceMaps: false,
 };
 
 export default nextConfig;
