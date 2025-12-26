@@ -9,6 +9,7 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { MollieService } from './services/mollie.service';
 
 // Load environment
 dotenv.config();
@@ -324,7 +325,6 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
     console.log(`✅ Order created: ${order.orderNumber} | €${total}`);
 
     // ✅ REAL Mollie payment integration
-    const { MollieService } = await import('./services/mollie.service');
     const redirectUrl = `${ENV.FRONTEND_URL}/success?order=${order.id}`;
     const molliePayment = await MollieService.createPayment(
       order.id,
