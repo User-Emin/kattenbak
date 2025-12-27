@@ -19,6 +19,11 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Premium Zelfreinigende Kattenbak",
   description: "Automatische kattenbak met app-bediening en gezondheidsmonitoring",
+  // ✅ PERFORMANCE: Preconnect to external domains
+  other: {
+    'link': 'preconnect',
+    'href': 'https://fonts.googleapis.com',
+  },
 };
 
 export default function RootLayout({
@@ -28,6 +33,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="nl" className={montserrat.variable}>
+      <head>
+        {/* ✅ PERFORMANCE: DNS prefetch & preconnect */}
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body className="antialiased font-[family-name:var(--font-montserrat)]">
         <UIProvider>
           <CartProvider>

@@ -190,9 +190,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* COOLBLUE-STYLE: Compact container, max-w-6xl, EXPLICIETE #FFFFFF achtergrond */}
       <div className="max-w-6xl mx-auto px-4 py-6 bg-[#FFFFFF]">
         {/* Breadcrumb - compact */}
-        {/* Breadcrumb - ✅ GRIJZER */}
+        {/* Breadcrumb - ✅ MAXIMAAL DONKER */}
         <nav className="mb-3">
-          <Link href="/" className="text-sm text-gray-500 hover:text-brand transition-colors">
+          <Link href="/" className="text-sm text-gray-600 hover:text-brand transition-colors">
             Home
           </Link>
           <span className="text-gray-400 mx-2">/</span>
@@ -239,10 +239,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* COOLBLUE: Info rechts - COMPACT */}
           <div className="space-y-5 lg:pl-6">
             {/* Prijs - RUSTIGER */}
-            {/* Prijs en CTA - ✅ DUIDELIJKER: ZWARTER */}
+            {/* Prijs en CTA - ✅ MAXIMAAL ZWART */}
             <div className="space-y-1">
               <div className="text-2xl font-semibold text-black">{formatPrice(finalPrice)}</div>
-              <p className="text-xs text-gray-500">Incl. BTW</p>
+              <p className="text-xs text-gray-600">Incl. BTW</p>
             </div>
 
             {/* Color Selector - DIRECT OP ACHTERGROND */}
@@ -272,8 +272,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
               </button>
               
-              {/* COOLBLUE EYECATCHERS - onder button - ✅ COMPACT maar DUIDELIJKER */}
-              <div className="space-y-2 text-xs text-gray-800">
+              {/* COOLBLUE EYECATCHERS - onder button - ✅ MAXIMAAL DONKER */}
+              <div className="space-y-2 text-xs text-gray-900">
                 <div className="flex items-center gap-2">
                   <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
                   <span><strong className="font-semibold text-black">Morgen</strong> bezorgd</span>
@@ -325,39 +325,39 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* Plus- en minpunten */}
           <div className="mb-8 p-6 bg-gray-50 rounded-sm">
             
-            {/* Product Highlights (PROs/CONs) - ✅ COMPACT maar GRIJZER/ZWARTER */}
+            {/* Product Highlights (PROs/CONs) - ✅ MAXIMAAL DONKER GRIJS */}
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <div className="flex items-start gap-2">
                   <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-800">Automatische reiniging na elk gebruik bespaart tijd</span>
+                  <span className="text-sm text-gray-900">Automatische reiniging na elk gebruik bespaart tijd</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-800">Fluisterstille werking (32dB) stoort niet</span>
+                  <span className="text-sm text-gray-900">Fluisterstille werking (32dB) stoort niet</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-800">App bediening voor real-time monitoring</span>
+                  <span className="text-sm text-gray-900">App bediening voor real-time monitoring</span>
                 </div>
               </div>
               <div className="space-y-2">
                 <div className="flex items-start gap-2">
-                  <span className="h-5 w-5 text-gray-500 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
-                  <span className="text-sm text-gray-800">Geschikt voor katten tot 7kg</span>
+                  <span className="h-5 w-5 text-gray-600 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
+                  <span className="text-sm text-gray-900">Geschikt voor katten tot 7kg</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="h-5 w-5 text-gray-500 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
-                  <span className="text-sm text-gray-800">Vereist regelmatige lediging van afvalbak</span>
+                  <span className="h-5 w-5 text-gray-600 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
+                  <span className="text-sm text-gray-900">Vereist regelmatige lediging van afvalbak</span>
                 </div>
               </div>
             </div>
           </div>
           
-          {/* Omschrijving - ✅ COMPACT maar GRIJZER */}
+          {/* Omschrijving - ✅ MAXIMAAL DONKER GRIJS */}
           <div className="prose prose-sm max-w-none">
             <h3 className="font-semibold text-base mb-3 text-black">Omschrijving</h3>
-            <p className="text-sm text-gray-800 leading-relaxed">{product.description}</p>
+            <p className="text-sm text-gray-900 leading-relaxed">{product.description}</p>
           </div>
         </div>
 
