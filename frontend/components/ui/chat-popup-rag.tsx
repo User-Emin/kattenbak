@@ -66,7 +66,7 @@ export function ChatPopup() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          question: userMessage.content
+          message: userMessage.content  // Changed from 'question' to 'message' to match API
         })
       });
       
@@ -76,9 +76,12 @@ export function ChatPopup() {
         throw new Error(data.error || 'Er ging iets mis');
       }
       
+      // API returns answer directly in root, not in data.data
+      const answer = data.answer || data.data?.answer || 'Geen antwoord ontvangen';
+      
       const assistantMessage: Message = {
         role: 'assistant',
-        content: data.data.answer,
+        content: answer,
         timestamp: new Date()
       };
       
