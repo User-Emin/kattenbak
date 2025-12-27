@@ -30,7 +30,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       className={`
         ${sizeClasses[size]}
         font-semibold
-        text-gray-900
+        text-black
         ${centered ? 'text-center' : ''}
         ${className}
       `.trim()}
