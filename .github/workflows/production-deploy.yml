@@ -287,6 +287,12 @@ jobs:
             npm install --save-dev tailwindcss@3.4.19 postcss@8.5.6 autoprefixer@10.4.23 postcss-nested@6.2.0
             rm -rf .next
             NODE_ENV=production npm run build
+            
+            # Copy static files to standalone build
+            echo "📦 Copying static files to standalone..."
+            cp -r .next/static .next/standalone/frontend/.next/static
+            cp -r public .next/standalone/frontend/public
+            
             # Keep Tailwind for runtime (don't prune devDependencies yet)
             # npm prune --production
             
@@ -313,7 +319,7 @@ jobs:
               apps: [
                 {
                   name: 'frontend',
-                  script: '.next/standalone/server.js',
+                  script: '.next/standalone/frontend/server.js',
                   cwd: '/var/www/kattenbak/frontend',
                   instances: 1,
                   exec_mode: 'fork',
