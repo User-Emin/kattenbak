@@ -665,12 +665,14 @@ app.post('/api/v1/admin/auth/login', async (req: Request, res: Response) => {
 });
 
 // =============================================================================
-// RAG ENDPOINTS - AI Chat (No hCaptcha)
+// RAG ENDPOINTS - AI Chat with Enhanced Pipeline
 // =============================================================================
 
-// Import RAG routes - DISABLED FOR NOW
-// const ragRoutes = require('./routes/rag.routes').default;
-// app.use('/api/v1/rag', ragRoutes);
+// Import RAG routes - ENABLED with full security
+const ragRoutes = require('./routes/rag.routes').default;
+app.use('/api/v1/rag', ragRoutes);
+
+console.log('✅ RAG endpoints loaded: /api/v1/rag/chat, /api/v1/rag/health');
 
 // =============================================================================
 // ERROR HANDLERS
