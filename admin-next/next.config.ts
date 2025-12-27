@@ -5,7 +5,10 @@ const nextConfig: NextConfig = {
   basePath: "/admin",
   
   // 🔒 SECURITY: COMPLETELY DISABLE ALL DEV OVERLAYS & ERROR BADGES
-  devIndicators: false, // ✅ Disable EVERYTHING including error overlays
+  devIndicators: {
+    buildActivity: false,
+    appIsrStatus: false,
+  },
   
   // 🔒 SECURITY: Disable source maps in production
   productionBrowserSourceMaps: false,
