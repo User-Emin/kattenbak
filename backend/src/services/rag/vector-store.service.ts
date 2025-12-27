@@ -20,7 +20,8 @@ export interface VectorDocument {
 
 export class VectorStoreService {
   private static documents: VectorDocument[] = [];
-  private static readonly STORE_PATH = path.join(__dirname, '../../../data/vector-store.json');
+  // Path: dist/services/rag -> dist/data (go up 2 levels)
+  private static readonly STORE_PATH = path.join(__dirname, '../../data/vector-store.json');
   
   /**
    * Initialize vector store
