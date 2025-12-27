@@ -198,8 +198,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           <span className="text-sm text-gray-900">{product.name}</span>
         </nav>
 
-        {/* Titel BOVEN afbeelding (niet overlay) */}
-        <h1 className="text-2xl font-semibold mb-4 text-gray-900">{product.name}</h1>
+        {/* Titel BOVEN afbeelding (niet overlay) - ✅ COOLBLUE: GROTE DUIDELIJKE TITEL */}
+        <h1 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 leading-tight">{product.name}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
           {/* Product Images - BREED zoals Coolblue */}
@@ -238,9 +238,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* COOLBLUE: Info rechts - COMPACT */}
           <div className="space-y-5 lg:pl-6">
             {/* Prijs - RUSTIGER */}
+            {/* Prijs en CTA - ✅ COOLBLUE: GROTE DUIDELIJKE PRIJS */}
             <div className="space-y-1">
-              <div className="text-2xl font-semibold text-gray-900">{formatPrice(finalPrice)}</div>
-              <p className="text-xs text-gray-600">Incl. BTW</p>
+              <div className="text-4xl md:text-5xl font-bold text-gray-900">{formatPrice(finalPrice)}</div>
+              <p className="text-sm text-gray-600">Incl. BTW</p>
             </div>
 
             {/* Color Selector - DIRECT OP ACHTERGROND */}
@@ -270,26 +271,27 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
               </button>
               
-              {/* COOLBLUE EYECATCHERS - onder button (ZONDER klantbeoordeling) */}
-              <div className="space-y-2 text-xs text-gray-700">
+              {/* COOLBLUE EYECATCHERS - onder button (ZONDER klantbeoordeling) - ✅ GROTERE TEKST */}
+              <div className="space-y-3 text-base text-gray-700">
                 <div className="flex items-center gap-2">
-                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span><strong>Morgen</strong> bezorgd</span>
+                  <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
+                  <span><strong className="font-semibold">Morgen</strong> bezorgd</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span>Je krijgt <strong>30 dagen</strong> bedenktijd</span>
+                  <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
+                  <span>Je krijgt <strong className="font-semibold">30 dagen</strong> bedenktijd</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span><strong>Gratis</strong> ruilen binnen 30 dagen</span>
+                  <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
+                  <span><strong className="font-semibold">Gratis</strong> ruilen binnen 30 dagen</span>
                 </div>
               </div>
             </div>
 
             {/* Product Specs - DIRECT OP ACHTERGROND, LICHTERE TITEL */}
+            {/* Product specs - ✅ GROTERE TITEL */}
             <div className="space-y-3">
-              <h3 className="font-medium text-sm text-gray-700">Product specificaties</h3>
+              <h3 className="font-semibold text-lg text-gray-900">Product specificaties</h3>
               <ProductSpecsComparison />
             </div>
           </div>
@@ -322,38 +324,39 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* Plus- en minpunten */}
           <div className="mb-8 p-6 bg-gray-50 rounded-sm">
             
+            {/* Product Highlights (PROs/CONs) - ✅ GROTERE TEKST */}
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="flex items-start gap-2">
-                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">Automatische reiniging na elk gebruik bespaart tijd</span>
+                  <Check className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-base text-gray-700 leading-relaxed">Automatische reiniging na elk gebruik bespaart tijd</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">Fluisterstille werking (32dB) stoort niet</span>
+                  <Check className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-base text-gray-700 leading-relaxed">Fluisterstille werking (32dB) stoort niet</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">App bediening voor real-time monitoring</span>
+                  <Check className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-base text-gray-700 leading-relaxed">App bediening voor real-time monitoring</span>
                 </div>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="flex items-start gap-2">
-                  <span className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5">−</span>
-                  <span className="text-sm text-gray-700">Geschikt voor katten tot 7kg</span>
+                  <span className="h-6 w-6 text-gray-400 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
+                  <span className="text-base text-gray-700 leading-relaxed">Geschikt voor katten tot 7kg</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5">−</span>
-                  <span className="text-sm text-gray-700">Vereist regelmatige lediging van afvalbak</span>
+                  <span className="h-6 w-6 text-gray-400 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
+                  <span className="text-base text-gray-700 leading-relaxed">Vereist regelmatige lediging van afvalbak</span>
                 </div>
               </div>
             </div>
           </div>
           
-          {/* Omschrijving */}
-          <div className="prose prose-sm max-w-none">
-            <h3 className="font-semibold text-base mb-3 text-gray-900">Omschrijving</h3>
-            <p className="text-sm text-gray-700 leading-relaxed">{product.description}</p>
+          {/* Omschrijving - ✅ GROTERE TEKST */}
+          <div className="prose prose-base max-w-none">
+            <h3 className="font-bold text-xl mb-4 text-gray-900">Omschrijving</h3>
+            <p className="text-base text-gray-700 leading-relaxed">{product.description}</p>
           </div>
         </div>
 

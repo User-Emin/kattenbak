@@ -31,15 +31,15 @@ interface ChatConfig {
 // DRY: Default config (can be overridden by API)
 const DEFAULT_CHAT_CONFIG: ChatConfig = {
   enabled: true,
-  position: 'left', // Zedar uses 'right'
-  bottomOffset: '1rem', // 16px = bottom-4
-  sideOffset: '1rem', // 16px = left-4/right-4
+  position: 'right', // ✅ RECHTS zoals Zedar
+  bottomOffset: '1.5rem', // 24px - meer ruimte
+  sideOffset: '1.5rem', // 24px - meer ruimte
   size: '4rem', // 64px = w-16 h-16
   backgroundColor: '#f76402', // accent color
   hoverBackgroundColor: '#e55a02', // accent-dark
   textColor: '#ffffff',
   zIndex: 9999,
-  alwaysVisible: true, // ✅ ALWAYS VISIBLE like Zedar
+  alwaysVisible: true, // ✅ ALWAYS VISIBLE like Zedar (ook bij scrollen)
   showPulseEffect: true,
   title: 'AI Assistent',
   subtitle: 'Stel me een vraag over onze kattenbak',
