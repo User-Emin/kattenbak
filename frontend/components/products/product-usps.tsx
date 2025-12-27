@@ -72,17 +72,19 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                   </div>
                 </div>
 
-                {/* Image (zonder schaduw) */}
-                <div className={`${isEven ? 'md:order-2' : 'md:order-1'}`}>
-                  <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden">
-                    <Image
-                      src={usp.image}
-                      alt={usp.title}
-                      fill
-                      className="object-cover"
-                    />
+                {/* Image (zonder schaduw) - ✅ SECURITY: Only render if image exists */}
+                {usp.image && usp.image.trim() !== '' && (
+                  <div className={`${isEven ? 'md:order-2' : 'md:order-1'}`}>
+                    <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden">
+                      <Image
+                        src={usp.image}
+                        alt={usp.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Connecting line (alleen tussen USPs) */}
