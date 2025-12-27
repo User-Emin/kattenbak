@@ -294,6 +294,11 @@ jobs:
             cp -r .next/static .next/standalone/frontend/.next/static
             cp -r public .next/standalone/frontend/public
             
+            # Ensure CSS directory exists and copy CSS files explicitly
+            echo "🎨 Copying CSS files..."
+            mkdir -p .next/standalone/frontend/.next/static/css
+            cp -v .next/static/css/*.css .next/standalone/frontend/.next/static/css/ || echo "No CSS files to copy"
+            
             echo "✅ Static files copied - standalone build ready"
             
             # Keep Tailwind for runtime (don't prune devDependencies yet)
