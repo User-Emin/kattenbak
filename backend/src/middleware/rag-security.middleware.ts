@@ -26,7 +26,7 @@ export class RAGSecurityMiddleware {
     next: NextFunction
   ): Promise<void> {
     try {
-      const query = req.body.question || req.body.query || '';
+      const query = req.body.message || req.body.question || req.body.query || '';
       
       // Layer 1: Rate limiting
       const rateLimitOk = await RAGSecurityMiddleware.checkRateLimit(req.ip || 'unknown');
