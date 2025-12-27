@@ -288,10 +288,13 @@ jobs:
             rm -rf .next
             NODE_ENV=production npm run build
             
-            # Copy static files to standalone build
+            # Copy static files to standalone build (CRITICAL for Next.js standalone mode)
             echo "📦 Copying static files to standalone..."
+            mkdir -p .next/standalone/frontend/.next
             cp -r .next/static .next/standalone/frontend/.next/static
             cp -r public .next/standalone/frontend/public
+            
+            echo "✅ Static files copied - standalone build ready"
             
             # Keep Tailwind for runtime (don't prune devDependencies yet)
             # npm prune --production
