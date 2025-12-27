@@ -46,7 +46,7 @@ export interface ReRankSummary {
 
 export class ReRankingService {
   private static readonly MODEL = 'cross-encoder/mmarco-mMiniLMv2-L12-H384-v1';
-  private static readonly API_URL = 'https://api-inference.huggingface.co/models';
+  private static readonly API_URL = 'https://router.huggingface.co/models';
   private static readonly TIMEOUT_MS = 3000;
   private static readonly MAX_PAIRS = 20; // Max query-doc pairs to rerank
   

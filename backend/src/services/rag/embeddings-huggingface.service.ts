@@ -34,7 +34,7 @@ export interface EmbeddingError {
 
 export class EmbeddingsHuggingFaceService {
   private static readonly MODEL = 'intfloat/multilingual-e5-base';
-  private static readonly API_URL = 'https://api-inference.huggingface.co/pipeline/feature-extraction';
+  private static readonly API_URL = 'https://router.huggingface.co/pipeline/feature-extraction';
   private static readonly DIMENSIONS = 768;
   private static readonly MAX_TOKENS = 512;
   private static readonly TIMEOUT_MS = 5000;
