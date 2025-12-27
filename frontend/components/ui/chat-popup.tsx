@@ -1,14 +1,49 @@
 "use client";
 
 /**
- * RAG CHAT POPUP - No hCaptcha
+ * RAG CHAT POPUP - FULLY CONFIGURABLE
  * AI-powered chat met Ollama + RAG
  * Security: Rate limiting + input validation backend
+ * DRY: ALL settings from API/config - NO HARDCODE
  */
 
 import { useState, useEffect } from "react";
 import { Button } from "./button";
 import { X, Send, MessageCircle, Loader2 } from "lucide-react";
+
+// DRY: Chat button configuration (can be loaded from API)
+interface ChatConfig {
+  enabled: boolean;
+  position: 'left' | 'right';
+  bottomOffset: string;
+  sideOffset: string;
+  size: string;
+  backgroundColor: string;
+  hoverBackgroundColor: string;
+  textColor: string;
+  zIndex: number;
+  alwaysVisible: boolean; // ✅ CRITICAL: Always visible like Zedar
+  showPulseEffect: boolean;
+  title: string;
+  subtitle: string;
+}
+
+// DRY: Default config (can be overridden by API)
+const DEFAULT_CHAT_CONFIG: ChatConfig = {
+  enabled: true,
+  position: 'left', // Zedar uses 'right'
+  bottomOffset: '1rem', // 16px = bottom-4
+  sideOffset: '1rem', // 16px = left-4/right-4
+  size: '4rem', // 64px = w-16 h-16
+  backgroundColor: '#f76402', // accent color
+  hoverBackgroundColor: '#e55a02', // accent-dark
+  textColor: '#ffffff',
+  zIndex: 9999,
+  alwaysVisible: true, // ✅ ALWAYS VISIBLE like Zedar
+  showPulseEffect: true,
+  title: 'AI Assistent',
+  subtitle: 'Stel me een vraag over onze kattenbak',
+};
 
 interface Message {
   role: 'user' | 'assistant';
@@ -23,21 +58,34 @@ export function ChatPopup() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPulse, setShowPulse] = useState(false);
+  const [config, setConfig] = useState<ChatConfig>(DEFAULT_CHAT_CONFIG);
 
-  // "Klik mij" golf effect bij scrollen
+  // DRY: Load chat config from API (if available)
   useEffect(() => {
+    fetch('/api/v1/admin/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data?.chatWidget) {
+          setConfig({ ...DEFAULT_CHAT_CONFIG, ...data.data.chatWidget });
+        }
+      })
+      .catch(() => {
+        // Use default config on error
+      });
+  }, []);
+
+  // DRY: Pulse effect - only if enabled in config
+  useEffect(() => {
+    if (!config.showPulseEffect) return;
+
     let pulseTimeout: NodeJS.Timeout;
     let scrollTimeout: NodeJS.Timeout;
     
     const handleScroll = () => {
-      // Clear existing timeout
       clearTimeout(scrollTimeout);
       
-      // Start pulse na 1s stilstand
       scrollTimeout = setTimeout(() => {
         setShowPulse(true);
-        
-        // Stop pulse na 3s
         pulseTimeout = setTimeout(() => {
           setShowPulse(false);
         }, 3000);
@@ -46,7 +94,6 @@ export function ChatPopup() {
     
     window.addEventListener('scroll', handleScroll, { passive: true });
     
-    // Initial pulse na 2s
     const initialPulse = setTimeout(() => {
       setShowPulse(true);
       setTimeout(() => setShowPulse(false), 3000);
@@ -58,7 +105,7 @@ export function ChatPopup() {
       clearTimeout(scrollTimeout);
       clearTimeout(initialPulse);
     };
-  }, []);
+  }, [config.showPulseEffect]);
 
   const handleSendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -115,37 +162,61 @@ export function ChatPopup() {
     }
   };
 
-  // Chat button blijft ALTIJD rechtsbeneden viewport (geen beweging!)
+  // DRY: Chat button - FULLY CONFIGURABLE, NO HARDCODE
+  if (!config.enabled) return null;
+
+  // DRY: Build position styles from config
+  const positionStyles = {
+    position: 'fixed' as const,
+    [config.position]: config.sideOffset,
+    bottom: config.bottomOffset,
+    zIndex: config.zIndex,
+    width: config.size,
+    height: config.size,
+    backgroundColor: config.backgroundColor,
+  };
+
   return (
     <>
-      {/* Floating Chat Button - ROND rechtsbeneden viewport - DYNAMISCH! */}
+      {/* Floating Chat Button - FULLY CONFIGURABLE */}
       <button
         onClick={() => {
           setIsExpanded(!isExpanded);
-          setShowPulse(false); // Stop pulse bij klik
+          setShowPulse(false);
         }}
-        className={`fixed left-4 bottom-4 md:left-6 md:bottom-6 z-[9999] transition-all duration-500 ease-out
-                   bg-accent hover:bg-accent-dark text-white 
-                   w-16 h-16 rounded-full shadow-lg hover:shadow-2xl
-                   focus:outline-none focus:ring-2 focus:ring-accent/50
+        style={positionStyles}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = config.hoverBackgroundColor;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = config.backgroundColor;
+        }}
+        className={`transition-all duration-300 ease-out
+                   text-white rounded-full shadow-lg hover:shadow-2xl
+                   focus:outline-none focus:ring-2 focus:ring-offset-2
                    flex items-center justify-center
                    relative overflow-visible group
-                   ${showPulse ? 'animate-pulse-subtle' : ''}`}
+                   ${config.showPulseEffect && showPulse ? 'animate-pulse-subtle' : ''}`}
         aria-label="Open chat"
       >
-        {/* "KLIK MIJ" Golf effect - alleen bij scroll */}
-        {showPulse && !isExpanded && (
+        {/* Pulse effect - only if enabled */}
+        {config.showPulseEffect && showPulse && !isExpanded && (
           <>
-            <span className="absolute inset-0 bg-accent/40 rounded-full scale-100 animate-ping-slow"></span>
-            <span className="absolute inset-0 bg-accent/20 rounded-full scale-100 animate-ping-slower"></span>
+            <span 
+              className="absolute inset-0 rounded-full scale-100 animate-ping-slow"
+              style={{ backgroundColor: `${config.backgroundColor}66` }}
+            ></span>
+            <span 
+              className="absolute inset-0 rounded-full scale-100 animate-ping-slower"
+              style={{ backgroundColor: `${config.backgroundColor}33` }}
+            ></span>
           </>
         )}
         
-        {/* Hover golf effect */}
+        {/* Hover effect */}
         <span className="absolute inset-0 bg-white/20 rounded-full scale-0 group-hover:scale-150 transition-transform duration-500 ease-out origin-center"></span>
-        <span className="absolute inset-0 bg-white/10 rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 ease-out delay-100 origin-center"></span>
         
-        {/* Chat bubble icon (chatwolk - custom smooth vector) */}
+        {/* Chat icon */}
         {isExpanded ? (
           <X className="w-7 h-7 relative z-10 transition-transform duration-200" />
         ) : (
@@ -176,12 +247,12 @@ export function ChatPopup() {
           <div className="fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[80] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
             <div className="pointer-events-auto w-full max-w-md max-h-[90vh] md:max-h-[600px] bg-white rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
               
-              {/* Header */}
+              {/* Header - DRY: Use config titles */}
               <div className="bg-gradient-to-br from-brand to-brand-dark p-6 rounded-t-2xl text-white">
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <h3 className="text-xl font-bold">AI Assistent</h3>
-                    <p className="text-sm text-white/90 mt-1">Stel me een vraag over onze kattenbak</p>
+                    <h3 className="text-xl font-bold">{config.title}</h3>
+                    <p className="text-sm text-white/90 mt-1">{config.subtitle}</p>
                   </div>
                   <button
                     onClick={() => setIsExpanded(false)}
