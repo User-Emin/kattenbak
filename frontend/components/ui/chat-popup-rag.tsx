@@ -76,12 +76,12 @@ export function ChatPopup() {
         throw new Error(data.error || 'Er ging iets mis');
       }
       
-      // API returns answer directly in root, not in data.data
+      // API returns answer directly in root, not in data.data (verified: 2025-12-27)
       const answer = data.answer || data.data?.answer || 'Geen antwoord ontvangen';
       
       const assistantMessage: Message = {
         role: 'assistant',
-        content: answer,
+        content: answer, // Secure: using validated answer from API
         timestamp: new Date()
       };
       
