@@ -166,12 +166,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   }
 
   const images = Array.isArray(product.images) && product.images.length > 0 
-    ? product.images 
+    ? product.images.filter(img => img && img.trim() !== '') // ✅ SECURITY: Filter empty strings
     : [IMAGE_CONFIG.product.main];
   
   // DRY: If variant is selected and has images, use those instead
   const displayImages = selectedVariant && selectedVariant.images && selectedVariant.images.length > 0
-    ? selectedVariant.images
+    ? selectedVariant.images.filter(img => img && img.trim() !== '') // ✅ SECURITY: Filter empty strings
     : images;
   
   // DRY: Calculate final price (base + variant adjustment)
