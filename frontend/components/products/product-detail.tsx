@@ -190,16 +190,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* COOLBLUE-STYLE: Compact container, max-w-6xl, EXPLICIETE #FFFFFF achtergrond */}
       <div className="max-w-6xl mx-auto px-4 py-6 bg-[#FFFFFF]">
         {/* Breadcrumb - compact */}
+        {/* Breadcrumb - ✅ GRIJZER */}
         <nav className="mb-3">
-          <Link href="/" className="text-sm text-gray-600 hover:text-brand transition-colors">
+          <Link href="/" className="text-sm text-gray-500 hover:text-brand transition-colors">
             Home
           </Link>
           <span className="text-gray-400 mx-2">/</span>
-          <span className="text-sm text-gray-900">{product.name}</span>
+          <span className="text-sm text-black">{product.name}</span>
         </nav>
 
-        {/* Titel BOVEN afbeelding (niet overlay) - ✅ COOLBLUE: GROTE DUIDELIJKE TITEL */}
-        <h1 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 leading-tight">{product.name}</h1>
+        {/* Titel BOVEN afbeelding (niet overlay) - ✅ DUIDELIJKER: ZWARTER */}
+        <h1 className="text-2xl font-semibold mb-4 text-black leading-tight">{product.name}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
           {/* Product Images - BREED zoals Coolblue */}
@@ -238,10 +239,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* COOLBLUE: Info rechts - COMPACT */}
           <div className="space-y-5 lg:pl-6">
             {/* Prijs - RUSTIGER */}
-            {/* Prijs en CTA - ✅ COOLBLUE: GROTE DUIDELIJKE PRIJS */}
+            {/* Prijs en CTA - ✅ DUIDELIJKER: ZWARTER */}
             <div className="space-y-1">
-              <div className="text-4xl md:text-5xl font-bold text-gray-900">{formatPrice(finalPrice)}</div>
-              <p className="text-sm text-gray-600">Incl. BTW</p>
+              <div className="text-2xl font-semibold text-black">{formatPrice(finalPrice)}</div>
+              <p className="text-xs text-gray-500">Incl. BTW</p>
             </div>
 
             {/* Color Selector - DIRECT OP ACHTERGROND */}
@@ -271,27 +272,27 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
               </button>
               
-              {/* COOLBLUE EYECATCHERS - onder button (ZONDER klantbeoordeling) - ✅ GROTERE TEKST */}
-              <div className="space-y-3 text-base text-gray-700">
+              {/* COOLBLUE EYECATCHERS - onder button - ✅ COMPACT maar DUIDELIJKER */}
+              <div className="space-y-2 text-xs text-gray-800">
                 <div className="flex items-center gap-2">
-                  <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
-                  <span><strong className="font-semibold">Morgen</strong> bezorgd</span>
+                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                  <span><strong className="font-semibold text-black">Morgen</strong> bezorgd</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
-                  <span>Je krijgt <strong className="font-semibold">30 dagen</strong> bedenktijd</span>
+                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                  <span>Je krijgt <strong className="font-semibold text-black">30 dagen</strong> bedenktijd</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
-                  <span><strong className="font-semibold">Gratis</strong> ruilen binnen 30 dagen</span>
+                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                  <span><strong className="font-semibold text-black">Gratis</strong> ruilen binnen 30 dagen</span>
                 </div>
               </div>
             </div>
 
             {/* Product Specs - DIRECT OP ACHTERGROND, LICHTERE TITEL */}
-            {/* Product specs - ✅ GROTERE TITEL */}
+            {/* Product specs - ✅ COMPACT maar ZWARTER */}
             <div className="space-y-3">
-              <h3 className="font-semibold text-lg text-gray-900">Product specificaties</h3>
+              <h3 className="font-semibold text-sm text-black">Product specificaties</h3>
               <ProductSpecsComparison />
             </div>
           </div>
@@ -324,39 +325,39 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {/* Plus- en minpunten */}
           <div className="mb-8 p-6 bg-gray-50 rounded-sm">
             
-            {/* Product Highlights (PROs/CONs) - ✅ GROTERE TEKST */}
+            {/* Product Highlights (PROs/CONs) - ✅ COMPACT maar GRIJZER/ZWARTER */}
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <div className="flex items-start gap-2">
-                  <Check className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-base text-gray-700 leading-relaxed">Automatische reiniging na elk gebruik bespaart tijd</span>
+                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-800">Automatische reiniging na elk gebruik bespaart tijd</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-base text-gray-700 leading-relaxed">Fluisterstille werking (32dB) stoort niet</span>
+                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-800">Fluisterstille werking (32dB) stoort niet</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-base text-gray-700 leading-relaxed">App bediening voor real-time monitoring</span>
+                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-800">App bediening voor real-time monitoring</span>
                 </div>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <div className="flex items-start gap-2">
-                  <span className="h-6 w-6 text-gray-400 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
-                  <span className="text-base text-gray-700 leading-relaxed">Geschikt voor katten tot 7kg</span>
+                  <span className="h-5 w-5 text-gray-500 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
+                  <span className="text-sm text-gray-800">Geschikt voor katten tot 7kg</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="h-6 w-6 text-gray-400 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
-                  <span className="text-base text-gray-700 leading-relaxed">Vereist regelmatige lediging van afvalbak</span>
+                  <span className="h-5 w-5 text-gray-500 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
+                  <span className="text-sm text-gray-800">Vereist regelmatige lediging van afvalbak</span>
                 </div>
               </div>
             </div>
           </div>
           
-          {/* Omschrijving - ✅ GROTERE TEKST */}
-          <div className="prose prose-base max-w-none">
-            <h3 className="font-bold text-xl mb-4 text-gray-900">Omschrijving</h3>
-            <p className="text-base text-gray-700 leading-relaxed">{product.description}</p>
+          {/* Omschrijving - ✅ COMPACT maar GRIJZER */}
+          <div className="prose prose-sm max-w-none">
+            <h3 className="font-semibold text-base mb-3 text-black">Omschrijving</h3>
+            <p className="text-sm text-gray-800 leading-relaxed">{product.description}</p>
           </div>
         </div>
 
