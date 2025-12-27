@@ -2,9 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ✅ Be Vietnam Pro - Calm & Expressive Font System */
+/* https://fonts.google.com/specimen/Be+Vietnam+Pro */
 @layer base {
+  :root {
+    --font-primary: var(--font-be-vietnam-pro);
+  }
+  
   body {
     @apply bg-gray-50 text-gray-900;
+    font-family: var(--font-primary), system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'kern' 1, 'liga' 1;
   }
 }
 

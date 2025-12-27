@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google"; // ✅ PROFESSIONEEL & MODERN (maximaal dynamisch)
+import { Be_Vietnam_Pro } from "next/font/google"; // ✅ CALM & EXPRESSIVE (maximaal dynamisch)
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -8,11 +8,12 @@ import { UIProvider } from "@/context/ui-context";
 import { Toaster } from "sonner";
 import { CookieConsentManager } from "@/components/ui/cookie-consent-manager";
 
-// ✅ Montserrat - Professioneel, modern, zakelijk gevoel
-const montserrat = Montserrat({
-  weight: ['300', '400', '500', '600', '700', '800'],
+// ✅ Be Vietnam Pro - Calm, expressive, modern e-commerce gevoel
+// https://fonts.google.com/specimen/Be+Vietnam+Pro
+const beVietnamPro = Be_Vietnam_Pro({
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
   subsets: ["latin"],
-  variable: "--font-montserrat",
+  variable: "--font-be-vietnam-pro",
   display: "swap",
 });
 
@@ -32,13 +33,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl" className={montserrat.variable}>
+    <html lang="nl" className={beVietnamPro.variable}>
       <head>
         {/* ✅ PERFORMANCE: DNS prefetch & preconnect */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="antialiased font-[family-name:var(--font-montserrat)]">
+      <body className="antialiased font-[family-name:var(--font-be-vietnam-pro)]">
         <UIProvider>
           <CartProvider>
             <div className="flex flex-col min-h-screen">
