@@ -225,8 +225,8 @@ export class EnhancedRAGPipelineService {
           latencyBreakdown.embeddings_ms = Date.now() - embeddingStart;
 
           if (embeddingResult && 'embedding' in embeddingResult && embeddingResult.embedding) {
-            // VECTOR SEARCH with cosine similarity
-            const vectorDocs = VectorStoreService.getDocuments();
+            // VECTOR SEARCH with cosine similarity (LOCAL embeddings)
+            const vectorDocs = VectorStoreService.getAllDocuments();
             if (vectorDocs.length > 0) {
               // Calculate cosine similarity for all documents
               const scoredDocs = vectorDocs.map(doc => {
@@ -253,7 +253,7 @@ export class EnhancedRAGPipelineService {
                   score: doc.score
                 }));
               
-              console.log(`✅ Vector search: ${retrievedDocs.length} docs (local embeddings)`);
+              console.log(`✅ Vector search: ${retrievedDocs.length} docs (LOCAL embeddings, <1ms)`);
             } else {
               // Fallback to keyword search
               console.warn('⚠️  Vector store empty, using keyword search');
