@@ -283,10 +283,12 @@ jobs:
             echo "🔨 Building frontend..."
             cd ../frontend
             npm install --legacy-peer-deps
+            # Install Tailwind CSS (required for build)
+            npm install --save-dev tailwindcss@3.4.19 postcss@8.5.6 autoprefixer@10.4.23 postcss-nested@6.2.0
             rm -rf .next
-            npm run build
-            # Clean devDependencies after build
-            npm prune --production
+            NODE_ENV=production npm run build
+            # Keep Tailwind for runtime (don't prune devDependencies yet)
+            # npm prune --production
             
             echo "🔨 Building admin..."
             cd ../admin-next
@@ -302,16 +304,75 @@ jobs:
       - name: 🔄 Restart Services (Zero Downtime)
         run: |
           ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            echo "🔄 Restarting services..."
-            pm2 reload backend --update-env
-            pm2 reload frontend --update-env
-            pm2 reload admin --update-env
+            echo "🔄 Updating PM2 ecosystem for standalone server..."
+            cd /var/www/kattenbak
+            
+            # Create/Update ecosystem.config.js
+            cat > ecosystem.config.js << 'ECOSYSTEM'
+            module.exports = {
+              apps: [
+                {
+                  name: 'frontend',
+                  script: '.next/standalone/server.js',
+                  cwd: '/var/www/kattenbak/frontend',
+                  instances: 1,
+                  exec_mode: 'fork',
+                  env: {
+                    NODE_ENV: 'production',
+                    PORT: 3102,
+                    HOSTNAME: '0.0.0.0',
+                  },
+                  error_file: '/root/.pm2/logs/frontend-error.log',
+                  out_file: '/root/.pm2/logs/frontend-out.log',
+                  log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+                  autorestart: true,
+                  watch: false,
+                  max_memory_restart: '500M',
+                },
+                {
+                  name: 'admin',
+                  script: 'node_modules/.bin/next',
+                  args: 'start -p 3103',
+                  cwd: '/var/www/kattenbak/admin-next',
+                  instances: 1,
+                  exec_mode: 'fork',
+                  env: {
+                    NODE_ENV: 'production',
+                    PORT: 3103,
+                  },
+                  error_file: '/root/.pm2/logs/admin-error.log',
+                  out_file: '/root/.pm2/logs/admin-out.log',
+                  autorestart: true,
+                  watch: false,
+                },
+                {
+                  name: 'backend',
+                  script: 'dist/server.js',
+                  cwd: '/var/www/kattenbak/backend',
+                  instances: 1,
+                  exec_mode: 'cluster',
+                  env: {
+                    NODE_ENV: 'production',
+                    PORT: 3100,
+                  },
+                  error_file: '/root/.pm2/logs/backend-error.log',
+                  out_file: '/root/.pm2/logs/backend-out.log',
+                  autorestart: true,
+                  watch: false,
+                },
+              ],
+            };
+            ECOSYSTEM
+            
+            echo "🔄 Restarting services with updated config..."
+            pm2 reload ecosystem.config.js --update-env
             
             # Wait for services to be ready
-            sleep 5
+            sleep 8
             
             # Check PM2 status
-            pm2 status
+            pm2 list
+            pm2 save
             echo "✅ Services restarted"
           EOF
 
