@@ -3,11 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   
-  // 🔒 SECURITY: Disable ALL dev indicators in production
-  devIndicators: {
-    buildActivity: false,
-    appIsrStatus: false,
-  },
+  // 🔒 SECURITY: COMPLETELY DISABLE ALL DEV OVERLAYS & ERROR BADGES
+  devIndicators: false, // ✅ Disable EVERYTHING including error overlays
   
   // 🔒 SECURITY: Disable source maps in production
   productionBrowserSourceMaps: false,

@@ -124,7 +124,7 @@ export function ChatPopup() {
           setIsExpanded(!isExpanded);
           setShowPulse(false); // Stop pulse bij klik
         }}
-        className={`fixed right-6 bottom-6 z-[60] transition-all duration-500 ease-out
+        className={`fixed right-4 bottom-4 md:right-6 md:bottom-6 z-[9999] transition-all duration-500 ease-out
                    bg-accent hover:bg-accent-dark text-white 
                    w-16 h-16 rounded-full shadow-lg hover:shadow-2xl
                    focus:outline-none focus:ring-2 focus:ring-accent/50

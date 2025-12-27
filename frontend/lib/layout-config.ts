@@ -10,7 +10,7 @@ export const LAYOUT_CONFIG = {
     height: 'h-16', // 64px - absoluut vast
     heightPx: 64,
     background: 'bg-brand',
-    shadow: 'shadow-md',
+    shadow: '', // ✅ GEEN SHADOW (was 'shadow-md')
   },
   
   logo: {
