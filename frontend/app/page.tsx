@@ -73,8 +73,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - DRY: Dynamisch via Featured Product Video */}
-      <section className="relative h-[85vh] flex items-end overflow-hidden">
+      {/* Hero Section - VANAF TOP - navbar zweeft erover */}
+      <section className="relative min-h-screen flex items-end overflow-hidden -mt-16 pt-16">
         {/* Background Video OR Image */}
         <div className="absolute inset-0 z-0">
           {product?.heroVideoUrl && product.heroVideoUrl.endsWith('.mp4') ? (
