@@ -1,39 +1,36 @@
 import React from 'react';
-import Image from 'next/image';
 
 /**
- * OFFICIAL PAYMENT LOGOS - FROM DOWNLOADS
- * Real brand logos from /Downloads folder
- * - ideal-logo-1024.png → /public/logos/ideal.png
- * - pp_cc_mark_111x69.jpg → /public/logos/paypal.jpg
+ * OFFICIAL PAYMENT LOGOS - DIRECT IMG TAGS (NO NEXT.JS OPTIMIZATION)
+ * Real brand logos from /public/logos/ folder
+ * - ideal.png (54K, 1040x1040 PNG)
+ * - paypal.jpg (3.5K, 226x142 JPEG)
+ * 
+ * Using direct <img> tags to avoid Next.js image optimization issues
  */
 
 export const PaymentIcons = {
   /**
-   * iDEAL - Official Logo (from Downloads)
+   * iDEAL - Official Logo
    */
   iDEAL: () => (
-    <Image
+    <img
       src="/logos/ideal.png"
       alt="iDEAL"
-      width={100}
-      height={40}
       className="h-8 w-auto object-contain"
-      priority
+      loading="eager"
     />
   ),
 
   /**
-   * PayPal - Official Logo (from Downloads)
+   * PayPal - Official Logo
    */
   PayPal: () => (
-    <Image
+    <img
       src="/logos/paypal.jpg"
       alt="PayPal"
-      width={111}
-      height={69}
       className="h-8 w-auto object-contain"
-      priority
+      loading="eager"
     />
   ),
 };
