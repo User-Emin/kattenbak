@@ -187,8 +187,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* COOLBLUE USP BANNER - ONDER NAVBAR */}
       <ProductUspBanner />
       
-      {/* COOLBLUE-STYLE: Compact container, max-w-6xl, EXPLICIETE #FFFFFF achtergrond */}
-      <div className="max-w-6xl mx-auto px-4 py-6 bg-[#FFFFFF]">
+      {/* PRODUCT DETAIL: Aligned met navbar logo (px-6 lg:px-10) */}
+      <div className="container mx-auto px-6 lg:px-10 py-6 bg-[#FFFFFF]">
         {/* Breadcrumb - compact */}
         {/* Breadcrumb - ✅ MAXIMAAL DONKER */}
         <nav className="mb-3">
