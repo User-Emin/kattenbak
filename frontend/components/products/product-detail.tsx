@@ -187,8 +187,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* COOLBLUE USP BANNER - ONDER NAVBAR */}
       <ProductUspBanner />
       
-      {/* PRODUCT DETAIL: Aligned met navbar logo (px-6 lg:px-10) */}
-      <div className="container mx-auto px-6 lg:px-10 py-6 bg-[#FFFFFF]">
+      {/* PRODUCT DETAIL: Aligned met navbar logo (px-6 lg:px-10, GEEN container) */}
+      <div className="px-6 lg:px-10 py-6 bg-[#FFFFFF] max-w-[1400px] mx-auto">
         {/* Breadcrumb - compact */}
         {/* Breadcrumb - ✅ MAXIMAAL DONKER */}
         <nav className="mb-3">

@@ -41,7 +41,7 @@ export function ProductUspBanner() {
 
   return (
     <div className="bg-white border-b border-gray-200 py-3 overflow-hidden">
-      <div className="container mx-auto px-6 lg:px-10">
+      <div className="px-6 lg:px-10 max-w-[1400px] mx-auto">
         {/* DESKTOP: Alle 3 naast elkaar */}
         <div className="hidden md:flex items-center justify-center md:justify-start gap-8">
           {usps.map((usp, idx) => {
