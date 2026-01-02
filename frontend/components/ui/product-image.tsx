@@ -47,6 +47,9 @@ export function ProductImage({
   // DRY: Use fallback from demo-images (sync met backend)
   // MAXIMAAL DYNAMISCH: Eerst API, dan demo fallback
   const imageSrc = src || getFallbackImage();
+  
+  // WATERDICHT FIX: Disable Next.js optimization for /uploads/ paths (served by nginx)
+  const isUploadPath = imageSrc.startsWith('/uploads/');
 
   // Open lightbox on click
   const handleImageClick = () => {
@@ -111,6 +114,7 @@ export function ProductImage({
           src={imageSrc}
           alt={alt}
           fill
+          unoptimized={isUploadPath}
           className={`${baseClassName} transition-transform duration-200 ease-out ${
             enableZoom ? 'cursor-zoom-in' : ''
           }`}
@@ -126,6 +130,7 @@ export function ProductImage({
           alt={alt}
           width={width || 800}
           height={height || 800}
+          unoptimized={isUploadPath}
           className={`${baseClassName} transition-transform duration-200 ease-out ${
             enableZoom ? 'cursor-zoom-in' : ''
           }`}
@@ -178,6 +183,7 @@ export function ProductImage({
                 src={imageSrc}
                 alt={alt}
                 fill
+                unoptimized={isUploadPath}
                 className="object-contain"
                 priority
               />
