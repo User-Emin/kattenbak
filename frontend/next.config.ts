@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   
+  // 🚀 PERFORMANCE: Enable compression
+  compress: true,
+  
   // 🔒 SECURITY: COMPLETELY DISABLE ALL DEV OVERLAYS & ERROR BADGES
   devIndicators: {
     buildActivity: false,
@@ -16,8 +19,29 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
+  
+  // 🚀 PERFORMANCE: Custom headers for caching
+  async headers() {
+    return [
+      {
+        source: '/uploads/videos/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/uploads/products/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
   },
   
   images: {

@@ -40,6 +40,13 @@ apiClient.interceptors.request.use(
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
+    
+    // ✅ FIX: Don't override Content-Type for FormData (file uploads)
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+      // Let browser set multipart/form-data with boundary
+    }
+    
     return config;
   },
   (error) => {

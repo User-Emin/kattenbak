@@ -66,7 +66,7 @@ export function ChatPopup() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          message: userMessage.content  // Changed from 'question' to 'message' to match API
+          query: userMessage.content
         })
       });
       

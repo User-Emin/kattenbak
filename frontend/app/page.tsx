@@ -74,11 +74,11 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section - DRY: Dynamisch via Featured Product Video */}
-      <section className="relative min-h-[80vh] flex items-end overflow-hidden">
+      <section className="relative min-h-[80vh] flex items-start overflow-hidden">
         {/* Background Video OR Image */}
         <div className="absolute inset-0 z-0">
           {product?.heroVideoUrl && product.heroVideoUrl.endsWith('.mp4') ? (
-            /* Hero Video: autoplay, muted, loop, optimized */
+            /* Hero Video: autoplay, muted, loop, optimized with dark grey glow */
             <>
               <VideoPlayer
                 videoUrl={product.heroVideoUrl}
@@ -89,7 +89,8 @@ export default function HomePage() {
                 loop
                 className="w-full h-full"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              {/* Smooth dark grey gradient glow for elegant look */}
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-gray-800/40 to-gray-700/20 backdrop-blur-[1px]" />
             </>
           ) : (
             /* Fallback: Static hero image */
@@ -106,21 +107,21 @@ export default function HomePage() {
           )}
         </div>
 
-        <div className="container mx-auto px-6 lg:px-12 pb-12 md:pb-16 relative z-10">
+        <div className="container mx-auto px-6 lg:px-12 pt-32 md:pt-40 relative z-10">
           <div className="max-w-2xl">
-            {/* Stabiele Titel - DRY: Via Settings */}
-            <h1 className="text-4xl md:text-6xl font-normal mb-4 leading-tight text-white drop-shadow-lg">
+            {/* Stabiele Titel - DRY: Via Settings - BOVEN in hero */}
+            <h1 className="text-4xl md:text-6xl font-light mb-4 leading-tight text-white">
               {hero.title}
             </h1>
 
-            <p className="text-base md:text-lg font-light text-white/90 mb-6 drop-shadow-md max-w-2xl mx-auto">
+            <p className="text-base md:text-lg font-light text-white/95 mb-6 max-w-2xl">
               {hero.subtitle}
             </p>
 
             {/* Compacte CTA Button */}
             <div className="">
               <Link href={`/product/${productSlug}`}>
-                <button className="h-12 px-8 text-sm font-semibold text-white bg-[#f76402] hover:bg-[#e55a02] rounded-sm shadow-xl transition-all duration-200">
+                <button className="h-12 px-8 text-sm font-semibold text-white bg-[#f76402] hover:bg-[#e55a02] rounded-sm transition-all duration-200">
                   Bekijk Product
                 </button>
               </Link>

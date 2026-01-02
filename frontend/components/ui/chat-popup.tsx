@@ -126,7 +126,7 @@ export function ChatPopup() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          question: userMessage.content
+          query: userMessage.content
         })
       });
       
@@ -138,7 +138,7 @@ export function ChatPopup() {
       
       const assistantMessage: Message = {
         role: 'assistant',
-        content: data.data.answer,
+        content: data.answer || data.data?.answer || 'Geen antwoord ontvangen',
         timestamp: new Date()
       };
       

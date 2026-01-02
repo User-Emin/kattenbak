@@ -231,16 +231,21 @@ export const deleteFile = async (filepath: string): Promise<void> => {
 
 /**
  * Get public URL for uploaded file
+ * Returns ABSOLUTE URL to work with admin subpath routing
  */
 export const getPublicUrl = (filename: string): string => {
-  return `/uploads/products/${filename}`;
+  // Use FULL URL to avoid issues with /admin subpath
+  const baseUrl = process.env.BASE_URL || 'https://catsupply.nl';
+  return `${baseUrl}/uploads/products/${filename}`;
 };
 
 /**
  * Get public URL for uploaded video
+ * Returns ABSOLUTE URL to work with admin subpath routing
  */
 export const getVideoPublicUrl = (filename: string): string => {
-  return `/uploads/videos/${filename}`;
+  const baseUrl = process.env.BASE_URL || 'https://catsupply.nl';
+  return `${baseUrl}/uploads/videos/${filename}`;
 };
 
 /**

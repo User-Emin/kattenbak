@@ -16,9 +16,21 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Dynamisch checken of we op cart pagina zijn - DRY & Maintainable
   const isOnCartPage = pathname === '/cart';
+  const isHomePage = pathname === '/';
+  
+  // Scroll detection voor transparante navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   // Auto-close cart wanneer we naar cart pagina navigeren
   useEffect(() => {
@@ -42,8 +54,12 @@ export function Header() {
 
   return (
     <>
-      {/* NAVBAR: FIXED HEIGHT - onafhankelijk van logo */}
-      <header className={`sticky top-0 z-50 ${LAYOUT_CONFIG.navbar.background} ${LAYOUT_CONFIG.navbar.shadow}`}>
+      {/* NAVBAR: ECHT transparant in hero, solid bij scroll */}
+      <header className={`sticky top-0 z-50 transition-all duration-300 ${
+        isHomePage && !isScrolled 
+          ? 'bg-transparent' 
+          : `${LAYOUT_CONFIG.navbar.background} ${LAYOUT_CONFIG.navbar.shadow}`
+      }`}>
         <div className="container mx-auto px-6 lg:px-10">
           <div className={`flex items-center justify-between ${LAYOUT_CONFIG.navbar.height}`}>
             {/* Logo - DYNAMIC SIZE met negatieve margin om uit te steken */}
@@ -60,13 +76,25 @@ export function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
-              <Link href="/" className="text-white hover:text-white/80 transition font-medium text-base">
+              <Link href="/" className={`${
+                isHomePage && !isScrolled 
+                  ? 'text-white hover:text-white/80' 
+                  : 'text-white hover:text-white/80'
+              } transition font-medium text-base`}>
                 Home
               </Link>
-              <Link href="/over-ons" className="text-white hover:text-white/80 transition font-medium text-base">
+              <Link href="/over-ons" className={`${
+                isHomePage && !isScrolled 
+                  ? 'text-white hover:text-white/80' 
+                  : 'text-white hover:text-white/80'
+              } transition font-medium text-base`}>
                 Over Ons
               </Link>
-              <Link href="/contact" className="text-white hover:text-white/80 transition font-medium text-base">
+              <Link href="/contact" className={`${
+                isHomePage && !isScrolled 
+                  ? 'text-white hover:text-white/80' 
+                  : 'text-white hover:text-white/80'
+              } transition font-medium text-base`}>
                 Contact
               </Link>
             </nav>
@@ -111,7 +139,11 @@ export function Header() {
                 className="hover:opacity-80 transition"
                 aria-label="Menu"
               >
-                {isMobileMenuOpen ? <X className="h-7 w-7 text-white" /> : <Menu className="h-7 w-7 text-white" />}
+                {isMobileMenuOpen ? (
+                  <X className="h-7 w-7 text-white" />
+                ) : (
+                  <Menu className="h-7 w-7 text-white" />
+                )}
               </button>
             </div>
           </div>

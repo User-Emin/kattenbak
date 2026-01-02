@@ -156,7 +156,12 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
             >
               {image && image.trim() ? (
                 <img
-                  src={image}
+                  src={
+                    // Support absolute URLs (http/https), data URIs, and relative paths
+                    image.startsWith('http') || image.startsWith('data:') 
+                      ? image 
+                      : `${typeof window !== 'undefined' ? window.location.origin : ''}${image.startsWith('/') ? image : '/' + image}`
+                  }
                   alt={`Afbeelding ${index + 1}`}
                   className="w-full h-full object-cover"
                   onError={(e) => {
