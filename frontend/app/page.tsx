@@ -74,7 +74,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section - DRY: Dynamisch via Featured Product Video */}
-      <section className="relative min-h-[80vh] flex items-start overflow-hidden">
+      <section className="relative h-[85vh] flex items-end overflow-hidden">
         {/* Background Video OR Image */}
         <div className="absolute inset-0 z-0">
           {product?.heroVideoUrl && product.heroVideoUrl.endsWith('.mp4') ? (
@@ -107,25 +107,24 @@ export default function HomePage() {
           )}
         </div>
 
-        <div className="container mx-auto px-6 lg:px-12 pt-32 md:pt-40 relative z-10">
+        {/* Hero tekst - LINKS BENEDEN in hero */}
+        <div className="absolute bottom-12 md:bottom-16 left-6 lg:left-10 z-10 max-w-2xl">
+          {/* Stabiele Titel - DRY: Via Settings - ULTRA LINKERHOEK */}
+          <h1 className="text-4xl md:text-6xl font-light mb-4 leading-tight text-white">
+            {hero.title}
+          </h1>
+
+          <p className="text-base md:text-lg font-light text-white/95 mb-6">
+            {hero.subtitle}
+          </p>
+
+          {/* Compacte CTA Button */}
           <div className="">
-            {/* Stabiele Titel - DRY: Via Settings - LINKERHOEK */}
-            <h1 className="text-4xl md:text-6xl font-light mb-4 leading-tight text-white max-w-3xl">
-              {hero.title}
-            </h1>
-
-            <p className="text-base md:text-lg font-light text-white/95 mb-6 max-w-xl">
-              {hero.subtitle}
-            </p>
-
-            {/* Compacte CTA Button */}
-            <div className="">
-              <Link href={`/product/${productSlug}`}>
-                <button className="h-12 px-8 text-sm font-semibold text-white bg-[#f76402] hover:bg-[#e55a02] rounded-sm transition-all duration-200">
-                  Bekijk Product
-                </button>
-              </Link>
-            </div>
+            <Link href={`/product/${productSlug}`}>
+              <button className="h-12 px-8 text-sm font-semibold text-white bg-[#f76402] hover:bg-[#e55a02] rounded-sm transition-all duration-200">
+                Bekijk Product
+              </button>
+            </Link>
           </div>
         </div>
       </section>
