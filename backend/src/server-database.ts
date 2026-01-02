@@ -665,12 +665,118 @@ app.post('/api/v1/admin/auth/login', async (req: Request, res: Response) => {
 });
 
 // =============================================================================
-// ADMIN UPLOAD ROUTES - File/Image/Video Upload
+// ADMIN UPLOAD ROUTES - File/Image/Video Upload (INLINE - NO @ IMPORTS)
 // =============================================================================
 
-// Import admin upload routes - ENABLED with full security
-const adminUploadRoutes = require('./routes/admin/upload.routes').default;
-app.use('/api/v1/admin/upload', adminUploadRoutes);
+// Multer setup - DIRECT no @ imports
+const multer = require('multer');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+
+const UPLOAD_DIR = '/var/www/uploads/products';
+const VIDEO_UPLOAD_DIR = '/var/www/uploads/videos';
+
+// Multer storage configuration
+const storage = multer.diskStorage({
+  destination: (req: any, file: any, cb: any) => {
+    const dir = file.mimetype.startsWith('video/') ? VIDEO_UPLOAD_DIR : UPLOAD_DIR;
+    cb(null, dir);
+  },
+  filename: (req: any, file: any, cb: any) => {
+    const ext = path.extname(file.originalname);
+    const filename = `${uuidv4()}${ext}`;
+    cb(null, filename);
+  }
+});
+
+const fileFilter = (req: any, file: any, cb: any) => {
+  const allowedMimes = [
+    'image/jpeg', 'image/jpg', 'image/png', 'image/webp',
+    'video/mp4', 'video/webm', 'video/quicktime'
+  ];
+  
+  if (allowedMimes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Invalid file type'), false);
+  }
+};
+
+const uploadMiddleware = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 100 * 1024 * 1024 } // 100MB
+});
+
+// POST /api/v1/admin/upload/images - Upload product images
+app.post('/api/v1/admin/upload/images', uploadMiddleware.array('images', 10), async (req: Request, res: Response) => {
+  try {
+    const files = req.files as Express.Multer.File[];
+    
+    if (!files || files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'No files uploaded'
+      });
+    }
+    
+    const uploadedFiles = files.map(file => ({
+      filename: file.filename,
+      originalName: file.originalname,
+      url: `/uploads/products/${file.filename}`,
+      size: file.size,
+      mimetype: file.mimetype
+    }));
+    
+    console.log(`✅ Uploaded ${uploadedFiles.length} images`);
+    
+    return res.json({
+      success: true,
+      data: uploadedFiles
+    });
+  } catch (error: any) {
+    console.error('Upload error:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Upload failed'
+    });
+  }
+});
+
+// POST /api/v1/admin/upload/videos - Upload videos
+app.post('/api/v1/admin/upload/videos', uploadMiddleware.single('video'), async (req: Request, res: Response) => {
+  try {
+    const file = req.file as Express.Multer.File;
+    
+    if (!file) {
+      return res.status(400).json({
+        success: false,
+        error: 'No video uploaded'
+      });
+    }
+    
+    const uploadedFile = {
+      filename: file.filename,
+      originalName: file.originalname,
+      url: `/uploads/videos/${file.filename}`,
+      size: file.size,
+      mimetype: file.mimetype
+    };
+    
+    console.log(`✅ Uploaded video: ${file.filename}`);
+    
+    return res.json({
+      success: true,
+      data: uploadedFile
+    });
+  } catch (error: any) {
+    console.error('Video upload error:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Video upload failed'
+    });
+  }
+});
 
 console.log('✅ Admin upload endpoints loaded: /api/v1/admin/upload/images, /api/v1/admin/upload/videos');
 
