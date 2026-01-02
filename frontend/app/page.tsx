@@ -84,14 +84,9 @@ export default function HomePage() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center hover:opacity-90 transition">
-              <Image
-                src="/images/logo-catsupply.png"
-                alt="Catsupply"
-                width={180}
-                height={50}
-                className="h-14 w-auto"
-                priority
-              />
+              <div className="text-white font-bold text-3xl tracking-tight">
+                Cat<span className="text-[#f76402]">Supply</span>
+              </div>
             </Link>
 
             {/* Navigatie & Winkelwagen */}
