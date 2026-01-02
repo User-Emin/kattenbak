@@ -64,7 +64,7 @@ export function Header() {
           <div className={`flex items-center justify-between ${LAYOUT_CONFIG.navbar.height}`}>
             {/* Logo - DYNAMIC SIZE met negatieve margin om uit te steken */}
             <Link href="/" className={`flex items-center hover:opacity-90 transition ${LAYOUT_CONFIG.logo.negativeMargin} ${LAYOUT_CONFIG.logo.zIndex}`}>
-              <div className="text-gray-900 font-bold text-2xl tracking-tight">
+              <div className="text-white font-bold text-2xl tracking-tight">
                 Cat<span className="text-[#f76402]">Supply</span>
               </div>
             </Link>

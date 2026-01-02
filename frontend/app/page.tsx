@@ -76,9 +76,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       {/* Hero Section - VANAF TOP - Logo & Cart DIRECT IN HERO */}
-      <section className="relative min-h-screen flex items-end overflow-hidden">
+      <section className="relative min-h-screen flex items-end overflow-hidden -mt-16 pt-16">
         {/* Logo & Winkelwagen BOVENAAN IN HERO */}
         <div className="absolute top-0 left-0 right-0 z-20 px-6 lg:px-10 py-6">
           <div className="flex items-center justify-between">
