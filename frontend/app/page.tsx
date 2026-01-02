@@ -9,11 +9,13 @@ import { Separator } from "@/components/ui/separator";
 import { VideoPlayer } from "@/components/ui/video-player";
 import { SectionHeading } from "@/components/ui/section-heading";
 // ProductUspBanner only on product detail pages
-import { ArrowRight, Play, Check, MessageCircle, ChevronDown, ChevronUp, Package, Volume2, Sparkles, Smartphone } from "lucide-react";
+import { ArrowRight, Play, Check, MessageCircle, ChevronDown, ChevronUp, Package, Volume2, Sparkles, Smartphone, ShoppingCart } from "lucide-react";
 import type { Product } from "@/types/product";
 import { API_CONFIG, SITE_CONFIG, apiFetch } from "@/lib/config";
 import { IMAGE_CONFIG, getImageFillProps } from "@/lib/image-config";
 import { TYPOGRAPHY } from "@/lib/theme-colors";
+import { useCart } from "@/context/cart-context";
+import { useUI } from "@/context/ui-context";
 
 // DRY: Site Settings Type (sync met backend)
 interface SiteSettings {
@@ -52,6 +54,8 @@ const faqs = [
 export default function HomePage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const { itemCount } = useCart();
+  const { openCart, closeCart } = useUI();
 
   // DRY: Fetch featured product (used for video on homepage)
   useEffect(() => {
@@ -73,8 +77,55 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - VANAF TOP - navbar zweeft erover */}
-      <section className="relative min-h-screen flex items-end overflow-hidden -mt-16 pt-16">
+      {/* Hero Section - VANAF TOP - Logo & Cart DIRECT IN HERO */}
+      <section className="relative min-h-screen flex items-end overflow-hidden">
+        {/* Logo & Winkelwagen BOVENAAN IN HERO */}
+        <div className="absolute top-0 left-0 right-0 z-20 px-6 lg:px-10 py-6">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <Link href="/" className="flex items-center hover:opacity-90 transition">
+              <Image
+                src="/images/logo-catsupply.png"
+                alt="Catsupply"
+                width={180}
+                height={50}
+                className="h-14 w-auto"
+                priority
+              />
+            </Link>
+
+            {/* Navigatie & Winkelwagen */}
+            <div className="flex items-center gap-6 md:gap-8">
+              {/* Desktop Navigation */}
+              <nav className="hidden md:flex items-center gap-8">
+                <Link href="/" className="text-white hover:text-white/80 transition font-medium text-base">
+                  Home
+                </Link>
+                <Link href="/over-ons" className="text-white hover:text-white/80 transition font-medium text-base">
+                  Over Ons
+                </Link>
+                <Link href="/contact" className="text-white hover:text-white/80 transition font-medium text-base">
+                  Contact
+                </Link>
+              </nav>
+
+              {/* Winkelwagen Icon */}
+              <button
+                onClick={openCart}
+                className="relative hover:opacity-80 transition cursor-pointer"
+                aria-label="Winkelwagen"
+              >
+                <ShoppingCart className="h-7 w-7 text-white" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 min-w-[22px] h-6 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-2">
+                    {itemCount}
+                  </span>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* Background Video OR Image */}
         <div className="absolute inset-0 z-0">
           {product?.heroVideoUrl && product.heroVideoUrl.endsWith('.mp4') ? (

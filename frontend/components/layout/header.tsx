@@ -54,11 +54,11 @@ export function Header() {
 
   return (
     <>
-      {/* NAVBAR: Transparant ZONDER scroll, grijs/bg-brand BIJ scroll */}
+      {/* NAVBAR: VERBORGEN op homepage, ALLEEN TONEN BIJ SCROLLEN */}
       <header className={`sticky top-0 z-50 transition-all duration-300 ${
         isHomePage && !isScrolled 
-          ? 'bg-transparent' 
-          : `${LAYOUT_CONFIG.navbar.background} ${LAYOUT_CONFIG.navbar.shadow}`
+          ? 'opacity-0 pointer-events-none -translate-y-full' 
+          : `${LAYOUT_CONFIG.navbar.background} ${LAYOUT_CONFIG.navbar.shadow} opacity-100 translate-y-0`
       }`}>
         <div className="container mx-auto px-6 lg:px-10">
           <div className={`flex items-center justify-between ${LAYOUT_CONFIG.navbar.height}`}>
