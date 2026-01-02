@@ -108,13 +108,13 @@ export default function HomePage() {
         </div>
 
         <div className="container mx-auto px-6 lg:px-12 pt-32 md:pt-40 relative z-10">
-          <div className="max-w-2xl">
-            {/* Stabiele Titel - DRY: Via Settings - BOVEN in hero */}
-            <h1 className="text-4xl md:text-6xl font-light mb-4 leading-tight text-white">
+          <div className="">
+            {/* Stabiele Titel - DRY: Via Settings - LINKERHOEK */}
+            <h1 className="text-4xl md:text-6xl font-light mb-4 leading-tight text-white max-w-3xl">
               {hero.title}
             </h1>
 
-            <p className="text-base md:text-lg font-light text-white/95 mb-6 max-w-2xl">
+            <p className="text-base md:text-lg font-light text-white/95 mb-6 max-w-xl">
               {hero.subtitle}
             </p>
 
