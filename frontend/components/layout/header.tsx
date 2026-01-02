@@ -54,9 +54,9 @@ export function Header() {
 
   return (
     <>
-      {/* NAVBAR: ALTIJD transparant op homepage - logo zweeft op video */}
+      {/* NAVBAR: Transparant ZONDER scroll, grijs/bg-brand BIJ scroll */}
       <header className={`sticky top-0 z-50 transition-all duration-300 ${
-        isHomePage 
+        isHomePage && !isScrolled 
           ? 'bg-transparent' 
           : `${LAYOUT_CONFIG.navbar.background} ${LAYOUT_CONFIG.navbar.shadow}`
       }`}>
