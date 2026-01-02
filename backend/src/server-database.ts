@@ -665,6 +665,16 @@ app.post('/api/v1/admin/auth/login', async (req: Request, res: Response) => {
 });
 
 // =============================================================================
+// ADMIN UPLOAD ROUTES - File/Image/Video Upload
+// =============================================================================
+
+// Import admin upload routes - ENABLED with full security
+const adminUploadRoutes = require('./routes/admin/upload.routes').default;
+app.use('/api/v1/admin/upload', adminUploadRoutes);
+
+console.log('✅ Admin upload endpoints loaded: /api/v1/admin/upload/images, /api/v1/admin/upload/videos');
+
+// =============================================================================
 // RAG ENDPOINTS - AI Chat with Enhanced Pipeline
 // =============================================================================
 
