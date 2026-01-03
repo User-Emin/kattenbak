@@ -51,10 +51,10 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
               {/* Header altijd zichtbaar (fixed) */}
               <Header />
               
-              {/* ✅ 10/10 FIX: Spacer voor fixed header (alleen op NIET-homepage) */}
-              {!isHomePage && <div className="h-20" />}
+              {/* ✅ 10/10 FIX: Spacer voor fixed header - h-16 (64px) voor navbar */}
+              {!isHomePage && <div className="h-16" />}
               
-              {/* ✅ 10/10: USP Banner NIET op homepage, WEL op product detail */}
+              {/* ✅ 10/10: USP Banner STICKY onder navbar - top-16 (64px) */}
               {!isHomePage && <UspBanner />}
               
               {/* Main content */}
