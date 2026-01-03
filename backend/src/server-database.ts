@@ -26,8 +26,8 @@ const mollieClient = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY || 
 
 // Middleware
 app.use(cors({ origin: '*', credentials: true }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' })); // WATERDICHT FIX: 413 error - increased for image uploads
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // ENV config
 const ENV = {
