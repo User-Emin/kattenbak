@@ -164,6 +164,8 @@ export function VideoPlayer({
         playsInline
         preload={isHero ? "auto" : "metadata"}
         controls={finalControls && !isHero}
+        autoPlay={autoplay && isHero}
+        style={{ backgroundColor: '#1a1a1a' }}
       >
         <source src={videoUrl} type="video/mp4" />
         <source src={videoUrl.replace('.mp4', '.webm')} type="video/webm" />

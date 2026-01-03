@@ -205,16 +205,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
           {/* Product Images - BREED zoals Coolblue */}
           <div className="space-y-3">
-            {/* Afbeelding zonder titel overlay */}
+            {/* Afbeelding zonder titel overlay - DIRECT IMG TAG (zoals sticky cart!) */}
             <div className="relative aspect-square bg-white overflow-hidden">
-              <ProductImage
-                src={displayImages[selectedImage]}
+              <img
+                src={displayImages[selectedImage] || '/images/placeholder.jpg'}
                 alt={product.name}
-                fill
-                className="object-contain"
-                priority
-                enableZoom={true}
-                zoomScale={2.5}
+                className="w-full h-full object-contain cursor-zoom-in"
+                loading="eager"
               />
             </div>
 
@@ -229,7 +226,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       selectedImage === idx ? 'border-brand border-2' : 'border-gray-300 hover:border-gray-400'
                     }`}
                   >
-                    <ProductImage src={img} alt={`${product.name} ${idx + 1}`} fill className="object-contain p-1" />
+                    <img src={img || '/images/placeholder.jpg'} alt={`${product.name} ${idx + 1}`} className="w-full h-full object-contain p-1" />
                   </button>
                 ))}
               </div>

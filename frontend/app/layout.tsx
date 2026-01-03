@@ -38,6 +38,9 @@ export default function RootLayout({
         {/* ✅ PERFORMANCE: DNS prefetch & preconnect */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* ✅ URL BAR GREY (Mobile Chrome/Safari) */}
+        <meta name="theme-color" content="#374151" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="antialiased font-[family-name:var(--font-be-vietnam-pro)]">
         <UIProvider>
