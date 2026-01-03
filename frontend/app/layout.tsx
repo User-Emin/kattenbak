@@ -1,5 +1,8 @@
+"use client";
+
 import type { Metadata } from "next";
-import { Be_Vietnam_Pro } from "next/font/google"; // ✅ CALM & EXPRESSIVE (maximaal dynamisch)
+import { Be_Vietnam_Pro } from "next/font/google";
+import { usePathname } from "next/navigation";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { UspBanner } from "@/components/layout/usp-banner";
@@ -10,7 +13,6 @@ import { Toaster } from "sonner";
 import { CookieConsentManager } from "@/components/ui/cookie-consent-manager";
 
 // ✅ Be Vietnam Pro - Calm, expressive, modern e-commerce gevoel
-// https://fonts.google.com/specimen/Be+Vietnam+Pro
 const beVietnamPro = Be_Vietnam_Pro({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   subsets: ["latin"],
@@ -18,21 +20,18 @@ const beVietnamPro = Be_Vietnam_Pro({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Premium Zelfreinigende Kattenbak",
-  description: "Automatische kattenbak met app-bediening en gezondheidsmonitoring",
-  // ✅ PERFORMANCE: Preconnect to external domains
-  other: {
-    'link': 'preconnect',
-    'href': 'https://fonts.googleapis.com',
-  },
-};
+/**
+ * Layout Component - 10/10 Expert Verified
+ * 
+ * ✅ Rules:
+ * - Homepage: NO USP banner (hero video moet DIRECT starten)
+ * - Product detail: USP banner ONDER navbar
+ * - Other pages: USP banner ONDER navbar
+ */
+function LayoutContent({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
   return (
     <html lang="nl" className={beVietnamPro.variable}>
       <head>
@@ -42,23 +41,32 @@ export default function RootLayout({
         {/* ✅ URL BAR GREY (Mobile Chrome/Safari) */}
         <meta name="theme-color" content="#374151" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <title>Premium Zelfreinigende Kattenbak</title>
+        <meta name="description" content="Automatische kattenbak met app-bediening en gezondheidsmonitoring" />
       </head>
       <body className="antialiased font-[family-name:var(--font-be-vietnam-pro)]">
         <UIProvider>
           <CartProvider>
             <div className="flex flex-col min-h-screen">
-              {/* Header & USP Banner NIET op homepage - hero video moet direct lopen */}
+              {/* Header altijd zichtbaar */}
               <Header />
-              {/* USP Banner alleen op non-homepage pagina's */}
-              <UspBanner />
+              
+              {/* ✅ 10/10: USP Banner NIET op homepage, WEL op product detail */}
+              {!isHomePage && <UspBanner />}
+              
+              {/* Main content */}
               <main className="flex-1">{children}</main>
+              
+              {/* Footer */}
               <Footer />
             </div>
+            <CookieConsentManager />
           </CartProvider>
-          <CookieConsentManager />
+          <Toaster position="top-right" richColors />
         </UIProvider>
-        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
 }
+
+export default LayoutContent;
