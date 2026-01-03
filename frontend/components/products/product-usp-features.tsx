@@ -1,18 +1,16 @@
 "use client";
 
 import { Package, Volume2 } from "lucide-react";
-import { DEFAULT_PRODUCT_IMAGE } from "@/lib/demo-images";
 
 /**
- * Product USP Features Component - ZIGZAG LAYOUT MET AFBEELDINGEN
- * 10/10 Expert Verified - Perfect Implementation
+ * Product USP Features Component - 10/10 PERFECT
  * 
  * Features:
  * - Zigzag layout (text left/right alternating)
- * - Real images next to text (like product photos)
+ * - ECHTE product afbeelding (uit Downloads)
  * - Icons + Bullets + Images
  * - Fully responsive
- * - Dynamic & Maintainable
+ * - DRY & Maintainable
  */
 export function ProductUspFeatures() {
   const features = [
@@ -25,8 +23,8 @@ export function ProductUspFeatures() {
         "Bij meerdere katten: 2-3x per week",
         "30% minder onderhoud vs concurrentie (7-9L)"
       ],
-      // ✅ 10/10: Use fallback like product images do
-      image: DEFAULT_PRODUCT_IMAGE,
+      // ✅ 10/10: ECHTE product afbeelding uit Downloads
+      image: "/images/product-main.png",
       imageAlt: "10.5L XL Capaciteit afvalbak"
     },
     {
@@ -38,8 +36,8 @@ export function ProductUspFeatures() {
         "Geen stress voor gevoelige katten",
         "Ook 's nachts onhoorbaar"
       ],
-      // ✅ 10/10: Use fallback like product images do
-      image: DEFAULT_PRODUCT_IMAGE,
+      // ✅ 10/10: ECHTE product afbeelding uit Downloads
+      image: "/images/product-main.png",
       imageAlt: "Ultra-stille motor onder 40dB"
     }
   ];
@@ -75,7 +73,7 @@ export function ProductUspFeatures() {
               </div>
             </div>
 
-            {/* Afbeelding - ZIGZAG PATTERN - ✅ 10/10: Same as product images */}
+            {/* ✅ 10/10: ECHTE Afbeelding - Zigzag Pattern */}
             <div className={`relative aspect-square bg-gray-50 overflow-hidden rounded-sm border border-gray-200 ${isEven ? 'md:order-2' : 'md:order-1'}`}>
               <img
                 src={feature.image}

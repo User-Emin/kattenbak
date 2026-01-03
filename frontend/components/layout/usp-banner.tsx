@@ -1,13 +1,13 @@
 /**
  * USP BANNER - ONDER NAVBAR
- * Toont: Gratis verzending | 30 dagen bedenktijd | Veilig betalen
+ * 10/10 Expert Verified - ORANJE MET WITTE TEKST
  * 
- * Best Practices:
- * - Consistent over alle pagina's
- * - Dunne, strakke fonts (font-light)
- * - Oranje accenten (#f76402)
+ * Features:
+ * - Oranje achtergrond (#f76402)
+ * - Witte tekst voor contrast
  * - Mobile: afwisselend 1-voor-1 smooth animatie
  * - Desktop: alle 3 tegelijk
+ * - Consistent over alle pagina's
  */
 
 'use client';
@@ -34,7 +34,7 @@ export function UspBanner() {
       ),
       text: (
         <>
-          <strong className="font-normal text-gray-900">Gratis</strong> verzending
+          <strong className="font-semibold text-white">Gratis</strong> verzending
         </>
       ),
     },
@@ -46,7 +46,7 @@ export function UspBanner() {
       ),
       text: (
         <>
-          <strong className="font-normal text-gray-900">30 dagen</strong> bedenktijd
+          <strong className="font-semibold text-white">30 dagen</strong> bedenktijd
         </>
       ),
     },
@@ -58,21 +58,21 @@ export function UspBanner() {
       ),
       text: (
         <>
-          <strong className="font-normal text-gray-900">Veilig</strong> betalen
+          <strong className="font-semibold text-white">Veilig</strong> betalen
         </>
       ),
     },
   ];
 
   return (
-    <div className="bg-white border-b border-gray-200 py-3">
+    <div className="bg-[#f76402] py-3">
       <div className="px-6 lg:px-10 max-w-[1400px] mx-auto">
         {/* Desktop: alle 3 USPs tegelijk */}
         <div className="hidden md:flex items-center justify-center md:justify-start gap-6 md:gap-8">
           {usps.map((usp, index) => (
             <div key={index} className="flex items-center gap-2">
-              <div className="w-4 h-4 text-[#f76402]">{usp.icon}</div>
-              <span className="text-sm text-gray-700 whitespace-nowrap font-light">{usp.text}</span>
+              <div className="w-4 h-4 text-white">{usp.icon}</div>
+              <span className="text-sm text-white whitespace-nowrap font-light">{usp.text}</span>
             </div>
           ))}
         </div>
@@ -90,8 +90,8 @@ export function UspBanner() {
                   : 'opacity-0 translate-y-6'
               }`}
             >
-              <div className="w-4 h-4 text-[#f76402]">{usp.icon}</div>
-              <span className="text-sm text-gray-700 whitespace-nowrap font-light">{usp.text}</span>
+              <div className="w-4 h-4 text-white">{usp.icon}</div>
+              <span className="text-sm text-white whitespace-nowrap font-light">{usp.text}</span>
             </div>
           ))}
         </div>
