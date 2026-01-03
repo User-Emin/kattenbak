@@ -185,9 +185,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* BREADCRUMB + PRODUCTNAAM BOVEN FOTO */}
+      {/* COOLBLUE: Alles in 1 container - titel DIRECT boven foto */}
       <div className="px-6 lg:px-10 py-4 bg-white max-w-[1400px] mx-auto">
-        {/* Breadcrumb - klein en subtiel */}
+        {/* Breadcrumb */}
         <nav className="flex items-center mb-3">
           <Link href="/" className="text-sm text-gray-600 hover:text-[#f76402] transition-colors font-light">
             Home
@@ -196,13 +196,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           <span className="text-sm text-gray-500 font-light">{product.name}</span>
         </nav>
         
-        {/* PRODUCTNAAM - BOVEN DE FOTO */}
-        <h1 className="text-2xl font-light text-gray-900 mb-6">{product.name}</h1>
+        {/* Titel DIRECT boven foto */}
+        <h1 className="text-2xl font-light text-gray-900 mb-4">{product.name}</h1>
 
-        {/* COOLBLUE LAYOUT: Links afbeelding GROTER, rechts info compacter */}
-        {/* COOLBLUE LAYOUT: Brede container (1400px), grotere foto's */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8 max-w-[1400px] mx-auto px-6">
-          {/* Product Images - BREED zoals Coolblue */}
+        {/* Grid: Foto + Info - GEEN extra nesting */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
+          {/* Product Images - BREED */}
           <div className="space-y-3">
             {/* Main image - GROOT en BREED */}
             <div className="relative aspect-square bg-gray-50 overflow-hidden rounded-lg border border-gray-200">
