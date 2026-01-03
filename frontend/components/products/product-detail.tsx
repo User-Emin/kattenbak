@@ -266,26 +266,25 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </button>
               
               {/* COOLBLUE USPs - klein + compact */}
-              <div className="space-y-1.5 text-xs text-gray-700">
+              <div className="space-y-1.5 text-sm text-gray-700 font-light">
                 <div className="flex items-center gap-2">
                   <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span><strong className="font-semibold text-gray-900">Morgen</strong> bezorgd</span>
+                  <span><strong className="font-normal text-gray-900">Morgen</strong> bezorgd</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span>Je krijgt <strong className="font-semibold text-gray-900">30 dagen</strong> bedenktijd</span>
+                  <span>Je krijgt <strong className="font-normal text-gray-900">30 dagen</strong> bedenktijd</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span><strong className="font-semibold text-gray-900">Gratis</strong> ruilen binnen 30 dagen</span>
+                  <span><strong className="font-normal text-gray-900">Gratis</strong> ruilen binnen 30 dagen</span>
                 </div>
               </div>
             </div>
 
-            {/* Product Specs - DIRECT OP ACHTERGROND, LICHTERE TITEL */}
-            {/* Product specs - ✅ COMPACT maar ZWARTER */}
+            {/* Product Specs - RUSTIGE FONTS */}
             <div className="space-y-3">
-              <h3 className="font-semibold text-sm text-black">Product specificaties</h3>
+              <h3 className="font-normal text-sm text-black">Product specificaties</h3>
               <ProductSpecsComparison />
             </div>
           </div>
@@ -315,42 +314,42 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             Productinformatie
           </SectionHeading>
           
-          {/* Plus- en minpunten */}
+          {/* Plus- en minpunten - RUSTIGE FONTS */}
           <div className="mb-8 p-6 bg-gray-50 rounded-sm">
             
-            {/* Product Highlights (PROs/CONs) - ✅ MAXIMAAL DONKER ZWART */}
+            {/* Product Highlights (PROs/CONs) - RUSTIGE FONTS */}
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <div className="flex items-start gap-2">
                   <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-black">Automatische reiniging na elk gebruik bespaart tijd</span>
+                  <span className="text-sm text-gray-900 font-light">Automatische reiniging na elk gebruik bespaart tijd</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-black">Fluisterstille werking (32dB) stoort niet</span>
+                  <span className="text-sm text-gray-900 font-light">Fluisterstille werking (32dB) stoort niet</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-black">App bediening voor real-time monitoring</span>
+                  <span className="text-sm text-gray-900 font-light">App bediening voor real-time monitoring</span>
                 </div>
               </div>
               <div className="space-y-2">
                 <div className="flex items-start gap-2">
                   <span className="h-5 w-5 text-gray-800 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
-                  <span className="text-sm text-black">Geschikt voor katten tot 7kg</span>
+                  <span className="text-sm text-gray-900 font-light">Geschikt voor katten tot 7kg</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="h-5 w-5 text-gray-800 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
-                  <span className="text-sm text-black">Vereist regelmatige lediging van afvalbak</span>
+                  <span className="text-sm text-gray-900 font-light">Vereist regelmatige lediging van afvalbak</span>
                 </div>
               </div>
             </div>
           </div>
           
-          {/* Omschrijving - ✅ MAXIMAAL DONKER ZWART */}
+          {/* Omschrijving - RUSTIGE FONTS */}
           <div className="prose prose-sm max-w-none">
-            <h3 className="font-semibold text-base mb-3 text-black">Omschrijving</h3>
-            <p className="text-sm text-black leading-relaxed">{product.description}</p>
+            <h3 className="font-normal text-base mb-3 text-gray-900">Omschrijving</h3>
+            <p className="text-sm text-gray-700 leading-relaxed font-light">{product.description}</p>
           </div>
         </div>
 
