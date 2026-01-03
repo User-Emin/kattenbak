@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'backend',
       script: 'npx',
-      args: 'ts-node --files src/server-database.ts',
+      args: 'ts-node --transpile-only --files src/server-database.ts',  // Added --transpile-only to skip type checking
       cwd: './backend',
       instances: 1,  // Changed from 2 to 1 (ts-node doesn't support cluster)
       exec_mode: 'fork',  // Changed from cluster to fork
