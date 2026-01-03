@@ -191,38 +191,39 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       <div className="px-6 lg:px-10 py-6 bg-[#FFFFFF] max-w-[1400px] mx-auto">
         {/* Breadcrumb - compact */}
         {/* Breadcrumb - ✅ MAXIMAAL DONKER */}
-        <nav className="mb-3">
-          <Link href="/" className="text-sm text-gray-900 hover:text-brand transition-colors">
+        <nav className="mb-2">
+          <Link href="/" className="text-sm text-gray-700 hover:text-brand transition-colors">
             Home
           </Link>
-          <span className="text-gray-600 mx-2">/</span>
-          <span className="text-sm text-black">{product.name}</span>
+          <span className="text-gray-500 mx-2">/</span>
+          <span className="text-sm text-gray-900 font-medium">{product.name}</span>
         </nav>
 
-        {/* Titel BOVEN afbeelding (niet overlay) - ✅ DUIDELIJKER: ZWARTER */}
-        <h1 className="text-2xl font-semibold mb-4 text-black leading-tight">{product.name}</h1>
+        {/* COOLBLUE STYLE: Title klein + direct product zichtbaar */}
+        <h1 className="text-xl font-semibold mb-5 text-black leading-tight">{product.name}</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
-          {/* Product Images - BREED zoals Coolblue */}
-          <div className="space-y-3">
-            {/* Afbeelding zonder titel overlay - DIRECT IMG TAG (zoals sticky cart!) */}
-            <div className="relative aspect-square bg-white overflow-hidden">
+        {/* COOLBLUE LAYOUT: Links afbeelding GROTER, rechts info compacter */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_360px] gap-6">
+          {/* Product Images - COOLBLUE STYLE: GROTE product foto direct zichtbaar */}
+          <div className="space-y-2">
+            {/* Main image - MAXIMALE GROOTTE voor directe zichtbaarheid */}
+            <div className="relative aspect-square bg-gray-50 overflow-hidden rounded-sm border border-gray-200">
               <img
                 src={displayImages[selectedImage] || '/images/placeholder.jpg'}
                 alt={product.name}
-                className="w-full h-full object-contain cursor-zoom-in"
+                className="w-full h-full object-contain cursor-zoom-in p-4"
                 loading="eager"
               />
             </div>
 
-            {/* COOLBLUE: Kleine vierkante thumbnails */}
+            {/* COOLBLUE: Kleine thumbnails ONDER main image */}
             {displayImages.length > 1 && (
-              <div className="flex gap-2">
+              <div className="flex gap-2 overflow-x-auto pb-2">
                 {displayImages.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
-                    className={`relative w-16 h-16 bg-white border overflow-hidden transition ${
+                    className={`relative w-14 h-14 flex-shrink-0 bg-white border rounded-sm overflow-hidden transition ${
                       selectedImage === idx ? 'border-brand border-2' : 'border-gray-300 hover:border-gray-400'
                     }`}
                   >
@@ -233,13 +234,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
           </div>
 
-          {/* COOLBLUE: Info rechts - COMPACT */}
-          <div className="space-y-5 lg:pl-6">
-            {/* Prijs - RUSTIGER */}
-            {/* Prijs en CTA - ✅ MAXIMAAL ZWART */}
-            <div className="space-y-1">
-              <div className="text-2xl font-semibold text-black">{formatPrice(finalPrice)}</div>
-              <p className="text-xs text-gray-800">Incl. BTW</p>
+          {/* COOLBLUE: Info rechts - SUPER COMPACT */}
+          <div className="space-y-4">
+            {/* Prijs - PROMINENT zoals Coolblue */}
+            <div className="space-y-0.5">
+              <div className="text-3xl font-bold text-black">{formatPrice(finalPrice)}</div>
+              <p className="text-xs text-gray-600">Incl. BTW</p>
             </div>
 
             {/* Color Selector - DIRECT OP ACHTERGROND */}
@@ -258,30 +258,30 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             )}
 
-            {/* Add to Cart - COOLBLUE EYECATCHERS */}
-            <div className="space-y-4" ref={addToCartButtonRef}>
-              {/* COOLBLUE: ECHT ORANJE BUTTON zoals sticky cart! */}
+            {/* Add to Cart - COOLBLUE STYLE */}
+            <div className="space-y-3" ref={addToCartButtonRef}>
+              {/* COOLBLUE: Grote oranje button */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding || product.stock === 0}
-                className="w-full h-12 bg-accent hover:bg-accent-dark text-white font-bold px-6 py-2.5 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-14 bg-accent hover:bg-accent-dark text-white font-bold text-base px-6 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               >
                 {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
               </button>
               
-              {/* COOLBLUE EYECATCHERS - onder button - ✅ MAXIMAAL DONKER ZWART */}
-              <div className="space-y-2 text-xs text-black">
+              {/* COOLBLUE USPs - klein + compact */}
+              <div className="space-y-1.5 text-xs text-gray-700">
                 <div className="flex items-center gap-2">
                   <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span><strong className="font-semibold text-black">Morgen</strong> bezorgd</span>
+                  <span><strong className="font-semibold text-gray-900">Morgen</strong> bezorgd</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span>Je krijgt <strong className="font-semibold text-black">30 dagen</strong> bedenktijd</span>
+                  <span>Je krijgt <strong className="font-semibold text-gray-900">30 dagen</strong> bedenktijd</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span><strong className="font-semibold text-black">Gratis</strong> ruilen binnen 30 dagen</span>
+                  <span><strong className="font-semibold text-gray-900">Gratis</strong> ruilen binnen 30 dagen</span>
                 </div>
               </div>
             </div>
