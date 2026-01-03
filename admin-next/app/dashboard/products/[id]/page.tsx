@@ -29,7 +29,7 @@ export default function ProductEditPage() {
       updatedAt, 
       publishedAt,
       category,  // Remove nested category object
-      variants,  // Will be handled separately if needed
+      // ✅ FIX: Keep variants, don't remove them!
       ...updateData 
     } = formData as any;
     

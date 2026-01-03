@@ -79,6 +79,14 @@ const toNumber = (value: any): number => {
   return isNaN(num) ? 0 : num;
 };
 
+// Helper: Sanitize variant for API response
+const sanitizeVariant = (variant: any) => ({
+  ...variant,
+  priceAdjustment: toNumber(variant.priceAdjustment),
+  price: toNumber(variant.priceAdjustment), // Frontend expects 'price'
+  stock: variant.stock || 0,
+});
+
 // Helper: Sanitize product for API response
 const sanitizeProduct = (product: any) => ({
   ...product,
@@ -86,6 +94,8 @@ const sanitizeProduct = (product: any) => ({
   compareAtPrice: product.compareAtPrice ? toNumber(product.compareAtPrice) : null,
   costPrice: product.costPrice ? toNumber(product.costPrice) : null,
   weight: product.weight ? toNumber(product.weight) : null,
+  // ✅ FIX: Transform variants if present
+  variants: product.variants ? product.variants.map(sanitizeVariant) : undefined,
 });
 
 // GET all products
@@ -469,14 +479,18 @@ app.get('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
   try {
     const product = await prisma.product.findUnique({
       where: { id: req.params.id },
-      include: { category: true },
+      include: { 
+        category: true,
+        variants: true, // ✅ FIX: Include variants for admin editing
+      },
     });
 
     if (!product) {
       return res.status(404).json(error('Product not found'));
     }
 
-    res.json(success(product));
+    // ✅ FIX: Sanitize product including variants
+    res.json(success(sanitizeProduct(product)));
   } catch (err: any) {
     console.error('Admin product error:', err.message);
     res.status(500).json(error('Could not fetch product'));
