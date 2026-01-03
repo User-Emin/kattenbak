@@ -185,8 +185,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* COOLBLUE: Alles in 1 container - titel DIRECT boven foto */}
-      <div className="px-6 lg:px-10 py-4 bg-white max-w-[1400px] mx-auto">
+      {/* COOLBLUE: Mobiel edge-to-edge, desktop normaal */}
+      <div className="px-4 md:px-6 lg:px-10 py-4 bg-white max-w-[1400px] mx-auto">
         {/* Breadcrumb */}
         <nav className="flex items-center mb-3">
           <Link href="/" className="text-sm text-gray-600 hover:text-[#f76402] transition-colors font-light">
@@ -199,29 +199,29 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         {/* Titel DIRECT boven foto */}
         <h1 className="text-2xl font-light text-gray-900 mb-4">{product.name}</h1>
 
-        {/* Grid: Foto + Info - GEEN extra nesting */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
-          {/* Product Images - BREED */}
+        {/* Grid: Foto + Info */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 md:gap-8">
+          {/* Product Images - DIRECT op achtergrond, geen vakje */}
           <div className="space-y-3">
-            {/* Main image - GROOT en BREED */}
-            <div className="relative aspect-square bg-gray-50 overflow-hidden rounded-lg border border-gray-200">
+            {/* Main image - GEEN border, GEEN bg-gray, DIRECT op wit */}
+            <div className="relative aspect-square overflow-hidden">
               <img
                 src={displayImages[selectedImage] || '/images/placeholder.jpg'}
                 alt={product.name}
-                className="w-full h-full object-contain cursor-zoom-in p-8"
+                className="w-full h-full object-contain p-4 md:p-8"
                 loading="eager"
               />
             </div>
 
-            {/* COOLBLUE: Kleine thumbnails ONDER main image */}
+            {/* Thumbnails */}
             {displayImages.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-2">
                 {displayImages.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
-                    className={`relative w-16 h-16 flex-shrink-0 bg-white border rounded-lg overflow-hidden transition ${
-                      selectedImage === idx ? 'border-brand border-2' : 'border-gray-300 hover:border-gray-400'
+                    className={`relative w-14 h-14 md:w-16 md:h-16 flex-shrink-0 overflow-hidden transition border-2 ${
+                      selectedImage === idx ? 'border-brand' : 'border-gray-300 hover:border-gray-400'
                     }`}
                   >
                     <img src={img || '/images/placeholder.jpg'} alt={`${product.name} ${idx + 1}`} className="w-full h-full object-contain p-1" />
@@ -231,7 +231,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
           </div>
 
-          {/* COOLBLUE: Info rechts - COMPACT maar ruimte */}
+          {/* Info rechts */}
           <div className="space-y-6">
             {/* Prijs - PROMINENT zoals Coolblue */}
             <div className="space-y-1">
