@@ -102,7 +102,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           {/* Price */}
           <div className="flex items-baseline gap-2 mt-auto">
             <span className="text-2xl font-bold text-foreground">
-              {formatPrice(product.price)}
+              {formatPrice(product.price / 100)}
             </span>
             {hasDiscount && (
               <span className="text-base text-muted-foreground line-through">

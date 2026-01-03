@@ -338,7 +338,7 @@ function CheckoutContent() {
                   <div className="flex-1">
                     <h3 className="font-semibold mb-1 text-gray-900">{product.name}</h3>
                     <p className="text-sm text-gray-600 mb-2">Aantal: {quantity}</p>
-                    <p className="font-semibold text-gray-900">{formatPrice(product.price)}</p>
+                    <p className="font-semibold text-gray-900">{formatPrice(product.price / 100)}</p>
                   </div>
                 </div>
 

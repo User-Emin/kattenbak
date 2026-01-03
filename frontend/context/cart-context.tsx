@@ -98,7 +98,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [items]);
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  // Calculate subtotal (convert cents to euros)
+  const subtotal = items.reduce((sum, item) => sum + (item.product.price / 100) * item.quantity, 0);
 
   const addItem = useCallback((product: Product, quantity: number = 1) => {
     setItems((prev) => {
