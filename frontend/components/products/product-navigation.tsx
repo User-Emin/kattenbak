@@ -32,7 +32,15 @@ export function ProductNavigation({ currentProduct }: ProductNavigationProps) {
         const data = await response.json();
         
         if (data.success && data.data) {
-          const products = data.data;
+          // ✅ DEFENSIVE: Handle both array and object responses
+          const products = Array.isArray(data.data) ? data.data : [];
+          
+          if (products.length === 0) {
+            console.warn('No products array in API response');
+            setLoading(false);
+            return;
+          }
+          
           const currentIndex = products.findIndex((p: Product) => p.id === currentProduct.id);
           
           if (currentIndex > 0) {
