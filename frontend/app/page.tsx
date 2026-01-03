@@ -177,7 +177,7 @@ export default function HomePage() {
 
       <Separator variant="float" spacing="sm" />
 
-      {/* USP Features - DIRECT NA HERO: Met afbeeldingen */}
+      {/* USP Features - DIRECT NA HERO: Met ECHTE SCREENSHOTS */}
       <section className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2 text-center">
@@ -187,14 +187,14 @@ export default function HomePage() {
             De belangrijkste features met visuele demonstraties
           </p>
           
-          {/* Feature 1 - Links: Image, Rechts: Content */}
+          {/* Feature 1 - Links: SCREENSHOT PRODUCT DETAIL, Rechts: Content */}
           <div className="grid md:grid-cols-2 gap-8 items-center mb-12">
-            <div className="relative aspect-video rounded-lg overflow-hidden shadow-sm">
-              <Image
-                src={usps.feature1.image}
-                alt="10.5L Capaciteit"
-                fill
-                className="object-cover"
+            <div className="relative aspect-video rounded-sm overflow-hidden border border-gray-200">
+              <img
+                src="/images/screenshot-product-detail.jpg"
+                alt="Product detail pagina met alle features"
+                className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
             <div>
@@ -211,6 +211,33 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
+          {/* Feature 2 - Links: Content, Rechts: SCREENSHOT HERO VIDEO */}
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="order-2 md:order-1">
+              <div className="flex items-start gap-4 mb-4">
+                <Volume2 className="h-8 w-8 text-[#f76402] flex-shrink-0" />
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    <strong className="text-[#f76402]">Ultra-Quiet</strong> Motor
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    Werkt onder <strong>40 decibel</strong>. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="relative aspect-video rounded-sm overflow-hidden border border-gray-200 order-1 md:order-2">
+              <img
+                src="/images/screenshot-hero-video.png"
+                alt="Hero video met product"
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
 
           {/* Feature 2 - ZIGZAG: Links: Content, Rechts: Image */}
           <div className="grid md:grid-cols-2 gap-8 items-center">
