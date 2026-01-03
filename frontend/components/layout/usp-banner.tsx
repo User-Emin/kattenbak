@@ -70,10 +70,10 @@ export function UspBanner() {
         {/* Desktop: alle 3 USPs tegelijk */}
         <div className="hidden md:flex items-center justify-center md:justify-start gap-6 md:gap-8">
           {usps.map((usp, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <div className="w-4 h-4 text-white">{usp.icon}</div>
-              <span className="text-sm text-white whitespace-nowrap font-light">{usp.text}</span>
-            </div>
+                <div key={index} className="flex items-center gap-2">
+                  <div className="w-4 h-4">{usp.icon}</div>
+                  <span className="text-sm text-white whitespace-nowrap font-light">{usp.text}</span>
+                </div>
           ))}
         </div>
 
@@ -90,8 +90,8 @@ export function UspBanner() {
                   : 'opacity-0 translate-y-6'
               }`}
             >
-              <div className="w-4 h-4 text-white">{usp.icon}</div>
-              <span className="text-sm text-white whitespace-nowrap font-light">{usp.text}</span>
+                      <div className="w-4 h-4">{usp.icon}</div>
+                      <span className="text-sm text-white whitespace-nowrap font-light">{usp.text}</span>
             </div>
           ))}
         </div>
