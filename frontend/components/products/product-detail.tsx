@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ProductImage } from "@/components/ui/product-image";
 import { ProductUsps } from "@/components/products/product-usps";
+import { ProductUspFeatures } from "@/components/products/product-usp-features";
 import { VideoPlayer } from "@/components/ui/video-player";
 import { Separator } from "@/components/ui/separator";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -355,12 +356,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Product USPs - DRY: Zigzag layout met dynamische content */}
-        {settings?.productUsps && (
-          <div className="container mx-auto px-6 lg:px-12">
-            <ProductUsps usps={[settings.productUsps.usp1, settings.productUsps.usp2]} />
-          </div>
-        )}
+        {/* Product USP Features - DRY: Same as homepage */}
+        <div className="max-w-5xl mx-auto mb-12">
+          <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-3 text-center">
+            Waarom deze kattenbak?
+          </h2>
+          <p className="text-lg text-gray-600 mb-10 text-center font-light">
+            De twee belangrijkste features die het verschil maken
+          </p>
+          
+          <ProductUspFeatures />
+        </div>
 
         <Separator variant="float" spacing="xl" />
       </div>

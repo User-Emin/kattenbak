@@ -55,7 +55,7 @@ export function Header() {
   return (
     <>
       {/* NAVBAR: VERBORGEN op homepage, ALLEEN TONEN BIJ SCROLLEN */}
-      <header className={`sticky top-0 z-50 transition-all duration-300 ${
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isHomePage && !isScrolled 
           ? 'opacity-0 pointer-events-none -translate-y-full' 
           : `${LAYOUT_CONFIG.navbar.background} ${LAYOUT_CONFIG.navbar.shadow} opacity-100 translate-y-0`

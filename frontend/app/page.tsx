@@ -8,6 +8,7 @@ import { ChatPopup } from "@/components/ui/chat-popup";
 import { Separator } from "@/components/ui/separator";
 import { VideoPlayer } from "@/components/ui/video-player";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { ProductUspFeatures } from "@/components/products/product-usp-features";
 // ProductUspBanner only on product detail pages
 import { ArrowRight, Play, Check, MessageCircle, ChevronDown, ChevronUp, Package, Volume2, Sparkles, Smartphone, ShoppingCart } from "lucide-react";
 import type { Product } from "@/types/product";
@@ -78,7 +79,7 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero Section - VANAF TOP - Logo & Cart DIRECT IN HERO */}
-      <section className="relative min-h-screen flex items-end overflow-hidden -mt-16 pt-16">
+      <section className="relative min-h-screen flex items-end overflow-hidden">
         {/* Logo & Winkelwagen BOVENAAN IN HERO */}
         <div className="absolute top-0 left-0 right-0 z-20 px-6 lg:px-10 py-6">
           <div className="flex items-center justify-between">
@@ -177,65 +178,17 @@ export default function HomePage() {
 
       <Separator variant="float" spacing="sm" />
 
-      {/* USP Features - STRAKKE FONTS + WARE GROOTTE SCREENSHOTS */}
+      {/* USP Features - DRY: Shared component with product detail */}
       <section className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
           <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-3 text-center">
-            Waarom Kiezen Voor Deze Kattenbak?
+            Waarom deze kattenbak?
           </h2>
           <p className="text-lg text-gray-600 mb-10 text-center font-light">
-            De belangrijkste features met visuele demonstraties
+            De twee belangrijkste features die het verschil maken
           </p>
           
-          {/* Feature 1 - Links: SCREENSHOT PRODUCT DETAIL (WARE GROOTTE), Rechts: Content */}
-          <div className="grid md:grid-cols-2 gap-8 items-start mb-12">
-            <div className="rounded-sm overflow-hidden border border-gray-200">
-              <img
-                src="/images/screenshot-product-detail.jpg"
-                alt="Product detail pagina met alle features"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-            <div>
-              <div className="flex items-start gap-4 mb-4">
-                <Package className="h-7 w-7 text-[#f76402] flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="text-xl font-normal text-gray-900 mb-2">
-                    <strong className="text-[#f76402] font-normal">10.5L</strong> Capaciteit
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed font-light">
-                    De <strong className="font-normal">grootste afvalbak</strong> in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Feature 2 - Links: Content, Rechts: SCREENSHOT HERO VIDEO (WARE GROOTTE) */}
-          <div className="grid md:grid-cols-2 gap-8 items-start">
-            <div className="order-2 md:order-1">
-              <div className="flex items-start gap-4 mb-4">
-                <Volume2 className="h-7 w-7 text-[#f76402] flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="text-xl font-normal text-gray-900 mb-2">
-                    <strong className="text-[#f76402] font-normal">Ultra-Quiet</strong> Motor
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed font-light">
-                    Werkt onder <strong className="font-normal">40 decibel</strong>. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="rounded-sm overflow-hidden border border-gray-200 order-1 md:order-2">
-              <img
-                src="/images/screenshot-hero-video.png"
-                alt="Hero video met product"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          </div>
+          <ProductUspFeatures />
         </div>
       </section>
 
