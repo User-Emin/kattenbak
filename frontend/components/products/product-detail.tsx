@@ -203,10 +203,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <h1 className="text-xl font-semibold mb-5 text-black leading-tight">{product.name}</h1>
 
         {/* COOLBLUE LAYOUT: Links afbeelding GROTER, rechts info compacter */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_360px] gap-6">
-          {/* Product Images - COOLBLUE STYLE: GROTE product foto direct zichtbaar */}
+        <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_400px] gap-4 max-w-[1200px] mx-auto">
+          {/* Product Images - COMPACTER voor 13 inch scherm */}
           <div className="space-y-2">
-            {/* Main image - MAXIMALE GROOTTE voor directe zichtbaarheid */}
+            {/* Main image - COMPACTER maar nog steeds zichtbaar */}
             <div className="relative aspect-square bg-gray-50 overflow-hidden rounded-sm border border-gray-200">
               <img
                 src={displayImages[selectedImage] || '/images/placeholder.jpg'}
