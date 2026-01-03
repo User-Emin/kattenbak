@@ -206,14 +206,50 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 md:gap-8">
           {/* Product Images - DIRECT op achtergrond, geen vakje */}
           <div className="space-y-3">
-            {/* Main image - GEEN border, GEEN bg-gray, DIRECT op wit */}
-            <div className="relative aspect-square overflow-hidden">
+            {/* Main image - GEEN border, GEEN bg-gray, DIRECT op wit + SWIPE BUTTONS */}
+            <div className="relative aspect-square overflow-hidden group">
               <img
                 src={displayImages[selectedImage] || '/images/placeholder.jpg'}
                 alt={product.name}
-                className="w-full h-full object-contain p-4 md:p-8"
+                className="w-full h-full object-contain p-4 md:p-8 transition-opacity duration-300"
                 loading="eager"
               />
+              
+              {/* Swipe buttons - ALLEEN TONEN als er meerdere afbeeldingen zijn */}
+              {displayImages.length > 1 && (
+                <>
+                  {/* Previous button */}
+                  {selectedImage > 0 && (
+                    <button
+                      onClick={() => setSelectedImage(selectedImage - 1)}
+                      className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-300 opacity-0 group-hover:opacity-100 z-10"
+                      aria-label="Vorige afbeelding"
+                    >
+                      <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </button>
+                  )}
+                  
+                  {/* Next button */}
+                  {selectedImage < displayImages.length - 1 && (
+                    <button
+                      onClick={() => setSelectedImage(selectedImage + 1)}
+                      className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-300 opacity-0 group-hover:opacity-100 z-10"
+                      aria-label="Volgende afbeelding"
+                    >
+                      <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  )}
+                  
+                  {/* Image counter */}
+                  <div className="absolute bottom-2 md:bottom-4 right-2 md:right-4 bg-black/60 text-white text-xs md:text-sm px-3 py-1 rounded-full">
+                    {selectedImage + 1} / {displayImages.length}
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Thumbnails */}
