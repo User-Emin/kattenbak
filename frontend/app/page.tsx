@@ -283,11 +283,11 @@ export default function HomePage() {
       <section className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
+            <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-3">
               Veelgestelde Vragen over de Automatische Kattenbak
             </h2>
-            <p className="text-base text-gray-600">
-              Alles over <strong>zelfreiniging</strong>, <strong>capaciteit</strong>, <strong>app-bediening</strong> en <strong>gezondheidsmonitoring</strong>
+            <p className="text-lg text-gray-600 font-light">
+              Alles over <strong className="font-normal">zelfreiniging</strong>, <strong className="font-normal">capaciteit</strong>, <strong className="font-normal">app-bediening</strong> en <strong className="font-normal">gezondheidsmonitoring</strong>
             </p>
           </div>
 
@@ -301,7 +301,7 @@ export default function HomePage() {
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors group"
                 >
-                  <span className="font-semibold text-base text-gray-900 pr-4 group-hover:text-[#f76402] transition-colors">
+                  <span className="font-normal text-base text-gray-900 pr-4 group-hover:text-[#f76402] transition-colors">
                     {faq.q}
                   </span>
                   {openFaq === i ? (
@@ -312,7 +312,7 @@ export default function HomePage() {
                 </button>
                 {openFaq === i && (
                   <div className="px-6 pb-5 pt-2 border-t border-gray-100 bg-gray-50/30">
-                    <p className="text-gray-700 leading-relaxed">{faq.a}</p>
+                    <p className="text-gray-700 leading-relaxed font-light">{faq.a}</p>
                   </div>
                 )}
               </div>

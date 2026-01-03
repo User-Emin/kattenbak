@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Be_Vietnam_Pro } from "next/font/google"; // ✅ CALM & EXPRESSIVE (maximaal dynamisch)
 import "./globals.css";
 import { Header } from "@/components/layout/header";
+import { UspBanner } from "@/components/layout/usp-banner";
 import { Footer } from "@/components/layout/footer";
 import { CartProvider } from "@/context/cart-context";
 import { UIProvider } from "@/context/ui-context";
@@ -47,6 +48,7 @@ export default function RootLayout({
           <CartProvider>
             <div className="flex flex-col min-h-screen">
               <Header />
+              <UspBanner />
               {/* Geen spacer meer nodig - navbar is sticky top-0 edge-to-edge */}
               <main className="flex-1">{children}</main>
               <Footer />

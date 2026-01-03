@@ -184,56 +184,19 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* STRAK: Breadcrumb, USPs, Titel ALLEMAAL OP 1 LIJN met foto */}
-      <div className="bg-white border-b border-gray-200 py-2">
-        <div className="px-6 lg:px-10 max-w-[1400px] mx-auto">
-          {/* Breadcrumb BOVENAAN */}
-          <nav className="flex items-center mb-2">
-            <Link href="/" className="text-xs text-gray-600 hover:text-brand transition-colors">
-              Home
-            </Link>
-            <span className="text-gray-400 mx-1.5 text-xs">/</span>
-            <span className="text-xs text-gray-900 font-normal">{product.name}</span>
-          </nav>
-          
-          {/* USPs LINKS + Titel OP DEZELFDE LIJN */}
-          <div className="flex items-center justify-between gap-4">
-            {/* USPs LINKS */}
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1.5">
-                <div className="w-3.5 h-3.5 text-[#f76402]">
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                </div>
-                <span className="text-xs text-gray-700 whitespace-nowrap">
-                  <strong className="font-semibold text-gray-900">Gratis</strong> verzending
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-3.5 h-3.5 text-[#f76402]">
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                </div>
-                <span className="text-xs text-gray-700 whitespace-nowrap">
-                  <strong className="font-semibold text-gray-900">30 dagen</strong> bedenktijd
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-3.5 h-3.5 text-[#f76402]">
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                </div>
-                <span className="text-xs text-gray-700 whitespace-nowrap">
-                  <strong className="font-semibold text-gray-900">Veilig</strong> betalen
-                </span>
-              </div>
-            </div>
-            
-            {/* Titel RECHTS op dezelfde lijn */}
-            <h1 className="text-base font-semibold text-black">{product.name}</h1>
-          </div>
-        </div>
-      </div>
-      
-      {/* PRODUCT DETAIL: Aligned met navbar logo */}
-      <div className="px-6 lg:px-10 py-4 bg-[#FFFFFF] max-w-[1400px] mx-auto">
+      {/* BREADCRUMB + PRODUCTNAAM BOVEN FOTO */}
+      <div className="px-6 lg:px-10 py-4 bg-white max-w-[1400px] mx-auto">
+        {/* Breadcrumb - klein en subtiel */}
+        <nav className="flex items-center mb-3">
+          <Link href="/" className="text-sm text-gray-600 hover:text-[#f76402] transition-colors font-light">
+            Home
+          </Link>
+          <span className="text-gray-400 mx-2 text-sm">/</span>
+          <span className="text-sm text-gray-500 font-light">{product.name}</span>
+        </nav>
+        
+        {/* PRODUCTNAAM - BOVEN DE FOTO */}
+        <h1 className="text-2xl font-light text-gray-900 mb-6">{product.name}</h1>
 
         {/* COOLBLUE LAYOUT: Links afbeelding GROTER, rechts info compacter */}
         <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_400px] gap-4 max-w-[1200px] mx-auto">
