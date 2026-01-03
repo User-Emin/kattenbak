@@ -76,7 +76,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div>
       {/* Hero Section - VANAF TOP - Logo & Cart DIRECT IN HERO */}
       <section className="relative min-h-screen flex items-end overflow-hidden -mt-16 pt-16">
         {/* Logo & Winkelwagen BOVENAAN IN HERO */}
@@ -245,9 +245,9 @@ export default function HomePage() {
       <section id="video" className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">Zie Het in Actie</h2>
-            <p className="text-base text-gray-600">
-              <strong>2:30 min</strong> demo video
+            <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-3">Zie Het in Actie</h2>
+            <p className="text-lg text-gray-600 font-light">
+              <strong className="font-normal">2:30 min</strong> demo video
             </p>
           </div>
           
