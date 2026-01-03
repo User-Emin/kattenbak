@@ -66,8 +66,8 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                     <IconComponent className={`h-12 w-12 flex-shrink-0 ${colorClass}`} />
                     
                     <div className="flex-1">
-                      <h3 className="text-xl font-semibold text-black mb-2">{usp.title}</h3>
-                      <p className="text-black text-base leading-relaxed">{usp.description}</p>
+                      <h3 className="text-xl font-normal text-black mb-2">{usp.title}</h3>
+                      <p className="text-gray-700 text-base leading-relaxed font-light">{usp.description}</p>
                     </div>
                   </div>
                 </div>
