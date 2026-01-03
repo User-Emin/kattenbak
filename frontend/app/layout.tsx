@@ -38,8 +38,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         {/* ✅ PERFORMANCE: DNS prefetch & preconnect */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* ✅ URL BAR GREY (Mobile Chrome/Safari) */}
-        <meta name="theme-color" content="#374151" />
+        {/* ✅ URL BAR - ZELFDE KLEUR ALS NAVBAR (#415b6b = brand) */}
+        <meta name="theme-color" content="#415b6b" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <title>Premium Zelfreinigende Kattenbak</title>
         <meta name="description" content="Automatische kattenbak met app-bediening en gezondheidsmonitoring" />
@@ -51,11 +51,11 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
               {/* Header altijd zichtbaar (fixed) */}
               <Header />
               
-              {/* ✅ 10/10 FIX: Spacer voor fixed header - h-16 (64px) voor navbar */}
-              {!isHomePage && <div className="h-16" />}
-              
-              {/* ✅ 10/10: USP Banner STICKY onder navbar - top-16 (64px) */}
+              {/* ✅ 10/10: USP Banner STICKY direct onder navbar - GEEN GAP */}
               {!isHomePage && <UspBanner />}
+              
+              {/* ✅ Spacer voor content onder sticky banner */}
+              {!isHomePage && <div className="h-16" />}
               
               {/* Main content */}
               <main className="flex-1">{children}</main>
