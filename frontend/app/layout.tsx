@@ -48,8 +48,11 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <UIProvider>
           <CartProvider>
             <div className="flex flex-col min-h-screen">
-              {/* Header altijd zichtbaar */}
+              {/* Header altijd zichtbaar (fixed) */}
               <Header />
+              
+              {/* ✅ 10/10 FIX: Spacer voor fixed header (alleen op NIET-homepage) */}
+              {!isHomePage && <div className="h-20" />}
               
               {/* ✅ 10/10: USP Banner NIET op homepage, WEL op product detail */}
               {!isHomePage && <UspBanner />}
