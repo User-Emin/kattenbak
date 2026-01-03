@@ -22,6 +22,7 @@ import { productsApi } from "@/lib/api/products";
 import { getProductImage, IMAGE_CONFIG } from "@/lib/image-config";
 import { ProductHighlights } from "@/components/products/product-highlights";
 import { ProductSpecsComparison } from "@/components/products/product-specs-comparison";
+import { ProductNavigation } from "@/components/products/product-navigation";
 
 // DRY: Site Settings Type (SYNC: admin-next/lib/api/settings.ts)
 interface SiteSettings {
@@ -374,7 +375,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       </div>
 
       {/* Sticky Cart Bar - SMOOTH BOTTOM BANNER */}
+      {/* Sticky Cart Bar */}
       <StickyCartBar product={product} addToCartButtonRef={addToCartButtonRef} />
+
+      {/* Product Navigation - Smooth swipe buttons in footer */}
+      <ProductNavigation currentProduct={product} />
 
       {/* Chat Popup - ALTIJD ZICHTBAAR */}
       <ChatPopup />
