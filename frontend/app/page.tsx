@@ -177,61 +177,61 @@ export default function HomePage() {
 
       <Separator variant="float" spacing="sm" />
 
-      {/* USP Features - DIRECT NA HERO: Met ECHTE SCREENSHOTS */}
+      {/* USP Features - STRAKKE FONTS + WARE GROOTTE SCREENSHOTS */}
       <section className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2 text-center">
+          <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-3 text-center">
             Waarom Kiezen Voor Deze Kattenbak?
           </h2>
-          <p className="text-base text-gray-600 mb-10 text-center">
+          <p className="text-lg text-gray-600 mb-10 text-center font-light">
             De belangrijkste features met visuele demonstraties
           </p>
           
-          {/* Feature 1 - Links: SCREENSHOT PRODUCT DETAIL, Rechts: Content */}
-          <div className="grid md:grid-cols-2 gap-8 items-center mb-12">
-            <div className="relative aspect-video rounded-sm overflow-hidden border border-gray-200">
+          {/* Feature 1 - Links: SCREENSHOT PRODUCT DETAIL (WARE GROOTTE), Rechts: Content */}
+          <div className="grid md:grid-cols-2 gap-8 items-start mb-12">
+            <div className="rounded-sm overflow-hidden border border-gray-200">
               <img
                 src="/images/screenshot-product-detail.jpg"
                 alt="Product detail pagina met alle features"
-                className="w-full h-full object-cover"
+                className="w-full h-auto"
                 loading="lazy"
               />
             </div>
             <div>
               <div className="flex items-start gap-4 mb-4">
-                <Package className="h-8 w-8 text-[#f76402] flex-shrink-0" />
+                <Package className="h-7 w-7 text-[#f76402] flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    <strong className="text-[#f76402]">10.5L</strong> Capaciteit
+                  <h3 className="text-xl font-normal text-gray-900 mb-2">
+                    <strong className="text-[#f76402] font-normal">10.5L</strong> Capaciteit
                   </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    De <strong>grootste afvalbak</strong> in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.
+                  <p className="text-gray-700 leading-relaxed font-light">
+                    De <strong className="font-normal">grootste afvalbak</strong> in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Feature 2 - Links: Content, Rechts: SCREENSHOT HERO VIDEO */}
-          <div className="grid md:grid-cols-2 gap-8 items-center">
+          {/* Feature 2 - Links: Content, Rechts: SCREENSHOT HERO VIDEO (WARE GROOTTE) */}
+          <div className="grid md:grid-cols-2 gap-8 items-start">
             <div className="order-2 md:order-1">
               <div className="flex items-start gap-4 mb-4">
-                <Volume2 className="h-8 w-8 text-[#f76402] flex-shrink-0" />
+                <Volume2 className="h-7 w-7 text-[#f76402] flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    <strong className="text-[#f76402]">Ultra-Quiet</strong> Motor
+                  <h3 className="text-xl font-normal text-gray-900 mb-2">
+                    <strong className="text-[#f76402] font-normal">Ultra-Quiet</strong> Motor
                   </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    Werkt onder <strong>40 decibel</strong>. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.
+                  <p className="text-gray-700 leading-relaxed font-light">
+                    Werkt onder <strong className="font-normal">40 decibel</strong>. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.
                   </p>
                 </div>
               </div>
             </div>
-            <div className="relative aspect-video rounded-sm overflow-hidden border border-gray-200 order-1 md:order-2">
+            <div className="rounded-sm overflow-hidden border border-gray-200 order-1 md:order-2">
               <img
                 src="/images/screenshot-hero-video.png"
                 alt="Hero video met product"
-                className="w-full h-full object-cover"
+                className="w-full h-auto"
                 loading="lazy"
               />
             </div>
