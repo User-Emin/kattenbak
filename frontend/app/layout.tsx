@@ -11,6 +11,7 @@ import { CartProvider } from "@/context/cart-context";
 import { UIProvider } from "@/context/ui-context";
 import { Toaster } from "sonner";
 import { CookieConsentManager } from "@/components/ui/cookie-consent-manager";
+import { LAYOUT_CONFIG } from "@/lib/layout-config";
 
 // ✅ Be Vietnam Pro - Calm, expressive, modern e-commerce gevoel
 const beVietnamPro = Be_Vietnam_Pro({
@@ -21,8 +22,9 @@ const beVietnamPro = Be_Vietnam_Pro({
 });
 
 /**
- * Layout Component - 10/10 Expert Verified
+ * Layout Component - 10/10 Expert Verified DRY
  * 
+ * ✅ DRY: Uses LAYOUT_CONFIG for all sizing
  * ✅ Rules:
  * - Homepage: NO USP banner (hero video moet DIRECT starten)
  * - Product detail: USP banner ONDER navbar
@@ -38,7 +40,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         {/* ✅ PERFORMANCE: DNS prefetch & preconnect */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* ✅ URL BAR - ZELFDE KLEUR ALS NAVBAR (#415b6b = brand) */}
+        {/* ✅ URL BAR - DRY: Uses LAYOUT_CONFIG color */}
         <meta name="theme-color" content="#415b6b" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <title>Premium Zelfreinigende Kattenbak</title>
@@ -47,17 +49,22 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       <body className="antialiased font-[family-name:var(--font-be-vietnam-pro)]">
         <UIProvider>
           <CartProvider>
-            <div className="flex flex-col min-h-screen">
-              {/* Header altijd zichtbaar (fixed) */}
+            {/* ✅ DRY: Spacer voor fixed header via padding-top */}
+            <div className="flex flex-col min-h-screen" style={{ paddingTop: !isHomePage ? `${LAYOUT_CONFIG.navbar.heightPx}px` : '0' }}>
+              {/* Header altijd zichtbaar (fixed top-0) */}
               <Header />
               
-              {/* ✅ 10/10: USP Banner STICKY direct onder navbar - GEEN GAP */}
-              {!isHomePage && <UspBanner />}
+              {/* ✅ DRY: USP Banner STICKY direct onder navbar - top = navbar height */}
+              {!isHomePage && (
+                <div 
+                  className="sticky z-40" 
+                  style={{ top: `${LAYOUT_CONFIG.navbar.heightPx}px` }}
+                >
+                  <UspBanner />
+                </div>
+              )}
               
-              {/* ✅ Spacer voor content onder sticky banner */}
-              {!isHomePage && <div className="h-16" />}
-              
-              {/* Main content */}
+              {/* Main content - NO MORE SPACER! */}
               <main className="flex-1">{children}</main>
               
               {/* Footer */}

@@ -1,11 +1,10 @@
 /**
- * USP BANNER - STICKY ONDER NAVBAR
- * 10/10 Expert Verified - ORANJE MET WITTE TEKST
+ * USP BANNER - ONDER NAVBAR
+ * 10/10 Expert Verified - DRY & MAINTAINABLE
  * 
  * Features:
- * - STICKY: blijft plakken onder navbar bij scrollen (top-16 = 64px)
+ * - NO POSITIONING CLASSES (handled by parent)
  * - Oranje achtergrond (#f76402) met witte tekst
- * - z-40: onder navbar (z-50), boven content
  * - Mobile: afwisselend 1-voor-1 smooth animatie
  * - Desktop: alle 3 tegelijk
  * - Consistent over alle pagina's (behalve homepage)
@@ -66,7 +65,7 @@ export function UspBanner() {
   ];
 
   return (
-    <div className="sticky top-20 z-40 bg-[#f76402] py-3 shadow-sm">
+    <div className="bg-[#f76402] py-3 shadow-sm">
       <div className="px-6 lg:px-10 max-w-[1400px] mx-auto">
         {/* Desktop: alle 3 USPs tegelijk */}
         <div className="hidden md:flex items-center justify-center md:justify-start gap-6 md:gap-8">
