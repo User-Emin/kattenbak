@@ -60,7 +60,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                   className="sticky z-40" 
                   style={{ top: `${LAYOUT_CONFIG.navbar.heightPx}px` }}
                 >
-                  <UspBanner />
+              <UspBanner />
                 </div>
               )}
               

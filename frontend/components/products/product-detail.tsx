@@ -405,7 +405,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           </p>
           
           <ProductUspFeatures />
-        </div>
+          </div>
 
         <Separator variant="float" spacing="xl" />
       </div>

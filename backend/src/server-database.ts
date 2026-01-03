@@ -291,13 +291,21 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
     const orderData = req.body;
 
     // Calculate totals
+    // ✅ FIX: Prices are ALREADY INCL. BTW (21%)!
     const subtotal = orderData.items.reduce((sum: number, item: any) => {
       return sum + item.price * item.quantity;
     }, 0);
 
-    const tax = subtotal * 0.21;
-    const shippingCost = subtotal >= 50 ? 0 : 5.95;
-    const total = subtotal + tax + shippingCost;
+    // ✅ EXTRACT BTW from subtotal (don't ADD it!)
+    const totalInclBtw = subtotal;
+    const totalExclBtw = totalInclBtw / 1.21;  // Remove BTW
+    const tax = totalInclBtw - totalExclBtw;   // Extract BTW amount
+    
+    // ✅ GRATIS VERZENDING (always free, like frontend)
+    const shippingCost = 0;
+    
+    // ✅ Total = subtotal (already incl. BTW) + shipping (€0)
+    const total = totalInclBtw + shippingCost;
 
     // Create order in database
     const order = await prisma.order.create({
