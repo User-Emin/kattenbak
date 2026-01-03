@@ -23,8 +23,8 @@ export function ProductUspFeatures() {
         "Bij meerdere katten: 2-3x per week",
         "30% minder onderhoud vs concurrentie (7-9L)"
       ],
-      // ✅ 10/10: ECHTE product afbeelding uit Downloads
-      image: "/images/product-main.png",
+      // ✅ 10/10: ECHTE product afbeelding uit Downloads (optimized)
+      image: "/images/product-main-optimized.jpg",
       imageAlt: "10.5L XL Capaciteit afvalbak"
     },
     {
@@ -36,8 +36,8 @@ export function ProductUspFeatures() {
         "Geen stress voor gevoelige katten",
         "Ook 's nachts onhoorbaar"
       ],
-      // ✅ 10/10: ECHTE product afbeelding uit Downloads
-      image: "/images/product-main.png",
+      // ✅ 10/10: ECHTE product afbeelding uit Downloads (optimized)
+      image: "/images/product-main-optimized.jpg",
       imageAlt: "Ultra-stille motor onder 40dB"
     }
   ];
