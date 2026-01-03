@@ -239,33 +239,6 @@ export default function HomePage() {
         </div>
       </section>
 
-          {/* Feature 2 - ZIGZAG: Links: Content, Rechts: Image */}
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div className="order-2 md:order-1">
-              <div className="flex items-start gap-4 mb-4">
-                <Volume2 className="h-8 w-8 text-[#f76402] flex-shrink-0" />
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    <strong className="text-[#f76402]">Ultra-Quiet</strong> Motor
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    Werkt onder <strong>40 decibel</strong>. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="order-1 md:order-2 relative aspect-video rounded-lg overflow-hidden shadow-sm">
-              <Image
-                src={usps.feature2.image}
-                alt="Ultra-Quiet Motor"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
       <Separator variant="float" spacing="sm" />
 
       {/* Video/Demo Section - NA USPs: Exact zoals product detail */}
