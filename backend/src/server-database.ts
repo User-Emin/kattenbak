@@ -158,6 +158,12 @@ app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
     
     const product = await prisma.product.findUnique({
       where: { slug },
+      include: {
+        category: true,
+        variants: {
+          where: { isActive: true }
+        }
+      }
     });
 
     if (!product) {
