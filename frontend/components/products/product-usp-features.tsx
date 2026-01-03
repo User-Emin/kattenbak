@@ -3,11 +3,11 @@
 import { Package, Volume2 } from "lucide-react";
 
 /**
- * Product USP Features Component - 10/10 PERFECT
+ * Product USP Features Component - COOLBLUE WIDE LAYOUT
  * 
  * Features:
  * - Zigzag layout (text left/right alternating)
- * - ECHTE product afbeelding (uit Downloads)
+ * - BREDE foto's zoals Coolblue (meer ruimte voor product)
  * - Icons + Bullets + Images
  * - Fully responsive
  * - DRY & Maintainable
@@ -23,7 +23,7 @@ export function ProductUspFeatures() {
         "Bij meerdere katten: 2-3x per week",
         "30% minder onderhoud vs concurrentie (7-9L)"
       ],
-      // ✅ 10/10: ECHTE product afbeelding uit Downloads (optimized)
+      // ✅ ECHTE product afbeelding uit Downloads (optimized)
       image: "/images/product-main-optimized.jpg",
       imageAlt: "10.5L XL Capaciteit afvalbak"
     },
@@ -36,35 +36,35 @@ export function ProductUspFeatures() {
         "Geen stress voor gevoelige katten",
         "Ook 's nachts onhoorbaar"
       ],
-      // ✅ 10/10: ECHTE product afbeelding uit Downloads (optimized)
+      // ✅ ECHTE product afbeelding uit Downloads (optimized)
       image: "/images/product-main-optimized.jpg",
       imageAlt: "Ultra-stille motor onder 40dB"
     }
   ];
 
   return (
-    <div className="space-y-16">
+    <div className="max-w-[1400px] mx-auto space-y-20">
       {features.map((feature, index) => {
         const isEven = index % 2 === 0;
         const IconComponent = feature.icon;
 
         return (
-          <div key={index} className={`grid md:grid-cols-2 gap-8 items-center`}>
-            {/* Tekst Content */}
-            <div className={`space-y-4 ${isEven ? 'md:order-1' : 'md:order-2'}`}>
+          <div key={index} className={`grid md:grid-cols-2 gap-12 items-center`}>
+            {/* Tekst Content - meer ruimte */}
+            <div className={`space-y-6 ${isEven ? 'md:order-1' : 'md:order-2'}`}>
               <div className="flex items-start gap-4">
-                <IconComponent className="h-12 w-12 text-[#f76402] flex-shrink-0 mt-1" />
+                <IconComponent className="h-14 w-14 text-[#f76402] flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="text-xl font-normal text-gray-900 mb-2">
+                  <h3 className="text-2xl font-normal text-gray-900 mb-3">
                     <strong className="text-[#f76402] font-normal">{feature.title.split(' ')[0]}</strong> {feature.title.split(' ').slice(1).join(' ')}
                   </h3>
-                  <p className="text-gray-700 leading-relaxed font-light">
+                  <p className="text-gray-700 text-lg leading-relaxed font-light">
                     {feature.description}
                   </p>
-                  <ul className="mt-3 space-y-2 text-sm text-gray-600">
+                  <ul className="mt-4 space-y-3 text-base text-gray-600">
                     {feature.benefits.map((benefit, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-green-600 mt-0.5">✓</span>
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="text-green-600 text-lg mt-0.5">✓</span>
                         <span>{benefit}</span>
                       </li>
                     ))}
@@ -73,12 +73,12 @@ export function ProductUspFeatures() {
               </div>
             </div>
 
-            {/* ✅ 10/10: ECHTE Afbeelding - Zigzag Pattern */}
-            <div className={`relative aspect-square bg-gray-50 overflow-hidden rounded-sm border border-gray-200 ${isEven ? 'md:order-2' : 'md:order-1'}`}>
+            {/* ✅ BREDE Afbeelding - Zigzag Pattern - grotere padding zoals Coolblue */}
+            <div className={`relative aspect-square bg-gray-50 overflow-hidden rounded-lg border border-gray-200 ${isEven ? 'md:order-2' : 'md:order-1'}`}>
               <img
                 src={feature.image}
                 alt={feature.imageAlt}
-                className="w-full h-full object-contain p-4"
+                className="w-full h-full object-contain p-8"
                 loading="lazy"
               />
             </div>

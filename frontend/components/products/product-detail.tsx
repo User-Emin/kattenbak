@@ -200,15 +200,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <h1 className="text-2xl font-light text-gray-900 mb-6">{product.name}</h1>
 
         {/* COOLBLUE LAYOUT: Links afbeelding GROTER, rechts info compacter */}
-        <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_400px] gap-4 max-w-[1200px] mx-auto">
-          {/* Product Images - COMPACTER voor 13 inch scherm */}
-          <div className="space-y-2">
-            {/* Main image - COMPACTER maar nog steeds zichtbaar */}
-            <div className="relative aspect-square bg-gray-50 overflow-hidden rounded-sm border border-gray-200">
+        {/* COOLBLUE LAYOUT: Brede container (1400px), grotere foto's */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8 max-w-[1400px] mx-auto px-6">
+          {/* Product Images - BREED zoals Coolblue */}
+          <div className="space-y-3">
+            {/* Main image - GROOT en BREED */}
+            <div className="relative aspect-square bg-gray-50 overflow-hidden rounded-lg border border-gray-200">
               <img
                 src={displayImages[selectedImage] || '/images/placeholder.jpg'}
                 alt={product.name}
-                className="w-full h-full object-contain cursor-zoom-in p-4"
+                className="w-full h-full object-contain cursor-zoom-in p-8"
                 loading="eager"
               />
             </div>
@@ -220,7 +221,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
-                    className={`relative w-14 h-14 flex-shrink-0 bg-white border rounded-sm overflow-hidden transition ${
+                    className={`relative w-16 h-16 flex-shrink-0 bg-white border rounded-lg overflow-hidden transition ${
                       selectedImage === idx ? 'border-brand border-2' : 'border-gray-300 hover:border-gray-400'
                     }`}
                   >
@@ -231,12 +232,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
           </div>
 
-          {/* COOLBLUE: Info rechts - SUPER COMPACT */}
-          <div className="space-y-4">
+          {/* COOLBLUE: Info rechts - COMPACT maar ruimte */}
+          <div className="space-y-6">
             {/* Prijs - PROMINENT zoals Coolblue */}
-            <div className="space-y-0.5">
-              <div className="text-3xl font-bold text-black">{formatPrice(finalPrice)}</div>
-              <p className="text-xs text-gray-600">Incl. BTW</p>
+            <div className="space-y-1">
+              <div className="text-4xl font-bold text-black">{formatPrice(finalPrice)}</div>
+              <p className="text-sm text-gray-600">Incl. BTW</p>
             </div>
 
             {/* Color Selector - DIRECT OP ACHTERGROND */}
