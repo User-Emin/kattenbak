@@ -19,31 +19,19 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { RETURN_REASON_LABELS } from '@/types/return';
-import {
-  GRADIENTS,
-  TEXT_COLORS,
-  BRAND_COLORS,
-  SEMANTIC_COLORS,
-  COMPONENT_COLORS,
-  BACKGROUND_OPACITY,
-  BORDER_RADIUS,
-  SHADOWS,
-  TYPOGRAPHY,
-  getStepColor,
-} from '@/lib/theme-colors';
 
 /**
- * RETOURNEREN PAGE - VOLLEDIG FORMULIER + MODERNE STYLING
+ * RETOURNEREN PAGE - STRAK & MINIMALISTISCH
  * 
- * ✅ Volledig retourformulier met alle velden
- * ✅ Ordernummer, email, reden, beschrijving
- * ✅ Moderne, strakke styling passend bij site
- * ✅ DRY principes: geen hardcoded kleuren/teksten
- * ✅ Responsive & gebruiksvriendelijk
+ * ✅ Oranje accent (#f76402)
+ * ✅ GEEN emoji
+ * ✅ GEEN shadows
+ * ✅ 1 kleur achtergrond (wit)
+ * ✅ Dunne, strakke fonts
  */
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// DRY: Return Process Steps (Dynamische kleuren)
+// DRY: Return Process Steps
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 const RETURN_PROCESS = [
@@ -74,7 +62,7 @@ const RETURN_PROCESS = [
 ] as const;
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// DRY: Return Policy Info (Centralized)
+// DRY: Return Policy Info
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 const RETURN_POLICY = {
@@ -125,34 +113,34 @@ export default function RetournerenPage() {
   const isFormValid = formData.orderNumber.trim() && formData.email.trim() && formData.reason && formData.description.trim();
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section - Strak en modern */}
-      <section className={`relative py-16 border-b overflow-hidden bg-gradient-to-br from-blue-50 via-white to-gray-50`}>
+    <div className="min-h-screen bg-white">
+      {/* Hero Section - Minimalistisch */}
+      <section className="relative py-12 border-b bg-white">
         <div className="container-custom relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-blue-800 to-gray-900 bg-clip-text text-transparent">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-light mb-3 text-gray-900">
               Retour Aanvragen
             </h1>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed max-w-2xl mx-auto">
-              Niet tevreden? Binnen <span className="font-bold text-gray-900">{RETURN_POLICY.returnPeriod} dagen</span> kunt u uw bestelling{' '}
-              <span className="font-bold text-brand">{RETURN_POLICY.shippingCost}</span> retourneren.
+            <p className="text-base font-light text-gray-600 leading-relaxed">
+              Niet tevreden? Binnen <span className="font-normal text-gray-900">{RETURN_POLICY.returnPeriod} dagen</span> kunt u uw bestelling{' '}
+              <span className="font-normal text-[#f76402]">{RETURN_POLICY.shippingCost}</span> retourneren.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Main Retour Form - VOLLEDIG FORMULIER */}
-      <section className="py-12 bg-white">
-        <div className="container-custom max-w-3xl mx-auto">
-          <Card className="p-8 md:p-10 border-2 rounded-2xl shadow-lg">
-            <h2 className="text-2xl font-bold mb-2 text-center">Retourformulier</h2>
-            <p className="text-sm text-gray-600 text-center mb-8">Vul alle velden in om uw retour aan te vragen</p>
+      {/* Main Retour Form - STRAK & CLEAN */}
+      <section className="py-10 bg-white">
+        <div className="container-custom max-w-2xl mx-auto">
+          <Card className="p-6 md:p-8 border rounded-sm bg-white">
+            <h2 className="text-xl font-normal mb-1 text-center text-gray-900">Retourformulier</h2>
+            <p className="text-sm font-light text-gray-600 text-center mb-6">Vul alle velden in om uw retour aan te vragen</p>
             
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Bestelnummer */}
               <div>
-                <Label htmlFor="orderNumber" className="text-base font-semibold mb-2 block">
-                  Bestelnummer <span className="text-red-500">*</span>
+                <Label htmlFor="orderNumber" className="text-sm font-normal mb-1.5 block text-gray-900">
+                  Bestelnummer <span className="text-[#f76402]">*</span>
                 </Label>
                 <Input
                   id="orderNumber"
@@ -161,16 +149,16 @@ export default function RetournerenPage() {
                   placeholder="Bijv. ORD-2024-001"
                   value={formData.orderNumber}
                   onChange={handleInputChange}
-                  className="h-12 text-base rounded-xl border-2 focus:border-brand transition-all"
+                  className="h-11 text-sm font-light rounded-sm border focus:border-[#f76402] transition-all"
                   required
                 />
-                <p className="text-xs text-gray-500 mt-1.5">💡 Te vinden in uw orderbevestiging email</p>
+                <p className="text-xs font-light text-gray-500 mt-1">Te vinden in uw orderbevestiging email</p>
               </div>
 
               {/* E-mailadres */}
               <div>
-                <Label htmlFor="email" className="text-base font-semibold mb-2 block">
-                  E-mailadres <span className="text-red-500">*</span>
+                <Label htmlFor="email" className="text-sm font-normal mb-1.5 block text-gray-900">
+                  E-mailadres <span className="text-[#f76402]">*</span>
                 </Label>
                 <Input
                   id="email"
@@ -179,23 +167,23 @@ export default function RetournerenPage() {
                   placeholder="uw@email.nl"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="h-12 text-base rounded-xl border-2 focus:border-brand transition-all"
+                  className="h-11 text-sm font-light rounded-sm border focus:border-[#f76402] transition-all"
                   required
                 />
-                <p className="text-xs text-gray-500 mt-1.5">📧 Gebruikt bij uw bestelling</p>
+                <p className="text-xs font-light text-gray-500 mt-1">Gebruikt bij uw bestelling</p>
               </div>
 
               {/* Retour reden */}
               <div>
-                <Label htmlFor="reason" className="text-base font-semibold mb-2 block">
-                  Reden voor retour <span className="text-red-500">*</span>
+                <Label htmlFor="reason" className="text-sm font-normal mb-1.5 block text-gray-900">
+                  Reden voor retour <span className="text-[#f76402]">*</span>
                 </Label>
                 <select
                   id="reason"
                   name="reason"
                   value={formData.reason}
                   onChange={handleInputChange}
-                  className="w-full h-12 px-4 text-base rounded-xl border-2 border-gray-200 focus:border-brand focus:ring-0 transition-all bg-white"
+                  className="w-full h-11 px-3 text-sm font-light rounded-sm border border-gray-200 focus:border-[#f76402] focus:ring-0 transition-all bg-white"
                   required
                 >
                   <option value="">Selecteer een reden...</option>
@@ -209,8 +197,8 @@ export default function RetournerenPage() {
 
               {/* Beschrijving/Toelichting */}
               <div>
-                <Label htmlFor="description" className="text-base font-semibold mb-2 block">
-                  Toelichting <span className="text-red-500">*</span>
+                <Label htmlFor="description" className="text-sm font-normal mb-1.5 block text-gray-900">
+                  Toelichting <span className="text-[#f76402]">*</span>
                 </Label>
                 <textarea
                   id="description"
@@ -219,15 +207,15 @@ export default function RetournerenPage() {
                   value={formData.description}
                   onChange={handleInputChange}
                   rows={4}
-                  className="w-full px-4 py-3 text-base rounded-xl border-2 border-gray-200 focus:border-brand focus:ring-0 transition-all resize-none"
+                  className="w-full px-3 py-2.5 text-sm font-light rounded-sm border border-gray-200 focus:border-[#f76402] focus:ring-0 transition-all resize-none"
                   required
                 />
-                <p className="text-xs text-gray-500 mt-1.5">Minimaal 20 karakters - hoe meer details, hoe sneller we u kunnen helpen</p>
+                <p className="text-xs font-light text-gray-500 mt-1">Minimaal 20 karakters</p>
               </div>
 
               {/* Bankrekeningnummer (optioneel) */}
               <div>
-                <Label htmlFor="accountNumber" className="text-base font-semibold mb-2 block">
+                <Label htmlFor="accountNumber" className="text-sm font-normal mb-1.5 block text-gray-900">
                   IBAN Bankrekeningnummer (optioneel)
                 </Label>
                 <Input
@@ -237,18 +225,18 @@ export default function RetournerenPage() {
                   placeholder="NL00 BANK 0000 0000 00"
                   value={formData.accountNumber}
                   onChange={handleInputChange}
-                  className="h-12 text-base rounded-xl border-2 focus:border-brand transition-all"
+                  className="h-11 text-sm font-light rounded-sm border focus:border-[#f76402] transition-all"
                 />
-                <p className="text-xs text-gray-500 mt-1.5">💳 Voor snellere terugbetaling - indien afwijkend van originele betaalmethode</p>
+                <p className="text-xs font-light text-gray-500 mt-1">Voor snellere terugbetaling</p>
               </div>
 
               {/* Info banner */}
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+              <div className="bg-gray-50 border border-gray-200 rounded-sm p-4">
                 <div className="flex gap-3">
-                  <ShieldCheck className="h-5 w-5 text-brand shrink-0 mt-0.5" />
-                  <div className="text-sm text-gray-700 leading-relaxed">
-                    <p className="font-semibold text-gray-900 mb-1">100% Tevredenheidsgarantie</p>
-                    <p>Na goedkeuring ontvangt u binnen {RETURN_POLICY.processingTime} werkdagen uw geld terug op dezelfde manier als u heeft betaald.</p>
+                  <ShieldCheck className="h-5 w-5 text-[#f76402] shrink-0 mt-0.5" />
+                  <div className="text-sm font-light text-gray-700 leading-relaxed">
+                    <p className="font-normal text-gray-900 mb-0.5">100% Tevredenheidsgarantie</p>
+                    <p>Na goedkeuring ontvangt u binnen {RETURN_POLICY.processingTime} werkdagen uw geld terug.</p>
                   </div>
                 </div>
               </div>
@@ -256,18 +244,18 @@ export default function RetournerenPage() {
               {/* Submit button */}
               <Button
                 type="submit"
-                className="w-full h-14 text-lg rounded-full bg-brand hover:bg-brand-dark text-white font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-12 text-base rounded-sm bg-[#f76402] hover:bg-[#e55d00] text-white font-normal transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!isFormValid || isSubmitting}
               >
                 {isSubmitting ? (
                   <span className="flex items-center justify-center gap-2">
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     <span>Aanvraag verzenden...</span>
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-2">
                     <span>Retour Aanvragen</span>
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="h-4 w-4" />
                   </span>
                 )}
               </Button>
@@ -276,40 +264,33 @@ export default function RetournerenPage() {
         </div>
       </section>
 
-      <Separator variant="float" spacing="xl" />
+      <Separator variant="float" spacing="md" />
 
-      {/* Return Process - Visuele stappenplan */}
-      <section className="py-16 bg-gray-50">
+      {/* Return Process - Minimalistisch */}
+      <section className="py-12 bg-white">
         <div className="container-custom">
-          <h2 className="text-3xl font-bold text-center mb-4 bg-gradient-to-r from-gray-900 via-blue-800 to-gray-900 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-light text-center mb-2 text-gray-900">
             Hoe werkt het?
           </h2>
-          <p className="text-lg text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          <p className="text-base font-light text-center text-gray-600 mb-10">
             Simpel in 4 stappen naar uw geld terug
           </p>
           
-          {/* Steps met doorlopende lijn */}
-          <div className="max-w-6xl mx-auto relative">
-            <div className="hidden lg:block absolute top-8 left-0 right-0 h-0.5 bg-gray-200"></div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {RETURN_PROCESS.map((step, index) => {
-                const isOrange = index % 2 === 1;
-                const iconColor = isOrange ? 'text-gray-900' : 'text-brand';
-                const bgColor = isOrange ? 'bg-gray-100' : 'bg-blue-50';
+                const Icon = step.icon;
                 
                 return (
-                  <div key={step.id} className="relative text-center">
-                    <div className={`inline-flex items-center justify-center w-16 h-16 mb-4 rounded-xl ${bgColor} border-2 ${isOrange ? 'border-gray-300' : 'border-brand'} relative z-10 bg-white`}>
-                      <span className={`text-2xl font-bold ${iconColor}`}>
-                        {index + 1}
-                      </span>
+                  <div key={step.id} className="text-center">
+                    <div className="inline-flex items-center justify-center w-12 h-12 mb-3 rounded-sm border border-gray-200 bg-white">
+                      <Icon className="w-5 h-5 text-[#f76402]" strokeWidth={1.5} />
                     </div>
                     
-                    <h3 className="text-lg font-bold mb-2">
+                    <h3 className="text-base font-normal mb-1.5 text-gray-900">
                       {step.title}
                     </h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">
+                    <p className="text-sm font-light text-gray-600 leading-relaxed">
                       {step.description}
                     </p>
                   </div>
@@ -320,78 +301,79 @@ export default function RetournerenPage() {
         </div>
       </section>
 
-      <Separator variant="float" spacing="xl" />
+      <Separator variant="float" spacing="md" />
 
       {/* Retourvoorwaarden - Accordion */}
-      <section className="py-16 bg-white">
-        <div className="container-custom max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4 bg-gradient-to-r from-gray-900 via-blue-800 to-gray-900 bg-clip-text text-transparent">
+      <section className="py-12 bg-white">
+        <div className="container-custom max-w-3xl mx-auto">
+          <h2 className="text-2xl font-light text-center mb-2 text-gray-900">
             Retourvoorwaarden
           </h2>
-          <p className="text-lg text-center text-gray-600 mb-10">
+          <p className="text-base font-light text-center text-gray-600 mb-8">
             Alles wat u moet weten over retourneren
           </p>
           
           {/* Accordion Sections */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             {/* Section 1: Belangrijkste info */}
-            <div className="border-2 border-gray-200 rounded-xl overflow-hidden hover:border-brand transition-colors bg-white">
+            <div className="border border-gray-200 rounded-sm overflow-hidden hover:border-[#f76402] transition-colors bg-white">
               <button
                 onClick={() => setOpenSection(openSection === 'policy' ? null : 'policy')}
-                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                className="w-full px-5 py-3.5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Clock className="h-6 w-6 text-brand flex-shrink-0" />
-                  <span className="text-lg font-bold">Retourbeleid & Belangrijke Info</span>
+                  <Clock className="h-5 w-5 text-[#f76402] flex-shrink-0" strokeWidth={1.5} />
+                  <span className="text-base font-normal text-gray-900">Retourbeleid & Belangrijke Info</span>
                 </div>
                 <svg
-                  className={`w-5 h-5 transition-transform ${openSection === 'policy' ? 'rotate-180' : ''}`}
+                  className={`w-4 h-4 transition-transform text-gray-600 ${openSection === 'policy' ? 'rotate-180' : ''}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  strokeWidth={1.5}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
               
               {openSection === 'policy' && (
-                <div className="px-6 pb-6 pt-2">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex items-start gap-3 p-4 rounded-lg bg-blue-50 border border-blue-100">
-                      <Clock className="h-5 w-5 text-brand shrink-0 mt-0.5" />
+                <div className="px-5 pb-5 pt-1">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
+                      <Clock className="h-4 w-4 text-[#f76402] shrink-0 mt-0.5" strokeWidth={1.5} />
                       <div>
-                        <h3 className="font-bold text-sm mb-1">Retourperiode</h3>
-                        <p className="text-sm text-gray-600">
+                        <h3 className="font-normal text-sm mb-0.5 text-gray-900">Retourperiode</h3>
+                        <p className="text-xs font-light text-gray-600">
                           {RETURN_POLICY.returnPeriod} dagen bedenktijd na ontvangst
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3 p-4 rounded-lg bg-green-50 border border-green-100">
-                      <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />
+                    <div className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
+                      <CheckCircle2 className="h-4 w-4 text-[#f76402] shrink-0 mt-0.5" strokeWidth={1.5} />
                       <div>
-                        <h3 className="font-bold text-sm mb-1">Terugbetaling</h3>
-                        <p className="text-sm text-gray-600">
+                        <h3 className="font-normal text-sm mb-0.5 text-gray-900">Terugbetaling</h3>
+                        <p className="text-xs font-light text-gray-600">
                           Binnen {RETURN_POLICY.processingTime} werkdagen na goedkeuring
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 border border-gray-200">
-                      <TruckIcon className="h-5 w-5 text-gray-700 shrink-0 mt-0.5" />
+                    <div className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
+                      <TruckIcon className="h-4 w-4 text-[#f76402] shrink-0 mt-0.5" strokeWidth={1.5} />
                       <div>
-                        <h3 className="font-bold text-sm mb-1">Verzendkosten</h3>
-                        <p className="text-sm text-gray-600">
+                        <h3 className="font-normal text-sm mb-0.5 text-gray-900">Verzendkosten</h3>
+                        <p className="text-xs font-light text-gray-600">
                           Retour verzenden is {RETURN_POLICY.shippingCost}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3 p-4 rounded-lg bg-blue-50 border border-blue-100">
-                      <ShieldCheck className="h-5 w-5 text-brand shrink-0 mt-0.5" />
+                    <div className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
+                      <ShieldCheck className="h-4 w-4 text-[#f76402] shrink-0 mt-0.5" strokeWidth={1.5} />
                       <div>
-                        <h3 className="font-bold text-sm mb-1">Garantie</h3>
-                        <p className="text-sm text-gray-600">
+                        <h3 className="font-normal text-sm mb-0.5 text-gray-900">Garantie</h3>
+                        <p className="text-xs font-light text-gray-600">
                           100% tevredenheidsgarantie
                         </p>
                       </div>
@@ -402,32 +384,33 @@ export default function RetournerenPage() {
             </div>
 
             {/* Section 2: Voorwaarden */}
-            <div className="border-2 border-gray-200 rounded-xl overflow-hidden hover:border-brand transition-colors bg-white">
+            <div className="border border-gray-200 rounded-sm overflow-hidden hover:border-[#f76402] transition-colors bg-white">
               <button
                 onClick={() => setOpenSection(openSection === 'conditions' ? null : 'conditions')}
-                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                className="w-full px-5 py-3.5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <AlertCircle className="h-6 w-6 text-brand flex-shrink-0" />
-                  <span className="text-lg font-bold">Voorwaarden voor Retourneren</span>
+                  <AlertCircle className="h-5 w-5 text-[#f76402] flex-shrink-0" strokeWidth={1.5} />
+                  <span className="text-base font-normal text-gray-900">Voorwaarden voor Retourneren</span>
                 </div>
                 <svg
-                  className={`w-5 h-5 transition-transform ${openSection === 'conditions' ? 'rotate-180' : ''}`}
+                  className={`w-4 h-4 transition-transform text-gray-600 ${openSection === 'conditions' ? 'rotate-180' : ''}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  strokeWidth={1.5}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
               
               {openSection === 'conditions' && (
-                <div className="px-6 pb-6 pt-2">
-                  <div className="space-y-2.5">
+                <div className="px-5 pb-5 pt-1">
+                  <div className="space-y-2">
                     {RETURN_POLICY.conditions.map((condition, index) => (
-                      <div key={index} className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
-                        <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />
-                        <span className="text-sm text-gray-700 leading-relaxed">{condition}</span>
+                      <div key={index} className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
+                        <CheckCircle2 className="h-4 w-4 text-[#f76402] shrink-0 mt-0.5" strokeWidth={1.5} />
+                        <span className="text-sm font-light text-gray-700 leading-relaxed">{condition}</span>
                       </div>
                     ))}
                   </div>

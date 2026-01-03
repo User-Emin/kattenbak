@@ -107,6 +107,16 @@ export function VideoPlayer({
   const finalLoop = isHero ? true : loop;
   const finalControls = isHero ? false : controls;
 
+  // WATERDICHT: NOOIT groene placeholder tonen als poster
+  // Als posterUrl een placeholder is, gebruik GEEN poster
+  const isPlaceholder = posterUrl && (
+    posterUrl.includes('placeholder') || 
+    posterUrl.includes('/images/hero') ||
+    posterUrl.includes('/logo.png') ||
+    posterUrl.includes('default')
+  );
+  const safePosterUrl = (!posterUrl || isPlaceholder) ? undefined : posterUrl;
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -158,7 +168,7 @@ export function VideoPlayer({
       <video
         ref={videoRef}
         className="w-full h-full object-cover"
-        poster={posterUrl}
+        poster={safePosterUrl}
         muted={finalMuted}
         loop={finalLoop}
         playsInline
