@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatische Kattenbak Premium - CatSupply</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Main Instagram Post - 1080x1080 */
+        .post {
+            width: 1080px;
+            height: 1080px;
+            background: linear-gradient(135deg, #ffffff 0%, #fff5eb 100%);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: #FF7A00;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            z-index: 20;
+        }
+        
+        .logo {
+            font-size: 38px;
+            font-weight: 900;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .badge {
+            background: white;
+            color: #FF7A00;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 16px;
+        }
+        
+        /* Product Image Section */
+        .product-section {
+            position: absolute;
+            top: 80px;
+            left: 0;
+            right: 0;
+            height: 650px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        
+        .product-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 40px 60px rgba(255, 122, 0, 0.25));
+        }
+        
+        /* Bottom Info Bar */
+        .info-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 350px;
+            background: linear-gradient(to top, #FF7A00 0%, #ff8f1f 100%);
+            padding: 40px 50px;
+            color: white;
+        }
+        
+        .product-name {
+            font-size: 52px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+        
+        .tagline {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+        
+        .features-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .feature-badge {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 18px;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .feature-label {
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .price-block {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .price-old {
+            font-size: 28px;
+            font-weight: 600;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        
+        .price-new {
+            font-size: 56px;
+            font-weight: 900;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button {
+            background: white;
+            color: #FF7A00;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-weight: 900;
+            font-size: 22px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+        }
+    </style>
+</head>
+<body>
+    <div class="post">
+        <!-- Top Orange Bar -->
+        <div class="top-bar">
+            <div class="logo">CATSUPPLY</div>
+            <div class="badge">🌸 MET GEURBLOKJE</div>
+        </div>
+        
+        <!-- Product Photo -->
+        <div class="product-section">
+            <img src="/Users/emin/Downloads/317de860-417c-4107-b174-2b5f695a01d3.png" 
+                 alt="Automatische Kattenbak Premium" 
+                 class="product-image">
+        </div>
+        
+        <!-- Bottom Info Bar -->
+        <div class="info-bar">
+            <h1 class="product-name">Automatische Kattenbak Premium</h1>
+            <p class="tagline">Zelfreinigend • Stil • Smart App Control</p>
+            
+            <div class="features-row">
+                <div class="feature-badge">
+                    <span class="feature-icon">🌸</span>
+                    <div class="feature-label">Geurblokje<br>Systeem</div>
+                </div>
+                <div class="feature-badge">
+                    <span class="feature-icon">🤖</span>
+                    <div class="feature-label">Volledig<br>Automatisch</div>
+                </div>
+                <div class="feature-badge">
+                    <span class="feature-icon">📱</span>
+                    <div class="feature-label">App<br>Besturing</div>
+                </div>
+            </div>
+            
+            <div class="bottom-row">
+                <div class="price-block">
+                    <span class="price-old">€399,99</span>
+                    <span class="price-new">€299,99</span>
+                </div>
+                <a href="#" class="cta-button">BESTEL NU</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

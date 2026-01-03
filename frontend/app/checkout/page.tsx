@@ -362,17 +362,17 @@ function CheckoutContent() {
                     <span>Totaal</span>
                     <span className="text-2xl text-brand">{formatPrice(total)}</span>
                   </div>
-                  <p className="text-sm text-gray-600 text-right">Incl. 21% BTW ({formatPrice(tax)})</p>
                 </div>
 
                 <Separator variant="float" spacing="md" />
 
-                {/* ✅ Payment Method Selector - RECHTS BOVEN BUTTON */}
+                {/* ✅ Payment Method Selector - EERST payment logos, DAN BTW text eronder */}
                 <div className="mt-6">
                   <PaymentMethodSelector
                     selectedMethod={paymentMethod}
                     onMethodChange={setPaymentMethod}
                   />
+                  <p className="text-sm text-gray-600 text-center mt-4">Incl. 21% BTW ({formatPrice(tax)})</p>
                 </div>
 
                 <Separator variant="float" spacing="sm" />

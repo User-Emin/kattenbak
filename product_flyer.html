@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatische Kattenbak Premium - CatSupply</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px;
+        }
+        
+        /* Main Container - 1080x1080 */
+        .flyer {
+            width: 1080px;
+            height: 1080px;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Vector Shapes Background */
+        .vector-shape {
+            position: absolute;
+            opacity: 1;
+        }
+        
+        /* Top Right Abstract Shape */
+        .shape-1 {
+            top: -100px;
+            right: -100px;
+            width: 600px;
+            height: 600px;
+        }
+        
+        /* Bottom Left Organic Shape */
+        .shape-2 {
+            bottom: -150px;
+            left: -150px;
+            width: 700px;
+            height: 700px;
+        }
+        
+        /* Side Accent Shapes */
+        .shape-3 {
+            top: 30%;
+            left: -80px;
+            width: 300px;
+            height: 300px;
+            transform: rotate(45deg);
+        }
+        
+        .shape-4 {
+            top: 10%;
+            right: -60px;
+            width: 250px;
+            height: 250px;
+            transform: rotate(-30deg);
+        }
+        
+        /* Content Container */
+        .content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            padding: 60px 70px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FF7A00, #FFB84D);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+        }
+        
+        .badge {
+            padding: 16px 36px;
+            background: linear-gradient(135deg, #FF7A00, #FFB84D);
+            color: white;
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: 3px;
+            border-radius: 8px;
+            transform: rotate(-3deg);
+        }
+        
+        /* Product Section */
+        .product-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 50px;
+            position: relative;
+        }
+        
+        .product-image {
+            width: 100%;
+            max-width: 750px;
+            height: auto;
+            position: relative;
+            z-index: 5;
+        }
+        
+        /* Info Tags Floating Around Product */
+        .info-tag {
+            position: absolute;
+            background: white;
+            padding: 18px 32px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #1a1a1a;
+            border: 3px solid #FF7A00;
+            z-index: 8;
+            transform: rotate(-2deg);
+        }
+        
+        .tag-1 {
+            top: 15%;
+            left: 8%;
+            transform: rotate(-8deg);
+        }
+        
+        .tag-2 {
+            top: 25%;
+            right: 10%;
+            transform: rotate(5deg);
+        }
+        
+        .tag-3 {
+            bottom: 30%;
+            left: 5%;
+            transform: rotate(3deg);
+        }
+        
+        .tag-4 {
+            bottom: 25%;
+            right: 8%;
+            transform: rotate(-6deg);
+        }
+        
+        /* Bottom Title Section */
+        .title-section {
+            padding: 40px 70px 60px;
+            text-align: center;
+        }
+        
+        .main-title {
+            font-size: 56px;
+            font-weight: 900;
+            color: #1a1a1a;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+        
+        .subtitle {
+            font-size: 22px;
+            color: #666;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Accent Line */
+        .accent-line {
+            width: 200px;
+            height: 6px;
+            background: linear-gradient(90deg, #FF7A00, #FFB84D);
+            margin: 0 auto 25px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="flyer">
+        <!-- Vector Shapes Background -->
+        <svg class="vector-shape shape-1" viewBox="0 0 600 600">
+            <path d="M300,50 Q500,100 550,300 Q500,500 300,550 Q100,500 50,300 Q100,100 300,50 Z" 
+                  fill="#FF7A00" opacity="0.06"/>
+            <circle cx="450" cy="150" r="80" fill="#FFB84D" opacity="0.08"/>
+            <path d="M400,400 L500,450 L450,550 Z" fill="#FF7A00" opacity="0.05"/>
+        </svg>
+        
+        <svg class="vector-shape shape-2" viewBox="0 0 700 700">
+            <ellipse cx="350" cy="350" rx="300" ry="250" 
+                     fill="#FFB84D" opacity="0.07" transform="rotate(30 350 350)"/>
+            <path d="M200,200 Q300,150 400,200 Q450,300 400,400 Q300,450 200,400 Q150,300 200,200 Z" 
+                  fill="#FF7A00" opacity="0.06"/>
+            <circle cx="150" cy="550" r="100" fill="#FFB84D" opacity="0.08"/>
+        </svg>
+        
+        <svg class="vector-shape shape-3" viewBox="0 0 300 300">
+            <polygon points="150,50 250,150 150,250 50,150" 
+                     fill="#FF7A00" opacity="0.05"/>
+            <circle cx="150" cy="150" r="60" fill="#FFB84D" opacity="0.07"/>
+        </svg>
+        
+        <svg class="vector-shape shape-4" viewBox="0 0 250 250">
+            <path d="M125,25 L200,100 L175,175 L100,200 L25,125 L50,50 Z" 
+                  fill="#FFB84D" opacity="0.06"/>
+            <circle cx="125" cy="125" r="40" fill="#FF7A00" opacity="0.08"/>
+        </svg>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Header -->
+            <div class="header">
+                <div class="logo">CATSUPPLY</div>
+                <div class="badge">NIEUW</div>
+            </div>
+            
+            <!-- Product Area -->
+            <div class="product-area">
+                <img src="/Users/emin/Downloads/317de860-417c-4107-b174-2b5f695a01d3.png" 
+                     alt="Automatische Kattenbak Premium" 
+                     class="product-image">
+                
+                <!-- Info Tags -->
+                <div class="info-tag tag-1">ZELFREINIGEND</div>
+                <div class="info-tag tag-2">APP BEDIENING</div>
+                <div class="info-tag tag-3">MET GEURBLOKJE</div>
+                <div class="info-tag tag-4">TOT 7KG</div>
+            </div>
+            
+            <!-- Title Section -->
+            <div class="title-section">
+                <div class="accent-line"></div>
+                <h1 class="main-title">Automatische Kattenbak Premium</h1>
+                <p class="subtitle">Volledig zelfreinigend met slimme app-bediening</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

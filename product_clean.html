@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatische Kattenbak Premium</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px;
+        }
+        
+        /* Main Container - 1080x1080 */
+        .flyer {
+            width: 1080px;
+            height: 1080px;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Vector Shapes Background - Seamless with white */
+        .vector-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        /* Product Container */
+        .product-container {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .product-image {
+            width: 70%;
+            height: auto;
+            position: relative;
+            z-index: 3;
+        }
+        
+        /* Circular Badges Around Product */
+        .badge {
+            position: absolute;
+            background: linear-gradient(135deg, #FF7A00, #FFB84D);
+            color: white;
+            border-radius: 100px;
+            padding: 22px 40px;
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            z-index: 10;
+            box-shadow: 0 8px 20px rgba(255, 122, 0, 0.25);
+        }
+        
+        /* Positioning badges in circular pattern */
+        .badge-1 {
+            top: 12%;
+            left: 15%;
+            transform: rotate(-8deg);
+        }
+        
+        .badge-2 {
+            top: 10%;
+            right: 18%;
+            transform: rotate(6deg);
+        }
+        
+        .badge-3 {
+            bottom: 35%;
+            left: 8%;
+            transform: rotate(-5deg);
+        }
+        
+        .badge-4 {
+            bottom: 32%;
+            right: 10%;
+            transform: rotate(7deg);
+        }
+        
+        .badge-5 {
+            bottom: 15%;
+            left: 28%;
+            transform: rotate(-4deg);
+        }
+        
+        .badge-6 {
+            bottom: 14%;
+            right: 30%;
+            transform: rotate(5deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="flyer">
+        <!-- Vector Shapes Background -->
+        <svg class="vector-bg" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+            <!-- Top right organic blob -->
+            <path d="M900,0 Q1080,0 1080,180 Q1080,360 900,450 Q720,360 780,180 Q840,0 900,0 Z" 
+                  fill="#FF7A00" opacity="0.04"/>
+            
+            <!-- Top left circular accent -->
+            <circle cx="200" cy="150" r="180" fill="#FFB84D" opacity="0.05"/>
+            
+            <!-- Right side wave -->
+            <path d="M1080,400 Q950,450 1080,550 L1080,400 Z" 
+                  fill="#FF7A00" opacity="0.06"/>
+            
+            <!-- Bottom left large blob -->
+            <path d="M0,800 Q200,700 400,800 Q500,950 300,1080 Q0,1080 0,900 Z" 
+                  fill="#FFB84D" opacity="0.06"/>
+            
+            <!-- Bottom right accent -->
+            <ellipse cx="900" cy="950" rx="200" ry="150" 
+                     fill="#FF7A00" opacity="0.05" transform="rotate(25 900 950)"/>
+            
+            <!-- Center background glow -->
+            <circle cx="540" cy="540" r="400" fill="#FF7A00" opacity="0.02"/>
+            
+            <!-- Left side geometric -->
+            <path d="M0,300 L150,400 L100,550 L0,450 Z" 
+                  fill="#FFB84D" opacity="0.04"/>
+            
+            <!-- Top center abstract -->
+            <path d="M400,0 Q500,50 600,0 L550,100 L450,100 Z" 
+                  fill="#FF7A00" opacity="0.05"/>
+            
+            <!-- Right center flowing shape -->
+            <path d="M1080,600 Q950,650 1080,750 L1080,600 Z" 
+                  fill="#FFB84D" opacity="0.04"/>
+            
+            <!-- Bottom center organic -->
+            <ellipse cx="540" cy="1000" rx="250" ry="120" 
+                     fill="#FF7A00" opacity="0.05"/>
+            
+            <!-- Additional small accents -->
+            <circle cx="150" cy="350" r="60" fill="#FFB84D" opacity="0.06"/>
+            <circle cx="920" cy="280" r="70" fill="#FF7A00" opacity="0.05"/>
+            <circle cx="250" cy="900" r="80" fill="#FFB84D" opacity="0.05"/>
+            <circle cx="850" cy="750" r="65" fill="#FF7A00" opacity="0.06"/>
+            
+            <!-- Curved lines -->
+            <path d="M300,200 Q400,250 500,200" 
+                  stroke="#FF7A00" stroke-width="3" fill="none" opacity="0.08"/>
+            <path d="M600,850 Q700,800 800,850" 
+                  stroke="#FFB84D" stroke-width="3" fill="none" opacity="0.08"/>
+        </svg>
+        
+        <!-- Product Container -->
+        <div class="product-container">
+            <img src="/Users/emin/Downloads/317de860-417c-4107-b174-2b5f695a01d3.png" 
+                 alt="Automatische Kattenbak" 
+                 class="product-image">
+            
+            <!-- Circular Badges -->
+            <div class="badge badge-1">ZELFREINIGEND</div>
+            <div class="badge badge-2">APP BEDIENING</div>
+            <div class="badge badge-3">MET GEURBLOKJE</div>
+            <div class="badge badge-4">TOT 7KG</div>
+            <div class="badge badge-5">AUTOMATISCH</div>
+            <div class="badge badge-6">LED DISPLAY</div>
+        </div>
+    </div>
+</body>
+</html>
