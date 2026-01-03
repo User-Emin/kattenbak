@@ -2,13 +2,14 @@ module.exports = {
   apps: [
     {
       name: 'backend',
-      script: './dist/server.js',
+      script: 'npx',
+      args: 'ts-node --files src/server-database.ts',
       cwd: './backend',
-      instances: 2,
-      exec_mode: 'cluster',
+      instances: 1,  // Changed from 2 to 1 (ts-node doesn't support cluster)
+      exec_mode: 'fork',  // Changed from cluster to fork
       env: {
         NODE_ENV: 'production',
-        PORT: 3100
+        PORT: 3101  // Changed from 3100 to 3101 (actual backend port)
       },
       error_file: '../logs/backend-error.log',
       out_file: '../logs/backend-out.log',
@@ -19,9 +20,7 @@ module.exports = {
       max_restarts: 10,
       min_uptime: '10s',
       // Graceful shutdown
-      kill_timeout: 5000,
-      wait_ready: true,
-      listen_timeout: 10000
+      kill_timeout: 5000
     },
     {
       name: 'frontend',
