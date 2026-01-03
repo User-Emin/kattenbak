@@ -186,7 +186,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   return (
     <div className="min-h-screen bg-white">
       {/* COOLBLUE: Mobiel edge-to-edge, desktop normaal */}
-      <div className="px-4 md:px-6 lg:px-10 py-4 bg-white max-w-[1400px] mx-auto">
+      <div className="px-4 md:px-6 lg:px-10 pt-4 pb-0 bg-white max-w-[1400px] mx-auto">
         {/* Breadcrumb */}
         <nav className="flex items-center mb-3">
           <Link href="/" className="text-sm text-gray-600 hover:text-[#f76402] transition-colors font-light">
@@ -196,10 +196,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           <span className="text-sm text-gray-500 font-light">{product.name}</span>
         </nav>
         
-        {/* Titel DIRECT boven foto */}
-        <h1 className="text-2xl font-light text-gray-900 mb-4">{product.name}</h1>
+        {/* Titel - DIRECT boven foto, geen margin onder */}
+        <h1 className="text-2xl font-light text-gray-900 mb-2">{product.name}</h1>
+      </div>
 
-        {/* Grid: Foto + Info */}
+      {/* Grid DIRECT na titel - GEEN extra padding */}
+      <div className="px-4 md:px-6 lg:px-10 bg-white max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 md:gap-8">
           {/* Product Images - DIRECT op achtergrond, geen vakje */}
           <div className="space-y-3">
