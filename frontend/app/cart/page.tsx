@@ -70,7 +70,7 @@ export default function CartPage() {
                           {item.product.name}
                         </h2>
                         <p className="text-sm sm:text-base text-gray-600">
-                          {formatPrice(item.product.price / 100)} per stuk
+                          {formatPrice(item.product.price)} per stuk
                         </p>
                       </div>
                       <button
@@ -106,7 +106,7 @@ export default function CartPage() {
                       </div>
 
                       <p className="text-base sm:text-xl font-semibold">
-                        {formatPrice((item.product.price / 100) * item.quantity)}
+                        {formatPrice(item.product.price * item.quantity)}
                       </p>
                     </div>
                   </div>

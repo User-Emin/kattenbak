@@ -63,7 +63,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
                   {item.product.name}
                 </h3>
                 <p className="text-sm text-gray-600 mb-2">
-                  {formatPrice(item.product.price / 100)}
+                  {formatPrice(item.product.price)}
                 </p>
                 
                 <div className="flex items-center gap-2">
