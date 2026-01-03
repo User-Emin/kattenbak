@@ -27,7 +27,7 @@
 ```bash
 # 1. SSH into server
 ssh root@185.224.139.74
-# Password: Pursangue66@
+# Password: <server-password>
 
 # 2. Pull latest code
 cd /var/www/catsupply

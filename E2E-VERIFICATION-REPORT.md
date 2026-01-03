@@ -205,7 +205,7 @@ Password: admin124
 ```
 Host:     185.224.139.74
 User:     root
-Password: Pursangue66@
+Password: <server-password>
 ```
 
 ### Git Credentials (voor pipeline)

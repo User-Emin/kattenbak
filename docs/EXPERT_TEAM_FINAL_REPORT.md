@@ -56,7 +56,7 @@
 
 #### 2. Security Vulnerabilities
 **Analysis by Marcus:**
-- ❌ Hardcoded server password (`Pursangue66@`) in 8 files
+- ❌ Hardcoded server password (`<server-password>`) in 8 files
 - ❌ Hardcoded server IP (`185.224.139.74`) in CORS configs
 - ❌ Admin credentials in documentation files
 - ❌ No secret rotation strategy

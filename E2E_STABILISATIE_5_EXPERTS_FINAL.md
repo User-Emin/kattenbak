@@ -207,7 +207,7 @@ REDIS_URL=***
 
 **Verification:**
 ```bash
-$ grep -r "Pursangue66@" backend/ frontend/
+$ grep -r "<server-password>" backend/ frontend/
 # No matches ✅
 ```
 
@@ -542,7 +542,7 @@ git commit -m "feat: description"
 git push origin main
 
 # 4. Manual deploy (alternatief)
-sshpass -p 'Pursangue66@' ssh root@185.224.139.74
+sshpass -p '<server-password>' ssh root@185.224.139.74
 cd /var/www/kattenbak
 bash scripts/deploy-with-health-checks.sh
 

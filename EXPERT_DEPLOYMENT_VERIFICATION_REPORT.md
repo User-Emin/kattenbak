@@ -1,7 +1,7 @@
 # 🎯 EXPERT TEAM - VOLLEDIGE DEPLOYMENT VERIFICATIE RAPPORT
 
 **Datum:** 2 Januari 2026  
-**Server:** 185.224.139.74 (Pursangue66@)  
+**Server:** 185.224.139.74 (<server-password>)  
 **Domein:** catsupply.nl  
 **Admin Credentials:** admin@catsupply.nl / admin124  
 **Status:** ✅ **UNANIEM GOEDGEKEURD DOOR 5 EXPERTS**
@@ -74,7 +74,7 @@ kattenbak/
 ```
 Host: 185.224.139.74
 User: root
-Password: Pursangue66@
+Password: <server-password>
 Status: ✅ VERIFIED - SSH access working
 ```
 
@@ -662,7 +662,7 @@ Verzendingen: 2 onderweg
 ```
 Host:     185.224.139.74
 User:     root
-Password: Pursangue66@
+Password: <server-password>
 Status:   ✅ VERIFIED
 ```
 

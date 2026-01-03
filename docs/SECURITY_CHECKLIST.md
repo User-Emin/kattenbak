@@ -21,7 +21,7 @@
 **Verification:**
 ```bash
 # Check for secrets in codebase
-grep -r "Pursangue66@" --exclude-dir=node_modules --exclude-dir=.git .
+grep -r "<server-password>" --exclude-dir=node_modules --exclude-dir=.git .
 # Should return: nothing
 
 # Check .gitignore

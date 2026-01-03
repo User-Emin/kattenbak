@@ -177,7 +177,7 @@ git push origin main
 ```bash
 # SSH naar server
 ssh root@185.224.139.74
-# Password: Pursangue66@
+# Password: <server-password>
 
 # Navigate naar project
 cd /var/www/catsupply

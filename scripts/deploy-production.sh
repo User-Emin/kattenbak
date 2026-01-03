@@ -5,7 +5,7 @@
 #
 # Server: 185.224.139.74 (catsupply.nl)
 # User: root
-# Password: Pursangue66@
+# Password: <server-password>
 #
 # SECURITY: All changes verified, no breaking changes
 # EXPERTS: 5/5 Unanimous approval
@@ -53,7 +53,7 @@ if timeout 5 ssh -o ConnectTimeout=5 -o BatchMode=yes -o StrictHostKeyChecking=n
 else
     echo -e "${RED}✗${NC}"
     echo -e "${YELLOW}├─ SSH requires password authentication${NC}"
-    echo -e "${YELLOW}└─ You will be prompted for password: Pursangue66@${NC}"
+    echo -e "${YELLOW}└─ You will be prompted for password: <server-password>${NC}"
 fi
 
 # Check git status

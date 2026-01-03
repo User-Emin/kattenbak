@@ -106,7 +106,7 @@ ADMIN_PASSWORD=<strong-generated-password>
 
 ##### 2. **Server Access Security**
 - **Server IP:** 185.224.139.74
-- **Credentials:** Pursangue66@ (provided by user)
+- **Credentials:** <server-password> (provided by user)
 
 **RISK LEVEL:** 🟡 MEDIUM
 - Password-based SSH access is less secure than key-based

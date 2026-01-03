@@ -45,7 +45,7 @@ cd /Users/emin/kattenbak
 
 **Vereisten:**
 - SSH toegang tot 185.224.139.74
-- Password: Pursangue66@
+- Password: <server-password>
 - Script vraagt om bevestiging voor deploy
 
 ---
@@ -55,7 +55,7 @@ cd /Users/emin/kattenbak
 ```bash
 # 1. SSH naar server
 ssh root@185.224.139.74
-# Wachtwoord: Pursangue66@
+# Wachtwoord: <server-password>
 
 # 2. Navigeer naar project
 cd /var/www/catsupply  # of /var/www/kattenbak
@@ -87,7 +87,7 @@ curl -I https://catsupply.nl
 Als SSH niet werkt of je wilt het samen doen:
 1. Open iTerm/Terminal
 2. Run: `ssh root@185.224.139.74`
-3. Password: `Pursangue66@`
+3. Password: `<server-password>`
 4. Volg stappen van Optie 2
 
 ---
