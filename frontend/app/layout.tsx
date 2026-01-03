@@ -47,9 +47,10 @@ export default function RootLayout({
         <UIProvider>
           <CartProvider>
             <div className="flex flex-col min-h-screen">
+              {/* Header & USP Banner NIET op homepage - hero video moet direct lopen */}
               <Header />
+              {/* USP Banner alleen op non-homepage pagina's */}
               <UspBanner />
-              {/* Geen spacer meer nodig - navbar is sticky top-0 edge-to-edge */}
               <main className="flex-1">{children}</main>
               <Footer />
             </div>
