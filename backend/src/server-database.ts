@@ -429,15 +429,53 @@ app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
 // ADMIN: Update product
 app.put('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
   try {
+    // Remove read-only fields that should not be updated
+    const { 
+      id, 
+      createdAt, 
+      updatedAt, 
+      publishedAt,
+      category,  // Remove nested objects
+      variants,  // Variants are updated separately
+      orderItems,
+      ...updateData 
+    } = req.body as any;
+    
+    // Clean undefined/null values (keep explicit null for optional fields)
+    const cleanData: any = {};
+    Object.keys(updateData).forEach(key => {
+      if (updateData[key] !== undefined) {
+        cleanData[key] = updateData[key];
+      }
+    });
+    
+    // Get existing product for comparison
+    const existing = await prisma.product.findUnique({
+      where: { id: req.params.id }
+    });
+    
+    if (!existing) {
+      return res.status(404).json(error('Product niet gevonden'));
+    }
+    
+    // Update product with clean data
     const product = await prisma.product.update({
       where: { id: req.params.id },
-      data: req.body,
+      data: cleanData,
+      include: {
+        category: true,
+        variants: true
+      }
     });
 
+    // Sanitize for response (convert Decimals)
+    const sanitizedProduct = sanitizeProduct(product);
+
     console.log(`✅ Admin updated product: ${product.name}`);
-    res.json(success(product));
+    res.json(success(sanitizedProduct));
   } catch (err: any) {
-    console.error('Admin update product error:', err.message);
+    console.error('Admin update product error:', err);
+    console.error('Request body:', JSON.stringify(req.body, null, 2));
     res.status(500).json(error('Could not update product'));
   }
 });
