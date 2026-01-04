@@ -5,7 +5,7 @@
  * - Add/Edit/Delete variants
  * - Color picker
  * - Stock management per variant
- * - Images per variant
+ * - Images per variant (Coolblue-style!)
  */
 
 'use client';
@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { ImageUpload } from '@/components/image-upload';
 import type { ProductVariant } from '@/types/product';
 
 interface VariantManagerProps {
@@ -188,6 +189,23 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
               </div>
             </div>
 
+            {/* ✅ COOLBLUE-STYLE: Variant Images Upload */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">
+                🎨 Variant Afbeeldingen (Coolblue-style)
+              </label>
+              <ImageUpload
+                value={newVariant.images || []}
+                onChange={(images) =>
+                  setNewVariant({ ...newVariant, images })
+                }
+                maxImages={5}
+              />
+              <p className="text-xs text-muted-foreground mt-2">
+                💡 Upload aparte foto's voor deze kleurvariant. Deze worden getoond wanneer klant deze kleur selecteert.
+              </p>
+            </div>
+
             <div className="flex gap-2 justify-end">
               <Button
                 type="button"
@@ -285,6 +303,24 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
                     placeholder="Voorraad"
                   />
                 </div>
+
+                {/* ✅ COOLBLUE-STYLE: Edit Variant Images */}
+                <div>
+                  <label className="text-sm font-medium mb-2 block">
+                    🎨 Variant Afbeeldingen
+                  </label>
+                  <ImageUpload
+                    value={variant.images || []}
+                    onChange={(images) =>
+                      handleUpdate(variant.id, { images })
+                    }
+                    maxImages={5}
+                  />
+                  <p className="text-xs text-muted-foreground mt-2">
+                    💡 Deze foto's worden getoond wanneer klant deze kleur selecteert
+                  </p>
+                </div>
+
                 <div className="flex gap-2 justify-end">
                   <Button
                     type="button"
