@@ -575,6 +575,49 @@ app.get('/api/v1/admin/orders', async (req: Request, res: Response) => {
   }
 });
 
+// ✅ PUBLIC: Get order by ID (for success page)
+// SECURITY: Only returns minimal info (orderNumber, customerEmail, status)
+// No authentication required - order ID is the security token
+app.get('/api/v1/orders/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    // VALIDATION: Sanitize input
+    const sanitizedId = String(id).trim();
+    if (!sanitizedId) {
+      return res.status(400).json(error('Order ID is required'));
+    }
+
+    // Fetch order with minimal info (for privacy)
+    const order = await prisma.order.findUnique({
+      where: { id: sanitizedId },
+      select: {
+        id: true,
+        orderNumber: true,
+        customerEmail: true,
+        status: true,
+        createdAt: true,
+        total: true,
+      },
+    });
+
+    if (!order) {
+      return res.status(404).json(error('Order not found'));
+    }
+
+    // DEFENSIVE: Convert Decimals to Numbers
+    const sanitizedOrder = {
+      ...order,
+      total: toNumber(order.total),
+    };
+
+    res.json(success(sanitizedOrder));
+  } catch (err: any) {
+    console.error('Public order by ID error:', err.message);
+    res.status(500).json(error('Could not fetch order'));
+  }
+});
+
 // ADMIN: Get single order by ID
 app.get('/api/v1/admin/orders/:id', async (req: Request, res: Response) => {
   try {
