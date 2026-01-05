@@ -141,12 +141,28 @@ app.get('/api/v1/products/featured', async (req: Request, res: Response) => {
   }
 });
 
-// GET product by ID
+// GET product by ID or SLUG (smart detection)
+// ✅ WATERDICHT FIX: Detect slug vs ID - if contains dash, treat as slug
 app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
   try {
-    const product = await prisma.product.findUnique({
-      where: { id: req.params.id },
-    });
+    const identifier = req.params.id;
+    const isSlug = identifier.includes('-');
+    
+    const product = isSlug
+      ? await prisma.product.findUnique({
+          where: { slug: identifier },
+          include: {
+            category: true,
+            variants: { where: { isActive: true } }
+          }
+        })
+      : await prisma.product.findUnique({
+          where: { id: identifier },
+          include: {
+            category: true,
+            variants: { where: { isActive: true } }
+          }
+        });
 
     if (!product) {
       return res.status(404).json(error('Product not found'));
@@ -155,7 +171,7 @@ app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
     // DEFENSIVE: Sanitize product
     res.json(success(sanitizeProduct(product)));
   } catch (err: any) {
-    console.error('Product by ID error:', err.message);
+    console.error('Product by ID/Slug error:', err.message);
     res.status(500).json(error('Could not fetch product'));
   }
 });

@@ -73,7 +73,7 @@ export function ProductSpecsComparison() {
             >
               <div className="flex items-center gap-2.5 flex-1">
                 <Icon className="h-4 w-4 text-accent flex-shrink-0" />
-                <span className="font-medium text-sm text-gray-700">{spec.title}</span>
+                <span className="font-normal text-sm text-gray-800">{spec.title}</span>
               </div>
               
               <ChevronDown 
@@ -142,7 +142,7 @@ export function ProductSpecsComparison() {
             >
               <div className="flex items-center gap-2.5 flex-1">
                 <Icon className="h-4 w-4 text-accent flex-shrink-0" />
-                <span className="font-medium text-sm text-gray-700">{spec.title}</span>
+                <span className="font-normal text-sm text-gray-800">{spec.title}</span>
               </div>
               
               <ChevronDown 

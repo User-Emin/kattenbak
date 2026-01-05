@@ -30,7 +30,7 @@ module.exports = {
       instances: 1,
       env: {
         NODE_ENV: 'production',
-        PORT: 3000,
+        PORT: 3102,  // Changed from 3000 to 3102 to match nginx config
         NEXT_TELEMETRY_DISABLED: 1
       },
       error_file: '../logs/frontend-error.log',
@@ -50,7 +50,7 @@ module.exports = {
       instances: 1,
       env: {
         NODE_ENV: 'production',
-        PORT: 3200,
+        PORT: 3001,  // Changed from 3200 to 3001 to match actual admin port
         NEXT_TELEMETRY_DISABLED: 1
       },
       error_file: '../logs/admin-error.log',

@@ -75,9 +75,19 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
     setEditingId(null);
   };
 
-  // Handle delete variant
+  // Handle delete variant with confirmation
   const handleDelete = (id: string) => {
-    onChange(variants.filter((v) => v.id !== id));
+    const variant = variants.find((v) => v.id === id);
+    if (!variant) return;
+    
+    // ✅ SECURITY: Confirmation dialog prevents accidental deletion
+    const confirmed = window.confirm(
+      `Weet je zeker dat je variant "${variant.name}" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.`
+    );
+    
+    if (confirmed) {
+      onChange(variants.filter((v) => v.id !== id));
+    }
   };
 
   return (

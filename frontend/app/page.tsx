@@ -68,8 +68,12 @@ export default function HomePage() {
   // Product slug - single source
   const productSlug = product?.slug || SITE_CONFIG.DEFAULT_PRODUCT_SLUG;
 
-  // DRY: Static values
-  const hero = { title: 'Slimme Kattenbak', subtitle: 'Automatisch • Smart • Hygiënisch', image: IMAGE_CONFIG.hero.main };
+  // DRY: Static values - ✅ WATERDICHT: Use real product image instead of placeholder
+  const hero = { 
+    title: 'Slimme Kattenbak', 
+    subtitle: 'Automatisch • Smart • Hygiënisch', 
+    image: product?.images?.[0] || IMAGE_CONFIG.hero.main 
+  };
   const usps = {
     title: 'Waarom Deze Kattenbak?',
     feature1: { title: '10.5L Capaciteit', description: 'De grootste afvalbak in zijn klasse. Minder vaak legen betekent meer vrijheid voor jou.', image: IMAGE_CONFIG.usps.capacity.src },
@@ -205,15 +209,16 @@ export default function HomePage() {
           </div>
           
           {/* Video Player - EXACT ZOALS PRODUCT DETAIL: w-full aspect-video */}
-          {product?.videoUrl ? (
-            <VideoPlayer
-              videoUrl={product.videoUrl}
-              posterUrl={hero.image}
-              type="demo"
-              controls
-              className="w-full aspect-video rounded-sm overflow-hidden border border-gray-200"
-            />
-          ) : (
+          {/* ✅ WATERDICHT: Always show video, use product.videoUrl if available, else static path */}
+          <VideoPlayer
+            videoUrl={product?.videoUrl || '/uploads/videos/hero-demo.mp4'}
+            posterUrl={product?.images?.[0]}
+            type="demo"
+            controls
+            className="w-full aspect-video rounded-sm overflow-hidden border border-gray-200"
+          />
+          {/* FALLBACK REMOVED - VideoPlayer component handles empty state internally */}
+          {false && (
             /* Fallback: Video placeholder als geen video geüpload */
             <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 rounded-sm overflow-hidden border border-gray-200 group cursor-pointer">
               <div className="absolute inset-0 flex items-center justify-center">

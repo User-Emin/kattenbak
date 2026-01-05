@@ -40,29 +40,30 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         {/* ✅ PERFORMANCE: DNS prefetch & preconnect */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* ✅ URL BAR - DRY: Uses LAYOUT_CONFIG color */}
-        <meta name="theme-color" content="#415b6b" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        {/* ✅ Google Fonts: Edu VIC WA NT Beginner voor expressieve productnamen */}
+        <link href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        {/* ✅ URL BAR ORANJE - Klantgericht & opvallend */}
+        <meta name="theme-color" content="#f76402" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <title>Premium Zelfreinigende Kattenbak</title>
         <meta name="description" content="Automatische kattenbak met app-bediening en gezondheidsmonitoring" />
       </head>
       <body className="antialiased font-[family-name:var(--font-be-vietnam-pro)]">
         <UIProvider>
           <CartProvider>
-            {/* ✅ DRY: Spacer voor fixed header via padding-top */}
-            <div className="flex flex-col min-h-screen" style={{ paddingTop: !isHomePage ? `${LAYOUT_CONFIG.navbar.heightPx}px` : '0' }}>
-              {/* Header altijd zichtbaar (fixed top-0) */}
-              <Header />
-              
-              {/* ✅ DRY: USP Banner STICKY direct onder navbar - top = navbar height */}
+            {/* ✅ DRY: Spacer voor fixed header via padding-top - USP banner (40px desktop, 48px mobiel) + navbar (64px) */}
+            <div className="flex flex-col min-h-screen" style={{ paddingTop: !isHomePage ? '104px' : '0' }}>
+              {/* ✅ USP Banner BOVEN navbar - fixed top-0 */}
               {!isHomePage && (
-                <div 
-                  className="sticky z-40" 
-                  style={{ top: `${LAYOUT_CONFIG.navbar.heightPx}px` }}
-                >
-              <UspBanner />
+                <div className="fixed top-0 left-0 right-0 z-50">
+                  <UspBanner />
                 </div>
               )}
+              
+              {/* Header - fixed, ONDER USP banner als die er is (40px), anders op top-0 */}
+              <div className={isHomePage ? "fixed top-0 left-0 right-0 z-50" : "fixed left-0 right-0 z-40"} style={!isHomePage ? { top: '40px' } : {}}>
+                <Header />
+              </div>
               
               {/* Main content - NO MORE SPACER! */}
               <main className="flex-1">{children}</main>

@@ -15,7 +15,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -23,8 +23,12 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@/shared/*": ["../shared/*"]
+      "@/*": [
+        "./*"
+      ],
+      "@/shared/*": [
+        "../shared/*"
+      ]
     }
   },
   "include": [
@@ -38,4 +42,3 @@
     "node_modules"
   ]
 }
-

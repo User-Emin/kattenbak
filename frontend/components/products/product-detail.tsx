@@ -185,24 +185,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const discount = hasDiscount ? Math.round(((product.compareAtPrice! - finalPrice) / product.compareAtPrice!) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       {/* COOLBLUE: Mobiel edge-to-edge, desktop normaal */}
-      <div className="px-4 md:px-6 lg:px-10 pt-4 pb-0 bg-white max-w-[1400px] mx-auto">
-        {/* Breadcrumb */}
+      <div className="px-4 md:px-6 lg:px-10 pt-4 pb-0 max-w-[1400px] mx-auto">
+        {/* Breadcrumb - STRAK (links boven) */}
         <nav className="flex items-center mb-3">
-          <Link href="/" className="text-sm text-gray-600 hover:text-[#f76402] transition-colors font-light">
+          <Link href="/" className="text-sm text-gray-700 hover:text-[#f76402] transition-colors font-medium">
             Home
           </Link>
-          <span className="text-gray-400 mx-2 text-sm">/</span>
-          <span className="text-sm text-gray-500 font-light">{product.name}</span>
+          <span className="text-gray-400 mx-2 text-sm font-medium">/</span>
+          <span className="text-sm text-gray-800 font-medium">{product.name}</span>
         </nav>
-        
-        {/* Titel - DIRECT boven foto, geen margin onder */}
-        <h1 className="text-2xl font-light text-gray-900 mb-2">{product.name}</h1>
       </div>
 
-      {/* Grid DIRECT na titel - GEEN extra padding */}
-      <div className="px-4 md:px-6 lg:px-10 bg-white max-w-[1400px] mx-auto">
+      {/* Grid DIRECT na breadcrumb - GEEN titel hier */}
+      <div className="px-4 md:px-6 lg:px-10 max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 md:gap-8">
           {/* Product Images - DIRECT op achtergrond, geen vakje */}
           <div className="space-y-3">
@@ -272,13 +269,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
           {/* Info rechts */}
           <div className="space-y-6">
-            {/* Prijs - PROMINENT zoals Coolblue */}
-            <div className="space-y-1">
-              <div className="text-4xl font-bold text-black">{formatPrice(finalPrice)}</div>
-              <p className="text-sm text-gray-600">Incl. BTW</p>
+            {/* Productnaam - NORMAAL FONT */}
+            <div className="space-y-3">
+              <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 leading-tight">{product.name}</h1>
             </div>
 
-            {/* Color Selector - DIRECT OP ACHTERGROND */}
+            {/* Color Selector */}
             {product.variants && product.variants.length > 0 && (
               <div className="space-y-3">
                 <ColorSelector
@@ -294,37 +290,58 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             )}
 
-            {/* Add to Cart - COOLBLUE STYLE */}
-            <div className="space-y-3" ref={addToCartButtonRef}>
-              {/* COOLBLUE: Grote oranje button */}
+            {/* Prijs ONDER kleuropties - KLEINER */}
+            <div className="space-y-1">
+              <div className="text-2xl font-bold text-gray-900">{formatPrice(finalPrice)}</div>
+              <p className="text-xs font-normal text-gray-600">Incl. BTW • Gratis verzending • Direct leverbaar</p>
+            </div>
+
+            {/* Add to Cart - STRAK & CLEAN */}
+            <div className="space-y-4" ref={addToCartButtonRef}>
+              {/* GROTE PROMINENTE BUTTON - GEEN SHADOW, GEEN TRANSFORM */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding || product.stock === 0}
-                className="w-full h-14 bg-accent hover:bg-accent-dark text-white font-bold text-base px-6 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                className="w-full h-16 bg-[#f76402] hover:bg-[#e55a00] text-white font-black text-lg px-8 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isAdding ? 'Toevoegen...' : 'In winkelwagen'}
+                <div className="flex items-center justify-center gap-3">
+                  <ShoppingCart className="w-6 h-6" strokeWidth={2.5} />
+                  <span>{isAdding ? 'Wordt toegevoegd...' : 'In winkelwagen'}</span>
+                </div>
               </button>
               
-              {/* COOLBLUE USPs - klein + compact */}
-              <div className="space-y-1.5 text-sm text-gray-700 font-light">
-                <div className="flex items-center gap-2">
-                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span><strong className="font-normal text-gray-900">Morgen</strong> bezorgd</span>
+              {/* USP BANNER - LICHTE FONTS MET DIKKE ACCENTEN */}
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-3">
+                  <svg className="flex-shrink-0 w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-sm text-gray-700">Levertijd <span className="font-bold text-gray-900">1-2 werkdagen</span></span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span>Je krijgt <strong className="font-normal text-gray-900">30 dagen</strong> bedenktijd</span>
+                <div className="flex items-center gap-3">
+                  <svg className="flex-shrink-0 w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-sm text-gray-700"><span className="font-bold text-gray-900">30 dagen</span> bedenktijd • <span className="font-bold text-gray-900">Gratis</span> retour</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                  <span><strong className="font-normal text-gray-900">Gratis</strong> ruilen binnen 30 dagen</span>
+                <div className="flex items-center gap-3">
+                  <svg className="flex-shrink-0 w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-sm text-gray-700"><span className="font-bold text-gray-900">1 jaar</span> garantie • <span className="font-bold text-gray-900">Altijd</span> betrouwbaar</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <svg className="flex-shrink-0 w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-sm text-gray-700">Inclusief: <span className="font-bold text-gray-900">1 rol strooisel + geurblokje</span></span>
                 </div>
               </div>
             </div>
 
-            {/* Product Specs - RUSTIGE FONTS */}
+            {/* Product Specs - DIKKER */}
             <div className="space-y-3">
-              <h3 className="font-normal text-sm text-black">Product specificaties</h3>
+              <h3 className="font-bold text-base text-gray-900">Product specificaties</h3>
               <ProductSpecsComparison />
             </div>
           </div>
@@ -332,75 +349,115 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
         <Separator variant="float" spacing="xl" />
 
-        {/* DRY: Product Demo Video - BOVEN Productinformatie */}
+        {/* DRY: Product Demo Video - STRAK */}
         {product.videoUrl && (
           <div className="max-w-4xl mx-auto mb-12">
-            <SectionHeading className="mb-6" size="sm">
+            <h2 className="text-2xl md:text-3xl font-normal text-gray-900 mb-6 text-center">
               Zie Het in Actie
-            </SectionHeading>
+            </h2>
             <VideoPlayer
               videoUrl={product.videoUrl}
               posterUrl={product.images?.[0] || ''}
               type="product"
               controls
-              className="w-full aspect-video rounded-sm overflow-hidden border border-gray-200"
+              className="w-full aspect-video rounded-lg overflow-hidden border border-gray-200"
             />
           </div>
         )}
 
-        {/* Product Description - COOLBLUE "PRODUCTINFORMATIE" */}
+        {/* Product Description - STRAK & RELEVANT */}
         <div className="max-w-4xl mx-auto mb-12">
-          <SectionHeading className="mb-6" size="sm">
+          <h2 className="text-2xl md:text-3xl font-normal text-gray-900 mb-6 text-center">
             Productinformatie
-          </SectionHeading>
+          </h2>
           
-          {/* Plus- en minpunten - RUSTIGE FONTS */}
-          <div className="mb-8 p-6 bg-gray-50 rounded-sm">
+          {/* Plus- en minpunten - STRAK met lichte achtergrond */}
+          <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-100">
             
-            {/* Product Highlights (PROs/CONs) - RUSTIGE FONTS */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <div className="flex items-start gap-2">
-                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-900 font-light">Automatische reiniging na elk gebruik bespaart tijd</span>
+            {/* Product Highlights (PROs/CONs) - CUSTOM VECTORS */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <h3 className="text-base font-bold text-gray-900 mb-4">Pluspunten</h3>
+                <div className="flex items-start gap-3">
+                  <svg className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-sm text-gray-900 font-medium">Automatische reiniging na elk gebruik bespaart tijd</span>
                 </div>
-                <div className="flex items-start gap-2">
-                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-900 font-light">Fluisterstille werking (32dB) stoort niet</span>
+                <div className="flex items-start gap-3">
+                  <svg className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-sm text-gray-900 font-medium">Fluisterstille werking (32dB) stoort niet</span>
                 </div>
-                <div className="flex items-start gap-2">
-                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-900 font-light">App bediening voor real-time monitoring</span>
+                <div className="flex items-start gap-3">
+                  <svg className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-sm text-gray-900 font-medium">App bediening voor real-time monitoring</span>
                 </div>
               </div>
-              <div className="space-y-2">
-                <div className="flex items-start gap-2">
-                  <span className="h-5 w-5 text-gray-800 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
-                  <span className="text-sm text-gray-900 font-light">Geschikt voor katten tot 7kg</span>
+              <div className="space-y-3">
+                <h3 className="text-base font-bold text-gray-900 mb-4">Let op</h3>
+                <div className="flex items-start gap-3">
+                  <svg className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  <span className="text-sm text-gray-900 font-medium">Geschikt voor katten tot 7kg (max 12.5kg)</span>
                 </div>
-                <div className="flex items-start gap-2">
-                  <span className="h-5 w-5 text-gray-800 flex-shrink-0 mt-0.5 flex items-center justify-center text-xl">−</span>
-                  <span className="text-sm text-gray-900 font-light">Vereist regelmatige lediging van afvalbak</span>
+                <div className="flex items-start gap-3">
+                  <svg className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  <span className="text-sm text-gray-900 font-medium">Niet geschikt voor kittens onder 6 maanden</span>
                 </div>
               </div>
             </div>
           </div>
           
-          {/* Omschrijving - RUSTIGE FONTS */}
+          {/* Veiligheidsinstructies - COMPACT */}
+          <div className="mb-8 p-4 bg-amber-50 rounded-lg border border-amber-200">
+            <h3 className="font-bold text-sm mb-3 text-gray-900 flex items-center gap-2">
+              <svg className="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Veiligheidsinstructies
+            </h3>
+            <ul className="space-y-1.5 text-xs text-gray-800">
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 font-bold mt-0.5">•</span>
+                <span>Niet geschikt voor kittens onder 6 maanden. Wen uw kat geleidelijk aan het apparaat.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 font-bold mt-0.5">•</span>
+                <span>Maximaal gewicht: 3.3-11.5KG (aanbevolen max 12.5KG voor optimale werking).</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 font-bold mt-0.5">•</span>
+                <span>Plaats op een stabiel, vlak oppervlak. Niet op verhoogde plaatsen vanwege valgevaar.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 font-bold mt-0.5">•</span>
+                <span>Gebruik het originele netsnoer en adapter. Niet onderdompelen in water.</span>
+              </li>
+            </ul>
+          </div>
+          
+          {/* Omschrijving - STRAK */}
           <div className="prose prose-sm max-w-none">
-            <h3 className="font-normal text-base mb-3 text-gray-900">Omschrijving</h3>
-            <p className="text-sm text-gray-700 leading-relaxed font-light">{product.description}</p>
+            <h3 className="font-bold text-base mb-4 text-gray-900">Omschrijving</h3>
+            <p className="text-sm text-gray-800 leading-relaxed font-normal">{product.description}</p>
           </div>
         </div>
 
         <Separator variant="float" spacing="xl" />
 
-        {/* Product USP Features - DRY: Same as homepage */}
+        {/* Product USP Features - STRAK */}
         <div className="max-w-5xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-3 text-center">
+          <h2 className="text-3xl md:text-4xl font-normal text-gray-900 mb-4 text-center">
             Waarom deze kattenbak?
           </h2>
-          <p className="text-lg text-gray-600 mb-10 text-center font-light">
+          <p className="text-base text-gray-700 mb-10 text-center font-medium">
             De twee belangrijkste features die het verschil maken
           </p>
           

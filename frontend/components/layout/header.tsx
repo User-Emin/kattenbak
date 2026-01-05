@@ -54,42 +54,26 @@ export function Header() {
 
   return (
     <>
-      {/* NAVBAR: VERBORGEN op homepage, ALLEEN TONEN BIJ SCROLLEN */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isHomePage && !isScrolled 
-          ? 'opacity-0 pointer-events-none -translate-y-full' 
-          : `${LAYOUT_CONFIG.navbar.background} ${LAYOUT_CONFIG.navbar.shadow} opacity-100 translate-y-0`
-      }`}>
+      {/* NAVBAR: ALTIJD WIT - CLEAN & PROFESSIONEEL - GEEN FIXED HIER (komt van parent) */}
+      <header className="bg-white shadow-sm">
         <div className="container mx-auto px-6 lg:px-10">
-          <div className={`flex items-center justify-between ${LAYOUT_CONFIG.navbar.height}`}>
-            {/* Logo - DYNAMIC SIZE met negatieve margin om uit te steken */}
-            <Link href="/" className={`flex items-center hover:opacity-90 transition ${LAYOUT_CONFIG.logo.negativeMargin} ${LAYOUT_CONFIG.logo.zIndex}`}>
-              <div className="text-white font-bold text-2xl tracking-tight">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link href="/" className="flex items-center hover:opacity-90 transition">
+              <div className="text-gray-900 font-bold text-2xl tracking-tight">
                 Cat<span className="text-[#f76402]">Supply</span>
               </div>
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
-              <Link href="/" className={`${
-                isHomePage && !isScrolled 
-                  ? 'text-white hover:text-white/80' 
-                  : 'text-white hover:text-white/80'
-              } transition font-medium text-base`}>
+              <Link href="/" className="text-gray-700 hover:text-[#f76402] transition font-medium text-base">
                 Home
               </Link>
-              <Link href="/over-ons" className={`${
-                isHomePage && !isScrolled 
-                  ? 'text-white hover:text-white/80' 
-                  : 'text-white hover:text-white/80'
-              } transition font-medium text-base`}>
+              <Link href="/over-ons" className="text-gray-700 hover:text-[#f76402] transition font-medium text-base">
                 Over Ons
               </Link>
-              <Link href="/contact" className={`${
-                isHomePage && !isScrolled 
-                  ? 'text-white hover:text-white/80' 
-                  : 'text-white hover:text-white/80'
-              } transition font-medium text-base`}>
+              <Link href="/contact" className="text-gray-700 hover:text-[#f76402] transition font-medium text-base">
                 Contact
               </Link>
             </nav>
@@ -103,7 +87,7 @@ export function Header() {
               aria-label="Winkelwagen"
               title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
             >
-              <ShoppingCart className="h-7 w-7 text-white" />
+              <ShoppingCart className="h-7 w-7 text-gray-900" />
                 {itemCount > 0 && (
                   <span className="absolute -top-2 -right-2 min-w-[22px] h-6 bg-[#f76402] text-white text-xs rounded-full flex items-center justify-center font-bold px-2">
                     {itemCount}
@@ -135,9 +119,9 @@ export function Header() {
                 aria-label="Menu"
               >
                 {isMobileMenuOpen ? (
-                  <X className="h-7 w-7 text-white" />
+                  <X className="h-7 w-7 text-gray-900" />
                 ) : (
-                  <Menu className="h-7 w-7 text-white" />
+                  <Menu className="h-7 w-7 text-gray-900" />
                 )}
               </button>
             </div>
@@ -145,15 +129,15 @@ export function Header() {
 
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <nav className="md:hidden pb-4 border-t border-white/20 mt-3 pt-4">
+            <nav className="md:hidden pb-4 border-t border-gray-200 mt-3 pt-4">
               <div className="flex flex-col gap-2">
-                <Link href="/" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/" className="text-gray-700 hover:text-[#f76402] transition font-medium px-4 py-3 hover:bg-gray-50 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Home
                 </Link>
-                <Link href="/over-ons" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/over-ons" className="text-gray-700 hover:text-[#f76402] transition font-medium px-4 py-3 hover:bg-gray-50 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Over Ons
                 </Link>
-                <Link href="/contact" className="text-white hover:text-white/80 transition font-medium px-4 py-3 hover:bg-white/10 rounded" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/contact" className="text-gray-700 hover:text-[#f76402] transition font-medium px-4 py-3 hover:bg-gray-50 rounded" onClick={() => setIsMobileMenuOpen(false)}>
                   Contact
                 </Link>
               </div>
