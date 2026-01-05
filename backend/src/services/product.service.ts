@@ -1,9 +1,9 @@
-import { prisma } from '@/config/database.config';
+import { prisma } from '../config/database.config';
 import { Product, Prisma } from '@prisma/client';
-import { NotFoundError, ValidationError } from '@/utils/errors.util';
-import { ProductFilters, PaginationParams } from '@/types';
-import { logger } from '@/config/logger.config';
-import { redis, RedisClient } from '@/config/redis.config';
+import { NotFoundError, ValidationError } from '../utils/errors.util';
+import { ProductFilters, PaginationParams } from '../types';
+import { logger } from '../config/logger.config';
+import { redis, RedisClient } from '../config/redis.config';
 
 /**
  * Enterprise Product Service

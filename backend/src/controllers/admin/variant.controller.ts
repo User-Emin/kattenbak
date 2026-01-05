@@ -4,8 +4,8 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-import { VariantService } from '@/services/variant.service';
-import { successResponse } from '@/utils/response.util';
+import { VariantService } from '../../services/variant.service';
+import { successResponse } from '../../utils/response.util';
 import { z } from 'zod';
 
 // DRY: Validation schemas

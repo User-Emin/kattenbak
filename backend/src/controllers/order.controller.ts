@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { OrderService } from '@/services/order.service';
-import { MollieService } from '@/services/mollie.service';
-import { successResponse } from '@/utils/response.util';
-import { env } from '@/config/env.config';
+import { OrderService } from '../services/order.service';
+import { MollieService } from '../services/mollie.service';
+import { successResponse } from '../utils/response.util';
+import { env } from '../config/env.config';
 
 /**
  * Order Controller

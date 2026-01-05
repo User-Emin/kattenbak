@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { MollieService } from '@/services/mollie.service';
-import { MyParcelService } from '@/services/myparcel.service';
-import { logger } from '@/config/logger.config';
-import { successResponse } from '@/utils/response.util';
+import { MollieService } from '../services/mollie.service';
+import { MyParcelService } from '../services/myparcel.service';
+import { logger } from '../config/logger.config';
+import { successResponse } from '../utils/response.util';
 
 /**
  * Webhook Controller

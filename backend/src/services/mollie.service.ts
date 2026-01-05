@@ -1,11 +1,11 @@
 import createMollieClient, { Payment as MolliePayment, PaymentMethod as MolliePaymentMethod } from '@mollie/api-client';
-import { prisma } from '@/config/database.config';
-import { env } from '@/config/env.config';
-import { logger } from '@/config/logger.config';
-import { NotFoundError, InternalServerError } from '@/utils/errors.util';
+import { prisma } from '../config/database.config';
+import { env } from '../config/env.config';
+import { logger } from '../config/logger.config';
+import { NotFoundError, InternalServerError } from '../utils/errors.util';
 import { Payment, PaymentStatus, PaymentMethod } from '@prisma/client';
-import { EmailService } from '@/services/email.service';
-import { MyParcelService } from '@/services/myparcel.service';
+import { EmailService } from './email.service';
+import { MyParcelService } from './myparcel.service';
 
 /**
  * Mollie Payment Service

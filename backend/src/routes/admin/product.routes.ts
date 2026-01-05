@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { getProduct, updateProduct } from '@/data/mock-products';
+import { getProduct, updateProduct } from '../../data/mock-products';
 
 const router = Router();
 

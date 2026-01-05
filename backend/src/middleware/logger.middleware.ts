@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { logger } from '@/config/logger.config';
-import { env } from '@/config/env.config';
+import { logger } from '../config/logger.config';
+import { env } from '../config/env.config';
 
 /**
  * Request logging middleware

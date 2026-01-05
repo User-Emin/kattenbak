@@ -2,14 +2,14 @@ module.exports = {
   apps: [
     {
       name: 'backend',
-      script: 'npx',
-      args: 'ts-node --transpile-only --files src/server-database.ts',  // Added --transpile-only to skip type checking
+      script: 'node_modules/.bin/ts-node',
+      args: '--transpile-only --files src/server.ts',
       cwd: './backend',
-      instances: 1,  // Changed from 2 to 1 (ts-node doesn't support cluster)
-      exec_mode: 'fork',  // Changed from cluster to fork
+      instances: 1,
+      exec_mode: 'fork',
       env: {
         NODE_ENV: 'production',
-        PORT: 3101  // Changed from 3100 to 3101 (actual backend port)
+        PORT: 3101
       },
       error_file: '../logs/backend-error.log',
       out_file: '../logs/backend-out.log',
@@ -19,18 +19,17 @@ module.exports = {
       autorestart: true,
       max_restarts: 10,
       min_uptime: '10s',
-      // Graceful shutdown
       kill_timeout: 5000
     },
     {
       name: 'frontend',
-      script: 'npm',
-      args: 'start',
+      script: '.next/standalone/frontend/server.js',  // Use Next.js standalone build (nested structure)
       cwd: './frontend',
       instances: 1,
       env: {
         NODE_ENV: 'production',
-        PORT: 3102,  // Changed from 3000 to 3102 to match nginx config
+        PORT: 3102,
+        HOSTNAME: '0.0.0.0',
         NEXT_TELEMETRY_DISABLED: 1
       },
       error_file: '../logs/frontend-error.log',
@@ -50,7 +49,7 @@ module.exports = {
       instances: 1,
       env: {
         NODE_ENV: 'production',
-        PORT: 3001,  // Changed from 3200 to 3001 to match actual admin port
+        PORT: 3001,
         NEXT_TELEMETRY_DISABLED: 1
       },
       error_file: '../logs/admin-error.log',
@@ -64,7 +63,6 @@ module.exports = {
     }
   ],
 
-  // Deployment configuration
   deploy: {
     production: {
       user: 'root',
@@ -78,4 +76,3 @@ module.exports = {
     }
   }
 };
-

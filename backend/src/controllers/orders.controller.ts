@@ -4,10 +4,10 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-import { logger } from '@/config/logger.config';
+import { logger } from '../config/logger.config';
 import { createMollieClient } from '@mollie/api-client';
-import { env } from '@/config/env.config';
-import { EmailService } from '@/services/email.service';
+import { env } from '../config/env.config';
+import { EmailService } from '../services/email.service';
 
 // DRY: In-memory mock orders (development)
 let ordersState: any[] = [];

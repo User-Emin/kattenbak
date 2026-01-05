@@ -3,7 +3,7 @@
  * CRUD operations for product variants
  */
 
-import { prisma } from '@/config/database.config';
+import { prisma } from '../config/database.config';
 
 export interface CreateVariantData {
   productId: string;

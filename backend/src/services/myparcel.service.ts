@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { prisma } from '@/config/database.config';
-import { env } from '@/config/env.config';
-import { logger } from '@/config/logger.config';
-import { NotFoundError, InternalServerError } from '@/utils/errors.util';
+import { prisma } from '../config/database.config';
+import { env } from '../config/env.config';
+import { logger } from '../config/logger.config';
+import { NotFoundError, InternalServerError } from '../utils/errors.util';
 import { Shipment, ShipmentStatus } from '@prisma/client';
 
 /**

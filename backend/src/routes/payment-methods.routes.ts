@@ -4,8 +4,8 @@
  */
 
 import { Router } from 'express';
-import { MollieService } from '@/services/mollie.service';
-import { logger } from '@/config/logger.config';
+import { MollieService } from '../services/mollie.service';
+import { logger } from '../config/logger.config';
 
 const router = Router();
 

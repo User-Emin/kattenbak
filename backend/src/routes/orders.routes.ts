@@ -5,16 +5,16 @@
  */
 
 import { Router, Request, Response, NextFunction } from 'express';
-import { OrderService } from '@/services/order.service';
-import { MollieService } from '@/services/mollie.service';
-import { WebhookController } from '@/controllers/webhook.controller';
-import { validateRequest } from '@/middleware/validation.middleware';
-import { successResponse } from '@/utils/response.util';
-import { env } from '@/config/env.config';
+import { OrderService } from '../services/order.service';
+import { MollieService } from '../services/mollie.service';
+import { WebhookController } from '../controllers/webhook.controller';
+import { validateRequest } from '../middleware/validation.middleware';
+import { successResponse } from '../utils/response.util';
+import { env } from '../config/env.config';
 import { z } from 'zod';
-import { logger } from '@/config/logger.config';
-import { EmailService } from '@/services/email.service';
-import { prisma } from '@/config/database.config';
+import { logger } from '../config/logger.config';
+import { EmailService } from '../services/email.service';
+import { prisma } from '../config/database.config';
 
 const router = Router();
 

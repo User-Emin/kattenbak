@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppError } from '@/utils/errors.util';
-import { logger } from '@/config/logger.config';
-import { env } from '@/config/env.config';
-import { errorResponse } from '@/utils/response.util';
+import { AppError } from '../utils/errors.util';
+import { logger } from '../config/logger.config';
+import { env } from '../config/env.config';
+import { errorResponse } from '../utils/response.util';
 
 /**
  * Global error handler middleware

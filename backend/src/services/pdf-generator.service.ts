@@ -1,6 +1,6 @@
 import PDFDocument from 'pdfkit';
-import { env } from '@/config/env.config';
-import { logger } from '@/config/logger.config';
+import { env } from '../config/env.config';
+import { logger } from '../config/logger.config';
 
 /**
  * PDF GENERATOR SERVICE - DRY & Dynamic

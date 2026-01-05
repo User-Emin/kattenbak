@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { ProductService } from '@/services/product.service';
-import { successResponse } from '@/utils/response.util';
+import { ProductService } from '../../services/product.service';
+import { successResponse } from '../../utils/response.util';
 
 /**
  * Admin Product Controller

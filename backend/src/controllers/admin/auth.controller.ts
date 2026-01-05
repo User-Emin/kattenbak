@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { generateToken, comparePasswords } from '@/utils/auth.util';
-import { successResponse } from '@/utils/response.util';
-import { UnauthorizedError } from '@/utils/errors.util';
-import { logger } from '@/config/logger.config';
+import { generateToken, comparePasswords } from '../../utils/auth.util';
+import { successResponse } from '../../utils/response.util';
+import { UnauthorizedError } from '../../utils/errors.util';
+import { logger } from '../../config/logger.config';
 
 /**
  * Admin Auth Controller - DATABASE VERSION

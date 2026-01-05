@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { env } from '@/config/env.config';
-import { logger } from '@/config/logger.config';
-import { InternalServerError, BadRequestError } from '@/utils/errors.util';
+import { env } from '../config/env.config';
+import { logger } from '../config/logger.config';
+import { InternalServerError, BadRequestError } from '../utils/errors.util';
 
 /**
  * MYPARCEL RETURN SERVICE - DRY & Enterprise

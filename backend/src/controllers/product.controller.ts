@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { ProductService } from '@/services/product.service';
-import { successResponse } from '@/utils/response.util';
-import { ProductFilters, PaginationParams } from '@/types';
+import { ProductService } from '../services/product.service';
+import { successResponse } from '../utils/response.util';
+import { ProductFilters, PaginationParams } from '../types';
 
 /**
  * Product Controller

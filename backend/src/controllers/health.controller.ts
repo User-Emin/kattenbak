@@ -4,8 +4,8 @@
  */
 
 import { Request, Response } from 'express';
-import { prisma } from '@/config/database.config';
-import { logger } from '@/config/logger.config';
+import { prisma } from '../config/database.config';
+import { logger } from '../config/logger.config';
 import os from 'os';
 import { exec } from 'child_process';
 import { promisify } from 'util';

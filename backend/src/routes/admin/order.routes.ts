@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { prisma } from '@/config/database.config';
-import { successResponse } from '@/utils/response.util';
-import { logger } from '@/config/logger.config';
+import { prisma } from '../../config/database.config';
+import { successResponse } from '../../utils/response.util';
+import { logger } from '../../config/logger.config';
 
 const router = Router();
 
@@ -38,10 +38,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
           },
           shippingAddress: true,
           billingAddress: true,
-          payments: {
-            orderBy: { createdAt: 'desc' },
-            take: 1,
-          },
+          payment: true, // ✅ FIXED: Changed from 'payments' to 'payment' (singular)
         },
         orderBy: { createdAt: 'desc' },
       }),
@@ -62,7 +59,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
       tax: Number(order.tax),
       shippingCost: Number(order.shippingCost),
       status: order.status,
-      paymentStatus: order.payments[0]?.status || 'PENDING',
+      paymentStatus: order.payment?.status || 'PENDING', // ✅ FIXED: Changed from 'payments[0]' to 'payment'
       shippingAddress: order.shippingAddress,
       billingAddress: order.billingAddress,
       items: order.items.map(item => ({
@@ -111,9 +108,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
         },
         shippingAddress: true,
         billingAddress: true,
-        payments: {
-          orderBy: { createdAt: 'desc' },
-        },
+        payment: true, // ✅ FIXED: Changed from 'payments' to 'payment' (singular)
       },
     });
 
@@ -138,7 +133,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
       shippingAddress: order.shippingAddress,
       billingAddress: order.billingAddress,
       items: order.items,
-      payments: order.payments,
+      payment: order.payment, // ✅ FIXED: Changed from 'payments' to 'payment' (singular)
       customerNotes: order.customerNotes,
       adminNotes: order.adminNotes,
       createdAt: order.createdAt.toISOString(),

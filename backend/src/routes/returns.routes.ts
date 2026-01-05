@@ -1,9 +1,9 @@
 import { Router, Request, Response } from 'express';
-import { MyParcelReturnService } from '@/services/myparcel-return.service';
-import { EmailService } from '@/services/email.service';
-import { PDFGeneratorService } from '@/services/pdf-generator.service';
-import { logger } from '@/config/logger.config';
-import { env } from '@/config/env.config';
+import { MyParcelReturnService } from '../services/myparcel-return.service';
+import { EmailService } from '../services/email.service';
+import { PDFGeneratorService } from '../services/pdf-generator.service';
+import { logger } from '../config/logger.config';
+import { env } from '../config/env.config';
 import axios from 'axios';
 
 const router = Router();

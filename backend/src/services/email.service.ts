@@ -1,7 +1,7 @@
-import { env } from '@/config/env.config';
-import { logger } from '@/config/logger.config';
+import { env } from '../config/env.config';
+import { logger } from '../config/logger.config';
 import nodemailer from 'nodemailer';
-import { InternalServerError } from '@/utils/errors.util';
+import { InternalServerError } from '../utils/errors.util';
 
 /**
  * EMAIL SERVICE - DRY & Multi-Provider

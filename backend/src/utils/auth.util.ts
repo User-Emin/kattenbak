@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { env } from '@/config/env.config';
+import { env } from '../config/env.config';
 
 // DRY: Type for JWT payload
 export interface JWTPayload {

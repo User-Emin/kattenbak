@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { Router, Request, Response } from 'express';
-import { env } from '@/config/env.config';
-import { logger } from '@/config/logger.config';
+import { env } from '../config/env.config';
+import { logger } from '../config/logger.config';
 
 const router = Router();
 

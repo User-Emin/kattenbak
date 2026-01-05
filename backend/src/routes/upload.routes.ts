@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { upload, processImage, validateImageDimensions } from '@/services/image.service';
-import { successResponse } from '@/utils/response.util';
+import { upload, processImage, validateImageDimensions } from '../services/image.service';
+import { successResponse } from '../utils/response.util';
 import { Request, Response, NextFunction } from 'express';
 
 const router = Router();

@@ -1,7 +1,7 @@
 "use client";
 
 import type { Metadata } from "next";
-import { Be_Vietnam_Pro } from "next/font/google";
+import { Comic_Neue } from "next/font/google";
 import { usePathname } from "next/navigation";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
@@ -13,11 +13,11 @@ import { Toaster } from "sonner";
 import { CookieConsentManager } from "@/components/ui/cookie-consent-manager";
 import { LAYOUT_CONFIG } from "@/lib/layout-config";
 
-// ✅ Be Vietnam Pro - Calm, expressive, modern e-commerce gevoel
-const beVietnamPro = Be_Vietnam_Pro({
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
+// ✅ Comic Neue - Expressieve, vrolijke font (vergelijkbaar met Comic Relief)
+const comicFont = Comic_Neue({
+  weight: ['300', '400', '700'],
   subsets: ["latin"],
-  variable: "--font-be-vietnam-pro",
+  variable: "--font-comic",
   display: "swap",
 });
 
@@ -35,7 +35,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   const isHomePage = pathname === '/';
 
   return (
-    <html lang="nl" className={beVietnamPro.variable}>
+    <html lang="nl" className={comicFont.variable}>
       <head>
         {/* ✅ PERFORMANCE: DNS prefetch & preconnect */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -48,7 +48,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <title>Premium Zelfreinigende Kattenbak</title>
         <meta name="description" content="Automatische kattenbak met app-bediening en gezondheidsmonitoring" />
       </head>
-      <body className="antialiased font-[family-name:var(--font-be-vietnam-pro)]">
+      <body className="antialiased font-[family-name:var(--font-comic)]">
         <UIProvider>
           <CartProvider>
             {/* ✅ DRY: Spacer voor fixed header via padding-top - USP banner (40px desktop, 48px mobiel) + navbar (64px) */}

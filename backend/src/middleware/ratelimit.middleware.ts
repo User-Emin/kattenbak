@@ -1,7 +1,7 @@
 import rateLimit from 'express-rate-limit';
-import { env } from '@/config/env.config';
-import { RedisClient } from '@/config/redis.config';
-import { logger } from '@/config/logger.config';
+import { env } from '../config/env.config';
+import { RedisClient } from '../config/redis.config';
+import { logger } from '../config/logger.config';
 
 /**
  * Rate limiter configuration
