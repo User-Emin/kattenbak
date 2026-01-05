@@ -51,7 +51,7 @@ jobs:
           npm audit --json > audit-frontend.json || true
       
       - name: 📊 Upload Audit Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: security-audits
           path: |
