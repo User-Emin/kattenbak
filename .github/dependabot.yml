@@ -1,0 +1,78 @@
+# ═══════════════════════════════════════════════════════════════
+# 🤖 DEPENDABOT - AUTOMATED DEPENDENCY UPDATES
+# ═══════════════════════════════════════════════════════════════
+
+version: 2
+updates:
+  # Backend (Node.js)
+  - package-ecosystem: "npm"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "User-Emin"
+    commit-message:
+      prefix: "🔒 [Security]"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "backend"
+      - "security"
+    ignore:
+      # Wait for stable releases
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    
+  # Frontend (Next.js)
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "User-Emin"
+    commit-message:
+      prefix: "🎨 [Frontend]"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "frontend"
+      - "security"
+    
+  # Admin Panel
+  - package-ecosystem: "npm"
+    directory: "/admin-next"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "User-Emin"
+    commit-message:
+      prefix: "⚙️  [Admin]"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "admin"
+      - "security"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    commit-message:
+      prefix: "🚀 [CI/CD]"
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "security"
+
