@@ -8,8 +8,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci && npm cache clean --force
+# Install dependencies (npm install auto-generates package-lock.json)
+RUN npm install && npm cache clean --force
 
 # Build the application
 FROM base AS builder

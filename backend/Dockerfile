@@ -9,8 +9,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Install dependencies
-RUN npm ci --only=production && \
+# Install dependencies (npm install auto-generates package-lock.json)
+RUN npm install --omit=dev && \
     npx prisma generate && \
     npm cache clean --force
 
