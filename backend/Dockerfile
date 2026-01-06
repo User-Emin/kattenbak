@@ -1,4 +1,3 @@
-# Backend Dockerfile - Production Ready
 FROM node:22-alpine AS base
 
 # Install dependencies only when needed
@@ -6,39 +5,44 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
-RUN npm ci --only=production
+COPY prisma ./prisma/
 
-# Build stage
+# Install dependencies
+RUN npm ci --only=production && \
+    npx prisma generate && \
+    npm cache clean --force
+
+# Build source code
 FROM base AS builder
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Build TypeScript
 RUN npm run build
 
-# Production stage
+# Production image
 FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV PORT=3101
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 backend
+# Copy built assets
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/prisma ./prisma
 
-COPY --from=builder --chown=backend:nodejs /app/dist ./dist
-COPY --from=builder --chown=backend:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=backend:nodejs /app/package.json ./package.json
-COPY --from=builder --chown=backend:nodejs /app/prisma ./prisma
+# Security: Run as non-root
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nodejs && \
+    chown -R nodejs:nodejs /app
 
-USER backend
+USER nodejs
 
-EXPOSE 3001
+EXPOSE 3101
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
-  CMD node -e "require('http').get('http://localhost:3001/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
-
-CMD ["npm", "start"]
-
-
+CMD ["node", "dist/server.js"]
