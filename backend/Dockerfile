@@ -9,8 +9,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Install dependencies (npm install auto-generates package-lock.json)
-RUN npm install --omit=dev && \
+# Install ALL dependencies (including devDeps for build)
+RUN npm install && \
     npx prisma generate && \
     npm cache clean --force
 
