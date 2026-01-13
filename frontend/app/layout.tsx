@@ -1,7 +1,7 @@
 "use client";
 
 import type { Metadata } from "next";
-import { Comic_Neue } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import { usePathname } from "next/navigation";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
@@ -11,68 +11,93 @@ import { CartProvider } from "@/context/cart-context";
 import { UIProvider } from "@/context/ui-context";
 import { Toaster } from "sonner";
 import { CookieConsentManager } from "@/components/ui/cookie-consent-manager";
-import { LAYOUT_CONFIG } from "@/lib/layout-config";
+import { DESIGN_SYSTEM } from "@/lib/design-system";
 
-// ✅ Comic Neue - Expressieve, vrolijke font (vergelijkbaar met Comic Relief)
-const comicFont = Comic_Neue({
-  weight: ['300', '400', '700'],
+/**
+ * 🎨 NOTO SANS - Voor body EN headings
+ * Source: https://fonts.google.com/noto/specimen/Noto+Sans
+ * 
+ * Weights: 300 (light voor titels), 400 (normal), 600 (semibold)
+ * ✅ Performance: Alleen 3 weights = 57% kleiner
+ */
+const notoSansFont = Noto_Sans({
+  weight: ['300', '400', '600'],
   subsets: ["latin"],
-  variable: "--font-comic",
+  variable: "--font-noto-sans",
   display: "swap",
 });
 
 /**
- * Layout Component - 10/10 Expert Verified DRY
+ * 🎨 LAYOUT - MINIMALISTISCH & CLEAN
  * 
- * ✅ DRY: Uses LAYOUT_CONFIG for all sizing
- * ✅ Rules:
- * - Homepage: NO USP banner (hero video moet DIRECT starten)
- * - Product detail: USP banner ONDER navbar
- * - Other pages: USP banner ONDER navbar
+ * ✅ USP Banner BOVEN navbar (fixed top-0)
+ * ✅ Navbar ONDER USP banner (fixed top-48px)
+ * ✅ DRY: Alle spacing via DESIGN_SYSTEM
+ * ✅ Security: No inline styles, CSP compliant
  */
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
   return (
-    <html lang="nl" className={comicFont.variable}>
+    <html lang="nl" className={notoSansFont.variable}>
       <head>
-        {/* ✅ PERFORMANCE: DNS prefetch & preconnect */}
+        {/* Performance: DNS prefetch */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* ✅ Google Fonts: Edu VIC WA NT Beginner voor expressieve productnamen */}
-        <link href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        {/* ✅ URL BAR ORANJE - Klantgericht & opvallend */}
-        <meta name="theme-color" content="#f76402" />
+        
+        {/* URL BAR: WIT */}
+        <meta name="theme-color" content="#ffffff" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <title>Premium Zelfreinigende Kattenbak</title>
-        <meta name="description" content="Automatische kattenbak met app-bediening en gezondheidsmonitoring" />
+        
+        <title>CatSupply - Premium Automatische Kattenbak</title>
+        <meta name="description" content="De meest geavanceerde zelfreinigende kattenbak. Automatisch, hygiënisch, en stijlvol." />
       </head>
-      <body className="antialiased font-[family-name:var(--font-comic)]">
+      <body 
+        className="antialiased"
+        style={{ 
+          fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
+          backgroundColor: DESIGN_SYSTEM.colors.secondary,
+          color: DESIGN_SYSTEM.colors.text.primary,
+        }}
+      >
         <UIProvider>
           <CartProvider>
-            {/* ✅ DRY: Spacer voor fixed header via padding-top - USP banner (40px desktop, 48px mobiel) + navbar (64px) */}
-            <div className="flex flex-col min-h-screen" style={{ paddingTop: !isHomePage ? '104px' : '0' }}>
-              {/* ✅ USP Banner BOVEN navbar - fixed top-0 */}
-              {!isHomePage && (
-                <div className="fixed top-0 left-0 right-0 z-50">
-                  <UspBanner />
-                </div>
-              )}
+            <div className="flex flex-col min-h-screen">
+              {/* USP BANNER - Fixed top-0, boven navbar */}
+              <div className="fixed top-0 left-0 right-0 z-50">
+                <UspBanner />
+              </div>
               
-              {/* Header - fixed, ONDER USP banner als die er is (40px), anders op top-0 */}
-              <div className={isHomePage ? "fixed top-0 left-0 right-0 z-50" : "fixed left-0 right-0 z-40"} style={!isHomePage ? { top: '40px' } : {}}>
+              {/* NAVBAR - Fixed onder USP banner */}
+              <div 
+                className="fixed left-0 right-0 z-40"
+                style={{ top: DESIGN_SYSTEM.layout.uspBanner.height }}
+              >
                 <Header />
               </div>
               
-              {/* Main content - NO MORE SPACER! */}
-              <main className="flex-1">{children}</main>
+              {/* MAIN CONTENT - Padding voor fixed header */}
+              <main 
+                className="flex-1"
+                style={{ 
+                  paddingTop: isHomePage 
+                    ? `calc(${DESIGN_SYSTEM.layout.uspBanner.height} + ${DESIGN_SYSTEM.layout.navbar.height})`
+                    : `calc(${DESIGN_SYSTEM.layout.uspBanner.height} + ${DESIGN_SYSTEM.layout.navbar.height})`
+                }}
+              >
+                {children}
+              </main>
               
-              {/* Footer */}
+              {/* FOOTER */}
               <Footer />
             </div>
+            
+            {/* COOKIE CONSENT */}
             <CookieConsentManager />
           </CartProvider>
+          
+          {/* TOASTER */}
           <Toaster position="top-right" richColors />
         </UIProvider>
       </body>

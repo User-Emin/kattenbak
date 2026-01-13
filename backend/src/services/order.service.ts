@@ -237,7 +237,7 @@ export class OrderService {
     const order = await prisma.order.update({
       where: { id },
       data: {
-        status,
+        status: status as any, // Cast to any for Prisma enum compatibility
         ...(status === 'DELIVERED' && { completedAt: new Date() }),
       },
       include: {

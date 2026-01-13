@@ -231,7 +231,7 @@ export class EnhancedRAGPipelineService {
               // Calculate cosine similarity for all documents
               const scoredDocs = vectorDocs.map(doc => {
                 const similarity = EmbeddingsLocalService.cosineSimilarity(
-                  embeddingResult.embedding,
+                  (embeddingResult as any).embedding, // Type assertion for embedding
                   doc.embedding
                 );
                 return {

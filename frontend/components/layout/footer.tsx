@@ -1,122 +1,250 @@
 import Link from "next/link";
-import Image from "next/image";
+import { DESIGN_SYSTEM } from "@/lib/design-system";
 
 /**
- * Footer Component - Responsive & DRY
- * MAXIMAAL DYNAMISCH: Geen hardcoded breakpoints, maintainable
+ * 🎨 FOOTER - MINIMALISTISCH & PROFESSIONEEL
+ * 
+ * ✅ Zwart background (consistent met brand)
+ * ✅ DRY: Alle styling via DESIGN_SYSTEM
+ * ✅ Clean typography
+ * ✅ Responsive grid
  */
 export function Footer() {
   return (
-    <footer className="bg-black text-gray-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {/* Logo - ECHT GROOT: Maximale impact */}
-        <div className="flex justify-center lg:justify-start mb-8">
-          <Image
-            src="/logo.png"
-            alt="Catsupply"
-            width={780}
-            height={216}
-            className="h-24 sm:h-28 w-auto opacity-90"
-          />
+    <footer 
+      style={{ 
+        backgroundColor: DESIGN_SYSTEM.colors.primary,
+        color: DESIGN_SYSTEM.colors.gray[400],
+      }}
+    >
+      <div 
+        className="mx-auto"
+        style={{
+          maxWidth: DESIGN_SYSTEM.layout.maxWidth['2xl'],
+          padding: `${DESIGN_SYSTEM.spacing[16]} ${DESIGN_SYSTEM.spacing.containerPadding}`,
+        }}
+      >
+        {/* Logo */}
+        <div className="flex justify-center lg:justify-start mb-12">
+          <div 
+            style={{
+              fontSize: DESIGN_SYSTEM.typography.fontSize['3xl'],
+              fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+              color: DESIGN_SYSTEM.colors.text.inverse,
+            }}
+          >
+            CatSupply
+          </div>
         </div>
 
-        {/* Footer Grid - DRY: 2 cols mobiel (centraal) → 4 cols desktop */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8 justify-items-center lg:justify-items-start">
-          {/* Column 1: About */}
-          <div className="text-center sm:text-left">
-            <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Over Ons</h3>
-            <ul className="space-y-2 text-xs sm:text-sm">
+        {/* Footer Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
+          {/* Column 1: Over Ons */}
+          <div>
+            <h3 
+              className="mb-4"
+              style={{
+                fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+                color: DESIGN_SYSTEM.colors.text.inverse,
+              }}
+            >
+              Over Ons
+            </h3>
+            <ul className="space-y-3">
               <li>
-                <Link href="/about" className="hover:text-white transition-colors">
+                <Link 
+                  href="/over-ons" 
+                  className="transition-colors hover:text-white"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                  }}
+                >
                   Ons Verhaal
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-white transition-colors">
+                <Link 
+                  href="/contact" 
+                  className="transition-colors hover:text-white"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                  }}
+                >
                   Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-white transition-colors">
-                  FAQ
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 2: Shop */}
-          <div className="text-center sm:text-left">
-            <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Winkel</h3>
-            <ul className="space-y-2 text-xs sm:text-sm">
+          {/* Column 2: Producten */}
+          <div>
+            <h3 
+              className="mb-4"
+              style={{
+                fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+                color: DESIGN_SYSTEM.colors.text.inverse,
+              }}
+            >
+              Producten
+            </h3>
+            <ul className="space-y-3">
               <li>
-                <Link href="/products" className="hover:text-white transition-colors">
-                  Producten
+                <Link 
+                  href="/producten" 
+                  className="transition-colors hover:text-white"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                  }}
+                >
+                  Alle Producten
                 </Link>
               </li>
               <li>
-                <Link href="/cart" className="hover:text-white transition-colors">
+                <Link 
+                  href="/cart" 
+                  className="transition-colors hover:text-white"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                  }}
+                >
                   Winkelwagen
-                </Link>
-              </li>
-              <li>
-                <Link href="/checkout" className="hover:text-white transition-colors">
-                  Afrekenen
                 </Link>
               </li>
             </ul>
           </div>
 
           {/* Column 3: Service */}
-          <div className="text-center sm:text-left">
-            <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Service</h3>
-            <ul className="space-y-2 text-xs sm:text-sm">
+          <div>
+            <h3 
+              className="mb-4"
+              style={{
+                fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+                color: DESIGN_SYSTEM.colors.text.inverse,
+              }}
+            >
+              Service
+            </h3>
+            <ul className="space-y-3">
               <li>
-                <Link href="/retourneren" className="hover:text-white transition-colors">
+                <Link 
+                  href="/retourneren" 
+                  className="transition-colors hover:text-white"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                  }}
+                >
                   Retourneren
                 </Link>
               </li>
               <li>
-                <Link href="/privacy-policy" className="hover:text-white transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/cookie-policy" className="hover:text-white transition-colors">
-                  Cookiebeleid
+                <Link 
+                  href="/privacy-policy" 
+                  className="transition-colors hover:text-white"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                  }}
+                >
+                  Privacy
                 </Link>
               </li>
             </ul>
           </div>
 
           {/* Column 4: Contact */}
-          <div className="text-center sm:text-left">
-            <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Contact</h3>
-            <ul className="space-y-2 text-xs sm:text-sm">
-              <li>info@kattenbak.nl</li>
-              <li>+31 20 123 4567</li>
-              <li className="pt-2 sm:pt-3">
-                <div className="text-gray-400 text-xs">
-                  Ma-Vr: 9:00 - 17:00
-                </div>
+          <div>
+            <h3 
+              className="mb-4"
+              style={{
+                fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+                color: DESIGN_SYSTEM.colors.text.inverse,
+              }}
+            >
+              Contact
+            </h3>
+            <ul className="space-y-3">
+              <li>
+                <a 
+                  href={`mailto:${DESIGN_SYSTEM.contact.email}`}
+                  className="transition-colors hover:text-white"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                  }}
+                >
+                  {DESIGN_SYSTEM.contact.email}
+                </a>
+              </li>
+              <li>
+                <a 
+                  href={`tel:${DESIGN_SYSTEM.contact.phone}`}
+                  className="transition-colors hover:text-white"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                  }}
+                >
+                  {DESIGN_SYSTEM.contact.phoneDisplay}
+                </a>
+              </li>
+              <li 
+                className="pt-2"
+                style={{
+                  fontSize: DESIGN_SYSTEM.typography.fontSize.xs,
+                  color: DESIGN_SYSTEM.colors.gray[500],
+                }}
+              >
+                Ma-Vr: 9:00 - 17:00
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar - Responsive */}
-        <div className="pt-6 sm:pt-8 border-t border-gray-800">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs sm:text-sm">
-            <p className="text-center sm:text-left">
-              © {new Date().getFullYear()} Kattenbak. Alle rechten voorbehouden.
-            </p>
-            <div className="flex gap-4 sm:gap-6">
-              <Link href="/algemene-voorwaarden" className="hover:text-white transition-colors">
-                Algemene Voorwaarden
-              </Link>
-              <Link href="/privacy-policy" className="hover:text-white transition-colors">
-                Privacy
-              </Link>
-            </div>
+        {/* Bottom Bar */}
+        <div 
+          className="pt-8 border-t flex flex-col sm:flex-row justify-between items-center gap-4"
+          style={{
+            borderColor: DESIGN_SYSTEM.colors.gray[800],
+          }}
+        >
+          <p 
+            style={{
+              fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+              fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+            }}
+          >
+            © {new Date().getFullYear()} CatSupply. Alle rechten voorbehouden.
+          </p>
+          <div className="flex gap-6">
+            <Link 
+              href="/algemene-voorwaarden" 
+              className="transition-colors hover:text-white"
+              style={{
+                fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+              }}
+            >
+              Voorwaarden
+            </Link>
+            <Link 
+              href="/privacy-policy" 
+              className="transition-colors hover:text-white"
+              style={{
+                fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+              }}
+            >
+              Privacy
+            </Link>
           </div>
         </div>
       </div>

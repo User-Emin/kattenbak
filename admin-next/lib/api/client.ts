@@ -70,9 +70,15 @@ apiClient.interceptors.response.use(
       url: error.config?.url || 'No URL',
       method: error.config?.method?.toUpperCase() || 'NO_METHOD',
       data: error.response?.data || null,
+      // Additional context for file uploads
+      contentType: error.config?.headers?.['Content-Type'] || 'unknown',
+      dataSize: error.config?.data ? 
+        (typeof error.config.data === 'string' ? error.config.data.length : 
+         error.config.data instanceof FormData ? 'FormData' : 'Object') : 'none',
     };
     
-    console.error('API Error interceptor:', errorDetails);
+    // Log with JSON.stringify to avoid {} issue
+    console.error('API Error interceptor:', JSON.stringify(errorDetails, null, 2));
     
     // DRY: Centralized error handling
     if (error.response) {

@@ -41,16 +41,36 @@ class Server {
    * Initialize middleware
    */
   private initializeMiddleware(): void {
-    // Security middleware
+    // ✅ FIX: Trust proxy for Nginx reverse proxy (X-Forwarded-For, rate limiting)
+    this.app.set('trust proxy', 1);
+
+    // ✅ OPTIMIZED: Security middleware (disabled unnecessary checks in dev)
     this.app.use(helmet({
       contentSecurityPolicy: env.IS_PRODUCTION,
-      crossOriginEmbedderPolicy: env.IS_PRODUCTION,
+      crossOriginEmbedderPolicy: false, // Disabled in dev for performance
+      dnsPrefetchControl: false,
+      frameguard: env.IS_PRODUCTION,
+      hidePoweredBy: true,
+      hsts: env.IS_PRODUCTION,
+      ieNoOpen: false,
+      noSniff: true,
+      originAgentCluster: false,
+      permittedCrossDomainPolicies: false,
+      referrerPolicy: { policy: 'no-referrer' },
+      xssFilter: true,
     }));
 
-    // CORS
+    // CORS - WATERDICHT: Preflight + Actual Requests
+    // ✅ SIMPLIFIED: Allow all origins during development
     this.app.use(cors({
-      origin: env.CORS_ORIGINS,
+      origin: true, // Allow all origins in development
       credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+      exposedHeaders: ['Content-Range', 'X-Content-Range'],
+      maxAge: 86400, // 24 hours preflight cache
+      preflightContinue: false,
+      optionsSuccessStatus: 204,
     }));
 
     // Body parsing

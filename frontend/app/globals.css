@@ -2,75 +2,95 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ✅ Be Vietnam Pro - Calm & Expressive Font System */
-/* https://fonts.google.com/specimen/Be+Vietnam+Pro */
+/**
+ * 🎨 GLOBAL STYLES - MINIMALISTISCH ZWART-WIT DESIGN
+ * 
+ * ✅ Noto Sans font system
+ * ✅ GEEN oranje meer - zwart-wit focus
+ * ✅ DRY: Alle button styles via design system
+ */
+
 @layer base {
   :root {
-    --font-primary: var(--font-be-vietnam-pro);
+    --font-primary: var(--font-noto-sans);
+    
+    /* Design tokens */
+    --color-primary: #000000;
+    --color-secondary: #ffffff;
+    --color-border: #e5e5e5;
+    --color-text-primary: #000000;
+    --color-text-secondary: #666666;
   }
   
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-white text-gray-900;
     font-family: var(--font-primary), system-ui, -apple-system, sans-serif;
     font-feature-settings: 'kern' 1, 'liga' 1;
+    font-weight: 400;
   }
 }
 
-/* ✅ COOLBLUE BUTTON STYLES - Subtiele ronde hoeken */
+/**
+ * BUTTON STYLES - MINIMALISTISCH
+ */
 @layer components {
   .btn {
-    @apply px-6 py-3 font-medium transition-all duration-200;
+    @apply px-6 py-3 font-semibold transition-all duration-200;
     @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    @apply rounded-sm; /* 4px subtiele hoek */
+    @apply rounded-sm;
   }
   
   .btn-primary {
-    @apply bg-[#f76402] text-white;
-    @apply hover:bg-[#e55a02] active:bg-[#d44f02];
-    @apply focus:ring-[#f76402];
+    @apply bg-black text-white;
+    @apply hover:opacity-80 active:opacity-90;
+    @apply focus:ring-black;
   }
   
   .btn-secondary {
-    @apply bg-[#415b6b] text-white;
-    @apply hover:bg-[#354852] active:bg-[#2a3a43];
-    @apply focus:ring-[#415b6b];
+    @apply bg-white text-black border border-black;
+    @apply hover:bg-black hover:text-white;
+    @apply focus:ring-black;
   }
   
-  /* ✅ Checkout/Cart buttons - ORANJE met witte tekst */
+  /* Checkout/Cart buttons - ZWART */
   .checkout-button,
   .cart-button {
-    @apply bg-[#f76402] text-white hover:bg-[#e55a02];
-    @apply rounded-sm; /* Subtiele hoek */
+    @apply bg-black text-white hover:opacity-80;
+    @apply rounded-sm;
   }
 }
 
-/* ✅ GLOBALE RONDE HOEKEN - Alle buttons en elementen */
+/**
+ * UTILITY CLASSES
+ */
 @layer utilities {
-  /* ALLE buttons krijgen ronde hoeken (tenzij expliciet rounded-none) */
+  /* Alle buttons krijgen subtiele rounded corners */
   button:not(.rounded-full):not(.rounded-none) {
-    border-radius: 0.25rem !important; /* 4px */
+    border-radius: 0.125rem !important; /* 2px - subtiel */
   }
   
-  /* ALLE input elementen krijgen ronde hoeken */
+  /* Alle input elementen krijgen subtiele rounded corners */
   input:not([type="radio"]):not([type="checkbox"]):not(.rounded-none),
   textarea:not(.rounded-none),
   select:not(.rounded-none) {
-    border-radius: 0.25rem !important; /* 4px */
+    border-radius: 0.125rem !important; /* 2px */
   }
   
-  /* ALLE cards en containers krijgen ronde hoeken */
+  /* Cards en containers - iets meer rounded */
   [class*="card"]:not(.rounded-none),
   [class*="container"]:not(.rounded-none) {
-    border-radius: 0.5rem !important; /* 8px */
+    border-radius: 0.25rem !important; /* 4px */
   }
 }
 
-/* DRY: Verberg hCaptcha badge (we tonen eigen disclosure tekst) */
+/* Verberg hCaptcha badge */
 .h-captcha {
   display: none !important;
 }
 
-/* CHAT BUTTON: "Klik mij" golf animaties */
+/**
+ * CHAT BUTTON ANIMATIES - BEHOUDEN
+ */
 @keyframes ping-slow {
   0% {
     transform: scale(1);

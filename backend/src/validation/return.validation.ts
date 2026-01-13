@@ -202,7 +202,7 @@ export function validateBody<T>(schema: z.ZodSchema<T>) {
       return res.status(400).json({
         success: false,
         error: 'Validation failed',
-        errors: result.errors,
+        errors: 'errors' in result ? result.errors : ['Validation error'],
       });
     }
 
@@ -224,7 +224,7 @@ export function validateQuery<T>(schema: z.ZodSchema<T>) {
       return res.status(400).json({
         success: false,
         error: 'Invalid query parameters',
-        errors: result.errors,
+        errors: 'errors' in result ? result.errors : ['Validation error'],
       });
     }
 

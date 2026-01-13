@@ -1,23 +1,49 @@
 /**
- * DEMO IMAGES - Sync met Backend
- * DRY: Zelfde SVG images als backend voor consistentie
+ * DEMO IMAGES - DYNAMISCH BEHEERBAAR
+ * DRY: Configureerbare SVG images
  * Self-contained, geen externe dependencies
  */
 
-// DRY: Default product image (identical to backend)
-export const DEFAULT_PRODUCT_IMAGE = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'%3E%3Crect fill='%2310b981' width='800' height='800'/%3E%3Cg fill='%23ffffff' font-family='Arial, sans-serif' font-size='48' font-weight='bold' text-anchor='middle'%3E%3Ctext x='400' y='350'%3EPremium%3C/text%3E%3Ctext x='400' y='420'%3EKattenbak%3C/text%3E%3C/g%3E%3C/svg%3E`;
+// DRY: Configuratie voor placeholder images - GEEN HARDCODE
+const PLACEHOLDER_CONFIG = {
+  colors: {
+    background: '#ffffff',  // WIT achtergrond (was #10b981 groen)
+    text: '#000000',        // ZWART tekst
+  },
+  dimensions: {
+    width: 800,
+    height: 800,
+  },
+  text: {
+    fontFamily: 'Arial, sans-serif',
+    fontSize: 48,
+    fontWeight: 'bold',
+  },
+};
 
-// DRY: Product image set (identical to backend)
+// DRY: Helper functie om SVG te genereren
+function generatePlaceholderSVG(text: string[], bgColor: string = PLACEHOLDER_CONFIG.colors.background): string {
+  const { width, height } = PLACEHOLDER_CONFIG.dimensions;
+  const { fontFamily, fontSize, fontWeight } = PLACEHOLDER_CONFIG.text;
+  const textColor = PLACEHOLDER_CONFIG.colors.text;
+  
+  const textElements = text.map((line, index) => 
+    `<text x='400' y='${350 + (index * 70)}'>${line}</text>`
+  ).join('');
+  
+  return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${width}' height='${height}' viewBox='0 0 ${width} ${height}'%3E%3Crect fill='${encodeURIComponent(bgColor)}' width='${width}' height='${height}'/%3E%3Cg fill='${encodeURIComponent(textColor)}' font-family='${fontFamily}' font-size='${fontSize}' font-weight='${fontWeight}' text-anchor='middle'%3E${textElements}%3C/g%3E%3C/svg%3E`;
+}
+
+// DRY: Default product image - DYNAMISCH
+export const DEFAULT_PRODUCT_IMAGE = generatePlaceholderSVG(['Premium', 'Kattenbak']);
+
+// DRY: Product image set - DYNAMISCH met individuele kleuren voor varianten
 export const DEMO_PRODUCT_IMAGES = {
   main: DEFAULT_PRODUCT_IMAGE,
-  
-  front: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'%3E%3Crect fill='%23ef4444' width='800' height='800'/%3E%3Cg fill='%23ffffff' font-family='Arial, sans-serif' font-size='48' font-weight='bold' text-anchor='middle'%3E%3Ctext x='400' y='380'%3EVooraanzicht%3C/text%3E%3C/g%3E%3C/svg%3E`,
-  
-  side: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'%3E%3Crect fill='%230ea5e9' width='800' height='800'/%3E%3Cg fill='%23ffffff' font-family='Arial, sans-serif' font-size='48' font-weight='bold' text-anchor='middle'%3E%3Ctext x='400' y='380'%3EZijaanzicht%3C/text%3E%3C/g%3E%3C/svg%3E`,
-  
-  inside: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'%3E%3Crect fill='%238b5cf6' width='800' height='800'/%3E%3Cg fill='%23ffffff' font-family='Arial, sans-serif' font-size='48' font-weight='bold' text-anchor='middle'%3E%3Ctext x='400' y='380'%3EBinnenkant%3C/text%3E%3C/g%3E%3C/svg%3E`,
-  
-  detail: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'%3E%3Crect fill='%23f97316' width='800' height='800'/%3E%3Cg fill='%23ffffff' font-family='Arial, sans-serif' font-size='48' font-weight='bold' text-anchor='middle'%3E%3Ctext x='400' y='380'%3EDetail%3C/text%3E%3C/g%3E%3C/svg%3E`,
+  front: generatePlaceholderSVG(['Vooraanzicht'], PLACEHOLDER_CONFIG.colors.background),
+  side: generatePlaceholderSVG(['Zijaanzicht'], PLACEHOLDER_CONFIG.colors.background),
+  inside: generatePlaceholderSVG(['Binnenkant'], PLACEHOLDER_CONFIG.colors.background),
+  detail: generatePlaceholderSVG(['Detail'], PLACEHOLDER_CONFIG.colors.background),
 };
 
 // DRY: Get demo images as array

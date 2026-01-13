@@ -121,7 +121,7 @@ export default function LoginPage() {
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
                           {...field}
-                          placeholder="admin@localhost"
+                          placeholder="admin@catsupply.nl"
                           className="pl-10"
                           disabled={isLoading}
                           autoComplete="email"
@@ -172,7 +172,7 @@ export default function LoginPage() {
           
           <div className="mt-6 p-3 bg-muted/50 rounded-lg text-xs text-muted-foreground">
             <p className="font-medium mb-1">Development credentials:</p>
-            <p>Email: admin@localhost</p>
+            <p>Email: admin@catsupply.nl</p>
             <p>Password: admin123</p>
           </div>
         </CardContent>

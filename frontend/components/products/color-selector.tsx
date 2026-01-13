@@ -21,11 +21,11 @@ export function ColorSelector({ variants, selectedVariant, onSelect }: ColorSele
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-gray-700">
-          Kleur: <span className="text-gray-900">{selectedVariant?.colorName || 'Selecteer'}</span>
+        <label className="text-base font-semibold text-gray-900">
+          Kleur — <span className="font-normal text-gray-700">{selectedVariant?.colorName || 'Selecteer'}</span>
         </label>
         {selectedVariant && selectedVariant.price !== 0 && (
-          <span className="text-sm text-gray-600">
+          <span className="text-sm font-semibold text-gray-900">
             {selectedVariant.price > 0 ? '+' : ''}€{Math.abs(selectedVariant.price).toFixed(2)}
           </span>
         )}
@@ -33,7 +33,7 @@ export function ColorSelector({ variants, selectedVariant, onSelect }: ColorSele
       
       <div className="flex flex-wrap gap-3">
         {variants.map((variant) => {
-          // ✅ FIX: Show variant image in square if available, otherwise fallback to colorHex
+          // ✅ PERGOLUX STYLE: Ronde kleur buttons
           const hasImage = variant.images && variant.images.length > 0;
           const variantImage = hasImage ? variant.images[0] : null;
           
@@ -43,11 +43,11 @@ export function ColorSelector({ variants, selectedVariant, onSelect }: ColorSele
               type="button"
               onClick={() => onSelect(variant)}
               className={`
-                relative w-12 h-12 rounded border-2 transition-all overflow-hidden
+                relative w-14 h-14 rounded-full border-3 transition-all overflow-hidden
                 ${
                   selectedVariant?.id === variant.id
-                    ? 'border-brand shadow-lg scale-110'
-                    : 'border-gray-300 hover:border-gray-400 hover:scale-105'
+                    ? 'border-gray-900 ring-2 ring-gray-900 ring-offset-2'
+                    : 'border-gray-300 hover:border-gray-500'
                 }
                 ${variant.stock === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
               `}
@@ -66,8 +66,8 @@ export function ColorSelector({ variants, selectedVariant, onSelect }: ColorSele
               )}
               
               {selectedVariant?.id === variant.id && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/10">
-                  <Check className="w-6 h-6 text-white drop-shadow-lg" strokeWidth={3} />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                  <Check className="w-7 h-7 text-white drop-shadow-lg" strokeWidth={3} />
                 </div>
               )}
               {variant.stock === 0 && (
@@ -81,13 +81,13 @@ export function ColorSelector({ variants, selectedVariant, onSelect }: ColorSele
       </div>
       
       {selectedVariant && selectedVariant.stock < 5 && selectedVariant.stock > 0 && (
-        <p className="text-sm text-orange-600">
+        <p className="text-sm font-semibold text-blue-600">
           Nog maar {selectedVariant.stock} op voorraad!
         </p>
       )}
       
       {selectedVariant && selectedVariant.stock === 0 && (
-        <p className="text-sm text-red-600">
+        <p className="text-sm font-semibold text-red-600">
           Deze kleur is momenteel uitverkocht
         </p>
       )}

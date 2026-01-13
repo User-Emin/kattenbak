@@ -4,6 +4,7 @@
  */
 
 import { prisma } from '../config/database.config';
+import { AppError } from '../middleware/error.middleware';
 
 export interface CreateVariantData {
   productId: string;

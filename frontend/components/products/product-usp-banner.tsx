@@ -1,11 +1,13 @@
 "use client";
 
 import { Shield, Truck, Lock } from "lucide-react";
+import { DESIGN_SYSTEM } from "@/lib/design-system";
 
 /**
  * KLANTGERICHTE USP BANNER - ONDER NAVBAR
- * WIT met ORANJE accenten en ZWARTE tekst
+ * WIT met BLAUW accenten (primary) en ZWARTE tekst
  * Altijd alle 3 zichtbaar, responsive
+ * ✅ DRY: Dynamisch via DESIGN_SYSTEM - GEEN hardcoded kleuren
  */
 export function ProductUspBanner() {
   
@@ -38,11 +40,11 @@ export function ProductUspBanner() {
                 key={index}
                 className="flex items-center gap-2.5"
               >
-                <div className="flex-shrink-0 w-6 h-6 text-[#f76402] flex items-center justify-center">
+                <div className="flex-shrink-0 w-6 h-6 text-black flex items-center justify-center">
                   <Icon className="w-6 h-6" strokeWidth={2.5} />
                 </div>
                 <span className="text-base md:text-lg whitespace-nowrap">
-                  <span className="font-extrabold text-[#f76402]">{usp.highlight}</span>{" "}
+                  <span className="font-extrabold text-black">{usp.highlight}</span>{" "}
                   <span className="font-normal text-gray-900">{usp.text}</span>
                 </span>
               </div>

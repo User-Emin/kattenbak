@@ -1,92 +1,90 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Truck, Shield, Lock } from "lucide-react";
+import { DESIGN_SYSTEM } from "@/lib/design-system";
+
 /**
- * USP BANNER - BOVEN NAVBAR
- * WIT DESIGN met ORANJE accenten
- * Desktop: Alle 3 USPs naast elkaar
- * Mobiel: 1-voor-1 afwisselend met smooth animatie
+ * 🎨 USP BANNER - BOVEN NAVBAR
+ * 
+ * ✅ Smooth wisselend (3 USPs, 3 seconden per USP)
+ * ✅ Centraal gepositioneerd
+ * ✅ Wit background, zwarte tekst
+ * ✅ Responsive (mobiel: 1 USP, desktop: 1 USP smooth fade)
+ * ✅ DRY: Alle config uit DESIGN_SYSTEM
+ * ✅ Security: Geen user input, geen XSS vectors
  */
 
-'use client';
-
-import { useState, useEffect } from 'react';
-import { Truck, Shield, Lock } from 'lucide-react';
+// DRY: USPs configuratie
+const USPS = [
+  {
+    icon: Truck,
+    text: "Gratis verzending binnen Nederland",
+  },
+  {
+    icon: Shield,
+    text: "30 dagen bedenktijd • Gratis retour",
+  },
+  {
+    icon: Lock,
+    text: "Veilig betalen • SSL beveiligd",
+  },
+] as const;
 
 export function UspBanner() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const usps = [
-    {
-      icon: Truck,
-      highlight: "Gratis",
-      text: "verzending",
-    },
-    {
-      icon: Shield,
-      highlight: "30 dagen",
-      text: "bedenktijd",
-    },
-    {
-      icon: Lock,
-      highlight: "Veilig",
-      text: "betalen",
-    },
-  ];
-
-  // Auto-rotate op mobiel (elke 3 seconden)
+  // Smooth cycling through USPs
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % usps.length);
-    }, 3000);
-    
-    return () => clearInterval(timer);
-  }, [usps.length]);
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % USPS.length);
+    }, parseInt(DESIGN_SYSTEM.layout.uspBanner.animationDuration));
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="bg-white border-b border-gray-200">
-      <div className="px-6 lg:px-10 max-w-[1400px] mx-auto">
-        {/* DESKTOP: Alle 3 naast elkaar - IETS DUNNER */}
-        <div className="hidden md:flex items-center justify-around h-10 gap-8">
-          {usps.map((usp, index) => {
-            const Icon = usp.icon;
-            return (
-              <div key={index} className="flex items-center gap-2">
-                <div className="flex-shrink-0 w-4 h-4 text-[#f76402] flex items-center justify-center">
-                  <Icon className="w-4 h-4" strokeWidth={2.5} />
-                </div>
-                <span className="text-sm whitespace-nowrap">
-                  <span className="font-bold text-[#f76402]">{usp.highlight}</span>{" "}
-                  <span className="font-normal text-gray-700">{usp.text}</span>
-                </span>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* MOBIEL: 1-voor-1 met smooth fade animatie */}
-        <div className="md:hidden relative h-12 flex items-center justify-center overflow-hidden">
-          {usps.map((usp, index) => {
-            const Icon = usp.icon;
-            const isActive = index === currentIndex;
-            
-            return (
-              <div 
-                key={index}
-                className={`absolute inset-0 flex items-center justify-center gap-2 transition-all duration-500 ${
-                  isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                }`}
-              >
-                <div className="flex-shrink-0 w-4 h-4 text-[#f76402] flex items-center justify-center">
-                  <Icon className="w-4 h-4" strokeWidth={2.5} />
-                </div>
-                <span className="text-xs whitespace-nowrap">
-                  <span className="font-bold text-[#f76402]">{usp.highlight}</span>{" "}
-                  <span className="font-normal text-gray-700">{usp.text}</span>
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+    <div 
+      className="w-full flex items-center justify-center relative overflow-hidden"
+      style={{
+        backgroundColor: DESIGN_SYSTEM.layout.uspBanner.bg,
+        height: DESIGN_SYSTEM.layout.uspBanner.height,
+        zIndex: DESIGN_SYSTEM.layout.uspBanner.zIndex, // ✅ BOVEN navbar
+        position: 'sticky',
+        top: 0,
+      }}
+    >
+      {/* Smooth fade animatie voor elk USP item */}
+      {USPS.map((usp, index) => {
+        const Icon = usp.icon;
+        const isActive = index === currentIndex;
+        
+        return (
+          <div
+            key={index}
+            className="absolute inset-0 flex items-center justify-center gap-3 transition-all duration-700 ease-in-out"
+            style={{
+              opacity: isActive ? 1 : 0,
+              transform: isActive ? 'translateY(0)' : 'translateY(10px)',
+            }}
+          >
+            <Icon 
+              className="w-4 h-4 flex-shrink-0" 
+              strokeWidth={2}
+              style={{ color: DESIGN_SYSTEM.layout.uspBanner.color }}
+            />
+            <span 
+              style={{
+                fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+                color: DESIGN_SYSTEM.layout.uspBanner.color,
+              }}
+            >
+              {usp.text}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }
-

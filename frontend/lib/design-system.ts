@@ -1,0 +1,271 @@
+/**
+ * 🎨 DESIGN SYSTEM - CENTRALE CONFIGURATIE
+ * 
+ * Geïnspireerd door: pergolux.nl
+ * - Minimalistisch zwart-wit design
+ * - Premium positioning
+ * - Maximum witruimte
+ * - Dunne maar leesbare typography
+ * 
+ * ✅ DRY: Single source of truth voor alle design tokens
+ * ✅ Type-safe: Alle values zijn strictly typed
+ * ✅ Maintainable: 1 plek om design te wijzigen
+ */
+
+export const DESIGN_SYSTEM = {
+  /**
+   * KLEUREN - Minimalistisch zwart-wit palet
+   */
+  colors: {
+    // Primary colors
+    primary: '#000000',       // Zwart - main text, borders
+    secondary: '#ffffff',     // Wit - backgrounds, inverse text
+    
+    // Grays - voor subtiele accenten
+    gray: {
+      50: '#fafafa',         // Lightest - subtle backgrounds
+      100: '#f5f5f5',        // Very light - hover states
+      200: '#e5e5e5',        // Light - borders
+      300: '#d4d4d4',        // Medium light
+      400: '#a3a3a3',        // Medium
+      500: '#737373',        // Medium dark - secondary text
+      600: '#525252',        // Dark
+      700: '#404040',        // Darker
+      800: '#262626',        // Very dark
+      900: '#171717',        // Darkest
+    },
+    
+    // Text colors
+    text: {
+      primary: '#000000',     // Hoofdtekst
+      secondary: '#666666',   // Secondary tekst
+      muted: '#999999',       // Muted/disabled tekst
+      inverse: '#ffffff',     // Tekst op donkere achtergrond
+    },
+    
+    // UI colors
+    border: {
+      light: '#f5f5f5',       // Subtle borders
+      default: '#e5e5e5',     // Default borders
+      dark: '#d4d4d4',        // Emphasized borders
+    },
+    
+    // State colors (minimaal gebruikt)
+    state: {
+      success: '#22c55e',     // Groen - success messages
+      error: '#ef4444',       // Rood - errors
+      warning: '#f59e0b',     // Geel - warnings
+      info: '#3b82f6',        // Blauw - info
+    }
+  },
+
+  /**
+   * TYPOGRAPHY - Noto Sans, dunne weights
+   */
+  typography: {
+    // Font families
+    fontFamily: {
+      primary: 'var(--font-noto-sans), system-ui, sans-serif',
+      headings: 'var(--font-noto-sans), system-ui, sans-serif', // Noto Sans voor titels
+    },
+    
+    // Font weights - ONLY 3 weights voor performance
+    fontWeight: {
+      light: '300',          // Subtitles, descriptions
+      normal: '400',         // Body text, readable
+      medium: '500',         // ✅ Titles (logo style - dunner maar vet)
+      semibold: '600',       // Headings - DIKKER voor duidelijkheid
+    },
+    
+    // Font sizes - Type scale (1.25 ratio)
+    fontSize: {
+      xs: '0.75rem',        // 12px
+      sm: '0.875rem',       // 14px
+      base: '1rem',         // 16px
+      lg: '1.125rem',       // 18px
+      xl: '1.25rem',        // 20px
+      '2xl': '1.5rem',      // 24px
+      '3xl': '1.875rem',    // 30px
+      '4xl': '2.25rem',     // 36px
+      '5xl': '3rem',        // 48px
+      '6xl': '3.75rem',     // 60px
+    },
+    
+    // Line heights
+    lineHeight: {
+      tight: '1.25',
+      normal: '1.5',
+      relaxed: '1.75',
+      loose: '2',
+    },
+    
+    // Letter spacing
+    letterSpacing: {
+      tighter: '-0.05em',
+      tight: '-0.025em',    // ✅ Voor logo-style titles
+      normal: '0',
+      wide: '0.025em',
+      wider: '0.05em',
+    }
+  },
+
+  /**
+   * SPACING - 4px base grid system
+   */
+  spacing: {
+    // Base units (4px grid)
+    0: '0',
+    1: '0.25rem',     // 4px
+    2: '0.5rem',      // 8px
+    3: '0.75rem',     // 12px
+    4: '1rem',        // 16px
+    5: '1.25rem',     // 20px
+    6: '1.5rem',      // 24px
+    8: '2rem',        // 32px
+    10: '2.5rem',     // 40px
+    12: '3rem',       // 48px
+    16: '4rem',       // 64px
+    20: '5rem',       // 80px
+    24: '6rem',       // 96px
+    32: '8rem',       // 128px
+    
+    // Semantic spacing
+    section: '5rem',          // 80px - tussen secties
+    containerPadding: '3rem', // 48px - container padding (desktop)
+    containerPaddingMobile: '1.5rem', // 24px - container padding (mobile)
+  },
+
+  /**
+   * LAYOUT - Containers, grids, etc.
+   */
+  layout: {
+    // Container max-widths
+    maxWidth: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1400px',      // Main content max-width
+      full: '100%',
+    },
+    
+    // Navbar
+    navbar: {
+      height: '80px',
+      bg: '#ffffff',
+      shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)',
+      maxWidth: '100%',     // Edge-to-edge
+      padding: '0 48px',
+    },
+    
+    // Hero
+    hero: {
+      minHeight: '600px',
+      minHeightMobile: '500px',
+      splitRatio: {
+        text: '35%',        // Tekst kant (smaller)
+        image: '65%',       // Afbeelding kant (larger)
+      },
+      spacing: '32px',      // Gap tussen tekst en afbeelding
+      // Legale afbeelding: Unsplash (automatic cat litter box, modern design)
+      imageUrl: 'https://images.unsplash.com/photo-1545249390-6bdfa286032f?q=80&w=2000&auto=format&fit=crop',
+    },
+    
+    // Trust banner (onder hero)
+    trustBanner: {
+      bg: '#000000',
+      color: '#ffffff',
+      height: '60px',
+      padding: '0 48px',
+    },
+    
+    // USP banner (boven navbar) - ZWART
+    uspBanner: {
+      bg: '#000000',         // ZWART
+      color: '#ffffff',      // WIT
+      height: '48px',
+      animationDuration: '3000ms', // 3 seconden per USP
+      zIndex: '1000',        // ✅ BOVEN navbar
+    },
+    
+    // Navbar
+    navbar: {
+      height: '72px',
+      maxWidth: '1920px',
+      bg: '#ffffff',         // WIT
+      zIndex: '999',         // ✅ ONDER USP banner
+    },
+    
+    // Feature section (edge-to-edge afbeelding)
+    featureSection: {
+      minHeight: '400px',
+      // Legale afbeelding: Unsplash (elegant cat on modern furniture, lifestyle shot)
+      imageUrl: 'https://images.unsplash.com/photo-1573865526739-10c1deaa9c87?q=80&w=2000&auto=format&fit=crop',
+      overlayOpacity: 0.4,  // Iets donkerder voor betere leesbaarheid
+    },
+    
+    // Sections
+    section: {
+      padding: '80px 0',
+      paddingMobile: '48px 0',
+    }
+  },
+
+  /**
+   * BORDERS & SHADOWS
+   */
+  effects: {
+    // Border radius
+    borderRadius: {
+      none: '0',
+      sm: '0.125rem',     // 2px - subtle
+      base: '0.25rem',    // 4px - default
+      md: '0.375rem',     // 6px
+      lg: '0.5rem',       // 8px
+    },
+    
+    // Box shadows - minimalistisch
+    shadow: {
+      none: 'none',
+      sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+      base: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+      md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+    }
+  },
+
+  /**
+   * TRANSITIONS - Smooth interactions
+   */
+  transitions: {
+    duration: {
+      fast: '150ms',
+      base: '200ms',
+      slow: '300ms',
+    },
+    timing: {
+      ease: 'ease',
+      easeIn: 'ease-in',
+      easeOut: 'ease-out',
+      easeInOut: 'ease-in-out',
+    }
+  },
+
+  /**
+   * CONTACT INFO - Centrale locatie
+   */
+  contact: {
+    email: 'info@catsupply.nl' as const,
+    phone: '+31 6 12345678' as const,
+    phoneDisplay: '+31 6 123 456 78' as const,
+  }
+} as const;
+
+/**
+ * TYPE EXPORTS - Voor TypeScript type-safety
+ */
+export type DesignSystem = typeof DESIGN_SYSTEM;
+export type ColorScale = keyof typeof DESIGN_SYSTEM.colors.gray;
+export type FontWeight = keyof typeof DESIGN_SYSTEM.typography.fontWeight;
+export type FontSize = keyof typeof DESIGN_SYSTEM.typography.fontSize;
+export type Spacing = keyof typeof DESIGN_SYSTEM.spacing;

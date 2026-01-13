@@ -1,28 +1,39 @@
-/**
- * CENTRALIZED CONFIGURATION
- * Single source of truth voor alle configuratie
- * Maximaal DRY, maintainable en type-safe
- */
+// Environment detection
+const isDevelopment = process.env.NODE_ENV === 'development' || 
+                     (typeof window !== 'undefined' && window.location.hostname === 'localhost');
 
-// API Configuration - ROBUST & MAINTAINABLE - DRY - PRODUCTION SSL
-// DRY: Runtime API URL detection (client-side only via apiFetch)
+// API Configuration - DYNAMISCH & VEILIG
 const getRuntimeApiUrl = (): string => {
   // Server-side: gebruik env var
   if (typeof window === 'undefined') {
-    return process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
+    const envUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (envUrl) {
+      // Als env var eindigt niet op /api/v1, voeg het toe
+      return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
+    }
+    return 'https://catsupply.nl/api/v1';
   }
   
   // Client-side: dynamic based on hostname
   const hostname = window.location.hostname;
   
-  // DEVELOPMENT: gebruik productie API (lokale backend niet nodig)
+  // DEVELOPMENT: gebruik LOKALE backend MET /api/v1
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'https://catsupply.nl/api/v1';
+    const envUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (envUrl) {
+      return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
+    }
+    return 'http://localhost:3101/api/v1';
   }
   
-  // Production: use same domain via NGINX reverse proxy (SSL terminated)
+  // Production: use same domain via NGINX reverse proxy
   return `${window.location.protocol}//${hostname}/api/v1`;
 };
+
+// Log configuration in development
+if (isDevelopment && typeof window !== 'undefined') {
+  console.log('🔧 [DEV] API URL:', getRuntimeApiUrl());
+}
 
 export const API_CONFIG = {
   get BASE_URL() {

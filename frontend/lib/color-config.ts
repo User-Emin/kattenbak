@@ -16,10 +16,14 @@ export const BRAND_COLORS_HEX = {
   primaryDark: '#004760',
   primaryLight: '#007aa8',
   
-  // Accent Color (Orange CTA)
-  accent: '#f76402',
-  accentDark: '#e55a02',
-  accentLight: '#ff8533',
+  // Accent Color (ZWART voor algemeen, BLAUW voor buttons)
+  accent: '#000000',        // ✅ ZWART (was orange)
+  accentDark: '#111827',    // ✅ DARK GRAY (was orange-dark)
+  accentLight: '#374151',   // ✅ GRAY (was orange-light)
+  
+  // Button Color (BLAUW voor CTA buttons)
+  buttonCta: '#2563eb',     // ✅ BLUE-600
+  buttonCtaHover: '#1d4ed8', // ✅ BLUE-700
   
   // Neutral Colors
   white: '#ffffff',
@@ -47,8 +51,9 @@ export const COLOR_CLASSES = {
   bg: {
     primary: 'bg-brand',
     primaryDark: 'bg-brand-dark',
-    accent: 'bg-[#f76402]',
-    accentDark: 'bg-[#e55a02]',
+    accent: 'bg-black',          // ✅ ZWART (was orange)
+    accentDark: 'bg-gray-900',   // ✅ DARK GRAY
+    buttonCta: 'bg-blue-600',    // ✅ BLAUW voor buttons
     white: 'bg-white',
     black: 'bg-black',
     gray50: 'bg-gray-50',
@@ -58,7 +63,7 @@ export const COLOR_CLASSES = {
   // Text Colors
   text: {
     primary: 'text-brand',
-    accent: 'text-[#f76402]',
+    accent: 'text-black',        // ✅ ZWART (was orange)
     white: 'text-white',
     black: 'text-black',
     gray600: 'text-gray-600',
@@ -68,14 +73,15 @@ export const COLOR_CLASSES = {
   // Border Colors
   border: {
     primary: 'border-brand',
-    accent: 'border-[#f76402]',
+    accent: 'border-black',      // ✅ ZWART (was orange)
     gray200: 'border-gray-200',
     gray300: 'border-gray-300',
   },
   
   // Hover States
   hover: {
-    accentDark: 'hover:bg-[#e55a02]',
+    accentDark: 'hover:bg-gray-900',     // ✅ DARK GRAY (was orange)
+    buttonCta: 'hover:bg-blue-700',       // ✅ BLAUW voor buttons
     primaryDark: 'hover:bg-brand-dark',
   },
 } as const;
@@ -85,10 +91,10 @@ export const COLOR_CLASSES = {
 // ============================================
 
 export const SEMANTIC_COLORS = {
-  // CTA Buttons (Oranje)
+  // CTA Buttons (BLAUW voor buttons)
   cta: {
-    bg: COLOR_CLASSES.bg.accent,
-    bgHover: COLOR_CLASSES.hover.accentDark,
+    bg: COLOR_CLASSES.bg.buttonCta,         // ✅ BLAUW bg-blue-600
+    bgHover: COLOR_CLASSES.hover.buttonCta, // ✅ BLAUW hover:bg-blue-700
     text: COLOR_CLASSES.text.white,
   },
   
@@ -106,9 +112,9 @@ export const SEMANTIC_COLORS = {
     text: COLOR_CLASSES.text.white,
   },
   
-  // Cart Badge (Oranje)
+  // Cart Badge (ZWART in plaats van oranje)
   cartBadge: {
-    bg: COLOR_CLASSES.bg.accent,
+    bg: COLOR_CLASSES.bg.accent,    // ✅ ZWART (was orange)
     text: COLOR_CLASSES.text.white,
   },
   
@@ -133,18 +139,18 @@ export const SEMANTIC_COLORS = {
 
 export const COMPONENT_COLORS = {
   button: {
-    // CTA Button (Oranje) - Checkout, Cart, etc.
+    // CTA Button (BLAUW) - Checkout, Cart, etc.
     cta: `${SEMANTIC_COLORS.cta.bg} ${SEMANTIC_COLORS.cta.bgHover} ${SEMANTIC_COLORS.cta.text} font-semibold rounded-md`,
     
     // Primary Button (Zwart)
     primary: `${SEMANTIC_COLORS.primary.bg} ${SEMANTIC_COLORS.primary.bgHover} ${SEMANTIC_COLORS.primary.text} font-semibold rounded-md`,
     
     // Outline Button
-    outline: 'bg-transparent border-2 border-gray-300 hover:border-[#f76402] text-gray-900 rounded-md',
+    outline: 'bg-transparent border-2 border-gray-300 hover:border-black text-gray-900 rounded-md',
   },
   
   badge: {
-    // Cart Count Badge (Oranje)
+    // Cart Count Badge (ZWART in plaats van oranje)
     cart: `${SEMANTIC_COLORS.cartBadge.bg} ${SEMANTIC_COLORS.cartBadge.text} rounded-full`,
     
     // Stock Badge

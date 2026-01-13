@@ -81,7 +81,7 @@ export function CookieConsentBanner({
               
               <button
                 onClick={onAcceptAll}
-                className="px-4 py-2 text-sm font-bold text-white bg-accent hover:bg-accent-dark transition-colors rounded-none whitespace-nowrap"
+                className="px-4 py-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors rounded-none whitespace-nowrap"
               >
                 Alles accepteren
               </button>

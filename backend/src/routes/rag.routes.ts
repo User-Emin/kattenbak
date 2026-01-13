@@ -26,6 +26,9 @@ const router = Router();
  */
 router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, res: Response) => {
   try {
+    // ✅ LAZY LOADING: Initialize vector store only when RAG is used
+    await VectorStoreService.ensureInitialized();
+    
     const sanitizedQuery = req.body.sanitized_query;
     
     if (!sanitizedQuery || sanitizedQuery.length < 3) {
@@ -69,6 +72,9 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
  */
 router.get('/health', async (req: Request, res: Response) => {
   try {
+    // ✅ LAZY LOADING: Initialize vector store for health check
+    await VectorStoreService.ensureInitialized();
+    
     // Check all components
     const pipelineHealth = await EnhancedRAGPipelineService.healthCheck();
     const embeddingsHealth = await EmbeddingsHuggingFaceService.healthCheck();

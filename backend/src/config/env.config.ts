@@ -85,7 +85,26 @@ class EnvironmentConfig {
   // Security
   public readonly RATE_LIMIT_WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10);
   public readonly RATE_LIMIT_MAX_REQUESTS = parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100', 10);
-  public readonly CORS_ORIGINS = (process.env.CORS_ORIGINS || 'http://localhost:3000').split(',');
+  
+  // CORS origins - DYNAMISCH: development includes localhost
+  get CORS_ORIGINS(): string[] {
+    const origins = process.env.CORS_ORIGINS || 'https://catsupply.nl';
+    const originList = origins.split(',');
+    
+    // Development: automatically add localhost origins
+    if (this.IS_DEVELOPMENT) {
+      const devOrigins = [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://localhost:3002',
+        'http://127.0.0.1:3000',
+        'http://127.0.0.1:3001',
+      ];
+      return [...new Set([...originList, ...devOrigins])];
+    }
+    
+    return originList;
+  }
 
   // Logging
   public readonly LOG_LEVEL = process.env.LOG_LEVEL || 'info';
@@ -138,6 +157,7 @@ class EnvironmentConfig {
     console.log(`   - MyParcel: ${this.MYPARCEL_API_KEY ? `configured (${this.MYPARCEL_MODE} mode)` : 'not configured'}`);
     console.log(`   - Redis: ${this.REDIS_HOST}:${this.REDIS_PORT}`);
     console.log(`   - CORS Origins: ${this.CORS_ORIGINS.join(', ')}`);
+    console.log(`   - Environment: ${this.IS_DEVELOPMENT ? 'DEVELOPMENT' : 'PRODUCTION'}`);
   }
 }
 

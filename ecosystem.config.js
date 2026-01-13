@@ -23,12 +23,13 @@ module.exports = {
     },
     {
       name: 'frontend',
-      script: '.next/standalone/frontend/server.js',  // Use Next.js standalone build (nested structure)
+      script: 'npm',  // ✅ FIX: Use npm start (compatible with standard Next.js build)
+      args: 'start',
       cwd: './frontend',
       instances: 1,
       env: {
         NODE_ENV: 'production',
-        PORT: 3102,
+        PORT: 3000,  // ✅ FIX: Changed from 3102 to 3000 (standard frontend port)
         HOSTNAME: '0.0.0.0',
         NEXT_TELEMETRY_DISABLED: 1
       },
@@ -49,7 +50,7 @@ module.exports = {
       instances: 1,
       env: {
         NODE_ENV: 'production',
-        PORT: 3001,
+        PORT: 3002,  // ✅ Admin op aparte poort - volledig gescheiden van dev
         NEXT_TELEMETRY_DISABLED: 1
       },
       error_file: '../logs/admin-error.log',

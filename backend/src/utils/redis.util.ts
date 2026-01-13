@@ -152,7 +152,8 @@ export async function checkRedisHealth(): Promise<{
 export async function redisGet(key: string): Promise<string | null> {
   try {
     const client = await getRedisClient();
-    return await client.get(key);
+    const result = await client.get(key);
+    return typeof result === 'string' ? result : null;
   } catch (error) {
     console.error(`Redis GET error for key "${key}":`, error);
     return null;

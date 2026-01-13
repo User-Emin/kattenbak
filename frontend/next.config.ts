@@ -1,16 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // ✅ FIX: Removed "standalone" for compatibility with npm start
+  // output: "standalone",
   
   // 🚀 PERFORMANCE: Enable compression
   compress: true,
   
-  // 🔒 SECURITY: COMPLETELY DISABLE ALL DEV OVERLAYS & ERROR BADGES
-  devIndicators: {
-    buildActivity: false,
-    appIsrStatus: false,
-  },
+  // ✅ FIX: Removed deprecated devIndicators (Next.js auto-disables in production)
+  // devIndicators: {
+  //   buildActivity: false,
+  //   appIsrStatus: false,
+  // },
   
   // 🔒 SECURITY: Disable source maps in production
   productionBrowserSourceMaps: false,
@@ -61,6 +62,14 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "catsupply.nl", // Own domain for /uploads/
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com", // For product detail page images
+      },
+      {
+        protocol: "https",
+        hostname: "**.unsplash.com",
       },
     ],
     formats: ["image/webp", "image/avif"], // Auto WebP/AVIF conversion

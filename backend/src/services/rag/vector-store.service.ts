@@ -20,14 +20,25 @@ export interface VectorDocument {
 
 export class VectorStoreService {
   private static documents: VectorDocument[] = [];
+  private static initialized = false; // ✅ FIX: Track initialization state
   // ABSOLUTE path to ensure it works regardless of cwd
   private static readonly STORE_PATH = process.env.VECTOR_STORE_PATH || 
     path.join(__dirname, '../../data/vector-store.json');
   
   /**
-   * Initialize vector store
+   * ✅ LAZY LOADING: Ensure initialized only when needed
    */
-  static async initialize(): Promise<void> {
+  static async ensureInitialized(): Promise<void> {
+    if (!this.initialized) {
+      await this.initialize();
+      this.initialized = true;
+    }
+  }
+  
+  /**
+   * Initialize vector store (PRIVATE - use ensureInitialized())
+   */
+  private static async initialize(): Promise<void> {
     try {
       if (fs.existsSync(this.STORE_PATH)) {
         const data = fs.readFileSync(this.STORE_PATH, 'utf-8');
@@ -177,5 +188,6 @@ export class VectorStoreService {
   }
 }
 
-// Initialize on import
-VectorStoreService.initialize();
+// ❌ REMOVED: Auto-initialize on import (causes unnecessary startup delay)
+// Call VectorStoreService.ensureInitialized() in routes instead
+// VectorStoreService.initialize();
