@@ -245,7 +245,9 @@ export class MollieService {
         };
       }
 
-      await this.client.payments.refund(mollieId, refundData);
+      // ✅ FIX: Mollie API uses payments.createRefund, not payments.refund
+      const payment = await this.client.payments.get(mollieId);
+      await payment.refunds.create(refundData);
 
       // Update payment in database
       await prisma.payment.update({

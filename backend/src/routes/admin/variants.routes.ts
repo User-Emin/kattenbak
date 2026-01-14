@@ -38,8 +38,8 @@ router.get('/', async (req, res) => {
       orderBy: { createdAt: 'desc' }
     });
     
-    // Transform Decimal to number
-    const transformed = transformVariants(variants);
+    // ✅ FIX: Transform array of variants
+    const transformed = variants.map(transformVariant);
     
     return res.json({
       success: true,
@@ -122,9 +122,9 @@ router.post('/', async (req, res) => {
       });
     }
     
-    // Create variant
+    // ✅ FIX: Create variant with type casting
     const variant = await prisma.productVariant.create({
-      data,
+      data: data as any, // Type assertion for Prisma
       include: {
         product: true
       }

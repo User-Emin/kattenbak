@@ -132,7 +132,9 @@ const error = (message: string) => ({ success: false, error: message });
 
 // Routes
 app.get('/health', (req: Request, res: Response) => {
-  res.json({ success: true, message: 'Healthy', environment: ENV.NODE_ENV, mollie: ENV.isTest ? 'TEST' : 'LIVE', timestamp: new Date().toISOString() });
+  // ✅ FIX: Use MOLLIE_API_KEY to determine test/live mode
+  const isTest = ENV.MOLLIE_API_KEY.startsWith('test_');
+  res.json({ success: true, message: 'Healthy', environment: ENV.NODE_ENV, mollie: isTest ? 'TEST' : 'LIVE', timestamp: new Date().toISOString() });
 });
 
 app.get('/api/v1/health', (req: Request, res: Response) => {
@@ -185,16 +187,20 @@ app.post('/api/v1/orders', (req: Request, res: Response) => {
     createdAt: new Date().toISOString(),
   };
   
+  // ✅ FIX: Use MOLLIE_API_KEY to determine test/live mode
+  const isTest = ENV.MOLLIE_API_KEY.startsWith('test_');
   const mollieUrl = `${ENV.FRONTEND_URL}/success?order=${order.id}&payment=test`;
-  const payment = { id: Math.random().toString(36).substr(2, 9), checkoutUrl: mollieUrl, mollieMode: ENV.isTest ? 'TEST' : 'LIVE' };
+  const payment = { id: Math.random().toString(36).substr(2, 9), checkoutUrl: mollieUrl, mollieMode: isTest ? 'TEST' : 'LIVE' };
 
-  console.log(`✅ Order: ${order.orderNumber} | Mollie: ${ENV.isTest ? 'TEST' : 'LIVE'}`);
+  console.log(`✅ Order: ${order.orderNumber} | Mollie: ${isTest ? 'TEST' : 'LIVE'}`);
   res.status(201).json(success({ order, payment }));
 });
 
 app.post('/api/v1/webhooks/mollie', (req: Request, res: Response) => {
   const { id: mollieId } = req.body;
-  console.log(`✅ Mollie webhook: ${mollieId} (${ENV.isTest ? 'TEST' : 'LIVE'})`);
+  // ✅ FIX: Use MOLLIE_API_KEY to determine test/live mode
+  const isTest = ENV.MOLLIE_API_KEY.startsWith('test_');
+  console.log(`✅ Mollie webhook: ${mollieId} (${isTest ? 'TEST' : 'LIVE'})`);
   res.status(200).json(success({ received: true }));
 });
 
