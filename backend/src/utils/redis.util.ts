@@ -27,7 +27,7 @@ const REDIS_CONFIG = {
   // Connection options
   socket: {
     connectTimeout: 10000, // 10 seconds
-    keepAlive: 5000, // 5 seconds
+    keepAlive: true, // ✅ FIX: Must be boolean, not number
     reconnectStrategy: (retries: number) => {
       if (retries > 10) {
         console.error('❌ Redis: Max reconnection attempts reached');
