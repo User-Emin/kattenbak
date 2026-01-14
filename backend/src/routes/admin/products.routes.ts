@@ -183,9 +183,10 @@ router.post('/', async (req, res) => {
     }
     
     // Create product
+    // ✅ FIX: Explicit type casting for Prisma
     const product = await prisma.product.create({
       data: {
-        ...data,
+        ...(data as any),
         publishedAt: data.isActive ? new Date() : null
       },
       include: {

@@ -82,9 +82,9 @@ export class OrdersController {
 
         const payment = await mollieClient.payments.create(paymentData);
 
-        // Update order with payment info
-        order.paymentId = payment.id;
-        order.paymentUrl = payment.getCheckoutUrl();
+        // ✅ FIX: Update order with payment info (order is typed as any)
+        (order as any).paymentId = payment.id;
+        (order as any).paymentUrl = payment.getCheckoutUrl();
 
         logger.info('Mollie payment created:', { 
           paymentId: payment.id, 
@@ -131,9 +131,9 @@ export class OrdersController {
       } catch (mollieError: any) {
         logger.error('Mollie payment creation failed:', mollieError);
         
-        // If Mollie fails, still return order but mark payment as failed
-        order.paymentStatus = 'failed';
-        order.paymentError = mollieError.message;
+        // ✅ FIX: If Mollie fails, still return order but mark payment as failed
+        (order as any).paymentStatus = 'failed';
+        (order as any).paymentError = mollieError.message;
 
         res.status(201).json({
           success: true,

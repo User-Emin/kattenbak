@@ -172,7 +172,8 @@ router.put('/:id/status', async (req, res) => {
     
     // ✅ AUTO-REFUND: When return is APPROVED, trigger Mollie refund
     if (status === 'APPROVED' && returnRecord.order) {
-      const payment = returnRecord.order.payments.find(p => p.status === 'PAID');
+      // ✅ FIX: order.payment is singular (not payments)
+      const payment = returnRecord.order.payment;
       
       if (payment && payment.mollieId) {
         try {
