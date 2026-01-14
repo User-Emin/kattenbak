@@ -2,8 +2,8 @@ module.exports = {
   apps: [
     {
       name: 'backend',
-      script: 'node_modules/.bin/ts-node',
-      args: '--transpile-only --files src/server.ts',
+      script: 'node',
+      args: 'dist/server.js',
       cwd: './backend',
       instances: 1,
       exec_mode: 'fork',
@@ -19,7 +19,11 @@ module.exports = {
       autorestart: true,
       max_restarts: 10,
       min_uptime: '10s',
-      kill_timeout: 5000
+      kill_timeout: 5000,
+      // CPU optimization for KVM
+      node_args: '--max-old-space-size=512',
+      merge_logs: true,
+      log_type: 'json'
     },
     {
       name: 'frontend',
