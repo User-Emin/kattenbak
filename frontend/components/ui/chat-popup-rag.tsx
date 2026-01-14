@@ -32,6 +32,169 @@ export function ChatPopup() {
   const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
 
+  // ✅ FIX: Safe access to CHAT_CONFIG with fallbacks
+  const safeChatConfig = useMemo(() => {
+    try {
+      // Verify CHAT_CONFIG exists and has required properties
+      if (!CHAT_CONFIG || !CHAT_CONFIG.button || !CHAT_CONFIG.modal) {
+        throw new Error('CHAT_CONFIG incomplete');
+      }
+      return CHAT_CONFIG;
+    } catch (err) {
+      console.error('CHAT_CONFIG not available, using fallback:', err);
+      // Return minimal fallback config
+      return {
+        button: {
+          position: { right: 'right-6', bottom: 'bottom-6', bottomWithCart: 'bottom-24' },
+          size: 'w-14 h-14',
+          borderRadius: 'rounded-lg',
+          backgroundColor: 'bg-gray-900',
+          textColor: 'text-white',
+          shadow: 'shadow-lg',
+          hoverBackgroundColor: 'hover:bg-gray-800',
+          border: 'border border-gray-700',
+          iconSize: 'w-6 h-6',
+        },
+        animations: {
+          duration: { base: 'duration-200' },
+          timing: { ease: 'ease-in-out' },
+          backdrop: {
+            backgroundColor: 'bg-black/50',
+            blur: 'backdrop-blur-sm',
+            fadeIn: 'animate-fade-in',
+            zIndex: 'z-[99]',
+            mobileTransparent: 'md:bg-black/50',
+            mobilePointerEvents: 'md:pointer-events-auto',
+          },
+          modal: {
+            slideIn: 'animate-slide-in',
+          },
+        },
+        modal: {
+          position: {
+            container: 'fixed inset-0',
+            flex: 'flex items-center justify-center',
+            padding: 'p-4',
+            pointerEvents: 'pointer-events-none',
+          },
+          zIndex: 'z-[100]',
+          maxWidth: 'max-w-2xl',
+          maxHeight: 'max-h-[90vh]',
+          backgroundColor: 'bg-white',
+          borderRadius: 'rounded-lg',
+          shadow: 'shadow-2xl',
+          border: 'border border-gray-200',
+        },
+        header: {
+          backgroundColor: 'bg-gray-900',
+          textColor: 'text-white',
+          padding: 'p-4',
+          borderRadius: 'rounded-t-lg',
+          borderBottom: 'border-b border-gray-700',
+          title: {
+            fontSize: 'text-lg',
+            fontWeight: 'font-semibold',
+            textColor: 'text-white',
+            letterSpacing: 'tracking-tight',
+          },
+          subtitle: {
+            fontSize: 'text-sm',
+            textColor: 'text-gray-300',
+          },
+        },
+        messages: {
+          container: {
+            padding: 'p-4',
+            spacing: 'space-y-4',
+            backgroundColor: 'bg-gray-50',
+          },
+          user: {
+            maxWidth: 'max-w-[80%]',
+            borderRadius: 'rounded-lg',
+            padding: 'p-3',
+            backgroundColor: 'bg-blue-600',
+            textColor: 'text-white',
+          },
+          assistant: {
+            maxWidth: 'max-w-[80%]',
+            borderRadius: 'rounded-lg',
+            padding: 'p-3',
+            backgroundColor: 'bg-white',
+            textColor: 'text-gray-900',
+            border: 'border border-gray-200',
+          },
+          timestamp: {
+            fontSize: 'text-xs',
+            textColor: 'text-gray-500',
+          },
+        },
+        emptyState: {
+          textColor: 'text-gray-600',
+          iconSize: 'w-12 h-12',
+          iconColor: 'text-gray-400',
+          fontSize: 'text-sm',
+          suggestionButton: {
+            padding: 'p-2',
+            backgroundColor: 'bg-white',
+            borderRadius: 'rounded',
+            fontSize: 'text-sm',
+            hoverBackgroundColor: 'hover:bg-gray-100',
+          },
+        },
+        loading: {
+          backgroundColor: 'bg-white',
+          border: 'border border-gray-200',
+          borderRadius: 'rounded-lg',
+          padding: 'p-3',
+          iconSize: 'w-5 h-5',
+          iconColor: 'text-gray-400',
+        },
+        error: {
+          backgroundColor: 'bg-red-50',
+          border: 'border border-red-200',
+          borderRadius: 'rounded-lg',
+          padding: 'p-3',
+          fontSize: 'text-sm',
+          textColor: 'text-red-700',
+        },
+        input: {
+          container: {
+            padding: 'p-4',
+            backgroundColor: 'bg-white',
+            borderTop: 'border-t border-gray-200',
+            borderRadius: 'rounded-b-lg',
+          },
+          field: {
+            padding: 'p-3',
+            border: 'border border-gray-300',
+            borderRadius: 'rounded-lg',
+            focus: {
+              ring: 'focus:ring-2 focus:ring-blue-500',
+              border: 'focus:border-blue-500',
+            },
+            fontSize: 'text-sm',
+            backgroundColor: 'bg-white',
+          },
+          button: {
+            padding: 'p-3',
+            borderRadius: 'rounded-lg',
+            backgroundColor: 'bg-blue-600',
+            textColor: 'text-white',
+            hoverBackgroundColor: 'hover:bg-blue-700',
+            fontSize: 'text-sm',
+            fontWeight: 'font-medium',
+            transition: 'transition-colors',
+            iconSize: 'w-5 h-5',
+          },
+          footer: {
+            fontSize: 'text-xs',
+            textColor: 'text-gray-500',
+          },
+        },
+      };
+    }
+  }, []);
+
   // ✅ PERFORMANCE: Debounced sticky cart detection (bespaart CPU)
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -111,12 +274,24 @@ export function ChatPopup() {
       
       const data = await response.json();
       
-      if (!response.ok || !data.success) {
+      if (!response.ok) {
+        // Handle HTTP errors (429, 403, 500, etc.)
+        const errorMessage = data.error || data.message || `HTTP ${response.status}: ${response.statusText}`;
+        throw new Error(errorMessage);
+      }
+      
+      if (!data.success) {
         throw new Error(data.error || 'Er ging iets mis');
       }
       
-      // API returns answer directly in root, not in data.data (verified: 2025-12-27)
+      // ✅ FIX: API returns answer directly in root (RAGResponse structure)
+      // Response structure: { success: true, answer: string, sources?: [...], metadata?: {...} }
       const answer = data.answer || data.data?.answer || 'Geen antwoord ontvangen';
+      
+      // ✅ SECURITY: Sanitize answer (prevent XSS in chat display)
+      if (typeof answer !== 'string') {
+        throw new Error('Ongeldig antwoord ontvangen van de server');
+      }
       
       const assistantMessage: Message = {
         role: 'assistant',
@@ -145,12 +320,12 @@ export function ChatPopup() {
     }
   }, [handleSendMessage]);
 
-  // ✅ DRY: Calculate button position via CHAT_CONFIG
+  // ✅ DRY: Calculate button position via CHAT_CONFIG (with safe access)
   const buttonBottomClass = useMemo(() => {
     return stickyCartVisible 
-      ? CHAT_CONFIG.button.position.bottomWithCart
-      : CHAT_CONFIG.button.position.bottom;
-  }, [stickyCartVisible]);
+      ? safeChatConfig.button.position.bottomWithCart
+      : safeChatConfig.button.position.bottom;
+  }, [stickyCartVisible, safeChatConfig]);
 
   return (
     <>
@@ -159,21 +334,21 @@ export function ChatPopup() {
         onClick={() => setIsExpanded(!isExpanded)}
         className={cn(
           'fixed',
-          CHAT_CONFIG.button.position.right,
+          safeChatConfig.button.position.right,
           'z-[100]',
           buttonBottomClass,
-          CHAT_CONFIG.button.size,
-          CHAT_CONFIG.button.borderRadius,
-          CHAT_CONFIG.button.backgroundColor,
-          CHAT_CONFIG.button.textColor,
-          CHAT_CONFIG.button.shadow,
-          CHAT_CONFIG.button.hoverBackgroundColor,
+          safeChatConfig.button.size,
+          safeChatConfig.button.borderRadius,
+          safeChatConfig.button.backgroundColor,
+          safeChatConfig.button.textColor,
+          safeChatConfig.button.shadow,
+          safeChatConfig.button.hoverBackgroundColor,
           'transition-all',
-          CHAT_CONFIG.animations.duration.base,
-          CHAT_CONFIG.animations.timing.ease,
+          safeChatConfig.animations.duration.base,
+          safeChatConfig.animations.timing.ease,
           'hover:scale-110',
           'active:scale-95',
-          CHAT_CONFIG.button.border,
+          safeChatConfig.button.border,
           'focus:outline-none',
           'focus:ring-4',
           'focus:ring-gray-400/30',
@@ -185,9 +360,9 @@ export function ChatPopup() {
         aria-label="Open chat"
       >
         {isExpanded ? (
-          <X className={CHAT_CONFIG.button.iconSize} />
+          <X className={safeChatConfig.button.iconSize} />
         ) : (
-          <MessageCircle className={CHAT_CONFIG.button.iconSize} />
+          <MessageCircle className={safeChatConfig.button.iconSize} />
         )}
       </button>
 
@@ -199,34 +374,34 @@ export function ChatPopup() {
             className={cn(
               'fixed',
               'inset-0',
-              CHAT_CONFIG.animations.backdrop.backgroundColor,
-              CHAT_CONFIG.animations.backdrop.blur,
-              CHAT_CONFIG.animations.backdrop.fadeIn,
-              CHAT_CONFIG.animations.backdrop.zIndex,
-              CHAT_CONFIG.animations.backdrop.mobileTransparent,
-              CHAT_CONFIG.animations.backdrop.mobilePointerEvents
+              safeChatConfig.animations.backdrop.backgroundColor,
+              safeChatConfig.animations.backdrop.blur,
+              safeChatConfig.animations.backdrop.fadeIn,
+              safeChatConfig.animations.backdrop.zIndex,
+              safeChatConfig.animations.backdrop.mobileTransparent,
+              safeChatConfig.animations.backdrop.mobilePointerEvents
             )}
             onClick={() => setIsExpanded(false)}
           />
           
           {/* ✅ MODERN: Chat Modal - Hoekiger, smoother animations */}
           <div className={cn(
-            CHAT_CONFIG.modal.position.container,
-            CHAT_CONFIG.modal.zIndex,
-            CHAT_CONFIG.modal.position.flex,
-            CHAT_CONFIG.modal.position.padding,
-            CHAT_CONFIG.modal.position.pointerEvents
+            safeChatConfig.modal.position.container,
+            safeChatConfig.modal.zIndex,
+            safeChatConfig.modal.position.flex,
+            safeChatConfig.modal.position.padding,
+            safeChatConfig.modal.position.pointerEvents
           )}>
             <div className={cn(
               'pointer-events-auto',
               'w-full',
-              CHAT_CONFIG.modal.maxWidth,
-              CHAT_CONFIG.modal.maxHeight,
-              CHAT_CONFIG.modal.backgroundColor,
-              CHAT_CONFIG.modal.borderRadius,
-              CHAT_CONFIG.modal.shadow,
-              CHAT_CONFIG.modal.border,
-              CHAT_CONFIG.animations.modal.slideIn,
+              safeChatConfig.modal.maxWidth,
+              safeChatConfig.modal.maxHeight,
+              safeChatConfig.modal.backgroundColor,
+              safeChatConfig.modal.borderRadius,
+              safeChatConfig.modal.shadow,
+              safeChatConfig.modal.border,
+              safeChatConfig.animations.modal.slideIn,
               'flex',
               'flex-col',
               'font-sans'
@@ -234,26 +409,26 @@ export function ChatPopup() {
               
               {/* ✅ MODERN: Header - Hoekiger, zwart-wit, Noto Sans */}
               <div className={cn(
-                CHAT_CONFIG.header.backgroundColor,
-                CHAT_CONFIG.header.textColor,
-                CHAT_CONFIG.header.padding,
-                CHAT_CONFIG.header.borderRadius,
-                CHAT_CONFIG.header.borderBottom
+                safeChatConfig.header.backgroundColor,
+                safeChatConfig.header.textColor,
+                safeChatConfig.header.padding,
+                safeChatConfig.header.borderRadius,
+                safeChatConfig.header.borderBottom
               )}>
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className={cn(
-                      CHAT_CONFIG.header.title.fontSize,
-                      CHAT_CONFIG.header.title.fontWeight,
-                      CHAT_CONFIG.header.title.textColor,
-                      CHAT_CONFIG.header.title.letterSpacing,
+                      safeChatConfig.header.title.fontSize,
+                      safeChatConfig.header.title.fontWeight,
+                      safeChatConfig.header.title.textColor,
+                      safeChatConfig.header.title.letterSpacing,
                       'font-sans'
                     )}>
                       AI Assistent
                     </h3>
                     <p className={cn(
-                      CHAT_CONFIG.header.subtitle.fontSize,
-                      CHAT_CONFIG.header.subtitle.textColor,
+                      safeChatConfig.header.subtitle.fontSize,
+                      safeChatConfig.header.subtitle.textColor,
                       'mt-1',
                       'font-sans'
                     )}>
@@ -274,15 +449,15 @@ export function ChatPopup() {
               <div className={cn(
                 'flex-1',
                 'overflow-y-auto',
-                CHAT_CONFIG.messages.container.padding,
-                CHAT_CONFIG.messages.container.spacing,
-                CHAT_CONFIG.messages.container.backgroundColor,
+                safeChatConfig.messages.container.padding,
+                safeChatConfig.messages.container.spacing,
+                safeChatConfig.messages.container.backgroundColor,
                 'font-sans'
               )}>
                 {messages.length === 0 && (
-                  <div className={cn('text-center', CHAT_CONFIG.emptyState.textColor, 'mt-8')}>
-                    <MessageCircle className={cn(CHAT_CONFIG.emptyState.iconSize, 'mx-auto', 'mb-3', CHAT_CONFIG.emptyState.iconColor)} />
-                    <p className={cn(CHAT_CONFIG.emptyState.fontSize, 'font-sans')}>
+                  <div className={cn('text-center', safeChatConfig.emptyState.textColor, 'mt-8')}>
+                    <MessageCircle className={cn(safeChatConfig.emptyState.iconSize, 'mx-auto', 'mb-3', safeChatConfig.emptyState.iconColor)} />
+                    <p className={cn(safeChatConfig.emptyState.fontSize, 'font-sans')}>
                       Stel een vraag over features, specificaties, of geschiktheid
                     </p>
                     <div className="mt-4 space-y-2">
@@ -294,11 +469,11 @@ export function ChatPopup() {
                             'block',
                             'w-full',
                             'text-left',
-                            CHAT_CONFIG.emptyState.suggestionButton.padding,
-                            CHAT_CONFIG.emptyState.suggestionButton.backgroundColor,
-                            CHAT_CONFIG.emptyState.suggestionButton.borderRadius,
-                            CHAT_CONFIG.emptyState.suggestionButton.fontSize,
-                            CHAT_CONFIG.emptyState.suggestionButton.hoverBackgroundColor,
+                            safeChatConfig.emptyState.suggestionButton.padding,
+                            safeChatConfig.emptyState.suggestionButton.backgroundColor,
+                            safeChatConfig.emptyState.suggestionButton.borderRadius,
+                            safeChatConfig.emptyState.suggestionButton.fontSize,
+                            safeChatConfig.emptyState.suggestionButton.hoverBackgroundColor,
                             'transition-colors',
                             'font-sans'
                           )}
@@ -317,21 +492,21 @@ export function ChatPopup() {
                   >
                     <div
                       className={cn(
-                        msg.role === 'user' ? CHAT_CONFIG.messages.user.maxWidth : CHAT_CONFIG.messages.assistant.maxWidth,
-                        CHAT_CONFIG.messages[msg.role].borderRadius,
-                        CHAT_CONFIG.messages[msg.role].padding,
+                        msg.role === 'user' ? safeChatConfig.messages.user.maxWidth : safeChatConfig.messages.assistant.maxWidth,
+                        safeChatConfig.messages[msg.role].borderRadius,
+                        safeChatConfig.messages[msg.role].padding,
                         'transition-all',
-                        CHAT_CONFIG.animations.duration.base,
+                        safeChatConfig.animations.duration.base,
                         'font-sans',
                         msg.role === 'user'
-                          ? cn(CHAT_CONFIG.messages.user.backgroundColor, CHAT_CONFIG.messages.user.textColor)
-                          : cn(CHAT_CONFIG.messages.assistant.backgroundColor, CHAT_CONFIG.messages.assistant.textColor, CHAT_CONFIG.messages.assistant.border)
+                          ? cn(safeChatConfig.messages.user.backgroundColor, safeChatConfig.messages.user.textColor)
+                          : cn(safeChatConfig.messages.assistant.backgroundColor, safeChatConfig.messages.assistant.textColor, safeChatConfig.messages.assistant.border)
                       )}
                     >
-                      <p className={cn(CHAT_CONFIG.messages[msg.role].fontSize || DESIGN_SYSTEM.typography.fontSize.sm, 'whitespace-pre-wrap')}>
+                      <p className={cn(safeChatConfig.messages[msg.role].fontSize || DESIGN_SYSTEM.typography.fontSize.sm, 'whitespace-pre-wrap')}>
                         {msg.content}
                       </p>
-                      <span className={cn(CHAT_CONFIG.messages.timestamp.fontSize, CHAT_CONFIG.messages.timestamp.textColor, 'mt-1', 'block')}>
+                      <span className={cn(safeChatConfig.messages.timestamp.fontSize, safeChatConfig.messages.timestamp.textColor, 'mt-1', 'block')}>
                         {msg.timestamp.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
@@ -341,24 +516,24 @@ export function ChatPopup() {
                 {isLoading && (
                   <div className="flex justify-start">
                     <div className={cn(
-                      CHAT_CONFIG.loading.backgroundColor,
-                      CHAT_CONFIG.loading.border,
-                      CHAT_CONFIG.loading.borderRadius,
-                      CHAT_CONFIG.loading.padding
+                      safeChatConfig.loading.backgroundColor,
+                      safeChatConfig.loading.border,
+                      safeChatConfig.loading.borderRadius,
+                      safeChatConfig.loading.padding
                     )}>
-                      <Loader2 className={cn(CHAT_CONFIG.loading.iconSize, 'animate-spin', CHAT_CONFIG.loading.iconColor)} />
+                      <Loader2 className={cn(safeChatConfig.loading.iconSize, 'animate-spin', safeChatConfig.loading.iconColor)} />
                     </div>
                   </div>
                 )}
                 
                 {error && (
                   <div className={cn(
-                    CHAT_CONFIG.error.backgroundColor,
-                    CHAT_CONFIG.error.border,
-                    CHAT_CONFIG.error.borderRadius,
-                    CHAT_CONFIG.error.padding,
-                    CHAT_CONFIG.error.fontSize,
-                    CHAT_CONFIG.error.textColor,
+                    safeChatConfig.error.backgroundColor,
+                    safeChatConfig.error.border,
+                    safeChatConfig.error.borderRadius,
+                    safeChatConfig.error.padding,
+                    safeChatConfig.error.fontSize,
+                    safeChatConfig.error.textColor,
                     'font-sans'
                   )}>
                     {error}
@@ -368,10 +543,10 @@ export function ChatPopup() {
 
               {/* ✅ MODERN: Input - Hoekiger, Noto Sans, smoother */}
               <div className={cn(
-                CHAT_CONFIG.input.container.padding,
-                CHAT_CONFIG.input.container.backgroundColor,
-                CHAT_CONFIG.input.container.borderTop,
-                CHAT_CONFIG.input.container.borderRadius,
+                safeChatConfig.input.container.padding,
+                safeChatConfig.input.container.backgroundColor,
+                safeChatConfig.input.container.borderTop,
+                safeChatConfig.input.container.borderRadius,
                 'font-sans'
               )}>
                 <div className="flex gap-2">
@@ -383,13 +558,13 @@ export function ChatPopup() {
                     placeholder="Stel je vraag..."
                     className={cn(
                       'flex-1',
-                      CHAT_CONFIG.input.field.padding,
-                      CHAT_CONFIG.input.field.border,
-                      CHAT_CONFIG.input.field.borderRadius,
-                      CHAT_CONFIG.input.field.focus.ring,
-                      CHAT_CONFIG.input.field.focus.border,
-                      CHAT_CONFIG.input.field.fontSize,
-                      CHAT_CONFIG.input.field.backgroundColor,
+                      safeChatConfig.input.field.padding,
+                      safeChatConfig.input.field.border,
+                      safeChatConfig.input.field.borderRadius,
+                      safeChatConfig.input.field.focus.ring,
+                      safeChatConfig.input.field.focus.border,
+                      safeChatConfig.input.field.fontSize,
+                      safeChatConfig.input.field.backgroundColor,
                       'font-sans'
                     )}
                     disabled={isLoading}
@@ -398,15 +573,15 @@ export function ChatPopup() {
                     onClick={handleSendMessage}
                     disabled={!input.trim() || isLoading}
                     className={cn(
-                      CHAT_CONFIG.input.button.padding,
-                      CHAT_CONFIG.input.button.borderRadius,
-                      CHAT_CONFIG.input.button.backgroundColor,
-                      CHAT_CONFIG.input.button.textColor,
-                      CHAT_CONFIG.input.button.hoverBackgroundColor,
-                      CHAT_CONFIG.input.button.fontSize,
-                      CHAT_CONFIG.input.button.fontWeight,
+                      safeChatConfig.input.button.padding,
+                      safeChatConfig.input.button.borderRadius,
+                      safeChatConfig.input.button.backgroundColor,
+                      safeChatConfig.input.button.textColor,
+                      safeChatConfig.input.button.hoverBackgroundColor,
+                      safeChatConfig.input.button.fontSize,
+                      safeChatConfig.input.button.fontWeight,
                       'transition-all',
-                      CHAT_CONFIG.input.button.transition,
+                      safeChatConfig.input.button.transition,
                       'disabled:opacity-50',
                       'disabled:cursor-not-allowed',
                       'flex',
@@ -416,15 +591,15 @@ export function ChatPopup() {
                     )}
                   >
                     {isLoading ? (
-                      <Loader2 className={cn(CHAT_CONFIG.input.button.iconSize, 'animate-spin')} />
+                      <Loader2 className={cn(safeChatConfig.input.button.iconSize, 'animate-spin')} />
                     ) : (
-                      <Send className={CHAT_CONFIG.input.button.iconSize} />
+                      <Send className={safeChatConfig.input.button.iconSize} />
                     )}
                   </button>
                 </div>
                 <p className={cn(
-                  CHAT_CONFIG.input.footer.fontSize,
-                  CHAT_CONFIG.input.footer.textColor,
+                  safeChatConfig.input.footer.fontSize,
+                  safeChatConfig.input.footer.textColor,
                   'mt-2',
                   'text-center',
                   'font-sans'

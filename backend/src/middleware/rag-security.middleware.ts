@@ -58,7 +58,8 @@ export class RAGSecurityMiddleware {
     next: NextFunction
   ): Promise<void> {
     try {
-      const query = req.body.message || req.body.question || req.body.query || '';
+      // ✅ FIX: Accept multiple field names for query (frontend compatibility)
+      const query = req.body.query || req.body.message || req.body.question || '';
       
       // Layer 1: Rate limiting
       const rateLimitOk = await RAGSecurityMiddleware.checkRateLimit(req.ip || 'unknown');

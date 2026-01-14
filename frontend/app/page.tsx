@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ChatPopup } from "@/components/ui/chat-popup-rag";
+import { ChatPopupErrorBoundary } from "@/components/ui/chat-popup-error-boundary";
 import { Separator } from "@/components/ui/separator";
 import { VideoPlayer } from "@/components/ui/video-player";
 import { ProductUspFeatures } from "@/components/products/product-usp-features";
@@ -54,11 +55,28 @@ export default function HomePage() {
   const { itemCount } = useCart();
   const { openCart, closeCart } = useUI();
 
-  // Fetch featured product
+  // Fetch featured product with proper error handling
   useEffect(() => {
+    let isMounted = true;
+    
     apiFetch<{ success: boolean; data: Product[] }>(API_CONFIG.ENDPOINTS.PRODUCTS_FEATURED)
-      .then(data => setProduct(data.data?.[0] || null))
-      .catch(() => {});
+      .then(data => {
+        if (isMounted && data?.data) {
+          setProduct(data.data[0] || null);
+        }
+      })
+      .catch((error) => {
+        // ✅ FIX: Silent error handling - don't show Oeps page for missing featured product
+        // The page will use default product slug and hero image
+        if (isMounted) {
+          console.warn('Could not load featured product, using defaults:', error);
+          setProduct(null); // Will trigger fallback to DEFAULT_PRODUCT_SLUG
+        }
+      });
+    
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const productSlug = product?.slug || SITE_CONFIG.DEFAULT_PRODUCT_SLUG;
@@ -452,8 +470,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CHAT POPUP */}
-      <ChatPopup />
+      {/* CHAT POPUP - Protected by Error Boundary */}
+      <ChatPopupErrorBoundary>
+        <ChatPopup />
+      </ChatPopupErrorBoundary>
     </div>
   );
 }
