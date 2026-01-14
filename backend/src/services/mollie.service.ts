@@ -108,7 +108,9 @@ export class MollieService {
       // Map Mollie status to our status
       let status: PaymentStatus = PaymentStatus.PENDING;
       
-      switch (molliePayment.status) {
+      // ✅ FIX: Type-safe status mapping
+      const mollieStatus = molliePayment.status as string;
+      switch (mollieStatus) {
         case 'paid':
           status = PaymentStatus.PAID;
           break;
@@ -120,8 +122,10 @@ export class MollieService {
           status = PaymentStatus.EXPIRED;
           break;
         case 'refunded':
-          // ✅ FIX: PaymentStatus.REFUNDED enum value
           status = PaymentStatus.REFUNDED;
+          break;
+        default:
+          status = PaymentStatus.PENDING;
           break;
       }
 
