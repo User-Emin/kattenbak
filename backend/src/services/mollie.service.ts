@@ -120,7 +120,8 @@ export class MollieService {
           status = PaymentStatus.EXPIRED;
           break;
         case 'refunded':
-          status = PaymentStatus.REFUNDED;
+          // ✅ FIX: PaymentStatus enum from Prisma
+          status = 'REFUNDED' as PaymentStatus;
           break;
       }
 
