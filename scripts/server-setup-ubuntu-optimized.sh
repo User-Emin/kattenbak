@@ -75,13 +75,20 @@ setup_project() {
 
 # Function: Clone repository
 setup_repository() {
-    echo -e "${YELLOW}📦 Cloning repository...${NC}"
+    echo -e "${YELLOW}📦 Setting up repository...${NC}"
     
     if [ -d "${PROJECT_PATH}/.git" ]; then
+        echo "Repository exists, pulling latest..."
         cd "${PROJECT_PATH}"
         git fetch origin
         git reset --hard origin/main
+    elif [ -d "${PROJECT_PATH}" ]; then
+        echo "Directory exists but not a git repo, removing and cloning..."
+        rm -rf "${PROJECT_PATH}"
+        git clone https://github.com/User-Emin/kattenbak.git "${PROJECT_PATH}"
+        cd "${PROJECT_PATH}"
     else
+        echo "Cloning repository..."
         git clone https://github.com/User-Emin/kattenbak.git "${PROJECT_PATH}"
         cd "${PROJECT_PATH}"
     fi
