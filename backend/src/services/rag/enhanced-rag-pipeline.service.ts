@@ -191,6 +191,8 @@ export class EnhancedRAGPipelineService {
       // ═══════════════════════════════════════════════════════════
       
       const filterStart = Date.now();
+      // ✅ FIX: Ensure vector store is initialized before getting documents
+      await VectorStoreService.ensureInitialized();
       let allDocs = VectorStoreService.getAllDocuments();
       const docsBeforeFilter = allDocs.length;
 
