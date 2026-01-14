@@ -44,7 +44,7 @@ export const CHAT_CONFIG = {
     textColor: DESIGN_SYSTEM.colors.secondary, // Wit
     padding: DESIGN_SYSTEM.spacing[6], // 24px
     borderRadius: 'rounded-t-sm', // ✅ HOEKIGER
-    borderBottom: `border-b border-${DESIGN_SYSTEM.colors.gray[800]}`,
+    borderBottom: 'border-b border-gray-800',
     title: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xl, // 20px
       fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium, // 500 - Noto Sans
@@ -76,7 +76,7 @@ export const CHAT_CONFIG = {
     assistant: {
       backgroundColor: DESIGN_SYSTEM.colors.secondary, // Wit
       textColor: DESIGN_SYSTEM.colors.text.primary, // Zwart
-      border: `border border-${DESIGN_SYSTEM.colors.border.default}`,
+      border: 'border border-gray-200',
       borderRadius: 'rounded-sm', // ✅ HOEKIGER
       padding: `${DESIGN_SYSTEM.spacing[4]} ${DESIGN_SYSTEM.spacing[4]}`, // 16px
       maxWidth: 'max-w-[85%]',
@@ -93,18 +93,18 @@ export const CHAT_CONFIG = {
     container: {
       padding: DESIGN_SYSTEM.spacing[4], // 16px
       backgroundColor: DESIGN_SYSTEM.colors.secondary, // Wit
-      borderTop: `border-t border-${DESIGN_SYSTEM.colors.border.default}`,
+      borderTop: 'border-t border-gray-200',
       borderRadius: 'rounded-b-sm', // ✅ HOEKIGER
     },
     field: {
       borderRadius: 'rounded-sm', // ✅ HOEKIGER
-      border: `border border-${DESIGN_SYSTEM.colors.gray[300]}`,
+      border: 'border border-gray-300',
       padding: `${DESIGN_SYSTEM.spacing[3]} ${DESIGN_SYSTEM.spacing[4]}`, // 12px 16px
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
       focus: {
-        ring: `focus:ring-2 focus:ring-${DESIGN_SYSTEM.colors.primary}/30`,
-        border: `focus:border-${DESIGN_SYSTEM.colors.primary}`,
+        ring: 'focus:ring-2 focus:ring-black/30',
+        border: 'focus:border-black',
       },
     },
     button: {

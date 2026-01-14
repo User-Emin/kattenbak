@@ -156,7 +156,7 @@ export function ChatPopup() {
       {/* ✅ MODERN: Floating Chat Button - Hoekiger, zwart-wit, Noto Sans */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className={`fixed ${CHAT_CONFIG.button.position.right} z-[${CHAT_CONFIG.button.zIndex}] ${buttonBottomClass}
+                    className={`fixed ${CHAT_CONFIG.button.position.right} z-[100] ${buttonBottomClass}
                    ${CHAT_CONFIG.button.size} ${CHAT_CONFIG.button.borderRadius}
                    ${CHAT_CONFIG.button.backgroundColor} ${CHAT_CONFIG.button.textColor}
                    ${CHAT_CONFIG.button.shadow} ${CHAT_CONFIG.button.hoverBackgroundColor}
@@ -186,7 +186,7 @@ export function ChatPopup() {
           />
           
           {/* ✅ MODERN: Chat Modal - Hoekiger, smoother animations */}
-          <div className={`fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[${CHAT_CONFIG.modal.zIndex}] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none`}>
+            <div className={`fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none`}>
             <div className={`pointer-events-auto w-full ${CHAT_CONFIG.modal.maxWidth} ${CHAT_CONFIG.modal.maxHeight} ${CHAT_CONFIG.modal.backgroundColor} ${CHAT_CONFIG.modal.borderRadius} ${CHAT_CONFIG.modal.shadow} ${CHAT_CONFIG.modal.border} ${CHAT_CONFIG.animations.modal.slideIn} flex flex-col`}
                  style={{
                    fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
