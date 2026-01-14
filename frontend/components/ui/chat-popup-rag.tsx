@@ -62,8 +62,10 @@ export function ChatPopup() {
     setError(null);
     
     try {
-      // ✅ SECURITY: Use API URL from config (dynamic, no hardcoding)
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
+      // ✅ SECURITY: Use dynamic API URL (no hardcoding)
+      const apiUrl = typeof window !== 'undefined' 
+        ? `${window.location.protocol}//${window.location.hostname}/api/v1`
+        : (process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1');
       const response = await fetch(`${apiUrl}/rag/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
