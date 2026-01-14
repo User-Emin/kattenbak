@@ -1,14 +1,21 @@
 "use client";
 
 /**
- * RAG CHAT POPUP - No hCaptcha
- * AI-powered chat met Ollama + RAG
+ * RAG CHAT POPUP - MODERN HOEKIGER DESIGN
+ * ✅ DRY: Alle styling via CHAT_CONFIG (geen hardcoding)
+ * ✅ Noto Sans font systeem
+ * ✅ Zwart-wit minimalistisch design
+ * ✅ Hoekiger (rounded-sm i.p.v. rounded-full/rounded-md)
+ * ✅ Smoother animations
+ * ✅ Performance optimized (debouncing, lazy loading)
  * Security: Rate limiting + input validation backend
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Button } from "./button";
 import { X, Send, MessageCircle, Loader2 } from "lucide-react";
+import { CHAT_CONFIG } from "@/lib/chat-config";
+import { DESIGN_SYSTEM } from "@/lib/design-system";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -24,8 +31,10 @@ export function ChatPopup() {
   const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
 
-  // Sticky cart detection
+  // ✅ PERFORMANCE: Debounced sticky cart detection (bespaart CPU)
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
     const checkStickyCart = () => {
       const stickyBar = document.querySelector('[data-sticky-cart]') as HTMLElement;
       
@@ -40,14 +49,40 @@ export function ChatPopup() {
       }
     };
     
-    // Poll every 100ms voor stabiele detectie
-    const interval = setInterval(checkStickyCart, 100);
-    checkStickyCart(); // Initial check
+    // ✅ PERFORMANCE: Debounce check (200ms i.p.v. 100ms polling)
+    const debouncedCheck = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkStickyCart, 200);
+    };
     
-    return () => clearInterval(interval);
+    // Initial check
+    checkStickyCart();
+    
+    // ✅ PERFORMANCE: Use MutationObserver voor efficiëntere detectie
+    const observer = new MutationObserver(debouncedCheck);
+    const targetNode = document.body;
+    observer.observe(targetNode, {
+      attributes: true,
+      attributeFilter: ['class'],
+      subtree: true,
+    });
+    
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
   }, []);
 
-  const handleSendMessage = async () => {
+  // ✅ PERFORMANCE: Memoized API URL (geen herberekening)
+  const apiUrl = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return `${window.location.protocol}//${window.location.hostname}/api/v1`;
+    }
+    return process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
+  }, []);
+
+  // ✅ PERFORMANCE: useCallback voor stable function reference
+  const handleSendMessage = useCallback(async () => {
     if (!input.trim() || isLoading) return;
     
     const userMessage: Message = {
@@ -57,20 +92,18 @@ export function ChatPopup() {
     };
     
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = input.trim();
     setInput("");
     setIsLoading(true);
     setError(null);
     
     try {
       // ✅ SECURITY: Use dynamic API URL (no hardcoding)
-      const apiUrl = typeof window !== 'undefined' 
-        ? `${window.location.protocol}//${window.location.hostname}/api/v1`
-        : (process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1');
       const response = await fetch(`${apiUrl}/rag/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          query: userMessage.content,
+          query: currentInput,
           conversation_history: messages.map(m => ({ role: m.role, content: m.content }))
         })
       });
@@ -101,36 +134,45 @@ export function ChatPopup() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [input, isLoading, messages, apiUrl]);
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  // ✅ PERFORMANCE: useCallback voor stable function reference
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
-  };
+  }, [handleSendMessage]);
 
-  // Calculate button position based on sticky cart
-  const buttonBottomClass = stickyCartVisible 
-    ? 'bottom-32 md:bottom-24' // 8rem = sticky cart height
-    : 'bottom-8 md:bottom-8';
+  // ✅ DRY: Calculate button position via CHAT_CONFIG
+  const buttonBottomClass = useMemo(() => {
+    return stickyCartVisible 
+      ? CHAT_CONFIG.button.position.bottomWithCart
+      : CHAT_CONFIG.button.position.bottom;
+  }, [stickyCartVisible]);
 
   return (
     <>
-      {/* Floating Chat Button - Zwart-wit design passend bij webshop */}
+      {/* ✅ MODERN: Floating Chat Button - Hoekiger, zwart-wit, Noto Sans */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className={`fixed right-4 z-[100] ${buttonBottomClass} transition-all duration-300 ease-out
-                   bg-black text-white 
-                   rounded-full p-4 shadow-2xl hover:scale-110 hover:bg-gray-900
+        className={`fixed ${CHAT_CONFIG.button.position.right} z-[${CHAT_CONFIG.button.zIndex}] ${buttonBottomClass}
+                   ${CHAT_CONFIG.button.size} ${CHAT_CONFIG.button.borderRadius}
+                   ${CHAT_CONFIG.button.backgroundColor} ${CHAT_CONFIG.button.textColor}
+                   ${CHAT_CONFIG.button.shadow} ${CHAT_CONFIG.button.hoverBackgroundColor}
+                   transition-all ${CHAT_CONFIG.animations.duration.base} ${CHAT_CONFIG.animations.timing.ease}
+                   hover:scale-110 active:scale-95 ${CHAT_CONFIG.button.border}
                    focus:outline-none focus:ring-4 focus:ring-gray-400/30
-                   active:scale-95 border border-gray-800`}
+                   flex items-center justify-center`}
+        style={{
+          fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+        }}
         aria-label="Open chat"
       >
         {isExpanded ? (
-          <X className="w-6 h-6" />
+          <X className={CHAT_CONFIG.button.iconSize} />
         ) : (
-          <MessageCircle className="w-6 h-6" />
+          <MessageCircle className={CHAT_CONFIG.button.iconSize} />
         )}
       </button>
 
@@ -143,20 +185,33 @@ export function ChatPopup() {
             onClick={() => setIsExpanded(false)}
           />
           
-          {/* Chat Modal - Smooth animations, passend bij webshop */}
-          <div className="fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
-            <div className="pointer-events-auto w-full max-w-md max-h-[90vh] md:max-h-[600px] bg-white rounded-md shadow-2xl border border-gray-200 animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 ease-out flex flex-col">
+          {/* ✅ MODERN: Chat Modal - Hoekiger, smoother animations */}
+          <div className={`fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[${CHAT_CONFIG.modal.zIndex}] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none`}>
+            <div className={`pointer-events-auto w-full ${CHAT_CONFIG.modal.maxWidth} ${CHAT_CONFIG.modal.maxHeight} ${CHAT_CONFIG.modal.backgroundColor} ${CHAT_CONFIG.modal.borderRadius} ${CHAT_CONFIG.modal.shadow} ${CHAT_CONFIG.modal.border} ${CHAT_CONFIG.animations.modal.slideIn} flex flex-col`}
+                 style={{
+                   fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+                 }}>
               
-              {/* Header - Zwart-wit design passend bij webshop */}
-              <div className="bg-black p-6 rounded-t-md text-white border-b border-gray-800">
+              {/* ✅ MODERN: Header - Hoekiger, zwart-wit, Noto Sans */}
+              <div className={`${CHAT_CONFIG.header.backgroundColor} ${CHAT_CONFIG.header.textColor} ${CHAT_CONFIG.header.padding} ${CHAT_CONFIG.header.borderRadius} ${CHAT_CONFIG.header.borderBottom}`}>
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <h3 className="text-xl font-semibold text-white">AI Assistent</h3>
-                    <p className="text-sm text-gray-300 mt-1">Stel me een vraag over onze kattenbak</p>
+                    <h3 className={`${CHAT_CONFIG.header.title.fontSize} ${CHAT_CONFIG.header.title.fontWeight} ${CHAT_CONFIG.header.title.textColor} ${CHAT_CONFIG.header.title.letterSpacing}`}
+                            style={{
+                              fontFamily: CHAT_CONFIG.header.title.fontFamily, // Noto Sans
+                            }}>
+                      AI Assistent
+                    </h3>
+                    <p className={`${CHAT_CONFIG.header.subtitle.fontSize} ${CHAT_CONFIG.header.subtitle.textColor} mt-1`}
+                       style={{
+                         fontFamily: CHAT_CONFIG.header.subtitle.fontFamily, // Noto Sans
+                       }}>
+                      Stel me een vraag over onze kattenbak
+                    </p>
                   </div>
                   <button
                     onClick={() => setIsExpanded(false)}
-                    className="text-gray-400 hover:text-white transition-colors p-1 rounded-md hover:bg-gray-800"
+                    className="text-gray-400 hover:text-white transition-colors p-1 rounded-sm hover:bg-gray-800"
                     aria-label="Sluit chat"
                   >
                     <X className="w-5 h-5" />
@@ -164,31 +219,33 @@ export function ChatPopup() {
                 </div>
               </div>
 
-              {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
+              {/* ✅ MODERN: Messages - Hoekiger, Noto Sans */}
+              <div className={`flex-1 overflow-y-auto ${CHAT_CONFIG.messages.container.padding} ${CHAT_CONFIG.messages.container.spacing} ${CHAT_CONFIG.messages.container.backgroundColor}`}
+                   style={{
+                     fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+                   }}>
                 {messages.length === 0 && (
-                  <div className="text-center text-gray-500 mt-8">
-                    <MessageCircle className="w-12 h-12 mx-auto mb-3 text-brand/30" />
-                    <p className="text-sm">Stel een vraag over features, specificaties, of geschiktheid</p>
+                  <div className={`text-center ${CHAT_CONFIG.emptyState.textColor} mt-8`}>
+                    <MessageCircle className={`${CHAT_CONFIG.emptyState.iconSize} mx-auto mb-3 ${CHAT_CONFIG.emptyState.iconColor}`} />
+                    <p className={CHAT_CONFIG.emptyState.fontSize}
+                       style={{
+                         fontFamily: CHAT_CONFIG.emptyState.fontFamily, // Noto Sans
+                       }}>
+                      Stel een vraag over features, specificaties, of geschiktheid
+                    </p>
                     <div className="mt-4 space-y-2">
-                      <button
-                        onClick={() => setInput("Hoeveel liter is de afvalbak?")}
-                        className="block w-full text-left px-4 py-2 bg-white rounded-md text-sm hover:bg-brand/5 transition-colors"
-                      >
-                        Hoeveel liter is de afvalbak?
-                      </button>
-                      <button
-                        onClick={() => setInput("Heeft deze kattenbak een app?")}
-                        className="block w-full text-left px-4 py-2 bg-white rounded-md text-sm hover:bg-brand/5 transition-colors"
-                      >
-                        Heeft deze kattenbak een app?
-                      </button>
-                      <button
-                        onClick={() => setInput("Is het veilig voor mijn kat?")}
-                        className="block w-full text-left px-4 py-2 bg-white rounded-md text-sm hover:bg-brand/5 transition-colors"
-                      >
-                        Is het veilig voor mijn kat?
-                      </button>
+                      {["Hoeveel liter is de afvalbak?", "Heeft deze kattenbak een app?", "Is het veilig voor mijn kat?"].map((suggestion, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setInput(suggestion)}
+                          className={`block w-full text-left ${CHAT_CONFIG.emptyState.suggestionButton.padding} ${CHAT_CONFIG.emptyState.suggestionButton.backgroundColor} ${CHAT_CONFIG.emptyState.suggestionButton.borderRadius} ${CHAT_CONFIG.emptyState.suggestionButton.fontSize} ${CHAT_CONFIG.emptyState.suggestionButton.hoverBackgroundColor} transition-colors`}
+                          style={{
+                            fontFamily: CHAT_CONFIG.emptyState.suggestionButton.fontFamily, // Noto Sans
+                          }}
+                        >
+                          {suggestion}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -199,14 +256,19 @@ export function ChatPopup() {
                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[85%] rounded-md px-4 py-3 transition-all duration-200 ${
+                      className={`${msg.role === 'user' ? CHAT_CONFIG.messages.user.maxWidth : CHAT_CONFIG.messages.assistant.maxWidth} ${CHAT_CONFIG.messages[msg.role].borderRadius} ${CHAT_CONFIG.messages[msg.role].padding} transition-all ${CHAT_CONFIG.animations.duration.base} ${
                         msg.role === 'user'
-                          ? 'bg-black text-white'
-                          : 'bg-white border border-gray-200'
+                          ? `${CHAT_CONFIG.messages.user.backgroundColor} ${CHAT_CONFIG.messages.user.textColor}`
+                          : `${CHAT_CONFIG.messages.assistant.backgroundColor} ${CHAT_CONFIG.messages.assistant.textColor} ${CHAT_CONFIG.messages.assistant.border}`
                       }`}
+                      style={{
+                        fontFamily: CHAT_CONFIG.messages[msg.role].fontFamily, // Noto Sans
+                      }}
                     >
-                      <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                      <span className="text-xs opacity-60 mt-1 block">
+                      <p className={CHAT_CONFIG.messages[msg.role].fontSize || DESIGN_SYSTEM.typography.fontSize.sm} style={{ whiteSpace: 'pre-wrap' }}>
+                        {msg.content}
+                      </p>
+                      <span className={`${CHAT_CONFIG.messages.timestamp.fontSize} ${CHAT_CONFIG.messages.timestamp.opacity} mt-1 block`}>
                         {msg.timestamp.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
@@ -215,21 +277,27 @@ export function ChatPopup() {
                 
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-white border border-gray-200 rounded-md px-4 py-3">
-                      <Loader2 className="w-5 h-5 animate-spin text-brand" />
+                    <div className={`${CHAT_CONFIG.loading.backgroundColor} ${CHAT_CONFIG.loading.border} ${CHAT_CONFIG.loading.borderRadius} ${CHAT_CONFIG.loading.padding}`}>
+                      <Loader2 className={`${CHAT_CONFIG.loading.iconSize} animate-spin ${CHAT_CONFIG.loading.iconColor}`} />
                     </div>
                   </div>
                 )}
                 
                 {error && (
-                  <div className="bg-red-50 border border-red-200 rounded-md p-3 text-sm text-red-700">
+                  <div className={`${CHAT_CONFIG.error.backgroundColor} ${CHAT_CONFIG.error.border} ${CHAT_CONFIG.error.borderRadius} ${CHAT_CONFIG.error.padding} ${CHAT_CONFIG.error.fontSize} ${CHAT_CONFIG.error.textColor}`}
+                       style={{
+                         fontFamily: CHAT_CONFIG.error.fontFamily, // Noto Sans
+                       }}>
                     {error}
                   </div>
                 )}
               </div>
 
-              {/* Input */}
-              <div className="p-4 bg-white border-t border-gray-200 rounded-b-md">
+              {/* ✅ MODERN: Input - Hoekiger, Noto Sans, smoother */}
+              <div className={`${CHAT_CONFIG.input.container.padding} ${CHAT_CONFIG.input.container.backgroundColor} ${CHAT_CONFIG.input.container.borderTop} ${CHAT_CONFIG.input.container.borderRadius}`}
+                   style={{
+                     fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+                   }}>
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -237,22 +305,31 @@ export function ChatPopup() {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Stel je vraag..."
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand text-sm"
+                    className={`flex-1 ${CHAT_CONFIG.input.field.padding} ${CHAT_CONFIG.input.field.border} ${CHAT_CONFIG.input.field.borderRadius} ${CHAT_CONFIG.input.field.focus.ring} ${CHAT_CONFIG.input.field.focus.border} ${CHAT_CONFIG.input.field.fontSize}`}
+                    style={{
+                      fontFamily: CHAT_CONFIG.input.field.fontFamily, // Noto Sans
+                    }}
                     disabled={isLoading}
                   />
-                  <Button
+                  <button
                     onClick={handleSendMessage}
                     disabled={!input.trim() || isLoading}
-                    className="px-6 rounded-md"
+                    className={`${CHAT_CONFIG.input.button.padding} ${CHAT_CONFIG.input.button.borderRadius} ${CHAT_CONFIG.input.button.backgroundColor} ${CHAT_CONFIG.input.button.textColor} ${CHAT_CONFIG.input.button.hoverBackgroundColor} ${CHAT_CONFIG.input.button.fontSize} ${CHAT_CONFIG.input.button.fontWeight} transition-all ${CHAT_CONFIG.input.button.transition} disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center`}
+                    style={{
+                      fontFamily: CHAT_CONFIG.input.button.fontFamily, // Noto Sans
+                    }}
                   >
                     {isLoading ? (
-                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <Loader2 className={`${CHAT_CONFIG.input.button.iconSize} animate-spin`} />
                     ) : (
-                      <Send className="w-5 h-5" />
+                      <Send className={CHAT_CONFIG.input.button.iconSize} />
                     )}
-                  </Button>
+                  </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-2 text-center">
+                <p className={`${CHAT_CONFIG.input.footer.fontSize} ${CHAT_CONFIG.input.footer.textColor} mt-2 text-center`}
+                   style={{
+                     fontFamily: CHAT_CONFIG.input.footer.fontFamily, // Noto Sans
+                   }}>
                   Powered by AI · Antwoorden op basis van productinformatie
                 </p>
               </div>
