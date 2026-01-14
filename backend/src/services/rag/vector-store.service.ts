@@ -21,9 +21,9 @@ export interface VectorDocument {
 export class VectorStoreService {
   private static documents: VectorDocument[] = [];
   private static initialized = false; // ✅ FIX: Track initialization state
-  // ABSOLUTE path to ensure it works regardless of cwd
+  // ✅ FIX: Absolute path from project root (works in both dev and production)
   private static readonly STORE_PATH = process.env.VECTOR_STORE_PATH || 
-    path.join(__dirname, '../../data/vector-store.json');
+    path.join(process.cwd(), 'data', 'vector-store.json');
   
   // ✅ MEMORY LIMIT: Prevent overloading (max 1000 documents in memory)
   private static readonly MAX_DOCUMENTS = parseInt(process.env.RAG_MAX_DOCUMENTS || '1000', 10);
