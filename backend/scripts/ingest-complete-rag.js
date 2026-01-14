@@ -17,7 +17,6 @@ const VECTOR_STORE_PATH = process.env.VECTOR_STORE_PATH ||
   path.join(__dirname, '../data/vector-store.json');
 
 // ✅ DRY: Local embeddings implementation (no TypeScript import needed)
-const crypto = require('crypto');
 
 // ✅ DRY: Local embeddings (same as EmbeddingsLocalService)
 class LocalEmbeddings {
