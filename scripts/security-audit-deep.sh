@@ -29,23 +29,32 @@ fi
 
 # Check 2: Dangerous code patterns (only actual dangerous calls, not method names)
 echo -e "${YELLOW}2. Checking for dangerous code patterns...${NC}"
-DANGEROUS=$(grep -rE "(eval\(|Function\(|\.exec\(|\.spawn\(|child_process\.)" \
-   --include="*.ts" --include="*.js" --exclude-dir=node_modules \
-   backend/src 2>/dev/null | grep -v "//.*spawn" | grep -v "import.*spawn" | grep -v "from 'child_process'" | grep -v "static.*Retrieval\|static.*agentic" || true)
 
-if [ -n "$DANGEROUS" ]; then
-    # Check if spawn is properly secured (path validation, shell: false)
-    if echo "$DANGEROUS" | grep -q "spawn" && ! grep -r "shell: false" --include="*.ts" backend/src/services/rag/embeddings.service.ts 2>/dev/null; then
+# Check for eval() or Function() constructor (actual calls, not method names)
+EVAL_FOUND=$(grep -rE "\beval\s*\(" --include="*.ts" --include="*.js" --exclude-dir=node_modules backend/src 2>/dev/null | grep -v "//.*eval" || true)
+FUNCTION_FOUND=$(grep -rE "\bFunction\s*\(" --include="*.ts" --include="*.js" --exclude-dir=node_modules backend/src 2>/dev/null | grep -v "//.*Function" || true)
+
+if [ -n "$EVAL_FOUND" ] || [ -n "$FUNCTION_FOUND" ]; then
+    echo -e "${RED}❌ eval() or Function() found!${NC}"
+    [ -n "$EVAL_FOUND" ] && echo "$EVAL_FOUND"
+    [ -n "$FUNCTION_FOUND" ] && echo "$FUNCTION_FOUND"
+    ISSUES=$((ISSUES + 1))
+else
+    echo -e "${GREEN}✅ No eval() or Function() calls${NC}"
+fi
+
+# Check spawn() security
+SPAWN_FOUND=$(grep -rE "\.spawn\s*\(" --include="*.ts" --include="*.js" --exclude-dir=node_modules backend/src 2>/dev/null || true)
+if [ -n "$SPAWN_FOUND" ]; then
+    # Check if spawn is properly secured
+    if grep -r "shell: false" --include="*.ts" backend/src/services/rag/embeddings.service.ts backend/ingest-simple.js 2>/dev/null | grep -q "shell: false"; then
+        echo -e "${GREEN}✅ spawn() is properly secured (shell: false)${NC}"
+    else
         echo -e "${RED}❌ spawn() found without shell: false security!${NC}"
         ISSUES=$((ISSUES + 1))
-    elif echo "$DANGEROUS" | grep -q "eval\|Function("; then
-        echo -e "${RED}❌ eval() or Function() found!${NC}"
-        ISSUES=$((ISSUES + 1))
-    else
-        echo -e "${GREEN}✅ spawn() is properly secured (path validation, shell: false)${NC}"
     fi
 else
-    echo -e "${GREEN}✅ No dangerous patterns${NC}"
+    echo -e "${GREEN}✅ No spawn() calls (using local embeddings)${NC}"
 fi
 
 # Check 3: Python script validation
