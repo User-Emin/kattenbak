@@ -10,6 +10,28 @@
  * 5. Encrypt video + thumbnail (AES-256-GCM)
  * 6. Remove temporary files
  */
+
+import * as path from 'path';
+import * as fs from 'fs/promises';
+
+// ✅ FIX: Placeholder functions (to be implemented)
+async function processVideoComplete(filePath: string, quality: 'low' | 'medium' | 'high') {
+  // Placeholder - implement actual video processing
+  return {
+    videoPath: filePath,
+    thumbnailPath: filePath.replace(/\.[^.]+$/, '.jpg'),
+    metadata: {
+      originalSize: 0,
+      processedSize: 0,
+      compressionRatio: 0,
+    },
+  };
+}
+
+function getVideoPublicUrl(filename: string): string {
+  return `/uploads/videos/${filename}`;
+}
+
 export async function processUploadedVideo(
   filePath: string,
   quality: 'low' | 'medium' | 'high' = 'medium'

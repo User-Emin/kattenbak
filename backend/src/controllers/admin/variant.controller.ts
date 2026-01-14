@@ -4,7 +4,7 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-import { VariantService } from '../../services/variant.service';
+import { VariantService, CreateVariantData } from '../../services/variant.service';
 import { successResponse } from '../../utils/response.util';
 import { z } from 'zod';
 
@@ -75,7 +75,12 @@ export class VariantController {
    */
   static async createVariant(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const data = createVariantSchema.parse(req.body);
+      const parsed = createVariantSchema.parse(req.body);
+      // ✅ FIX: Ensure productId is present (required by CreateVariantData)
+      if (!parsed.productId) {
+        throw new Error('productId is required');
+      }
+      const data = parsed as CreateVariantData;
       const variant = await VariantService.createVariant(data);
 
       successResponse(res, variant, 'Variant created successfully', 201);
