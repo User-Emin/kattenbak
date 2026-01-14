@@ -140,6 +140,11 @@ export const CHAT_CONFIG = {
     },
     backdrop: {
       fadeIn: 'animate-in fade-in duration-200',
+      backgroundColor: 'bg-black/20',
+      blur: 'backdrop-blur-sm',
+      zIndex: 'z-[110]',
+      mobileTransparent: 'md:bg-transparent',
+      mobilePointerEvents: 'md:pointer-events-none',
     },
     modal: {
       slideIn: 'animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 ease-out',

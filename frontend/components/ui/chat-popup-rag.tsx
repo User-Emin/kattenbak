@@ -194,14 +194,29 @@ export function ChatPopup() {
       {/* Chat Popup */}
       {isExpanded && (
         <>
-          {/* Backdrop */}
+          {/* ✅ DRY: Backdrop via CHAT_CONFIG */}
           <div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-in fade-in duration-200 z-[110] md:bg-transparent md:pointer-events-none"
+            className={cn(
+              'fixed',
+              'inset-0',
+              CHAT_CONFIG.animations.backdrop.backgroundColor,
+              CHAT_CONFIG.animations.backdrop.blur,
+              CHAT_CONFIG.animations.backdrop.fadeIn,
+              CHAT_CONFIG.animations.backdrop.zIndex,
+              CHAT_CONFIG.animations.backdrop.mobileTransparent,
+              CHAT_CONFIG.animations.backdrop.mobilePointerEvents
+            )}
             onClick={() => setIsExpanded(false)}
           />
           
           {/* ✅ MODERN: Chat Modal - Hoekiger, smoother animations */}
-          <div className="fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
+          <div className={cn(
+            CHAT_CONFIG.modal.position.container,
+            CHAT_CONFIG.modal.zIndex,
+            CHAT_CONFIG.modal.position.flex,
+            CHAT_CONFIG.modal.position.padding,
+            CHAT_CONFIG.modal.position.pointerEvents
+          )}>
             <div className={cn(
               'pointer-events-auto',
               'w-full',
