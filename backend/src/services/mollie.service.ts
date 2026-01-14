@@ -245,9 +245,10 @@ export class MollieService {
         };
       }
 
-      // ✅ FIX: Mollie API uses payments.createRefund, not payments.refund
+      // ✅ FIX: Mollie API refund - get payment first, then create refund
       const payment = await this.client.payments.get(mollieId);
-      await payment.refunds.create(refundData);
+      // Type assertion for refunds (Mollie API has refunds on Payment object)
+      await (payment as any).refunds.create(refundData);
 
       // Update payment in database
       await prisma.payment.update({
