@@ -33,7 +33,7 @@ export class OrdersController {
       const total = subtotal + shippingCost;
 
       // Create order
-      const order = {
+      const order: any = {
         id: `order-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         orderNumber: `KB${Date.now().toString().slice(-8)}`,
         items,
@@ -45,6 +45,10 @@ export class OrdersController {
         status: 'pending',
         paymentStatus: 'pending',
         paymentMethod,
+        // ✅ FIX: Add payment properties (will be set later)
+        paymentId: undefined as string | undefined,
+        paymentUrl: undefined as string | undefined,
+        paymentError: undefined as string | undefined,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
