@@ -244,9 +244,11 @@ export class EnhancedRAGPipelineService {
                 };
               });
               
+              // ✅ MRR OPTIMIZATION: Lower threshold for better recall (MRR metrics)
               // Sort by similarity and take top results
+              const minScore = options.min_score || 0; // ✅ Allow lower scores for better recall
               retrievedDocs = scoredDocs
-                .filter(doc => doc.score >= options.min_score)
+                .filter(doc => doc.score >= minScore)
                 .sort((a, b) => b.score - a.score)
                 .slice(0, options.top_k * 2)
                 .map(doc => ({

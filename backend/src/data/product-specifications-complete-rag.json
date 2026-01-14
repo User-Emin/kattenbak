@@ -1,0 +1,167 @@
+{
+  "product_id": "1",
+  "sku": "KB-AUTO-001",
+  "documents": [
+    {
+      "type": "overview",
+      "title": "Product Overzicht",
+      "content": "De Automatische Kattenbak Premium is een zelfreinigende kattenbak met app-bediening. Perfect voor katten tot 7kg. Volledig automatisch met real-time monitoring via smartphone app. De kattenbak heeft een 10.5L XL capaciteit, wat 17% meer is dan de concurrentie. Voor 1 kat: 7-10 dagen tussen legen. Voor meerdere katten: 3-5 dagen tussen legen.",
+      "keywords": ["overzicht", "capaciteit", "automatisch", "app", "zelfreinigend"],
+      "importance": "high"
+    },
+    {
+      "type": "safety",
+      "title": "Veiligheid - Gewicht en Leeftijd",
+      "content": "Niet geschikt voor kittens onder 6 maanden. De smart cat litter is alleen geschikt voor katten die niet meer wegen dan 3,3 lbs (1,5KG), en het wordt aanbevolen dat het maximale gewicht van de kat niet meer dan 27,5 lbs (12,5KG) mag zijn. De kattenbak is geschikt voor katten tot 7kg.",
+      "keywords": ["veiligheid", "gewicht", "leeftijd", "kittens", "minimum", "maximum", "1.5kg", "12.5kg", "7kg"],
+      "importance": "critical"
+    },
+    {
+      "type": "safety",
+      "title": "Veiligheid - Stroomkabel",
+      "content": "Gebruik altijd de originele stroomkabel en adapter om schade en veiligheidsrisico's te voorkomen. Zorg ervoor dat uw kat niet aan de stroomkabel bijt. Schakel de stroom uit voordat u het apparaat gebruikt of demonteert. Dompel de basis en elektrische componenten niet onder water of was ze niet met water.",
+      "keywords": ["veiligheid", "stroomkabel", "adapter", "elektrisch", "water", "demonteren"],
+      "importance": "critical"
+    },
+    {
+      "type": "safety",
+      "title": "Veiligheid - Plaatsing",
+      "content": "Plaats het product op een stabiel, vlak oppervlak. Plaats het niet op een verhoogd oppervlak om het risico op vallen te vermijden. Zorg voor goede ventilatie rondom de kattenbak.",
+      "keywords": ["veiligheid", "plaatsing", "stabiel", "vlak", "ventilatie"],
+      "importance": "high"
+    },
+    {
+      "type": "safety",
+      "title": "Veiligheid - Gebruik",
+      "content": "Steek uw handen niet in de trommel terwijl de machine draait. Schakel niet tussen reinigings- en leegtaken. Wacht tot de huidige taak is voltooid voordat u van programma wisselt. Volg de veiligheidsrichtlijnen strikt om ongelukken met uw huisdier te voorkomen.",
+      "keywords": ["veiligheid", "gebruik", "handen", "trommel", "machine", "programma"],
+      "importance": "critical"
+    },
+    {
+      "type": "feature",
+      "title": "Zelfreinigende Functie",
+      "content": "Automatische reiniging na elk gebruik. Dubbele veiligheidssensoren zorgen voor 100% veiligheid. IR + gewichtssensor. Pauzeert automatisch als kat terug gaat. Getest op meer dan 10.000 cycli voor maximale betrouwbaarheid.",
+      "keywords": ["zelfreinigend", "automatisch", "sensoren", "IR", "gewicht", "veiligheid", "cycli"],
+      "importance": "high"
+    },
+    {
+      "type": "feature",
+      "title": "Open-Top Design",
+      "content": "Low-stress design voor katten. Geen claustrofobisch gevoel. Ventilatie voor frisse lucht. Open-top ontwerp maakt het comfortabel voor katten om te gebruiken.",
+      "keywords": ["open-top", "design", "low-stress", "claustrofobisch", "ventilatie", "comfort"],
+      "importance": "high"
+    },
+    {
+      "type": "feature",
+      "title": "Dubbele Veiligheidssensoren",
+      "content": "Uitgerust met infrarood- en gewichtssensoren die automatisch stoppen wanneer uw kat de bak betreedt. Getest op 10.000+ cycli voor maximale betrouwbaarheid. Automatische pauze functie wanneer de kat de bak betreedt.",
+      "keywords": ["sensoren", "infrarood", "gewicht", "veiligheid", "pauze", "cycli", "betrouwbaarheid"],
+      "importance": "high"
+    },
+    {
+      "type": "feature",
+      "title": "Smartphone App",
+      "content": "iOS & Android app. Real-time notifications. Gezondheidsmonitoring & statistieken. Cloud-sync. Volledige bediening via smartphone met real-time monitoring van gebruik en gezondheid van uw kat.",
+      "keywords": ["app", "iOS", "Android", "notifications", "monitoring", "statistieken", "cloud", "smartphone"],
+      "importance": "high"
+    },
+    {
+      "type": "feature",
+      "title": "Geurbeheersing",
+      "content": "Hygiënisch zowel voor je kat als voor je huis. Dempt vieze geuren effectief. Geurwerend en hypoallergeen voor optimale hygiëne.",
+      "keywords": ["geur", "hygiëne", "geurwerend", "hypoallergeen", "geurbeheersing"],
+      "importance": "medium"
+    },
+    {
+      "type": "specification",
+      "title": "Capaciteit",
+      "content": "10.5L XL capaciteit (17% meer dan concurrentie). Voor 1 kat: 7-10 dagen tussen legen. Bij meerdere katten: 3-5 dagen tussen legen. 30% minder onderhoud vs concurrentie (7-9L).",
+      "keywords": ["capaciteit", "10.5L", "XL", "liter", "legen", "onderhoud", "dagen"],
+      "importance": "high"
+    },
+    {
+      "type": "specification",
+      "title": "Onderhoud",
+      "content": "Makkelijk te demonteren voor grondig schoonmaken. Alle onderdelen zijn goed bereikbaar. Modulair ontwerp zonder tools. Alle onderdelen makkelijk te bereiken. Schoonmaken in 5 minuten.",
+      "keywords": ["onderhoud", "demonteren", "schoonmaken", "modulair", "tools", "minuten"],
+      "importance": "medium"
+    },
+    {
+      "type": "specification",
+      "title": "Vulling",
+      "content": "Klonterende klei vulling, plantaardige vulling, en gemixte vulling. Kies wat jij het beste vindt. Geschikt voor verschillende soorten kattenbakvulling.",
+      "keywords": ["vulling", "klei", "plantaardig", "gemixte", "kattenbakvulling"],
+      "importance": "medium"
+    },
+    {
+      "type": "specification",
+      "title": "Afmetingen",
+      "content": "Buitenmaat: 65×53×65cm. Binnenmaat: groot genoeg voor katten tot 7kg. Past onder meeste kasten. Gewicht: 8.5kg.",
+      "keywords": ["afmetingen", "buitenmaat", "binnenmaat", "65cm", "53cm", "gewicht", "8.5kg", "kasten"],
+      "importance": "high"
+    },
+    {
+      "type": "specification",
+      "title": "Geluid",
+      "content": "Stiller dan conversatie. Verstoort niet tijdens slaap. Premium Japanse motor technologie. Werkt onder 40 decibel. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.",
+      "keywords": ["geluid", "stil", "40dB", "decibel", "slaap", "motor", "Japanse"],
+      "importance": "high"
+    },
+    {
+      "type": "specification",
+      "title": "Materiaal",
+      "content": "Gemaakt van duurzaam, milieuvriendelijk ABS-materiaal dat bestand is tegen krassen en eenvoudig te reinigen. Geurwerend en hypoallergeen voor optimale hygiëne. Duurzaam ABS kunststof, kras- en slijtvast, antibacteriële coating.",
+      "keywords": ["materiaal", "ABS", "duurzaam", "milieuvriendelijk", "krassen", "reinigen", "antibacterieel"],
+      "importance": "medium"
+    },
+    {
+      "type": "faq",
+      "title": "Hoeveel liter is de afvalbak?",
+      "content": "De afvalbak heeft een 10.5L XL capaciteit, wat 17% meer is dan de concurrentie. Voor 1 kat: 7-10 dagen tussen legen. Bij meerdere katten: 3-5 dagen tussen legen.",
+      "keywords": ["liter", "capaciteit", "10.5L", "legen", "dagen"],
+      "importance": "high"
+    },
+    {
+      "type": "faq",
+      "title": "Heeft deze kattenbak een app?",
+      "content": "Ja, de kattenbak heeft een iOS & Android app met real-time notifications, gezondheidsmonitoring, statistieken en cloud-sync. Volledige bediening via smartphone.",
+      "keywords": ["app", "iOS", "Android", "notifications", "monitoring"],
+      "importance": "high"
+    },
+    {
+      "type": "faq",
+      "title": "Is het veilig voor mijn kat?",
+      "content": "Ja, de kattenbak heeft dubbele veiligheidssensoren (IR + gewicht) die automatisch stoppen wanneer uw kat de bak betreedt. Getest op 10.000+ cycli. Niet geschikt voor kittens onder 6 maanden. Geschikt voor katten van 1.5kg tot 12.5kg (aanbevolen maximum 7kg).",
+      "keywords": ["veiligheid", "sensoren", "kat", "kittens", "gewicht", "1.5kg", "12.5kg", "7kg"],
+      "importance": "critical"
+    },
+    {
+      "type": "faq",
+      "title": "Hoe werkt de zelfreinigende functie?",
+      "content": "De kattenbak reinigt automatisch na elk gebruik. Dubbele veiligheidssensoren zorgen ervoor dat de reiniging stopt wanneer uw kat de bak betreedt. De machine pauzeert automatisch en wacht tot de kat de bak verlaat voordat de reiniging wordt voortgezet.",
+      "keywords": ["zelfreinigend", "automatisch", "reinigen", "sensoren", "pauze"],
+      "importance": "high"
+    },
+    {
+      "type": "faq",
+      "title": "Hoe vaak moet ik de afvalbak legen?",
+      "content": "Voor 1 kat: 7-10 dagen tussen legen. Bij meerdere katten: 3-5 dagen tussen legen. De 10.5L capaciteit betekent 30% minder onderhoud dan concurrentie met 7-9L capaciteit.",
+      "keywords": ["legen", "dagen", "capaciteit", "onderhoud", "10.5L"],
+      "importance": "high"
+    },
+    {
+      "type": "faq",
+      "title": "Is de kattenbak geschikt voor meerdere katten?",
+      "content": "Ja, de kattenbak is geschikt voor meerdere katten. Met meerdere katten moet u de afvalbak elke 3-5 dagen legen. De 10.5L capaciteit is groot genoeg voor meerdere katten.",
+      "keywords": ["meerdere", "katten", "legen", "3-5 dagen", "capaciteit"],
+      "importance": "medium"
+    },
+    {
+      "type": "comparison",
+      "title": "Vergelijking met Concurrentie",
+      "content": "De 10.5L capaciteit is 17% meer dan de concurrentie (7-9L). Dit betekent 30% minder onderhoud. De kattenbak is stiller dan conversatie (onder 40dB) en heeft dubbele veiligheidssensoren die getest zijn op 10.000+ cycli.",
+      "keywords": ["vergelijking", "concurrentie", "capaciteit", "onderhoud", "geluid", "sensoren"],
+      "importance": "medium"
+    }
+  ]
+}
