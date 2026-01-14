@@ -24,6 +24,8 @@ class RedisClient {
             return delay;
           },
           maxRetriesPerRequest: 3,
+          // ✅ FIX: keepAlive must be boolean, not number
+          keepAlive: true,
         });
 
         RedisClient.instance.on('connect', () => {
