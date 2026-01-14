@@ -28,6 +28,11 @@
     font-feature-settings: 'kern' 1, 'liga' 1;
     font-weight: 400;
   }
+  
+  /* ✅ CHAT POPUP: Ensure CSS classes load correctly */
+  .font-sans {
+    font-family: var(--font-primary), system-ui, -apple-system, sans-serif;
+  }
 }
 
 /**
