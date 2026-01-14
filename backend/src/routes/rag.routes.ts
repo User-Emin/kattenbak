@@ -36,7 +36,8 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
     // ✅ LAZY LOADING: Initialize vector store only when RAG is used
     await VectorStoreService.ensureInitialized();
     
-    const sanitizedQuery = req.body.sanitized_query;
+    // ✅ FIX: Accept both 'query' (from frontend) and 'sanitized_query' (from middleware)
+    const sanitizedQuery = req.body.sanitized_query || req.body.query;
     
     if (!sanitizedQuery || sanitizedQuery.length < 3) {
       return res.status(400).json({
