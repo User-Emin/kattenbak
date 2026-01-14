@@ -15,10 +15,38 @@ const nextConfig: NextConfig = {
   
   // 🔒 SECURITY: Disable source maps in production
   productionBrowserSourceMaps: false,
-  
+
   // 🔒 SECURITY: Temporarily ignore TypeScript/ESLint errors during build
   typescript: {
     ignoreBuildErrors: true,
+  },
+
+  // 🚀 CPU-FRIENDLY: Optimize build for low CPU usage
+  swcMinify: true, // Use SWC minifier (faster than Terser, lower CPU)
+  
+  // 🚀 PERFORMANCE: Optimize webpack for CPU efficiency
+  webpack: (config, { isServer, dev }) => {
+    // ✅ CPU-friendly: Reduce parallel processing in production
+    if (!dev && !isServer) {
+      config.optimization = {
+        ...config.optimization,
+        minimize: true,
+        // ✅ Reduce CPU load during build (limit parallel workers)
+        minimizer: config.optimization.minimizer?.map((plugin: any) => {
+          if (plugin.constructor.name === 'TerserPlugin' || plugin.constructor.name === 'SwcMinifyPlugin') {
+            return {
+              ...plugin,
+              options: {
+                ...plugin.options,
+                parallel: 2, // Limit parallel workers (CPU-friendly)
+              },
+            };
+          }
+          return plugin;
+        }),
+      };
+    }
+    return config;
   },
   
   // 🚀 PERFORMANCE: Custom headers for caching

@@ -9,25 +9,34 @@ echo "📊 FRONTEND OVERBELASTING MONITORING"
 echo "===================================="
 echo ""
 
-# CPU Check
-CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')
-echo "CPU Usage: ${CPU_USAGE}%"
-if (( $(echo "$CPU_USAGE > 80" | bc -l) )); then
-  echo "⚠️  HIGH CPU USAGE (>80%) - Build may be slow"
-  OVERLOAD=true
+# CPU Check (Linux compatible)
+if command -v top &> /dev/null && top -bn1 2>/dev/null | grep -q "Cpu(s)"; then
+  CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')
+  echo "CPU Usage: ${CPU_USAGE}%"
+  if (( $(echo "$CPU_USAGE > 80" | bc -l 2>/dev/null || echo "0") )); then
+    echo "⚠️  HIGH CPU USAGE (>80%) - Build may be slow"
+    OVERLOAD=true
+  else
+    echo "✅ CPU usage normal"
+    OVERLOAD=false
+  fi
 else
-  echo "✅ CPU usage normal"
+  echo "⚠️  CPU monitoring not available (top command)"
   OVERLOAD=false
 fi
 
-# Memory Check
-MEMORY_USAGE=$(free | grep Mem | awk '{printf "%.1f", $3/$2 * 100.0}')
-echo "Memory Usage: ${MEMORY_USAGE}%"
-if (( $(echo "$MEMORY_USAGE > 80" | bc -l) )); then
-  echo "⚠️  HIGH MEMORY USAGE (>80%)"
-  OVERLOAD=true
+# Memory Check (Linux compatible)
+if command -v free &> /dev/null; then
+  MEMORY_USAGE=$(free | grep Mem | awk '{printf "%.1f", $3/$2 * 100.0}')
+  echo "Memory Usage: ${MEMORY_USAGE}%"
+  if (( $(echo "$MEMORY_USAGE > 80" | bc -l 2>/dev/null || echo "0") )); then
+    echo "⚠️  HIGH MEMORY USAGE (>80%)"
+    OVERLOAD=true
+  else
+    echo "✅ Memory usage normal"
+  fi
 else
-  echo "✅ Memory usage normal"
+  echo "⚠️  Memory monitoring not available (free command)"
 fi
 
 # Frontend .next directory size
