@@ -162,7 +162,7 @@ echo "4. JWT AUTHENTICATION CHECK (20 points)"
 echo "----------------------------------------"
 
 # HS256 algorithm
-if grep -r "jwt\.sign\|jwt\.verify" backend/src --include="*.ts" | grep -q "HS256\|algorithm.*HS256"; then
+if grep -r "jwt\.sign\|jwt\.verify" backend/src --include="*.ts" | grep -qE "HS256|algorithm.*HS256|'HS256'|\"HS256\""; then
   echo "✅ JWT HS256 algorithm found"
   SCORE=$((SCORE + 7))
 else
@@ -171,7 +171,7 @@ else
 fi
 
 # Algorithm whitelisting
-if grep -r "algorithms.*HS256\|algorithm.*HS256" backend/src --include="*.ts" | grep -q "algorithms\|algorithm"; then
+if grep -r "algorithms.*HS256\|algorithm.*HS256" backend/src --include="*.ts" | grep -qE "algorithms|algorithm"; then
   echo "✅ Algorithm whitelisting found"
   SCORE=$((SCORE + 7))
 else
