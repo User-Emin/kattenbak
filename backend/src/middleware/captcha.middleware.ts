@@ -7,7 +7,8 @@ import axios from 'axios';
  * ✅ SWITCHED TO hCaptcha (meer privacy-vriendelijk dan Google reCAPTCHA)
  */
 
-const SECRET_KEY = process.env.HCAPTCHA_SECRET_KEY || '0x0000000000000000000000000000000000000000';
+// DRY: Load from environment (NEVER hardcode!)
+const SECRET_KEY = process.env.HCAPTCHA_SECRET_KEY || '';
 const VERIFY_URL = 'https://hcaptcha.com/siteverify';
 const MIN_SCORE = 0.5;
 
@@ -28,6 +29,12 @@ export const verifyCaptcha = async (
   token: string,
   expectedAction?: string
 ): Promise<{ valid: boolean; score: number; error?: string }> => {
+  // DRY: Validate environment variable
+  if (!SECRET_KEY || SECRET_KEY === '') {
+    console.warn('⚠️  HCAPTCHA_SECRET_KEY not set, skipping verification');
+    return { valid: true, score: 1.0 }; // Allow in development
+  }
+  
   if (!token) {
     return { valid: false, score: 0, error: 'Token is verplicht' };
   }

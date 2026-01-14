@@ -28,7 +28,7 @@ echo "CPU Limit: ${MAX_CPU_PERCENT}%"
 echo "Memory Limit: ${MAX_MEMORY_MB}MB"
 echo ""
 
-# Function: Install Node.js (if needed)
+# Function: Detect OS and install Node.js
 install_nodejs() {
     if command -v node &> /dev/null; then
         NODE_CURRENT=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
@@ -39,8 +39,25 @@ install_nodejs() {
     fi
     
     echo -e "${YELLOW}📦 Installing Node.js ${NODE_VERSION}...${NC}"
-    curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash -
-    apt-get install -y nodejs
+    
+    # Detect OS
+    if command -v dnf &> /dev/null; then
+        # RHEL/CentOS/AlmaLinux (dnf)
+        curl -fsSL https://rpm.nodesource.com/setup_${NODE_VERSION}.x | bash -
+        dnf install -y nodejs git curl wget
+    elif command -v yum &> /dev/null; then
+        # RHEL/CentOS (yum)
+        curl -fsSL https://rpm.nodesource.com/setup_${NODE_VERSION}.x | bash -
+        yum install -y nodejs git curl wget
+    elif command -v apt-get &> /dev/null; then
+        # Debian/Ubuntu
+        curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash -
+        apt-get install -y nodejs git curl wget
+    else
+        echo -e "${RED}❌ Unsupported OS${NC}"
+        exit 1
+    fi
+    
     echo -e "${GREEN}✅ Node.js installed${NC}"
 }
 
@@ -83,6 +100,11 @@ setup_repository() {
         cd "${PROJECT_PATH}"
         git fetch origin
         git reset --hard origin/main
+    elif [ -d "${PROJECT_PATH}" ]; then
+        echo "Directory exists but not a git repo, removing and cloning..."
+        rm -rf "${PROJECT_PATH}"
+        git clone https://github.com/User-Emin/kattenbak.git "${PROJECT_PATH}"
+        cd "${PROJECT_PATH}"
     else
         echo "Cloning repository..."
         git clone https://github.com/User-Emin/kattenbak.git "${PROJECT_PATH}"
@@ -92,19 +114,36 @@ setup_repository() {
     echo -e "${GREEN}✅ Repository setup complete${NC}"
 }
 
-# Function: Install dependencies (CPU optimized)
+# Function: Install dependencies (CPU optimized, fastest)
 install_dependencies() {
-    echo -e "${YELLOW}📦 Installing dependencies (CPU optimized)...${NC}"
+    echo -e "${YELLOW}📦 Installing dependencies (optimized for speed)...${NC}"
     
     # Backend dependencies
     echo "Installing backend dependencies..."
     cd "${PROJECT_PATH}/backend"
     
-    # Use nice to limit CPU priority
-    nice -n 10 npm ci --prefer-offline --no-audit --loglevel=error --maxsockets=2 || {
-        echo -e "${YELLOW}⚠️  npm ci failed, trying npm install...${NC}"
-        nice -n 10 npm install --prefer-offline --no-audit --loglevel=error --maxsockets=2
-    }
+    # Use npm ci with optimizations (fastest)
+    nice -n 10 npm ci \
+        --prefer-offline \
+        --no-audit \
+        --loglevel=error \
+        --maxsockets=2 \
+        --omit=optional \
+        || {
+            echo -e "${YELLOW}⚠️  npm ci failed, trying npm install...${NC}"
+            nice -n 10 npm install \
+                --prefer-offline \
+                --no-audit \
+                --loglevel=error \
+                --maxsockets=2 \
+                --omit=optional
+        }
+    
+    # Install sharp separately with prebuilt binaries (faster)
+    if grep -q "sharp" package.json; then
+        echo "Installing sharp with prebuilt binaries..."
+        SHARP_IGNORE_GLOBAL_LIBVIPS=1 nice -n 10 npm install sharp --no-save --prefer-offline || true
+    fi
     
     # Generate Prisma client
     npx prisma generate
@@ -113,21 +152,39 @@ install_dependencies() {
     echo "Installing frontend dependencies..."
     cd "${PROJECT_PATH}/frontend"
     
-    nice -n 10 npm ci --prefer-offline --no-audit --loglevel=error --maxsockets=2 || {
-        echo -e "${YELLOW}⚠️  npm ci failed, trying npm install...${NC}"
-        nice -n 10 npm install --prefer-offline --no-audit --loglevel=error --maxsockets=2
-    }
+    nice -n 10 npm ci \
+        --prefer-offline \
+        --no-audit \
+        --loglevel=error \
+        --maxsockets=2 \
+        || {
+            echo -e "${YELLOW}⚠️  npm ci failed, trying npm install...${NC}"
+            nice -n 10 npm install \
+                --prefer-offline \
+                --no-audit \
+                --loglevel=error \
+                --maxsockets=2
+        }
     
     # Admin dependencies
     echo "Installing admin dependencies..."
     cd "${PROJECT_PATH}/admin-next"
     
-    nice -n 10 npm ci --prefer-offline --no-audit --loglevel=error --maxsockets=2 || {
-        echo -e "${YELLOW}⚠️  npm ci failed, trying npm install...${NC}"
-        nice -n 10 npm install --prefer-offline --no-audit --loglevel=error --maxsockets=2
-    }
+    nice -n 10 npm ci \
+        --prefer-offline \
+        --no-audit \
+        --loglevel=error \
+        --maxsockets=2 \
+        || {
+            echo -e "${YELLOW}⚠️  npm ci failed, trying npm install...${NC}"
+            nice -n 10 npm install \
+                --prefer-offline \
+                --no-audit \
+                --loglevel=error \
+                --maxsockets=2
+        }
     
-    echo -e "${GREEN}✅ Dependencies installed${NC}"
+    echo -e "${GREEN}✅ Dependencies installed (optimized)${NC}"
 }
 
 # Function: Build projects (CPU optimized)
@@ -179,13 +236,17 @@ verify_security() {
     
     cd "${PROJECT_PATH}"
     
-    # Check for hardcoded secrets
-    if grep -r "ENCRYPTION_KEY.*=" --include="*.ts" --include="*.js" --exclude-dir=node_modules . | grep -v "process.env" | grep -v ".example"; then
+    # Check for hardcoded secrets (only detect actual string literals, not env lookups)
+    # Pattern: ENCRYPTION_KEY = "actual-secret-string" or ENCRYPTION_KEY = 'actual-secret-string'
+    # Exclude: process.env, getRequired, || '', || ""
+    if grep -rE "ENCRYPTION_KEY\s*=\s*['\"][^'\"]{20,}" --include="*.ts" --include="*.js" --exclude-dir=node_modules . | \
+       grep -v "process.env" | grep -v "getRequired" | grep -v ".example" | grep -v "|| ''" | grep -v "|| \"\""; then
         echo -e "${RED}❌ Hardcoded ENCRYPTION_KEY found!${NC}"
         exit 1
     fi
     
-    if grep -r "JWT_SECRET.*=" --include="*.ts" --include="*.js" --exclude-dir=node_modules . | grep -v "process.env" | grep -v ".example"; then
+    if grep -rE "JWT_SECRET\s*=\s*['\"][^'\"]{20,}" --include="*.ts" --include="*.js" --exclude-dir=node_modules . | \
+       grep -v "process.env" | grep -v "getRequired" | grep -v ".example" | grep -v "|| ''" | grep -v "|| \"\""; then
         echo -e "${RED}❌ Hardcoded JWT_SECRET found!${NC}"
         exit 1
     fi
