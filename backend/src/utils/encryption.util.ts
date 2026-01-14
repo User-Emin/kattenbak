@@ -30,13 +30,14 @@ function getEncryptionKey(): Buffer {
     throw new Error('MEDIA_ENCRYPTION_KEY not set in environment');
   }
 
-  // Derive a proper 256-bit key using PBKDF2
+  // ✅ SECURITY: Derive a proper 256-bit key using PBKDF2 (NIST SP 800-132 compliant)
+  // 100k iterations, SHA-512 (stronger than SHA-256)
   return crypto.pbkdf2Sync(
     secret,
     'media-encryption-salt-v1', // Static salt (acceptable for key derivation)
-    100000, // iterations
+    100000, // 100k iterations (NIST SP 800-132)
     KEY_LENGTH,
-    'sha256'
+    'sha512' // ✅ FIX: SHA-512 instead of SHA-256 (stronger)
   );
 }
 

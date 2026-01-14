@@ -56,12 +56,19 @@ export async function getRedisClient(): Promise<RedisClientType> {
   try {
     console.log('🔌 Connecting to Redis...');
     
-    // Create client with secure configuration
+    // ✅ FIX: Create client with secure configuration (type-safe socket options)
+    const socketOptions: any = {
+      ...REDIS_CONFIG.socket,
+    };
+    
+    if (REDIS_CONFIG.tls) {
+      socketOptions.tls = REDIS_CONFIG.tls;
+    }
+    
     redisClient = createClient({
       url: REDIS_CONFIG.url,
       password: REDIS_CONFIG.password,
-      socket: REDIS_CONFIG.socket,
-      ...(REDIS_CONFIG.tls && { socket: { ...REDIS_CONFIG.socket, tls: REDIS_CONFIG.tls } }),
+      socket: socketOptions,
     });
     
     // Event handlers

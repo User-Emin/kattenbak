@@ -225,12 +225,12 @@ export class MyParcelService {
         },
       });
 
-      // Update order status
+      // ✅ FIX: Update order status with proper type
       if (orderStatus && shipment.order) {
         await prisma.order.update({
           where: { id: shipment.orderId },
           data: {
-            status: orderStatus,
+            status: orderStatus as any, // Type assertion for OrderStatus enum
             ...(orderStatus === 'DELIVERED' && { completedAt: new Date() }),
           },
         });

@@ -4,6 +4,9 @@ import { logger } from '../config/logger.config';
 import { env } from '../config/env.config';
 import { errorResponse } from '../utils/response.util';
 
+// ✅ FIX: Export AppError for use in other modules
+export { AppError } from '../utils/errors.util';
+
 /**
  * Global error handler middleware
  * Catches all errors and sends appropriate response

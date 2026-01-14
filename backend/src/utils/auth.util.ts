@@ -28,19 +28,24 @@ export async function comparePasswords(
 
 /**
  * Generate JWT token with expiry
+ * ✅ SECURITY: HS256 algorithm (RFC 7519), algorithm whitelisting
  */
 export function generateToken(payload: JWTPayload): string {
   return jwt.sign(payload, env.JWT_SECRET, {
     expiresIn: env.JWT_EXPIRES_IN,
+    algorithm: 'HS256', // ✅ SECURITY: Explicit algorithm whitelisting (RFC 7519)
   } as jwt.SignOptions);
 }
 
 /**
  * Verify JWT token (returns null if invalid/expired)
+ * ✅ SECURITY: Algorithm whitelisting (prevents algorithm confusion attacks)
  */
 export function verifyToken(token: string): JWTPayload | null {
   try {
-    return jwt.verify(token, env.JWT_SECRET) as JWTPayload;
+    return jwt.verify(token, env.JWT_SECRET, {
+      algorithms: ['HS256'], // ✅ SECURITY: Algorithm whitelisting (RFC 7519)
+    }) as JWTPayload;
   } catch {
     return null;
   }
