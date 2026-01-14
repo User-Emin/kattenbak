@@ -226,7 +226,7 @@ export function ChatPopup() {
                    }}>
                 {messages.length === 0 && (
                   <div className={`text-center ${CHAT_CONFIG.emptyState.textColor} mt-8`}>
-                    <MessageCircle className={`${CHAT_CONFIG.emptyState.iconSize} mx-auto mb-3 ${CHAT_CONFIG.emptyState.iconColor}`} />
+                    <MessageCircle className={`${CHAT_CONFIG.emptyState.iconSize} mx-auto mb-3 ${CHAT_CONFIG.emptyState.iconColor}`} style={{ opacity: 1 }} />
                     <p className={CHAT_CONFIG.emptyState.fontSize}
                        style={{
                          fontFamily: CHAT_CONFIG.emptyState.fontFamily, // Noto Sans
@@ -268,7 +268,7 @@ export function ChatPopup() {
                       <p className={CHAT_CONFIG.messages[msg.role].fontSize || DESIGN_SYSTEM.typography.fontSize.sm} style={{ whiteSpace: 'pre-wrap' }}>
                         {msg.content}
                       </p>
-                      <span className={`${CHAT_CONFIG.messages.timestamp.fontSize} ${CHAT_CONFIG.messages.timestamp.opacity} mt-1 block`}>
+                      <span className={`${CHAT_CONFIG.messages.timestamp.fontSize} ${CHAT_CONFIG.messages.timestamp.textColor} mt-1 block`}>
                         {msg.timestamp.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>

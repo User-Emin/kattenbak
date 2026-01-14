@@ -8,15 +8,15 @@
 import { DESIGN_SYSTEM } from './design-system';
 
 export const CHAT_CONFIG = {
-  // Button styling - Hoekiger, zwart-wit
+  // Button styling - Hoekiger, zwart-wit (GEEN transparantie)
   button: {
     size: 'w-14 h-14', // 56px - moderner dan 64px
     borderRadius: 'rounded-sm', // ✅ HOEKIGER (was rounded-full)
-    backgroundColor: DESIGN_SYSTEM.colors.primary, // Zwart
-    textColor: DESIGN_SYSTEM.colors.secondary, // Wit
-    hoverBackgroundColor: DESIGN_SYSTEM.colors.gray[900], // Donkerder zwart
-    border: `border border-${DESIGN_SYSTEM.colors.gray[800]}`, // Subtiele border
-    shadow: DESIGN_SYSTEM.effects.shadow.lg,
+    backgroundColor: 'bg-black', // ✅ ZWART (geen transparantie)
+    textColor: 'text-white', // ✅ WIT
+    hoverBackgroundColor: 'hover:bg-gray-900', // Donkerder zwart
+    border: 'border border-gray-800', // Subtiele border
+    shadow: 'shadow-2xl', // ✅ SOLIDE shadow
     zIndex: 100,
     position: {
       right: 'right-4',
@@ -27,21 +27,21 @@ export const CHAT_CONFIG = {
     iconSize: 'w-6 h-6',
   },
 
-  // Modal styling - Hoekiger, zwart-wit
+  // Modal styling - Hoekiger, zwart-wit (GEEN transparantie)
   modal: {
     maxWidth: 'max-w-md',
     maxHeight: 'max-h-[90vh] md:max-h-[600px]',
-    backgroundColor: DESIGN_SYSTEM.colors.secondary, // Wit
+    backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
     borderRadius: 'rounded-sm', // ✅ HOEKIGER (was rounded-md)
-    border: `border border-${DESIGN_SYSTEM.colors.border.default}`,
-    shadow: DESIGN_SYSTEM.effects.shadow.lg,
+    border: 'border border-gray-200',
+    shadow: 'shadow-2xl', // ✅ SOLIDE shadow
     zIndex: 120,
   },
 
-  // Header styling - Zwart-wit
+  // Header styling - Zwart-wit (GEEN transparantie)
   header: {
-    backgroundColor: DESIGN_SYSTEM.colors.primary, // Zwart
-    textColor: DESIGN_SYSTEM.colors.secondary, // Wit
+    backgroundColor: 'bg-black', // ✅ ZWART (geen transparantie)
+    textColor: 'text-white', // ✅ WIT
     padding: DESIGN_SYSTEM.spacing[6], // 24px
     borderRadius: 'rounded-t-sm', // ✅ HOEKIGER
     borderBottom: 'border-b border-gray-800',
@@ -50,32 +50,33 @@ export const CHAT_CONFIG = {
       fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium, // 500 - Noto Sans
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings, // Noto Sans
       letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight, // Logo style
+      textColor: 'text-white', // ✅ WIT (geen transparantie)
     },
     subtitle: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
-      textColor: DESIGN_SYSTEM.colors.text.muted, // Gray-300
+      textColor: 'text-gray-300', // ✅ Gray-300 (geen transparantie)
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
     },
   },
 
-  // Messages styling
+  // Messages styling - Zwart-wit (GEEN transparantie)
   messages: {
     container: {
       padding: DESIGN_SYSTEM.spacing[6], // 24px
-      backgroundColor: DESIGN_SYSTEM.colors.gray[50], // Light gray background
+      backgroundColor: 'bg-gray-50', // ✅ Light gray background (geen transparantie)
       spacing: 'space-y-4',
     },
     user: {
-      backgroundColor: DESIGN_SYSTEM.colors.primary, // Zwart
-      textColor: DESIGN_SYSTEM.colors.secondary, // Wit
+      backgroundColor: 'bg-black', // ✅ ZWART (geen transparantie)
+      textColor: 'text-white', // ✅ WIT
       borderRadius: 'rounded-sm', // ✅ HOEKIGER
       padding: `${DESIGN_SYSTEM.spacing[4]} ${DESIGN_SYSTEM.spacing[4]}`, // 16px
       maxWidth: 'max-w-[85%]',
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
     },
     assistant: {
-      backgroundColor: DESIGN_SYSTEM.colors.secondary, // Wit
-      textColor: DESIGN_SYSTEM.colors.text.primary, // Zwart
+      backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
+      textColor: 'text-black', // ✅ ZWART
       border: 'border border-gray-200',
       borderRadius: 'rounded-sm', // ✅ HOEKIGER
       padding: `${DESIGN_SYSTEM.spacing[4]} ${DESIGN_SYSTEM.spacing[4]}`, // 16px
@@ -84,21 +85,22 @@ export const CHAT_CONFIG = {
     },
     timestamp: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // 12px
-      opacity: 0.6,
+      textColor: 'text-gray-500', // ✅ Gray-500 (geen opacity, solid color)
     },
   },
 
-  // Input styling - Hoekiger, Noto Sans
+  // Input styling - Hoekiger, Noto Sans, Zwart-wit (GEEN transparantie)
   input: {
     container: {
       padding: DESIGN_SYSTEM.spacing[4], // 16px
-      backgroundColor: DESIGN_SYSTEM.colors.secondary, // Wit
+      backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
       borderTop: 'border-t border-gray-200',
       borderRadius: 'rounded-b-sm', // ✅ HOEKIGER
     },
     field: {
       borderRadius: 'rounded-sm', // ✅ HOEKIGER
       border: 'border border-gray-300',
+      backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
       padding: `${DESIGN_SYSTEM.spacing[3]} ${DESIGN_SYSTEM.spacing[4]}`, // 12px 16px
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
@@ -109,9 +111,9 @@ export const CHAT_CONFIG = {
     },
     button: {
       borderRadius: 'rounded-sm', // ✅ HOEKIGER
-      backgroundColor: DESIGN_SYSTEM.colors.primary, // Zwart
-      textColor: DESIGN_SYSTEM.colors.secondary, // Wit
-      hoverBackgroundColor: DESIGN_SYSTEM.colors.gray[900], // Donkerder zwart
+      backgroundColor: 'bg-black', // ✅ ZWART (geen transparantie)
+      textColor: 'text-white', // ✅ WIT
+      hoverBackgroundColor: 'hover:bg-gray-900', // Donkerder zwart
       padding: `${DESIGN_SYSTEM.spacing[3]} ${DESIGN_SYSTEM.spacing[6]}`, // 12px 24px
       fontSize: DESIGN_SYSTEM.typography.fontSize.base, // 16px
       fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal, // 400 - Noto Sans
@@ -121,7 +123,7 @@ export const CHAT_CONFIG = {
     },
     footer: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // 12px
-      textColor: DESIGN_SYSTEM.colors.text.muted, // Gray-500
+      textColor: 'text-gray-500', // ✅ Gray-500 (geen transparantie)
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
     },
   },
@@ -144,16 +146,16 @@ export const CHAT_CONFIG = {
     },
   },
 
-  // Empty state styling
+  // Empty state styling - Zwart-wit (GEEN transparantie)
   emptyState: {
     iconSize: 'w-12 h-12',
-    iconColor: DESIGN_SYSTEM.colors.gray[400],
-    textColor: DESIGN_SYSTEM.colors.text.secondary, // Gray-600
+    iconColor: 'text-gray-400', // ✅ Gray-400 (geen transparantie)
+    textColor: 'text-gray-600', // ✅ Gray-600 (geen transparantie)
     fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
     fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
     suggestionButton: {
-      backgroundColor: DESIGN_SYSTEM.colors.secondary, // Wit
-      hoverBackgroundColor: DESIGN_SYSTEM.colors.gray[100],
+      backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
+      hoverBackgroundColor: 'hover:bg-gray-100',
       borderRadius: 'rounded-sm', // ✅ HOEKIGER
       padding: `${DESIGN_SYSTEM.spacing[2]} ${DESIGN_SYSTEM.spacing[4]}`, // 8px 16px
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
@@ -161,13 +163,13 @@ export const CHAT_CONFIG = {
     },
   },
 
-  // Loading state
+  // Loading state - Zwart-wit (GEEN transparantie)
   loading: {
-    backgroundColor: DESIGN_SYSTEM.colors.secondary, // Wit
-    border: `border border-${DESIGN_SYSTEM.colors.border.default}`,
+    backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
+    border: 'border border-gray-200',
     borderRadius: 'rounded-sm', // ✅ HOEKIGER
     padding: `${DESIGN_SYSTEM.spacing[4]} ${DESIGN_SYSTEM.spacing[4]}`, // 16px
-    iconColor: DESIGN_SYSTEM.colors.primary, // Zwart
+    iconColor: 'text-black', // ✅ ZWART (geen transparantie)
     iconSize: 'w-5 h-5',
   },
 
