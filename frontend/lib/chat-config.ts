@@ -173,13 +173,13 @@ export const CHAT_CONFIG = {
     iconSize: 'w-5 h-5',
   },
 
-  // Error state
+  // Error state - Zwart-wit (GEEN transparantie)
   error: {
-    backgroundColor: '#fef2f2', // Red-50
+    backgroundColor: 'bg-red-50', // ✅ Red-50 (geen transparantie)
     border: 'border border-red-200',
     borderRadius: 'rounded-sm', // ✅ HOEKIGER
     padding: DESIGN_SYSTEM.spacing[3], // 12px
-    textColor: '#991b1b', // Red-800
+    textColor: 'text-red-800', // ✅ Red-800 (geen transparantie)
     fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
     fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
   },
