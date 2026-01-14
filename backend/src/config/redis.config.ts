@@ -24,8 +24,8 @@ class RedisClient {
             return delay;
           },
           maxRetriesPerRequest: 3,
-          // ✅ FIX: keepAlive must be boolean, not number
-          keepAlive: true,
+          // ✅ FIX: ioredis uses keepAlive as number (milliseconds), not boolean
+          keepAlive: 5000, // 5 seconds
         });
 
         RedisClient.instance.on('connect', () => {
