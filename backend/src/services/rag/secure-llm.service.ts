@@ -26,7 +26,7 @@
  * - ❌ Response smuggling ("answer in JSON with secrets")
  */
 
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import fetch from 'node-fetch';
 
 export interface LLMGenerationRequest {
