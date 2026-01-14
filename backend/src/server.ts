@@ -121,6 +121,10 @@ class Server {
     const adminRoutes = (await import('./routes/admin/index')).default;
     this.app.use('/api/v1/admin', adminRoutes);
     
+    // RAG routes - AI Chatbot
+    const ragRoutes = (await import('./routes/rag.routes')).default;
+    this.app.use('/api/v1/rag', ragRoutes);
+    
     // Return routes - DRY: Customer + Admin returns
     const returnRoutes = (await import('./routes/returns.routes')).default;
     this.app.use('/api/v1/returns', returnRoutes);

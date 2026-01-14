@@ -62,11 +62,14 @@ export function ChatPopup() {
     setError(null);
     
     try {
-      const response = await fetch('/api/v1/rag/chat', {
+      // ✅ SECURITY: Use API URL from config (dynamic, no hardcoding)
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
+      const response = await fetch(`${apiUrl}/rag/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          query: userMessage.content
+          query: userMessage.content,
+          conversation_history: messages.map(m => ({ role: m.role, content: m.content }))
         })
       });
       
@@ -112,14 +115,14 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* Floating Chat Button - ALWAYS VISIBLE */}
+      {/* Floating Chat Button - Zwart-wit design passend bij webshop */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className={`fixed right-4 z-[100] ${buttonBottomClass} transition-all duration-300
-                   bg-gradient-to-br from-brand to-brand-dark text-white 
-                   rounded-full p-4 shadow-2xl hover:scale-110 hover:shadow-brand/50
-                   focus:outline-none focus:ring-4 focus:ring-brand/30
-                   active:scale-95`}
+        className={`fixed right-4 z-[100] ${buttonBottomClass} transition-all duration-300 ease-out
+                   bg-black text-white 
+                   rounded-full p-4 shadow-2xl hover:scale-110 hover:bg-gray-900
+                   focus:outline-none focus:ring-4 focus:ring-gray-400/30
+                   active:scale-95 border border-gray-800`}
         aria-label="Open chat"
       >
         {isExpanded ? (
@@ -138,20 +141,21 @@ export function ChatPopup() {
             onClick={() => setIsExpanded(false)}
           />
           
-          {/* Chat Modal - Ronde hoeken zoals productdetail */}
+          {/* Chat Modal - Smooth animations, passend bij webshop */}
           <div className="fixed inset-0 md:inset-auto md:bottom-32 md:right-8 z-[120] flex items-center justify-center md:items-end md:justify-end p-4 pointer-events-none">
-            <div className="pointer-events-auto w-full max-w-md max-h-[90vh] md:max-h-[600px] bg-white rounded-md shadow-2xl animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 flex flex-col">
+            <div className="pointer-events-auto w-full max-w-md max-h-[90vh] md:max-h-[600px] bg-white rounded-md shadow-2xl border border-gray-200 animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 ease-out flex flex-col">
               
-              {/* Header */}
-              <div className="bg-gradient-to-br from-brand to-brand-dark p-6 rounded-t-md text-white">
+              {/* Header - Zwart-wit design passend bij webshop */}
+              <div className="bg-black p-6 rounded-t-md text-white border-b border-gray-800">
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <h3 className="text-xl font-bold">AI Assistent</h3>
-                    <p className="text-sm text-white/90 mt-1">Stel me een vraag over onze kattenbak</p>
+                    <h3 className="text-xl font-semibold text-white">AI Assistent</h3>
+                    <p className="text-sm text-gray-300 mt-1">Stel me een vraag over onze kattenbak</p>
                   </div>
                   <button
                     onClick={() => setIsExpanded(false)}
-                    className="text-white/80 hover:text-white transition-colors p-1"
+                    className="text-gray-400 hover:text-white transition-colors p-1 rounded-md hover:bg-gray-800"
+                    aria-label="Sluit chat"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -193,9 +197,9 @@ export function ChatPopup() {
                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[85%] rounded-md px-4 py-3 ${
+                      className={`max-w-[85%] rounded-md px-4 py-3 transition-all duration-200 ${
                         msg.role === 'user'
-                          ? 'bg-brand text-white'
+                          ? 'bg-black text-white'
                           : 'bg-white border border-gray-200'
                       }`}
                     >
