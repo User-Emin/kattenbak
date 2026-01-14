@@ -22,10 +22,30 @@ async function processDocument(doc, index) {
   console.log(`🔮 [${index + 1}/${specs.documents.length}] ${doc.title}`);
   
   return new Promise((resolve, reject) => {
-    const python = spawn('python3', [
-      'scripts/generate_embedding.py',
-      doc.content
-    ]);
+    // 🔒 SECURITY: Validate script path
+    const scriptPath = path.join(__dirname, 'scripts/generate_embedding.py');
+    const resolvedPath = path.resolve(scriptPath);
+    const scriptsDir = path.resolve(path.join(__dirname, 'scripts'));
+    
+    // Ensure script is within scripts directory
+    if (!resolvedPath.startsWith(scriptsDir)) {
+      reject(new Error('Invalid script path (security check failed)'));
+      return;
+    }
+    
+    // 🔒 SECURITY: Validate script exists
+    if (!fs.existsSync(resolvedPath)) {
+      reject(new Error('Python script not found'));
+      return;
+    }
+    
+    // 🔒 SECURITY: Sanitize content (prevent command injection)
+    const sanitizedContent = doc.content.replace(/[;&|`$(){}[\]<>]/g, '');
+    
+    const python = spawn('python3', [resolvedPath, sanitizedContent], {
+      stdio: ['pipe', 'pipe', 'pipe'],
+      shell: false // 🔒 SECURITY: Disable shell
+    });
     
     let stdout = '';
     let stderr = '';

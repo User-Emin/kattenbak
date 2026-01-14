@@ -106,9 +106,30 @@ export class EmbeddingsService {
    */
   private static async callPythonEmbeddings(text: string): Promise<number[]> {
     return new Promise((resolve, reject) => {
+      // 🔒 SECURITY: Validate script path (prevent path traversal)
       const scriptPath = path.join(__dirname, '../../../scripts/generate_embedding.py');
+      const resolvedPath = path.resolve(scriptPath);
+      const scriptsDir = path.resolve(path.join(__dirname, '../../../scripts'));
       
-      const python = spawn('python3', [scriptPath, text]);
+      // Ensure script is within scripts directory (prevent path traversal)
+      if (!resolvedPath.startsWith(scriptsDir)) {
+        reject(new Error('Invalid script path (security check failed)'));
+        return;
+      }
+      
+      // 🔒 SECURITY: Validate script exists
+      if (!require('fs').existsSync(resolvedPath)) {
+        reject(new Error('Python script not found'));
+        return;
+      }
+      
+      // 🔒 SECURITY: Sanitize input (prevent command injection)
+      const sanitizedText = this.sanitizeText(text);
+      
+      const python = spawn('python3', [resolvedPath, sanitizedText], {
+        stdio: ['pipe', 'pipe', 'pipe'],
+        shell: false // 🔒 SECURITY: Disable shell to prevent injection
+      });
       
       let stdout = '';
       let stderr = '';
