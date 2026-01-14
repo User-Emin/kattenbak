@@ -17,8 +17,15 @@ import { VectorStoreService } from '../services/rag/vector-store.service';
 import { EmbeddingsHuggingFaceService } from '../services/rag/embeddings-huggingface.service';
 import { QueryRewritingService } from '../services/rag/query-rewriting.service';
 import { SecureLLMService } from '../services/rag/secure-llm.service';
+import { redisGet, redisSet } from '../utils/redis.util';
+import crypto from 'crypto';
 
 const router = Router();
+
+// ✅ RAG QUERY CACHING: Prevent overloading with Redis
+const hashQuery = (query: string): string => {
+  return crypto.createHash('sha256').update(query.toLowerCase().trim()).digest('hex');
+};
 
 /**
  * POST /api/v1/rag/chat
@@ -38,6 +45,15 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
       });
     }
     
+    // ✅ RAG CACHING: Check Redis cache first (prevents CPU overload)
+    const cacheKey = `rag:query:${hashQuery(sanitizedQuery)}`;
+    const cachedResponse = await redisGet(cacheKey);
+    
+    if (cachedResponse) {
+      console.log('✅ RAG Response from cache (CPU saved)');
+      return res.json(JSON.parse(cachedResponse));
+    }
+    
     // Enhanced RAG Pipeline (5 techniques + 6-layer security)
     const response = await EnhancedRAGPipelineService.query({
       query: sanitizedQuery,
@@ -53,6 +69,9 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
         ...(req.query.techniques ? JSON.parse(req.query.techniques as string) : {})
       }
     });
+    
+    // ✅ CACHE RESPONSE: Store in Redis for 1 hour (3600 seconds)
+    await redisSet(cacheKey, JSON.stringify(response), 3600);
     
     // Return response (already processed through Layer 6)
     res.json(response);

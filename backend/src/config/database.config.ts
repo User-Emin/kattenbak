@@ -12,11 +12,20 @@ class DatabaseClient {
 
   public static getInstance(): PrismaClient {
     if (!DatabaseClient.instance) {
+      // ✅ CONNECTION POOLING: Optimize for production (prevents overload)
       DatabaseClient.instance = new PrismaClient({
         log: env.IS_DEVELOPMENT 
           ? ['query', 'info', 'warn', 'error']
           : ['error'],
         errorFormat: env.IS_DEVELOPMENT ? 'pretty' : 'minimal',
+        datasources: {
+          db: {
+            url: env.DATABASE_URL + (env.DATABASE_URL.includes('?') ? '&' : '?') + 
+              'connection_limit=10' + // Max 10 connections per instance
+              '&pool_timeout=20' + // 20s timeout
+              '&connect_timeout=10' // 10s connect timeout
+          }
+        }
       });
 
       // Handle graceful shutdown

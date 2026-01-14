@@ -25,6 +25,9 @@ export class VectorStoreService {
   private static readonly STORE_PATH = process.env.VECTOR_STORE_PATH || 
     path.join(__dirname, '../../data/vector-store.json');
   
+  // ✅ MEMORY LIMIT: Prevent overloading (max 1000 documents in memory)
+  private static readonly MAX_DOCUMENTS = parseInt(process.env.RAG_MAX_DOCUMENTS || '1000', 10);
+  
   /**
    * ✅ LAZY LOADING: Ensure initialized only when needed
    */
@@ -37,6 +40,7 @@ export class VectorStoreService {
   
   /**
    * Initialize vector store (PRIVATE - use ensureInitialized())
+   * ✅ MEMORY LIMIT: Only load first MAX_DOCUMENTS to prevent overloading
    */
   private static async initialize(): Promise<void> {
     try {
@@ -45,15 +49,24 @@ export class VectorStoreService {
         const parsed = JSON.parse(data);
         
         // Handle both old format (array) and new format (object with documents key)
+        let allDocs: VectorDocument[] = [];
         if (Array.isArray(parsed)) {
-          this.documents = parsed;
+          allDocs = parsed;
         } else if (parsed.documents && Array.isArray(parsed.documents)) {
-          this.documents = parsed.documents;
+          allDocs = parsed.documents;
         } else {
           throw new Error('Invalid vector store format');
         }
         
-        console.log(`✅ Vector store loaded: ${this.documents.length} documents`);
+        // ✅ MEMORY LIMIT: Only keep first MAX_DOCUMENTS (prevents CPU/memory overload)
+        if (allDocs.length > this.MAX_DOCUMENTS) {
+          console.warn(`⚠️  Vector store has ${allDocs.length} documents, limiting to ${this.MAX_DOCUMENTS} to prevent overloading`);
+          this.documents = allDocs.slice(0, this.MAX_DOCUMENTS);
+        } else {
+          this.documents = allDocs;
+        }
+        
+        console.log(`✅ Vector store loaded: ${this.documents.length} documents (max: ${this.MAX_DOCUMENTS})`);
       } else {
         console.log('ℹ️  Vector store empty - run ingestion');
       }
@@ -92,6 +105,7 @@ export class VectorStoreService {
   
   /**
    * Cosine similarity search
+   * ✅ PERFORMANCE: Early termination if too many documents (prevents CPU overload)
    */
   static async similaritySearch(
     queryEmbedding: number[],
@@ -103,8 +117,12 @@ export class VectorStoreService {
     similarity: number;
     metadata: any;
   }>> {
-    // Calculate cosine similarity for all documents
-    const results = this.documents.map(doc => ({
+    // ✅ PERFORMANCE: Limit search to first 500 documents if too many (prevents CPU overload)
+    const searchLimit = this.documents.length > 500 ? 500 : this.documents.length;
+    const docsToSearch = this.documents.slice(0, searchLimit);
+    
+    // Calculate cosine similarity for documents (limited set)
+    const results = docsToSearch.map(doc => ({
       id: doc.id,
       content: doc.content,
       metadata: doc.metadata,

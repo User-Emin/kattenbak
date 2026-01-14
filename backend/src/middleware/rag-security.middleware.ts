@@ -6,8 +6,40 @@
 
 import { Request, Response, NextFunction } from 'express';
 
-// In-memory rate limiting
+// ✅ MEMORY LIMIT: In-memory rate limiting with automatic cleanup (prevents memory leak)
 const rateLimitStore = new Map<string, { count: number; windowStart: number; blockedUntil?: number }>();
+const MAX_RATE_LIMIT_ENTRIES = 10000; // Max IPs to track (prevents memory overload)
+
+// ✅ CLEANUP: Remove old entries every 5 minutes to prevent memory leak
+setInterval(() => {
+  const now = Date.now();
+  const oneMinute = 60000;
+  let cleaned = 0;
+  
+  for (const [ip, entry] of rateLimitStore.entries()) {
+    // Remove entries older than 1 minute
+    if (now - entry.windowStart > oneMinute && (!entry.blockedUntil || entry.blockedUntil < now)) {
+      rateLimitStore.delete(ip);
+      cleaned++;
+    }
+  }
+  
+  // If still too many entries, remove oldest
+  if (rateLimitStore.size > MAX_RATE_LIMIT_ENTRIES) {
+    const entries = Array.from(rateLimitStore.entries())
+      .sort((a, b) => a[1].windowStart - b[1].windowStart);
+    
+    const toRemove = rateLimitStore.size - MAX_RATE_LIMIT_ENTRIES;
+    for (let i = 0; i < toRemove; i++) {
+      rateLimitStore.delete(entries[i][0]);
+      cleaned++;
+    }
+  }
+  
+  if (cleaned > 0) {
+    console.log(`🧹 Rate limit cleanup: removed ${cleaned} old entries`);
+  }
+}, 5 * 60 * 1000); // Every 5 minutes
 
 export interface SecurityCheckResult {
   safe: boolean;

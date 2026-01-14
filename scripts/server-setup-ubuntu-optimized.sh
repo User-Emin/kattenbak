@@ -131,7 +131,7 @@ verify_security() {
     echo -e "${GREEN}✅ Security verified (AES-256-GCM, bcrypt, JWT, no hardcoding)${NC}"
 }
 
-# Function: Install dependencies (optimized)
+# Function: Install dependencies (optimized with RAG limits)
 install_dependencies() {
     echo -e "${YELLOW}📦 Installing dependencies (optimized)...${NC}"
     
@@ -140,6 +140,15 @@ install_dependencies() {
     cd "${PROJECT_PATH}/backend"
     nice -n 10 npm install --prefer-offline --no-audit --loglevel=error --maxsockets=2
     npx prisma generate
+    
+    # ✅ RAG: Set environment variable for memory limits (prevents overload)
+    if [ ! -f "${PROJECT_PATH}/backend/.env" ]; then
+        touch "${PROJECT_PATH}/backend/.env"
+    fi
+    if ! grep -q "RAG_MAX_DOCUMENTS" "${PROJECT_PATH}/backend/.env" 2>/dev/null; then
+        echo "RAG_MAX_DOCUMENTS=1000" >> "${PROJECT_PATH}/backend/.env"
+        echo -e "${GREEN}✅ RAG memory limit configured${NC}"
+    fi
     
     # Frontend
     echo "Installing frontend..."
@@ -151,7 +160,7 @@ install_dependencies() {
     cd "${PROJECT_PATH}/admin-next"
     nice -n 10 npm install --prefer-offline --no-audit --loglevel=error --maxsockets=2
     
-    echo -e "${GREEN}✅ Dependencies installed${NC}"
+    echo -e "${GREEN}✅ Dependencies installed (RAG optimized)${NC}"
 }
 
 # Function: Build projects
@@ -170,7 +179,7 @@ build_projects() {
     echo -e "${GREEN}✅ Builds complete${NC}"
 }
 
-# Function: Setup PM2
+# Function: Setup PM2 (with RAG monitoring)
 setup_pm2() {
     echo -e "${YELLOW}⚙️  Setting up PM2...${NC}"
     
@@ -179,6 +188,12 @@ setup_pm2() {
     pm2 start ecosystem.config.js
     pm2 save
     pm2 startup systemd -u root --hp /root | tail -1 | bash || true
+    
+    # ✅ RAG: Make monitoring script executable (optional - can be enabled if needed)
+    if [ -f "${PROJECT_PATH}/scripts/server-rag-monitor.sh" ]; then
+        chmod +x "${PROJECT_PATH}/scripts/server-rag-monitor.sh"
+        echo -e "${GREEN}✅ RAG monitor script ready (run manually if needed)${NC}"
+    fi
     
     echo -e "${GREEN}✅ PM2 ready${NC}"
 }

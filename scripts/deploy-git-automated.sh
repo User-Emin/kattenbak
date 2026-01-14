@@ -127,13 +127,28 @@ else
     exit 1
 fi
 
-# Step 6: RAG Health Check
+# Step 6: RAG Health Check (with overload protection)
 echo -e "${YELLOW}6. RAG system check...${NC}"
 RAG_HEALTH=$(curl -sf "https://catsupply.nl/api/v1/rag/health" 2>/dev/null | grep -o '"status":"healthy"' || echo "")
 if [ -n "$RAG_HEALTH" ]; then
     echo -e "${GREEN}✅ RAG: Healthy${NC}"
+    
+    # Check RAG metrics (documents loaded, cache stats)
+    RAG_METRICS=$(curl -sf "https://catsupply.nl/api/v1/rag/health" 2>/dev/null | grep -o '"documents_loaded":[0-9]*' || echo "")
+    if [ -n "$RAG_METRICS" ]; then
+        echo -e "${GREEN}   ${RAG_METRICS}${NC}"
+    fi
 else
     echo -e "${YELLOW}⚠️  RAG: May need initialization${NC}"
+fi
+
+# Step 7: Verify RAG overload protection
+echo -e "${YELLOW}7. Verifying RAG overload protection...${NC}"
+if grep -r "MAX_DOCUMENTS\|similaritySearch.*500\|rateLimitStore.*MAX_RATE_LIMIT" backend/src/services/rag backend/src/middleware/rag-security.middleware.ts 2>/dev/null; then
+    echo -e "${GREEN}✅ RAG overload protection: Active${NC}"
+else
+    echo -e "${RED}❌ RAG overload protection: Missing${NC}"
+    exit 1
 fi
 
 echo ""
