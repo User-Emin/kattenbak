@@ -120,7 +120,7 @@ export const PRODUCT_PAGE_CONFIG = {
     button: {
       size: 'w-full py-4',
       fontSize: 'text-base',
-      fontWeight: 'font-normal', // ✅ DUNNER (was medium)
+      fontWeight: 'font-semibold', // ✅ DIKKER: Zoals banner (was font-normal)
       bgColor: 'bg-blue-600',
       hoverBgColor: 'hover:bg-blue-700',
       textColor: 'text-white',
