@@ -134,12 +134,14 @@ export default function HomePage() {
                 <button 
                   className="inline-flex items-center gap-3 transition-opacity hover:opacity-80"
                   style={{
-                    backgroundColor: DESIGN_SYSTEM.colors.primary,
+                    background: typeof DESIGN_SYSTEM.colors.primary === 'string' && DESIGN_SYSTEM.colors.primary.includes('gradient') 
+                      ? DESIGN_SYSTEM.colors.primary 
+                      : `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart || '#3C3C3D'} 0%, ${DESIGN_SYSTEM.colors.primaryEnd || '#7A7A7D'} 100%)`, // ✅ GRADIENT
                     color: DESIGN_SYSTEM.colors.text.inverse,
                     padding: `${DESIGN_SYSTEM.spacing[4]} ${DESIGN_SYSTEM.spacing[8]}`,
                     fontSize: DESIGN_SYSTEM.typography.fontSize.base,
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-                    borderRadius: DESIGN_SYSTEM.effects.borderRadius.sm,
+                    borderRadius: DESIGN_SYSTEM.effects.borderRadius.xl, // ✅ RONDER: xl (12px) voor buttons
                   }}
                 >
                   <span>Bekijk Product</span>
@@ -163,11 +165,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🎨 TRUST BANNER - ZWART, EDGE-TO-EDGE, ONDER HERO */}
+      {/* 🎨 TRUST BANNER - ✅ GRADIENT, EDGE-TO-EDGE, ONDER HERO */}
       <section 
         className="flex items-center justify-center"
         style={{
-          backgroundColor: DESIGN_SYSTEM.layout.trustBanner.bg,
+          background: DESIGN_SYSTEM.layout.trustBanner.bg, // ✅ GRADIENT
           height: DESIGN_SYSTEM.layout.trustBanner.height,
           padding: DESIGN_SYSTEM.layout.trustBanner.padding,
         }}

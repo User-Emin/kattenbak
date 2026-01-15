@@ -49,7 +49,10 @@ export function CookieSettingsModal({
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-300">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm" 
+        className="absolute inset-0 backdrop-blur-sm"
+        style={{
+          background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.5) 0%, rgba(122, 122, 125, 0.5) 100%)', // ✅ GRADIENT met opacity (was bg-black/50)
+        }} 
         onClick={onClose}
       />
       
@@ -102,7 +105,7 @@ export function CookieSettingsModal({
                       isRequired 
                         ? 'bg-brand cursor-not-allowed opacity-50' 
                         : isEnabled 
-                          ? 'bg-black'
+                          ? 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]' // ✅ GRADIENT (was bg-black)
                           : 'bg-gray-200'
                     }`}
                   >

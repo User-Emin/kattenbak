@@ -70,7 +70,12 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           
           {/* Out of stock overlay */}
           {product.stock === 0 && (
-            <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
+            <div 
+              className="absolute inset-0 flex items-center justify-center backdrop-blur-sm"
+              style={{
+                background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.6) 0%, rgba(122, 122, 125, 0.6) 100%)', // ✅ GRADIENT met opacity (was bg-black/60)
+              }}
+            >
               <span className="bg-white text-foreground px-6 py-3 font-bold shadow-xl">
                 Tijdelijk uitverkocht
               </span>

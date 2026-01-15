@@ -59,7 +59,12 @@ export function ProductVideo({ videoUrl, productName, className = '' }: ProductV
         </video>
         
         {/* Video Badge */}
-        <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium">
+        <div 
+          className="absolute top-4 left-4 text-white px-3 py-1 rounded-full text-sm font-medium"
+          style={{
+            background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.7) 0%, rgba(122, 122, 125, 0.7) 100%)', // ✅ GRADIENT met opacity (was bg-black/70)
+          }}
+        >
           🎥 Demo Video
         </div>
       </div>
@@ -94,7 +99,12 @@ export function ProductVideo({ videoUrl, productName, className = '' }: ProductV
             </button>
 
             {/* Video Badge */}
-            <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium">
+            <div 
+          className="absolute top-4 left-4 text-white px-3 py-1 rounded-full text-sm font-medium"
+          style={{
+            background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.7) 0%, rgba(122, 122, 125, 0.7) 100%)', // ✅ GRADIENT met opacity (was bg-black/70)
+          }}
+        >
               🎥 Demo Video
             </div>
           </>
@@ -132,7 +142,12 @@ export function ProductVideo({ videoUrl, productName, className = '' }: ProductV
             </div>
 
             {/* Video Badge */}
-            <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium">
+            <div 
+          className="absolute top-4 left-4 text-white px-3 py-1 rounded-full text-sm font-medium"
+          style={{
+            background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.7) 0%, rgba(122, 122, 125, 0.7) 100%)', // ✅ GRADIENT met opacity (was bg-black/70)
+          }}
+        >
               🎥 Demo Video
             </div>
           </>

@@ -129,7 +129,12 @@ function CheckoutContent() {
   if (isLoading) {
     return (
       <div className="container mx-auto px-6 py-20 flex justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-black" />
+        <Loader2 
+          className="h-12 w-12 animate-spin"
+          style={{
+            color: '#3C3C3D', // ✅ GRADIENT START (was text-black)
+          }}
+        />
       </div>
     );
   }

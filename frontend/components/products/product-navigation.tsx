@@ -75,12 +75,17 @@ export function ProductNavigation({ currentProduct }: ProductNavigationProps) {
               href={`/product/${prevProduct.slug}`}
               className="flex items-center gap-3 flex-1 group transition-all duration-300 hover:bg-gray-50 rounded-lg p-3 -m-3"
             >
-              <div className="flex-shrink-0 w-10 h-10 bg-black rounded-full flex items-center justify-center text-white group-hover:bg-gray-700 transition-colors">
+              <div 
+                className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white group-hover:opacity-80 transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)', // ✅ GRADIENT (was bg-black)
+                }}
+              >
                 <ChevronLeft className="w-5 h-5" />
               </div>
               <div className="flex-1 min-w-0 text-left">
                 <p className="text-xs text-gray-500 font-light">Vorig product</p>
-                <p className="text-sm font-normal text-gray-900 truncate group-hover:text-black transition-colors">
+                <p className="text-sm font-normal text-gray-900 truncate group-hover:opacity-80 transition-opacity">
                   {prevProduct.name}
                 </p>
               </div>
@@ -102,11 +107,16 @@ export function ProductNavigation({ currentProduct }: ProductNavigationProps) {
             >
               <div className="flex-1 min-w-0 text-right">
                 <p className="text-xs text-gray-500 font-light">Volgend product</p>
-                <p className="text-sm font-normal text-gray-900 truncate group-hover:text-black transition-colors">
+                <p className="text-sm font-normal text-gray-900 truncate group-hover:opacity-80 transition-opacity">
                   {nextProduct.name}
                 </p>
               </div>
-              <div className="flex-shrink-0 w-10 h-10 bg-black rounded-full flex items-center justify-center text-white group-hover:bg-gray-700 transition-colors">
+              <div 
+                className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white group-hover:opacity-80 transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)', // ✅ GRADIENT (was bg-black)
+                }}
+              >
                 <ChevronRight className="w-5 h-5" />
               </div>
             </Link>

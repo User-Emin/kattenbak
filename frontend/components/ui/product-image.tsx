@@ -144,7 +144,12 @@ export function ProductImage({
       
       {/* Zoom hint icon */}
       {enableZoom && !isHovering && (
-        <div className="absolute bottom-4 right-4 bg-black/60 text-white p-2 rounded-full backdrop-blur-sm transition-opacity">
+        <div 
+          className="absolute bottom-4 right-4 text-white p-2 rounded-full backdrop-blur-sm transition-opacity"
+          style={{
+            background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.6) 0%, rgba(122, 122, 125, 0.6) 100%)', // ✅ GRADIENT met opacity (was bg-black/60)
+          }}
+        >
           <ZoomIn className="h-5 w-5" />
         </div>
       )}
@@ -159,7 +164,10 @@ export function ProductImage({
       {/* LIGHTBOX MODAL - Voor full screen view */}
       {isLightboxOpen && (
         <div
-          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center"
+          className="fixed inset-0 z-[9999] flex items-center justify-center"
+          style={{
+            background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.95) 0%, rgba(122, 122, 125, 0.95) 100%)', // ✅ GRADIENT met opacity (was bg-black/95)
+          }}
           onClick={handleCloseLightbox}
           onKeyDown={handleKeyDown}
           tabIndex={0}

@@ -66,7 +66,12 @@ export function ColorSelector({ variants, selectedVariant, onSelect }: ColorSele
               )}
               
               {selectedVariant?.id === variant.id && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                <div 
+                  className="absolute inset-0 flex items-center justify-center"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.2) 0%, rgba(122, 122, 125, 0.2) 100%)', // ✅ GRADIENT met opacity (was bg-black/20)
+                  }}
+                >
                   <Check className="w-7 h-7 text-white drop-shadow-lg" strokeWidth={3} />
                 </div>
               )}

@@ -42,7 +42,7 @@ export function Header() {
         style={{ 
           boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.08)', // Versterkte shadow
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)', // Subtiele border voor definitie
-          zIndex: 165, // ✅ BOVEN sidebar winkelwagen (z-[170]) maar ONDER USP banner (z-[1000])
+          zIndex: 165, // ✅ BOVEN sidebar winkelwagen (z-[170]) maar ONDER USP banner (z-160)
         }}
       >
         <div 
@@ -137,7 +137,10 @@ export function Header() {
       {isCartOpen && (
         <>
           <div
-            className="fixed inset-0 bg-black/20 z-[150] backdrop-blur-sm"
+            className="fixed inset-0 z-[150] backdrop-blur-sm"
+            style={{
+              background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.2) 0%, rgba(122, 122, 125, 0.2) 100%)', // ✅ GRADIENT met opacity (was bg-black/20)
+            }}
             onClick={closeCart}
           />
           <div className="fixed right-0 top-0 h-screen w-full max-w-md bg-white shadow-2xl z-[170] animate-slide-in-right flex flex-col">

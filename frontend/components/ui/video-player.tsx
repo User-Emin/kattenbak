@@ -187,7 +187,16 @@ export function VideoPlayer({
         <div className="absolute bottom-4 right-4 flex gap-2 z-10">
           <button
             onClick={togglePlay}
-            className="p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"
+            className="p-2 rounded-full text-white transition-all"
+            style={{
+              background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.5) 0%, rgba(122, 122, 125, 0.5) 100%)', // ✅ GRADIENT met opacity (was bg-black/50)
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(60, 60, 61, 0.7) 0%, rgba(122, 122, 125, 0.7) 100%)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(60, 60, 61, 0.5) 0%, rgba(122, 122, 125, 0.5) 100%)';
+            }}
             aria-label={isPlaying ? 'Pause' : 'Play'}
           >
             {isPlaying ? <Pause size={20} /> : <Play size={20} />}
@@ -199,7 +208,16 @@ export function VideoPlayer({
       {!isHero && !isPlaying && (
         <button
           onClick={togglePlay}
-          className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors group"
+          className="absolute inset-0 flex items-center justify-center transition-all group"
+          style={{
+            background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.3) 0%, rgba(122, 122, 125, 0.3) 100%)', // ✅ GRADIENT met opacity (was bg-black/30)
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(60, 60, 61, 0.4) 0%, rgba(122, 122, 125, 0.4) 100%)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(60, 60, 61, 0.3) 0%, rgba(122, 122, 125, 0.3) 100%)';
+          }}
           aria-label="Speel video af"
         >
           <div className="w-20 h-20 bg-brand/90 hover:bg-brand rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-2xl">

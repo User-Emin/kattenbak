@@ -176,9 +176,11 @@ export const DESIGN_SYSTEM = {
       imageUrl: 'https://images.unsplash.com/photo-1545249390-6bdfa286032f?q=80&w=2000&auto=format&fit=crop',
     },
     
-    // Trust banner (onder hero)
+    // Trust banner (onder hero) - ✅ GRADIENT: #3C3C3D → #7A7A7D
     trustBanner: {
-      bg: '#000000',
+      bg: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',  // ✅ GRADIENT (was #000000)
+      bgStart: '#3C3C3D',    // ✅ GRADIENT START
+      bgEnd: '#7A7A7D',      // ✅ GRADIENT END
       color: '#ffffff',
       height: '60px',
       padding: '0 48px',

@@ -13,7 +13,9 @@ export function Footer() {
   return (
     <footer 
       style={{ 
-        backgroundColor: DESIGN_SYSTEM.colors.primary,
+        background: typeof DESIGN_SYSTEM.colors.primary === 'string' && DESIGN_SYSTEM.colors.primary.includes('gradient')
+          ? DESIGN_SYSTEM.colors.primary
+          : `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart || '#3C3C3D'} 0%, ${DESIGN_SYSTEM.colors.primaryEnd || '#7A7A7D'} 100%)`, // ✅ GRADIENT
         color: DESIGN_SYSTEM.colors.gray[400],
       }}
     >
