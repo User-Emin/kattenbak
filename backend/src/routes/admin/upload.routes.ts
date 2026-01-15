@@ -39,7 +39,7 @@ const handleMulterError = (err: any, req: any, res: any, next: any) => {
   next(err);
 };
 
-router.post('/images', upload.array('images', 10), handleMulterError, async (req, res) => {
+router.post('/images', upload.array('images', 10), handleMulterError, async (req, res, next) => {
   const uploadedFiles: Express.Multer.File[] = [];
   
   try {
