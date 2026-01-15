@@ -74,7 +74,7 @@ export const CHAT_CONFIG = {
       fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ Noto Sans
       letterSpacing: 'tracking-normal', // ✅ WHATSAPP: Normale spacing (was tight)
-      textColor: 'gradient-text', // ✅ GRADIENT (was text-black)
+      textColor: 'text-white', // ✅ WIT: Op gradient achtergrond (was gradient-text)
     },
     subtitle: {
       display: 'hidden', // ✅ WHATSAPP: Verberg subtitle (alleen naam)
