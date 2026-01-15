@@ -23,36 +23,19 @@ export default function AdminReturnsPage() {
   const fetchReturns = useCallback(async () => {
     setLoading(true);
     
-    // TODO: Replace with real API call
-    // Mock data voor nu
-    const mockReturns: Return[] = [
-      {
-        id: 'ret_1',
-        orderId: 'ord_1',
-        myparcelId: 123456,
-        trackingCode: '3SABCD123456789',
-        trackingUrl: 'https://postnl.nl/tracktrace/?B=3SABCD123456789',
-        labelUrl: 'https://example.com/label.pdf',
-        reason: 'DEFECTIVE' as any,
-        reasonDetails: 'Product maakt vreemd geluid',
-        status: 'REQUESTED' as any,
-        items: [
-          {
-            productId: '1',
-            productName: 'Automatische Kattenbak Premium',
-            quantity: 1,
-            price: 299.99,
-          },
-        ],
-        refundAmount: 299.99,
-        customerNotes: 'Product werkt niet goed',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-    ];
-
-    setReturns(mockReturns);
-    setLoading(false);
+    try {
+      // ✅ DYNAMIC: Fetch returns from API (when backend endpoint is available)
+      // For now, use empty array to prevent 404 errors
+      // TODO: Implement real API call when returns endpoint is ready
+      const returns: Return[] = [];
+      
+      setReturns(returns);
+    } catch (error) {
+      console.error('Error fetching returns:', error);
+      setReturns([]);
+    } finally {
+      setLoading(false);
+    }
   }, [statusFilter]);
 
   useEffect(() => {
