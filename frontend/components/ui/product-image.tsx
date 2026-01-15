@@ -164,10 +164,7 @@ export function ProductImage({
       {/* LIGHTBOX MODAL - Voor full screen view */}
       {isLightboxOpen && (
         <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center"
-          style={{
-            background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.95) 0%, rgba(122, 122, 125, 0.95) 100%)', // ✅ GRADIENT met opacity (was bg-black/95)
-          }}
+          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center"
           onClick={handleCloseLightbox}
           onKeyDown={handleKeyDown}
           tabIndex={0}

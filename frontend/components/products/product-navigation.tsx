@@ -85,7 +85,12 @@ export function ProductNavigation({ currentProduct }: ProductNavigationProps) {
               </div>
               <div className="flex-1 min-w-0 text-left">
                 <p className="text-xs text-gray-500 font-light">Vorig product</p>
-                <p className="text-sm font-normal text-gray-900 truncate group-hover:opacity-80 transition-opacity">
+                <p 
+                  className="text-sm font-normal text-gray-900 truncate transition-colors"
+                  style={{
+                    '--hover-color': 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',
+                  } as React.CSSProperties & { '--hover-color': string }}
+                >
                   {prevProduct.name}
                 </p>
               </div>
@@ -107,7 +112,12 @@ export function ProductNavigation({ currentProduct }: ProductNavigationProps) {
             >
               <div className="flex-1 min-w-0 text-right">
                 <p className="text-xs text-gray-500 font-light">Volgend product</p>
-                <p className="text-sm font-normal text-gray-900 truncate group-hover:opacity-80 transition-opacity">
+                <p 
+                  className="text-sm font-normal text-gray-900 truncate transition-colors"
+                  style={{
+                    '--hover-color': 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',
+                  } as React.CSSProperties & { '--hover-color': string }}
+                >
                   {nextProduct.name}
                 </p>
               </div>

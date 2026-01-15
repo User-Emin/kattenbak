@@ -105,7 +105,7 @@ export function CookieSettingsModal({
                       isRequired 
                         ? 'bg-brand cursor-not-allowed opacity-50' 
                         : isEnabled 
-                          ? 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]' // ✅ GRADIENT (was bg-black)
+                          ? 'bg-black'
                           : 'bg-gray-200'
                     }`}
                   >

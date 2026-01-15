@@ -165,11 +165,11 @@ export const PRODUCT_PAGE_CONFIG = {
     },
   },
 
-  // Edge-to-edge section configuratie
+  // Edge-to-edge section configuratie - ✅ KORTER: Verticaal korter
   edgeSection: {
-    container: 'relative w-full',
+    container: 'relative w-full', // ✅ EDGE-TO-EDGE: Volledige breedte
     image: {
-      aspectRatio: 'aspect-[21/9]',
+      aspectRatio: 'aspect-[21/6]', // ✅ KORTER: Verticaal korter (was aspect-[21/9])
       objectFit: 'object-cover',
       brightness: 'brightness-75',
     },

@@ -423,28 +423,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               )}>
                 {formatPrice(product.price)}
               </span>
-              {product.compareAtPrice && product.compareAtPrice > product.price && (
-                <>
-                  <span className={cn(
-                    CONFIG.info.price.original.fontSize,
-                    CONFIG.info.price.original.fontWeight,
-                    CONFIG.info.price.original.textColor,
-                    CONFIG.info.price.original.decoration
-                  )}>
-                    {formatPrice(product.compareAtPrice)}
-                  </span>
-                  <span className={cn(
-                    CONFIG.info.price.discount.fontSize,
-                    CONFIG.info.price.discount.fontWeight,
-                    CONFIG.info.price.discount.textColor,
-                    CONFIG.info.price.discount.bgColor,
-                    CONFIG.info.price.discount.padding,
-                    CONFIG.info.price.discount.borderRadius
-                  )}>
-                    -{Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)}%
-                  </span>
-                </>
-              )}
+              {/* ✅ KORTING VERWIJDERD: Geen korting badge meer */}
             </div>
 
             {/* Short Description */}
@@ -891,9 +870,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* Edge-to-edge Image Section */}
+      {/* Edge-to-edge Image Section - ✅ EDGE-TO-EDGE: Volledige breedte, geen padding */}
       <div className={CONFIG.edgeSection.container}>
-        <div className="relative">
+        <div className="relative w-full">
           <Image
             src="https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1920&h=800&fit=crop"
             alt="Maak je ervaring compleet"
