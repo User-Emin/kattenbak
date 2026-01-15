@@ -118,15 +118,15 @@ export const PRODUCT_PAGE_CONFIG = {
       marginBottom: 'mb-6',
     },
     button: {
-      size: 'w-full py-3 md:py-4', // ✅ RESPONSIVE: Mobile kleinere padding
-      fontSize: 'text-sm md:text-base', // ✅ RESPONSIVE: Mobile kleinere tekst (text-sm)
-      fontWeight: 'font-semibold', // ✅ DIKKER: Zoals banner (was font-normal)
+      size: 'w-full py-4 md:py-4', // ✅ RESPONSIVE: Mobile groter (py-4 ipv py-3) - verticaal langer
+      fontSize: 'text-base md:text-base', // ✅ RESPONSIVE: Mobile groter (text-base ipv text-sm) - dikker tekst
+      fontWeight: 'font-bold', // ✅ DIKKER: font-bold (was font-semibold) - vooral mobiel
       bgColor: 'bg-blue-600',
       hoverBgColor: 'hover:bg-blue-700',
       textColor: 'text-white',
       borderRadius: 'rounded-lg',
       transition: 'transition-colors',
-      icon: 'w-4 h-4 md:w-5 md:h-5', // ✅ RESPONSIVE: Mobile kleinere icon
+      icon: 'w-5 h-5 md:w-5 md:h-5', // ✅ RESPONSIVE: Mobile groter (w-5 h-5 ipv w-4 h-4)
     },
     usps: {
       spacing: 'flex flex-col gap-2 mt-6',

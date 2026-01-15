@@ -9,6 +9,7 @@ import { productsApi } from "@/lib/api/products";
 import { formatPrice } from "@/lib/utils";
 import { PRODUCT_PAGE_CONFIG, cn } from "@/lib/product-page-config";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { PremiumQualitySection } from "@/components/shared/premium-quality-section";
 import type { Product } from "@/types/product";
 import { 
   ChevronLeft, 
@@ -873,46 +874,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* ✅ PREMIUM KWALITEIT & VEILIGHEID - GRADIENT EXACT ZOALS HOME (GEEN AFBEELDING) */}
-      <section 
-        className="relative flex items-center justify-center w-full"
-        style={{
-          minHeight: '400px', // ✅ VERTICAAL KORTER: 400px (zoals home)
-          // ✅ GEEN AFBEELDING: Alleen gradient zoals navbar
-          background: `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart} 0%, ${DESIGN_SYSTEM.colors.primaryEnd} 100%)`, // ✅ GRADIENT EXACT NAVBAR: Via DESIGN_SYSTEM (geen hardcode)
-        }}
-      >
-        {/* Centered content */}
-        <div 
-          className="relative z-10 text-center space-y-6"
-          style={{
-            maxWidth: DESIGN_SYSTEM.layout.maxWidth.lg,
-            padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
-          }}
-        >
-          <h2 
-            style={{
-              fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-              fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'],
-              fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
-              color: DESIGN_SYSTEM.colors.text.inverse,
-              letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
-            }}
-          >
-            Premium Kwaliteit & Veiligheid
-          </h2>
-          <p 
-            style={{
-              fontSize: DESIGN_SYSTEM.typography.fontSize.xl,
-              fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-              color: DESIGN_SYSTEM.colors.text.inverse,
-              lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
-            }}
-          >
-            Hoogwaardige ABS materialen met dubbele veiligheidssensoren. Volledig automatisch met real-time monitoring via smartphone app. Perfect voor katten tot 7kg.
-          </p>
-        </div>
-      </section>
+      {/* ✅ PREMIUM KWALITEIT & VEILIGHEID - ✅ SHARED COMPONENT: Exact zoals home, dynamisch, geen hardcode */}
+      <PremiumQualitySection />
 
       {/* Feature Sections - ZIGZAG PATTERN (Pergolux style) */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.sectionSpacing)}>
