@@ -349,7 +349,18 @@ export function ChatPopup() {
     }
   }, [handleSendMessage]);
 
+  // ✅ DRY: Calculate button position via CHAT_CONFIG (with safe access)
+  const buttonBottomClass = useMemo(() => {
+    if (!safeChatConfig?.button?.position) {
+      return 'bottom-8';
+    }
+    return stickyCartVisible 
+      ? safeChatConfig.button.position.bottomWithCart
+      : safeChatConfig.button.position.bottom;
+  }, [stickyCartVisible, safeChatConfig]);
+
   // ✅ SECURITY: Additional safety check - ensure safeChatConfig is valid before render
+  // This check happens AFTER safeChatConfig is defined
   if (!safeChatConfig || !safeChatConfig.button || !safeChatConfig.modal || !safeChatConfig.animations) {
     // Return minimal button only (no popup) to prevent crash
     return (
@@ -362,16 +373,6 @@ export function ChatPopup() {
       </button>
     );
   }
-
-  // ✅ DRY: Calculate button position via CHAT_CONFIG (with safe access)
-  const buttonBottomClass = useMemo(() => {
-    if (!safeChatConfig?.button?.position) {
-      return 'bottom-8';
-    }
-    return stickyCartVisible 
-      ? safeChatConfig.button.position.bottomWithCart
-      : safeChatConfig.button.position.bottom;
-  }, [stickyCartVisible, safeChatConfig]);
 
   return (
     <>

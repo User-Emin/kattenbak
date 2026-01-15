@@ -37,7 +37,10 @@ export class ChatPopupErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // ✅ SECURITY: Log errors server-side only (not in browser console)
-    if (typeof window === 'undefined') {
+    // Client-side: log to console for debugging (development only)
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+      console.error('ChatPopup Error:', error, errorInfo);
+    } else if (typeof window === 'undefined') {
       console.error('ChatPopup Error:', error, errorInfo);
     }
   }
