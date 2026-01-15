@@ -11,7 +11,7 @@ export const CHAT_CONFIG = {
   // Button styling - ULTRA MODERN, dynamisch via DESIGN_SYSTEM
   button: {
     size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
-    borderRadius: 'rounded-md', // ✅ MODERN: DESIGN_SYSTEM.effects.borderRadius.md - Tailwind class (was rounded-sm)
+    borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
     backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
     textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
     hoverBackgroundColor: 'hover:bg-gray-900', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[900] - Tailwind class
@@ -45,7 +45,7 @@ export const CHAT_CONFIG = {
     maxWidth: 'max-w-md', // Consistent met cookie modal max-w-xl pattern
     maxHeight: 'max-h-[85vh] sm:max-h-[80vh]', // Consistent met cookie modal
     backgroundColor: 'bg-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.secondary (#ffffff) - Tailwind class
-    borderRadius: 'rounded-xl sm:rounded-2xl', // ✅ Consistent met cookie modal
+    borderRadius: 'rounded-2xl sm:rounded-3xl', // ✅ RONDER: Minder hoekig, smoother
     border: 'border border-gray-200', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[200] - Tailwind class
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     zIndex: 200, // ✅ Consistent met cookie modal z-[200]
@@ -59,7 +59,7 @@ export const CHAT_CONFIG = {
     backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
     textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
     padding: 'px-4 py-3', // ✅ Consistent met cookie modal (was spacing[6])
-    borderRadius: 'rounded-t-xl sm:rounded-t-2xl', // ✅ Consistent met modal borderRadius
+    borderRadius: 'rounded-t-2xl sm:rounded-t-3xl', // ✅ RONDER: Consistent met modal borderRadius
     borderBottom: 'border-b border-gray-700/20', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[700] - Tailwind class
     sticky: 'sticky top-0', // ✅ Consistent met cookie modal
     transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
@@ -71,13 +71,14 @@ export const CHAT_CONFIG = {
     },
     title: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xl, // 20px
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium, // 500 - Noto Sans
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings, // Noto Sans
       letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight, // Logo style
       textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
     },
     subtitle: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
       textColor: 'text-gray-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[300] - Tailwind class
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       marginTop: 'mt-1',
@@ -114,9 +115,10 @@ export const CHAT_CONFIG = {
     user: {
       backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
       textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
-      borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
+      borderRadius: 'rounded-lg', // ✅ RONDER: Minder hoekig, smoother
       padding: 'p-4', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[4] - Tailwind class
       maxWidth: 'max-w-[85%]',
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       transition: 'transition-all duration-200', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
     },
@@ -124,9 +126,10 @@ export const CHAT_CONFIG = {
       backgroundColor: 'bg-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.secondary (#ffffff) - Tailwind class
       textColor: 'text-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.primary (#000000) - Tailwind class
       border: 'border border-gray-200', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[200] - Tailwind class
-      borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
+      borderRadius: 'rounded-lg', // ✅ RONDER: Minder hoekig, smoother
       padding: 'p-4', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[4] - Tailwind class
       maxWidth: 'max-w-[85%]',
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       transition: 'transition-all duration-200', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
     },
@@ -148,7 +151,7 @@ export const CHAT_CONFIG = {
       padding: 'p-4', // ✅ Direct Tailwind class (was: DESIGN_SYSTEM.spacing[4] = '1rem' string)
       backgroundColor: 'bg-white', // ✅ Direct Tailwind class (was: DESIGN_SYSTEM.colors.secondary = '#ffffff' string)
       borderTop: 'border-t border-gray-200', // ✅ Direct Tailwind class (was: template literal)
-      borderRadius: 'rounded-b-xl sm:rounded-b-2xl', // ✅ Consistent met modal borderRadius
+      borderRadius: 'rounded-b-2xl sm:rounded-b-3xl', // ✅ RONDER: Consistent met modal borderRadius
       transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
     },
     fieldContainer: {
@@ -168,10 +171,10 @@ export const CHAT_CONFIG = {
       textAlign: 'text-center',
     },
     field: {
-      borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
+      borderRadius: 'rounded-lg', // ✅ RONDER: Minder hoekig, smoother
       border: 'border border-gray-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[300] - Tailwind class
       backgroundColor: 'bg-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.secondary (#ffffff) - Tailwind class
-      padding: 'px-3 py-4', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[3] + spacing[4] - Tailwind classes
+      padding: 'px-4 py-4', // ✅ BREDER: Meer padding links/rechts (was px-3)
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       focus: {
@@ -181,13 +184,13 @@ export const CHAT_CONFIG = {
       transition: 'transition-all duration-200', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
     },
     button: {
-      borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
+      borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
       backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
       textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
       hoverBackgroundColor: 'hover:bg-gray-900', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[900] - Tailwind class
-      padding: 'px-3 py-6', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[3] + spacing[6] - Tailwind classes
+      padding: 'px-4 py-6', // ✅ BREDER: Meer padding links/rechts (was px-3)
       fontSize: DESIGN_SYSTEM.typography.fontSize.base, // ✅ DYNAMISCH: via DESIGN_SYSTEM
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       iconSize: 'w-5 h-5',
       transition: 'transition-all duration-200 ease-in-out', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
@@ -268,9 +271,10 @@ export const CHAT_CONFIG = {
     suggestionButton: {
       backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
       hoverBackgroundColor: 'hover:bg-gray-100',
-      borderRadius: 'rounded-sm', // ✅ HOEKIGER
+      borderRadius: 'rounded-lg', // ✅ RONDER: Minder hoekig, smoother
       padding: 'px-4 py-2', // ✅ Direct Tailwind classes (was: template literal)
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
       display: DESIGN_SYSTEM.layoutUtils.display.block,
       width: DESIGN_SYSTEM.layoutUtils.sizing.widthFull,
@@ -282,7 +286,7 @@ export const CHAT_CONFIG = {
   loading: {
     backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
     border: 'border border-gray-200',
-    borderRadius: 'rounded-sm', // ✅ HOEKIGER
+    borderRadius: 'rounded-lg', // ✅ RONDER: Minder hoekig, smoother
     padding: 'p-4', // ✅ Direct Tailwind class (was: template literal)
     iconColor: 'text-black', // ✅ ZWART (geen transparantie)
     iconSize: 'w-5 h-5',
@@ -292,11 +296,29 @@ export const CHAT_CONFIG = {
   error: {
     backgroundColor: 'bg-red-50', // ✅ Red-50 (geen transparantie)
     border: 'border border-red-200',
-    borderRadius: 'rounded-sm', // ✅ HOEKIGER
+    borderRadius: 'rounded-lg', // ✅ RONDER: Minder hoekig, smoother
     padding: 'p-3', // ✅ Direct Tailwind class (was: DESIGN_SYSTEM.spacing[3] = '0.75rem' string)
     textColor: 'text-red-800', // ✅ Red-800 (geen transparantie)
     fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
     fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+  },
+
+  // Warning banner - Rode achtergrond, zwarte tekst
+  warning: {
+    container: {
+      backgroundColor: 'bg-red-500', // ✅ ROOD: Rode achtergrond
+      textColor: 'text-black', // ✅ ZWART: Zwarte tekst
+      padding: 'px-4 py-3', // ✅ DYNAMISCH: DESIGN_SYSTEM spacing
+      borderRadius: 'rounded-t-2xl sm:rounded-t-3xl', // ✅ RONDER: Consistent met modal
+      borderBottom: 'border-b border-red-600', // ✅ DYNAMISCH: Donkerder rood voor border
+      marginBottom: 'mb-0', // Geen margin, direct onder header
+    },
+    text: {
+      fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+      lineHeight: 'leading-relaxed', // ✅ DYNAMISCH: Betere leesbaarheid
+    },
   },
 
   // Global utilities - DRY

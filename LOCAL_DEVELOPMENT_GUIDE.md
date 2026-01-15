@@ -17,7 +17,7 @@
 ### **Development Poorten** (Default)
 
 ```bash
-Frontend:  http://localhost:3000    # Next.js dev server
+Frontend:  http://localhost:3001    # Next.js dev server
 Backend:   http://localhost:3101    # Express API server
 Admin:     http://localhost:3102    # Admin Next.js dev server
 PostgreSQL: localhost:5432          # Database
@@ -29,8 +29,9 @@ Redis:     localhost:6379           # Cache
 #### Frontend (`frontend/.env.local`)
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:3101/api/v1
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_URL=http://localhost:3001
 NODE_ENV=development
+PORT=3001
 ```
 
 #### Backend (`backend/.env`)
@@ -40,7 +41,7 @@ BACKEND_PORT=3101
 DATABASE_URL=postgresql://kattenbak_user:kattenbak_dev_password@localhost:5432/kattenbak_dev
 REDIS_HOST=localhost
 REDIS_PORT=6379
-CORS_ORIGINS=http://localhost:3000,http://localhost:3102
+CORS_ORIGINS=http://localhost:3001,http://localhost:3102
 ```
 
 #### Admin (`admin-next/.env.local`)
@@ -61,7 +62,7 @@ npm run dev
 
 Dit start:
 - ✅ Backend op `http://localhost:3101`
-- ✅ Frontend op `http://localhost:3000`
+- ✅ Frontend op `http://localhost:3001`
 - ✅ Admin op `http://localhost:3102`
 
 ### **Optie 2: Individueel starten**
@@ -77,7 +78,7 @@ npm run dev
 ```bash
 cd /Users/emin/kattenbak/frontend
 npm run dev
-# → http://localhost:3000
+# → http://localhost:3001
 ```
 
 #### Admin
@@ -142,7 +143,7 @@ curl http://localhost:3101/api/v1/health
 
 ### **2. Frontend Check**
 ```bash
-# Open browser: http://localhost:3000
+# Open browser: http://localhost:3001
 # ✅ Homepage laadt
 # ✅ Chat button zichtbaar
 # ✅ Chat popup werkt
@@ -179,7 +180,7 @@ curl http://localhost:3101/api/v1/health
 
 | Service | Development | Production | Environment Variable |
 |---------|------------|------------|---------------------|
-| Frontend | `3000` | `80/443` (nginx) | `FRONTEND_PORT` |
+| Frontend | `3001` | `80/443` (nginx) | `PORT` |
 | Backend | `3101` | `3101` (PM2) | `BACKEND_PORT` |
 | Admin | `3102` | `3102` (PM2) | `ADMIN_PORT` |
 | PostgreSQL | `5432` | `5432` | `POSTGRES_PORT` |
@@ -202,7 +203,7 @@ cd /Users/emin/kattenbak && \
 - ✅ Database draait
 - ✅ Redis draait
 - ✅ Backend op http://localhost:3101
-- ✅ Frontend op http://localhost:3000
+- ✅ Frontend op http://localhost:3001
 - ✅ Admin op http://localhost:3102
 
 ---

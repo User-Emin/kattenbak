@@ -631,7 +631,7 @@ export function ChatPopup() {
                   <div>
                     <h3 className={cn(
                       safeChatConfig.header.title.fontSize || 'text-xl',
-                      safeChatConfig.header.title.fontWeight || 'font-medium',
+                      safeChatConfig.header.title.fontWeight || 'font-semibold',
                       safeChatConfig.header.title.textColor || 'text-white',
                       safeChatConfig.header.title.letterSpacing || 'tracking-tight',
                       safeChatConfig.utilities?.fontFamily || 'font-sans'
@@ -640,6 +640,7 @@ export function ChatPopup() {
                     </h3>
                     <p className={cn(
                       safeChatConfig.header.subtitle.fontSize || 'text-sm',
+                      safeChatConfig.header.subtitle.fontWeight || 'font-semibold',
                       safeChatConfig.header.subtitle.textColor || 'text-gray-300',
                       safeChatConfig.header.subtitle.marginTop,
                       safeChatConfig.utilities?.fontFamily || 'font-sans'
@@ -664,7 +665,28 @@ export function ChatPopup() {
                 </div>
               </div>
 
-              {/* ✅ MODERN: Messages - Hoekiger, Noto Sans - 100% DRY */}
+              {/* ✅ WARNING BANNER - Rode achtergrond, zwarte tekst */}
+              {safeChatConfig.warning && (
+                <div className={cn(
+                  safeChatConfig.warning.container.backgroundColor,
+                  safeChatConfig.warning.container.textColor,
+                  safeChatConfig.warning.container.padding,
+                  safeChatConfig.warning.container.borderRadius,
+                  safeChatConfig.warning.container.borderBottom,
+                  safeChatConfig.warning.container.marginBottom
+                )}>
+                  <p className={cn(
+                    safeChatConfig.warning.text.fontSize,
+                    safeChatConfig.warning.text.fontWeight,
+                    safeChatConfig.warning.text.fontFamily,
+                    safeChatConfig.warning.text.lineHeight
+                  )}>
+                    Let op: Niet geschikt voor kittens onder 6 maanden. De smart cat litter is alleen geschikt voor katten die niet meer wegen dan 3,3 lbs (1,5KG), en het wordt aanbevolen dat het maximale gewicht van de kat niet meer dan 27,5 lbs (12,5KG) mag zijn.
+                  </p>
+                </div>
+              )}
+
+              {/* ✅ MODERN: Messages - Ronder, Noto Sans - 100% DRY */}
               <div className={cn(
                 safeChatConfig.messages.container.flex,
                 safeChatConfig.messages.container.overflow,
@@ -709,6 +731,7 @@ export function ChatPopup() {
                             safeChatConfig.emptyState.suggestionButton.backgroundColor,
                             safeChatConfig.emptyState.suggestionButton.borderRadius,
                             safeChatConfig.emptyState.suggestionButton.fontSize,
+                            safeChatConfig.emptyState.suggestionButton.fontWeight || 'font-semibold',
                             safeChatConfig.emptyState.suggestionButton.hoverBackgroundColor,
                             safeChatConfig.utilities?.transition?.colors || 'transition-colors',
                             safeChatConfig.utilities?.fontFamily || 'font-sans'
@@ -735,8 +758,9 @@ export function ChatPopup() {
                     <div
                       className={cn(
                         msg.role === 'user' ? safeChatConfig.messages?.user?.maxWidth || 'max-w-[85%]' : safeChatConfig.messages?.assistant?.maxWidth || 'max-w-[85%]',
-                        msg.role === 'user' ? safeChatConfig.messages?.user?.borderRadius || 'rounded-sm' : safeChatConfig.messages?.assistant?.borderRadius || 'rounded-sm',
-                        msg.role === 'user' ? safeChatConfig.messages?.user?.padding || 'p-3' : safeChatConfig.messages?.assistant?.padding || 'p-3',
+                        msg.role === 'user' ? safeChatConfig.messages?.user?.borderRadius || 'rounded-lg' : safeChatConfig.messages?.assistant?.borderRadius || 'rounded-lg',
+                        msg.role === 'user' ? safeChatConfig.messages?.user?.padding || 'p-4' : safeChatConfig.messages?.assistant?.padding || 'p-4',
+                        msg.role === 'user' ? safeChatConfig.messages?.user?.fontWeight || 'font-semibold' : safeChatConfig.messages?.assistant?.fontWeight || 'font-semibold',
                         safeChatConfig.utilities?.transition?.all || 'transition-all',
                         safeChatConfig.animations?.duration?.base || 'duration-200',
                         safeChatConfig.utilities?.fontFamily || 'font-sans',

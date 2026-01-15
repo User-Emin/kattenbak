@@ -55,7 +55,7 @@ cd ..
 echo -e "${GREEN}🚀 Starting all services...${NC}"
 echo ""
 echo "📍 Services will be available at:"
-echo "   Frontend:  http://localhost:3000"
+echo "   Frontend:  http://localhost:3001"
 echo "   Backend:   http://localhost:3101"
 echo "   Admin:     http://localhost:3102"
 echo ""
