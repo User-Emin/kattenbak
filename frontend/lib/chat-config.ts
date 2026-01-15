@@ -57,7 +57,7 @@ export const CHAT_CONFIG = {
   // Header styling - WHATSAPP STYLE: Minimalistisch (alleen naam of niets)
     header: {
     backgroundColor: 'bg-gray-50', // ✅ WHATSAPP: Lichte achtergrond (was zwart)
-    textColor: 'text-black', // ✅ WHATSAPP: Zwarte tekst (was wit)
+      textColor: 'gradient-text', // ✅ GRADIENT (was text-black)
     padding: 'px-4 py-3', // ✅ Consistent met cookie modal
     borderRadius: 'rounded-t-3xl sm:rounded-t-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
     borderBottom: 'border-b border-gray-200', // ✅ WHATSAPP: Lichte border (was border-gray-700/20)
@@ -74,7 +74,7 @@ export const CHAT_CONFIG = {
       fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ Noto Sans
       letterSpacing: 'tracking-normal', // ✅ WHATSAPP: Normale spacing (was tight)
-      textColor: 'text-black', // ✅ WHATSAPP: Zwart (was wit)
+      textColor: 'gradient-text', // ✅ GRADIENT (was text-black)
     },
     subtitle: {
       display: 'hidden', // ✅ WHATSAPP: Verberg subtitle (alleen naam)
@@ -109,7 +109,7 @@ export const CHAT_CONFIG = {
       transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
     },
     user: {
-      backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
+      backgroundColor: 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]', // ✅ GRADIENT (was bg-black)
       textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
       borderRadius: 'rounded-xl', // ✅ RONDER: Extra ronde hoeken, smoother
       padding: 'p-4', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[4] - Tailwind class
@@ -120,7 +120,7 @@ export const CHAT_CONFIG = {
     },
     assistant: {
       backgroundColor: 'bg-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.secondary (#ffffff) - Tailwind class
-      textColor: 'text-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.primary (#000000) - Tailwind class
+      textColor: 'gradient-text', // ✅ GRADIENT (was text-black) - gebruikt .gradient-text utility
       border: 'border border-gray-200', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[200] - Tailwind class
       borderRadius: 'rounded-xl', // ✅ RONDER: Extra ronde hoeken, smoother
       padding: 'p-4', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[4] - Tailwind class
@@ -229,7 +229,7 @@ export const CHAT_CONFIG = {
     },
     backdrop: {
       fadeIn: 'animate-in fade-in duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.transitions.duration.slow (300ms) - Tailwind class
-      backgroundColor: 'bg-black/50', // ✅ Consistent met cookie modal
+      backgroundColor: 'bg-gradient-to-r from-[rgba(60,60,61,0.5)] to-[rgba(122,122,125,0.5)]', // ✅ GRADIENT met opacity (was bg-black/50)
       blur: 'backdrop-blur-sm',
       zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.backdrop,
       mobileTransparent: 'md:bg-transparent',
@@ -303,7 +303,7 @@ export const CHAT_CONFIG = {
     border: 'border border-gray-200',
     borderRadius: 'rounded-lg', // ✅ RONDER: Minder hoekig, smoother
     padding: 'p-4', // ✅ Direct Tailwind class (was: template literal)
-    iconColor: 'text-black', // ✅ ZWART (geen transparantie)
+    iconColor: 'text-[#3C3C3D]', // ✅ GRADIENT START (was text-black)
     iconSize: 'w-5 h-5',
   },
 

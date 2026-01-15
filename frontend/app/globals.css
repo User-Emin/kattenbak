@@ -22,11 +22,15 @@
   :root {
     --font-primary: var(--font-noto-sans);
     
-    /* Design tokens */
-    --color-primary: #000000;
+    /* Design tokens - ✅ GRADIENT: #3C3C3D → #7A7A7D (was #000000) */
+    --color-primary: linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%);
+    --color-primary-start: #3C3C3D;
+    --color-primary-end: #7A7A7D;
     --color-secondary: #ffffff;
     --color-border: #e5e5e5;
-    --color-text-primary: #000000;
+    --color-text-primary: linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%);
+    --color-text-primary-start: #3C3C3D;
+    --color-text-primary-end: #7A7A7D;
     --color-text-secondary: #666666;
   }
   
@@ -54,21 +58,27 @@
   }
   
   .btn-primary {
-    @apply bg-black text-white;
+    background: linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%); /* ✅ GRADIENT (was bg-black) */
+    @apply text-white;
     @apply hover:opacity-80 active:opacity-90;
-    @apply focus:ring-black;
+    @apply focus:ring-gray-700;
   }
   
   .btn-secondary {
-    @apply bg-white text-black border border-black;
-    @apply hover:bg-black hover:text-white;
-    @apply focus:ring-black;
+    @apply bg-white border border-gray-700;
+    background: linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    @apply hover:opacity-80;
+    @apply focus:ring-gray-700;
   }
   
-  /* Checkout/Cart buttons - ZWART */
+  /* Checkout/Cart buttons - ✅ GRADIENT */
   .checkout-button,
   .cart-button {
-    @apply bg-black text-white hover:opacity-80;
+    background: linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%); /* ✅ GRADIENT (was bg-black) */
+    @apply text-white hover:opacity-80;
     @apply rounded-sm;
   }
 }
