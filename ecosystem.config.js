@@ -54,7 +54,7 @@ module.exports = {
       instances: 1,
       env: {
         NODE_ENV: 'production',
-        PORT: 3002,  // ✅ Admin op aparte poort - volledig gescheiden van dev
+        PORT: 3102,  // ✅ FIX: Admin op poort 3102 (was 3002) - matcht nginx config
         NEXT_TELEMETRY_DISABLED: 1
       },
       error_file: '../logs/admin-error.log',
