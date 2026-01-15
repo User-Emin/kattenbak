@@ -71,11 +71,12 @@ export const errorHandler = (
   // ✅ SECURITY: Send error response (JSON format for API consistency)
   if (req.path?.startsWith('/api/')) {
     // API routes: return JSON
-    return res.status(statusCode).json({
+    res.status(statusCode).json({
       success: false,
       error: message,
       ...(env.IS_DEVELOPMENT && { stack: error.stack })
     });
+    return;
   }
   
   // Non-API routes: use errorResponse utility
