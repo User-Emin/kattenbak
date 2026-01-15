@@ -84,12 +84,15 @@ router.post('/images', upload.array('images', 10), multerErrorHandler, async (re
       uploadedFiles.map(async (file) => {
         try {
           // Optimize image (security: strips EXIF, re-encodes)
-          await optimizeImage(file.path);
+          // Returns WebP path, but we need to return the original filename for URL
+          const optimizedPath = await optimizeImage(file.path);
           
+          // ✅ FIX: Use original filename (not WebP) for URL - WebP is served automatically if available
+          // The decrypt middleware will serve WebP if available, otherwise original
           return {
-            filename: file.filename,
+            filename: file.filename, // Original filename (e.g., uuid.jpg)
             originalName: file.originalname,
-            url: getPublicUrl(file.filename),
+            url: getPublicUrl(file.filename), // URL uses original filename
             size: file.size,
             mimetype: file.mimetype
           };

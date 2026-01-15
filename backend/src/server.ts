@@ -80,8 +80,11 @@ class Server {
     this.app.use(express.json({ limit: '50mb' })); // Increased for uploads
     this.app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-    // DRY: Static files - Serve uploaded images
-    this.app.use('/uploads', express.static(path.join(process.cwd(), 'public', 'uploads')));
+    // ✅ UPLOAD: Serve encrypted uploads via decrypt middleware
+    // Files are stored encrypted in /var/www/uploads/ and need decryption on-the-fly
+    // Note: Nginx also serves /uploads/ directly, but encrypted files need backend decryption
+    const { decryptMediaMiddleware } = await import('./middleware/decrypt.middleware');
+    this.app.use('/uploads', decryptMediaMiddleware);
 
     // Request logging
     this.app.use(requestLogger);
