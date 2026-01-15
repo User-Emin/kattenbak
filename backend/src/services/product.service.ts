@@ -42,7 +42,7 @@ export class ProductService {
 
     // Execute queries in parallel
     // ✅ FIX: Use select to avoid hero_video_url column that doesn't exist in database
-    const [products, total] = await Promise.all([
+    const [productsRaw, total] = await Promise.all([
       prisma.product.findMany({
         where,
         skip,
@@ -82,9 +82,12 @@ export class ProductService {
             },
           },
         },
-      }) as Product[],
+      }),
       prisma.product.count({ where }),
     ]);
+
+    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
+    const products = productsRaw.map(p => ({ ...p, heroVideoUrl: null })) as Product[];
 
     return { products, total };
   }
@@ -98,13 +101,15 @@ export class ProductService {
       const cached = await redis?.get(`${this.CACHE_PREFIX}${id}`);
       if (cached) {
         logger.debug(`Product ${id} served from cache`);
-        return JSON.parse(cached);
+        const parsed = JSON.parse(cached);
+        // ✅ FIX: Ensure heroVideoUrl is null if missing
+        return { ...parsed, heroVideoUrl: parsed.heroVideoUrl || null } as Product;
       }
     }
 
     // ✅ FIX: Use select to avoid hero_video_url column that doesn't exist in database
     // Explicitly select only fields that exist to prevent Prisma errors
-    const product = await prisma.product.findUnique({
+    const productRaw = await prisma.product.findUnique({
       where: { id },
       select: {
         id: true,
@@ -147,7 +152,10 @@ export class ProductService {
           },
         },
       },
-    }) as Product | null;
+    });
+
+    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
+    const product = productRaw ? { ...productRaw, heroVideoUrl: null } as Product : null;
 
     if (!product) {
       throw new NotFoundError(`Product with ID ${id} not found`);
@@ -174,7 +182,7 @@ export class ProductService {
    */
   static async getProductBySlug(slug: string): Promise<Product> {
     // ✅ FIX: Use same select pattern to avoid hero_video_url column
-    const product = await prisma.product.findUnique({
+    const productRaw = await prisma.product.findUnique({
       where: { slug },
       select: {
         id: true,
@@ -217,7 +225,10 @@ export class ProductService {
           },
         },
       },
-    }) as Product | null;
+    });
+
+    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
+    const product = productRaw ? { ...productRaw, heroVideoUrl: null } as Product : null;
 
     if (!product) {
       throw new NotFoundError(`Product with slug ${slug} not found`);
@@ -235,7 +246,7 @@ export class ProductService {
    */
   static async getFeaturedProducts(limit: number = 8): Promise<Product[]> {
     // ✅ FIX: Use select to avoid hero_video_url column
-    return prisma.product.findMany({
+    const productsRaw = await prisma.product.findMany({
       where: {
         isActive: true,
         isFeatured: true,
@@ -276,7 +287,10 @@ export class ProductService {
           },
         },
       },
-    }) as Product[];
+    });
+
+    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
+    return productsRaw.map(p => ({ ...p, heroVideoUrl: null })) as Product[];
   }
 
   /**
@@ -296,7 +310,7 @@ export class ProductService {
     // ✅ FIX: Remove heroVideoUrl from data if it doesn't exist in DB schema
     const { heroVideoUrl, ...productData } = data as any;
     
-    const product = await prisma.product.create({
+    const productRaw = await prisma.product.create({
       data: productData,
       select: {
         id: true,
@@ -339,7 +353,10 @@ export class ProductService {
           },
         },
       },
-    }) as Product;
+    });
+
+    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
+    const product = { ...productRaw, heroVideoUrl: null } as Product;
 
     logger.info(`Product created: ${product.id} (${product.sku})`);
 
@@ -359,7 +376,7 @@ export class ProductService {
     // ✅ FIX: Remove heroVideoUrl from data if it doesn't exist in DB schema
     const { heroVideoUrl, ...productData } = data as any;
 
-    const product = await prisma.product.update({
+    const productRaw = await prisma.product.update({
       where: { id },
       data: productData,
       select: {
@@ -403,7 +420,10 @@ export class ProductService {
           },
         },
       },
-    }) as Product;
+    });
+
+    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
+    const product = { ...productRaw, heroVideoUrl: null } as Product;
 
     // Invalidate cache
     if (RedisClient.isAvailable()) {
@@ -502,7 +522,7 @@ export class ProductService {
    */
   static async searchProducts(query: string, limit: number = 10): Promise<Product[]> {
     // ✅ FIX: Use select to avoid hero_video_url column
-    return prisma.product.findMany({
+    const productsRaw = await prisma.product.findMany({
       where: {
         isActive: true,
         OR: [
@@ -546,7 +566,10 @@ export class ProductService {
           },
         },
       },
-    }) as Product[];
+    });
+
+    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
+    return productsRaw.map(p => ({ ...p, heroVideoUrl: null })) as Product[];
   }
 }
 
