@@ -51,7 +51,7 @@ export const PRODUCT_PAGE_CONFIG = {
     },
     thumbnails: {
       grid: 'grid grid-cols-4 gap-4',
-      aspectRatio: 'aspect-square',
+      aspectRatio: 'aspect-[4/3]', // ✅ RECHTHOEK: Horizontaal langer dan verticaal (was aspect-square)
       borderRadius: 'rounded-md',
       activeBorder: 'ring-2 ring-black',
       hoverOpacity: 'hover:opacity-75',

@@ -72,6 +72,7 @@ const envSchema = z.object({
   UPLOAD_MAX_SIZE: z.string().regex(/^\d+$/).default('5242880'),
   UPLOAD_ALLOWED_TYPES: z.string().default('image/jpeg,image/png,image/webp'),
   UPLOAD_PATH: z.string().default('./uploads'),
+  MEDIA_ENCRYPTION_KEY: z.string().min(32, 'MEDIA_ENCRYPTION_KEY must be at least 32 characters').optional().default(''), // ✅ OPTIONAL: Fallback to non-encrypted if not set
   NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
   FRONTEND_URL: z.string().url().optional(),
   CORS_ORIGINS: z.string().optional(),

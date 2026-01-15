@@ -152,7 +152,14 @@ export function Header() {
             }}
             onClick={closeCart}
           />
-          <div className="fixed right-0 top-0 h-screen w-full max-w-md bg-white shadow-2xl z-[170] animate-slide-in-right flex flex-col">
+          <div 
+            className="fixed right-0 w-full max-w-md bg-white shadow-2xl animate-slide-in-right flex flex-col"
+            style={{
+              zIndex: 130, // ✅ ONDER banner (z-[160]) en navbar (z-[165]) - geen overlap
+              top: DESIGN_SYSTEM.layout.uspBanner.height, // ✅ TOP: Start onder banner (geen overlap)
+              height: `calc(100vh - ${DESIGN_SYSTEM.layout.uspBanner.height})`, // ✅ HEIGHT: Volledige hoogte minus banner
+            }}
+          >
             <div 
               className="flex items-center justify-between flex-shrink-0 border-b"
               style={{

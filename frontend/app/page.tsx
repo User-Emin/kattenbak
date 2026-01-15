@@ -84,42 +84,57 @@ export default function HomePage() {
 
   return (
     <div>
-      {/* 🎨 HERO SECTION - ASYMMETRISCHE SPLIT (35/65) - AFBEELDING EDGE-TO-EDGE */}
+      {/* 🎨 HERO SECTION - RESPONSIVE: Mobile stacked, Desktop split (35/65) */}
       <section 
-        className="relative flex items-center"
+        className="relative flex flex-col md:flex-row items-center"
         style={{
-          minHeight: DESIGN_SYSTEM.layout.hero.minHeight,
+          minHeight: DESIGN_SYSTEM.layout.hero.minHeightMobile, // ✅ MOBILE: Kleinere hoogte
         }}
       >
-        {/* Container voor flexbox zonder padding */}
-        <div className="w-full flex items-center" style={{ height: DESIGN_SYSTEM.layout.hero.minHeight }}>
-          {/* LINKS: TEKST & CTA (35%) - MET PADDING */}
+        {/* Container voor flexbox - ✅ RESPONSIVE: Mobile column, Desktop row */}
+        <div 
+          className="w-full flex flex-col md:flex-row items-center" 
+          style={{ 
+            minHeight: `clamp(${DESIGN_SYSTEM.layout.hero.minHeightMobile}, 100vh, ${DESIGN_SYSTEM.layout.hero.minHeight})`, // ✅ RESPONSIVE: Clamp tussen mobile en desktop
+          }}
+        >
+          {/* LINKS: TEKST & CTA - ✅ RESPONSIVE: Mobile full width, Desktop 35% */}
           <div 
-            className="space-y-6 z-10"
+            className="space-y-4 md:space-y-6 z-10 w-full md:w-auto"
             style={{
-              width: DESIGN_SYSTEM.layout.hero.splitRatio.text,
-              padding: `${DESIGN_SYSTEM.spacing[12]} ${DESIGN_SYSTEM.spacing.containerPadding}`,
+              width: '100%', // ✅ MOBILE: Full width
+              maxWidth: '100%', // ✅ MOBILE: Full width
+              padding: `${DESIGN_SYSTEM.spacing[8]} ${DESIGN_SYSTEM.spacing.containerPaddingMobile}`, // ✅ MOBILE: Kleinere padding
               backgroundColor: DESIGN_SYSTEM.colors.gray[50],
             }}
+            // ✅ DESKTOP: 35% width via inline style override
+            {...(typeof window !== 'undefined' && window.innerWidth >= 768 ? {
+              style: {
+                width: DESIGN_SYSTEM.layout.hero.splitRatio.text,
+                padding: `${DESIGN_SYSTEM.spacing[12]} ${DESIGN_SYSTEM.spacing.containerPadding}`,
+                backgroundColor: DESIGN_SYSTEM.colors.gray[50],
+              }
+            } : {})}
           >
-            {/* Heading - Noto Sans MEDIUM (logo style - dunner maar vet) */}
+            {/* Heading - ✅ RESPONSIVE: Mobile smaller, Desktop larger */}
             <h1 
-              className="leading-tight"
+              className="leading-tight text-3xl md:text-5xl lg:text-6xl" // ✅ RESPONSIVE: Tailwind breakpoints
               style={{
                 fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-                fontSize: DESIGN_SYSTEM.typography.fontSize['5xl'],
                 fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
                 color: DESIGN_SYSTEM.colors.text.primary,
                 letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
               }}
             >
-              Automatische<br />Kattenbak
+              Automatische<br className="hidden md:block" /> {/* ✅ RESPONSIVE: Line break alleen op desktop */}
+              <span className="md:hidden"> </span> {/* ✅ MOBILE: Space in plaats van break */}
+              Kattenbak
             </h1>
 
-            {/* Subtitle */}
+            {/* Subtitle - ✅ RESPONSIVE: Mobile smaller */}
             <p 
+              className="text-base md:text-xl" // ✅ RESPONSIVE: Tailwind breakpoints
               style={{
-                fontSize: DESIGN_SYSTEM.typography.fontSize.xl,
                 fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
                 color: DESIGN_SYSTEM.colors.text.secondary,
                 lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
@@ -151,15 +166,22 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* RECHTS: AFBEELDING (65%) - VOLLEDIG EDGE-TO-EDGE, GEEN MARGIN */}
+          {/* RECHTS: AFBEELDING - ✅ RESPONSIVE: Mobile full width/height, Desktop 65% */}
           <div 
-            className="absolute top-0 right-0 bottom-0"
+            className="relative md:absolute top-0 right-0 w-full md:w-auto h-64 md:h-full" // ✅ RESPONSIVE: Mobile relative met height, Desktop absolute
             style={{
-              width: DESIGN_SYSTEM.layout.hero.splitRatio.image,
+              width: '100%', // ✅ MOBILE: Full width
+              minHeight: '16rem', // ✅ MOBILE: 256px minimum height
               backgroundImage: `url('${DESIGN_SYSTEM.layout.hero.imageUrl}')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
+              // ✅ DESKTOP: 65% width via inline style override
+              ...(typeof window !== 'undefined' && window.innerWidth >= 768 ? {
+                width: DESIGN_SYSTEM.layout.hero.splitRatio.image,
+                height: '100%',
+                position: 'absolute',
+              } : {})
             }}
           />
         </div>

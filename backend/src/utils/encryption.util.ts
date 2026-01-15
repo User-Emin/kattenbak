@@ -23,11 +23,13 @@ const KEY_LENGTH = 32; // 256 bits
  * Get encryption key from environment
  * Derives a consistent 256-bit key from MEDIA_ENCRYPTION_KEY
  */
-function getEncryptionKey(): Buffer {
+function getEncryptionKey(): Buffer | null {
   const secret = process.env.MEDIA_ENCRYPTION_KEY;
   
-  if (!secret) {
-    throw new Error('MEDIA_ENCRYPTION_KEY not set in environment');
+  // ✅ OPTIONAL: Return null if not set (fallback to non-encrypted storage)
+  if (!secret || secret.trim() === '') {
+    console.warn('⚠️  MEDIA_ENCRYPTION_KEY not set - files will be stored without encryption');
+    return null;
   }
 
   // ✅ SECURITY: Derive a proper 256-bit key using PBKDF2 (NIST SP 800-132 compliant)
@@ -52,6 +54,9 @@ export async function encryptFile(buffer: Buffer): Promise<{
 }> {
   try {
     const key = getEncryptionKey();
+    if (!key) {
+      throw new Error('Encryption key not available');
+    }
     const iv = crypto.randomBytes(IV_LENGTH); // Random IV per file
     
     const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
@@ -106,6 +111,15 @@ export async function encryptAndSaveFile(
   buffer: Buffer,
   filePath: string
 ): Promise<void> {
+  const key = getEncryptionKey();
+  
+  // ✅ FALLBACK: If encryption key not set, save file without encryption
+  if (!key) {
+    await fs.writeFile(filePath, buffer);
+    console.log(`✅ File saved without encryption: ${filePath}`);
+    return;
+  }
+  
   const { encrypted, iv, authTag } = await encryptFile(buffer);
   
   // Combine IV + authTag + encrypted data for single-file storage
