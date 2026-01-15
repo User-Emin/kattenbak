@@ -146,70 +146,71 @@ else
     exit 1
 fi
 
-# Step 7: Create admin user via seed script
+# Step 7: Create admin user via Node.js script
 echo -e "${YELLOW}📦 Step 7: Creating admin user...${NC}"
 cd "${BACKEND_PATH}"
 
-# Create admin user script
-cat > /tmp/create-admin.ts <<'ADMINSCRIPT'
-import { PrismaClient } from '@prisma/client';
-import { hashPassword } from './src/utils/auth.util';
+# Load .env to get ADMIN_EMAIL and ADMIN_PASSWORD
+source .env 2>/dev/null || true
+ADMIN_EMAIL="${ADMIN_EMAIL:-admin@localhost}"
+ADMIN_PASSWORD="${ADMIN_PASSWORD:-admin123456789}"
+
+# Create admin user via Node.js (using bcrypt from backend)
+node <<ADMINSCRIPT
+const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@localhost';
-  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123456789';
+  const adminEmail = process.env.ADMIN_EMAIL || '${ADMIN_EMAIL}';
+  const adminPassword = process.env.ADMIN_PASSWORD || '${ADMIN_PASSWORD}';
   
   // ✅ SECURITY: Bcrypt hash (12 rounds, OWASP 2023)
-  const passwordHash = await hashPassword(adminPassword);
+  const passwordHash = await bcrypt.hash(adminPassword, 12);
   
-  // Check if admin exists
-  const existing = await prisma.user.findUnique({
-    where: { email: adminEmail }
-  });
-  
-  if (existing) {
-    console.log(`✅ Admin user already exists: ${adminEmail}`);
-    // Update password if needed
-    await prisma.user.update({
-      where: { email: adminEmail },
-      data: { 
-        passwordHash,
-        role: 'ADMIN'
-      }
+  try {
+    // Check if admin exists
+    const existing = await prisma.user.findUnique({
+      where: { email: adminEmail }
     });
-    console.log(`✅ Admin password updated`);
-  } else {
-    await prisma.user.create({
-      data: {
-        email: adminEmail,
-        passwordHash,
-        role: 'ADMIN',
-        firstName: 'Admin',
-        lastName: 'User'
-      }
-    });
-    console.log(`✅ Admin user created: ${adminEmail}`);
+    
+    if (existing) {
+      console.log(\`✅ Admin user already exists: \${adminEmail}\`);
+      // Update password and role
+      await prisma.user.update({
+        where: { email: adminEmail },
+        data: { 
+          passwordHash,
+          role: 'ADMIN'
+        }
+      });
+      console.log(\`✅ Admin password and role updated\`);
+    } else {
+      await prisma.user.create({
+        data: {
+          email: adminEmail,
+          passwordHash,
+          role: 'ADMIN',
+          firstName: 'Admin',
+          lastName: 'User'
+        }
+      });
+      console.log(\`✅ Admin user created: \${adminEmail}\`);
+    }
+  } catch (e) {
+    console.error('❌ Error:', e.message);
+    process.exit(1);
+  } finally {
+    await prisma.\$disconnect();
   }
 }
 
-main()
-  .catch((e) => {
-    console.error('❌ Error:', e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main();
 ADMINSCRIPT
-
-# Run admin creation
-tsx /tmp/create-admin.ts
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Admin user created${NC}"
-    rm -f /tmp/create-admin.ts
 else
     echo -e "${RED}❌ Admin user creation failed${NC}"
     exit 1
