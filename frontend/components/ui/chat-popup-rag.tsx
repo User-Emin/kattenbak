@@ -18,15 +18,15 @@ import { CHAT_CONFIG } from "@/lib/chat-config";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { cn } from "@/lib/utils";
 
-// ✅ SECURITY: Safe DESIGN_SYSTEM access with fallback
-const getDesignSystem = () => {
+// ✅ SECURITY: Safe DESIGN_SYSTEM access with fallback (outside component, executed once)
+const SAFE_DESIGN_SYSTEM = (() => {
   try {
-    if (!DESIGN_SYSTEM || !DESIGN_SYSTEM.typography) {
-      throw new Error('DESIGN_SYSTEM incomplete');
+    if (DESIGN_SYSTEM && DESIGN_SYSTEM.typography && DESIGN_SYSTEM.typography.fontSize) {
+      return DESIGN_SYSTEM;
     }
-    return DESIGN_SYSTEM;
+    throw new Error('DESIGN_SYSTEM incomplete');
   } catch (err) {
-    // Fallback design system
+    // ✅ SECURITY: Silent fallback (no error exposure)
     return {
       typography: {
         fontSize: {
@@ -43,7 +43,7 @@ const getDesignSystem = () => {
       },
     };
   }
-};
+})();
 
 interface Message {
   role: 'user' | 'assistant';
@@ -60,11 +60,8 @@ export function ChatPopup() {
   const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
   
-  // ✅ SECURITY: Safe DESIGN_SYSTEM access (memoized)
-  const designSystem = useMemo(() => getDesignSystem(), []);
-  
   // ✅ SECURITY: Additional safety check - ensure safeChatConfig is valid before render
-  if (!safeChatConfig || !safeChatConfig.button || !safeChatConfig.modal) {
+  if (!safeChatConfig || !safeChatConfig.button || !safeChatConfig.modal || !safeChatConfig.animations) {
     // Return minimal button only (no popup) to prevent crash
     return (
       <button
@@ -550,7 +547,7 @@ export function ChatPopup() {
                           : cn(safeChatConfig.messages.assistant.backgroundColor, safeChatConfig.messages.assistant.textColor, safeChatConfig.messages.assistant.border)
                       )}
                     >
-                      <p className={cn(safeChatConfig.messages[msg.role]?.fontSize || designSystem.typography.fontSize.sm, 'whitespace-pre-wrap')}>
+                      <p className={cn(safeChatConfig.messages[msg.role]?.fontSize || SAFE_DESIGN_SYSTEM.typography.fontSize.sm, 'whitespace-pre-wrap')}>
                         {msg.content}
                       </p>
                       <span className={cn(safeChatConfig.messages.timestamp.fontSize, safeChatConfig.messages.timestamp.textColor, 'mt-1', 'block')}>
