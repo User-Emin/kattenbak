@@ -76,15 +76,52 @@ export class ProductService {
       }
     }
 
-    // ✅ FIX: Exclude hero_video_url if it doesn't exist in database
+    // ✅ FIX: Use select to avoid hero_video_url column that doesn't exist in database
+    // Explicitly select only fields that exist to prevent Prisma errors
     const product = await prisma.product.findUnique({
       where: { id },
-      include: {
-        category: true,
+      select: {
+        id: true,
+        sku: true,
+        name: true,
+        slug: true,
+        description: true,
+        shortDescription: true,
+        price: true,
+        compareAtPrice: true,
+        costPrice: true,
+        stock: true,
+        lowStockThreshold: true,
+        trackInventory: true,
+        weight: true,
+        dimensions: true,
+        images: true,
+        videoUrl: true, // Keep videoUrl if it exists
+        // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
+        metaTitle: true,
+        metaDescription: true,
+        isActive: true,
+        isFeatured: true,
+        createdAt: true,
+        updatedAt: true,
+        publishedAt: true,
+        categoryId: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            description: true,
+            image: true,
+            parentId: true,
+            sortOrder: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
       },
-      // ✅ SECURITY: Explicitly select fields to avoid schema mismatches
-      // Note: hero_video_url may not exist in database, so we don't include it
-    });
+    }) as Product | null;
 
     if (!product) {
       throw new NotFoundError(`Product with ID ${id} not found`);
@@ -110,12 +147,51 @@ export class ProductService {
    * Get product by slug
    */
   static async getProductBySlug(slug: string): Promise<Product> {
+    // ✅ FIX: Use same select pattern to avoid hero_video_url column
     const product = await prisma.product.findUnique({
       where: { slug },
-      include: {
-        category: true,
+      select: {
+        id: true,
+        sku: true,
+        name: true,
+        slug: true,
+        description: true,
+        shortDescription: true,
+        price: true,
+        compareAtPrice: true,
+        costPrice: true,
+        stock: true,
+        lowStockThreshold: true,
+        trackInventory: true,
+        weight: true,
+        dimensions: true,
+        images: true,
+        videoUrl: true,
+        // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
+        metaTitle: true,
+        metaDescription: true,
+        isActive: true,
+        isFeatured: true,
+        createdAt: true,
+        updatedAt: true,
+        publishedAt: true,
+        categoryId: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            description: true,
+            image: true,
+            parentId: true,
+            sortOrder: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
       },
-    });
+    }) as Product | null;
 
     if (!product) {
       throw new NotFoundError(`Product with slug ${slug} not found`);
