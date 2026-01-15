@@ -18,6 +18,7 @@ import { ProductImage } from "@/components/ui/product-image";
 import { getProductImage } from "@/lib/image-config";
 import { useCookieConsent } from "@/lib/hooks/use-cookie-consent";
 import { PaymentMethodSelector, type PaymentMethodType } from "@/components/payment/payment-method-selector";
+import { DESIGN_SYSTEM } from "@/lib/design-system";
 
 function CheckoutContent() {
   const searchParams = useSearchParams();

@@ -8,6 +8,7 @@ import { formatPrice } from '@/lib/utils';
 import { getProductImage } from '@/lib/image-config';
 import { X, Plus, Minus, ShoppingCart, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { DESIGN_SYSTEM } from '@/lib/design-system';
 
 export default function CartPage() {
   const { items, itemCount, subtotal, removeItem, updateQuantity } = useCart();
@@ -147,7 +148,13 @@ export default function CartPage() {
               </div>
 
               <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
-                <Button className="w-full bg-brand hover:bg-brand-dark text-white font-semibold py-3 px-6 rounded-md flex items-center justify-center gap-2" size="lg">
+                <Button 
+                  className="w-full text-white font-semibold py-3 px-6 rounded-md flex items-center justify-center gap-2" 
+                  style={{
+                    background: `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart} 0%, ${DESIGN_SYSTEM.colors.primaryEnd} 100%)`, // ✅ GRADIENT GRIJS: Via DESIGN_SYSTEM (geen hardcode)
+                  }}
+                  size="lg"
+                >
                   <span>Afrekenen</span>
                   <ArrowRight className="h-5 w-5" />
                 </Button>
