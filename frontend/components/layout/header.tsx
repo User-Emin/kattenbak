@@ -28,10 +28,11 @@ export function Header() {
 
   const isOnCartPage = pathname === '/cart';
 
-  // Cart toggle handler
+  // Cart toggle handler - ✅ DIRECTE VERWIJZING: Naar winkelwagenpagina
   const handleCartToggle = () => {
     if (isOnCartPage) return;
-    isCartOpen ? closeCart() : openCart();
+    // ✅ DIRECT: Navigeer direct naar winkelwagenpagina (was sidebar openen)
+    window.location.href = '/cart';
   };
 
   return (

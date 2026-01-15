@@ -14,7 +14,7 @@ export default function CartPage() {
 
   if (itemCount === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center"> {/* ✅ ECHT WIT: bg-white (was bg-gray-50) */}
         <div className="text-center max-w-md px-6">
           <ShoppingCart className="h-20 w-20 mx-auto mb-6 text-gray-300" />
           <h1 className="text-3xl font-semibold mb-4 text-gray-900">Je winkelwagen is leeg</h1>
@@ -41,7 +41,7 @@ export default function CartPage() {
   const tax = total - priceExclVAT; // BTW bedrag
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-white py-12"> {/* ✅ ECHT WIT: bg-white (was bg-gray-50) */}
       <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
         <h1 className="text-4xl font-semibold mb-2">Winkelwagen</h1>
         <p className="text-gray-600 mb-8">{itemCount} {itemCount === 1 ? 'product' : 'producten'}</p>

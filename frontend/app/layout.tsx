@@ -63,10 +63,10 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <meta name="description" content="De meest geavanceerde zelfreinigende kattenbak. Automatisch, hygiënisch, en stijlvol." />
       </head>
       <body 
-        className="antialiased"
+        className="antialiased bg-white" // ✅ ECHT WIT: bg-white class + style
         style={{ 
           fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
-          backgroundColor: DESIGN_SYSTEM.colors.secondary,
+          backgroundColor: '#ffffff', // ✅ ECHT WIT: #ffffff (was DESIGN_SYSTEM.colors.secondary)
           color: DESIGN_SYSTEM.colors.text.primary,
         }}
       >

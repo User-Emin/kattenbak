@@ -163,7 +163,7 @@ function CheckoutContent() {
   const tax = total - priceExclVAT; // BTW bedrag
 
   return (
-    <div className="bg-white min-h-screen py-12">
+    <div className="bg-white min-h-screen py-12"> {/* ✅ ECHT WIT: bg-white */}
       <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-semibold mb-2 text-gray-900">Afrekenen</h1>
@@ -305,7 +305,7 @@ function CheckoutContent() {
 
               {/* Guest Checkout Info + Consent - SMOOTH */}
               <div className="space-y-3">
-                <div className="text-sm text-gray-600 bg-gray-50 px-4 py-3 rounded">
+                <div className="text-sm text-gray-600 bg-white px-4 py-3 rounded border border-gray-200"> {/* ✅ ECHT WIT: bg-white met border (was bg-gray-50) */}
                   ✓ Geen account nodig - direct afrekenen als gast
                 </div>
 
