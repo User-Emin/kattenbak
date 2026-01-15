@@ -42,7 +42,7 @@ export function Header() {
         style={{ 
           boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.08)', // Versterkte shadow
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)', // Subtiele border voor definitie
-          zIndex: DESIGN_SYSTEM.layout.navbar.zIndex, // ✅ ONDER USP banner
+          zIndex: 165, // ✅ BOVEN sidebar winkelwagen (z-[170]) maar ONDER USP banner (z-[1000])
         }}
       >
         <div 
@@ -151,8 +151,9 @@ export function Header() {
               <h2 
                 style={{
                   fontSize: DESIGN_SYSTEM.typography.fontSize.xl,
-                  fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+                  fontWeight: DESIGN_SYSTEM.typography.fontWeight.bold || '700', // ✅ DIKKER: Bold (700) zoals gevraagd
                   color: DESIGN_SYSTEM.colors.text.primary,
+                  fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ EXACT: Noto Sans
                 }}
               >
                 Winkelwagen

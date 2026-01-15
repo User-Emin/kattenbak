@@ -331,7 +331,7 @@ export const PRODUCT_PAGE_CONFIG = {
       title: {
         fontSize: 'text-sm',
         fontWeight: 'font-semibold', // ✅ BLIJFT BOLD voor waarschuwingen
-        textColor: 'text-red-900',
+        textColor: 'text-black', // ✅ ZWART: "Let op" tekst ook zwart zoals gevraagd
       },
     },
     content: {
