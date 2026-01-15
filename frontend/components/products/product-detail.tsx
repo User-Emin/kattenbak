@@ -875,8 +875,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       <div className={CONFIG.edgeSection.container}>
         <div className="relative w-full">
           <Image
-            src="https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1920&h=800&fit=crop"
-            alt="Maak je ervaring compleet"
+            src={DESIGN_SYSTEM.layout.featureSection.imageUrl} // ✅ DYNAMISCH: Via DESIGN_SYSTEM (geen hardcode)
+            alt="Premium Kwaliteit & Veiligheid"
             width={1920}
             height={800}
             className={cn(CONFIG.edgeSection.image.aspectRatio, CONFIG.edgeSection.image.objectFit, CONFIG.edgeSection.image.brightness)}
