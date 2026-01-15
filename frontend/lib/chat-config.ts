@@ -12,10 +12,10 @@ export const CHAT_CONFIG = {
   button: {
     size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
     borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
-    backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
+    backgroundColor: 'bg-white', // ✅ WIT: Witte achtergrond voor zwarte tekst
     textColor: 'text-black', // ✅ ZWART: Zwarte tekst zoals gevraagd
     hoverBackgroundColor: 'hover:bg-gray-900', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[900] - Tailwind class
-    border: 'border-2 border-gray-800', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[800] - Tailwind class
+    border: 'border-2 border-gray-300', // ✅ DYNAMISCH: Lichte border voor witte button
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     zIndex: 'z-[50]', // ✅ DYNAMISCH: DESIGN_SYSTEM.layoutUtils.zIndex.dropdown - Tailwind class
     position: {
@@ -298,29 +298,12 @@ export const CHAT_CONFIG = {
   error: {
     backgroundColor: 'bg-red-50', // ✅ Red-50 (geen transparantie)
     border: 'border border-red-200',
-    borderRadius: 'rounded-lg', // ✅ RONDER: Minder hoekig, smoother
+    borderRadius: 'rounded-xl', // ✅ RONDER: Extra ronde hoeken, smoother
     padding: 'p-3', // ✅ Direct Tailwind class (was: DESIGN_SYSTEM.spacing[3] = '0.75rem' string)
     textColor: 'text-red-800', // ✅ Red-800 (geen transparantie)
     fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
     fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
-  },
-
-  // Warning banner - Rode achtergrond, zwarte tekst
-  warning: {
-    container: {
-      backgroundColor: 'bg-red-500', // ✅ ROOD: Rode achtergrond
-      textColor: 'text-black', // ✅ ZWART: Zwarte tekst
-      padding: 'px-4 py-3', // ✅ DYNAMISCH: DESIGN_SYSTEM spacing
-      borderRadius: 'rounded-t-2xl sm:rounded-t-3xl', // ✅ RONDER: Consistent met modal
-      borderBottom: 'border-b border-red-600', // ✅ DYNAMISCH: Donkerder rood voor border
-      marginBottom: 'mb-0', // Geen margin, direct onder header
-    },
-    text: {
-      fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
-      lineHeight: 'leading-relaxed', // ✅ DYNAMISCH: Betere leesbaarheid
-    },
+    fontWeight: DESIGN_SYSTEM.typography.fontWeight.bold, // ✅ DIKKER: 700 - dikker dan banner
   },
 
   // Global utilities - DRY
