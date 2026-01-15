@@ -67,13 +67,13 @@ const envSchema = z.object({
 // ✅ SECURITY: Runtime validation met Zod (met fallback voor optionele velden)
 let validatedEnv: z.infer<typeof envSchema>;
 try {
-  // Clean process.env: remove empty strings for optional fields
+  // Clean process.env: remove empty strings and invalid values for optional fields
   const cleanedEnv = { ...process.env };
-  // Remove empty strings for optional admin fields to use defaults
-  if (!cleanedEnv.ADMIN_EMAIL || cleanedEnv.ADMIN_EMAIL.trim() === '') {
+  // Remove empty strings or invalid emails for optional admin fields to use defaults
+  if (!cleanedEnv.ADMIN_EMAIL || cleanedEnv.ADMIN_EMAIL.trim() === '' || !cleanedEnv.ADMIN_EMAIL.includes('@')) {
     delete cleanedEnv.ADMIN_EMAIL;
   }
-  if (!cleanedEnv.ADMIN_PASSWORD || cleanedEnv.ADMIN_PASSWORD.trim() === '') {
+  if (!cleanedEnv.ADMIN_PASSWORD || cleanedEnv.ADMIN_PASSWORD.trim() === '' || cleanedEnv.ADMIN_PASSWORD.length < 12) {
     delete cleanedEnv.ADMIN_PASSWORD;
   }
   
