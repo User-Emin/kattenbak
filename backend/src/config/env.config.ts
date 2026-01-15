@@ -94,10 +94,10 @@ class EnvironmentConfig {
     // Development: automatically add localhost origins
     if (this.IS_DEVELOPMENT) {
       const devOrigins = [
-        'http://localhost:3000',
+        'http://localhost:3001',
         'http://localhost:3001',
         'http://localhost:3002',
-        'http://127.0.0.1:3000',
+        'http://127.0.0.1:3001',
         'http://127.0.0.1:3001',
       ];
       return [...new Set([...originList, ...devOrigins])];
@@ -116,7 +116,7 @@ class EnvironmentConfig {
   public readonly UPLOAD_PATH = process.env.UPLOAD_PATH || './uploads';
 
   // Frontend URLs
-  public readonly FRONTEND_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  public readonly FRONTEND_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001';
 
   /**
    * Get required environment variable or throw error
