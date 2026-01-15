@@ -13,7 +13,7 @@ export const CHAT_CONFIG = {
     size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
     borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
     backgroundColor: 'bg-white', // ✅ WIT: Witte achtergrond voor zwarte tekst
-    textColor: 'text-black', // ✅ ZWART: Zwarte tekst zoals gevraagd
+    textColor: 'gradient-text', // ✅ GRADIENT (was text-black)
     hoverBackgroundColor: 'hover:bg-gray-900', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[900] - Tailwind class
     border: 'border-2 border-gray-300', // ✅ DYNAMISCH: Lichte border voor witte button
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM

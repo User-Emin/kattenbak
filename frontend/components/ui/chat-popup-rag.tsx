@@ -208,7 +208,7 @@ export function ChatPopup() {
             borderRadius: 'rounded-sm',
             padding: 'p-3',
             backgroundColor: 'bg-white',
-            textColor: 'text-black',
+            textColor: 'gradient-text', // ✅ GRADIENT (was text-black)
             border: 'border border-gray-200',
           },
           timestamp: {
@@ -488,7 +488,7 @@ export function ChatPopup() {
       position: { type: 'fixed', right: 'right-6', bottom: 'bottom-6' },
       size: 'w-16 h-16',
       borderRadius: 'rounded-md',
-      backgroundColor: 'bg-black',
+      backgroundColor: 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]', // ✅ GRADIENT (was bg-black)
       textColor: 'text-white',
       shadow: 'shadow-lg',
       hoverBackgroundColor: 'hover:bg-gray-900',
@@ -632,7 +632,7 @@ export function ChatPopup() {
                   <h3 className={cn(
                     safeChatConfig.header.title.fontSize || 'text-lg',
                     safeChatConfig.header.title.fontWeight || 'font-semibold',
-                    safeChatConfig.header.title.textColor || 'text-black',
+                    safeChatConfig.header.title.textColor || 'gradient-text', // ✅ GRADIENT (was text-black)
                     safeChatConfig.header.title.letterSpacing || 'tracking-normal',
                     safeChatConfig.utilities?.fontFamily || 'font-sans'
                   )}>
@@ -735,8 +735,8 @@ export function ChatPopup() {
                         safeChatConfig.animations?.duration?.base || 'duration-200',
                         safeChatConfig.utilities?.fontFamily || 'font-sans',
                         msg.role === 'user'
-                          ? cn(safeChatConfig.messages?.user?.backgroundColor || 'bg-black', safeChatConfig.messages?.user?.textColor || 'text-white')
-                          : cn(safeChatConfig.messages?.assistant?.backgroundColor || 'bg-white', safeChatConfig.messages?.assistant?.textColor || 'text-black', safeChatConfig.messages?.assistant?.border || 'border border-gray-200')
+                          ? cn(safeChatConfig.messages?.user?.backgroundColor || 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]', safeChatConfig.messages?.user?.textColor || 'text-white') // ✅ GRADIENT (was bg-black)
+                          : cn(safeChatConfig.messages?.assistant?.backgroundColor || 'bg-white', safeChatConfig.messages?.assistant?.textColor || 'gradient-text', safeChatConfig.messages?.assistant?.border || 'border border-gray-200') // ✅ GRADIENT (was text-black)
                       )}
                     >
                       <p className={cn(
