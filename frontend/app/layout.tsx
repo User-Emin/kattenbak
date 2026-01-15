@@ -11,6 +11,8 @@ import { CartProvider } from "@/context/cart-context";
 import { UIProvider } from "@/context/ui-context";
 import { Toaster } from "sonner";
 import { CookieConsentManager } from "@/components/ui/cookie-consent-manager";
+import { ChatPopup } from "@/components/ui/chat-popup-rag";
+import { ChatPopupErrorBoundary } from "@/components/ui/chat-popup-error-boundary";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 
 /**
@@ -95,6 +97,11 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
             
             {/* COOKIE CONSENT */}
             <CookieConsentManager />
+            
+            {/* CHAT POPUP - Global, werkt op alle pagina's */}
+            <ChatPopupErrorBoundary>
+              <ChatPopup />
+            </ChatPopupErrorBoundary>
           </CartProvider>
           
           {/* TOASTER */}

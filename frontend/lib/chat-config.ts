@@ -38,25 +38,27 @@ export const CHAT_CONFIG = {
     iconSize: 'w-6 h-6',
   },
 
-  // Modal styling - Hoekiger, zwart-wit (GEEN transparantie)
+  // Modal styling - Consistent met andere modals (cookie-settings-modal pattern)
   modal: {
-    maxWidth: 'max-w-md',
-    maxHeight: 'max-h-[90vh] md:max-h-[600px]',
+    maxWidth: 'max-w-md', // Consistent met cookie modal max-w-xl pattern
+    maxHeight: 'max-h-[85vh] sm:max-h-[80vh]', // Consistent met cookie modal
     backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
-    borderRadius: 'rounded-sm', // ✅ HOEKIGER (was rounded-md)
+    borderRadius: 'rounded-xl sm:rounded-2xl', // ✅ Consistent met cookie modal (was rounded-sm)
     border: 'border border-gray-200',
     shadow: 'shadow-2xl', // ✅ SOLIDE shadow
-    zIndex: 120,
+    zIndex: 200, // ✅ Consistent met cookie modal z-[200] (was 120)
+    overflow: 'overflow-hidden', // ✅ Consistent met cookie modal
     // Note: Container and content layout utilities are in animations.modal
   },
 
-  // Header styling - Zwart-wit (GEEN transparantie)
+  // Header styling - Zwart-wit (GEEN transparantie) - Consistent met cookie modal
   header: {
     backgroundColor: 'bg-black', // ✅ ZWART (geen transparantie)
     textColor: 'text-white', // ✅ WIT
-    padding: DESIGN_SYSTEM.spacing[6], // 24px
-    borderRadius: 'rounded-t-sm', // ✅ HOEKIGER
-    borderBottom: 'border-b border-gray-800',
+    padding: 'px-4 py-3', // ✅ Consistent met cookie modal (was spacing[6])
+    borderRadius: 'rounded-t-xl sm:rounded-t-2xl', // ✅ Consistent met modal borderRadius (was rounded-t-sm)
+    borderBottom: 'border-b border-gray-700/20', // ✅ Consistent met cookie modal (was border-gray-800)
+    sticky: 'sticky top-0', // ✅ Consistent met cookie modal
     container: {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       justify: DESIGN_SYSTEM.layoutUtils.flex.justify.between,
@@ -197,8 +199,8 @@ export const CHAT_CONFIG = {
       ease: DESIGN_SYSTEM.transitions.timing.easeOut, // ease-out voor smoother
     },
     backdrop: {
-      fadeIn: 'animate-in fade-in duration-200',
-      backgroundColor: 'bg-black/20',
+      fadeIn: 'animate-in fade-in duration-300', // ✅ Consistent met cookie modal (was duration-200)
+      backgroundColor: 'bg-black/50', // ✅ Consistent met cookie modal (was bg-black/20)
       blur: 'backdrop-blur-sm',
       zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.backdrop,
       mobileTransparent: 'md:bg-transparent',
@@ -207,15 +209,15 @@ export const CHAT_CONFIG = {
       inset: 'inset-0',
     },
     modal: {
-      slideIn: 'animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 ease-out',
+      slideIn: 'animate-in zoom-in-95 duration-300', // ✅ Consistent met cookie modal (was slide-in-from-bottom-4)
       container: {
         position: DESIGN_SYSTEM.layoutUtils.position.fixed,
         inset: 'inset-0',
-        zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.modal,
+        zIndex: 'z-[200]', // ✅ Consistent met cookie modal (was layoutUtils.zIndex.modal)
         display: DESIGN_SYSTEM.layoutUtils.display.flex,
         align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
         justify: DESIGN_SYSTEM.layoutUtils.flex.justify.center,
-        padding: 'p-4',
+        padding: 'p-3 sm:p-4', // ✅ Consistent met cookie modal (was p-4)
         pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
       },
       content: {
@@ -223,6 +225,7 @@ export const CHAT_CONFIG = {
         width: DESIGN_SYSTEM.layoutUtils.sizing.widthFull,
         display: DESIGN_SYSTEM.layoutUtils.display.flex,
         direction: DESIGN_SYSTEM.layoutUtils.flex.direction.col,
+        position: 'relative', // ✅ Consistent met cookie modal
       },
     },
   },

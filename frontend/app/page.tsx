@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ChatPopup } from "@/components/ui/chat-popup-rag";
-import { ChatPopupErrorBoundary } from "@/components/ui/chat-popup-error-boundary";
+// Chat popup is nu in layout.tsx voor alle pagina's
 import { Separator } from "@/components/ui/separator";
 import { VideoPlayer } from "@/components/ui/video-player";
 import { ProductUspFeatures } from "@/components/products/product-usp-features";

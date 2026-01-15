@@ -106,23 +106,23 @@ export function ChatPopup() {
           backdrop: {
             backgroundColor: 'bg-black/50',
             blur: 'backdrop-blur-sm',
-            fadeIn: 'animate-fade-in',
+            fadeIn: 'animate-in fade-in duration-300',
             zIndex: 'z-[99]',
-            mobileTransparent: 'md:bg-black/50',
-            mobilePointerEvents: 'md:pointer-events-auto',
+            mobileTransparent: 'md:bg-transparent',
+            mobilePointerEvents: 'md:pointer-events-none',
             position: 'fixed',
             inset: 'inset-0',
           },
           modal: {
-            slideIn: 'animate-slide-in',
+            slideIn: 'animate-in zoom-in-95 duration-300',
             container: {
               position: 'fixed',
               inset: 'inset-0',
-              zIndex: 'z-[120]',
+              zIndex: 'z-[200]',
               display: 'flex',
               align: 'items-center',
               justify: 'justify-center',
-              padding: 'p-4',
+              padding: 'p-3 sm:p-4',
               pointerEvents: 'pointer-events-none',
             },
             content: {
@@ -130,24 +130,27 @@ export function ChatPopup() {
               width: 'w-full',
               display: 'flex',
               direction: 'flex-col',
+              position: 'relative',
             },
           },
         },
         modal: {
           maxWidth: 'max-w-md',
-          maxHeight: 'max-h-[90vh] md:max-h-[600px]',
+          maxHeight: 'max-h-[85vh] sm:max-h-[80vh]',
           backgroundColor: 'bg-white',
-          borderRadius: 'rounded-sm',
+          borderRadius: 'rounded-xl sm:rounded-2xl',
           shadow: 'shadow-2xl',
           border: 'border border-gray-200',
-          zIndex: 120,
+          zIndex: 200,
+          overflow: 'overflow-hidden',
         },
         header: {
-          backgroundColor: 'bg-gray-900',
+          backgroundColor: 'bg-black',
           textColor: 'text-white',
-          padding: 'p-4',
-          borderRadius: 'rounded-t-lg',
-          borderBottom: 'border-b border-gray-700',
+          padding: 'px-4 py-3',
+          borderRadius: 'rounded-t-xl sm:rounded-t-2xl',
+          borderBottom: 'border-b border-gray-700/20',
+          sticky: 'sticky top-0',
           container: {
             display: 'flex',
             justify: 'justify-between',
@@ -445,8 +448,12 @@ export function ChatPopup() {
       setMessages(prev => [...prev, assistantMessage]);
       
     } catch (err: any) {
-      console.error('Chat error:', err);
-      setError(err.message || 'Kon geen antwoord krijgen. Probeer het opnieuw.');
+      // ✅ SECURITY: Log errors server-side only (not in browser console in production)
+      if (typeof window === 'undefined' || process.env.NODE_ENV === 'development') {
+        console.error('Chat error:', err);
+      }
+      // ✅ SECURITY: Generic error message (no sensitive data exposure)
+      setError('Kon geen antwoord krijgen. Probeer het opnieuw.');
       
       // Remove user message on error
       setMessages(prev => prev.slice(0, -1));
@@ -565,14 +572,17 @@ export function ChatPopup() {
               safeChatConfig.modal.borderRadius,
               safeChatConfig.modal.shadow,
               safeChatConfig.modal.border,
+              safeChatConfig.modal.overflow,
               safeChatConfig.animations.modal.slideIn,
               safeChatConfig.animations.modal.content.display,
               safeChatConfig.animations.modal.content.direction,
+              safeChatConfig.animations.modal.content.position,
               safeChatConfig.utilities?.fontFamily || 'font-sans'
             )}>
               
-              {/* ✅ MODERN: Header - Hoekiger, zwart-wit, Noto Sans - 100% DRY */}
+              {/* ✅ MODERN: Header - Consistent met cookie modal - 100% DRY */}
               <div className={cn(
+                safeChatConfig.header.sticky,
                 safeChatConfig.header.backgroundColor,
                 safeChatConfig.header.textColor,
                 safeChatConfig.header.padding,
