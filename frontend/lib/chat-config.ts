@@ -232,7 +232,7 @@ export const CHAT_CONFIG = {
       backgroundColor: 'bg-gradient-to-r from-[rgba(60,60,61,0.5)] to-[rgba(122,122,125,0.5)]', // ✅ GRADIENT met opacity (was bg-black/50)
       blur: 'backdrop-blur-sm',
       zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.backdrop,
-      mobileTransparent: 'md:bg-transparent',
+            mobileTransparent: 'md:bg-gray-200/50', // ✅ GRIJS: Geen transparant (was bg-transparent)
       mobilePointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
       position: DESIGN_SYSTEM.layoutUtils.position.fixed,
       inset: 'inset-0',

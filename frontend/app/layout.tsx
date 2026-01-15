@@ -48,10 +48,10 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* URL BAR: ✅ GRADIENT - Exact meelopen met banner (gradient) */}
-        <meta name="theme-color" content={DESIGN_SYSTEM.colors.primaryStart} />
-        <meta name="msapplication-navbutton-color" content={DESIGN_SYSTEM.colors.primaryStart} />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        {/* URL BAR: ✅ WIT - Echt wit voor duidelijkheid */}
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="msapplication-navbutton-color" content="#ffffff" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <style dangerouslySetInnerHTML={{ __html: `
           :root {
             --theme-color-start: ${DESIGN_SYSTEM.colors.primaryStart};

@@ -8,6 +8,7 @@ import { useCart } from "@/context/cart-context";
 import { productsApi } from "@/lib/api/products";
 import { formatPrice } from "@/lib/utils";
 import { PRODUCT_PAGE_CONFIG, cn } from "@/lib/product-page-config";
+import { DESIGN_SYSTEM } from "@/lib/design-system";
 import type { Product } from "@/types/product";
 import { 
   ChevronLeft, 
@@ -251,7 +252,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     {
       title: 'Hoogwaardige ABS Materialen',
       description: 'Gemaakt van duurzaam, milieuvriendelijk ABS-materiaal dat bestand is tegen krassen en eenvoudig te reinigen. Geurwerend en hypoallergeen voor optimale hygiëne.',
-      image: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=800&h=600&fit=crop',
+      image: '/images/feature-1.jpg', // ✅ DYNAMISCH: Lokale foto (geen hardcode Unsplash URL)
       items: [
         'Duurzaam ABS kunststof',
         'Kras- en slijtvast',
@@ -262,7 +263,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     {
       title: 'Dubbele Veiligheidssensoren',
       description: 'Uitgerust met infrarood- en gewichtssensoren die automatisch stoppen wanneer uw kat de bak betreedt. Getest op 10.000+ cycli voor maximale betrouwbaarheid.',
-      image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=600&fit=crop',
+      image: '/images/feature-2.jpg', // ✅ DYNAMISCH: Lokale foto (geen hardcode Unsplash URL)
       items: [
         'IR bewegingssensor',
         'Gewichtdetectie technologie',
