@@ -21,25 +21,7 @@ router.use(rateLimitMiddleware({ windowMs: 15 * 60 * 1000, max: 50 })); // Lower
  * - EXIF stripping
  * - UUID filenames
  */
-// ✅ SECURITY: Multer error handler for 413 (file too large)
-const handleMulterError = (err: any, req: any, res: any, next: any) => {
-  if (err && err.code === 'LIMIT_FILE_SIZE') {
-    const maxSizeMB = Math.round(MAX_FILE_SIZE / (1024 * 1024));
-    return res.status(413).json({
-      success: false,
-      error: `Bestand te groot. Maximum ${maxSizeMB}MB per afbeelding.`
-    });
-  }
-  if (err && err.code === 'LIMIT_FILE_COUNT') {
-    return res.status(400).json({
-      success: false,
-      error: 'Te veel bestanden. Maximum 10 afbeeldingen per upload.'
-    });
-  }
-  next(err);
-};
-
-router.post('/images', upload.array('images', 10), handleMulterError, async (req, res, next) => {
+router.post('/images', upload.array('images', 10), async (req, res, next) => {
   const uploadedFiles: Express.Multer.File[] = [];
   
   try {
@@ -109,8 +91,29 @@ router.post('/images', upload.array('images', 10), handleMulterError, async (req
       await deleteFile(file.path);
     }
     
-    // ✅ SECURITY: Pass Multer errors to global error handler
-    if (error && 'code' in error && (error.code === 'LIMIT_FILE_SIZE' || error.code === 'LIMIT_FILE_COUNT')) {
+    // ✅ SECURITY: Handle Multer errors specifically (before global handler)
+    if (error && 'code' in error) {
+      if (error.code === 'LIMIT_FILE_SIZE') {
+        const maxSizeMB = Math.round(MAX_FILE_SIZE / (1024 * 1024));
+        return res.status(413).json({
+          success: false,
+          error: `Bestand te groot. Maximum ${maxSizeMB}MB per afbeelding.`,
+          details: {
+            maxSizeMB,
+            receivedSize: error.field ? 'unknown' : 'unknown'
+          }
+        });
+      }
+      if (error.code === 'LIMIT_FILE_COUNT') {
+        return res.status(400).json({
+          success: false,
+          error: 'Te veel bestanden. Maximum 10 afbeeldingen per upload.'
+        });
+      }
+    }
+    
+    // ✅ SECURITY: Pass other Multer errors to global error handler
+    if (error && 'code' in error && error.code.startsWith('LIMIT_')) {
       return next(error); // Let global error handler process Multer errors
     }
     

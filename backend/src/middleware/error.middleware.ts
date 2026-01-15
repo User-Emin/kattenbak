@@ -33,6 +33,13 @@ export const errorHandler = (
       : 20;
     message = `Bestand te groot. Maximum ${maxSizeMB}MB per afbeelding.`;
     isOperational = true;
+    // ✅ LOG: Log file size limit errors for debugging
+    logger.warn('File size limit exceeded:', {
+      maxSizeMB,
+      url: req.url,
+      method: req.method,
+      ip: req.ip
+    });
   } else if (error && 'code' in error && error.code === 'LIMIT_FILE_COUNT') {
     statusCode = 400;
     message = 'Te veel bestanden. Maximum 10 afbeeldingen per upload.';
