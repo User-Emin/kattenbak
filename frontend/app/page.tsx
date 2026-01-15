@@ -228,7 +228,7 @@ export default function HomePage() {
 
       {/* ✅ VIDEO SECTIE VERWIJDERD: Geen redundantie */}
 
-      {/* 🎨 FAQ SECTION */}
+      {/* 🎨 FAQ SECTION - ✅ EDGE-TO-EDGE MOBIEL: Mobielvriendelijker */}
       <section 
         style={{
           padding: `${DESIGN_SYSTEM.spacing.section} 0`,
@@ -236,14 +236,13 @@ export default function HomePage() {
         }}
       >
         <div 
-          className="mx-auto"
+          className="mx-auto md:max-w-4xl" // ✅ EDGE-TO-EDGE MOBIEL: Geen max-width op mobiel, wel op desktop
           style={{
-            maxWidth: DESIGN_SYSTEM.layout.maxWidth.lg,
-            padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
+            padding: '0', // ✅ EDGE-TO-EDGE MOBIEL: Geen padding op container
           }}
         >
-          {/* Section Heading - Noto Sans MEDIUM (logo style) */}
-          <div className="text-center mb-12">
+          {/* Section Heading - ✅ PADDING MOBIEL: Padding op mobiel voor leesbaarheid */}
+          <div className="text-center mb-12 px-4 md:px-0"> {/* ✅ PADDING MOBIEL: Padding op mobiel */}
             <h2 
               className="mb-4"
               style={{
@@ -267,8 +266,8 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* FAQ Accordion */}
-          <div className="space-y-4">
+          {/* FAQ Accordion - ✅ EDGE-TO-EDGE MOBIEL: Geen padding op container */}
+          <div className="space-y-4 px-4 md:px-0"> {/* ✅ PADDING MOBIEL: Padding op mobiel voor leesbaarheid */}
             {faqs.map((faq, i) => (
               <div 
                 key={i} 
