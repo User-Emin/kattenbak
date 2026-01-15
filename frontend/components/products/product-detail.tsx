@@ -127,7 +127,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
         <h1 className="text-3xl font-semibold mb-4">Product niet gevonden</h1>
-        <Link href="/" className="text-blue-600 hover:text-blue-700">
+        <Link href="/" className="text-gray-600 hover:text-gray-700">
           Terug naar Home
         </Link>
       </div>

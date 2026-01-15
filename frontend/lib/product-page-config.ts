@@ -265,7 +265,7 @@ export const PRODUCT_PAGE_CONFIG = {
       },
       buttonStyle: {
         base: 'mt-4 text-sm font-medium transition-colors',
-        color: 'text-blue-600 hover:text-blue-700',
+        color: 'text-gray-600 hover:text-gray-700', // ✅ GRIJS: Geen blauw (was text-blue-600)
         icon: 'w-4 h-4 ml-1 inline-block transition-transform',
       },
     },
@@ -281,7 +281,7 @@ export const PRODUCT_PAGE_CONFIG = {
       },
       buttonStyle: {
         base: 'mt-4 text-sm font-medium transition-colors',
-        color: 'text-blue-600 hover:text-blue-700',
+        color: 'text-gray-600 hover:text-gray-700', // ✅ GRIJS: Geen blauw (was text-blue-600)
         icon: 'w-4 h-4 ml-1 inline-block transition-transform',
       },
     },

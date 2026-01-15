@@ -12,10 +12,10 @@ export const CHAT_CONFIG = {
   button: {
     size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
     borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
-    backgroundColor: 'bg-gray-200', // ✅ GRIJS: Grijs achtergrond voor duidelijkheid (was bg-white)
-    textColor: 'text-gray-700', // ✅ GRIJS TEKST: Goed contrast (was gradient-text)
-    hoverBackgroundColor: 'hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover voor duidelijkheid (was hover:bg-gray-900)
-    border: 'border-2 border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border (was border-gray-300)
+    backgroundColor: 'bg-gray-200', // ✅ GRIJS: Grijs achtergrond voor duidelijkheid
+    textColor: 'text-white', // ✅ WIT SYMBOOL: Symbool wit zoals gevraagd (was text-gray-700)
+    hoverBackgroundColor: 'hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover voor duidelijkheid
+    border: 'border-2 border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     zIndex: 'z-[50]', // ✅ DYNAMISCH: DESIGN_SYSTEM.layoutUtils.zIndex.dropdown - Tailwind class
     position: {
@@ -54,10 +54,10 @@ export const CHAT_CONFIG = {
     // Note: Container and content layout utilities are in animations.modal
   },
 
-  // Header styling - ✅ GRIJS: Minimalistisch (alleen naam of niets)
+  // Header styling - ✅ GRADIENT GRIJS: Minimalistisch (alleen naam of niets)
     header: {
-    backgroundColor: 'bg-gray-100', // ✅ GRIJS: Grijs achtergrond voor duidelijkheid (was gray-50)
-      textColor: 'gradient-text', // ✅ GRADIENT (was text-black)
+    backgroundColor: 'bg-gray-100', // ✅ GRIJS: Grijs achtergrond voor duidelijkheid
+      textColor: 'gradient-text', // ✅ GRADIENT GRIJS: Exact identiek (was gradient-text)
     padding: 'px-4 py-3', // ✅ Consistent met cookie modal
     borderRadius: 'rounded-t-3xl sm:rounded-t-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
     borderBottom: 'border-b border-gray-200', // ✅ WHATSAPP: Lichte border (was border-gray-700/20)
