@@ -243,7 +243,7 @@ export const COMPONENT_COLORS = {
   button: {
     primary: 'bg-gradient-to-br from-gray-900 to-black hover:from-gray-800 hover:to-gray-900 text-white font-bold rounded-full',
     secondary: 'bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full',
-    cta: 'bg-[#f76402] hover:bg-[#e55a02] text-white font-bold rounded-full transform hover:scale-[1.02] transition-all duration-200',
+    cta: 'bg-brand hover:bg-brand-dark text-white font-bold rounded-full transform hover:scale-[1.02] transition-all duration-200', // ✅ WINKELWAGEN BLAUW (was oranje)
     outline: 'border-2 border-current rounded-full',
   },
   navbar: {

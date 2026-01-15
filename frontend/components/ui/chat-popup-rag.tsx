@@ -628,35 +628,24 @@ export function ChatPopup() {
                   safeChatConfig.header.container.align,
                   safeChatConfig.header.container.marginBottom
                 )}>
-                  <div>
-                    <h3 className={cn(
-                      safeChatConfig.header.title.fontSize || 'text-xl',
-                      safeChatConfig.header.title.fontWeight || 'font-semibold',
-                      safeChatConfig.header.title.textColor || 'text-white',
-                      safeChatConfig.header.title.letterSpacing || 'tracking-tight',
-                      safeChatConfig.utilities?.fontFamily || 'font-sans'
-                    )}>
-                      AI Assistent
-                    </h3>
-                    <p className={cn(
-                      safeChatConfig.header.subtitle.fontSize || 'text-sm',
-                      safeChatConfig.header.subtitle.fontWeight || 'font-semibold',
-                      safeChatConfig.header.subtitle.textColor || 'text-gray-300',
-                      safeChatConfig.header.subtitle.marginTop,
-                      safeChatConfig.utilities?.fontFamily || 'font-sans'
-                    )}>
-                      Stel me een vraag over onze kattenbak
-                    </p>
-                  </div>
+                  {/* ✅ WHATSAPP: Alleen naam (geen subtitle) */}
+                  <h3 className={cn(
+                    safeChatConfig.header.title.fontSize || 'text-lg',
+                    safeChatConfig.header.title.fontWeight || 'font-semibold',
+                    safeChatConfig.header.title.textColor || 'text-black',
+                    safeChatConfig.header.title.letterSpacing || 'tracking-normal',
+                    safeChatConfig.utilities?.fontFamily || 'font-sans'
+                  )}>
+                    AI Assistent
+                  </h3>
                   <button
                     onClick={() => setIsExpanded(false)}
                     className={cn(
-                      safeChatConfig.header.closeButton.textColor,
-                      safeChatConfig.header.closeButton.hoverTextColor,
+                      'text-gray-600 hover:text-black', // ✅ WHATSAPP: Grijze close button (was text-gray-400)
                       safeChatConfig.header.closeButton.transition,
                       safeChatConfig.header.closeButton.padding,
                       safeChatConfig.header.closeButton.borderRadius,
-                      safeChatConfig.header.closeButton.hoverBackground
+                      'hover:bg-gray-200' // ✅ WHATSAPP: Lichte hover (was hover:bg-gray-800)
                     )}
                     aria-label="Sluit chat"
                   >
@@ -825,9 +814,12 @@ export function ChatPopup() {
                       safeChatConfig.input.field.borderRadius,
                       safeChatConfig.input.field.focus.ring,
                       safeChatConfig.input.field.focus.border,
+                      safeChatConfig.input.field.focus.outline,
                       safeChatConfig.input.field.fontSize,
                       safeChatConfig.input.field.fontWeight,
                       safeChatConfig.input.field.backgroundColor,
+                      safeChatConfig.input.field.focus.backgroundColor,
+                      safeChatConfig.input.field.placeholder?.textColor || 'placeholder:text-gray-500',
                       safeChatConfig.utilities?.fontFamily || 'font-sans'
                     )}
                     disabled={isLoading}
@@ -837,16 +829,19 @@ export function ChatPopup() {
                     disabled={!input.trim() || isLoading}
                     className={cn(
                       safeChatConfig.input.button.padding,
+                      safeChatConfig.input.button.minWidth,
+                      safeChatConfig.input.button.minHeight,
                       safeChatConfig.input.button.borderRadius,
                       safeChatConfig.input.button.backgroundColor,
                       safeChatConfig.input.button.textColor,
                       safeChatConfig.input.button.hoverBackgroundColor,
+                      safeChatConfig.input.button.activeBackgroundColor,
                       safeChatConfig.input.button.fontSize,
                       safeChatConfig.input.button.fontWeight,
                       safeChatConfig.utilities?.transition?.all || 'transition-all',
                       safeChatConfig.input.button.transition,
-                      safeChatConfig.utilities?.disabled?.opacity || 'disabled:opacity-50',
-                      safeChatConfig.utilities?.disabled?.cursor || 'disabled:cursor-not-allowed',
+                      safeChatConfig.input.button.disabled?.opacity || safeChatConfig.utilities?.disabled?.opacity || 'disabled:opacity-40',
+                      safeChatConfig.input.button.disabled?.cursor || safeChatConfig.utilities?.disabled?.cursor || 'disabled:cursor-not-allowed',
                       safeChatConfig.input.buttonContainer.display,
                       safeChatConfig.input.buttonContainer.align,
                       safeChatConfig.input.buttonContainer.justify,

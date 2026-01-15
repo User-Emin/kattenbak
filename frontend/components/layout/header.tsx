@@ -121,7 +121,8 @@ export function Header() {
                   style={{
                     backgroundColor: DESIGN_SYSTEM.colors.primary,
                     fontSize: DESIGN_SYSTEM.typography.fontSize.xs,
-                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.bold || '700', // ✅ DIKKER: Bold (700) zoals gevraagd
+                    fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ EXACT: Noto Sans zoals homepage
                   }}
                 >
                   {itemCount}

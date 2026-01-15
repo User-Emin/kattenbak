@@ -11,19 +11,23 @@
 // ============================================
 
 export const BRAND_COLORS_HEX = {
-  // Primary Brand Color (Navbar Blue)
-  primary: '#005980',
-  primaryDark: '#004760',
-  primaryLight: '#007aa8',
+  // Primary Brand Color (Navbar Blue / Winkelwagen Blauw)
+  primary: '#005980',        // ✅ WINKELWAGEN BLAUW - Single source of truth
+  primaryDark: '#004760',    // ✅ WINKELWAGEN BLAUW DARK
+  primaryLight: '#007aa8',   // ✅ WINKELWAGEN BLAUW LIGHT
   
   // Accent Color (ZWART voor algemeen, BLAUW voor buttons)
   accent: '#000000',        // ✅ ZWART (was orange)
   accentDark: '#111827',    // ✅ DARK GRAY (was orange-dark)
   accentLight: '#374151',   // ✅ GRAY (was orange-light)
   
-  // Button Color (BLAUW voor CTA buttons)
-  buttonCta: '#2563eb',     // ✅ BLUE-600
-  buttonCtaHover: '#1d4ed8', // ✅ BLUE-700
+  // Button Color (WINKELWAGEN BLAUW voor CTA buttons - vervangt oranje)
+  buttonCta: '#005980',     // ✅ WINKELWAGEN BLAUW (was #2563eb blue-600, vervangt oranje)
+  buttonCtaHover: '#004760', // ✅ WINKELWAGEN BLAUW DARK (was #1d4ed8 blue-700, vervangt oranje hover)
+  
+  // Oranje vervangen door WINKELWAGEN BLAUW - Single source of truth
+  orangeReplacement: '#005980',      // ✅ WINKELWAGEN BLAUW (vervangt #f76402)
+  orangeReplacementHover: '#004760', // ✅ WINKELWAGEN BLAUW DARK (vervangt #e55a02, #e55d00)
   
   // Neutral Colors
   white: '#ffffff',
@@ -49,11 +53,12 @@ export const BRAND_COLORS_HEX = {
 export const COLOR_CLASSES = {
   // Background Colors
   bg: {
-    primary: 'bg-brand',
-    primaryDark: 'bg-brand-dark',
-    accent: 'bg-black',          // ✅ ZWART (was orange)
-    accentDark: 'bg-gray-900',   // ✅ DARK GRAY
-    buttonCta: 'bg-blue-600',    // ✅ BLAUW voor buttons
+    primary: 'bg-brand',           // ✅ WINKELWAGEN BLAUW (#005980)
+    primaryDark: 'bg-brand-dark',  // ✅ WINKELWAGEN BLAUW DARK (#004760)
+    accent: 'bg-black',            // ✅ ZWART (was orange)
+    accentDark: 'bg-gray-900',     // ✅ DARK GRAY
+    buttonCta: 'bg-brand',         // ✅ WINKELWAGEN BLAUW (was blue-600, vervangt oranje)
+    orangeReplacement: 'bg-brand', // ✅ WINKELWAGEN BLAUW (vervangt oranje)
     white: 'bg-white',
     black: 'bg-black',
     gray50: 'bg-gray-50',
@@ -63,7 +68,8 @@ export const COLOR_CLASSES = {
   // Text Colors
   text: {
     primary: 'text-brand',
-    accent: 'text-black',        // ✅ ZWART (was orange)
+    accent: 'text-black',              // ✅ ZWART (was orange)
+    orangeReplacement: 'text-brand',   // ✅ WINKELWAGEN BLAUW (vervangt oranje)
     white: 'text-white',
     black: 'text-black',
     gray600: 'text-gray-600',
@@ -73,15 +79,17 @@ export const COLOR_CLASSES = {
   // Border Colors
   border: {
     primary: 'border-brand',
-    accent: 'border-black',      // ✅ ZWART (was orange)
+    accent: 'border-black',              // ✅ ZWART (was orange)
+    orangeReplacement: 'border-brand',   // ✅ WINKELWAGEN BLAUW (vervangt oranje)
     gray200: 'border-gray-200',
     gray300: 'border-gray-300',
   },
   
   // Hover States
   hover: {
-    accentDark: 'hover:bg-gray-900',     // ✅ DARK GRAY (was orange)
-    buttonCta: 'hover:bg-blue-700',       // ✅ BLAUW voor buttons
+    accentDark: 'hover:bg-gray-900',         // ✅ DARK GRAY (was orange)
+    buttonCta: 'hover:bg-brand-dark',        // ✅ WINKELWAGEN BLAUW DARK (was blue-700)
+    orangeReplacement: 'hover:bg-brand-dark', // ✅ WINKELWAGEN BLAUW DARK (vervangt oranje hover)
     primaryDark: 'hover:bg-brand-dark',
   },
 } as const;

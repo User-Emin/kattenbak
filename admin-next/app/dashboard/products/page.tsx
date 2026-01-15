@@ -60,8 +60,12 @@ export default function ProductsPage() {
               <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
             </div>
           ) : error ? (
-            <div className="text-center py-8 text-destructive">
-              Fout bij laden van producten
+            <div className="text-center py-8">
+              <p className="text-destructive mb-4">Kon producten niet laden</p>
+              <Button variant="outline" onClick={() => refetch()} disabled={isLoading}>
+                <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+                Probeer opnieuw
+              </Button>
             </div>
           ) : products.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">

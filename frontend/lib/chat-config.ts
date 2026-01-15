@@ -54,42 +54,38 @@ export const CHAT_CONFIG = {
     // Note: Container and content layout utilities are in animations.modal
   },
 
-  // Header styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
+  // Header styling - WHATSAPP STYLE: Minimalistisch (alleen naam of niets)
     header: {
-    backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
-    textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
-    padding: 'px-4 py-3', // ✅ Consistent met cookie modal (was spacing[6])
+    backgroundColor: 'bg-gray-50', // ✅ WHATSAPP: Lichte achtergrond (was zwart)
+    textColor: 'text-black', // ✅ WHATSAPP: Zwarte tekst (was wit)
+    padding: 'px-4 py-3', // ✅ Consistent met cookie modal
     borderRadius: 'rounded-t-3xl sm:rounded-t-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
-    borderBottom: 'border-b border-gray-700/20', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[700] - Tailwind class
+    borderBottom: 'border-b border-gray-200', // ✅ WHATSAPP: Lichte border (was border-gray-700/20)
     sticky: 'sticky top-0', // ✅ Consistent met cookie modal
     transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
     container: {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       justify: DESIGN_SYSTEM.layoutUtils.flex.justify.between,
-      align: DESIGN_SYSTEM.layoutUtils.flex.align.start,
-      marginBottom: 'mb-2',
+      align: DESIGN_SYSTEM.layoutUtils.flex.align.center, // ✅ WHATSAPP: Center align (was start)
+      marginBottom: 'mb-0', // ✅ WHATSAPP: Geen margin (was mb-2)
     },
     title: {
-      fontSize: DESIGN_SYSTEM.typography.fontSize.xl, // 20px
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings, // Noto Sans
-      letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight, // Logo style
-      textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
+      fontSize: DESIGN_SYSTEM.typography.fontSize.lg, // ✅ WHATSAPP: Iets kleiner (was xl)
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ Noto Sans
+      letterSpacing: 'tracking-normal', // ✅ WHATSAPP: Normale spacing (was tight)
+      textColor: 'text-black', // ✅ WHATSAPP: Zwart (was wit)
     },
     subtitle: {
-      fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // ✅ DYNAMISCH: via DESIGN_SYSTEM
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
-      textColor: 'text-gray-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[300] - Tailwind class
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
-      marginTop: 'mt-1',
+      display: 'hidden', // ✅ WHATSAPP: Verberg subtitle (alleen naam)
     },
     closeButton: {
-      textColor: 'text-gray-400', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[400] - Tailwind class
-      hoverTextColor: 'hover:text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse - Tailwind class
+      textColor: 'text-gray-600', // ✅ WHATSAPP: Grijze tekst (was gray-400)
+      hoverTextColor: 'hover:text-black', // ✅ WHATSAPP: Zwarte hover (was white)
       transition: 'transition-colors', // ✅ DYNAMISCH: DESIGN_SYSTEM.layoutUtils.transitions.colors - Tailwind class
       padding: 'p-1', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[1] - Tailwind class
       borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
-      hoverBackground: 'hover:bg-gray-800', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[800] - Tailwind class
+      hoverBackground: 'hover:bg-gray-200', // ✅ WHATSAPP: Lichte hover (was gray-800)
     },
   },
 
@@ -172,32 +168,43 @@ export const CHAT_CONFIG = {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     },
     field: {
-      borderRadius: 'rounded-2xl', // ✅ RONDER: Extra ronde hoeken, smoother (was rounded-xl)
-      border: 'border-0', // ✅ GEEN BORDER: Geen witte border zoals gevraagd
-      backgroundColor: 'bg-gray-50', // ✅ DYNAMISCH: Subtiele achtergrond zonder border
-      padding: 'px-5 py-3.5', // ✅ SMOOTHER: Minder verticale padding voor compacter uiterlijk
+      borderRadius: 'rounded-full', // ✅ WHATSAPP: Volledig rond (was rounded-2xl)
+      border: 'border-0', // ✅ GEEN BORDER: Geen border
+      backgroundColor: 'bg-gray-100', // ✅ WHATSAPP: Lichtere achtergrond (was bg-gray-50)
+      padding: 'px-4 py-2.5', // ✅ WHATSAPP: Compactere padding (was px-5 py-3.5)
       width: 'w-full', // ✅ LANGER: Volledige breedte
-      fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      fontSize: DESIGN_SYSTEM.typography.fontSize.base, // ✅ WHATSAPP: Base size (was sm)
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal, // ✅ WHATSAPP: Normal weight (was semibold)
+      placeholder: {
+        textColor: 'placeholder:text-gray-500', // ✅ WHATSAPP: Grijze placeholder
+      },
       focus: {
-        ring: 'focus:ring-2 focus:ring-black/20', // ✅ DYNAMISCH: Subtielere focus ring
+        ring: 'focus:ring-0', // ✅ WHATSAPP: Geen focus ring (was ring-2)
         border: 'focus:border-0', // ✅ GEEN BORDER: Ook bij focus geen border
-        backgroundColor: 'focus:bg-white', // ✅ DYNAMISCH: Witte achtergrond bij focus
+        backgroundColor: 'focus:bg-white', // ✅ WHATSAPP: Witte achtergrond bij focus
+        outline: 'focus:outline-none', // ✅ WHATSAPP: Geen outline
       },
       transition: 'transition-all duration-200 ease-out', // ✅ SMOOTHER: ease-out voor vloeiendere animatie
     },
     button: {
-      borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
-      backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
-      textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
-      hoverBackgroundColor: 'hover:bg-gray-900', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[900] - Tailwind class
-      padding: 'px-4 py-6', // ✅ BREDER: Meer padding links/rechts (was px-3)
+      borderRadius: 'rounded-full', // ✅ WHATSAPP: Volledig rond
+      backgroundColor: 'bg-gray-50', // ✅ WHATSAPP: Lichte achtergrond (was zwart)
+      textColor: 'text-gray-600', // ✅ WHATSAPP: Grijze tekst (was wit)
+      hoverBackgroundColor: 'hover:bg-gray-200', // ✅ WHATSAPP: Lichtere hover (was gray-900)
+      activeBackgroundColor: 'active:bg-gray-300', // ✅ WHATSAPP: Active state
+      padding: 'p-2.5', // ✅ WHATSAPP: Gelijkmatige padding (was px-4 py-6)
+      minWidth: 'min-w-[44px]', // ✅ WHATSAPP: Minimum touch target
+      minHeight: 'min-h-[44px]', // ✅ WHATSAPP: Minimum touch target
       fontSize: DESIGN_SYSTEM.typography.fontSize.base, // ✅ DYNAMISCH: via DESIGN_SYSTEM
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal, // ✅ WHATSAPP: Normal weight (was semibold)
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
-      iconSize: 'w-5 h-5',
-      transition: 'transition-all duration-200 ease-in-out', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
+      iconSize: 'w-5 h-5', // ✅ WHATSAPP: Standaard icon size
+      disabled: {
+        opacity: 'disabled:opacity-40', // ✅ WHATSAPP: Disabled state
+        cursor: 'disabled:cursor-not-allowed',
+      },
+      transition: 'transition-all duration-150 ease-out', // ✅ WHATSAPP: Snellere transition (was 200ms)
     },
     footer: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // 12px

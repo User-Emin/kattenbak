@@ -64,12 +64,54 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [showAllFeatures, setShowAllFeatures] = useState(false); // ✅ Toon meer features state
   const [openSpecs, setOpenSpecs] = useState<Set<number>>(new Set());
 
-  // Fetch product data
+  // Fetch product data - ✅ FIX: Retry logic voor betrouwbaar laden
   useEffect(() => {
-    productsApi.getBySlug(slug)
-      .then(setProduct)
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    let isMounted = true;
+    let retryCount = 0;
+    const MAX_RETRIES = 3;
+    const RETRY_DELAY = 1000; // 1 second
+
+    const loadProduct = async () => {
+      try {
+        const productData = await productsApi.getBySlug(slug);
+        if (isMounted) {
+          setProduct(productData);
+          setLoading(false);
+        }
+      } catch (error: any) {
+        // ✅ SECURITY: Log error server-side only
+        if (typeof window === 'undefined') {
+          console.error('Product load error:', error);
+        }
+        
+        // ✅ RETRY: Probeer opnieuw bij network errors
+        if (retryCount < MAX_RETRIES && (
+          error?.isNetworkError || 
+          error?.isGatewayError || 
+          error?.message?.includes('verbinding') ||
+          error?.message?.includes('tijdelijk niet beschikbaar')
+        )) {
+          retryCount++;
+          setTimeout(() => {
+            if (isMounted) {
+              loadProduct();
+            }
+          }, RETRY_DELAY * retryCount); // Exponential backoff
+        } else {
+          // ✅ FIX: Geen "Fout bij laden" - toon product niet gevonden (graceful degradation)
+          if (isMounted) {
+            setLoading(false);
+            // Product blijft null, wordt afgehandeld door "Product not found" UI
+          }
+        }
+      }
+    };
+
+    loadProduct();
+
+    return () => {
+      isMounted = false;
+    };
   }, [slug]);
 
   if (loading) {

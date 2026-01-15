@@ -69,12 +69,13 @@ export const DESIGN_SYSTEM = {
       headings: 'var(--font-noto-sans), system-ui, sans-serif', // Noto Sans voor titels
     },
     
-    // Font weights - ONLY 3 weights voor performance
+    // Font weights - ONLY 4 weights voor performance
     fontWeight: {
       light: '300',          // Subtitles, descriptions
       normal: '400',         // Body text, readable
       medium: '500',         // ✅ Titles (logo style - dunner maar vet)
       semibold: '600',       // Headings - DIKKER voor duidelijkheid
+      bold: '700',            // ✅ DIKKER: Voor winkelwagen badge en belangrijke UI elementen
     },
     
     // Font sizes - Type scale (1.25 ratio)

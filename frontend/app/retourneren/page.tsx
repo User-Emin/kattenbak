@@ -23,7 +23,7 @@ import { RETURN_REASON_LABELS } from '@/types/return';
 /**
  * RETOURNEREN PAGE - STRAK & MINIMALISTISCH
  * 
- * ✅ Oranje accent (#f76402)
+ * ✅ Winkelwagen blauw accent (#005980) - vervangt oranje
  * ✅ GEEN emoji
  * ✅ GEEN shadows
  * ✅ 1 kleur achtergrond (wit)
@@ -123,7 +123,7 @@ export default function RetournerenPage() {
             </h1>
             <p className="text-base font-light text-gray-600 leading-relaxed">
               Niet tevreden? Binnen <span className="font-normal text-gray-900">{RETURN_POLICY.returnPeriod} dagen</span> kunt u uw bestelling{' '}
-              <span className="font-normal text-[#f76402]">{RETURN_POLICY.shippingCost}</span> retourneren.
+              <span className="font-normal text-brand">{RETURN_POLICY.shippingCost}</span> retourneren.
             </p>
           </div>
         </div>
@@ -140,7 +140,7 @@ export default function RetournerenPage() {
               {/* Bestelnummer */}
               <div>
                 <Label htmlFor="orderNumber" className="text-sm font-normal mb-1.5 block text-gray-900">
-                  Bestelnummer <span className="text-[#f76402]">*</span>
+                  Bestelnummer <span className="text-brand">*</span>
                 </Label>
                 <Input
                   id="orderNumber"
@@ -149,7 +149,7 @@ export default function RetournerenPage() {
                   placeholder="Bijv. ORD-2024-001"
                   value={formData.orderNumber}
                   onChange={handleInputChange}
-                  className="h-11 text-sm font-light rounded-sm border focus:border-[#f76402] transition-all"
+                  className="h-11 text-sm font-light rounded-sm border focus:border-brand transition-all"
                   required
                 />
                 <p className="text-xs font-light text-gray-500 mt-1">Te vinden in uw orderbevestiging email</p>
@@ -158,7 +158,7 @@ export default function RetournerenPage() {
               {/* E-mailadres */}
               <div>
                 <Label htmlFor="email" className="text-sm font-normal mb-1.5 block text-gray-900">
-                  E-mailadres <span className="text-[#f76402]">*</span>
+                  E-mailadres <span className="text-brand">*</span>
                 </Label>
                 <Input
                   id="email"
@@ -167,7 +167,7 @@ export default function RetournerenPage() {
                   placeholder="uw@email.nl"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="h-11 text-sm font-light rounded-sm border focus:border-[#f76402] transition-all"
+                  className="h-11 text-sm font-light rounded-sm border focus:border-brand transition-all"
                   required
                 />
                 <p className="text-xs font-light text-gray-500 mt-1">Gebruikt bij uw bestelling</p>
@@ -176,14 +176,14 @@ export default function RetournerenPage() {
               {/* Retour reden */}
               <div>
                 <Label htmlFor="reason" className="text-sm font-normal mb-1.5 block text-gray-900">
-                  Reden voor retour <span className="text-[#f76402]">*</span>
+                  Reden voor retour <span className="text-brand">*</span>
                 </Label>
                 <select
                   id="reason"
                   name="reason"
                   value={formData.reason}
                   onChange={handleInputChange}
-                  className="w-full h-11 px-3 text-sm font-light rounded-sm border border-gray-200 focus:border-[#f76402] focus:ring-0 transition-all bg-white"
+                  className="w-full h-11 px-3 text-sm font-light rounded-sm border border-gray-200 focus:border-brand focus:ring-0 transition-all bg-white"
                   required
                 >
                   <option value="">Selecteer een reden...</option>
@@ -198,7 +198,7 @@ export default function RetournerenPage() {
               {/* Beschrijving/Toelichting */}
               <div>
                 <Label htmlFor="description" className="text-sm font-normal mb-1.5 block text-gray-900">
-                  Toelichting <span className="text-[#f76402]">*</span>
+                  Toelichting <span className="text-brand">*</span>
                 </Label>
                 <textarea
                   id="description"
@@ -207,7 +207,7 @@ export default function RetournerenPage() {
                   value={formData.description}
                   onChange={handleInputChange}
                   rows={4}
-                  className="w-full px-3 py-2.5 text-sm font-light rounded-sm border border-gray-200 focus:border-[#f76402] focus:ring-0 transition-all resize-none"
+                  className="w-full px-3 py-2.5 text-sm font-light rounded-sm border border-gray-200 focus:border-brand focus:ring-0 transition-all resize-none"
                   required
                 />
                 <p className="text-xs font-light text-gray-500 mt-1">Minimaal 20 karakters</p>
@@ -225,7 +225,7 @@ export default function RetournerenPage() {
                   placeholder="NL00 BANK 0000 0000 00"
                   value={formData.accountNumber}
                   onChange={handleInputChange}
-                  className="h-11 text-sm font-light rounded-sm border focus:border-[#f76402] transition-all"
+                  className="h-11 text-sm font-light rounded-sm border focus:border-brand transition-all"
                 />
                 <p className="text-xs font-light text-gray-500 mt-1">Voor snellere terugbetaling</p>
               </div>
@@ -233,7 +233,7 @@ export default function RetournerenPage() {
               {/* Info banner */}
               <div className="bg-gray-50 border border-gray-200 rounded-sm p-4">
                 <div className="flex gap-3">
-                  <ShieldCheck className="h-5 w-5 text-[#f76402] shrink-0 mt-0.5" />
+                  <ShieldCheck className="h-5 w-5 text-brand shrink-0 mt-0.5" />
                   <div className="text-sm font-light text-gray-700 leading-relaxed">
                     <p className="font-normal text-gray-900 mb-0.5">100% Tevredenheidsgarantie</p>
                     <p>Na goedkeuring ontvangt u binnen {RETURN_POLICY.processingTime} werkdagen uw geld terug.</p>
@@ -244,7 +244,7 @@ export default function RetournerenPage() {
               {/* Submit button */}
               <Button
                 type="submit"
-                className="w-full h-12 text-base rounded-sm bg-[#f76402] hover:bg-[#e55d00] text-white font-normal transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-12 text-base rounded-sm bg-brand hover:bg-brand-dark text-white font-normal transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!isFormValid || isSubmitting}
               >
                 {isSubmitting ? (
@@ -284,7 +284,7 @@ export default function RetournerenPage() {
                 return (
                   <div key={step.id} className="text-center">
                     <div className="inline-flex items-center justify-center w-12 h-12 mb-3 rounded-sm border border-gray-200 bg-white">
-                      <Icon className="w-5 h-5 text-[#f76402]" strokeWidth={1.5} />
+                      <Icon className="w-5 h-5 text-brand" strokeWidth={1.5} />
                     </div>
                     
                     <h3 className="text-base font-normal mb-1.5 text-gray-900">
@@ -316,13 +316,13 @@ export default function RetournerenPage() {
           {/* Accordion Sections */}
           <div className="space-y-2">
             {/* Section 1: Belangrijkste info */}
-            <div className="border border-gray-200 rounded-sm overflow-hidden hover:border-[#f76402] transition-colors bg-white">
+            <div className="border border-gray-200 rounded-sm overflow-hidden hover:border-brand transition-colors bg-white">
               <button
                 onClick={() => setOpenSection(openSection === 'policy' ? null : 'policy')}
                 className="w-full px-5 py-3.5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Clock className="h-5 w-5 text-[#f76402] flex-shrink-0" strokeWidth={1.5} />
+                  <Clock className="h-5 w-5 text-brand flex-shrink-0" strokeWidth={1.5} />
                   <span className="text-base font-normal text-gray-900">Retourbeleid & Belangrijke Info</span>
                 </div>
                 <svg
@@ -340,7 +340,7 @@ export default function RetournerenPage() {
                 <div className="px-5 pb-5 pt-1">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
-                      <Clock className="h-4 w-4 text-[#f76402] shrink-0 mt-0.5" strokeWidth={1.5} />
+                      <Clock className="h-4 w-4 text-brand shrink-0 mt-0.5" strokeWidth={1.5} />
                       <div>
                         <h3 className="font-normal text-sm mb-0.5 text-gray-900">Retourperiode</h3>
                         <p className="text-xs font-light text-gray-600">
@@ -350,7 +350,7 @@ export default function RetournerenPage() {
                     </div>
 
                     <div className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
-                      <CheckCircle2 className="h-4 w-4 text-[#f76402] shrink-0 mt-0.5" strokeWidth={1.5} />
+                      <CheckCircle2 className="h-4 w-4 text-brand shrink-0 mt-0.5" strokeWidth={1.5} />
                       <div>
                         <h3 className="font-normal text-sm mb-0.5 text-gray-900">Terugbetaling</h3>
                         <p className="text-xs font-light text-gray-600">
@@ -360,7 +360,7 @@ export default function RetournerenPage() {
                     </div>
 
                     <div className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
-                      <TruckIcon className="h-4 w-4 text-[#f76402] shrink-0 mt-0.5" strokeWidth={1.5} />
+                      <TruckIcon className="h-4 w-4 text-brand shrink-0 mt-0.5" strokeWidth={1.5} />
                       <div>
                         <h3 className="font-normal text-sm mb-0.5 text-gray-900">Verzendkosten</h3>
                         <p className="text-xs font-light text-gray-600">
@@ -370,7 +370,7 @@ export default function RetournerenPage() {
                     </div>
 
                     <div className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
-                      <ShieldCheck className="h-4 w-4 text-[#f76402] shrink-0 mt-0.5" strokeWidth={1.5} />
+                      <ShieldCheck className="h-4 w-4 text-brand shrink-0 mt-0.5" strokeWidth={1.5} />
                       <div>
                         <h3 className="font-normal text-sm mb-0.5 text-gray-900">Garantie</h3>
                         <p className="text-xs font-light text-gray-600">
@@ -384,13 +384,13 @@ export default function RetournerenPage() {
             </div>
 
             {/* Section 2: Voorwaarden */}
-            <div className="border border-gray-200 rounded-sm overflow-hidden hover:border-[#f76402] transition-colors bg-white">
+            <div className="border border-gray-200 rounded-sm overflow-hidden hover:border-brand transition-colors bg-white">
               <button
                 onClick={() => setOpenSection(openSection === 'conditions' ? null : 'conditions')}
                 className="w-full px-5 py-3.5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <AlertCircle className="h-5 w-5 text-[#f76402] flex-shrink-0" strokeWidth={1.5} />
+                  <AlertCircle className="h-5 w-5 text-brand flex-shrink-0" strokeWidth={1.5} />
                   <span className="text-base font-normal text-gray-900">Voorwaarden voor Retourneren</span>
                 </div>
                 <svg
@@ -409,7 +409,7 @@ export default function RetournerenPage() {
                   <div className="space-y-2">
                     {RETURN_POLICY.conditions.map((condition, index) => (
                       <div key={index} className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
-                        <CheckCircle2 className="h-4 w-4 text-[#f76402] shrink-0 mt-0.5" strokeWidth={1.5} />
+                        <CheckCircle2 className="h-4 w-4 text-brand shrink-0 mt-0.5" strokeWidth={1.5} />
                         <span className="text-sm font-light text-gray-700 leading-relaxed">{condition}</span>
                       </div>
                     ))}
