@@ -725,6 +725,7 @@ export function ChatPopup() {
                     key={idx}
                     className={cn(
                       safeChatConfig.messages.messageWrapper.display,
+                      safeChatConfig.messages.messageWrapper.padding || 'px-2', // ✅ FIX: Padding zodat tekst niet aan zijkanten plakt
                       msg.role === 'user' 
                         ? safeChatConfig.messages.messageWrapper.userJustify 
                         : safeChatConfig.messages.messageWrapper.assistantJustify

@@ -108,6 +108,7 @@ export const CHAT_CONFIG = {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       userJustify: DESIGN_SYSTEM.layoutUtils.flex.justify.end,
       assistantJustify: DESIGN_SYSTEM.layoutUtils.flex.justify.start,
+      padding: 'px-2', // ✅ FIX: Padding links/rechts zodat tekst niet aan zijkanten plakt
       transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
     },
     user: {
@@ -228,7 +229,7 @@ export const CHAT_CONFIG = {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       align: DESIGN_SYSTEM.layoutUtils.flex.align.end, // ✅ POPUP: Boven button (end i.p.v. center)
       justify: DESIGN_SYSTEM.layoutUtils.flex.justify.end, // ✅ POPUP: Rechts (end i.p.v. center)
-      padding: 'p-3 sm:p-4 pb-20 sm:pb-20', // ✅ POPUP: Padding onderaan voor ruimte boven button
+      padding: 'p-3 sm:p-4 pb-24 sm:pb-24', // ✅ POPUP: Padding onderaan (96px) voor ruimte boven button (64px button + 32px gap)
       pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
       transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
     },
@@ -238,7 +239,8 @@ export const CHAT_CONFIG = {
         display: DESIGN_SYSTEM.layoutUtils.display.flex,
         direction: DESIGN_SYSTEM.layoutUtils.flex.direction.col,
         position: 'relative', // ✅ Consistent met cookie modal
-        transition: 'transition-all duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
+        marginBottom: 'mb-4', // ✅ POPUP: Margin onderaan zodat modal boven button verschijnt
+        transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
       },
     },
   },
