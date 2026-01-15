@@ -146,25 +146,23 @@ else
     exit 1
 fi
 
-# Step 7: Create admin user via Node.js script
+# Step 7: Create admin user via compiled TypeScript
 echo -e "${YELLOW}📦 Step 7: Creating admin user...${NC}"
 cd "${BACKEND_PATH}"
 
-# Load .env to get ADMIN_EMAIL and ADMIN_PASSWORD
-source .env 2>/dev/null || true
-ADMIN_EMAIL="${ADMIN_EMAIL:-admin@localhost}"
-ADMIN_PASSWORD="${ADMIN_PASSWORD:-admin123456789}"
-
-# Create admin user via Node.js (using bcrypt from backend)
-node <<ADMINSCRIPT
+# Create admin user script file
+cat > create-admin-user.js <<'ADMINSCRIPT'
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const adminEmail = process.env.ADMIN_EMAIL || '${ADMIN_EMAIL}';
-  const adminPassword = process.env.ADMIN_PASSWORD || '${ADMIN_PASSWORD}';
+  // Load from .env via process.env (already loaded by Prisma)
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@localhost';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123456789';
+  
+  console.log(`Creating admin user: ${adminEmail}`);
   
   // ✅ SECURITY: Bcrypt hash (12 rounds, OWASP 2023)
   const passwordHash = await bcrypt.hash(adminPassword, 12);
@@ -176,7 +174,7 @@ async function main() {
     });
     
     if (existing) {
-      console.log(\`✅ Admin user already exists: \${adminEmail}\`);
+      console.log(`✅ Admin user already exists: ${adminEmail}`);
       // Update password and role
       await prisma.user.update({
         where: { email: adminEmail },
@@ -185,7 +183,7 @@ async function main() {
           role: 'ADMIN'
         }
       });
-      console.log(\`✅ Admin password and role updated\`);
+      console.log(`✅ Admin password and role updated`);
     } else {
       await prisma.user.create({
         data: {
@@ -196,23 +194,28 @@ async function main() {
           lastName: 'User'
         }
       });
-      console.log(\`✅ Admin user created: \${adminEmail}\`);
+      console.log(`✅ Admin user created: ${adminEmail}`);
     }
   } catch (e) {
     console.error('❌ Error:', e.message);
     process.exit(1);
   } finally {
-    await prisma.\$disconnect();
+    await prisma.$disconnect();
   }
 }
 
 main();
 ADMINSCRIPT
 
+# Run admin creation
+node create-admin-user.js
+
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Admin user created${NC}"
+    rm -f create-admin-user.js
 else
     echo -e "${RED}❌ Admin user creation failed${NC}"
+    rm -f create-admin-user.js
     exit 1
 fi
 
