@@ -50,48 +50,47 @@ export function ProductUspFeatures() {
 
   return (
     <div className={cn(
+      CONFIG.layout.maxWidth, // ✅ EXACT ZELFDE: Max-width zoals productdetail (max-w-7xl)
       'mx-auto',
-      'max-w-[1400px]', // ✅ EXACT ZELFDE: Max-width zoals productdetail
-      'space-y-16 lg:space-y-24', // ✅ EXACT ZELFDE: Spacing zoals productdetail (CONFIG.featureSection.containerSpacing)
-      'md:px-4 md:sm:px-6 md:lg:px-8', // ✅ EDGE-TO-EDGE MOBIEL: Geen padding op mobiel, wel op desktop
+      CONFIG.layout.containerPadding, // ✅ EXACT ZELFDE: Container padding zoals productdetail (px-4 sm:px-6 lg:px-8) - kleinere witruimte
+      CONFIG.layout.sectionSpacing, // ✅ EXACT ZELFDE: Section spacing zoals productdetail
     )}>
-      {features.map((feature, index) => {
-        const isEven = index % 2 === 0;
-        const IconComponent = feature.icon;
+      <div className={CONFIG.featureSection.containerSpacing}> {/* ✅ EXACT ZELFDE: Container spacing zoals productdetail */}
+        {features.map((feature, index) => {
+          const isEven = index % 2 === 0;
+          const IconComponent = feature.icon;
 
-        return (
-          <div 
-            key={index} 
-            className={cn(
-              isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout // ✅ EXACT ZELFDE: Layout zoals productdetail
-            )}
-          >
-            {/* Image - ✅ EDGE-TO-EDGE MOBIEL: Full width op mobiel, padding op desktop */}
-            <div className={cn(
-              'relative',
-              '-mx-4 md:mx-0', // ✅ EDGE-TO-EDGE MOBIEL: Negatieve margin op mobiel voor edge-to-edge
-              isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right // ✅ EXACT ZELFDE: Image order zoals productdetail
-            )}>
-              <img
-                src={feature.image}
-                alt={feature.imageAlt}
-                className={cn(
-                  'w-full',
-                  CONFIG.featureSection.image.aspectRatio, // ✅ EXACT ZELFDE: Aspect ratio zoals productdetail
-                  'rounded-none md:rounded-lg', // ✅ EDGE-TO-EDGE MOBIEL: Geen border radius op mobiel
-                  CONFIG.featureSection.image.objectFit, // ✅ EXACT ZELFDE: Object fit zoals productdetail
-                  CONFIG.featureSection.image.bgColor // ✅ EXACT ZELFDE: Background color zoals productdetail
-                )}
-                loading="lazy"
-              />
-            </div>
+          return (
+            <div 
+              key={index} 
+              className={cn(
+                isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout // ✅ EXACT ZELFDE: Layout zoals productdetail
+              )}
+            >
+              {/* Image - ✅ EXACT ZELFDE: Geen negatieve margin, gebruikt container padding */}
+              <div className={cn(
+                'relative',
+                isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right // ✅ EXACT ZELFDE: Image order zoals productdetail
+              )}>
+                <img
+                  src={feature.image}
+                  alt={feature.imageAlt}
+                  className={cn(
+                    'w-full',
+                    CONFIG.featureSection.image.aspectRatio, // ✅ EXACT ZELFDE: Aspect ratio zoals productdetail
+                    CONFIG.featureSection.image.borderRadius, // ✅ EXACT ZELFDE: Border radius zoals productdetail (rounded-lg)
+                    CONFIG.featureSection.image.objectFit, // ✅ EXACT ZELFDE: Object fit zoals productdetail
+                    CONFIG.featureSection.image.bgColor // ✅ EXACT ZELFDE: Background color zoals productdetail
+                  )}
+                  loading="lazy"
+                />
+              </div>
 
-            {/* Tekst Content - ✅ PADDING MOBIEL: Padding op mobiel voor leesbaarheid */}
-            <div className={cn(
-              CONFIG.featureSection.text.container, // ✅ EXACT ZELFDE: Container spacing zoals productdetail
-              'px-4 md:px-0', // ✅ PADDING MOBIEL: Padding op mobiel, geen padding op desktop
-              isEven ? CONFIG.featureSection.zigzag.textOrder.left : CONFIG.featureSection.zigzag.textOrder.right // ✅ EXACT ZELFDE: Text order zoals productdetail
-            )}>
+              {/* Tekst Content - ✅ EXACT ZELFDE: Geen extra padding, gebruikt container padding */}
+              <div className={cn(
+                CONFIG.featureSection.text.container, // ✅ EXACT ZELFDE: Container spacing zoals productdetail
+                isEven ? CONFIG.featureSection.zigzag.textOrder.left : CONFIG.featureSection.zigzag.textOrder.right // ✅ EXACT ZELFDE: Text order zoals productdetail
+              )}>
               <h3 className={cn(
                 'text-2xl lg:text-3xl', // ✅ EXACT ZELFDE: Font size zoals productdetail (CONFIG.featureSection.text.title.fontSize)
                 'font-light', // ✅ EXACT ZELFDE: Font weight zoals productdetail (CONFIG.featureSection.text.title.fontWeight)
@@ -122,10 +121,11 @@ export function ProductUspFeatures() {
                   </li>
                 ))}
               </ul>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

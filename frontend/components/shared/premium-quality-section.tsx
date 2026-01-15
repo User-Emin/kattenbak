@@ -23,7 +23,7 @@ export function PremiumQualitySection() {
         className="relative z-10 text-center space-y-4 md:space-y-6 px-4 md:px-12 max-w-4xl mx-auto" // ✅ RESPONSIVE: Mobile padding, Desktop max-width
       >
         <h2 
-          className="text-2xl md:text-4xl lg:text-5xl" // ✅ RESPONSIVE: Mobile kleiner (text-2xl), Desktop groter
+          className="text-2xl md:text-3xl lg:text-5xl" // ✅ RESPONSIVE: Mobile kleiner (text-2xl), Laptop kleiner (md:text-3xl ipv md:text-4xl), Desktop groter
           style={{
             fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
             fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
@@ -34,7 +34,7 @@ export function PremiumQualitySection() {
           Premium Kwaliteit & Veiligheid
         </h2>
         <p 
-          className="text-sm md:text-lg lg:text-xl" // ✅ RESPONSIVE: Mobile kleiner (text-sm), Desktop groter
+          className="text-sm md:text-base lg:text-xl max-w-2xl mx-auto" // ✅ RESPONSIVE: Mobile kleiner (text-sm), Laptop kleiner (md:text-base ipv md:text-lg), Desktop groter, max-width voor 2 regels
           style={{
             fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
             color: DESIGN_SYSTEM.colors.text.inverse,

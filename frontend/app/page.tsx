@@ -108,7 +108,7 @@ export default function HomePage() {
           >
             {/* Heading - ✅ RESPONSIVE: Mobile smaller, Laptop smaller, Desktop larger */}
             <h1 
-              className="leading-tight text-3xl md:text-4xl lg:text-6xl" // ✅ RESPONSIVE: Laptop kleiner (md:text-4xl ipv md:text-5xl)
+              className="leading-tight text-3xl md:text-3xl lg:text-6xl" // ✅ RESPONSIVE: Laptop kleiner (md:text-3xl ipv md:text-4xl)
               style={{
                 fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
                 fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
