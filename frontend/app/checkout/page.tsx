@@ -384,7 +384,15 @@ function CheckoutContent() {
 
                 {/* CTA Button rechts - Prominent ORANJE */}
                 <div className="mt-6">
-                  <Button type="submit" className="w-full bg-brand hover:bg-brand-dark text-white font-semibold py-3 px-6 rounded-md flex items-center justify-center gap-2" size="lg" disabled={isProcessing}>
+                  <Button 
+                    type="submit" 
+                    className="w-full text-white font-semibold py-3 px-6 rounded-md flex items-center justify-center gap-2" 
+                    style={{
+                      background: `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart} 0%, ${DESIGN_SYSTEM.colors.primaryEnd} 100%)`, // ✅ GRADIENT GRIJS: Via DESIGN_SYSTEM (geen hardcode)
+                    }}
+                    size="lg" 
+                    disabled={isProcessing}
+                  >
                     {isProcessing ? (
                       <>
                         <Loader2 className="h-5 w-5 animate-spin" />
