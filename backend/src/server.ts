@@ -19,9 +19,10 @@ class Server {
   constructor() {
     this.app = express();
     this.validateEnvironment();
-    this.initializeMiddleware();
-    this.initializeRoutes().then(() => {
-      this.initializeErrorHandling();
+    this.initializeMiddleware().then(() => {
+      this.initializeRoutes().then(() => {
+        this.initializeErrorHandling();
+      });
     });
   }
 
@@ -40,7 +41,7 @@ class Server {
   /**
    * Initialize middleware
    */
-  private initializeMiddleware(): void {
+  private async initializeMiddleware(): Promise<void> {
     // ✅ FIX: Trust proxy for Nginx reverse proxy (X-Forwarded-For, rate limiting)
     this.app.set('trust proxy', 1);
 
