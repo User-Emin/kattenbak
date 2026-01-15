@@ -21,7 +21,36 @@ router.use(rateLimitMiddleware({ windowMs: 15 * 60 * 1000, max: 50 })); // Lower
  * - EXIF stripping
  * - UUID filenames
  */
-router.post('/images', upload.array('images', 10), async (req, res, next) => {
+// ✅ SECURITY: Multer error handler - MUST be immediately after upload.array()
+const multerErrorHandler = (err: any, req: any, res: any, next: any) => {
+  if (err && err.code === 'LIMIT_FILE_SIZE') {
+    const maxSizeMB = Math.round(MAX_FILE_SIZE / (1024 * 1024));
+    return res.status(413).json({
+      success: false,
+      error: `Bestand te groot. Maximum ${maxSizeMB}MB per afbeelding.`,
+      details: {
+        maxSizeMB,
+        code: err.code,
+        field: err.field
+      }
+    });
+  }
+  if (err && err.code === 'LIMIT_FILE_COUNT') {
+    return res.status(400).json({
+      success: false,
+      error: 'Te veel bestanden. Maximum 10 afbeeldingen per upload.'
+    });
+  }
+  if (err && err.code === 'LIMIT_UNEXPECTED_FILE') {
+    return res.status(400).json({
+      success: false,
+      error: 'Onverwacht bestand. Controleer de upload configuratie.'
+    });
+  }
+  next(err);
+};
+
+router.post('/images', upload.array('images', 10), multerErrorHandler, async (req, res, next) => {
   const uploadedFiles: Express.Multer.File[] = [];
   
   try {
