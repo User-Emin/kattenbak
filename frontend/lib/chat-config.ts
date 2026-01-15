@@ -36,6 +36,7 @@ export const CHAT_CONFIG = {
     border: 'border border-gray-200',
     shadow: 'shadow-2xl', // ✅ SOLIDE shadow
     zIndex: 120,
+    // Note: Container and content layout utilities are in animations.modal
   },
 
   // Header styling - Zwart-wit (GEEN transparantie)
@@ -45,6 +46,12 @@ export const CHAT_CONFIG = {
     padding: DESIGN_SYSTEM.spacing[6], // 24px
     borderRadius: 'rounded-t-sm', // ✅ HOEKIGER
     borderBottom: 'border-b border-gray-800',
+    container: {
+      display: DESIGN_SYSTEM.layoutUtils.display.flex,
+      justify: DESIGN_SYSTEM.layoutUtils.flex.justify.between,
+      align: DESIGN_SYSTEM.layoutUtils.flex.align.start,
+      marginBottom: 'mb-2',
+    },
     title: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xl, // 20px
       fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium, // 500 - Noto Sans
@@ -56,6 +63,15 @@ export const CHAT_CONFIG = {
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
       textColor: 'text-gray-300', // ✅ Gray-300 (geen transparantie)
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+      marginTop: 'mt-1',
+    },
+    closeButton: {
+      textColor: 'text-gray-400',
+      hoverTextColor: 'hover:text-white',
+      transition: 'transition-colors',
+      padding: 'p-1',
+      borderRadius: 'rounded-sm',
+      hoverBackground: 'hover:bg-gray-800',
     },
   },
 
@@ -65,6 +81,15 @@ export const CHAT_CONFIG = {
       padding: DESIGN_SYSTEM.spacing[6], // 24px
       backgroundColor: 'bg-gray-50', // ✅ Light gray background (geen transparantie)
       spacing: 'space-y-4',
+      flex: DESIGN_SYSTEM.layoutUtils.flex.grow.grow,
+      overflow: DESIGN_SYSTEM.layoutUtils.overflow.yAuto,
+      display: DESIGN_SYSTEM.layoutUtils.display.flex,
+      direction: DESIGN_SYSTEM.layoutUtils.flex.direction.col,
+    },
+    messageWrapper: {
+      display: DESIGN_SYSTEM.layoutUtils.display.flex,
+      userJustify: DESIGN_SYSTEM.layoutUtils.flex.justify.end,
+      assistantJustify: DESIGN_SYSTEM.layoutUtils.flex.justify.start,
     },
     user: {
       backgroundColor: 'bg-black', // ✅ ZWART (geen transparantie)
@@ -86,6 +111,12 @@ export const CHAT_CONFIG = {
     timestamp: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // 12px
       textColor: 'text-gray-500', // ✅ Gray-500 (geen opacity, solid color)
+      marginTop: 'mt-1',
+      display: DESIGN_SYSTEM.layoutUtils.display.block,
+    },
+    loadingContainer: {
+      display: DESIGN_SYSTEM.layoutUtils.display.flex,
+      justify: DESIGN_SYSTEM.layoutUtils.flex.justify.start,
     },
   },
 
@@ -96,6 +127,22 @@ export const CHAT_CONFIG = {
       backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
       borderTop: 'border-t border-gray-200',
       borderRadius: 'rounded-b-sm', // ✅ HOEKIGER
+    },
+    fieldContainer: {
+      display: DESIGN_SYSTEM.layoutUtils.display.flex,
+      gap: 'gap-2',
+    },
+    field: {
+      flex: DESIGN_SYSTEM.layoutUtils.flex.grow.grow,
+    },
+    buttonContainer: {
+      display: DESIGN_SYSTEM.layoutUtils.display.flex,
+      align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
+      justify: DESIGN_SYSTEM.layoutUtils.flex.justify.center,
+    },
+    footer: {
+      marginTop: 'mt-2',
+      textAlign: 'text-center',
     },
     field: {
       borderRadius: 'rounded-sm', // ✅ HOEKIGER
@@ -142,12 +189,30 @@ export const CHAT_CONFIG = {
       fadeIn: 'animate-in fade-in duration-200',
       backgroundColor: 'bg-black/20',
       blur: 'backdrop-blur-sm',
-      zIndex: 'z-[110]',
+      zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.backdrop,
       mobileTransparent: 'md:bg-transparent',
-      mobilePointerEvents: 'md:pointer-events-none',
+      mobilePointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
+      position: DESIGN_SYSTEM.layoutUtils.position.fixed,
+      inset: 'inset-0',
     },
     modal: {
       slideIn: 'animate-in slide-in-from-bottom-4 md:slide-in-from-right-4 fade-in duration-300 ease-out',
+      container: {
+        position: DESIGN_SYSTEM.layoutUtils.position.fixed,
+        inset: 'inset-0',
+        zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.modal,
+        display: DESIGN_SYSTEM.layoutUtils.display.flex,
+        align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
+        justify: DESIGN_SYSTEM.layoutUtils.flex.justify.center,
+        padding: 'p-4',
+        pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
+      },
+      content: {
+        pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.auto,
+        width: DESIGN_SYSTEM.layoutUtils.sizing.widthFull,
+        display: DESIGN_SYSTEM.layoutUtils.display.flex,
+        direction: DESIGN_SYSTEM.layoutUtils.flex.direction.col,
+      },
     },
   },
 
@@ -158,6 +223,19 @@ export const CHAT_CONFIG = {
     textColor: 'text-gray-600', // ✅ Gray-600 (geen transparantie)
     fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
     fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+    container: {
+      align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
+      textAlign: 'text-center',
+      marginTop: 'mt-8',
+    },
+    iconContainer: {
+      marginX: 'mx-auto',
+      marginBottom: 'mb-3',
+    },
+    suggestionsContainer: {
+      marginTop: 'mt-4',
+      spacing: 'space-y-2',
+    },
     suggestionButton: {
       backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
       hoverBackgroundColor: 'hover:bg-gray-100',
@@ -165,6 +243,9 @@ export const CHAT_CONFIG = {
       padding: `${DESIGN_SYSTEM.spacing[2]} ${DESIGN_SYSTEM.spacing[4]}`, // 8px 16px
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+      display: DESIGN_SYSTEM.layoutUtils.display.block,
+      width: DESIGN_SYSTEM.layoutUtils.sizing.widthFull,
+      textAlign: 'text-left',
     },
   },
 
@@ -187,5 +268,31 @@ export const CHAT_CONFIG = {
     textColor: 'text-red-800', // ✅ Red-800 (geen transparantie)
     fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
     fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+  },
+
+  // Global utilities - DRY
+  utilities: {
+    fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
+    transition: {
+      all: 'transition-all',
+      colors: 'transition-colors',
+    },
+    disabled: {
+      opacity: 'disabled:opacity-50',
+      cursor: 'disabled:cursor-not-allowed',
+    },
+    animation: {
+      spin: 'animate-spin',
+    },
+    whitespace: {
+      preWrap: 'whitespace-pre-wrap',
+    },
+    textAlign: {
+      center: 'text-center',
+      left: 'text-left',
+    },
+    margin: {
+      auto: 'mx-auto',
+    },
   },
 } as const;

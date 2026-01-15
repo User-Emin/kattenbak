@@ -252,6 +252,90 @@ export const DESIGN_SYSTEM = {
   },
 
   /**
+   * LAYOUT UTILITIES - Dynamische layout classes (DRY)
+   */
+  layoutUtils: {
+    // Positioning
+    position: {
+      fixed: 'fixed',
+      absolute: 'absolute',
+      relative: 'relative',
+      sticky: 'sticky',
+      static: 'static',
+    },
+    // Display
+    display: {
+      flex: 'flex',
+      block: 'block',
+      inline: 'inline',
+      inlineBlock: 'inline-block',
+      grid: 'grid',
+      none: 'hidden',
+    },
+    // Flexbox
+    flex: {
+      direction: {
+        row: 'flex-row',
+        col: 'flex-col',
+      },
+      align: {
+        start: 'items-start',
+        center: 'items-center',
+        end: 'items-end',
+        stretch: 'items-stretch',
+      },
+      justify: {
+        start: 'justify-start',
+        center: 'justify-center',
+        end: 'justify-end',
+        between: 'justify-between',
+        around: 'justify-around',
+        evenly: 'justify-evenly',
+      },
+      wrap: {
+        wrap: 'flex-wrap',
+        nowrap: 'flex-nowrap',
+      },
+      grow: {
+        grow: 'flex-grow',
+        shrink: 'flex-shrink',
+        none: 'flex-none',
+      },
+    },
+    // Sizing
+    sizing: {
+      full: 'w-full h-full',
+      widthFull: 'w-full',
+      heightFull: 'h-full',
+      auto: 'w-auto h-auto',
+      widthAuto: 'w-auto',
+      heightAuto: 'h-auto',
+    },
+    // Overflow
+    overflow: {
+      auto: 'overflow-auto',
+      hidden: 'overflow-hidden',
+      visible: 'overflow-visible',
+      scroll: 'overflow-scroll',
+      yAuto: 'overflow-y-auto',
+      xAuto: 'overflow-x-auto',
+    },
+    // Pointer events
+    pointerEvents: {
+      none: 'pointer-events-none',
+      auto: 'pointer-events-auto',
+    },
+    // Z-index
+    zIndex: {
+      backdrop: 'z-[110]',
+      modal: 'z-[120]',
+      dropdown: 'z-[50]',
+      sticky: 'z-[10]',
+      base: 'z-0',
+    },
+  },
+
+  /**
    * CONTACT INFO - Centrale locatie
    */
   contact: {

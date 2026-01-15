@@ -94,9 +94,27 @@ export function ChatPopup() {
             zIndex: 'z-[99]',
             mobileTransparent: 'md:bg-black/50',
             mobilePointerEvents: 'md:pointer-events-auto',
+            position: 'fixed',
+            inset: 'inset-0',
           },
           modal: {
             slideIn: 'animate-slide-in',
+            container: {
+              position: 'fixed',
+              inset: 'inset-0',
+              zIndex: 'z-[120]',
+              display: 'flex',
+              align: 'items-center',
+              justify: 'justify-center',
+              padding: 'p-4',
+              pointerEvents: 'pointer-events-none',
+            },
+            content: {
+              pointerEvents: 'pointer-events-auto',
+              width: 'w-full',
+              display: 'flex',
+              direction: 'flex-col',
+            },
           },
         },
         modal: {
@@ -114,6 +132,12 @@ export function ChatPopup() {
           padding: 'p-4',
           borderRadius: 'rounded-t-lg',
           borderBottom: 'border-b border-gray-700',
+          container: {
+            display: 'flex',
+            justify: 'justify-between',
+            align: 'items-start',
+            marginBottom: 'mb-2',
+          },
           title: {
             fontSize: 'text-lg',
             fontWeight: 'font-semibold',
@@ -123,6 +147,15 @@ export function ChatPopup() {
           subtitle: {
             fontSize: 'text-sm',
             textColor: 'text-gray-300',
+            marginTop: 'mt-1',
+          },
+          closeButton: {
+            textColor: 'text-gray-400',
+            hoverTextColor: 'hover:text-white',
+            transition: 'transition-colors',
+            padding: 'p-1',
+            borderRadius: 'rounded-sm',
+            hoverBackground: 'hover:bg-gray-800',
           },
         },
         messages: {
@@ -130,6 +163,19 @@ export function ChatPopup() {
             padding: 'p-4',
             spacing: 'space-y-4',
             backgroundColor: 'bg-gray-50',
+            flex: 'flex-1',
+            overflow: 'overflow-y-auto',
+            display: 'flex',
+            direction: 'flex-col',
+          },
+          messageWrapper: {
+            display: 'flex',
+            userJustify: 'justify-end',
+            assistantJustify: 'justify-start',
+          },
+          loadingContainer: {
+            display: 'flex',
+            justify: 'justify-start',
           },
           user: {
             maxWidth: 'max-w-[85%]',
@@ -149,6 +195,8 @@ export function ChatPopup() {
           timestamp: {
             fontSize: 'text-xs',
             textColor: 'text-gray-500',
+            marginTop: 'mt-1',
+            display: 'block',
           },
         },
         emptyState: {
@@ -156,12 +204,28 @@ export function ChatPopup() {
           iconSize: 'w-12 h-12',
           iconColor: 'text-gray-400',
           fontSize: 'text-sm',
+          container: {
+            align: 'items-center',
+            textAlign: 'text-center',
+            marginTop: 'mt-8',
+          },
+          iconContainer: {
+            marginX: 'mx-auto',
+            marginBottom: 'mb-3',
+          },
+          suggestionsContainer: {
+            marginTop: 'mt-4',
+            spacing: 'space-y-2',
+          },
           suggestionButton: {
             padding: 'p-2',
             backgroundColor: 'bg-white',
             borderRadius: 'rounded',
             fontSize: 'text-sm',
             hoverBackgroundColor: 'hover:bg-gray-100',
+            display: 'block',
+            width: 'w-full',
+            textAlign: 'text-left',
           },
         },
         loading: {
@@ -186,6 +250,22 @@ export function ChatPopup() {
             backgroundColor: 'bg-white',
             borderTop: 'border-t border-gray-200',
             borderRadius: 'rounded-b-lg',
+          },
+          fieldContainer: {
+            display: 'flex',
+            gap: 'gap-2',
+          },
+          field: {
+            flex: 'flex-1',
+          },
+          buttonContainer: {
+            display: 'flex',
+            align: 'items-center',
+            justify: 'justify-center',
+          },
+          footer: {
+            marginTop: 'mt-2',
+            textAlign: 'text-center',
           },
           field: {
             padding: 'p-3',
@@ -212,6 +292,30 @@ export function ChatPopup() {
           footer: {
             fontSize: 'text-xs',
             textColor: 'text-gray-500',
+          },
+        },
+        utilities: {
+          fontFamily: 'font-sans',
+          transition: {
+            all: 'transition-all',
+            colors: 'transition-colors',
+          },
+          disabled: {
+            opacity: 'disabled:opacity-50',
+            cursor: 'disabled:cursor-not-allowed',
+          },
+          animation: {
+            spin: 'animate-spin',
+          },
+          whitespace: {
+            preWrap: 'whitespace-pre-wrap',
+          },
+          textAlign: {
+            center: 'text-center',
+            left: 'text-left',
+          },
+          margin: {
+            auto: 'mx-auto',
           },
         },
       };
@@ -413,8 +517,8 @@ export function ChatPopup() {
           {/* ✅ DRY: Backdrop via CHAT_CONFIG */}
           <div
             className={cn(
-              'fixed',
-              'inset-0',
+              safeChatConfig.animations.backdrop.position,
+              safeChatConfig.animations.backdrop.inset,
               safeChatConfig.animations.backdrop.backgroundColor,
               safeChatConfig.animations.backdrop.blur,
               safeChatConfig.animations.backdrop.fadeIn,
@@ -425,17 +529,20 @@ export function ChatPopup() {
             onClick={() => setIsExpanded(false)}
           />
           
-          {/* ✅ MODERN: Chat Modal - Hoekiger, smoother animations */}
+          {/* ✅ MODERN: Chat Modal - Hoekiger, smoother animations - 100% DRY */}
           <div className={cn(
-            'fixed inset-0',
-            'z-[120]',
-            'flex items-center justify-center',
-            'p-4',
-            'pointer-events-none'
+            safeChatConfig.animations.modal.container.position,
+            safeChatConfig.animations.modal.container.inset,
+            safeChatConfig.animations.modal.container.zIndex,
+            safeChatConfig.animations.modal.container.display,
+            safeChatConfig.animations.modal.container.align,
+            safeChatConfig.animations.modal.container.justify,
+            safeChatConfig.animations.modal.container.padding,
+            safeChatConfig.animations.modal.container.pointerEvents
           )}>
             <div className={cn(
-              'pointer-events-auto',
-              'w-full',
+              safeChatConfig.animations.modal.content.pointerEvents,
+              safeChatConfig.animations.modal.content.width,
               safeChatConfig.modal.maxWidth,
               safeChatConfig.modal.maxHeight,
               safeChatConfig.modal.backgroundColor,
@@ -443,12 +550,12 @@ export function ChatPopup() {
               safeChatConfig.modal.shadow,
               safeChatConfig.modal.border,
               safeChatConfig.animations.modal.slideIn,
-              'flex',
-              'flex-col',
-              'font-sans'
+              safeChatConfig.animations.modal.content.display,
+              safeChatConfig.animations.modal.content.direction,
+              safeChatConfig.utilities?.fontFamily || 'font-sans'
             )}>
               
-              {/* ✅ MODERN: Header - Hoekiger, zwart-wit, Noto Sans */}
+              {/* ✅ MODERN: Header - Hoekiger, zwart-wit, Noto Sans - 100% DRY */}
               <div className={cn(
                 safeChatConfig.header.backgroundColor,
                 safeChatConfig.header.textColor,
@@ -456,29 +563,41 @@ export function ChatPopup() {
                 safeChatConfig.header.borderRadius,
                 safeChatConfig.header.borderBottom
               )}>
-                <div className="flex justify-between items-start mb-2">
+                <div className={cn(
+                  safeChatConfig.header.container.display,
+                  safeChatConfig.header.container.justify,
+                  safeChatConfig.header.container.align,
+                  safeChatConfig.header.container.marginBottom
+                )}>
                   <div>
                     <h3 className={cn(
                       safeChatConfig.header.title.fontSize || 'text-xl',
                       safeChatConfig.header.title.fontWeight || 'font-medium',
                       safeChatConfig.header.title.textColor || 'text-white',
                       safeChatConfig.header.title.letterSpacing || 'tracking-tight',
-                      'font-sans'
+                      safeChatConfig.utilities?.fontFamily || 'font-sans'
                     )}>
                       AI Assistent
                     </h3>
                     <p className={cn(
                       safeChatConfig.header.subtitle.fontSize || 'text-sm',
                       safeChatConfig.header.subtitle.textColor || 'text-gray-300',
-                      'mt-1',
-                      'font-sans'
+                      safeChatConfig.header.subtitle.marginTop,
+                      safeChatConfig.utilities?.fontFamily || 'font-sans'
                     )}>
                       Stel me een vraag over onze kattenbak
                     </p>
                   </div>
                   <button
                     onClick={() => setIsExpanded(false)}
-                    className="text-gray-400 hover:text-white transition-colors p-1 rounded-sm hover:bg-gray-800"
+                    className={cn(
+                      safeChatConfig.header.closeButton.textColor,
+                      safeChatConfig.header.closeButton.hoverTextColor,
+                      safeChatConfig.header.closeButton.transition,
+                      safeChatConfig.header.closeButton.padding,
+                      safeChatConfig.header.closeButton.borderRadius,
+                      safeChatConfig.header.closeButton.hoverBackground
+                    )}
                     aria-label="Sluit chat"
                   >
                     <X className="w-5 h-5" />
@@ -486,37 +605,54 @@ export function ChatPopup() {
                 </div>
               </div>
 
-              {/* ✅ MODERN: Messages - Hoekiger, Noto Sans */}
+              {/* ✅ MODERN: Messages - Hoekiger, Noto Sans - 100% DRY */}
               <div className={cn(
-                'flex-1',
-                'overflow-y-auto',
+                safeChatConfig.messages.container.flex,
+                safeChatConfig.messages.container.overflow,
                 safeChatConfig.messages.container.padding,
                 safeChatConfig.messages.container.spacing,
                 safeChatConfig.messages.container.backgroundColor,
-                'font-sans'
+                safeChatConfig.messages.container.display,
+                safeChatConfig.messages.container.direction,
+                safeChatConfig.utilities?.fontFamily || 'font-sans'
               )}>
                 {messages.length === 0 && (
-                  <div className={cn('text-center', safeChatConfig.emptyState.textColor, 'mt-8')}>
-                    <MessageCircle className={cn(safeChatConfig.emptyState.iconSize, 'mx-auto', 'mb-3', safeChatConfig.emptyState.iconColor)} />
-                    <p className={cn(safeChatConfig.emptyState.fontSize, 'font-sans')}>
+                  <div className={cn(
+                    safeChatConfig.emptyState.container.textAlign,
+                    safeChatConfig.emptyState.textColor,
+                    safeChatConfig.emptyState.container.marginTop
+                  )}>
+                    <MessageCircle className={cn(
+                      safeChatConfig.emptyState.iconSize,
+                      safeChatConfig.emptyState.iconContainer.marginX,
+                      safeChatConfig.emptyState.iconContainer.marginBottom,
+                      safeChatConfig.emptyState.iconColor
+                    )} />
+                    <p className={cn(
+                      safeChatConfig.emptyState.fontSize,
+                      safeChatConfig.utilities?.fontFamily || 'font-sans'
+                    )}>
                       Stel een vraag over features, specificaties, of geschiktheid
                     </p>
-                    <div className="mt-4 space-y-2">
+                    <div className={cn(
+                      safeChatConfig.emptyState.suggestionsContainer.marginTop,
+                      safeChatConfig.emptyState.suggestionsContainer.spacing
+                    )}>
                       {["Hoeveel liter is de afvalbak?", "Heeft deze kattenbak een app?", "Is het veilig voor mijn kat?"].map((suggestion, idx) => (
                         <button
                           key={idx}
                           onClick={() => setInput(suggestion)}
                           className={cn(
-                            'block',
-                            'w-full',
-                            'text-left',
+                            safeChatConfig.emptyState.suggestionButton.display,
+                            safeChatConfig.emptyState.suggestionButton.width,
+                            safeChatConfig.emptyState.suggestionButton.textAlign,
                             safeChatConfig.emptyState.suggestionButton.padding,
                             safeChatConfig.emptyState.suggestionButton.backgroundColor,
                             safeChatConfig.emptyState.suggestionButton.borderRadius,
                             safeChatConfig.emptyState.suggestionButton.fontSize,
                             safeChatConfig.emptyState.suggestionButton.hoverBackgroundColor,
-                            'transition-colors',
-                            'font-sans'
+                            safeChatConfig.utilities?.transition?.colors || 'transition-colors',
+                            safeChatConfig.utilities?.fontFamily || 'font-sans'
                           )}
                         >
                           {suggestion}
@@ -529,25 +665,38 @@ export function ChatPopup() {
                 {messages.map((msg, idx) => (
                   <div
                     key={idx}
-                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={cn(
+                      safeChatConfig.messages.messageWrapper.display,
+                      msg.role === 'user' 
+                        ? safeChatConfig.messages.messageWrapper.userJustify 
+                        : safeChatConfig.messages.messageWrapper.assistantJustify
+                    )}
                   >
                     <div
                       className={cn(
                         msg.role === 'user' ? safeChatConfig.messages?.user?.maxWidth || 'max-w-[85%]' : safeChatConfig.messages?.assistant?.maxWidth || 'max-w-[85%]',
                         msg.role === 'user' ? safeChatConfig.messages?.user?.borderRadius || 'rounded-sm' : safeChatConfig.messages?.assistant?.borderRadius || 'rounded-sm',
                         msg.role === 'user' ? safeChatConfig.messages?.user?.padding || 'p-3' : safeChatConfig.messages?.assistant?.padding || 'p-3',
-                        'transition-all',
+                        safeChatConfig.utilities?.transition?.all || 'transition-all',
                         safeChatConfig.animations?.duration?.base || 'duration-200',
-                        'font-sans',
+                        safeChatConfig.utilities?.fontFamily || 'font-sans',
                         msg.role === 'user'
                           ? cn(safeChatConfig.messages?.user?.backgroundColor || 'bg-black', safeChatConfig.messages?.user?.textColor || 'text-white')
                           : cn(safeChatConfig.messages?.assistant?.backgroundColor || 'bg-white', safeChatConfig.messages?.assistant?.textColor || 'text-black', safeChatConfig.messages?.assistant?.border || 'border border-gray-200')
                       )}
                     >
-                      <p className={cn(SAFE_DESIGN_SYSTEM.typography.fontSize.sm, 'whitespace-pre-wrap')}>
+                      <p className={cn(
+                        SAFE_DESIGN_SYSTEM.typography.fontSize.sm,
+                        safeChatConfig.utilities?.whitespace?.preWrap || 'whitespace-pre-wrap'
+                      )}>
                         {msg.content}
                       </p>
-                      <span className={cn(safeChatConfig.messages?.timestamp?.fontSize || 'text-xs', safeChatConfig.messages?.timestamp?.textColor || 'text-gray-500', 'mt-1', 'block')}>
+                      <span className={cn(
+                        safeChatConfig.messages?.timestamp?.fontSize || 'text-xs',
+                        safeChatConfig.messages?.timestamp?.textColor || 'text-gray-500',
+                        safeChatConfig.messages?.timestamp?.marginTop,
+                        safeChatConfig.messages?.timestamp?.display
+                      )}>
                         {msg.timestamp.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
@@ -555,7 +704,10 @@ export function ChatPopup() {
                 ))}
                 
                 {isLoading && (
-                  <div className="flex justify-start">
+                  <div className={cn(
+                    safeChatConfig.messages.loadingContainer.display,
+                    safeChatConfig.messages.loadingContainer.justify
+                  )}>
                     <div className={cn(
                       safeChatConfig.loading.backgroundColor,
                       safeChatConfig.loading.border,
@@ -573,24 +725,27 @@ export function ChatPopup() {
                     safeChatConfig.error.border,
                     safeChatConfig.error.borderRadius,
                     safeChatConfig.error.padding,
-                    safeChatConfig.error.fontSize,
-                    safeChatConfig.error.textColor,
-                    'font-sans'
-                  )}>
-                    {error}
-                  </div>
+                      safeChatConfig.error.fontSize,
+                      safeChatConfig.error.textColor,
+                      safeChatConfig.utilities?.fontFamily || 'font-sans'
+                    )}>
+                      {error}
+                    </div>
                 )}
               </div>
 
-              {/* ✅ MODERN: Input - Hoekiger, Noto Sans, smoother */}
+              {/* ✅ MODERN: Input - Hoekiger, Noto Sans, smoother - 100% DRY */}
               <div className={cn(
                 safeChatConfig.input.container.padding,
                 safeChatConfig.input.container.backgroundColor,
                 safeChatConfig.input.container.borderTop,
                 safeChatConfig.input.container.borderRadius,
-                'font-sans'
+                safeChatConfig.utilities?.fontFamily || 'font-sans'
               )}>
-                <div className="flex gap-2">
+                <div className={cn(
+                  safeChatConfig.input.fieldContainer.display,
+                  safeChatConfig.input.fieldContainer.gap
+                )}>
                   <input
                     type="text"
                     value={input}
@@ -598,7 +753,7 @@ export function ChatPopup() {
                     onKeyPress={handleKeyPress}
                     placeholder="Stel je vraag..."
                     className={cn(
-                      'flex-1',
+                      safeChatConfig.input.field.flex,
                       safeChatConfig.input.field.padding,
                       safeChatConfig.input.field.border,
                       safeChatConfig.input.field.borderRadius,
@@ -606,7 +761,7 @@ export function ChatPopup() {
                       safeChatConfig.input.field.focus.border,
                       safeChatConfig.input.field.fontSize,
                       safeChatConfig.input.field.backgroundColor,
-                      'font-sans'
+                      safeChatConfig.utilities?.fontFamily || 'font-sans'
                     )}
                     disabled={isLoading}
                   />
@@ -621,18 +776,21 @@ export function ChatPopup() {
                       safeChatConfig.input.button.hoverBackgroundColor,
                       safeChatConfig.input.button.fontSize,
                       safeChatConfig.input.button.fontWeight,
-                      'transition-all',
+                      safeChatConfig.utilities?.transition?.all || 'transition-all',
                       safeChatConfig.input.button.transition,
-                      'disabled:opacity-50',
-                      'disabled:cursor-not-allowed',
-                      'flex',
-                      'items-center',
-                      'justify-center',
-                      'font-sans'
+                      safeChatConfig.utilities?.disabled?.opacity || 'disabled:opacity-50',
+                      safeChatConfig.utilities?.disabled?.cursor || 'disabled:cursor-not-allowed',
+                      safeChatConfig.input.buttonContainer.display,
+                      safeChatConfig.input.buttonContainer.align,
+                      safeChatConfig.input.buttonContainer.justify,
+                      safeChatConfig.utilities?.fontFamily || 'font-sans'
                     )}
                   >
                     {isLoading ? (
-                      <Loader2 className={cn(safeChatConfig.input.button.iconSize, 'animate-spin')} />
+                      <Loader2 className={cn(
+                        safeChatConfig.input.button.iconSize,
+                        safeChatConfig.utilities?.animation?.spin || 'animate-spin'
+                      )} />
                     ) : (
                       <Send className={safeChatConfig.input.button.iconSize} />
                     )}
@@ -641,9 +799,9 @@ export function ChatPopup() {
                 <p className={cn(
                   safeChatConfig.input.footer.fontSize,
                   safeChatConfig.input.footer.textColor,
-                  'mt-2',
-                  'text-center',
-                  'font-sans'
+                  safeChatConfig.input.footer.marginTop,
+                  safeChatConfig.input.footer.textAlign,
+                  safeChatConfig.utilities?.fontFamily || 'font-sans'
                 )}>
                   Powered by AI · Antwoorden op basis van productinformatie
                 </p>
