@@ -46,8 +46,8 @@ test_url() {
   echo "  URL: $url"
   
   response=$(curl -sfL -w "\n%{http_code}" "$url" 2>&1 || echo "ERROR\n000")
-  http_code=$(echo "$response" | tail -1)
-  body=$(echo "$response" | head -n -1)
+  http_code=$(echo "$response" | tail -n 1)
+  body=$(echo "$response" | sed '$d')
   
   # Check HTTP status
   if [ "$http_code" != "200" ]; then
@@ -90,8 +90,8 @@ test_api() {
     response=$(curl -sfL -w "\n%{http_code}" "$url" 2>&1 || echo "ERROR\n000")
   fi
   
-  http_code=$(echo "$response" | tail -1)
-  body=$(echo "$response" | head -n -1)
+  http_code=$(echo "$response" | tail -n 1)
+  body=$(echo "$response" | sed '$d')
   
   if [ "$http_code" != "200" ] && [ "$http_code" != "201" ]; then
     error "  ❌ FAILED: HTTP $http_code"

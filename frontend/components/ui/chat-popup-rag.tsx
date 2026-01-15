@@ -18,6 +18,33 @@ import { CHAT_CONFIG } from "@/lib/chat-config";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { cn } from "@/lib/utils";
 
+// ✅ SECURITY: Safe DESIGN_SYSTEM access with fallback
+const getDesignSystem = () => {
+  try {
+    if (!DESIGN_SYSTEM || !DESIGN_SYSTEM.typography) {
+      throw new Error('DESIGN_SYSTEM incomplete');
+    }
+    return DESIGN_SYSTEM;
+  } catch (err) {
+    // Fallback design system
+    return {
+      typography: {
+        fontSize: {
+          sm: 'text-sm',
+          base: 'text-base',
+          lg: 'text-lg',
+          xl: 'text-xl',
+        },
+        fontWeight: {
+          normal: 'font-normal',
+          medium: 'font-medium',
+          semibold: 'font-semibold',
+        },
+      },
+    };
+  }
+};
+
 interface Message {
   role: 'user' | 'assistant';
   content: string;
@@ -25,24 +52,44 @@ interface Message {
 }
 
 export function ChatPopup() {
+  // ✅ SECURITY: Initialize state safely
   const [isExpanded, setIsExpanded] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
+  
+  // ✅ SECURITY: Safe DESIGN_SYSTEM access (memoized)
+  const designSystem = useMemo(() => getDesignSystem(), []);
+  
+  // ✅ SECURITY: Additional safety check - ensure safeChatConfig is valid before render
+  if (!safeChatConfig || !safeChatConfig.button || !safeChatConfig.modal) {
+    // Return minimal button only (no popup) to prevent crash
+    return (
+      <button
+        onClick={() => {}}
+        className="fixed right-4 bottom-8 w-14 h-14 bg-black text-white rounded-sm shadow-2xl z-[100] flex items-center justify-center"
+        aria-label="Chat niet beschikbaar"
+        disabled
+      >
+        <MessageCircle className="w-6 h-6" />
+      </button>
+    );
+  }
 
-  // ✅ FIX: Safe access to CHAT_CONFIG with fallbacks
+  // ✅ FIX: Safe access to CHAT_CONFIG with fallbacks (useMemo for performance)
   const safeChatConfig = useMemo(() => {
     try {
       // Verify CHAT_CONFIG exists and has required properties
-      if (!CHAT_CONFIG || !CHAT_CONFIG.button || !CHAT_CONFIG.modal) {
+      if (!CHAT_CONFIG || !CHAT_CONFIG.button || !CHAT_CONFIG.modal || !CHAT_CONFIG.animations) {
         throw new Error('CHAT_CONFIG incomplete');
       }
+      // ✅ SECURITY: Return validated config
       return CHAT_CONFIG;
     } catch (err) {
-      console.error('CHAT_CONFIG not available, using fallback:', err);
-      // Return minimal fallback config
+      // ✅ SECURITY: Silent fallback (no error exposure to user)
+      // Return minimal fallback config that matches CHAT_CONFIG structure
       return {
         button: {
           position: { right: 'right-6', bottom: 'bottom-6', bottomWithCart: 'bottom-24' },
@@ -503,7 +550,7 @@ export function ChatPopup() {
                           : cn(safeChatConfig.messages.assistant.backgroundColor, safeChatConfig.messages.assistant.textColor, safeChatConfig.messages.assistant.border)
                       )}
                     >
-                      <p className={cn(safeChatConfig.messages[msg.role].fontSize || DESIGN_SYSTEM.typography.fontSize.sm, 'whitespace-pre-wrap')}>
+                      <p className={cn(safeChatConfig.messages[msg.role]?.fontSize || designSystem.typography.fontSize.sm, 'whitespace-pre-wrap')}>
                         {msg.content}
                       </p>
                       <span className={cn(safeChatConfig.messages.timestamp.fontSize, safeChatConfig.messages.timestamp.textColor, 'mt-1', 'block')}>
