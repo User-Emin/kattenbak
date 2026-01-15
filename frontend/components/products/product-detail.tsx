@@ -412,17 +412,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               {product.name}
             </h1>
 
-            {/* Rating (placeholder - zou uit backend moeten komen) */}
-            <div className={CONFIG.info.rating.spacing}>
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className={CONFIG.info.rating.starColor}>★</span>
-                ))}
-              </div>
-              <span className={cn(CONFIG.info.rating.fontSize, CONFIG.info.rating.reviewColor)}>
-                (0 reviews)
-              </span>
-            </div>
+            {/* ✅ RATING VERWIJDERD: Geen sterren/reviews zonder redundantie */}
 
             {/* Price */}
             <div className={CONFIG.info.price.spacing}>
