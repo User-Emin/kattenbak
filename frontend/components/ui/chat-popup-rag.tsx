@@ -632,7 +632,7 @@ export function ChatPopup() {
                   <h3 className={cn(
                     safeChatConfig.header.title.fontSize || 'text-lg',
                     safeChatConfig.header.title.fontWeight || 'font-semibold',
-                    safeChatConfig.header.title.textColor || 'gradient-text', // ✅ GRADIENT (was text-black)
+                    safeChatConfig.header.title.textColor || 'text-white', // ✅ WIT: Via config (geen hardcode)
                     safeChatConfig.header.title.letterSpacing || 'tracking-normal',
                     safeChatConfig.utilities?.fontFamily || 'font-sans'
                   )}>
@@ -641,7 +641,8 @@ export function ChatPopup() {
                   <button
                     onClick={() => setIsExpanded(false)}
                     className={cn(
-                      'text-gray-600 hover:text-black', // ✅ WHATSAPP: Grijze close button (was text-gray-400)
+                      safeChatConfig.header.closeButton.textColor, // ✅ WIT: Via config (geen hardcode)
+                      safeChatConfig.header.closeButton.hoverTextColor, // ✅ HOVER: Via config (geen hardcode)
                       safeChatConfig.header.closeButton.transition,
                       safeChatConfig.header.closeButton.padding,
                       safeChatConfig.header.closeButton.borderRadius,

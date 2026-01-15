@@ -44,7 +44,7 @@ export const CHAT_CONFIG = {
   modal: {
     maxWidth: 'max-w-sm', // ✅ KORTER: Horizontaal korter (was max-w-md)
     maxHeight: 'max-h-[90vh] sm:max-h-[85vh]', // ✅ LANGER: Verticaal langer (was 85vh/80vh)
-    backgroundColor: 'bg-white/95', // ✅ SEMI-TRANSPARANT: Blijft zichtbaar maar behoudt achtergrond (was bg-white)
+    backgroundColor: 'bg-white', // ✅ WIT: Normale achtergrond (was bg-white/95 - terug naar origineel)
     borderRadius: 'rounded-3xl sm:rounded-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
     border: 'border border-gray-200', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[200] - Tailwind class
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
@@ -80,8 +80,8 @@ export const CHAT_CONFIG = {
       display: 'hidden', // ✅ WHATSAPP: Verberg subtitle (alleen naam)
     },
     closeButton: {
-      textColor: 'text-gray-600', // ✅ WHATSAPP: Grijze tekst (was gray-400)
-      hoverTextColor: 'hover:text-black', // ✅ WHATSAPP: Zwarte hover (was white)
+      textColor: 'text-white', // ✅ WIT: Op gradient achtergrond (was text-gray-600)
+      hoverTextColor: 'hover:text-gray-200', // ✅ LICHT GRIJS HOVER: Op gradient achtergrond (was hover:text-black)
       transition: 'transition-colors', // ✅ DYNAMISCH: DESIGN_SYSTEM.layoutUtils.transitions.colors - Tailwind class
       padding: 'p-1', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[1] - Tailwind class
       borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
@@ -229,7 +229,7 @@ export const CHAT_CONFIG = {
     },
     backdrop: {
       fadeIn: 'animate-in fade-in duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.transitions.duration.slow (300ms) - Tailwind class
-      backgroundColor: 'bg-transparent', // ✅ TRANSPARANT: Blijft zoals het was (geen overlay, was gradient met opacity)
+      backgroundColor: 'bg-black/20', // ✅ LICHTE OVERLAY: Subtiel, behoudt achtergrond zichtbaar (was bg-transparent)
       blur: 'backdrop-blur-sm',
       zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.backdrop,
             mobileTransparent: 'md:bg-gray-200', // ✅ GRIJS: Solid (geen transparant, was bg-gray-200/50)
