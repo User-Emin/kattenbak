@@ -4,18 +4,21 @@ import { existsSync } from 'fs';
 import { z } from 'zod';
 
 // Load environment-specific .env file
-// Try multiple locations: backend/.env, root/.env, parent .env.development
+// ✅ SECURITY: Only load specific .env files, exclude backups
 const possibleEnvPaths = [
   path.resolve(process.cwd(), '.env'),
   path.resolve(process.cwd(), '..', '.env'),
   path.resolve(process.cwd(), '..', '.env.development'),
   path.resolve(process.cwd(), '.env.development'),
-];
+].filter(envPath => {
+  // Exclude backup files
+  return !envPath.includes('.backup') && !envPath.includes('.bak');
+});
 
 let envLoaded = false;
 for (const envPath of possibleEnvPaths) {
   if (existsSync(envPath)) {
-    config({ path: envPath });
+    config({ path: envPath, override: false }); // Don't override existing env vars
     console.log(`✅ Environment loaded from: ${envPath}`);
     envLoaded = true;
     break;
