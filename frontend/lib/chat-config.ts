@@ -54,10 +54,10 @@ export const CHAT_CONFIG = {
     // Note: Container and content layout utilities are in animations.modal
   },
 
-  // Header styling - ✅ GRADIENT GRIJS: Minimalistisch (alleen naam of niets)
+  // Header styling - ✅ GRADIENT GRIJS EXACT: Zoals navbar
     header: {
-    backgroundColor: 'bg-gray-100', // ✅ GRIJS: Grijs achtergrond voor duidelijkheid
-      textColor: 'gradient-text', // ✅ GRADIENT GRIJS EXACT: Via DESIGN_SYSTEM (geen hardcode)
+    backgroundColor: 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]', // ✅ GRADIENT GRIJS EXACT: Via DESIGN_SYSTEM.colors.primaryStart/End (geen hardcode in component)
+      textColor: 'text-white', // ✅ WIT TEKST: Op gradient achtergrond
     padding: 'px-4 py-3', // ✅ Consistent met cookie modal
     borderRadius: 'rounded-t-3xl sm:rounded-t-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
     borderBottom: 'border-b border-gray-200', // ✅ WHATSAPP: Lichte border (was border-gray-700/20)
@@ -229,7 +229,7 @@ export const CHAT_CONFIG = {
     },
     backdrop: {
       fadeIn: 'animate-in fade-in duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.transitions.duration.slow (300ms) - Tailwind class
-      backgroundColor: 'bg-gradient-to-r from-[rgba(60,60,61,0.5)] to-[rgba(122,122,125,0.5)]', // ✅ GRADIENT met opacity (was bg-black/50)
+      backgroundColor: 'bg-transparent', // ✅ TRANSPARANT: Blijft zoals het was (geen overlay, was gradient met opacity)
       blur: 'backdrop-blur-sm',
       zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.backdrop,
             mobileTransparent: 'md:bg-gray-200', // ✅ GRIJS: Solid (geen transparant, was bg-gray-200/50)
