@@ -54,10 +54,7 @@ export function ProductUspFeatures() {
             {/* Tekst Content - meer ruimte */}
             <div className={`space-y-6 ${isEven ? 'md:order-1' : 'md:order-2'}`}>
               <div className="flex items-start gap-4">
-                <IconComponent 
-                  className="h-14 w-14 flex-shrink-0 mt-1"
-                  style={{ color: '#3C3C3D' }}
-                />
+                {/* ✅ SYMBOOL VERWIJDERD: Exact zoals productdetail (geen icon) */}
                 <div>
                   <h3 className="text-2xl font-normal text-gray-900 mb-3">
                     <strong 

@@ -12,10 +12,10 @@ export const CHAT_CONFIG = {
   button: {
     size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
     borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
-    backgroundColor: 'bg-white', // ✅ WIT: Witte achtergrond voor zwarte tekst
-    textColor: 'gradient-text', // ✅ GRADIENT (was text-black)
-    hoverBackgroundColor: 'hover:bg-gray-900', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[900] - Tailwind class
-    border: 'border-2 border-gray-300', // ✅ DYNAMISCH: Lichte border voor witte button
+    backgroundColor: 'bg-gray-200', // ✅ GRIJS: Grijs achtergrond voor duidelijkheid (was bg-white)
+    textColor: 'text-gray-700', // ✅ GRIJS TEKST: Goed contrast (was gradient-text)
+    hoverBackgroundColor: 'hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover voor duidelijkheid (was hover:bg-gray-900)
+    border: 'border-2 border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border (was border-gray-300)
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     zIndex: 'z-[50]', // ✅ DYNAMISCH: DESIGN_SYSTEM.layoutUtils.zIndex.dropdown - Tailwind class
     position: {
@@ -54,9 +54,9 @@ export const CHAT_CONFIG = {
     // Note: Container and content layout utilities are in animations.modal
   },
 
-  // Header styling - WHATSAPP STYLE: Minimalistisch (alleen naam of niets)
+  // Header styling - ✅ GRIJS: Minimalistisch (alleen naam of niets)
     header: {
-    backgroundColor: 'bg-gray-50', // ✅ WHATSAPP: Lichte achtergrond (was zwart)
+    backgroundColor: 'bg-gray-100', // ✅ GRIJS: Grijs achtergrond voor duidelijkheid (was gray-50)
       textColor: 'gradient-text', // ✅ GRADIENT (was text-black)
     padding: 'px-4 py-3', // ✅ Consistent met cookie modal
     borderRadius: 'rounded-t-3xl sm:rounded-t-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother

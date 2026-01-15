@@ -16,7 +16,7 @@ export function Footer() {
         background: typeof DESIGN_SYSTEM.colors.primary === 'string' && DESIGN_SYSTEM.colors.primary.includes('gradient')
           ? DESIGN_SYSTEM.colors.primary
           : `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart || '#3C3C3D'} 0%, ${DESIGN_SYSTEM.colors.primaryEnd || '#7A7A7D'} 100%)`, // ✅ GRADIENT
-        color: DESIGN_SYSTEM.colors.gray[400],
+        color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit voor duidelijkheid (was gray[400])
       }}
     >
       <div 
@@ -57,10 +57,11 @@ export function Footer() {
               <li>
                 <Link 
                   href="/over-ons" 
-                  className="transition-colors hover:text-white"
+                  className="transition-opacity hover:opacity-80"
                   style={{
                     fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
                   }}
                 >
                   Ons Verhaal
@@ -69,10 +70,11 @@ export function Footer() {
               <li>
                 <Link 
                   href="/contact" 
-                  className="transition-colors hover:text-white"
+                  className="transition-opacity hover:opacity-80"
                   style={{
                     fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
                   }}
                 >
                   Contact
@@ -97,10 +99,11 @@ export function Footer() {
               <li>
                 <Link 
                   href="/producten" 
-                  className="transition-colors hover:text-white"
+                  className="transition-opacity hover:opacity-80"
                   style={{
                     fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
                   }}
                 >
                   Alle Producten
@@ -109,10 +112,11 @@ export function Footer() {
               <li>
                 <Link 
                   href="/cart" 
-                  className="transition-colors hover:text-white"
+                  className="transition-opacity hover:opacity-80"
                   style={{
                     fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
                   }}
                 >
                   Winkelwagen
@@ -137,10 +141,11 @@ export function Footer() {
               <li>
                 <Link 
                   href="/retourneren" 
-                  className="transition-colors hover:text-white"
+                  className="transition-opacity hover:opacity-80"
                   style={{
                     fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
                   }}
                 >
                   Retourneren
@@ -149,10 +154,11 @@ export function Footer() {
               <li>
                 <Link 
                   href="/privacy-policy" 
-                  className="transition-colors hover:text-white"
+                  className="transition-opacity hover:opacity-80"
                   style={{
                     fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
                   }}
                 >
                   Privacy
@@ -177,10 +183,11 @@ export function Footer() {
               <li>
                 <a 
                   href={`mailto:${DESIGN_SYSTEM.contact.email}`}
-                  className="transition-colors hover:text-white"
+                  className="transition-opacity hover:opacity-80"
                   style={{
                     fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
                   }}
                 >
                   {DESIGN_SYSTEM.contact.email}
@@ -189,10 +196,11 @@ export function Footer() {
               <li>
                 <a 
                   href={`tel:${DESIGN_SYSTEM.contact.phone}`}
-                  className="transition-colors hover:text-white"
+                  className="transition-opacity hover:opacity-80"
                   style={{
                     fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
                   }}
                 >
                   {DESIGN_SYSTEM.contact.phoneDisplay}
@@ -222,6 +230,7 @@ export function Footer() {
             style={{
               fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
               fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+              color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
             }}
           >
             © {new Date().getFullYear()} CatSupply. Alle rechten voorbehouden.
@@ -229,21 +238,23 @@ export function Footer() {
           <div className="flex gap-6">
             <Link 
               href="/algemene-voorwaarden" 
-              className="transition-colors hover:text-white"
-              style={{
-                fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-              }}
+                  className="transition-opacity hover:opacity-80"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
+                  }}
             >
               Voorwaarden
             </Link>
             <Link 
               href="/privacy-policy" 
-              className="transition-colors hover:text-white"
-              style={{
-                fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-              }}
+                  className="transition-opacity hover:opacity-80"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
+                  }}
             >
               Privacy
             </Link>

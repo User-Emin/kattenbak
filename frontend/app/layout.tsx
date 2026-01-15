@@ -48,9 +48,9 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* URL BAR: WIT */}
-        <meta name="theme-color" content="#ffffff" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        {/* URL BAR: ✅ GRADIENT CONTRAST - Zelfde kleur als banner */}
+        <meta name="theme-color" content="#3C3C3D" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         
         <title>CatSupply - Premium Automatische Kattenbak</title>
         <meta name="description" content="De meest geavanceerde zelfreinigende kattenbak. Automatisch, hygiënisch, en stijlvol." />
