@@ -483,14 +483,44 @@ export function ChatPopup() {
   // ✅ SECURITY: Additional safety check - ensure safeChatConfig is valid before render
   // This check happens AFTER safeChatConfig is defined
   if (!safeChatConfig || !safeChatConfig.button || !safeChatConfig.modal || !safeChatConfig.animations) {
-    // Return minimal button only (no popup) to prevent crash
+    // Return minimal button only (no popup) to prevent crash - 100% DYNAMISCH via fallback config
+    const fallbackButton = safeChatConfig?.button || {
+      position: { type: 'fixed', right: 'right-6', bottom: 'bottom-6' },
+      size: 'w-16 h-16',
+      borderRadius: 'rounded-md',
+      backgroundColor: 'bg-black',
+      textColor: 'text-white',
+      shadow: 'shadow-lg',
+      hoverBackgroundColor: 'hover:bg-gray-900',
+      display: 'flex',
+      align: 'items-center',
+      justify: 'justify-center',
+      zIndex: 'z-[50]',
+      transitionClasses: 'transition-all duration-200',
+      iconSize: 'w-7 h-7',
+    };
     return (
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="fixed right-4 bottom-8 w-14 h-14 bg-black text-white rounded-sm shadow-2xl z-[100] flex items-center justify-center hover:bg-gray-900 transition-colors"
+        className={cn(
+          fallbackButton.position.type,
+          fallbackButton.position.right,
+          fallbackButton.position.bottom,
+          fallbackButton.size,
+          fallbackButton.borderRadius,
+          fallbackButton.backgroundColor,
+          fallbackButton.textColor,
+          fallbackButton.shadow,
+          fallbackButton.hoverBackgroundColor,
+          fallbackButton.display,
+          fallbackButton.align,
+          fallbackButton.justify,
+          fallbackButton.zIndex,
+          fallbackButton.transitionClasses
+        )}
         aria-label="Open chat"
       >
-        <MessageCircle className="w-6 h-6" />
+        <MessageCircle className={fallbackButton.iconSize} />
       </button>
     );
   }

@@ -62,7 +62,7 @@ export const CHAT_CONFIG = {
     borderRadius: 'rounded-t-xl sm:rounded-t-2xl', // ✅ Consistent met modal borderRadius
     borderBottom: 'border-b border-gray-700/20', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[700] - Tailwind class
     sticky: 'sticky top-0', // ✅ Consistent met cookie modal
-    transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+    transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
     container: {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       justify: DESIGN_SYSTEM.layoutUtils.flex.justify.between,
@@ -95,20 +95,20 @@ export const CHAT_CONFIG = {
   // Messages styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
   messages: {
     container: {
-      padding: DESIGN_SYSTEM.spacing[6], // ✅ DYNAMISCH: 24px via DESIGN_SYSTEM
+      padding: 'p-4 sm:p-6', // ✅ DYNAMISCH: 16px mobile, 24px desktop (was: DESIGN_SYSTEM.spacing[6] = '1.5rem' string)
       backgroundColor: 'bg-gray-50', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[50] - Tailwind class
       spacing: 'space-y-4',
       flex: DESIGN_SYSTEM.layoutUtils.flex.grow.grow,
       overflow: DESIGN_SYSTEM.layoutUtils.overflow.yAuto,
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       direction: DESIGN_SYSTEM.layoutUtils.flex.direction.col,
-      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
     },
     messageWrapper: {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       userJustify: DESIGN_SYSTEM.layoutUtils.flex.justify.end,
       assistantJustify: DESIGN_SYSTEM.layoutUtils.flex.justify.start,
-      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
     },
     user: {
       backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
@@ -148,7 +148,7 @@ export const CHAT_CONFIG = {
       backgroundColor: DESIGN_SYSTEM.colors.secondary, // ✅ DYNAMISCH: #ffffff via DESIGN_SYSTEM
       borderTop: `border-t border-${DESIGN_SYSTEM.colors.gray[200]}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       borderRadius: 'rounded-b-xl sm:rounded-b-2xl', // ✅ Consistent met modal borderRadius
-      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
     },
     fieldContainer: {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
@@ -217,21 +217,21 @@ export const CHAT_CONFIG = {
       mobilePointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
       position: DESIGN_SYSTEM.layoutUtils.position.fixed,
       inset: 'inset-0',
-      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.slow}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
     },
     modal: {
       slideIn: 'animate-in zoom-in-95 duration-300 ease-out', // ✅ DYNAMISCH: DESIGN_SYSTEM transitions - Tailwind classes
-      container: {
-        position: DESIGN_SYSTEM.layoutUtils.position.fixed,
-        inset: 'inset-0',
-        zIndex: 'z-[200]', // ✅ Consistent met cookie modal
-        display: DESIGN_SYSTEM.layoutUtils.display.flex,
-        align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
-        justify: DESIGN_SYSTEM.layoutUtils.flex.justify.center,
-        padding: 'p-3 sm:p-4', // ✅ Consistent met cookie modal
-        pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
-        transition: 'transition-all duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
-      },
+    container: {
+      position: DESIGN_SYSTEM.layoutUtils.position.fixed,
+      inset: 'inset-0',
+      zIndex: 'z-[200]', // ✅ Consistent met cookie modal
+      display: DESIGN_SYSTEM.layoutUtils.display.flex,
+      align: DESIGN_SYSTEM.layoutUtils.flex.align.end, // ✅ POPUP: Boven button (end i.p.v. center)
+      justify: DESIGN_SYSTEM.layoutUtils.flex.justify.end, // ✅ POPUP: Rechts (end i.p.v. center)
+      padding: 'p-3 sm:p-4', // ✅ Consistent met cookie modal
+      pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
+      transition: 'transition-all duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
+    },
       content: {
         pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.auto,
         width: DESIGN_SYSTEM.layoutUtils.sizing.widthFull,
