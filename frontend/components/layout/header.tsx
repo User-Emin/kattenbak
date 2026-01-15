@@ -140,7 +140,7 @@ export function Header() {
             className="fixed inset-0 bg-black/20 z-[150] backdrop-blur-sm"
             onClick={closeCart}
           />
-          <div className="fixed right-0 top-0 h-screen w-full max-w-md bg-white shadow-2xl z-[160] animate-slide-in-right flex flex-col">
+          <div className="fixed right-0 top-0 h-screen w-full max-w-md bg-white shadow-2xl z-[170] animate-slide-in-right flex flex-col">
             <div 
               className="flex items-center justify-between flex-shrink-0 border-b"
               style={{

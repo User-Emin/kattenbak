@@ -42,8 +42,8 @@ export const CHAT_CONFIG = {
 
   // Modal styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
   modal: {
-    maxWidth: 'max-w-md', // Consistent met cookie modal max-w-xl pattern
-    maxHeight: 'max-h-[85vh] sm:max-h-[80vh]', // Consistent met cookie modal
+    maxWidth: 'max-w-sm', // ✅ KORTER: Horizontaal korter (was max-w-md)
+    maxHeight: 'max-h-[90vh] sm:max-h-[85vh]', // ✅ LANGER: Verticaal langer (was 85vh/80vh)
     backgroundColor: 'bg-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.secondary (#ffffff) - Tailwind class
     borderRadius: 'rounded-3xl sm:rounded-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
     border: 'border border-gray-200', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[200] - Tailwind class
@@ -168,9 +168,9 @@ export const CHAT_CONFIG = {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     },
     field: {
-      borderRadius: 'rounded-full', // ✅ WHATSAPP: Volledig rond (was rounded-2xl)
-      border: 'border-0', // ✅ GEEN BORDER: Geen border
-      backgroundColor: 'bg-gray-100', // ✅ WHATSAPP: Lichtere achtergrond (was bg-gray-50)
+      borderRadius: 'rounded-full', // ✅ ROND: Volledig rond
+      border: 'border border-gray-300', // ✅ BORDER: Subtiele border voor typveld vibe
+      backgroundColor: 'bg-white', // ✅ WIT: Witte achtergrond (was gray-100)
       padding: 'px-4 py-2.5', // ✅ WHATSAPP: Compactere padding (was px-5 py-3.5)
       width: 'w-full', // ✅ LANGER: Volledige breedte
       fontSize: DESIGN_SYSTEM.typography.fontSize.base, // ✅ WHATSAPP: Base size (was sm)
@@ -180,10 +180,10 @@ export const CHAT_CONFIG = {
         textColor: 'placeholder:text-gray-500', // ✅ WHATSAPP: Grijze placeholder
       },
       focus: {
-        ring: 'focus:ring-0', // ✅ WHATSAPP: Geen focus ring (was ring-2)
-        border: 'focus:border-0', // ✅ GEEN BORDER: Ook bij focus geen border
-        backgroundColor: 'focus:bg-white', // ✅ WHATSAPP: Witte achtergrond bij focus
-        outline: 'focus:outline-none', // ✅ WHATSAPP: Geen outline
+        ring: 'focus:ring-2 focus:ring-gray-300', // ✅ TYPVELD: Subtiele focus ring
+        border: 'focus:border-gray-400', // ✅ TYPVELD: Border blijft bij focus
+        backgroundColor: 'focus:bg-white', // ✅ WIT: Witte achtergrond bij focus
+        outline: 'focus:outline-none', // ✅ Geen outline
       },
       transition: 'transition-all duration-200 ease-out', // ✅ SMOOTHER: ease-out voor vloeiendere animatie
     },

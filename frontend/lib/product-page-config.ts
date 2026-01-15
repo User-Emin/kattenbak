@@ -321,12 +321,12 @@ export const PRODUCT_PAGE_CONFIG = {
 
   // Safety Notice (Let op / Waarschuwing)
   safetyNotice: {
-    container: 'mt-6 p-3.5 border-2 border-red-200 rounded-lg bg-red-50',
+    container: 'mt-6 p-4 border border-red-300 rounded-xl bg-red-50', // ✅ SMOOTH: Rondere hoeken, subtielere border
     header: {
       container: 'flex items-start gap-2.5 mb-2',
       icon: {
         size: 'w-5 h-5',
-        color: 'text-red-600',
+        color: 'text-black', // ✅ ZWART: Icon in zwart zoals gevraagd (kaart blijft rood)
       },
       title: {
         fontSize: 'text-sm',
@@ -336,7 +336,7 @@ export const PRODUCT_PAGE_CONFIG = {
     },
     content: {
       fontSize: 'text-sm',
-      textColor: 'text-red-800',
+      textColor: 'text-black', // ✅ ZWART: Tekst in zwart zoals gevraagd
       lineHeight: 'leading-relaxed',
     },
   },
