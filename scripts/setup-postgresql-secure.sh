@@ -153,7 +153,7 @@ cd "${BACKEND_PATH}"
 # Create admin user script file
 cat > create-admin-user.js <<'ADMINSCRIPT'
 const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs'); // ✅ Uses bcryptjs (same as auth.util.ts)
 
 const prisma = new PrismaClient();
 
