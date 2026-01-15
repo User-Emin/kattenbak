@@ -488,10 +488,10 @@ export function ChatPopup() {
       position: { type: 'fixed', right: 'right-6', bottom: 'bottom-6' },
       size: 'w-16 h-16',
       borderRadius: 'rounded-md',
-      backgroundColor: 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]', // ✅ GRADIENT (was bg-black)
-      textColor: 'text-white',
+      backgroundColor: 'bg-gray-200', // ✅ GRIJS: Grijs achtergrond (was gradient)
+      textColor: 'text-gray-700', // ✅ GRIJS TEKST: Goed contrast (was text-white)
       shadow: 'shadow-lg',
-      hoverBackgroundColor: 'hover:bg-gray-900',
+      hoverBackgroundColor: 'hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover (was hover:bg-gray-900)
       display: 'flex',
       align: 'items-center',
       justify: 'justify-center',
