@@ -83,12 +83,12 @@ export function ProductUspFeatures() {
               </div>
             </div>
 
-            {/* ✅ BREDE Afbeelding - Zigzag Pattern - grotere padding zoals Coolblue */}
-            <div className={`relative aspect-square bg-gray-50 overflow-hidden rounded-lg border border-gray-200 ${isEven ? 'md:order-2' : 'md:order-1'}`}>
+            {/* ✅ DIRECT: Afbeelding zonder extra styling (zoals productdetail) */}
+            <div className={`relative w-full ${isEven ? 'md:order-2' : 'md:order-1'}`}>
               <img
                 src={feature.image}
                 alt={feature.imageAlt}
-                className="w-full h-full object-contain p-8"
+                className="w-full h-auto object-cover"
                 loading="lazy"
               />
             </div>

@@ -232,7 +232,7 @@ export default function HomePage() {
               letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
             }}
           >
-            Premium Kwaliteit
+            Premium Kwaliteit & Veiligheid
           </h2>
           <p 
             style={{
@@ -242,7 +242,7 @@ export default function HomePage() {
               lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
             }}
           >
-            Hoogwaardige materialen • Duurzaam design • Gemaakt voor comfort
+            Hoogwaardige ABS materialen met dubbele veiligheidssensoren. Volledig automatisch met real-time monitoring via smartphone app. Perfect voor katten tot 7kg.
           </p>
         </div>
       </section>
