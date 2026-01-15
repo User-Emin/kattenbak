@@ -108,7 +108,7 @@ export function ChatPopup() {
             blur: 'backdrop-blur-sm',
             fadeIn: 'animate-in fade-in duration-300',
             zIndex: 'z-[99]',
-            mobileTransparent: 'md:bg-gray-200', // ✅ GRIJS: Solid (geen transparant, was md:bg-transparent)
+            mobileTransparent: 'md:bg-transparent', // ✅ TRANSPARANT: Blijft zoals het was (was md:bg-gray-200)
             mobilePointerEvents: 'md:pointer-events-none',
             position: 'fixed',
             inset: 'inset-0',

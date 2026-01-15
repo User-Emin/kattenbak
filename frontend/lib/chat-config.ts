@@ -229,7 +229,7 @@ export const CHAT_CONFIG = {
     },
     backdrop: {
       fadeIn: 'animate-in fade-in duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.transitions.duration.slow (300ms) - Tailwind class
-      backgroundColor: 'bg-black/20', // ✅ LICHTE OVERLAY: Subtiel, behoudt achtergrond zichtbaar (was bg-transparent)
+      backgroundColor: 'bg-transparent', // ✅ TRANSPARANT: Blijft zoals het was, niets verandert (was bg-black/20)
       blur: 'backdrop-blur-sm',
       zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.backdrop,
             mobileTransparent: 'md:bg-gray-200', // ✅ GRIJS: Solid (geen transparant, was bg-gray-200/50)
