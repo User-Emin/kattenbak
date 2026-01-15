@@ -16,6 +16,7 @@ import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { SHARED_CONTENT } from "@/lib/content.config";
+import { PremiumQualitySection } from "@/components/shared/premium-quality-section";
 
 /**
  * 🎨 HOMEPAGE - MINIMALISTISCH ZWART-WIT DESIGN
