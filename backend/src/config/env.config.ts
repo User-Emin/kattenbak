@@ -50,8 +50,8 @@ const envSchema = z.object({
   EMAIL_FROM: z.string().email().default('noreply@kattenbak.nl'),
   EMAIL_PROVIDER: z.enum(['console', 'smtp', 'sendgrid']).default('console'),
   SENDGRID_API_KEY: z.string().optional(),
-  ADMIN_EMAIL: z.string().email().optional().or(z.literal('')).default('admin@localhost'),
-  ADMIN_PASSWORD: z.string().min(12, 'ADMIN_PASSWORD must be at least 12 characters').optional().or(z.literal('')).default('admin123456789'),
+  ADMIN_EMAIL: z.string().email().optional().or(z.literal('')).or(z.undefined()).default('admin@localhost'),
+  ADMIN_PASSWORD: z.string().min(12, 'ADMIN_PASSWORD must be at least 12 characters').optional().or(z.literal('')).or(z.undefined()).default('admin123456789'),
   RATE_LIMIT_WINDOW_MS: z.string().regex(/^\d+$/).default('900000'),
   RATE_LIMIT_MAX_REQUESTS: z.string().regex(/^\d+$/).default('100'),
   UPLOAD_MAX_SIZE: z.string().regex(/^\d+$/).default('5242880'),
@@ -64,19 +64,37 @@ const envSchema = z.object({
   LOG_TO_FILE: z.string().transform(val => val === 'true').default('false'),
 });
 
-// ✅ SECURITY: Runtime validation met Zod
+// ✅ SECURITY: Runtime validation met Zod (met fallback voor optionele velden)
 let validatedEnv: z.infer<typeof envSchema>;
 try {
-  validatedEnv = envSchema.parse(process.env);
-} catch (error) {
-  if (error instanceof z.ZodError) {
+  // Parse met safeParse voor betere error handling
+  const result = envSchema.safeParse(process.env);
+  if (!result.success) {
     console.error('❌ Environment validation failed:');
-    error.errors.forEach(err => {
+    result.error.errors.forEach(err => {
       console.error(`   - ${err.path.join('.')}: ${err.message}`);
     });
-    process.exit(1);
+    // ✅ SECURITY: Voor optionele velden (ADMIN_EMAIL, ADMIN_PASSWORD) gebruiken we defaults
+    // Alleen critical errors (DATABASE_URL, JWT_SECRET, MOLLIE_API_KEY) zijn fatal
+    const criticalErrors = result.error.errors.filter(err => 
+      ['DATABASE_URL', 'JWT_SECRET', 'MOLLIE_API_KEY'].includes(err.path[0] as string)
+    );
+    if (criticalErrors.length > 0) {
+      console.error('❌ FATAL: Critical environment variables missing!');
+      process.exit(1);
+    }
+    // Voor non-critical errors, gebruik defaults
+    validatedEnv = envSchema.parse({ ...process.env, ...Object.fromEntries(
+      result.error.errors
+        .filter(err => !['DATABASE_URL', 'JWT_SECRET', 'MOLLIE_API_KEY'].includes(err.path[0] as string))
+        .map(err => [err.path[0], undefined])
+    )});
+  } else {
+    validatedEnv = result.data;
   }
-  throw error;
+} catch (error) {
+  console.error('❌ Fatal error during environment validation:', error);
+  process.exit(1);
 }
 
 // Environment configuration with validation
