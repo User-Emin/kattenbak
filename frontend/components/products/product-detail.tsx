@@ -871,28 +871,46 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* Edge-to-edge Image Section - ✅ EDGE-TO-EDGE: Volledige breedte, geen padding */}
-      <div className={CONFIG.edgeSection.container}>
-        <div className="relative w-full">
-          <Image
-            src={DESIGN_SYSTEM.layout.edgeSection.imageUrl} // ✅ DYNAMISCH: Druppel foto via DESIGN_SYSTEM (geen hardcode)
-            alt="Premium Kwaliteit & Veiligheid"
-            width={1920}
-            height={800}
-            className={cn(CONFIG.edgeSection.image.aspectRatio, CONFIG.edgeSection.image.objectFit, CONFIG.edgeSection.image.brightness)}
-          />
-          <div className={CONFIG.edgeSection.overlay.position}>
-            <div className={cn(CONFIG.edgeSection.overlay.content, CONFIG.edgeSection.overlay.padding, CONFIG.edgeSection.overlay.maxWidth, CONFIG.edgeSection.overlay.textAlign)}>
-              <h2 className={cn(CONFIG.edgeSection.title.fontSize, CONFIG.edgeSection.title.fontWeight, CONFIG.edgeSection.title.textColor, CONFIG.edgeSection.title.marginBottom)}>
-                Premium Kwaliteit & Veiligheid
-              </h2>
-              <p className={cn(CONFIG.edgeSection.description.fontSize, CONFIG.edgeSection.description.textColor)}>
-                Hoogwaardige ABS materialen met dubbele veiligheidssensoren. Volledig automatisch met real-time monitoring via smartphone app. Perfect voor katten tot 7kg.
-              </p>
-            </div>
-          </div>
+      {/* ✅ PREMIUM KWALITEIT & VEILIGHEID - GRADIENT EXACT ZOALS HOME (GEEN AFBEELDING) */}
+      <section 
+        className="relative flex items-center justify-center w-full"
+        style={{
+          minHeight: '400px', // ✅ VERTICAAL KORTER: 400px (zoals home)
+          // ✅ GEEN AFBEELDING: Alleen gradient zoals navbar
+          background: `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart} 0%, ${DESIGN_SYSTEM.colors.primaryEnd} 100%)`, // ✅ GRADIENT EXACT NAVBAR: Via DESIGN_SYSTEM (geen hardcode)
+        }}
+      >
+        {/* Centered content */}
+        <div 
+          className="relative z-10 text-center space-y-6"
+          style={{
+            maxWidth: DESIGN_SYSTEM.layout.maxWidth.lg,
+            padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
+          }}
+        >
+          <h2 
+            style={{
+              fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
+              fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'],
+              fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
+              color: DESIGN_SYSTEM.colors.text.inverse,
+              letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
+            }}
+          >
+            Premium Kwaliteit & Veiligheid
+          </h2>
+          <p 
+            style={{
+              fontSize: DESIGN_SYSTEM.typography.fontSize.xl,
+              fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+              color: DESIGN_SYSTEM.colors.text.inverse,
+              lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
+            }}
+          >
+            Hoogwaardige ABS materialen met dubbele veiligheidssensoren. Volledig automatisch met real-time monitoring via smartphone app. Perfect voor katten tot 7kg.
+          </p>
         </div>
-      </div>
+      </section>
 
       {/* Feature Sections - ZIGZAG PATTERN (Pergolux style) */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.sectionSpacing)}>

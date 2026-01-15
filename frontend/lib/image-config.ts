@@ -66,13 +66,14 @@ export const getProductImage = (images: string[] | null | undefined): string => 
 
 // Helper voor FILL images (geen width/height)
 export const getImageFillProps = (config: { src?: string; alt: string }) => {
+  const imageSrc = config.src && config.src.trim() !== '' ? config.src : IMAGE_CONFIG.placeholder; // ✅ FIX: Geen lege string
   return {
-    src: config.src || IMAGE_CONFIG.placeholder,
+    src: imageSrc,
     alt: config.alt,
     fill: true,
     quality: IMAGE_QUALITY,
     sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
-    onError: () => console.error('❌ Image failed to load:', config.src),
+    onError: () => console.error('❌ Image failed to load:', imageSrc),
   };
 };
 
