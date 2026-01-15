@@ -50,8 +50,16 @@ const envSchema = z.object({
   EMAIL_FROM: z.string().email().default('noreply@kattenbak.nl'),
   EMAIL_PROVIDER: z.enum(['console', 'smtp', 'sendgrid']).default('console'),
   SENDGRID_API_KEY: z.string().optional(),
-  ADMIN_EMAIL: z.string().email().optional().or(z.literal('')).or(z.undefined()).default('admin@localhost'),
-  ADMIN_PASSWORD: z.string().min(12, 'ADMIN_PASSWORD must be at least 12 characters').optional().or(z.literal('')).or(z.undefined()).default('admin123456789'),
+  ADMIN_EMAIL: z.union([
+    z.string().email(),
+    z.literal(''),
+    z.undefined()
+  ]).optional().default('admin@localhost'),
+  ADMIN_PASSWORD: z.union([
+    z.string().min(12, 'ADMIN_PASSWORD must be at least 12 characters'),
+    z.literal(''),
+    z.undefined()
+  ]).optional().default('admin123456789'),
   RATE_LIMIT_WINDOW_MS: z.string().regex(/^\d+$/).default('900000'),
   RATE_LIMIT_MAX_REQUESTS: z.string().regex(/^\d+$/).default('100'),
   UPLOAD_MAX_SIZE: z.string().regex(/^\d+$/).default('5242880'),
