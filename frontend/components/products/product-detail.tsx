@@ -464,7 +464,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               ) : (
                 <>
                   <ShoppingCart className={CONFIG.info.button.icon} />
-                  Toevoegen aan Winkelwagen - {formatPrice(product.price)}
+                  <span className="hidden md:inline">Toevoegen aan Winkelwagen - </span> {/* ✅ RESPONSIVE: Desktop volledige tekst */}
+                  <span className="md:hidden">Toevoegen - </span> {/* ✅ RESPONSIVE: Mobile kortere tekst */}
+                  {formatPrice(product.price)}
                 </>
               )}
             </button>

@@ -100,21 +100,10 @@ export default function HomePage() {
         >
           {/* LINKS: TEKST & CTA - ✅ RESPONSIVE: Mobile full width, Desktop 35% */}
           <div 
-            className="space-y-4 md:space-y-6 z-10 w-full md:w-auto"
+            className="space-y-4 md:space-y-6 z-10 w-full md:w-[35%] px-4 md:px-12" // ✅ RESPONSIVE: Mobile full width met padding, Desktop 35% width
             style={{
-              width: '100%', // ✅ MOBILE: Full width
-              maxWidth: '100%', // ✅ MOBILE: Full width
-              padding: `${DESIGN_SYSTEM.spacing[8]} ${DESIGN_SYSTEM.spacing.containerPaddingMobile}`, // ✅ MOBILE: Kleinere padding
               backgroundColor: DESIGN_SYSTEM.colors.gray[50],
             }}
-            // ✅ DESKTOP: 35% width via inline style override
-            {...(typeof window !== 'undefined' && window.innerWidth >= 768 ? {
-              style: {
-                width: DESIGN_SYSTEM.layout.hero.splitRatio.text,
-                padding: `${DESIGN_SYSTEM.spacing[12]} ${DESIGN_SYSTEM.spacing.containerPadding}`,
-                backgroundColor: DESIGN_SYSTEM.colors.gray[50],
-              }
-            } : {})}
           >
             {/* Heading - ✅ RESPONSIVE: Mobile smaller, Desktop larger */}
             <h1 
@@ -168,20 +157,12 @@ export default function HomePage() {
 
           {/* RECHTS: AFBEELDING - ✅ RESPONSIVE: Mobile full width/height, Desktop 65% */}
           <div 
-            className="relative md:absolute top-0 right-0 w-full md:w-auto h-64 md:h-full" // ✅ RESPONSIVE: Mobile relative met height, Desktop absolute
+            className="relative md:absolute top-0 right-0 w-full md:w-[65%] h-64 md:h-full" // ✅ RESPONSIVE: Mobile relative met height, Desktop absolute 65%
             style={{
-              width: '100%', // ✅ MOBILE: Full width
-              minHeight: '16rem', // ✅ MOBILE: 256px minimum height
               backgroundImage: `url('${DESIGN_SYSTEM.layout.hero.imageUrl}')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
-              // ✅ DESKTOP: 65% width via inline style override
-              ...(typeof window !== 'undefined' && window.innerWidth >= 768 ? {
-                width: DESIGN_SYSTEM.layout.hero.splitRatio.image,
-                height: '100%',
-                position: 'absolute',
-              } : {})
             }}
           />
         </div>

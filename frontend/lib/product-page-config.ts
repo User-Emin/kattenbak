@@ -26,15 +26,15 @@ export const PRODUCT_PAGE_CONFIG = {
     },
   },
 
-  // Breadcrumb configuratie
+  // Breadcrumb configuratie - ✅ RESPONSIVE: Mobile kleiner
   breadcrumb: {
-    fontSize: 'text-xs',        // ✅ Compacter (was text-sm)
+    fontSize: 'text-xs md:text-sm',        // ✅ RESPONSIVE: Mobile text-xs, Desktop text-sm
     textColor: 'text-gray-600',
     hoverColor: 'hover:text-gray-900',
     separator: '/',
-    spacing: 'flex items-center space-x-1.5', // ✅ Compacter spacing (was space-x-2)
-    iconSize: 'w-3.5 h-3.5',    // ✅ Kleinere icons (was w-4 h-4)
-    containerPadding: 'pb-1',   // ✅ ULTRA COMPACT - minimale ruimte onder breadcrumb
+    spacing: 'flex items-center space-x-1 md:space-x-1.5', // ✅ RESPONSIVE: Mobile kleinere spacing
+    iconSize: 'w-3 h-3 md:w-3.5 md:h-3.5',    // ✅ RESPONSIVE: Mobile kleinere icons
+    containerPadding: 'pb-1 px-4 md:px-0',   // ✅ RESPONSIVE: Mobile padding, Desktop geen padding
     // Bottom border verwijderd - breadcrumb zit nu in grid
   },
 
@@ -118,15 +118,15 @@ export const PRODUCT_PAGE_CONFIG = {
       marginBottom: 'mb-6',
     },
     button: {
-      size: 'w-full py-4',
-      fontSize: 'text-base',
+      size: 'w-full py-3 md:py-4', // ✅ RESPONSIVE: Mobile kleinere padding
+      fontSize: 'text-sm md:text-base', // ✅ RESPONSIVE: Mobile kleinere tekst (text-sm)
       fontWeight: 'font-semibold', // ✅ DIKKER: Zoals banner (was font-normal)
       bgColor: 'bg-blue-600',
       hoverBgColor: 'hover:bg-blue-700',
       textColor: 'text-white',
       borderRadius: 'rounded-lg',
       transition: 'transition-colors',
-      icon: 'w-5 h-5',
+      icon: 'w-4 h-4 md:w-5 md:h-5', // ✅ RESPONSIVE: Mobile kleinere icon
     },
     usps: {
       spacing: 'flex flex-col gap-2 mt-6',
