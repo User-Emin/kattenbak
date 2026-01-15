@@ -213,11 +213,10 @@ export const DESIGN_SYSTEM = {
       overlayOpacity: 0.4,  // Iets donkerder voor betere leesbaarheid
     },
     
-    // Edge section (Premium Kwaliteit & Veiligheid) - ✅ REGENDRUPPEL FOTO: Smooth regendruppel
+    // Edge section (Premium Kwaliteit & Veiligheid) - ✅ GRADIENT EXACT NAVBAR (GEEN AFBEELDING)
     edgeSection: {
-      // ✅ DYNAMISCH: Smooth regendruppel foto Unsplash (premium kwaliteit, regendruppels)
-      imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1920&h=800&auto=format&fit=crop',
-      overlayOpacity: 0.5,  // Overlay voor tekst leesbaarheid
+      // ✅ DYNAMISCH: Gradient exact zoals navbar (geen afbeelding, geen hardcode)
+      // Gradient wordt direct in component gebruikt via DESIGN_SYSTEM.colors.primaryStart/End
     },
     
     // Feature images - ✅ DYNAMISCH: Centrale configuratie voor zigzag features

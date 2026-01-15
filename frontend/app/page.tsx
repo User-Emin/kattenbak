@@ -186,25 +186,15 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* 🎨 PREMIUM KWALITEIT & VEILIGHEID - DIRECT PLAKKEND AAN HERO */}
+      {/* 🎨 PREMIUM KWALITEIT & VEILIGHEID - GRADIENT EXACT ZOALS NAVBAR (GEEN AFBEELDING) */}
       <section 
         className="relative flex items-center justify-center w-full"
         style={{
-          minHeight: '600px', // ✅ VERTICAAL BREDER: 600px (was 400px)
-          backgroundImage: `url('${DESIGN_SYSTEM.layout.edgeSection.imageUrl}')`, // ✅ DYNAMISCH: Regendruppel foto (geen hardcode)
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
+          minHeight: '600px', // ✅ VERTICAAL BREDER: 600px
+          // ✅ GEEN AFBEELDING: Alleen gradient zoals navbar
+          background: `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart} 0%, ${DESIGN_SYSTEM.colors.primaryEnd} 100%)`, // ✅ GRADIENT EXACT NAVBAR: Via DESIGN_SYSTEM (geen hardcode)
         }}
       >
-        {/* ✅ GRADIENT EXACT GRIJS: Via DESIGN_SYSTEM (geen hardcode) */}
-        <div 
-          className="absolute inset-0 transition-opacity duration-500"
-          style={{
-            background: `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.gray[600]} 0%, ${DESIGN_SYSTEM.colors.gray[800]} 100%)`, // ✅ GRADIENT EXACT GRIJS
-            opacity: DESIGN_SYSTEM.layout.edgeSection.overlayOpacity, // ✅ DYNAMISCH: Via edgeSection (geen hardcode)
-          }}
-        />
 
         {/* Centered content */}
         <div 
