@@ -199,8 +199,8 @@ export default function HomePage() {
       <section 
         className="relative flex items-center justify-center w-full"
         style={{
-          minHeight: DESIGN_SYSTEM.layout.featureSection.minHeight,
-          backgroundImage: `url('${DESIGN_SYSTEM.layout.featureSection.imageUrl}')`,
+          minHeight: DESIGN_SYSTEM.layout.edgeSection.overlayOpacity ? '400px' : DESIGN_SYSTEM.layout.featureSection.minHeight,
+          backgroundImage: `url('${DESIGN_SYSTEM.layout.edgeSection.imageUrl}')`, // ✅ DYNAMISCH: Regendruppel foto (geen hardcode)
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -211,7 +211,7 @@ export default function HomePage() {
           className="absolute inset-0 transition-opacity duration-500"
           style={{
             backgroundColor: DESIGN_SYSTEM.colors.primary,
-            opacity: DESIGN_SYSTEM.layout.featureSection.overlayOpacity,
+            opacity: DESIGN_SYSTEM.layout.edgeSection.overlayOpacity, // ✅ DYNAMISCH: Via edgeSection (geen hardcode)
           }}
         />
 
