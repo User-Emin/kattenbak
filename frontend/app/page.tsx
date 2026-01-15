@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 // Chat popup is nu in layout.tsx voor alle pagina's
 import { Separator } from "@/components/ui/separator";
-import { VideoPlayer } from "@/components/ui/video-player";
+// ✅ VIDEO PLAYER IMPORT VERWIJDERD: Geen redundantie
 import { ProductUspFeatures } from "@/components/products/product-usp-features";
 import { ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import type { Product } from "@/types/product";
@@ -186,31 +186,22 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* SEPARATOR */}
-      <div 
-        className="w-full"
-        style={{
-          height: '1px',
-          backgroundColor: DESIGN_SYSTEM.colors.border.default,
-        }}
-      />
-
-      {/* 🎨 EDGE-TO-EDGE FEATURE SECTION - VOLLEDIG TOT DE RAND */}
+      {/* 🎨 PREMIUM KWALITEIT & VEILIGHEID - DIRECT PLAKKEND AAN HERO */}
       <section 
         className="relative flex items-center justify-center w-full"
         style={{
-          minHeight: DESIGN_SYSTEM.layout.edgeSection.overlayOpacity ? '400px' : DESIGN_SYSTEM.layout.featureSection.minHeight,
+          minHeight: '600px', // ✅ VERTICAAL BREDER: 600px (was 400px)
           backgroundImage: `url('${DESIGN_SYSTEM.layout.edgeSection.imageUrl}')`, // ✅ DYNAMISCH: Regendruppel foto (geen hardcode)
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}
       >
-        {/* Smooth dark overlay voor leesbaarheid */}
+        {/* ✅ GRADIENT EXACT GRIJS: Via DESIGN_SYSTEM (geen hardcode) */}
         <div 
           className="absolute inset-0 transition-opacity duration-500"
           style={{
-            backgroundColor: DESIGN_SYSTEM.colors.primary,
+            background: `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.gray[600]} 0%, ${DESIGN_SYSTEM.colors.gray[800]} 100%)`, // ✅ GRADIENT EXACT GRIJS
             opacity: DESIGN_SYSTEM.layout.edgeSection.overlayOpacity, // ✅ DYNAMISCH: Via edgeSection (geen hardcode)
           }}
         />
@@ -300,77 +291,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SEPARATOR */}
-      <div 
-        className="w-full"
-        style={{
-          height: '1px',
-          backgroundColor: DESIGN_SYSTEM.colors.border.default,
-        }}
-      />
-
-      {/* 🎨 VIDEO SECTION */}
-      <section 
-        style={{
-          padding: `${DESIGN_SYSTEM.spacing.section} 0`,
-          backgroundColor: DESIGN_SYSTEM.colors.secondary,
-        }}
-      >
-        <div 
-          className="mx-auto"
-          style={{
-            maxWidth: DESIGN_SYSTEM.layout.maxWidth.lg,
-            padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
-          }}
-        >
-          {/* Section Heading - Noto Sans MEDIUM (logo style) */}
-          <div className="text-center mb-12">
-            <h2 
-              className="mb-4"
-              style={{
-                fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-                fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'],
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
-                color: DESIGN_SYSTEM.colors.text.primary,
-                letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
-              }}
-            >
-              Zie Het in Actie
-            </h2>
-            <p 
-              style={{
-                fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-                color: DESIGN_SYSTEM.colors.text.secondary,
-              }}
-            >
-              <span style={{ fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold }}>2:30 min</span> demo video
-            </p>
-          </div>
-          
-          {/* Video Player */}
-          <VideoPlayer
-            videoUrl={product?.videoUrl || '/uploads/videos/hero-demo.mp4'}
-            posterUrl={product?.images?.[0]}
-            type="demo"
-            controls
-            className="w-full aspect-video overflow-hidden"
-            style={{
-              borderRadius: DESIGN_SYSTEM.effects.borderRadius.sm,
-              border: `1px solid ${DESIGN_SYSTEM.colors.border.default}`,
-            }}
-          />
-        </div>
-      </section>
-
-      {/* SEPARATOR */}
-      <div 
-        className="w-full"
-        style={{
-          height: '1px',
-          backgroundColor: DESIGN_SYSTEM.colors.border.default,
-        }}
-      />
+      {/* ✅ VIDEO SECTIE VERWIJDERD: Geen redundantie */}
 
       {/* 🎨 FAQ SECTION */}
       <section 
