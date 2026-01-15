@@ -263,7 +263,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     {
       title: 'Dubbele Veiligheidssensoren',
       description: 'Uitgerust met infrarood- en gewichtssensoren die automatisch stoppen wanneer uw kat de bak betreedt. Getest op 10.000+ cycli voor maximale betrouwbaarheid.',
-      image: '/images/feature-2.jpg', // ✅ DYNAMISCH: Lokale foto (geen hardcode Unsplash URL)
+      image: DESIGN_SYSTEM.layout.features.capacity.imageUrl, // ✅ DYNAMISCH: Zelfde foto als home (geen hardcode)
       items: [
         'IR bewegingssensor',
         'Gewichtdetectie technologie',

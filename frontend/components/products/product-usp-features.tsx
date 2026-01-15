@@ -84,12 +84,12 @@ export function ProductUspFeatures() {
               </div>
             </div>
 
-            {/* ✅ DIRECT: Afbeelding zonder extra styling (zoals productdetail) */}
+            {/* ✅ RONDIGER: Afbeelding met ronde hoeken zoals productdetail */}
             <div className={`relative w-full ${isEven ? 'md:order-2' : 'md:order-1'}`}>
               <img
                 src={feature.image}
                 alt={feature.imageAlt}
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover rounded-xl" // ✅ RONDIGER: rounded-xl zoals productdetail (was geen rounded)
                 loading="lazy"
               />
             </div>
