@@ -48,7 +48,8 @@ export const uploadImage = async (file: File): Promise<string> => {
       throw new Error('Niet geautoriseerd. Log opnieuw in.');
     }
     if (error?.status === 413) {
-      throw new Error('Bestand te groot. Maximum 10MB per afbeelding.');
+      const maxSizeMB = error?.details?.maxSizeMB || 20;
+      throw new Error(`Bestand te groot. Maximum ${maxSizeMB}MB per afbeelding.`);
     }
     if (error?.status === 500) {
       throw new Error(error?.details?.error || error?.message || 'Serverfout bij uploaden. Probeer opnieuw.');

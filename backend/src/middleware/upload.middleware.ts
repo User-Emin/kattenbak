@@ -11,7 +11,7 @@ import { processVideoComplete } from '../utils/ffmpeg.util'; // VIDEO TRANSCODIN
  * SECURE IMAGE UPLOAD CONFIGURATION
  * Security measures:
  * - File type validation (MIME + extension)
- * - File size limits (10MB max)
+ * - File size limits (20MB max, configurable via env)
  * - Unique filenames (UUID)
  * - Path traversal prevention
  * - Image optimization
@@ -40,8 +40,13 @@ const ALLOWED_VIDEO_MIME_TYPES = [
 
 const ALLOWED_VIDEO_EXTENSIONS = ['.mp4', '.webm', '.mov', '.avi', '.mkv', '.m4v'];
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB for images
-const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100MB for videos
+// ✅ DYNAMIC: File size limits - configurable via env (fallback to defaults)
+const MAX_FILE_SIZE = process.env.UPLOAD_MAX_FILE_SIZE 
+  ? parseInt(process.env.UPLOAD_MAX_FILE_SIZE, 10) 
+  : 20 * 1024 * 1024; // ✅ INCREASED: 20MB for images (was 10MB) - matches Nginx limit
+const MAX_VIDEO_SIZE = process.env.UPLOAD_MAX_VIDEO_SIZE
+  ? parseInt(process.env.UPLOAD_MAX_VIDEO_SIZE, 10)
+  : 100 * 1024 * 1024; // 100MB for videos
 const MAX_FILES = 10;
 const UPLOAD_DIR = '/var/www/uploads/products';
 const VIDEO_UPLOAD_DIR = '/var/www/uploads/videos';
@@ -251,6 +256,9 @@ export const getVideoPublicUrl = (filename: string): string => {
 /**
  * Validate file size before processing
  */
+// ✅ EXPORT: MAX_FILE_SIZE for use in routes (error messages)
+export { MAX_FILE_SIZE, MAX_VIDEO_SIZE };
+
 export const validateFileSize = (size: number): boolean => {
   return size > 0 && size <= MAX_FILE_SIZE;
 };

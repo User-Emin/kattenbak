@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
-import { upload, videoUpload, optimizeImage, deleteFile, getPublicUrl, getVideoPublicUrl, validateFileSize, validateVideoSize } from '../../middleware/upload.middleware';
+import { upload, videoUpload, optimizeImage, deleteFile, getPublicUrl, getVideoPublicUrl, validateFileSize, validateVideoSize, MAX_FILE_SIZE } from '../../middleware/upload.middleware';
 
 const router = Router();
 
@@ -16,7 +16,7 @@ router.use(rateLimitMiddleware({ windowMs: 15 * 60 * 1000, max: 50 })); // Lower
  * Upload multiple product images
  * Security:
  * - File type validation
- * - Size limits (10MB per file)
+ * - Size limits (20MB per file, configurable via env)
  * - Image optimization
  * - EXIF stripping
  * - UUID filenames
