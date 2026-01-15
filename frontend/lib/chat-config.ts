@@ -148,7 +148,7 @@ export const CHAT_CONFIG = {
   // Input styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
   input: {
     container: {
-      padding: 'p-4', // ✅ Direct Tailwind class (was: DESIGN_SYSTEM.spacing[4] = '1rem' string)
+      padding: 'p-3 sm:p-4', // ✅ KORTER: Minder padding (was p-4)
       backgroundColor: 'bg-white', // ✅ Direct Tailwind class (was: DESIGN_SYSTEM.colors.secondary = '#ffffff' string)
       borderTop: 'border-t border-gray-200', // ✅ Direct Tailwind class (was: template literal)
       borderRadius: 'rounded-b-3xl sm:rounded-b-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
@@ -167,23 +167,25 @@ export const CHAT_CONFIG = {
       justify: DESIGN_SYSTEM.layoutUtils.flex.justify.center,
     },
     footer: {
-      marginTop: 'mt-2',
+      marginTop: 'mt-1.5', // ✅ KORTER: Minder margin (was mt-2)
       textAlign: 'text-center',
+      fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     },
     field: {
-      borderRadius: 'rounded-xl', // ✅ RONDER: Extra ronde hoeken, smoother
-      border: 'border border-gray-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[300] - Tailwind class
-      backgroundColor: 'bg-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.secondary (#ffffff) - Tailwind class
-      padding: 'px-5 py-4', // ✅ LANGER: Meer padding links/rechts tot einde (was px-4)
+      borderRadius: 'rounded-2xl', // ✅ RONDER: Extra ronde hoeken, smoother (was rounded-xl)
+      border: 'border-0', // ✅ GEEN BORDER: Geen witte border zoals gevraagd
+      backgroundColor: 'bg-gray-50', // ✅ DYNAMISCH: Subtiele achtergrond zonder border
+      padding: 'px-5 py-3.5', // ✅ SMOOTHER: Minder verticale padding voor compacter uiterlijk
       width: 'w-full', // ✅ LANGER: Volledige breedte
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold, // ✅ DIKKER: 600 - zoals in banner
       focus: {
-        ring: 'focus:ring-2 focus:ring-black/30', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary - Tailwind class
-        border: 'focus:border-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary - Tailwind class
+        ring: 'focus:ring-2 focus:ring-black/20', // ✅ DYNAMISCH: Subtielere focus ring
+        border: 'focus:border-0', // ✅ GEEN BORDER: Ook bij focus geen border
+        backgroundColor: 'focus:bg-white', // ✅ DYNAMISCH: Witte achtergrond bij focus
       },
-      transition: 'transition-all duration-200', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
+      transition: 'transition-all duration-200 ease-out', // ✅ SMOOTHER: ease-out voor vloeiendere animatie
     },
     button: {
       borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
@@ -201,6 +203,7 @@ export const CHAT_CONFIG = {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // 12px
       textColor: 'text-gray-500', // ✅ Gray-500 (geen transparantie)
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+      marginTop: 'mt-1.5', // ✅ KORTER: Minder margin
     },
   },
 

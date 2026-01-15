@@ -864,7 +864,7 @@ export function ChatPopup() {
                   </button>
                 </div>
                 <p className={cn(
-                  safeChatConfig.input.footer.fontSize,
+                  safeChatConfig.input.footer.fontSize || 'text-xs',
                   safeChatConfig.input.footer.textColor,
                   safeChatConfig.input.footer.marginTop,
                   safeChatConfig.input.footer.textAlign,
