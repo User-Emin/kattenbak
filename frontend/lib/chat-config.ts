@@ -13,7 +13,7 @@ export const CHAT_CONFIG = {
     size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
     borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
     backgroundColor: 'bg-gray-200', // ✅ GRIJS: Solid grijs (geen transparantie)
-    textColor: 'text-white', // ✅ WIT SYMBOOL: Symbool wit zoals gevraagd (was text-gray-700)
+    textColor: 'gradient-text', // ✅ GRADIENT GRIJS: Exact zoals navbar (was text-white)
     hoverBackgroundColor: 'hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover voor duidelijkheid
     border: 'border-2 border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
@@ -57,7 +57,7 @@ export const CHAT_CONFIG = {
   // Header styling - ✅ GRADIENT GRIJS: Minimalistisch (alleen naam of niets)
     header: {
     backgroundColor: 'bg-gray-100', // ✅ GRIJS: Grijs achtergrond voor duidelijkheid
-      textColor: 'gradient-text', // ✅ GRADIENT GRIJS: Exact identiek (was gradient-text)
+      textColor: 'gradient-text', // ✅ GRADIENT GRIJS EXACT: Via DESIGN_SYSTEM (geen hardcode)
     padding: 'px-4 py-3', // ✅ Consistent met cookie modal
     borderRadius: 'rounded-t-3xl sm:rounded-t-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
     borderBottom: 'border-b border-gray-200', // ✅ WHATSAPP: Lichte border (was border-gray-700/20)

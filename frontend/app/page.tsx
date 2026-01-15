@@ -190,7 +190,7 @@ export default function HomePage() {
       <section 
         className="relative flex items-center justify-center w-full"
         style={{
-          minHeight: '600px', // ✅ VERTICAAL BREDER: 600px
+          minHeight: '400px', // ✅ VERTICAAL KORTER: 400px (was 600px)
           // ✅ GEEN AFBEELDING: Alleen gradient zoals navbar
           background: `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart} 0%, ${DESIGN_SYSTEM.colors.primaryEnd} 100%)`, // ✅ GRADIENT EXACT NAVBAR: Via DESIGN_SYSTEM (geen hardcode)
         }}
