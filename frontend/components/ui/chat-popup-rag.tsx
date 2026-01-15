@@ -82,11 +82,11 @@ export function ChatPopup() {
           },
           size: 'w-14 h-14',
           borderRadius: 'rounded-lg',
-          backgroundColor: 'bg-gray-900',
+          backgroundColor: 'bg-gray-200', // ✅ GRIJS: Solid grijs (geen transparantie)
           textColor: 'text-white',
           shadow: 'shadow-lg',
-          hoverBackgroundColor: 'hover:bg-gray-800',
-          border: 'border border-gray-700',
+          hoverBackgroundColor: 'hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover
+          border: 'border-2 border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border
           display: 'flex',
           align: 'items-center',
           justify: 'justify-center',
@@ -490,11 +490,11 @@ export function ChatPopup() {
       position: { type: 'fixed', right: 'right-6', bottom: 'bottom-6' },
       size: 'w-16 h-16',
       borderRadius: 'rounded-full',
-      backgroundColor: '!bg-gray-200', // ✅ GRIJS: Grijs achtergrond met !important om transparantie te overschrijven
-      textColor: '!text-white', // ✅ WIT SYMBOOL: Symbool wit met !important
+      backgroundColor: 'bg-gray-200', // ✅ GRIJS: Solid grijs (geen transparantie)
+      textColor: 'text-white', // ✅ WIT SYMBOOL: Symbool wit
       shadow: 'shadow-lg',
-      hoverBackgroundColor: '!hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover met !important
-      border: '!border-2 !border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border met !important
+      hoverBackgroundColor: 'hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover
+      border: 'border-2 border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border
       display: 'flex',
       align: 'items-center',
       justify: 'justify-center',
