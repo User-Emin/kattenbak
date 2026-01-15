@@ -132,24 +132,23 @@ export default function HomePage() {
               Zelfreinigende • Hygiënisch • Stil
             </p>
 
-            {/* CTA Button */}
-            <div className="pt-4">
+            {/* CTA Button - ✅ RESPONSIVE: Mobile margin-bottom, Desktop normale spacing */}
+            <div className="pt-4 pb-8 md:pb-4"> {/* ✅ RESPONSIVE: Mobile extra bottom padding zodat button niet aan afbeelding plakt */}
               <Link href={`/product/${productSlug}`}>
                 <button 
-                  className="inline-flex items-center gap-3 transition-opacity hover:opacity-80"
+                  className="inline-flex items-center gap-2 md:gap-3 transition-opacity hover:opacity-80 text-sm md:text-base" // ✅ RESPONSIVE: Mobile kleinere gap en tekst
                   style={{
                     background: typeof DESIGN_SYSTEM.colors.primary === 'string' && DESIGN_SYSTEM.colors.primary.includes('gradient') 
                       ? DESIGN_SYSTEM.colors.primary 
                       : `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart || '#3C3C3D'} 0%, ${DESIGN_SYSTEM.colors.primaryEnd || '#7A7A7D'} 100%)`, // ✅ GRADIENT
                     color: DESIGN_SYSTEM.colors.text.inverse,
-                    padding: `${DESIGN_SYSTEM.spacing[4]} ${DESIGN_SYSTEM.spacing[8]}`,
-                    fontSize: DESIGN_SYSTEM.typography.fontSize.base,
+                    padding: `${DESIGN_SYSTEM.spacing[3]} ${DESIGN_SYSTEM.spacing[6]}`, // ✅ RESPONSIVE: Mobile kleinere padding (was spacing[4] spacing[8])
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
                     borderRadius: DESIGN_SYSTEM.effects.borderRadius.xl, // ✅ RONDER: xl (12px) voor buttons
                   }}
                 >
                   <span>Bekijk Product</span>
-                  <ArrowRight className="w-5 h-5" strokeWidth={2} />
+                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2} /> {/* ✅ RESPONSIVE: Mobile kleinere icon */}
                 </button>
               </Link>
             </div>
