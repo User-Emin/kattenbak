@@ -41,13 +41,39 @@ export class ProductService {
     };
 
     // Execute queries in parallel
+    // ✅ FIX: Use select to avoid hero_video_url column that doesn't exist in database
     const [products, total] = await Promise.all([
       prisma.product.findMany({
         where,
         skip,
         take: pageSize,
         orderBy: { [sortBy]: sortOrder },
-        include: {
+        select: {
+          id: true,
+          sku: true,
+          name: true,
+          slug: true,
+          description: true,
+          shortDescription: true,
+          price: true,
+          compareAtPrice: true,
+          costPrice: true,
+          stock: true,
+          lowStockThreshold: true,
+          trackInventory: true,
+          weight: true,
+          dimensions: true,
+          images: true,
+          videoUrl: true,
+          // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
+          metaTitle: true,
+          metaDescription: true,
+          isActive: true,
+          isFeatured: true,
+          createdAt: true,
+          updatedAt: true,
+          publishedAt: true,
+          categoryId: true,
           category: {
             select: {
               id: true,
@@ -56,7 +82,7 @@ export class ProductService {
             },
           },
         },
-      }),
+      }) as Product[],
       prisma.product.count({ where }),
     ]);
 
@@ -208,6 +234,7 @@ export class ProductService {
    * Get featured products
    */
   static async getFeaturedProducts(limit: number = 8): Promise<Product[]> {
+    // ✅ FIX: Use select to avoid hero_video_url column
     return prisma.product.findMany({
       where: {
         isActive: true,
@@ -215,7 +242,32 @@ export class ProductService {
       },
       take: limit,
       orderBy: { createdAt: 'desc' },
-      include: {
+      select: {
+        id: true,
+        sku: true,
+        name: true,
+        slug: true,
+        description: true,
+        shortDescription: true,
+        price: true,
+        compareAtPrice: true,
+        costPrice: true,
+        stock: true,
+        lowStockThreshold: true,
+        trackInventory: true,
+        weight: true,
+        dimensions: true,
+        images: true,
+        videoUrl: true,
+        // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
+        metaTitle: true,
+        metaDescription: true,
+        isActive: true,
+        isFeatured: true,
+        createdAt: true,
+        updatedAt: true,
+        publishedAt: true,
+        categoryId: true,
         category: {
           select: {
             id: true,
@@ -224,7 +276,7 @@ export class ProductService {
           },
         },
       },
-    });
+    }) as Product[];
   }
 
   /**
@@ -234,18 +286,60 @@ export class ProductService {
     // Validate SKU uniqueness
     const existing = await prisma.product.findUnique({
       where: { sku: data.sku },
+      select: { id: true }, // ✅ FIX: Only select id for existence check
     });
 
     if (existing) {
       throw new ValidationError(`Product with SKU ${data.sku} already exists`);
     }
 
+    // ✅ FIX: Remove heroVideoUrl from data if it doesn't exist in DB schema
+    const { heroVideoUrl, ...productData } = data as any;
+    
     const product = await prisma.product.create({
-      data,
-      include: {
-        category: true,
+      data: productData,
+      select: {
+        id: true,
+        sku: true,
+        name: true,
+        slug: true,
+        description: true,
+        shortDescription: true,
+        price: true,
+        compareAtPrice: true,
+        costPrice: true,
+        stock: true,
+        lowStockThreshold: true,
+        trackInventory: true,
+        weight: true,
+        dimensions: true,
+        images: true,
+        videoUrl: true,
+        // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
+        metaTitle: true,
+        metaDescription: true,
+        isActive: true,
+        isFeatured: true,
+        createdAt: true,
+        updatedAt: true,
+        publishedAt: true,
+        categoryId: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            description: true,
+            image: true,
+            parentId: true,
+            sortOrder: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
       },
-    });
+    }) as Product;
 
     logger.info(`Product created: ${product.id} (${product.sku})`);
 
@@ -262,13 +356,54 @@ export class ProductService {
     // Check if product exists
     await this.getProductById(id);
 
+    // ✅ FIX: Remove heroVideoUrl from data if it doesn't exist in DB schema
+    const { heroVideoUrl, ...productData } = data as any;
+
     const product = await prisma.product.update({
       where: { id },
-      data,
-      include: {
-        category: true,
+      data: productData,
+      select: {
+        id: true,
+        sku: true,
+        name: true,
+        slug: true,
+        description: true,
+        shortDescription: true,
+        price: true,
+        compareAtPrice: true,
+        costPrice: true,
+        stock: true,
+        lowStockThreshold: true,
+        trackInventory: true,
+        weight: true,
+        dimensions: true,
+        images: true,
+        videoUrl: true,
+        // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
+        metaTitle: true,
+        metaDescription: true,
+        isActive: true,
+        isFeatured: true,
+        createdAt: true,
+        updatedAt: true,
+        publishedAt: true,
+        categoryId: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            description: true,
+            image: true,
+            parentId: true,
+            sortOrder: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
       },
-    });
+    }) as Product;
 
     // Invalidate cache
     if (RedisClient.isAvailable()) {
@@ -308,9 +443,15 @@ export class ProductService {
     productId: string,
     quantity: number
   ): Promise<boolean> {
+    // ✅ FIX: Use select to avoid hero_video_url column
     const product = await prisma.product.findUnique({
       where: { id: productId },
-      select: { stock: true, trackInventory: true, isActive: true },
+      select: { 
+        stock: true, 
+        trackInventory: true, 
+        isActive: true,
+        // ✅ FIX: Only select needed fields, exclude hero_video_url
+      },
     });
 
     if (!product || !product.isActive) {
@@ -328,8 +469,14 @@ export class ProductService {
    * Update stock after order
    */
   static async updateStock(productId: string, quantity: number): Promise<void> {
+    // ✅ FIX: Use select to avoid hero_video_url column
     const product = await prisma.product.findUnique({
       where: { id: productId },
+      select: { 
+        id: true,
+        trackInventory: true,
+        // ✅ FIX: Only select needed fields, exclude hero_video_url
+      },
     });
 
     if (!product) {
@@ -354,6 +501,7 @@ export class ProductService {
    * Search products
    */
   static async searchProducts(query: string, limit: number = 10): Promise<Product[]> {
+    // ✅ FIX: Use select to avoid hero_video_url column
     return prisma.product.findMany({
       where: {
         isActive: true,
@@ -364,7 +512,32 @@ export class ProductService {
         ],
       },
       take: limit,
-      include: {
+      select: {
+        id: true,
+        sku: true,
+        name: true,
+        slug: true,
+        description: true,
+        shortDescription: true,
+        price: true,
+        compareAtPrice: true,
+        costPrice: true,
+        stock: true,
+        lowStockThreshold: true,
+        trackInventory: true,
+        weight: true,
+        dimensions: true,
+        images: true,
+        videoUrl: true,
+        // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
+        metaTitle: true,
+        metaDescription: true,
+        isActive: true,
+        isFeatured: true,
+        createdAt: true,
+        updatedAt: true,
+        publishedAt: true,
+        categoryId: true,
         category: {
           select: {
             id: true,
@@ -373,7 +546,7 @@ export class ProductService {
           },
         },
       },
-    });
+    }) as Product[];
   }
 }
 
