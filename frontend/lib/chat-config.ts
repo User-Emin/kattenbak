@@ -19,11 +19,22 @@ export const CHAT_CONFIG = {
     shadow: 'shadow-2xl', // ✅ SOLIDE shadow
     zIndex: 100,
     position: {
+      type: DESIGN_SYSTEM.layoutUtils.position.fixed,
       right: 'right-4',
       bottom: 'bottom-8',
       bottomWithCart: 'bottom-32 md:bottom-24',
     },
+    display: DESIGN_SYSTEM.layoutUtils.display.flex,
+    align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
+    justify: DESIGN_SYSTEM.layoutUtils.flex.justify.center,
     transition: DESIGN_SYSTEM.transitions.duration.base,
+    hoverScale: 'hover:scale-110',
+    activeScale: 'active:scale-95',
+    focus: {
+      outline: 'focus:outline-none',
+      ring: 'focus:ring-4',
+      ringColor: 'focus:ring-gray-400/30',
+    },
     iconSize: 'w-6 h-6',
   },
 

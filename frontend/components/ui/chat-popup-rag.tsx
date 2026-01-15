@@ -74,7 +74,12 @@ export function ChatPopup() {
       // Return minimal fallback config that matches CHAT_CONFIG structure
       return {
         button: {
-          position: { right: 'right-6', bottom: 'bottom-6', bottomWithCart: 'bottom-24' },
+          position: {
+            type: 'fixed',
+            right: 'right-6',
+            bottom: 'bottom-6',
+            bottomWithCart: 'bottom-24',
+          },
           size: 'w-14 h-14',
           borderRadius: 'rounded-lg',
           backgroundColor: 'bg-gray-900',
@@ -82,6 +87,17 @@ export function ChatPopup() {
           shadow: 'shadow-lg',
           hoverBackgroundColor: 'hover:bg-gray-800',
           border: 'border border-gray-700',
+          display: 'flex',
+          align: 'items-center',
+          justify: 'justify-center',
+          zIndex: 100,
+          hoverScale: 'hover:scale-110',
+          activeScale: 'active:scale-95',
+          focus: {
+            outline: 'focus:outline-none',
+            ring: 'focus:ring-4',
+            ringColor: 'focus:ring-gray-400/30',
+          },
           iconSize: 'w-6 h-6',
         },
         animations: {
@@ -478,9 +494,9 @@ export function ChatPopup() {
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={cn(
-          'fixed',
+          safeChatConfig.button.position.type,
           safeChatConfig.button.position.right,
-          'z-[100]',
+          `z-[${safeChatConfig.button.zIndex}]`,
           buttonBottomClass,
           safeChatConfig.button.size,
           safeChatConfig.button.borderRadius,
@@ -488,19 +504,19 @@ export function ChatPopup() {
           safeChatConfig.button.textColor,
           safeChatConfig.button.shadow,
           safeChatConfig.button.hoverBackgroundColor,
-          'transition-all',
+          safeChatConfig.utilities?.transition?.all || 'transition-all',
           safeChatConfig.animations.duration.base,
           safeChatConfig.animations.timing.ease,
-          'hover:scale-110',
-          'active:scale-95',
+          safeChatConfig.button.hoverScale,
+          safeChatConfig.button.activeScale,
           safeChatConfig.button.border,
-          'focus:outline-none',
-          'focus:ring-4',
-          'focus:ring-gray-400/30',
-          'flex',
-          'items-center',
-          'justify-center',
-          'font-sans'
+          safeChatConfig.button.focus.outline,
+          safeChatConfig.button.focus.ring,
+          safeChatConfig.button.focus.ringColor,
+          safeChatConfig.button.display,
+          safeChatConfig.button.align,
+          safeChatConfig.button.justify,
+          safeChatConfig.utilities?.fontFamily || 'font-sans'
         )}
         aria-label="Open chat"
       >
