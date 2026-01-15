@@ -497,13 +497,13 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* ✅ MODERN: Floating Chat Button - Hoekiger, zwart-wit, Noto Sans */}
+      {/* ✅ ULTRA MODERN: Floating Chat Button - 100% Dynamisch via DESIGN_SYSTEM */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={cn(
           safeChatConfig.button.position.type,
           safeChatConfig.button.position.right,
-          `z-[${safeChatConfig.button.zIndex}]`,
+          safeChatConfig.button.zIndex,
           buttonBottomClass,
           safeChatConfig.button.size,
           safeChatConfig.button.borderRadius,
@@ -511,9 +511,7 @@ export function ChatPopup() {
           safeChatConfig.button.textColor,
           safeChatConfig.button.shadow,
           safeChatConfig.button.hoverBackgroundColor,
-          safeChatConfig.utilities?.transition?.all || 'transition-all',
-          safeChatConfig.animations.duration.base,
-          safeChatConfig.animations.timing.ease,
+          safeChatConfig.button.transitionClasses,
           safeChatConfig.button.hoverScale,
           safeChatConfig.button.activeScale,
           safeChatConfig.button.border,
@@ -523,7 +521,8 @@ export function ChatPopup() {
           safeChatConfig.button.display,
           safeChatConfig.button.align,
           safeChatConfig.button.justify,
-          safeChatConfig.utilities?.fontFamily || 'font-sans'
+          safeChatConfig.utilities?.fontFamily || 'font-sans',
+          !isExpanded && safeChatConfig.button.pulse // ✅ MODERN: Pulse animation when closed
         )}
         aria-label="Open chat"
       >
@@ -537,7 +536,7 @@ export function ChatPopup() {
       {/* Chat Popup */}
       {isExpanded && (
         <>
-          {/* ✅ DRY: Backdrop via CHAT_CONFIG */}
+          {/* ✅ ULTRA MODERN: Backdrop - 100% Dynamisch via DESIGN_SYSTEM */}
           <div
             className={cn(
               safeChatConfig.animations.backdrop.position,
@@ -547,12 +546,13 @@ export function ChatPopup() {
               safeChatConfig.animations.backdrop.fadeIn,
               safeChatConfig.animations.backdrop.zIndex,
               safeChatConfig.animations.backdrop.mobileTransparent,
-              safeChatConfig.animations.backdrop.mobilePointerEvents
+              safeChatConfig.animations.backdrop.mobilePointerEvents,
+              safeChatConfig.animations.backdrop.transition
             )}
             onClick={() => setIsExpanded(false)}
           />
           
-          {/* ✅ MODERN: Chat Modal - Hoekiger, smoother animations - 100% DRY */}
+          {/* ✅ ULTRA MODERN: Chat Modal - 100% Dynamisch via DESIGN_SYSTEM */}
           <div className={cn(
             safeChatConfig.animations.modal.container.position,
             safeChatConfig.animations.modal.container.inset,
@@ -561,7 +561,8 @@ export function ChatPopup() {
             safeChatConfig.animations.modal.container.align,
             safeChatConfig.animations.modal.container.justify,
             safeChatConfig.animations.modal.container.padding,
-            safeChatConfig.animations.modal.container.pointerEvents
+            safeChatConfig.animations.modal.container.pointerEvents,
+            safeChatConfig.animations.modal.container.transition
           )}>
             <div className={cn(
               safeChatConfig.animations.modal.content.pointerEvents,
@@ -577,6 +578,7 @@ export function ChatPopup() {
               safeChatConfig.animations.modal.content.display,
               safeChatConfig.animations.modal.content.direction,
               safeChatConfig.animations.modal.content.position,
+              safeChatConfig.animations.modal.content.transition,
               safeChatConfig.utilities?.fontFamily || 'font-sans'
             )}>
               

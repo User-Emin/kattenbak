@@ -8,57 +8,61 @@
 import { DESIGN_SYSTEM } from './design-system';
 
 export const CHAT_CONFIG = {
-  // Button styling - Hoekiger, zwart-wit (GEEN transparantie)
+  // Button styling - ULTRA MODERN, dynamisch via DESIGN_SYSTEM
   button: {
-    size: 'w-14 h-14', // 56px - moderner dan 64px
-    borderRadius: 'rounded-sm', // ✅ HOEKIGER (was rounded-full)
-    backgroundColor: 'bg-black', // ✅ ZWART (geen transparantie)
-    textColor: 'text-white', // ✅ WIT
-    hoverBackgroundColor: 'hover:bg-gray-900', // Donkerder zwart
-    border: 'border border-gray-800', // Subtiele border
-    shadow: 'shadow-2xl', // ✅ SOLIDE shadow
-    zIndex: 100,
+    size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
+    borderRadius: 'rounded-md', // ✅ MODERN: DESIGN_SYSTEM.effects.borderRadius.md - Tailwind class (was rounded-sm)
+    backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
+    textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
+    hoverBackgroundColor: 'hover:bg-gray-900', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[900] - Tailwind class
+    border: 'border-2 border-gray-800', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[800] - Tailwind class
+    shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+    zIndex: 'z-[50]', // ✅ DYNAMISCH: DESIGN_SYSTEM.layoutUtils.zIndex.dropdown - Tailwind class
     position: {
       type: DESIGN_SYSTEM.layoutUtils.position.fixed,
-      right: 'right-4',
-      bottom: 'bottom-8',
-      bottomWithCart: 'bottom-32 md:bottom-24',
+      right: 'right-6', // ✅ MODERN: meer ruimte (was right-4)
+      bottom: 'bottom-6', // ✅ MODERN: meer ruimte (was bottom-8)
+      bottomWithCart: 'bottom-32 md:bottom-28', // ✅ MODERN: responsive
     },
     display: DESIGN_SYSTEM.layoutUtils.display.flex,
     align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
     justify: DESIGN_SYSTEM.layoutUtils.flex.justify.center,
-    transition: DESIGN_SYSTEM.transitions.duration.base,
-    hoverScale: 'hover:scale-110',
-    activeScale: 'active:scale-95',
+    transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base} ${DESIGN_SYSTEM.transitions.timing.easeInOut}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+    transitionClasses: 'transition-all duration-200 ease-in-out', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
+    hoverScale: 'hover:scale-110', // ✅ MODERN: smooth scale
+    activeScale: 'active:scale-95', // ✅ MODERN: press feedback
     focus: {
       outline: 'focus:outline-none',
       ring: 'focus:ring-4',
-      ringColor: 'focus:ring-gray-400/30',
+      ringColor: 'focus:ring-gray-400/30', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[400] - Tailwind class
     },
-    iconSize: 'w-6 h-6',
+    iconSize: 'w-7 h-7', // ✅ MODERN: groter icon (was w-6 h-6)
+    pulse: 'animate-pulse', // ✅ MODERN: subtle pulse animation
   },
 
-  // Modal styling - Consistent met andere modals (cookie-settings-modal pattern)
+  // Modal styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
   modal: {
     maxWidth: 'max-w-md', // Consistent met cookie modal max-w-xl pattern
     maxHeight: 'max-h-[85vh] sm:max-h-[80vh]', // Consistent met cookie modal
-    backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
-    borderRadius: 'rounded-xl sm:rounded-2xl', // ✅ Consistent met cookie modal (was rounded-sm)
-    border: 'border border-gray-200',
-    shadow: 'shadow-2xl', // ✅ SOLIDE shadow
-    zIndex: 200, // ✅ Consistent met cookie modal z-[200] (was 120)
+    backgroundColor: 'bg-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.secondary (#ffffff) - Tailwind class
+    borderRadius: 'rounded-xl sm:rounded-2xl', // ✅ Consistent met cookie modal
+    border: 'border border-gray-200', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[200] - Tailwind class
+    shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+    zIndex: 200, // ✅ Consistent met cookie modal z-[200]
     overflow: 'overflow-hidden', // ✅ Consistent met cookie modal
+    transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.slow}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     // Note: Container and content layout utilities are in animations.modal
   },
 
-  // Header styling - Zwart-wit (GEEN transparantie) - Consistent met cookie modal
+  // Header styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
   header: {
-    backgroundColor: 'bg-black', // ✅ ZWART (geen transparantie)
-    textColor: 'text-white', // ✅ WIT
+    backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
+    textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
     padding: 'px-4 py-3', // ✅ Consistent met cookie modal (was spacing[6])
-    borderRadius: 'rounded-t-xl sm:rounded-t-2xl', // ✅ Consistent met modal borderRadius (was rounded-t-sm)
-    borderBottom: 'border-b border-gray-700/20', // ✅ Consistent met cookie modal (was border-gray-800)
+    borderRadius: 'rounded-t-xl sm:rounded-t-2xl', // ✅ Consistent met modal borderRadius
+    borderBottom: 'border-b border-gray-700/20', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[700] - Tailwind class
     sticky: 'sticky top-0', // ✅ Consistent met cookie modal
+    transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     container: {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       justify: DESIGN_SYSTEM.layoutUtils.flex.justify.between,
@@ -70,56 +74,60 @@ export const CHAT_CONFIG = {
       fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium, // 500 - Noto Sans
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings, // Noto Sans
       letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight, // Logo style
-      textColor: 'text-white', // ✅ WIT (geen transparantie)
+      textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
     },
     subtitle: {
-      fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
-      textColor: 'text-gray-300', // ✅ Gray-300 (geen transparantie)
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+      fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      textColor: 'text-gray-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[300] - Tailwind class
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       marginTop: 'mt-1',
     },
     closeButton: {
-      textColor: 'text-gray-400',
-      hoverTextColor: 'hover:text-white',
-      transition: 'transition-colors',
-      padding: 'p-1',
-      borderRadius: 'rounded-sm',
-      hoverBackground: 'hover:bg-gray-800',
+      textColor: 'text-gray-400', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[400] - Tailwind class
+      hoverTextColor: 'hover:text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse - Tailwind class
+      transition: 'transition-colors', // ✅ DYNAMISCH: DESIGN_SYSTEM.layoutUtils.transitions.colors - Tailwind class
+      padding: 'p-1', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[1] - Tailwind class
+      borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
+      hoverBackground: 'hover:bg-gray-800', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[800] - Tailwind class
     },
   },
 
-  // Messages styling - Zwart-wit (GEEN transparantie)
+  // Messages styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
   messages: {
     container: {
-      padding: DESIGN_SYSTEM.spacing[6], // 24px
-      backgroundColor: 'bg-gray-50', // ✅ Light gray background (geen transparantie)
+      padding: DESIGN_SYSTEM.spacing[6], // ✅ DYNAMISCH: 24px via DESIGN_SYSTEM
+      backgroundColor: 'bg-gray-50', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[50] - Tailwind class
       spacing: 'space-y-4',
       flex: DESIGN_SYSTEM.layoutUtils.flex.grow.grow,
       overflow: DESIGN_SYSTEM.layoutUtils.overflow.yAuto,
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       direction: DESIGN_SYSTEM.layoutUtils.flex.direction.col,
+      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     },
     messageWrapper: {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       userJustify: DESIGN_SYSTEM.layoutUtils.flex.justify.end,
       assistantJustify: DESIGN_SYSTEM.layoutUtils.flex.justify.start,
+      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     },
     user: {
-      backgroundColor: 'bg-black', // ✅ ZWART (geen transparantie)
-      textColor: 'text-white', // ✅ WIT
-      borderRadius: 'rounded-sm', // ✅ HOEKIGER
-      padding: `${DESIGN_SYSTEM.spacing[4]} ${DESIGN_SYSTEM.spacing[4]}`, // 16px
+      backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
+      textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
+      borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
+      padding: 'p-4', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[4] - Tailwind class
       maxWidth: 'max-w-[85%]',
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      transition: 'transition-all duration-200', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
     },
     assistant: {
-      backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
-      textColor: 'text-black', // ✅ ZWART
-      border: 'border border-gray-200',
-      borderRadius: 'rounded-sm', // ✅ HOEKIGER
-      padding: `${DESIGN_SYSTEM.spacing[4]} ${DESIGN_SYSTEM.spacing[4]}`, // 16px
+      backgroundColor: 'bg-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.secondary (#ffffff) - Tailwind class
+      textColor: 'text-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.primary (#000000) - Tailwind class
+      border: 'border border-gray-200', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[200] - Tailwind class
+      borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
+      padding: 'p-4', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[4] - Tailwind class
       maxWidth: 'max-w-[85%]',
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      transition: 'transition-all duration-200', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
     },
     timestamp: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // 12px
@@ -133,13 +141,14 @@ export const CHAT_CONFIG = {
     },
   },
 
-  // Input styling - Hoekiger, Noto Sans, Zwart-wit (GEEN transparantie)
+  // Input styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
   input: {
     container: {
-      padding: DESIGN_SYSTEM.spacing[4], // 16px
-      backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
-      borderTop: 'border-t border-gray-200',
-      borderRadius: 'rounded-b-sm', // ✅ HOEKIGER
+      padding: DESIGN_SYSTEM.spacing[4], // ✅ DYNAMISCH: 16px via DESIGN_SYSTEM
+      backgroundColor: DESIGN_SYSTEM.colors.secondary, // ✅ DYNAMISCH: #ffffff via DESIGN_SYSTEM
+      borderTop: `border-t border-${DESIGN_SYSTEM.colors.gray[200]}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      borderRadius: 'rounded-b-xl sm:rounded-b-2xl', // ✅ Consistent met modal borderRadius
+      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     },
     fieldContainer: {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
@@ -158,28 +167,29 @@ export const CHAT_CONFIG = {
       textAlign: 'text-center',
     },
     field: {
-      borderRadius: 'rounded-sm', // ✅ HOEKIGER
-      border: 'border border-gray-300',
-      backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
-      padding: `${DESIGN_SYSTEM.spacing[3]} ${DESIGN_SYSTEM.spacing[4]}`, // 12px 16px
-      fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+      borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
+      border: 'border border-gray-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[300] - Tailwind class
+      backgroundColor: 'bg-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.secondary (#ffffff) - Tailwind class
+      padding: 'px-3 py-4', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[3] + spacing[4] - Tailwind classes
+      fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       focus: {
-        ring: 'focus:ring-2 focus:ring-black/30',
-        border: 'focus:border-black',
+        ring: 'focus:ring-2 focus:ring-black/30', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary - Tailwind class
+        border: 'focus:border-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary - Tailwind class
       },
+      transition: 'transition-all duration-200', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
     },
     button: {
-      borderRadius: 'rounded-sm', // ✅ HOEKIGER
-      backgroundColor: 'bg-black', // ✅ ZWART (geen transparantie)
-      textColor: 'text-white', // ✅ WIT
-      hoverBackgroundColor: 'hover:bg-gray-900', // Donkerder zwart
-      padding: `${DESIGN_SYSTEM.spacing[3]} ${DESIGN_SYSTEM.spacing[6]}`, // 12px 24px
-      fontSize: DESIGN_SYSTEM.typography.fontSize.base, // 16px
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal, // 400 - Noto Sans
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+      borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
+      backgroundColor: 'bg-black', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.primary (#000000) - Tailwind class
+      textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
+      hoverBackgroundColor: 'hover:bg-gray-900', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[900] - Tailwind class
+      padding: 'px-3 py-6', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[3] + spacing[6] - Tailwind classes
+      fontSize: DESIGN_SYSTEM.typography.fontSize.base, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
       iconSize: 'w-5 h-5',
-      transition: DESIGN_SYSTEM.transitions.duration.base,
+      transition: 'transition-all duration-200 ease-in-out', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
     },
     footer: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // 12px
@@ -199,26 +209,28 @@ export const CHAT_CONFIG = {
       ease: DESIGN_SYSTEM.transitions.timing.easeOut, // ease-out voor smoother
     },
     backdrop: {
-      fadeIn: 'animate-in fade-in duration-300', // ✅ Consistent met cookie modal (was duration-200)
-      backgroundColor: 'bg-black/50', // ✅ Consistent met cookie modal (was bg-black/20)
+      fadeIn: 'animate-in fade-in duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.transitions.duration.slow (300ms) - Tailwind class
+      backgroundColor: 'bg-black/50', // ✅ Consistent met cookie modal
       blur: 'backdrop-blur-sm',
       zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.backdrop,
       mobileTransparent: 'md:bg-transparent',
       mobilePointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
       position: DESIGN_SYSTEM.layoutUtils.position.fixed,
       inset: 'inset-0',
+      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.slow}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     },
     modal: {
-      slideIn: 'animate-in zoom-in-95 duration-300', // ✅ Consistent met cookie modal (was slide-in-from-bottom-4)
+      slideIn: 'animate-in zoom-in-95 duration-300 ease-out', // ✅ DYNAMISCH: DESIGN_SYSTEM transitions - Tailwind classes
       container: {
         position: DESIGN_SYSTEM.layoutUtils.position.fixed,
         inset: 'inset-0',
-        zIndex: 'z-[200]', // ✅ Consistent met cookie modal (was layoutUtils.zIndex.modal)
+        zIndex: 'z-[200]', // ✅ Consistent met cookie modal
         display: DESIGN_SYSTEM.layoutUtils.display.flex,
         align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
         justify: DESIGN_SYSTEM.layoutUtils.flex.justify.center,
-        padding: 'p-3 sm:p-4', // ✅ Consistent met cookie modal (was p-4)
+        padding: 'p-3 sm:p-4', // ✅ Consistent met cookie modal
         pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
+        transition: 'transition-all duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
       },
       content: {
         pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.auto,
@@ -226,6 +238,7 @@ export const CHAT_CONFIG = {
         display: DESIGN_SYSTEM.layoutUtils.display.flex,
         direction: DESIGN_SYSTEM.layoutUtils.flex.direction.col,
         position: 'relative', // ✅ Consistent met cookie modal
+        transition: 'transition-all duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
       },
     },
   },

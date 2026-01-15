@@ -333,6 +333,13 @@ export const DESIGN_SYSTEM = {
       sticky: 'z-[10]',
       base: 'z-0',
     },
+    // Transitions (utility classes)
+    transitions: {
+      all: 'transition-all',
+      colors: 'transition-colors',
+      transform: 'transition-transform',
+      opacity: 'transition-opacity',
+    },
   },
 
   /**
