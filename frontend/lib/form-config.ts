@@ -63,7 +63,7 @@ export const FORM_CONFIG = {
       },
       
       // Transitions
-      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base}`, // 'transition-all duration-200'
+      transition: 'transition-all duration-200', // ✅ Direct Tailwind classes (was: DESIGN_SYSTEM layoutUtils + transitions)
     },
     
     // Error message
@@ -136,7 +136,7 @@ export const FORM_CONFIG = {
       },
       
       // Transitions
-      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base}`, // 'transition-all duration-200'
+      transition: 'transition-all duration-200', // ✅ Direct Tailwind classes (was: DESIGN_SYSTEM layoutUtils + transitions)
     },
     
     // Error message (same as input)
@@ -178,7 +178,7 @@ export const FORM_CONFIG = {
       },
       
       // Transitions
-      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all}`, // 'transition-all'
+      transition: 'transition-all', // ✅ Direct Tailwind class
     },
   },
   
@@ -192,7 +192,7 @@ export const FORM_CONFIG = {
       fontWeight: 'font-semibold', // DESIGN_SYSTEM.typography.fontWeight.semibold - Tailwind class
       padding: 'py-4 px-8', // DESIGN_SYSTEM.spacing[4] + custom - Tailwind classes
       borderRadius: 'rounded-full', // Tailwind class (full rounded for contact form)
-      transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.slow}`, // 'transition-all duration-300'
+      transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
       hoverScale: 'hover:scale-105', // Tailwind class
       activeScale: 'active:scale-95', // Tailwind class
     },
