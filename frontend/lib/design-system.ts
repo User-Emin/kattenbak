@@ -215,8 +215,8 @@ export const DESIGN_SYSTEM = {
     
     // Edge section (Premium Kwaliteit & Veiligheid) - ✅ DRUPPEL FOTO: Legale druppel foto
     edgeSection: {
-      // ✅ DYNAMISCH: Legale druppel foto Unsplash (smooth, premium kwaliteit)
-      imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1920&auto=format&fit=crop',
+      // ✅ DYNAMISCH: Legale druppel foto Unsplash (smooth, premium kwaliteit, waterdruppels)
+      imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1920&h=800&auto=format&fit=crop',
       overlayOpacity: 0.5,  // Overlay voor tekst leesbaarheid
     },
     
