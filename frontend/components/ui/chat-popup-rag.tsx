@@ -366,14 +366,26 @@ export function ChatPopup() {
 
   // ✅ DRY: Calculate button position via CHAT_CONFIG (with safe access)
   const buttonBottomClass = useMemo(() => {
+    if (!safeChatConfig?.button?.position) {
+      return 'bottom-8';
+    }
     return stickyCartVisible 
       ? safeChatConfig.button.position.bottomWithCart
       : safeChatConfig.button.position.bottom;
   }, [stickyCartVisible, safeChatConfig]);
 
-  // ✅ SECURITY: Don't render on server (prevent SSR errors)
-  if (!isMounted) {
-    return null;
+  // ✅ SECURITY: Additional safety check - ensure safeChatConfig is valid before render
+  if (!safeChatConfig || !safeChatConfig.button || !safeChatConfig.modal || !safeChatConfig.animations) {
+    // Return minimal button only (no popup) to prevent crash
+    return (
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="fixed right-4 bottom-8 w-14 h-14 bg-black text-white rounded-sm shadow-2xl z-[100] flex items-center justify-center hover:bg-gray-900 transition-colors"
+        aria-label="Open chat"
+      >
+        <MessageCircle className="w-6 h-6" />
+      </button>
+    );
   }
 
   return (
