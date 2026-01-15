@@ -127,7 +127,7 @@ export class ProductService {
         weight: true,
         dimensions: true,
         images: true,
-        videoUrl: true, // Keep videoUrl if it exists
+        // videoUrl: false, // ✅ FIX: Exclude video_url - column doesn't exist in DB
         // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
         metaTitle: true,
         metaDescription: true,
