@@ -1,4 +1,54 @@
+"use client";
+
+import { FORM_CONFIG } from "@/lib/form-config";
+import { cn } from "@/lib/utils";
+
 export default function ContactPage() {
+  const safeFormConfig = FORM_CONFIG || {
+    textarea: {
+      field: {
+        width: 'w-full',
+        padding: 'px-4 py-3',
+        backgroundColor: 'bg-white',
+        border: 'border-2',
+        borderColor: 'border-gray-300',
+        borderRadius: 'rounded-xl',
+        textColor: 'text-gray-900',
+        resize: 'resize-none',
+        focus: { outline: 'focus:outline-none', borderColor: 'focus:border-brand', ring: 'focus:ring-4', ringColor: 'focus:ring-brand/10' },
+        transition: 'transition-all',
+      },
+    },
+    button: {
+      submit: {
+        width: 'w-full',
+        backgroundColor: 'bg-accent',
+        hoverBackgroundColor: 'hover:bg-accent-dark',
+        textColor: 'text-gray-900',
+        fontWeight: 'font-semibold',
+        padding: 'py-4 px-8',
+        borderRadius: 'rounded-full',
+        transition: 'transition-all duration-300',
+        hoverScale: 'hover:scale-105',
+        activeScale: 'active:scale-95',
+      },
+    },
+    input: {
+      label: { display: 'block', fontSize: 'text-sm', fontWeight: 'font-semibold', textColor: 'text-gray-900', marginBottom: 'mb-2' },
+      field: {
+        width: 'w-full',
+        padding: 'px-4 py-3',
+        backgroundColor: 'bg-white',
+        border: 'border-2',
+        borderColor: 'border-gray-300',
+        borderRadius: 'rounded-xl',
+        textColor: 'text-gray-900',
+        focus: { outline: 'focus:outline-none', borderColor: 'focus:border-brand', ring: 'focus:ring-4', ringColor: 'focus:ring-brand/10' },
+        transition: 'transition-all',
+      },
+    },
+  };
+
   return (
     <div className="min-h-screen bg-white py-20">
       <div className="container mx-auto px-6 max-w-4xl">
@@ -43,41 +93,110 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* Contact Form - Direct op achtergrond */}
+        {/* Contact Form - Direct op achtergrond, 100% dynamisch via FORM_CONFIG */}
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl font-medium mb-8 text-center text-gray-900">Stuur ons een bericht</h2>
           
           <form className="space-y-6">
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">Naam</label>
+              <label className={cn(
+                safeFormConfig.input.label.display,
+                safeFormConfig.input.label.fontSize,
+                safeFormConfig.input.label.fontWeight,
+                safeFormConfig.input.label.textColor,
+                safeFormConfig.input.label.marginBottom
+              )}>Naam</label>
               <input 
                 type="text" 
-                className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all"
+                className={cn(
+                  safeFormConfig.input.field.width,
+                  safeFormConfig.input.field.padding,
+                  safeFormConfig.input.field.backgroundColor,
+                  safeFormConfig.input.field.border,
+                  safeFormConfig.input.field.borderColor,
+                  safeFormConfig.input.field.borderRadius,
+                  safeFormConfig.input.field.textColor,
+                  safeFormConfig.input.field.focus.outline,
+                  safeFormConfig.input.field.focus.borderColor,
+                  safeFormConfig.input.field.focus.ring,
+                  safeFormConfig.input.field.focus.ringColor,
+                  safeFormConfig.input.field.transition
+                )}
                 placeholder="Jouw naam"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">Email</label>
+              <label className={cn(
+                safeFormConfig.input.label.display,
+                safeFormConfig.input.label.fontSize,
+                safeFormConfig.input.label.fontWeight,
+                safeFormConfig.input.label.textColor,
+                safeFormConfig.input.label.marginBottom
+              )}>Email</label>
               <input 
                 type="email" 
-                className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all"
+                className={cn(
+                  safeFormConfig.input.field.width,
+                  safeFormConfig.input.field.padding,
+                  safeFormConfig.input.field.backgroundColor,
+                  safeFormConfig.input.field.border,
+                  safeFormConfig.input.field.borderColor,
+                  safeFormConfig.input.field.borderRadius,
+                  safeFormConfig.input.field.textColor,
+                  safeFormConfig.input.field.focus.outline,
+                  safeFormConfig.input.field.focus.borderColor,
+                  safeFormConfig.input.field.focus.ring,
+                  safeFormConfig.input.field.focus.ringColor,
+                  safeFormConfig.input.field.transition
+                )}
                 placeholder="jouw@email.nl"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">Bericht</label>
+              <label className={cn(
+                safeFormConfig.input.label.display,
+                safeFormConfig.input.label.fontSize,
+                safeFormConfig.input.label.fontWeight,
+                safeFormConfig.input.label.textColor,
+                safeFormConfig.input.label.marginBottom
+              )}>Bericht</label>
               <textarea 
                 rows={6}
-                className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all resize-none"
+                className={cn(
+                  safeFormConfig.textarea.field.width,
+                  safeFormConfig.textarea.field.padding,
+                  safeFormConfig.textarea.field.backgroundColor,
+                  safeFormConfig.textarea.field.border,
+                  safeFormConfig.textarea.field.borderColor,
+                  safeFormConfig.textarea.field.borderRadius,
+                  safeFormConfig.textarea.field.textColor,
+                  safeFormConfig.textarea.field.resize,
+                  safeFormConfig.textarea.field.focus.outline,
+                  safeFormConfig.textarea.field.focus.borderColor,
+                  safeFormConfig.textarea.field.focus.ring,
+                  safeFormConfig.textarea.field.focus.ringColor,
+                  safeFormConfig.textarea.field.transition
+                )}
                 placeholder="Jouw bericht..."
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-accent hover:bg-accent-dark text-gray-900 font-semibold py-4 px-8 rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
+              className={cn(
+                safeFormConfig.button.submit.width,
+                safeFormConfig.button.submit.backgroundColor,
+                safeFormConfig.button.submit.hoverBackgroundColor,
+                safeFormConfig.button.submit.textColor,
+                safeFormConfig.button.submit.fontWeight,
+                safeFormConfig.button.submit.padding,
+                safeFormConfig.button.submit.borderRadius,
+                safeFormConfig.button.submit.transition,
+                safeFormConfig.button.submit.hoverScale,
+                safeFormConfig.button.submit.activeScale
+              )}
             >
               Verstuur Bericht
             </button>
