@@ -27,7 +27,7 @@ export const CHAT_CONFIG = {
     display: DESIGN_SYSTEM.layoutUtils.display.flex,
     align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
     justify: DESIGN_SYSTEM.layoutUtils.flex.justify.center,
-    transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.base} ${DESIGN_SYSTEM.transitions.timing.easeInOut}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+    transition: 'transition-all duration-200 ease-in-out', // ✅ Direct Tailwind classes
     transitionClasses: 'transition-all duration-200 ease-in-out', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
     hoverScale: 'hover:scale-110', // ✅ MODERN: smooth scale
     activeScale: 'active:scale-95', // ✅ MODERN: press feedback
@@ -50,7 +50,7 @@ export const CHAT_CONFIG = {
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     zIndex: 200, // ✅ Consistent met cookie modal z-[200]
     overflow: 'overflow-hidden', // ✅ Consistent met cookie modal
-    transition: `${DESIGN_SYSTEM.layoutUtils.transitions.all} ${DESIGN_SYSTEM.transitions.duration.slow}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+    transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
     // Note: Container and content layout utilities are in animations.modal
   },
 
@@ -144,9 +144,9 @@ export const CHAT_CONFIG = {
   // Input styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
   input: {
     container: {
-      padding: DESIGN_SYSTEM.spacing[4], // ✅ DYNAMISCH: 16px via DESIGN_SYSTEM
-      backgroundColor: DESIGN_SYSTEM.colors.secondary, // ✅ DYNAMISCH: #ffffff via DESIGN_SYSTEM
-      borderTop: `border-t border-${DESIGN_SYSTEM.colors.gray[200]}`, // ✅ DYNAMISCH: via DESIGN_SYSTEM
+      padding: 'p-4', // ✅ Direct Tailwind class (was: DESIGN_SYSTEM.spacing[4] = '1rem' string)
+      backgroundColor: 'bg-white', // ✅ Direct Tailwind class (was: DESIGN_SYSTEM.colors.secondary = '#ffffff' string)
+      borderTop: 'border-t border-gray-200', // ✅ Direct Tailwind class (was: template literal)
       borderRadius: 'rounded-b-xl sm:rounded-b-2xl', // ✅ Consistent met modal borderRadius
       transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
     },
@@ -228,9 +228,9 @@ export const CHAT_CONFIG = {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       align: DESIGN_SYSTEM.layoutUtils.flex.align.end, // ✅ POPUP: Boven button (end i.p.v. center)
       justify: DESIGN_SYSTEM.layoutUtils.flex.justify.end, // ✅ POPUP: Rechts (end i.p.v. center)
-      padding: 'p-3 sm:p-4', // ✅ Consistent met cookie modal
+      padding: 'p-3 sm:p-4 pb-20 sm:pb-20', // ✅ POPUP: Padding onderaan voor ruimte boven button
       pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
-      transition: 'transition-all duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
+      transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
     },
       content: {
         pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.auto,
@@ -267,7 +267,7 @@ export const CHAT_CONFIG = {
       backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
       hoverBackgroundColor: 'hover:bg-gray-100',
       borderRadius: 'rounded-sm', // ✅ HOEKIGER
-      padding: `${DESIGN_SYSTEM.spacing[2]} ${DESIGN_SYSTEM.spacing[4]}`, // 8px 16px
+      padding: 'px-4 py-2', // ✅ Direct Tailwind classes (was: template literal)
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
       display: DESIGN_SYSTEM.layoutUtils.display.block,
@@ -281,7 +281,7 @@ export const CHAT_CONFIG = {
     backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
     border: 'border border-gray-200',
     borderRadius: 'rounded-sm', // ✅ HOEKIGER
-    padding: `${DESIGN_SYSTEM.spacing[4]} ${DESIGN_SYSTEM.spacing[4]}`, // 16px
+    padding: 'p-4', // ✅ Direct Tailwind class (was: template literal)
     iconColor: 'text-black', // ✅ ZWART (geen transparantie)
     iconSize: 'w-5 h-5',
   },
@@ -291,7 +291,7 @@ export const CHAT_CONFIG = {
     backgroundColor: 'bg-red-50', // ✅ Red-50 (geen transparantie)
     border: 'border border-red-200',
     borderRadius: 'rounded-sm', // ✅ HOEKIGER
-    padding: DESIGN_SYSTEM.spacing[3], // 12px
+    padding: 'p-3', // ✅ Direct Tailwind class (was: DESIGN_SYSTEM.spacing[3] = '0.75rem' string)
     textColor: 'text-red-800', // ✅ Red-800 (geen transparantie)
     fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
     fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
