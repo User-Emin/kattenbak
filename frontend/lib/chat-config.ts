@@ -44,7 +44,7 @@ export const CHAT_CONFIG = {
   modal: {
     maxWidth: 'max-w-sm', // ✅ KORTER: Horizontaal korter (was max-w-md)
     maxHeight: 'max-h-[90vh] sm:max-h-[85vh]', // ✅ LANGER: Verticaal langer (was 85vh/80vh)
-    backgroundColor: 'bg-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.secondary (#ffffff) - Tailwind class
+    backgroundColor: 'bg-white/95', // ✅ SEMI-TRANSPARANT: Blijft zichtbaar maar behoudt achtergrond (was bg-white)
     borderRadius: 'rounded-3xl sm:rounded-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
     border: 'border border-gray-200', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[200] - Tailwind class
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
