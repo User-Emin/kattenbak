@@ -48,6 +48,17 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
 
   // DRY: Real file upload handler
   const handleFiles = async (files: File[]) => {
+    // ✅ SECURITY: Pre-validate file sizes before upload (client-side check)
+    const MAX_FILE_SIZE_MB = 20;
+    const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+    
+    for (const file of files) {
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        toast.error(`Bestand te groot: ${file.name} (${fileSizeMB}MB). Maximum ${MAX_FILE_SIZE_MB}MB per afbeelding.`);
+        return;
+      }
+    }
     // Filter image files only
     const imageFiles = files.filter(file => file.type.startsWith('image/'));
     

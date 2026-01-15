@@ -49,7 +49,8 @@ export const uploadImage = async (file: File): Promise<string> => {
     }
     if (error?.status === 413) {
       const maxSizeMB = error?.details?.maxSizeMB || 20;
-      throw new Error(`Bestand te groot. Maximum ${maxSizeMB}MB per afbeelding.`);
+      const errorMessage = error?.details?.error || error?.message || `Bestand te groot. Maximum ${maxSizeMB}MB per afbeelding.`;
+      throw new Error(errorMessage);
     }
     if (error?.status === 500) {
       throw new Error(error?.details?.error || error?.message || 'Serverfout bij uploaden. Probeer opnieuw.');
