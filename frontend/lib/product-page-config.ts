@@ -45,7 +45,7 @@ export const PRODUCT_PAGE_CONFIG = {
       height: 'lg:h-fit',
     },
     mainImage: {
-      aspectRatio: 'aspect-square',
+      aspectRatio: 'aspect-[4/3]', // ✅ RECHTHOEK HORIZONTAAL: Horizontaal langer dan verticaal (was aspect-square)
       borderRadius: 'rounded-lg',
       bgColor: 'bg-gray-100',
     },

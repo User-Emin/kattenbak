@@ -28,10 +28,18 @@ export function Header() {
 
   const isOnCartPage = pathname === '/cart';
 
-  // Cart toggle handler - ✅ DIRECTE VERWIJZING: Naar winkelwagenpagina
+  // Cart toggle handler - ✅ NAVBAR SYMBOOL: Sidebar openen, WINKELWAGENBUTTON: Direct verwijzing
   const handleCartToggle = () => {
     if (isOnCartPage) return;
-    // ✅ DIRECT: Navigeer direct naar winkelwagenpagina (was sidebar openen)
+    // ✅ NAVBAR SYMBOOL: Sidebar openen (niet direct navigeren)
+    isCartOpen ? closeCart() : openCart();
+  };
+  
+  // ✅ WINKELWAGENBUTTON: Direct verwijzing naar winkelwagenpagina (aparte handler)
+  const handleCartButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isOnCartPage) return;
+    // ✅ DIRECT: Navigeer direct naar winkelwagenpagina
     window.location.href = '/cart';
   };
 

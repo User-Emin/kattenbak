@@ -13,7 +13,7 @@ export const CHAT_CONFIG = {
     size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
     borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
     backgroundColor: 'bg-gray-200', // ✅ GRIJS: Solid grijs (geen transparantie)
-    textColor: 'gradient-text', // ✅ GRADIENT GRIJS: Exact zoals navbar (was text-white)
+    textColor: 'text-white', // ✅ WIT SYMBOOL: Symbool wit op grijze achtergrond (was gradient-text)
     hoverBackgroundColor: 'hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover voor duidelijkheid
     border: 'border-2 border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
@@ -229,8 +229,8 @@ export const CHAT_CONFIG = {
     },
     backdrop: {
       fadeIn: '', // ✅ GEEN ANIMATIE: Backdrop niet zichtbaar, dus geen fade-in nodig
-      backgroundColor: 'bg-transparent', // ✅ VOLLEDIG TRANSPARANT: Achtergrond blijft volledig zichtbaar, niets bedekt
-      blur: '', // ✅ GEEN BLUR: Achtergrond blijft scherp zichtbaar
+      backgroundColor: 'bg-black/10', // ✅ KLEINE BLUR ACHTERGROND: Subtiele overlay bij openen chatbot (was bg-transparent)
+      blur: 'backdrop-blur-sm', // ✅ KLEINE BLUR: Subtiele blur voor focus (was '')
       zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.backdrop,
       mobileTransparent: '', // ✅ GEEN MOBILE OVERRIDE: Overal transparant
       mobilePointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none, // ✅ POINTER EVENTS NONE: Backdrop niet klikbaar

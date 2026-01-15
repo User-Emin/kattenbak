@@ -141,13 +141,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     : ['/placeholder-image.jpg'];
   const currentImage = images[selectedImageIndex];
 
-  // Handle add to cart
+  // Handle add to cart - ✅ DIRECTE VERWIJZING: Naar winkelwagenpagina
   const handleAddToCart = async () => {
     setIsAdding(true);
     try {
       addItem(product, quantity);
-      // Visual feedback
-      setTimeout(() => setIsAdding(false), 2000);
+      // ✅ DIRECT: Navigeer direct naar winkelwagenpagina
+      window.location.href = '/cart';
     } catch (error) {
       console.error('Error adding to cart:', error);
       setIsAdding(false);
@@ -252,7 +252,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     {
       title: 'Hoogwaardige ABS Materialen',
       description: 'Gemaakt van duurzaam, milieuvriendelijk ABS-materiaal dat bestand is tegen krassen en eenvoudig te reinigen. Geurwerend en hypoallergeen voor optimale hygiëne.',
-      image: DESIGN_SYSTEM.layout.features.capacity.imageUrl, // ✅ DYNAMISCH: Via DESIGN_SYSTEM (geen hardcode)
+      image: DESIGN_SYSTEM.layout.features.capacity.imageUrl, // ✅ DYNAMISCH: Via DESIGN_SYSTEM (geen hardcode) - EXACT ZELFDE ALS HOME
       items: [
         'Duurzaam ABS kunststof',
         'Kras- en slijtvast',
@@ -263,7 +263,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     {
       title: 'Dubbele Veiligheidssensoren',
       description: 'Uitgerust met infrarood- en gewichtssensoren die automatisch stoppen wanneer uw kat de bak betreedt. Getest op 10.000+ cycli voor maximale betrouwbaarheid.',
-      image: DESIGN_SYSTEM.layout.features.capacity.imageUrl, // ✅ DYNAMISCH: Zelfde foto als home (geen hardcode)
+      image: '/images/feature-2.jpg', // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode) - EXACT IDENTIEK
       items: [
         'IR bewegingssensor',
         'Gewichtdetectie technologie',
