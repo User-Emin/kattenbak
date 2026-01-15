@@ -105,7 +105,7 @@ export const PRODUCT_PAGE_CONFIG = {
         fontSize: 'text-sm',
         fontWeight: 'font-normal', // ✅ DUNNER (was medium)
         textColor: 'text-white',
-        bgColor: 'bg-blue-500',
+        bgColor: 'bg-gray-600', // ✅ GRIJS: Geen blauw/oranje (was bg-blue-500)
         padding: 'px-2 py-1',
         borderRadius: 'rounded',
       },
