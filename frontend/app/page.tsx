@@ -165,27 +165,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🎨 TRUST BANNER - ✅ GRADIENT, EDGE-TO-EDGE, ONDER HERO */}
-      <section 
-        className="flex items-center justify-center"
-        style={{
-          background: DESIGN_SYSTEM.layout.trustBanner.bg, // ✅ GRADIENT
-          height: DESIGN_SYSTEM.layout.trustBanner.height,
-          padding: DESIGN_SYSTEM.layout.trustBanner.padding,
-        }}
-      >
-        <p
-          className="text-center"
-          style={{
-            color: DESIGN_SYSTEM.layout.trustBanner.color,
-            fontSize: DESIGN_SYSTEM.typography.fontSize.base,
-            fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-          }}
-        >
-          {SHARED_CONTENT.trustBanner.text}
-        </p>
-      </section>
-
+      {/* ✅ TRUST BANNER VERWIJDERD: Onder hero weggehaald */}
+      
       {/* 🎨 PREMIUM KWALITEIT & VEILIGHEID - GRADIENT EXACT ZOALS NAVBAR (GEEN AFBEELDING) */}
       <section 
         className="relative flex items-center justify-center w-full"

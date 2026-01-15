@@ -109,7 +109,7 @@ export const CHAT_CONFIG = {
       transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
     },
     user: {
-      backgroundColor: 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]', // ✅ GRADIENT (was bg-black)
+      backgroundColor: `bg-gradient-to-r from-[${DESIGN_SYSTEM.colors.primaryStart}] to-[${DESIGN_SYSTEM.colors.primaryEnd}]`, // ✅ GRADIENT DYNAMISCH: Via DESIGN_SYSTEM (geen hardcode)
       textColor: 'text-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.text.inverse (#ffffff) - Tailwind class
       borderRadius: 'rounded-xl', // ✅ RONDER: Extra ronde hoeken, smoother
       padding: 'p-4', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[4] - Tailwind class
