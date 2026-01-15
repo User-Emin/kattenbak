@@ -21,7 +21,25 @@ router.use(rateLimitMiddleware({ windowMs: 15 * 60 * 1000, max: 50 })); // Lower
  * - EXIF stripping
  * - UUID filenames
  */
-router.post('/images', upload.array('images', 10), async (req, res) => {
+// ✅ SECURITY: Multer error handler for 413 (file too large)
+const handleMulterError = (err: any, req: any, res: any, next: any) => {
+  if (err && err.code === 'LIMIT_FILE_SIZE') {
+    const maxSizeMB = Math.round(MAX_FILE_SIZE / (1024 * 1024));
+    return res.status(413).json({
+      success: false,
+      error: `Bestand te groot. Maximum ${maxSizeMB}MB per afbeelding.`
+    });
+  }
+  if (err && err.code === 'LIMIT_FILE_COUNT') {
+    return res.status(400).json({
+      success: false,
+      error: 'Te veel bestanden. Maximum 10 afbeeldingen per upload.'
+    });
+  }
+  next(err);
+};
+
+router.post('/images', upload.array('images', 10), handleMulterError, async (req, res) => {
   const uploadedFiles: Express.Multer.File[] = [];
   
   try {
@@ -89,6 +107,11 @@ router.post('/images', upload.array('images', 10), async (req, res) => {
     // Clean up all uploaded files on error
     for (const file of uploadedFiles) {
       await deleteFile(file.path);
+    }
+    
+    // ✅ SECURITY: Pass Multer errors to global error handler
+    if (error && 'code' in error && (error.code === 'LIMIT_FILE_SIZE' || error.code === 'LIMIT_FILE_COUNT')) {
+      return next(error); // Let global error handler process Multer errors
     }
     
     return res.status(500).json({
