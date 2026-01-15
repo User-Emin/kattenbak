@@ -330,7 +330,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       CONFIG.gallery.navigation.buttonSize,
                       CONFIG.gallery.navigation.buttonBg,
                       CONFIG.gallery.navigation.buttonHover,
-                      'rounded-full',
+                      CONFIG.gallery.navigation.borderRadius || 'rounded-full', // ✅ DYNAMISCH: Via config
                       'absolute left-4',
                       CONFIG.gallery.navigation.position,
                       'flex items-center justify-center',
@@ -346,7 +346,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       CONFIG.gallery.navigation.buttonSize,
                       CONFIG.gallery.navigation.buttonBg,
                       CONFIG.gallery.navigation.buttonHover,
-                      'rounded-full',
+                      CONFIG.gallery.navigation.borderRadius || 'rounded-full', // ✅ DYNAMISCH: Via config
                       'absolute right-4',
                       CONFIG.gallery.navigation.position,
                       'flex items-center justify-center',
