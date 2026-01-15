@@ -104,14 +104,15 @@ export function ChatPopup() {
           duration: { base: 'duration-200' },
           timing: { ease: 'ease-in-out' },
           backdrop: {
-            backgroundColor: 'bg-gray-200/80', // ✅ GRIJS: Solid met lichte opacity voor backdrop (was bg-black/50)
-            blur: 'backdrop-blur-sm',
-            fadeIn: 'animate-in fade-in duration-300',
+            backgroundColor: 'bg-transparent', // ✅ VOLLEDIG TRANSPARANT: Achtergrond blijft volledig zichtbaar, niets bedekt
+            blur: '', // ✅ GEEN BLUR: Achtergrond blijft scherp zichtbaar
+            fadeIn: '', // ✅ GEEN ANIMATIE: Backdrop niet zichtbaar, dus geen fade-in nodig
             zIndex: 'z-[99]',
-            mobileTransparent: 'md:bg-transparent', // ✅ TRANSPARANT: Blijft zoals het was (was md:bg-gray-200)
-            mobilePointerEvents: 'md:pointer-events-none',
+            mobileTransparent: '', // ✅ GEEN MOBILE OVERRIDE: Overal transparant
+            mobilePointerEvents: 'pointer-events-none', // ✅ POINTER EVENTS NONE: Backdrop niet klikbaar
             position: 'fixed',
             inset: 'inset-0',
+            transition: '', // ✅ GEEN TRANSITION: Backdrop niet zichtbaar, dus geen transition nodig
           },
           modal: {
             slideIn: 'animate-in zoom-in-95 duration-300',
@@ -124,6 +125,7 @@ export function ChatPopup() {
               justify: 'justify-center',
               padding: 'p-3 sm:p-4',
               pointerEvents: 'pointer-events-none',
+              backgroundColor: 'bg-transparent', // ✅ VOLLEDIG TRANSPARANT: Container bedekt niets, achtergrond blijft volledig zichtbaar
             },
             content: {
               pointerEvents: 'pointer-events-auto',
@@ -592,6 +594,7 @@ export function ChatPopup() {
             safeChatConfig.animations.modal.container.justify,
             safeChatConfig.animations.modal.container.padding,
             safeChatConfig.animations.modal.container.pointerEvents,
+            safeChatConfig.animations.modal.container.backgroundColor || 'bg-transparent', // ✅ VOLLEDIG TRANSPARANT: Container bedekt niets, achtergrond blijft volledig zichtbaar
             safeChatConfig.animations.modal.container.transition
           )}>
             <div className={cn(

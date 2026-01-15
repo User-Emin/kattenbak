@@ -228,27 +228,28 @@ export const CHAT_CONFIG = {
       ease: DESIGN_SYSTEM.transitions.timing.easeOut, // ease-out voor smoother
     },
     backdrop: {
-      fadeIn: 'animate-in fade-in duration-300', // ✅ DYNAMISCH: DESIGN_SYSTEM.transitions.duration.slow (300ms) - Tailwind class
-      backgroundColor: 'bg-transparent', // ✅ TRANSPARANT: Blijft zoals het was, niets verandert (was bg-black/20)
-      blur: 'backdrop-blur-sm',
+      fadeIn: '', // ✅ GEEN ANIMATIE: Backdrop niet zichtbaar, dus geen fade-in nodig
+      backgroundColor: 'bg-transparent', // ✅ VOLLEDIG TRANSPARANT: Achtergrond blijft volledig zichtbaar, niets bedekt
+      blur: '', // ✅ GEEN BLUR: Achtergrond blijft scherp zichtbaar
       zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.backdrop,
-            mobileTransparent: 'md:bg-gray-200', // ✅ GRIJS: Solid (geen transparant, was bg-gray-200/50)
-      mobilePointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
+      mobileTransparent: '', // ✅ GEEN MOBILE OVERRIDE: Overal transparant
+      mobilePointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none, // ✅ POINTER EVENTS NONE: Backdrop niet klikbaar
       position: DESIGN_SYSTEM.layoutUtils.position.fixed,
       inset: 'inset-0',
-      transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
+      transition: '', // ✅ GEEN TRANSITION: Backdrop niet zichtbaar, dus geen transition nodig
     },
     modal: {
       slideIn: 'animate-in zoom-in-95 duration-300 ease-out', // ✅ DYNAMISCH: DESIGN_SYSTEM transitions - Tailwind classes
     container: {
       position: DESIGN_SYSTEM.layoutUtils.position.fixed,
-      inset: 'inset-0',
+      inset: 'inset-0', // ✅ VOLLEDIG TRANSPARANT: Container bedekt viewport maar is volledig transparant, achtergrond blijft zichtbaar
       zIndex: 'z-[200]', // ✅ Consistent met cookie modal
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       align: DESIGN_SYSTEM.layoutUtils.flex.align.end, // ✅ POPUP: Boven button (end i.p.v. center)
       justify: DESIGN_SYSTEM.layoutUtils.flex.justify.end, // ✅ POPUP: Rechts (end i.p.v. center)
       padding: 'p-3 sm:p-4 pb-24 sm:pb-24', // ✅ POPUP: Padding onderaan (96px) voor ruimte boven button (64px button + 32px gap)
-      pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
+      pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none, // ✅ POINTER EVENTS NONE: Container niet klikbaar, alleen content
+      backgroundColor: 'bg-transparent', // ✅ VOLLEDIG TRANSPARANT: Container bedekt niets, achtergrond blijft volledig zichtbaar
       transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
     },
       content: {
