@@ -41,9 +41,10 @@ router.post('/images', upload.array('images', 10), async (req, res) => {
         for (const f of files) {
           await deleteFile(f.path);
         }
-        return res.status(400).json({
+        const maxSizeMB = Math.round(MAX_FILE_SIZE / (1024 * 1024));
+        return res.status(413).json({
           success: false,
-          error: `Bestand te groot: ${file.originalname} (max 10MB)`
+          error: `Bestand te groot: ${file.originalname} (max ${maxSizeMB}MB)`
         });
       }
       uploadedFiles.push(file);
