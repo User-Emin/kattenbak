@@ -665,26 +665,7 @@ export function ChatPopup() {
                 </div>
               </div>
 
-              {/* ✅ WARNING BANNER - Rode achtergrond, zwarte tekst */}
-              {safeChatConfig.warning && (
-                <div className={cn(
-                  safeChatConfig.warning.container.backgroundColor,
-                  safeChatConfig.warning.container.textColor,
-                  safeChatConfig.warning.container.padding,
-                  safeChatConfig.warning.container.borderRadius,
-                  safeChatConfig.warning.container.borderBottom,
-                  safeChatConfig.warning.container.marginBottom
-                )}>
-                  <p className={cn(
-                    safeChatConfig.warning.text.fontSize,
-                    safeChatConfig.warning.text.fontWeight,
-                    safeChatConfig.warning.text.fontFamily,
-                    safeChatConfig.warning.text.lineHeight
-                  )}>
-                    Let op: Niet geschikt voor kittens onder 6 maanden. De smart cat litter is alleen geschikt voor katten die niet meer wegen dan 3,3 lbs (1,5KG), en het wordt aanbevolen dat het maximale gewicht van de kat niet meer dan 27,5 lbs (12,5KG) mag zijn.
-                  </p>
-                </div>
-              )}
+              {/* ✅ WARNING BANNER REMOVED - Nu alleen in product detail pagina */}
 
               {/* ✅ MODERN: Messages - Ronder, Noto Sans - 100% DRY */}
               <div className={cn(
@@ -838,12 +819,14 @@ export function ChatPopup() {
                     placeholder="Stel je vraag..."
                     className={cn(
                       safeChatConfig.input.field.flex,
+                      safeChatConfig.input.field.width || 'w-full',
                       safeChatConfig.input.field.padding,
                       safeChatConfig.input.field.border,
                       safeChatConfig.input.field.borderRadius,
                       safeChatConfig.input.field.focus.ring,
                       safeChatConfig.input.field.focus.border,
                       safeChatConfig.input.field.fontSize,
+                      safeChatConfig.input.field.fontWeight,
                       safeChatConfig.input.field.backgroundColor,
                       safeChatConfig.utilities?.fontFamily || 'font-sans'
                     )}
