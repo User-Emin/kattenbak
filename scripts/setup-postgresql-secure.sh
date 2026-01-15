@@ -72,19 +72,33 @@ echo -e "${GREEN}✅ Secure password generated${NC}"
 # Step 4: Create database and user
 echo -e "${YELLOW}📦 Step 4: Creating database and user...${NC}"
 sudo -u postgres psql <<EOF
--- ✅ SECURITY: Create database with secure settings
-CREATE DATABASE ${DB_NAME} 
-    WITH ENCODING='UTF8' 
-    LC_COLLATE='en_US.UTF-8' 
-    LC_CTYPE='en_US.UTF-8' 
-    TEMPLATE=template0;
+-- ✅ SECURITY: Create database with secure settings (if not exists)
+SELECT 'CREATE DATABASE ${DB_NAME} 
+    WITH ENCODING=''UTF8'' 
+    LC_COLLATE=''en_US.UTF-8'' 
+    LC_CTYPE=''en_US.UTF-8'' 
+    TEMPLATE=template0'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${DB_NAME}')\gexec
 
--- ✅ SECURITY: Create user with secure password
-CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';
+-- ✅ SECURITY: Create user with secure password (if not exists)
+DO \$\$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_user WHERE usename = '${DB_USER}') THEN
+        CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';
+    ELSE
+        -- Update password if user exists
+        ALTER USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';
+    END IF;
+END
+\$\$;
 
 -- ✅ SECURITY: Grant required permissions for Prisma
 GRANT CONNECT ON DATABASE ${DB_NAME} TO ${DB_USER};
 GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};
+
+-- Connect to database to set schema permissions
+\c ${DB_NAME}
+
 GRANT ALL ON SCHEMA public TO ${DB_USER};
 ALTER SCHEMA public OWNER TO ${DB_USER};
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO ${DB_USER};
@@ -98,9 +112,10 @@ REVOKE ALL ON SCHEMA public FROM PUBLIC;
 EOF
 
 if [ $? -eq 0 ]; then
-    echo -e "${GREEN}✅ Database and user created${NC}"
+    echo -e "${GREEN}✅ Database and user configured${NC}"
 else
-    echo -e "${YELLOW}⚠️  Database/user may already exist, continuing...${NC}"
+    echo -e "${RED}❌ Database/user configuration failed${NC}"
+    exit 1
 fi
 
 # Step 5: Update .env file with DATABASE_URL
