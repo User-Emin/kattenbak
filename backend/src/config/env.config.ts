@@ -67,28 +67,40 @@ const envSchema = z.object({
 // ✅ SECURITY: Runtime validation met Zod (met fallback voor optionele velden)
 let validatedEnv: z.infer<typeof envSchema>;
 try {
+  // Clean process.env: remove empty strings for optional fields
+  const cleanedEnv = { ...process.env };
+  // Remove empty strings for optional admin fields to use defaults
+  if (!cleanedEnv.ADMIN_EMAIL || cleanedEnv.ADMIN_EMAIL.trim() === '') {
+    delete cleanedEnv.ADMIN_EMAIL;
+  }
+  if (!cleanedEnv.ADMIN_PASSWORD || cleanedEnv.ADMIN_PASSWORD.trim() === '') {
+    delete cleanedEnv.ADMIN_PASSWORD;
+  }
+  
   // Parse met safeParse voor betere error handling
-  const result = envSchema.safeParse(process.env);
+  const result = envSchema.safeParse(cleanedEnv);
   if (!result.success) {
     console.error('❌ Environment validation failed:');
     result.error.errors.forEach(err => {
       console.error(`   - ${err.path.join('.')}: ${err.message}`);
     });
-    // ✅ SECURITY: Voor optionele velden (ADMIN_EMAIL, ADMIN_PASSWORD) gebruiken we defaults
-    // Alleen critical errors (DATABASE_URL, JWT_SECRET, MOLLIE_API_KEY) zijn fatal
+    // ✅ SECURITY: Alleen critical errors (DATABASE_URL, JWT_SECRET, MOLLIE_API_KEY) zijn fatal
     const criticalErrors = result.error.errors.filter(err => 
       ['DATABASE_URL', 'JWT_SECRET', 'MOLLIE_API_KEY'].includes(err.path[0] as string)
     );
     if (criticalErrors.length > 0) {
-      console.error('❌ FATAL: Critical environment variables missing!');
+      console.error('❌ FATAL: Critical environment variables missing or invalid!');
       process.exit(1);
     }
-    // Voor non-critical errors, gebruik defaults
-    validatedEnv = envSchema.parse({ ...process.env, ...Object.fromEntries(
-      result.error.errors
-        .filter(err => !['DATABASE_URL', 'JWT_SECRET', 'MOLLIE_API_KEY'].includes(err.path[0] as string))
-        .map(err => [err.path[0], undefined])
-    )});
+    // Voor non-critical errors (ADMIN_EMAIL, ADMIN_PASSWORD), gebruik defaults door ze te verwijderen
+    const fixedEnv = { ...cleanedEnv };
+    result.error.errors
+      .filter(err => !['DATABASE_URL', 'JWT_SECRET', 'MOLLIE_API_KEY'].includes(err.path[0] as string))
+      .forEach(err => {
+        delete fixedEnv[err.path[0] as string];
+      });
+    validatedEnv = envSchema.parse(fixedEnv);
+    console.warn('⚠️  Using defaults for non-critical environment variables');
   } else {
     validatedEnv = result.data;
   }
