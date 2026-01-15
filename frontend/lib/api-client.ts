@@ -65,13 +65,22 @@ class ApiClient {
         }
       );
 
-      // Response interceptor
+      // Response interceptor - ✅ 502 ERROR HANDLING
       ApiClient.instance.interceptors.response.use(
         (response) => response,
         (error: AxiosError) => {
           if (error.response) {
             // Server responded with error status
             const status = error.response.status;
+            
+            // ✅ 502 PREVENTION: Verberg 502/503/504 errors, toon vriendelijke message
+            if (status === 502 || status === 503 || status === 504) {
+              // ✅ SECURITY: Generic error message (geen stack trace)
+              const friendlyError = new Error('Service tijdelijk niet beschikbaar. Probeer het over een moment opnieuw.');
+              (friendlyError as any).status = status;
+              (friendlyError as any).isGatewayError = true;
+              return Promise.reject(friendlyError);
+            }
             
             if (status === 401) {
               // Unauthorized - clear token
@@ -80,6 +89,11 @@ class ApiClient {
                 window.location.href = "/admin/login";
               }
             }
+          } else if (error.request) {
+            // ✅ 502 PREVENTION: Network error (backend down)
+            const networkError = new Error('Kan geen verbinding maken met de server. Controleer je internetverbinding.');
+            (networkError as any).isNetworkError = true;
+            return Promise.reject(networkError);
           }
 
           return Promise.reject(error);
@@ -110,10 +124,22 @@ export interface ApiResponse<T = any> {
 }
 
 /**
- * API Error handler
+ * API Error handler - ✅ 502 PREVENTION: Vriendelijke error messages
  */
 export function handleApiError(error: any): string {
+  // ✅ 502 PREVENTION: Gateway errors krijgen vriendelijke message
+  if (error?.isGatewayError || error?.isNetworkError) {
+    return error.message || 'Service tijdelijk niet beschikbaar. Probeer het over een moment opnieuw.';
+  }
+  
   if (axios.isAxiosError(error)) {
+    const status = error.response?.status;
+    
+    // ✅ 502 PREVENTION: Gateway errors
+    if (status === 502 || status === 503 || status === 504) {
+      return 'Service tijdelijk niet beschikbaar. Probeer het over een moment opnieuw.';
+    }
+    
     if (error.response?.data?.error) {
       return error.response.data.error;
     }
@@ -125,6 +151,7 @@ export function handleApiError(error: any): string {
     }
   }
   
+  // ✅ SECURITY: Generic error (geen stack trace)
   return "Er is een fout opgetreden. Probeer het later opnieuw.";
 }
 

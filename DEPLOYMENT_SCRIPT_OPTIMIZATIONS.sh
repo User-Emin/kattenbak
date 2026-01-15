@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "🔥 DEPLOYMENT: Maximale Performance Optimalisaties"
-echo "Server: 185.224.139.74"
+echo "Server: \${SERVER_HOST:-185.224.139.74}"
 echo ""
 
 # STAP 1: Update frontend/next.config.ts

@@ -399,10 +399,17 @@ jobs:
     needs: [deploy]
     
     steps:
-      - name: 🏥 Health Check - Backend
+      - name: 🏥 Health Check - Backend (✅ 502 Prevention)
         run: |
           echo "Checking backend health..."
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://catsupply.nl/api/v1/health)
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://catsupply.nl/api/v1/health || echo "000")
+          
+          # ✅ 502 PREVENTION: Check for gateway errors
+          if [ "$RESPONSE" = "502" ] || [ "$RESPONSE" = "503" ] || [ "$RESPONSE" = "504" ]; then
+            echo "❌ Gateway error detected (HTTP $RESPONSE)"
+            echo "⚠️  This should never happen - 502 errors are prevented"
+            exit 1
+          fi
           
           if [ "$RESPONSE" != "200" ]; then
             echo "❌ Backend health check FAILED (HTTP $RESPONSE)"
@@ -410,11 +417,19 @@ jobs:
           fi
           
           echo "✅ Backend: OK (HTTP $RESPONSE)"
+          echo "✅ No 502/503/504 gateway errors"
       
-      - name: 🏥 Health Check - Frontend
+      - name: 🏥 Health Check - Frontend (✅ 502 Prevention)
         run: |
           echo "Checking frontend..."
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://catsupply.nl/)
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://catsupply.nl/ || echo "000")
+          
+          # ✅ 502 PREVENTION: Check for gateway errors
+          if [ "$RESPONSE" = "502" ] || [ "$RESPONSE" = "503" ] || [ "$RESPONSE" = "504" ]; then
+            echo "❌ Gateway error detected (HTTP $RESPONSE)"
+            echo "⚠️  This should never happen - 502 errors are prevented"
+            exit 1
+          fi
           
           if [ "$RESPONSE" != "200" ]; then
             echo "❌ Frontend health check FAILED (HTTP $RESPONSE)"
@@ -422,6 +437,7 @@ jobs:
           fi
           
           echo "✅ Frontend: OK (HTTP $RESPONSE)"
+          echo "✅ No 502/503/504 gateway errors"
       
       - name: 🏥 Health Check - Admin
         run: |

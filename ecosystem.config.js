@@ -70,11 +70,11 @@ module.exports = {
 
   deploy: {
     production: {
-      user: 'root',
-      host: '185.224.139.74',
+      user: process.env.DEPLOY_USER || 'root',
+      host: process.env.DEPLOY_HOST || 'localhost',
       ref: 'origin/main',
-      repo: 'git@github.com:yourusername/kattenbak.git',
-      path: '/var/www/catsupply',
+      repo: process.env.DEPLOY_REPO || 'git@github.com:User-Emin/kattenbak.git',
+      path: process.env.DEPLOY_PATH || '/var/www/kattenbak',
       'pre-deploy-local': '',
       'post-deploy': 'npm install && npm run build && pm2 reload ecosystem.config.js --env production',
       'pre-setup': ''

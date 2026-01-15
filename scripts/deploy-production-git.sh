@@ -96,8 +96,8 @@ sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SER
 
 log "✅ Deployment completed successfully!"
 
-# Step 4: Verify deployment
-log "Step 4: Verifying deployment..."
+# Step 4: Verify deployment - ✅ 502 PREVENTION
+log "Step 4: Verifying deployment (502 prevention)..."
 # ✅ SECURITY: Password passed via environment variable
 HEALTH_CHECK=$(sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" "curl -sf http://localhost:$BACKEND_PORT/api/v1/rag/health | head -5" || echo "FAILED")
 
@@ -106,7 +106,22 @@ if [[ "$HEALTH_CHECK" == *"FAILED"* ]] || [[ -z "$HEALTH_CHECK" ]]; then
   exit 1
 fi
 
+# ✅ 502 PREVENTION: Check for gateway errors
+log "Checking for 502/503/504 errors..."
+GATEWAY_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -m 10 "https://catsupply.nl/api/v1/health" || echo "000")
+if [[ "$GATEWAY_STATUS" == "502" ]] || [[ "$GATEWAY_STATUS" == "503" ]] || [[ "$GATEWAY_STATUS" == "504" ]]; then
+  error "Gateway error detected (status: $GATEWAY_STATUS). Restarting services..."
+  sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" "pm2 restart all && sleep 5 && pm2 save"
+  sleep 5
+  GATEWAY_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -m 10 "https://catsupply.nl/api/v1/health" || echo "000")
+  if [[ "$GATEWAY_STATUS" == "502" ]] || [[ "$GATEWAY_STATUS" == "503" ]] || [[ "$GATEWAY_STATUS" == "504" ]]; then
+    error "Gateway error persists after restart (status: $GATEWAY_STATUS)"
+    exit 1
+  fi
+fi
+
 log "✅ Health check passed!"
+log "✅ No gateway errors (status: $GATEWAY_STATUS)"
 log "✅ Deployment verification complete!"
 
 echo ""

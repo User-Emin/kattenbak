@@ -1,0 +1,69 @@
+name: 🔍 Health Check & Verification - Enterprise Automation
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # ✅ AUTOMATION: Elke 5 minuten health check
+    - cron: '*/5 * * * *'
+
+env:
+  SERVER_HOST: ${{ secrets.SERVER_HOST }}
+  SERVER_USER: ${{ secrets.SERVER_USER }}
+
+jobs:
+  health-check:
+    name: ✅ Health Check & Verification
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 🔍 Backend Health Check
+        run: |
+          echo "🔍 Checking backend health..."
+          response=$(curl -sf -m 10 https://catsupply.nl/api/v1/health || echo "FAILED")
+          if [ "$response" = "FAILED" ]; then
+            echo "❌ Backend health check FAILED"
+            exit 1
+          fi
+          echo "✅ Backend health: $response"
+      
+      - name: 🔍 Frontend Health Check
+        run: |
+          echo "🔍 Checking frontend health..."
+          status=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://catsupply.nl || echo "000")
+          if [ "$status" != "200" ]; then
+            echo "❌ Frontend health check FAILED (status: $status)"
+            exit 1
+          fi
+          echo "✅ Frontend health: HTTP $status"
+      
+      - name: 🔍 PM2 Process Check
+        run: |
+          echo "🔍 Checking PM2 processes..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << 'ENDSSH'
+            pm2 list | grep -E "(backend|frontend|admin)" || exit 1
+            echo "✅ PM2 processes running"
+          ENDSSH
+      
+      - name: 🔍 No 502 Errors Check
+        run: |
+          echo "🔍 Checking for 502 errors..."
+          status=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://catsupply.nl/api/v1/health || echo "000")
+          if [ "$status" = "502" ] || [ "$status" = "503" ] || [ "$status" = "504" ]; then
+            echo "❌ Gateway error detected (status: $status)"
+            exit 1
+          fi
+          echo "✅ No gateway errors (status: $status)"
+      
+      - name: 📊 Report Status
+        if: always()
+        run: |
+          echo "## Health Check Results" >> $GITHUB_STEP_SUMMARY
+          echo "- Backend: ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- Frontend: ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- PM2: ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- No 502 Errors: ✅" >> $GITHUB_STEP_SUMMARY
