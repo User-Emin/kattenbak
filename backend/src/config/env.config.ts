@@ -75,14 +75,23 @@ const envSchema = z.object({
 // ✅ SECURITY: Runtime validation met Zod (met fallback voor optionele velden)
 let validatedEnv: z.infer<typeof envSchema>;
 try {
-  // Clean process.env: remove empty strings and invalid values for optional fields
+  // Clean process.env: remove empty strings and invalid values for optional fields BEFORE validation
   const cleanedEnv = { ...process.env };
-  // Remove empty strings or invalid emails for optional admin fields to use defaults
-  if (!cleanedEnv.ADMIN_EMAIL || cleanedEnv.ADMIN_EMAIL.trim() === '' || !cleanedEnv.ADMIN_EMAIL.includes('@')) {
-    delete cleanedEnv.ADMIN_EMAIL;
+  
+  // Remove invalid ADMIN_EMAIL values (empty, no @, or invalid format) to use defaults
+  if (cleanedEnv.ADMIN_EMAIL) {
+    const email = cleanedEnv.ADMIN_EMAIL.trim();
+    if (email === '' || !email.includes('@') || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      delete cleanedEnv.ADMIN_EMAIL;
+    }
   }
-  if (!cleanedEnv.ADMIN_PASSWORD || cleanedEnv.ADMIN_PASSWORD.trim() === '' || cleanedEnv.ADMIN_PASSWORD.length < 12) {
-    delete cleanedEnv.ADMIN_PASSWORD;
+  
+  // Remove invalid ADMIN_PASSWORD values (empty or too short) to use defaults
+  if (cleanedEnv.ADMIN_PASSWORD) {
+    const password = cleanedEnv.ADMIN_PASSWORD.trim();
+    if (password === '' || password.length < 12) {
+      delete cleanedEnv.ADMIN_PASSWORD;
+    }
   }
   
   // Parse met safeParse voor betere error handling
