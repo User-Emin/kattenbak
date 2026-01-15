@@ -280,6 +280,11 @@ export const SHARED_CONTENT = {
     ],
   },
   
+  // ✅ DYNAMISCH: Trust banner content (onder hero)
+  trustBanner: {
+    text: 'Gratis verzending • 30 dagen bedenktijd • 2 jaar garantie',
+  },
+  
   success: {
     title: 'Bedankt voor je bestelling!',
     subtitle: 'We hebben je bestelling ontvangen en zijn deze aan het verwerken.',

@@ -62,6 +62,7 @@ export const PRODUCT_PAGE_CONFIG = {
       buttonHover: 'hover:bg-white',
       iconSize: 'w-6 h-6',
       position: 'absolute inset-y-1/2 -translate-y-1/2',
+      borderRadius: 'rounded-full', // ✅ ROND: Volledig ronde navigation buttons
     },
     counter: {
       position: 'absolute bottom-4 right-4',

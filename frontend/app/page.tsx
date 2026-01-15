@@ -15,6 +15,7 @@ import { IMAGE_CONFIG, getImageFillProps } from "@/lib/image-config";
 import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { SHARED_CONTENT } from "@/lib/content.config";
 
 /**
  * 🎨 HOMEPAGE - MINIMALISTISCH ZWART-WIT DESIGN
@@ -171,7 +172,7 @@ export default function HomePage() {
           padding: DESIGN_SYSTEM.layout.trustBanner.padding,
         }}
       >
-        <p 
+        <p
           className="text-center"
           style={{
             color: DESIGN_SYSTEM.layout.trustBanner.color,
@@ -179,7 +180,7 @@ export default function HomePage() {
             fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
           }}
         >
-          Gratis verzending • 30 dagen bedenktijd • 2 jaar garantie
+          {SHARED_CONTENT.trustBanner.text}
         </p>
       </section>
 

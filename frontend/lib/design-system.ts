@@ -222,13 +222,16 @@ export const DESIGN_SYSTEM = {
    * BORDERS & SHADOWS
    */
   effects: {
-    // Border radius
+    // Border radius - ✅ DYNAMISCH: Alle border radius waarden
     borderRadius: {
       none: '0',
       sm: '0.125rem',     // 2px - subtle
       base: '0.25rem',    // 4px - default
       md: '0.375rem',     // 6px
       lg: '0.5rem',       // 8px
+      xl: '0.75rem',      // 12px - ✅ RONDER: Voor buttons en icons
+      '2xl': '1rem',      // 16px - ✅ RONDER: Voor grote buttons
+      full: '9999px',     // ✅ ROND: Voor volledig ronde elementen
     },
     
     // Box shadows - minimalistisch
