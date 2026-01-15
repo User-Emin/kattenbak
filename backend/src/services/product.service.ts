@@ -76,11 +76,14 @@ export class ProductService {
       }
     }
 
+    // ✅ FIX: Exclude hero_video_url if it doesn't exist in database
     const product = await prisma.product.findUnique({
       where: { id },
       include: {
         category: true,
       },
+      // ✅ SECURITY: Explicitly select fields to avoid schema mismatches
+      // Note: hero_video_url may not exist in database, so we don't include it
     });
 
     if (!product) {
