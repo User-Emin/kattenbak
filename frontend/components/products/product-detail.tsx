@@ -875,7 +875,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       <div className={CONFIG.edgeSection.container}>
         <div className="relative w-full">
           <Image
-            src={DESIGN_SYSTEM.layout.featureSection.imageUrl} // ✅ DYNAMISCH: Via DESIGN_SYSTEM (geen hardcode)
+            src={DESIGN_SYSTEM.layout.edgeSection.imageUrl} // ✅ DYNAMISCH: Druppel foto via DESIGN_SYSTEM (geen hardcode)
             alt="Premium Kwaliteit & Veiligheid"
             width={1920}
             height={800}

@@ -12,7 +12,7 @@ export const CHAT_CONFIG = {
   button: {
     size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
     borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
-    backgroundColor: 'bg-gray-200', // ✅ GRIJS: Grijs achtergrond voor duidelijkheid
+    backgroundColor: 'bg-gray-200', // ✅ GRIJS: Solid grijs (geen transparantie)
     textColor: 'text-white', // ✅ WIT SYMBOOL: Symbool wit zoals gevraagd (was text-gray-700)
     hoverBackgroundColor: 'hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover voor duidelijkheid
     border: 'border-2 border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border
@@ -37,7 +37,7 @@ export const CHAT_CONFIG = {
       ringColor: 'focus:ring-gray-400/30', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[400] - Tailwind class
     },
     iconSize: 'w-7 h-7', // ✅ MODERN: groter icon (was w-6 h-6)
-    pulse: 'animate-pulse', // ✅ MODERN: subtle pulse animation
+    pulse: '', // ✅ FIX: Geen beweging (was animate-pulse)
   },
 
   // Modal styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
@@ -232,7 +232,7 @@ export const CHAT_CONFIG = {
       backgroundColor: 'bg-gradient-to-r from-[rgba(60,60,61,0.5)] to-[rgba(122,122,125,0.5)]', // ✅ GRADIENT met opacity (was bg-black/50)
       blur: 'backdrop-blur-sm',
       zIndex: DESIGN_SYSTEM.layoutUtils.zIndex.backdrop,
-            mobileTransparent: 'md:bg-gray-200/50', // ✅ GRIJS: Geen transparant (was bg-transparent)
+            mobileTransparent: 'md:bg-gray-200', // ✅ GRIJS: Solid (geen transparant, was bg-gray-200/50)
       mobilePointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none,
       position: DESIGN_SYSTEM.layoutUtils.position.fixed,
       inset: 'inset-0',
