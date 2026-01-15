@@ -182,48 +182,40 @@ export default function HomePage() {
         }}
       />
 
-      {/* 🎨 USP FEATURES - ZIGZAG PATTERN */}
+      {/* 🎨 USP FEATURES - ZIGZAG PATTERN - ✅ EDGE-TO-EDGE MOBIEL: Mobielvriendelijker */}
       <section 
         style={{
           padding: `${DESIGN_SYSTEM.spacing.section} 0`,
           backgroundColor: DESIGN_SYSTEM.colors.secondary,
         }}
       >
-        <div 
-          className="mx-auto"
-          style={{
-            maxWidth: DESIGN_SYSTEM.layout.maxWidth.xl,
-            padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
-          }}
-        >
-          {/* Section Heading - Noto Sans MEDIUM (logo style) */}
-          <div className="text-center mb-16">
-            <h2 
-              className="mb-4"
-              style={{
-                fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-                fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'],
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
-                color: DESIGN_SYSTEM.colors.text.primary,
-                letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
-              }}
-            >
-              Waarom deze kattenbak?
-            </h2>
-            <p 
-              style={{
-                fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-                color: DESIGN_SYSTEM.colors.text.secondary,
-              }}
-            >
-              De twee belangrijkste features die het verschil maken
-            </p>
-          </div>
-          
-          {/* USP Features Component */}
-          <ProductUspFeatures />
+        {/* ✅ PADDING MOBIEL: Heading heeft padding op mobiel voor leesbaarheid */}
+        <div className="text-center mb-12 px-4 md:px-0"> {/* ✅ PADDING MOBIEL: Padding op mobiel */}
+          <h2 
+            className="mb-4"
+            style={{
+              fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
+              fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'],
+              fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
+              color: DESIGN_SYSTEM.colors.text.primary,
+              letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
+            }}
+          >
+            Waarom deze kattenbak?
+          </h2>
+          <p 
+            style={{
+              fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
+              fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+              color: DESIGN_SYSTEM.colors.text.secondary,
+            }}
+          >
+            De twee belangrijkste features die het verschil maken
+          </p>
         </div>
+        
+        {/* USP Features Component - ✅ EDGE-TO-EDGE MOBIEL: Afbeeldingen edge-to-edge */}
+        <ProductUspFeatures />
       </section>
 
       {/* ✅ VIDEO SECTIE VERWIJDERD: Geen redundantie */}
