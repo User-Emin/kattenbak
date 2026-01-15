@@ -27,11 +27,19 @@ const ICON_MAP = {
   package: Package,
 } as const;
 
-// DRY: Color mapping naar Tailwind classes
+// DRY: Color mapping - ✅ GRADIENT: #3C3C3D → #7A7A7D (was text-black)
 const COLOR_MAP = {
-  accent: 'text-black', // ✅ ZWART ipv ORANJE
+  accent: 'gradient-text', // ✅ GRADIENT (was text-black)
   blue: 'text-blue-600',
   brand: 'text-brand',
+} as const;
+
+// ✅ GRADIENT: Utility voor gradient text
+const gradientTextStyle = {
+  background: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
 } as const;
 
 /**
@@ -66,7 +74,12 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                     <IconComponent className={`h-12 w-12 flex-shrink-0 ${colorClass}`} />
                     
                     <div className="flex-1">
-                      <h3 className="text-xl font-normal text-black mb-2">{usp.title}</h3>
+                      <h3 
+                        className="text-xl font-normal mb-2"
+                        style={usp.color === 'accent' ? gradientTextStyle : undefined}
+                      >
+                        {usp.title}
+                      </h3>
                       <p className="text-gray-700 text-base leading-relaxed font-light">{usp.description}</p>
                     </div>
                   </div>

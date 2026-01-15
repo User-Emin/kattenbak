@@ -47,9 +47,9 @@ export function UspBanner() {
     <div 
       className="w-full flex items-center justify-center relative overflow-hidden"
       style={{
-        backgroundColor: DESIGN_SYSTEM.layout.uspBanner.bg,
+        background: DESIGN_SYSTEM.layout.uspBanner.bg, // ✅ GRADIENT
         height: DESIGN_SYSTEM.layout.uspBanner.height,
-        zIndex: DESIGN_SYSTEM.layout.uspBanner.zIndex, // ✅ BOVEN navbar
+        zIndex: parseInt(DESIGN_SYSTEM.layout.uspBanner.zIndex), // ✅ ONDER sidebar (z-[170]) maar BOVEN navbar (z-165)
         position: 'sticky',
         top: 0,
       }}

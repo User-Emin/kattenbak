@@ -34,7 +34,7 @@ export function ProductHighlights() {
       icon: RotateCcw,
       title: "14 dagen retour",
       subtitle: "Gratis terugsturen",
-      color: "text-black", // ✅ ZWART ipv ORANJE
+      color: "gradient-text", // ✅ GRADIENT: #3C3C3D → #7A7A7D (was text-black)
     },
   ];
 
@@ -61,7 +61,10 @@ export function ProductHighlights() {
             return (
               <div key={index}>
                 <div className="flex items-center gap-3 py-2">
-                  <Icon className={`h-5 w-5 ${item.color} flex-shrink-0`} />
+                  <Icon 
+                    className="h-5 w-5 flex-shrink-0"
+                    style={item.color === 'gradient-text' ? { color: '#3C3C3D' } : undefined}
+                  />
                   <div>
                     <p className="text-sm font-bold text-gray-900">{item.title}</p>
                     <p className="text-xs text-gray-600">{item.subtitle}</p>

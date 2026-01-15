@@ -54,10 +54,22 @@ export function ProductUspFeatures() {
             {/* Tekst Content - meer ruimte */}
             <div className={`space-y-6 ${isEven ? 'md:order-1' : 'md:order-2'}`}>
               <div className="flex items-start gap-4">
-                <IconComponent className="h-14 w-14 text-black flex-shrink-0 mt-1" />
+                <IconComponent 
+                  className="h-14 w-14 flex-shrink-0 mt-1"
+                  style={{ color: '#3C3C3D' }}
+                />
                 <div>
                   <h3 className="text-2xl font-normal text-gray-900 mb-3">
-                    <strong className="text-black font-normal">{feature.title.split(' ')[0]}</strong> {feature.title.split(' ').slice(1).join(' ')}
+                    <strong 
+                      style={{
+                        background: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                      }}
+                    >
+                      {feature.title.split(' ')[0]}
+                    </strong> {feature.title.split(' ').slice(1).join(' ')}
                   </h3>
                   <p className="text-gray-700 text-lg leading-relaxed font-light">
                     {feature.description}

@@ -14,7 +14,12 @@ export function MovingBanner() {
   ];
 
   return (
-    <div className="bg-black text-white py-2 overflow-hidden relative">
+    <div 
+      className="text-white py-2 overflow-hidden relative"
+      style={{
+        background: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)', // ✅ GRADIENT (was bg-black)
+      }}
+    >
       <div className="animate-marquee whitespace-nowrap flex items-center gap-12 antialiased">
         {[...usps, ...usps, ...usps].map((text, idx) => (
           <span 

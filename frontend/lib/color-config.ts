@@ -16,8 +16,10 @@ export const BRAND_COLORS_HEX = {
   primaryDark: '#004760',    // ✅ WINKELWAGEN BLAUW DARK
   primaryLight: '#007aa8',   // ✅ WINKELWAGEN BLAUW LIGHT
   
-  // Accent Color (ZWART voor algemeen, BLAUW voor buttons)
-  accent: '#000000',        // ✅ ZWART (was orange)
+  // Accent Color - ✅ GRADIENT: #3C3C3D → #7A7A7D (was #000000)
+  accent: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',  // ✅ GRADIENT (was #000000)
+  accentStart: '#3C3C3D',   // ✅ GRADIENT START
+  accentEnd: '#7A7A7D',     // ✅ GRADIENT END
   accentDark: '#111827',    // ✅ DARK GRAY (was orange-dark)
   accentLight: '#374151',   // ✅ GRAY (was orange-light)
   
@@ -29,9 +31,11 @@ export const BRAND_COLORS_HEX = {
   orangeReplacement: '#005980',      // ✅ WINKELWAGEN BLAUW (vervangt #f76402)
   orangeReplacementHover: '#004760', // ✅ WINKELWAGEN BLAUW DARK (vervangt #e55a02, #e55d00)
   
-  // Neutral Colors
+  // Neutral Colors - ✅ GRADIENT: #3C3C3D → #7A7A7D (was #000000)
   white: '#ffffff',
-  black: '#000000',
+  black: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',  // ✅ GRADIENT (was #000000)
+  blackStart: '#3C3C3D',    // ✅ GRADIENT START
+  blackEnd: '#7A7A7D',      // ✅ GRADIENT END
   gray: {
     50: '#f9fafb',
     100: '#f3f4f6',

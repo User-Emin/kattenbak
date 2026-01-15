@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ✅ GRADIENT TEXT UTILITY - #3C3C3D → #7A7A7D (vervangt text-black) */
+.gradient-text {
+  background: linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /**
  * 🎨 GLOBAL STYLES - MINIMALISTISCH ZWART-WIT DESIGN
  * 

@@ -35,9 +35,9 @@ export function ProductSpecsAccordion({ specs }: ProductSpecsAccordionProps) {
     { ...specs.spec1, color: 'text-brand' },
     { ...specs.spec2, color: 'text-brand' },
     { ...specs.spec3, color: 'text-brand' },
-    { ...specs.spec4, color: 'text-black' }, // ✅ ZWART ipv ORANJE
-    { ...specs.spec5, color: 'text-black' }, // ✅ ZWART ipv ORANJE
-    { ...specs.spec6, color: 'text-black' }, // ✅ ZWART ipv ORANJE
+    { ...specs.spec4, color: 'gradient-text' }, // ✅ GRADIENT: #3C3C3D → #7A7A7D (was text-black)
+    { ...specs.spec5, color: 'gradient-text' }, // ✅ GRADIENT: #3C3C3D → #7A7A7D (was text-black)
+    { ...specs.spec6, color: 'gradient-text' }, // ✅ GRADIENT: #3C3C3D → #7A7A7D (was text-black)
   ];
 
   return (
@@ -65,7 +65,10 @@ export function ProductSpecsAccordion({ specs }: ProductSpecsAccordionProps) {
                 <div key={index} className="py-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <IconComponent className={`h-5 w-5 ${spec.color} flex-shrink-0`} />
+                      <IconComponent 
+                        className="h-5 w-5 flex-shrink-0"
+                        style={spec.color === 'gradient-text' ? { color: '#3C3C3D' } : undefined}
+                      />
                       <span className="text-sm font-semibold text-gray-900">{spec.label}</span>
                     </div>
                     <span className="text-sm text-gray-700 font-medium">{spec.value}</span>

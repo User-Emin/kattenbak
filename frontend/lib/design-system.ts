@@ -17,8 +17,10 @@ export const DESIGN_SYSTEM = {
    * KLEUREN - Minimalistisch zwart-wit palet
    */
   colors: {
-    // Primary colors
-    primary: '#000000',       // Zwart - main text, borders
+    // Primary colors - ✅ GRADIENT: #3C3C3D → #7A7A7D (was #000000)
+    primary: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',  // ✅ GRADIENT: Main text, borders
+    primaryStart: '#3C3C3D',  // ✅ GRADIENT START
+    primaryEnd: '#7A7A7D',   // ✅ GRADIENT END
     secondary: '#ffffff',     // Wit - backgrounds, inverse text
     
     // Grays - voor subtiele accenten
@@ -35,9 +37,11 @@ export const DESIGN_SYSTEM = {
       900: '#171717',        // Darkest
     },
     
-    // Text colors
+    // Text colors - ✅ GRADIENT: #3C3C3D → #7A7A7D (was #000000)
     text: {
-      primary: '#000000',     // Hoofdtekst
+      primary: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',     // ✅ GRADIENT: Hoofdtekst
+      primaryStart: '#3C3C3D',  // ✅ GRADIENT START
+      primaryEnd: '#7A7A7D',    // ✅ GRADIENT END
       secondary: '#666666',   // Secondary tekst
       muted: '#999999',       // Muted/disabled tekst
       inverse: '#ffffff',     // Tekst op donkere achtergrond
@@ -180,13 +184,15 @@ export const DESIGN_SYSTEM = {
       padding: '0 48px',
     },
     
-    // USP banner (boven navbar) - ZWART
+    // USP banner (boven navbar) - ✅ GRADIENT: #3C3C3D → #7A7A7D
     uspBanner: {
-      bg: '#000000',         // ZWART
+      bg: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',  // ✅ GRADIENT (was #000000)
+      bgStart: '#3C3C3D',    // ✅ GRADIENT START
+      bgEnd: '#7A7A7D',      // ✅ GRADIENT END
       color: '#ffffff',      // WIT
       height: '48px',
       animationDuration: '3000ms', // 3 seconden per USP
-      zIndex: '1000',        // ✅ BOVEN navbar
+      zIndex: '160',        // ✅ ONDER sidebar (z-[170]) maar BOVEN navbar (z-165)
     },
     
     // Navbar
