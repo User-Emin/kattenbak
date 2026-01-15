@@ -172,8 +172,8 @@ export const DESIGN_SYSTEM = {
         image: '65%',       // Afbeelding kant (larger)
       },
       spacing: '32px',      // Gap tussen tekst en afbeelding
-      // Legale afbeelding: Unsplash (automatic cat litter box, modern design)
-      imageUrl: 'https://images.unsplash.com/photo-1545249390-6bdfa286032f?q=80&w=2000&auto=format&fit=crop',
+      // ✅ DYNAMISCH: Lokale hero foto uit Downloads (geen hardcode)
+      imageUrl: '/images/hero-main.jpg',
     },
     
     // Trust banner (onder hero) - ✅ GRADIENT: #3C3C3D → #7A7A7D
@@ -205,11 +205,11 @@ export const DESIGN_SYSTEM = {
       zIndex: '999',         // ✅ ONDER USP banner
     },
     
-    // Feature section (edge-to-edge afbeelding)
+    // Feature section (edge-to-edge afbeelding) - ✅ SMOOTH PASSEND: Legale foto onder hero
     featureSection: {
       minHeight: '400px',
-      // Legale afbeelding: Unsplash (elegant cat on modern furniture, lifestyle shot)
-      imageUrl: 'https://images.unsplash.com/photo-1573865526739-10c1deaa9c87?q=80&w=2000&auto=format&fit=crop',
+      // ✅ DYNAMISCH: Legale afbeelding Unsplash (smooth passend bij hero, modern interieur)
+      imageUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=2000&auto=format&fit=crop',
       overlayOpacity: 0.4,  // Iets donkerder voor betere leesbaarheid
     },
     
