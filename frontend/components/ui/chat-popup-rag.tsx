@@ -865,12 +865,15 @@ export function ChatPopup() {
                 </div>
                 <p className={cn(
                   safeChatConfig.input.footer.fontSize || 'text-xs',
+                  safeChatConfig.input.footer.fontWeight || 'font-normal',
+                  safeChatConfig.input.footer.letterSpacing || 'tracking-normal',
+                  safeChatConfig.input.footer.antialiased || 'antialiased',
                   safeChatConfig.input.footer.textColor,
                   safeChatConfig.input.footer.marginTop,
                   safeChatConfig.input.footer.textAlign,
-                  safeChatConfig.utilities?.fontFamily || 'font-sans'
+                  safeChatConfig.input.footer.fontFamily || safeChatConfig.utilities?.fontFamily || 'font-sans'
                 )}>
-                  Powered by AI · Antwoorden op basis van productinformatie
+                  Powered by AI
                 </p>
               </div>
             </div>

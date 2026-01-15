@@ -202,7 +202,10 @@ export const CHAT_CONFIG = {
     footer: {
       fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // 12px
       textColor: 'text-gray-500', // ✅ Gray-500 (geen transparantie)
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ EXACT: Noto Sans zoals homepage
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal, // ✅ SMOOTH: Normal weight voor smooth rendering
+      letterSpacing: 'tracking-normal', // ✅ SMOOTH: Normale letter spacing
+      antialiased: 'antialiased', // ✅ SMOOTH: Antialiased voor smooth rendering zoals homepage
       marginTop: 'mt-1.5', // ✅ KORTER: Minder margin
     },
   },
