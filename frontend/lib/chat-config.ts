@@ -12,10 +12,10 @@ export const CHAT_CONFIG = {
   button: {
     size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
     borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
-    backgroundColor: 'bg-gray-200', // ✅ GRIJS: Solid grijs (geen transparantie)
-    textColor: 'text-white', // ✅ WIT SYMBOOL: Symbool wit op grijze achtergrond (was gradient-text)
-    hoverBackgroundColor: 'hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover voor duidelijkheid
-    border: 'border-2 border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border
+    backgroundColor: '!bg-gray-200', // ✅ GRIJS: Solid grijs met !important om transparantie te overschrijven
+    textColor: '!text-white', // ✅ WIT SYMBOOL: Symbool wit met !important
+    hoverBackgroundColor: '!hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover met !important
+    border: '!border-2 !border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border met !important
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     zIndex: 'z-[50]', // ✅ DYNAMISCH: DESIGN_SYSTEM.layoutUtils.zIndex.dropdown - Tailwind class
     position: {

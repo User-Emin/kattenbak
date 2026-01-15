@@ -489,11 +489,12 @@ export function ChatPopup() {
     const fallbackButton = safeChatConfig?.button || {
       position: { type: 'fixed', right: 'right-6', bottom: 'bottom-6' },
       size: 'w-16 h-16',
-      borderRadius: 'rounded-md',
-      backgroundColor: 'bg-gray-200', // ✅ GRIJS: Grijs achtergrond (niet transparant)
-      textColor: 'text-white', // ✅ WIT SYMBOOL: Symbool wit (niet transparant)
+      borderRadius: 'rounded-full',
+      backgroundColor: '!bg-gray-200', // ✅ GRIJS: Grijs achtergrond met !important om transparantie te overschrijven
+      textColor: '!text-white', // ✅ WIT SYMBOOL: Symbool wit met !important
       shadow: 'shadow-lg',
-      hoverBackgroundColor: 'hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover
+      hoverBackgroundColor: '!hover:bg-gray-300', // ✅ GRIJS HOVER: Lichtere hover met !important
+      border: '!border-2 !border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border met !important
       display: 'flex',
       align: 'items-center',
       justify: 'justify-center',
