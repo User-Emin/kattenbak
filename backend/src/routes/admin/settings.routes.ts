@@ -5,8 +5,16 @@
 
 import { Router, Request, Response } from 'express';
 import { getSettings, updateSettings } from '../../data/mock-settings';
+import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
 
 const router = Router();
+
+/**
+ * ✅ SECURITY: ALL routes require authentication + admin role
+ */
+router.use(authMiddleware);
+router.use(adminMiddleware);
+router.use(rateLimitMiddleware({ windowMs: 15 * 60 * 1000, max: 100 }));
 
 /**
  * GET /admin/settings

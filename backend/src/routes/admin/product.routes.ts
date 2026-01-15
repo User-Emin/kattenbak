@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { getProduct, updateProduct } from '../../data/mock-products';
+import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
 
 const router = Router();
 
@@ -7,7 +8,11 @@ const router = Router();
  * ADMIN PRODUCT ROUTES - DRY & Mock Data
  * React Admin compatible: pagination, sorting, filtering
  * Uses SHARED mock data source for consistency
+ * ✅ SECURITY: ALL routes require authentication + admin role
  */
+router.use(authMiddleware);
+router.use(adminMiddleware);
+router.use(rateLimitMiddleware({ windowMs: 15 * 60 * 1000, max: 100 }));
 
 // GET /admin/products - List with pagination
 router.get('/', (req: Request, res: Response) => {

@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { prisma } from '../../config/database.config';
 import { successResponse } from '../../utils/response.util';
 import { logger } from '../../config/logger.config';
+import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
 
 const router = Router();
 
@@ -9,7 +10,11 @@ const router = Router();
  * ADMIN ORDER ROUTES - PostgreSQL Database
  * Team Decision: Use Prisma for all order operations
  * Approved by: Dr. Chen, Prof. Anderson, Marcus Rodriguez, Elena Volkov
+ * ✅ SECURITY: ALL routes require authentication + admin role
  */
+router.use(authMiddleware);
+router.use(adminMiddleware);
+router.use(rateLimitMiddleware({ windowMs: 15 * 60 * 1000, max: 100 }));
 
 // GET /admin/orders - List all orders with pagination (DATABASE)
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {

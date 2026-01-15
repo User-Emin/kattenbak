@@ -1,10 +1,15 @@
 import { Router, Request, Response } from 'express';
+import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
 
 const router = Router();
 
 /**
  * ADMIN CATEGORY ROUTES - DRY & Mock Data
+ * ✅ SECURITY: ALL routes require authentication + admin role
  */
+router.use(authMiddleware);
+router.use(adminMiddleware);
+router.use(rateLimitMiddleware({ windowMs: 15 * 60 * 1000, max: 100 }));
 
 const MOCK_CATEGORIES = [
   {
