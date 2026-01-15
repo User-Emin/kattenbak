@@ -170,28 +170,23 @@ export default function HomePage() {
 
       {/* ✅ TRUST BANNER VERWIJDERD: Onder hero weggehaald */}
       
-      {/* 🎨 PREMIUM KWALITEIT & VEILIGHEID - GRADIENT EXACT ZOALS NAVBAR (GEEN AFBEELDING) */}
+      {/* 🎨 PREMIUM KWALITEIT & VEILIGHEID - ✅ RESPONSIVE: Mobile kleiner tekst, niet onderregelgaand */}
       <section 
-        className="relative flex items-center justify-center w-full"
+        className="relative flex items-center justify-center w-full py-8 md:py-12" // ✅ RESPONSIVE: Mobile minder padding
         style={{
-          minHeight: '400px', // ✅ VERTICAAL KORTER: 400px (was 600px)
+          minHeight: '300px', // ✅ MOBILE: Kleinere hoogte (was 400px)
           // ✅ GEEN AFBEELDING: Alleen gradient zoals navbar
           background: `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart} 0%, ${DESIGN_SYSTEM.colors.primaryEnd} 100%)`, // ✅ GRADIENT EXACT NAVBAR: Via DESIGN_SYSTEM (geen hardcode)
         }}
       >
-
-        {/* Centered content */}
+        {/* Centered content - ✅ RESPONSIVE: Mobile padding, Desktop center */}
         <div 
-          className="relative z-10 text-center space-y-6"
-          style={{
-            maxWidth: DESIGN_SYSTEM.layout.maxWidth.lg,
-            padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
-          }}
+          className="relative z-10 text-center space-y-4 md:space-y-6 px-4 md:px-12 max-w-4xl mx-auto" // ✅ RESPONSIVE: Mobile padding, Desktop max-width
         >
           <h2 
+            className="text-2xl md:text-4xl lg:text-5xl" // ✅ RESPONSIVE: Mobile kleiner (text-2xl), Desktop groter
             style={{
               fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-              fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'],
               fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
               color: DESIGN_SYSTEM.colors.text.inverse,
               letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
@@ -200,8 +195,8 @@ export default function HomePage() {
             Premium Kwaliteit & Veiligheid
           </h2>
           <p 
+            className="text-sm md:text-lg lg:text-xl" // ✅ RESPONSIVE: Mobile kleiner (text-sm), Desktop groter
             style={{
-              fontSize: DESIGN_SYSTEM.typography.fontSize.xl,
               fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
               color: DESIGN_SYSTEM.colors.text.inverse,
               lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
