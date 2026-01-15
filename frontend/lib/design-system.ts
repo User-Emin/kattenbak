@@ -220,6 +220,18 @@ export const DESIGN_SYSTEM = {
       overlayOpacity: 0.5,  // Overlay voor tekst leesbaarheid
     },
     
+    // Feature images - ✅ DYNAMISCH: Centrale configuratie voor zigzag features
+    features: {
+      capacity: {
+        // ✅ DYNAMISCH: 10.5L Capaciteit afbeelding (wordt dynamisch gezet)
+        imageUrl: '/images/capacity-10.5l.jpg', // Standaard, kan worden overschreven
+      },
+      quiet: {
+        // ✅ DYNAMISCH: Ultra-Quiet Motor afbeelding
+        imageUrl: '/images/feature-2.jpg',
+      },
+    },
+    
     // Sections
     section: {
       padding: '80px 0',

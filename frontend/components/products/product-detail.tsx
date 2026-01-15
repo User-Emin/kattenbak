@@ -252,7 +252,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     {
       title: 'Hoogwaardige ABS Materialen',
       description: 'Gemaakt van duurzaam, milieuvriendelijk ABS-materiaal dat bestand is tegen krassen en eenvoudig te reinigen. Geurwerend en hypoallergeen voor optimale hygiëne.',
-      image: '/images/feature-1.jpg', // ✅ DYNAMISCH: Lokale foto (geen hardcode Unsplash URL)
+      image: DESIGN_SYSTEM.layout.features.capacity.imageUrl, // ✅ DYNAMISCH: Via DESIGN_SYSTEM (geen hardcode)
       items: [
         'Duurzaam ABS kunststof',
         'Kras- en slijtvast',

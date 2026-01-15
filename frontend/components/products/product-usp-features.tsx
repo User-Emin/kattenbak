@@ -1,6 +1,7 @@
 "use client";
 
 import { Package, Volume2 } from "lucide-react";
+import { DESIGN_SYSTEM } from "@/lib/design-system";
 
 /**
  * Product USP Features Component - COOLBLUE WIDE LAYOUT
@@ -24,8 +25,8 @@ export function ProductUspFeatures() {
         "Bij meerdere katten: 2-3x per week",
         "30% minder onderhoud vs concurrentie (7-9L)"
       ],
-      // ✅ DYNAMISCH: Lokale foto uit Downloads (geen hardcode)
-      image: "/images/feature-1.jpg",
+      // ✅ DYNAMISCH: Via DESIGN_SYSTEM (geen hardcode)
+      image: DESIGN_SYSTEM.layout.features.capacity.imageUrl,
       imageAlt: "10.5L XL Capaciteit afvalbak"
     },
     {

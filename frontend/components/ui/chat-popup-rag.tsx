@@ -104,11 +104,11 @@ export function ChatPopup() {
           duration: { base: 'duration-200' },
           timing: { ease: 'ease-in-out' },
           backdrop: {
-            backgroundColor: 'bg-black/50',
+            backgroundColor: 'bg-gray-200/80', // ✅ GRIJS: Solid met lichte opacity voor backdrop (was bg-black/50)
             blur: 'backdrop-blur-sm',
             fadeIn: 'animate-in fade-in duration-300',
             zIndex: 'z-[99]',
-            mobileTransparent: 'md:bg-transparent',
+            mobileTransparent: 'md:bg-gray-200', // ✅ GRIJS: Solid (geen transparant, was md:bg-transparent)
             mobilePointerEvents: 'md:pointer-events-none',
             position: 'fixed',
             inset: 'inset-0',
