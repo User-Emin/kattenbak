@@ -928,7 +928,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right
                 )}>
                   <Image
-                    src={feature.image}
+                    src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
                     alt={feature.title}
                     width={800}
                     height={600}

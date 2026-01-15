@@ -83,11 +83,14 @@ export const getImageFixedProps = (config: {
   alt: string;
   width: number;
   height: number;
-}) => ({
-  src: config.src || IMAGE_CONFIG.placeholder,
-  alt: config.alt,
-  width: config.width,
-  height: config.height,
-  quality: IMAGE_QUALITY,
-  onError: () => console.error('❌ Image failed to load:', config.src),
-});
+}) => {
+  const imageSrc = config.src && config.src.trim() !== '' ? config.src : IMAGE_CONFIG.placeholder; // ✅ FIX: Geen lege string
+  return {
+    src: imageSrc,
+    alt: config.alt,
+    width: config.width,
+    height: config.height,
+    quality: IMAGE_QUALITY,
+    onError: () => console.error('❌ Image failed to load:', imageSrc),
+  };
+};
