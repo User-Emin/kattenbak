@@ -371,6 +371,11 @@ export function ChatPopup() {
       : safeChatConfig.button.position.bottom;
   }, [stickyCartVisible, safeChatConfig]);
 
+  // ✅ SECURITY: Don't render on server (prevent SSR errors)
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <>
       {/* ✅ MODERN: Floating Chat Button - Hoekiger, zwart-wit, Noto Sans */}

@@ -470,10 +470,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CHAT POPUP - Protected by Error Boundary */}
-      <ChatPopupErrorBoundary>
-        <ChatPopup />
-      </ChatPopupErrorBoundary>
+      {/* CHAT POPUP - Protected by Error Boundary & Client-Only */}
+      {typeof window !== 'undefined' && (
+        <ChatPopupErrorBoundary>
+          <ChatPopup />
+        </ChatPopupErrorBoundary>
+      )}
     </div>
   );
 }
