@@ -608,6 +608,7 @@ export function ChatPopup() {
               safeChatConfig.animations.modal.content.display,
               safeChatConfig.animations.modal.content.direction,
               safeChatConfig.animations.modal.content.position,
+              safeChatConfig.animations.modal.content.marginBottom || 'mb-4', // ✅ POPUP: Margin onderaan zodat modal boven button verschijnt
               safeChatConfig.animations.modal.content.transition,
               safeChatConfig.utilities?.fontFamily || 'font-sans'
             )}>
