@@ -100,19 +100,13 @@ export function ChatPopup() {
           },
         },
         modal: {
-          position: {
-            container: 'fixed inset-0',
-            flex: 'flex items-center justify-center',
-            padding: 'p-4',
-            pointerEvents: 'pointer-events-none',
-          },
-          zIndex: 'z-[100]',
-          maxWidth: 'max-w-2xl',
-          maxHeight: 'max-h-[90vh]',
+          maxWidth: 'max-w-md',
+          maxHeight: 'max-h-[90vh] md:max-h-[600px]',
           backgroundColor: 'bg-white',
-          borderRadius: 'rounded-lg',
+          borderRadius: 'rounded-sm',
           shadow: 'shadow-2xl',
           border: 'border border-gray-200',
+          zIndex: 120,
         },
         header: {
           backgroundColor: 'bg-gray-900',
@@ -433,11 +427,11 @@ export function ChatPopup() {
           
           {/* ✅ MODERN: Chat Modal - Hoekiger, smoother animations */}
           <div className={cn(
-            safeChatConfig.modal.position.container,
-            safeChatConfig.modal.zIndex,
-            safeChatConfig.modal.position.flex,
-            safeChatConfig.modal.position.padding,
-            safeChatConfig.modal.position.pointerEvents
+            'fixed inset-0',
+            'z-[120]',
+            'flex items-center justify-center',
+            'p-4',
+            'pointer-events-none'
           )}>
             <div className={cn(
               'pointer-events-auto',
