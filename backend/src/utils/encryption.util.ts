@@ -46,17 +46,19 @@ function getEncryptionKey(): Buffer | null {
 /**
  * Encrypt file buffer
  * Returns: { encrypted: Buffer, iv: Buffer, authTag: Buffer }
+ * ✅ SECURITY: Throws error if key not available (encryptAndSaveFile handles fallback)
  */
 export async function encryptFile(buffer: Buffer): Promise<{
   encrypted: Buffer;
   iv: Buffer;
   authTag: Buffer;
 }> {
+  const key = getEncryptionKey();
+  if (!key) {
+    throw new Error('Encryption key not available - use encryptAndSaveFile for automatic fallback');
+  }
+  
   try {
-    const key = getEncryptionKey();
-    if (!key) {
-      throw new Error('Encryption key not available');
-    }
     const iv = crypto.randomBytes(IV_LENGTH); // Random IV per file
     
     const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
@@ -69,9 +71,9 @@ export async function encryptFile(buffer: Buffer): Promise<{
     const authTag = cipher.getAuthTag();
     
     return { encrypted, iv, authTag };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Encryption failed:', error);
-    throw new Error('File encryption failed');
+    throw new Error(`File encryption failed: ${error.message || 'Unknown error'}`);
   }
 }
 
@@ -131,9 +133,22 @@ export async function encryptAndSaveFile(
 /**
  * Load and decrypt file from disk
  * Extracts IV and auth tag from file header
+ * ✅ SECURITY: Handles both encrypted and unencrypted files
  */
 export async function loadAndDecryptFile(filePath: string): Promise<Buffer> {
   const combined = await fs.readFile(filePath);
+  const key = getEncryptionKey();
+  
+  // ✅ FALLBACK: If no key, assume file is unencrypted (return as-is)
+  if (!key) {
+    return combined;
+  }
+  
+  // Check if file is encrypted (has IV + authTag header)
+  if (combined.length < IV_LENGTH + AUTH_TAG_LENGTH) {
+    // File too small to be encrypted, return as-is
+    return combined;
+  }
   
   // Extract components
   const iv = combined.subarray(0, IV_LENGTH);

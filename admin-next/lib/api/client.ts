@@ -53,7 +53,7 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000,
+  timeout: 60000, // ✅ UPLOAD: 60 seconden timeout voor file uploads (was 10 seconden)
 });
 
 // DRY: Request interceptor - Add auth token

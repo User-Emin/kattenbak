@@ -76,7 +76,10 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
       toast.success(`${imageFiles.length} afbeelding(en) geüpload!`);
     } catch (error: any) {
       console.error('Upload error:', error);
-      toast.error('Upload mislukt: ' + (error.message || 'Onbekende fout'));
+      // ✅ BETTER ERROR HANDLING: Show detailed error message
+      const errorMessage = error?.message || error?.details?.error || error?.details?.message || 'Onbekende fout';
+      const networkError = error?.status === 0 ? 'Netwerkfout: Kan geen verbinding maken met de server' : null;
+      toast.error(networkError || `Upload mislukt: ${errorMessage}`);
     } finally {
       setIsUploading(false);
       setUploadProgress('');
