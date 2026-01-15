@@ -76,6 +76,7 @@ class Server {
     // Body parsing
     // ✅ UPLOAD: Increased limits for file uploads (must be BEFORE multer routes)
     // Note: For multipart/form-data (file uploads), body parser doesn't apply, but we set high limits for other requests
+    // ✅ CRITICAL: Body parsers must NOT interfere with multipart/form-data (Multer handles that)
     this.app.use(express.json({ limit: '50mb' })); // Increased for uploads
     this.app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
