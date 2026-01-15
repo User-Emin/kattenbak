@@ -132,18 +132,18 @@ export function ChatPopup() {
             backgroundColor: 'bg-gray-50',
           },
           user: {
-            maxWidth: 'max-w-[80%]',
-            borderRadius: 'rounded-lg',
+            maxWidth: 'max-w-[85%]',
+            borderRadius: 'rounded-sm',
             padding: 'p-3',
-            backgroundColor: 'bg-blue-600',
+            backgroundColor: 'bg-black',
             textColor: 'text-white',
           },
           assistant: {
-            maxWidth: 'max-w-[80%]',
-            borderRadius: 'rounded-lg',
+            maxWidth: 'max-w-[85%]',
+            borderRadius: 'rounded-sm',
             padding: 'p-3',
             backgroundColor: 'bg-white',
-            textColor: 'text-gray-900',
+            textColor: 'text-black',
             border: 'border border-gray-200',
           },
           timestamp: {
@@ -459,17 +459,17 @@ export function ChatPopup() {
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className={cn(
-                      safeChatConfig.header.title.fontSize,
-                      safeChatConfig.header.title.fontWeight,
-                      safeChatConfig.header.title.textColor,
-                      safeChatConfig.header.title.letterSpacing,
+                      safeChatConfig.header.title.fontSize || 'text-xl',
+                      safeChatConfig.header.title.fontWeight || 'font-medium',
+                      safeChatConfig.header.title.textColor || 'text-white',
+                      safeChatConfig.header.title.letterSpacing || 'tracking-tight',
                       'font-sans'
                     )}>
                       AI Assistent
                     </h3>
                     <p className={cn(
-                      safeChatConfig.header.subtitle.fontSize,
-                      safeChatConfig.header.subtitle.textColor,
+                      safeChatConfig.header.subtitle.fontSize || 'text-sm',
+                      safeChatConfig.header.subtitle.textColor || 'text-gray-300',
                       'mt-1',
                       'font-sans'
                     )}>
@@ -533,21 +533,21 @@ export function ChatPopup() {
                   >
                     <div
                       className={cn(
-                        msg.role === 'user' ? safeChatConfig.messages.user.maxWidth : safeChatConfig.messages.assistant.maxWidth,
-                        safeChatConfig.messages[msg.role].borderRadius,
-                        safeChatConfig.messages[msg.role].padding,
+                        msg.role === 'user' ? safeChatConfig.messages?.user?.maxWidth || 'max-w-[85%]' : safeChatConfig.messages?.assistant?.maxWidth || 'max-w-[85%]',
+                        msg.role === 'user' ? safeChatConfig.messages?.user?.borderRadius || 'rounded-sm' : safeChatConfig.messages?.assistant?.borderRadius || 'rounded-sm',
+                        msg.role === 'user' ? safeChatConfig.messages?.user?.padding || 'p-3' : safeChatConfig.messages?.assistant?.padding || 'p-3',
                         'transition-all',
-                        safeChatConfig.animations.duration.base,
+                        safeChatConfig.animations?.duration?.base || 'duration-200',
                         'font-sans',
                         msg.role === 'user'
-                          ? cn(safeChatConfig.messages.user.backgroundColor, safeChatConfig.messages.user.textColor)
-                          : cn(safeChatConfig.messages.assistant.backgroundColor, safeChatConfig.messages.assistant.textColor, safeChatConfig.messages.assistant.border)
+                          ? cn(safeChatConfig.messages?.user?.backgroundColor || 'bg-black', safeChatConfig.messages?.user?.textColor || 'text-white')
+                          : cn(safeChatConfig.messages?.assistant?.backgroundColor || 'bg-white', safeChatConfig.messages?.assistant?.textColor || 'text-black', safeChatConfig.messages?.assistant?.border || 'border border-gray-200')
                       )}
                     >
-                      <p className={cn(safeChatConfig.messages[msg.role]?.fontSize || SAFE_DESIGN_SYSTEM.typography.fontSize.sm, 'whitespace-pre-wrap')}>
+                      <p className={cn(SAFE_DESIGN_SYSTEM.typography.fontSize.sm, 'whitespace-pre-wrap')}>
                         {msg.content}
                       </p>
-                      <span className={cn(safeChatConfig.messages.timestamp.fontSize, safeChatConfig.messages.timestamp.textColor, 'mt-1', 'block')}>
+                      <span className={cn(safeChatConfig.messages?.timestamp?.fontSize || 'text-xs', safeChatConfig.messages?.timestamp?.textColor || 'text-gray-500', 'mt-1', 'block')}>
                         {msg.timestamp.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
