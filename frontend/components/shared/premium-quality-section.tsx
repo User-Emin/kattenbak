@@ -23,7 +23,7 @@ export function PremiumQualitySection() {
         className="relative z-10 text-center space-y-4 md:space-y-6 px-4 md:px-12 max-w-4xl mx-auto" // ✅ RESPONSIVE: Mobile padding, Desktop max-width
       >
         <h2 
-          className="text-2xl md:text-3xl lg:text-5xl" // ✅ RESPONSIVE: Mobile kleiner (text-2xl), Laptop kleiner (md:text-3xl ipv md:text-4xl), Desktop groter
+          className="text-2xl lg:text-3xl" // ✅ RESPONSIVE: Mobile kleiner (text-2xl), Desktop kleiner zoals zigzag (lg:text-3xl ipv lg:text-5xl)
           style={{
             fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
             fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,

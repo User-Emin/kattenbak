@@ -106,9 +106,9 @@ export default function HomePage() {
               backgroundColor: DESIGN_SYSTEM.colors.gray[50],
             }}
           >
-            {/* Heading - ✅ RESPONSIVE: Mobile smaller, Laptop smaller, Desktop larger */}
+            {/* Heading - ✅ RESPONSIVE: Mobile smaller, Laptop smaller, Desktop smaller */}
             <h1 
-              className="leading-tight text-3xl md:text-3xl lg:text-6xl" // ✅ RESPONSIVE: Laptop kleiner (md:text-3xl ipv md:text-4xl)
+              className="leading-tight text-3xl md:text-3xl lg:text-5xl" // ✅ RESPONSIVE: Desktop kleiner (lg:text-5xl ipv lg:text-6xl)
               style={{
                 fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
                 fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
