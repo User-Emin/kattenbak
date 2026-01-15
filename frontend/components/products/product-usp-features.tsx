@@ -89,7 +89,7 @@ export function ProductUspFeatures() {
               <img
                 src={feature.image}
                 alt={feature.imageAlt}
-                className="w-full h-auto object-cover rounded-xl" // ✅ RONDIGER: rounded-xl zoals productdetail (was geen rounded)
+                className="w-full h-auto object-cover rounded-lg" // ✅ RONDIGER: rounded-lg zoals productdetail (was geen rounded)
                 loading="lazy"
               />
             </div>
