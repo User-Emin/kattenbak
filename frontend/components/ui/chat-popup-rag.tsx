@@ -60,22 +60,7 @@ export function ChatPopup() {
   const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
   
-  // ✅ SECURITY: Additional safety check - ensure safeChatConfig is valid before render
-  if (!safeChatConfig || !safeChatConfig.button || !safeChatConfig.modal || !safeChatConfig.animations) {
-    // Return minimal button only (no popup) to prevent crash
-    return (
-      <button
-        onClick={() => {}}
-        className="fixed right-4 bottom-8 w-14 h-14 bg-black text-white rounded-sm shadow-2xl z-[100] flex items-center justify-center"
-        aria-label="Chat niet beschikbaar"
-        disabled
-      >
-        <MessageCircle className="w-6 h-6" />
-      </button>
-    );
-  }
-
-  // ✅ FIX: Safe access to CHAT_CONFIG with fallbacks (useMemo for performance)
+  // ✅ FIX: Safe access to CHAT_CONFIG with fallbacks (useMemo for performance) - MUST BE BEFORE ANY USAGE
   const safeChatConfig = useMemo(() => {
     try {
       // Verify CHAT_CONFIG exists and has required properties
@@ -364,16 +349,6 @@ export function ChatPopup() {
     }
   }, [handleSendMessage]);
 
-  // ✅ DRY: Calculate button position via CHAT_CONFIG (with safe access)
-  const buttonBottomClass = useMemo(() => {
-    if (!safeChatConfig?.button?.position) {
-      return 'bottom-8';
-    }
-    return stickyCartVisible 
-      ? safeChatConfig.button.position.bottomWithCart
-      : safeChatConfig.button.position.bottom;
-  }, [stickyCartVisible, safeChatConfig]);
-
   // ✅ SECURITY: Additional safety check - ensure safeChatConfig is valid before render
   if (!safeChatConfig || !safeChatConfig.button || !safeChatConfig.modal || !safeChatConfig.animations) {
     // Return minimal button only (no popup) to prevent crash
@@ -387,6 +362,16 @@ export function ChatPopup() {
       </button>
     );
   }
+
+  // ✅ DRY: Calculate button position via CHAT_CONFIG (with safe access)
+  const buttonBottomClass = useMemo(() => {
+    if (!safeChatConfig?.button?.position) {
+      return 'bottom-8';
+    }
+    return stickyCartVisible 
+      ? safeChatConfig.button.position.bottomWithCart
+      : safeChatConfig.button.position.bottom;
+  }, [stickyCartVisible, safeChatConfig]);
 
   return (
     <>
