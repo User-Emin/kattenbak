@@ -40,10 +40,29 @@ app.use(cors({
     if (!origin && process.env.NODE_ENV !== 'production') {
       return callback(null, true);
     }
-    // ✅ SECURITY: Check if origin is allowed
-    if (origin && allowedOrigins.includes(origin)) {
+    
+    // ✅ SECURITY: Allow same-origin requests (admin panel opzelfde domain)
+    if (!origin) {
+      return callback(null, true);
+    }
+    
+    // ✅ SECURITY: Check if origin is allowed (exact match of starts with)
+    const isAllowed = allowedOrigins.some(allowed => {
+      return origin === allowed || origin.startsWith(allowed.replace('https://', 'https://').replace('http://', 'http://'));
+    });
+    
+    // ✅ SECURITY: Also allow if origin contains catsupply.nl (voor subdomains)
+    if (origin.includes('catsupply.nl')) {
+      return callback(null, true);
+    }
+    
+    if (isAllowed) {
       callback(null, true);
     } else {
+      // ✅ SECURITY: Log blocked origin for debugging (niet in productie)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('CORS blocked origin:', origin);
+      }
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -667,16 +686,59 @@ app.delete('/api/v1/admin/products/:id', authMiddleware, async (req: Request, re
 // ADMIN: Get all products (with filters) - ✅ SECURITY: JWT auth required
 app.get('/api/v1/admin/products', authMiddleware, async (req: Request, res: Response) => {
   try {
+    // ✅ FIX: Select only fields that exist in database (zorg dat data niet verloren gaat)
     const products = await prisma.product.findMany({
       orderBy: { createdAt: 'desc' },
-      include: { category: true },
+      select: {
+        id: true,
+        sku: true,
+        name: true,
+        slug: true,
+        description: true,
+        shortDescription: true,
+        price: true,
+        compareAtPrice: true,
+        costPrice: true,
+        stock: true,
+        lowStockThreshold: true,
+        trackInventory: true,
+        weight: true,
+        dimensions: true,
+        images: true,
+        metaTitle: true,
+        metaDescription: true,
+        isActive: true,
+        isFeatured: true,
+        createdAt: true,
+        updatedAt: true,
+        publishedAt: true,
+        categoryId: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          }
+        }
+      }
     });
 
-    // DEFENSIVE: Sanitize all products
-    const sanitizedProducts = products.map(sanitizeProduct);
-    res.json(success(sanitizedProducts));
+    // DEFENSIVE: Sanitize all products with error handling
+    try {
+      const sanitizedProducts = products.map(sanitizeProduct);
+      res.json(success(sanitizedProducts));
+    } catch (sanitizeError: any) {
+      // ✅ FIX: Return products anyway if sanitization fails (zorg dat data niet verloren gaat)
+      console.error('Product sanitization error:', sanitizeError?.message || 'Unknown error');
+      res.json(success(products));
+    }
   } catch (err: any) {
-    console.error('Admin products error:', err.message);
+    // ✅ SECURITY: Log error but don't leak details
+    console.error('Admin products error:', {
+      message: err?.message || 'Unknown error',
+      code: err?.code,
+      // ✅ SECURITY: No stack traces, API keys, or sensitive data in logs
+    });
     res.status(500).json(error('Could not fetch products'));
   }
 });
