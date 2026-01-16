@@ -93,6 +93,44 @@ router.post(
       // Create order in DATABASE
       const order = await OrderService.createOrder(orderData);
 
+      // ✅ FIX: Send order confirmation email immediately (not waiting for payment)
+      try {
+        const customerName = `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`;
+        
+        await EmailService.sendOrderConfirmation({
+          customerEmail: order.customerEmail,
+          customerName,
+          orderNumber: order.orderNumber,
+          orderId: order.id,
+          items: order.items.map(item => ({
+            name: item.product.name,
+            quantity: item.quantity,
+            price: Number(item.price),
+          })),
+          subtotal: Number(order.subtotal),
+          shippingCost: Number(order.shippingCost),
+          tax: Number(order.tax),
+          total: Number(order.total),
+          shippingAddress: {
+            street: order.shippingAddress.street,
+            houseNumber: order.shippingAddress.houseNumber,
+            addition: order.shippingAddress.addition || undefined,
+            postalCode: order.shippingAddress.postalCode,
+            city: order.shippingAddress.city,
+            country: order.shippingAddress.country,
+          },
+        });
+
+        logger.info('Order confirmation email sent:', { orderId: order.id, email: order.customerEmail });
+      } catch (emailError: any) {
+        // ✅ SECURITY: Log email error but don't fail order creation
+        logger.error('Failed to send order confirmation email:', {
+          orderId: order.id,
+          error: emailError?.message,
+        });
+        // Don't throw - order is still created successfully
+      }
+
       // Create Mollie payment with SUCCESS page redirect
       const redirectUrl = `${env.FRONTEND_URL}/success?order=${order.id}`;
       const payment = await MollieService.createPayment(
