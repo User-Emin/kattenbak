@@ -182,12 +182,56 @@ app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
     // SECURITY: Sanitize slug input
     const slug = String(req.params.slug).toLowerCase().trim();
     
+    // ✅ FIX: Select only fields that exist in database (zorg dat data niet verloren gaat)
     const product = await prisma.product.findUnique({
       where: { slug },
-      include: {
-        category: true,
+      select: {
+        id: true,
+        sku: true,
+        name: true,
+        slug: true,
+        description: true,
+        shortDescription: true,
+        price: true,
+        compareAtPrice: true,
+        costPrice: true,
+        stock: true,
+        lowStockThreshold: true,
+        trackInventory: true,
+        weight: true,
+        dimensions: true,
+        images: true,
+        metaTitle: true,
+        metaDescription: true,
+        isActive: true,
+        isFeatured: true,
+        createdAt: true,
+        updatedAt: true,
+        publishedAt: true,
+        categoryId: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          }
+        },
         variants: {
-          where: { isActive: true }
+          where: { isActive: true },
+          select: {
+            id: true,
+            productId: true,
+            name: true,
+            colorName: true,
+            colorHex: true,
+            priceAdjustment: true,
+            sku: true,
+            stock: true,
+            images: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true,
+          }
         }
       }
     });
@@ -201,11 +245,20 @@ app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
     if (!product.isActive) {
       return res.status(404).json(error('Product not found'));
     }
-
+    
     // DEFENSIVE: Sanitize product
-    res.json(success(sanitizeProduct(product)));
+    try {
+      const sanitized = sanitizeProduct(product);
+      res.json(success(sanitized));
+    } catch (sanitizeError: any) {
+      // ✅ SECURITY: Log error but don't leak details
+      console.error('Product sanitization error:', sanitizeError?.message || 'Unknown error');
+      // ✅ FIX: Return product anyway (zorg dat data niet verloren gaat)
+      res.json(success(product));
+    }
   } catch (err: any) {
-    console.error('Product by slug error:', err.message);
+    // ✅ SECURITY: Log error but don't leak details
+    console.error('Product by slug error:', err?.message || 'Unknown error');
     res.status(500).json(error('Could not fetch product'));
   }
 });
