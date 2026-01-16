@@ -805,8 +805,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           {activeTab === 'omschrijving' && (
             <div className={cn(CONFIG.tabs.content.spacing, CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor, CONFIG.tabs.content.lineHeight)}>
               <h3 className="text-base sm:text-lg font-semibold mb-2">Product Omschrijving</h3>
-              <p className="text-sm sm:text-base mb-3">
+              {/* ✅ MOBIEL: Alleen productnaam, geen lange beschrijving */}
+              <p className="text-sm sm:text-base mb-3 hidden sm:block">
                 {product.description || 'De beste automatische kattenbak met zelfreinigende functie. Perfect voor katten tot 7kg. Volledig automatisch met app-bediening.'}
+              </p>
+              {/* ✅ MOBIEL: Alleen productnaam op mobiel */}
+              <p className="text-sm sm:hidden mb-3 font-medium text-gray-900">
+                {product.name}
               </p>
               <h4 className="text-sm sm:text-base font-semibold mb-1.5">Standaard meegeleverd:</h4>
               <ul className="space-y-1 ml-4 text-sm sm:text-base">

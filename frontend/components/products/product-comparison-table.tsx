@@ -81,23 +81,23 @@ const comparisonData: ComparisonRow[] = [
 ];
 
 export function ProductComparisonTable() {
-  const renderValue = (value: string | boolean) => {
+  const renderValue = (value: string | boolean, isOurProduct: boolean = false) => {
     if (typeof value === 'boolean') {
       return value ? (
-        <Check className="w-5 h-5 text-green-600" />
+        <Check className="w-6 h-6 text-green-600" /> // ✅ DUidelijker: Grotere vinkjes
       ) : (
-        <X className="w-5 h-5 text-gray-300" />
+        <X className="w-6 h-6 text-red-500" /> // ✅ DUidelijker: Rode kruisjes (was grijs)
       );
     }
-    return <span className="text-sm font-medium text-gray-900">{value}</span>;
+    return <span className="text-sm sm:text-base font-medium text-gray-900">{value}</span>;
   };
 
   return (
     <div className="w-full bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      {/* Header */}
+      {/* Header - ✅ MOBIEL: Centraal */}
       <div className="bg-gray-50 border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4">
-        <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Vergelijking</h3>
-        <p className="text-xs sm:text-sm text-gray-600 mt-1">Onze automatische kattenbak vs. traditionele kattenbak</p>
+        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 text-center sm:text-left">Vergelijking</h3>
+        <p className="text-xs sm:text-sm text-gray-600 mt-1 text-center sm:text-left">Onze automatische kattenbak vs. traditionele kattenbak</p>
       </div>
 
       {/* ✅ RESPONSIVE TABLE: Desktop tabel, mobiel cards */}
@@ -122,7 +122,7 @@ export function ProductComparisonTable() {
                       className="object-contain"
                     />
                   </div>
-                  <span>Traditionele Kattenbak</span>
+                  <span className="text-center">Traditionele Kattenbak</span>
                 </div>
               </th>
             </tr>
@@ -141,12 +141,12 @@ export function ProductComparisonTable() {
                 </td>
                 <td className="px-6 py-4 text-center">
                   <div className="flex items-center justify-center">
-                    {renderValue(row.ourProduct)}
+                    {renderValue(row.ourProduct, true)}
                   </div>
                 </td>
                 <td className="px-6 py-4 text-center">
                   <div className="flex items-center justify-center">
-                    {renderValue(row.competitor)}
+                    {renderValue(row.competitor, false)}
                   </div>
                 </td>
               </tr>
@@ -155,7 +155,7 @@ export function ProductComparisonTable() {
         </table>
       </div>
 
-      {/* ✅ MOBIEL: Cards layout voor betere leesbaarheid */}
+      {/* ✅ MOBIEL: Cards layout voor betere leesbaarheid - CENTRAAL */}
       <div className="md:hidden divide-y divide-gray-200">
         {comparisonData.map((row, index) => (
           <div
@@ -165,18 +165,18 @@ export function ProductComparisonTable() {
               row.highlight && 'bg-green-50/50'
             )}
           >
-            <div className="text-xs font-semibold text-gray-900 mb-3">{row.feature}</div>
+            <div className="text-sm font-semibold text-gray-900 mb-3 text-center">{row.feature}</div>
             <div className="grid grid-cols-2 gap-3">
               <div className="flex flex-col items-center">
-                <div className="text-xs text-gray-600 mb-1.5">Onze Kattenbak</div>
+                <div className="text-xs sm:text-sm font-medium text-gray-700 mb-2 text-center">Onze Kattenbak</div>
                 <div className="flex items-center justify-center">
-                  {renderValue(row.ourProduct)}
+                  {renderValue(row.ourProduct, true)}
                 </div>
               </div>
               <div className="flex flex-col items-center">
-                <div className="text-xs text-gray-600 mb-1.5">Traditionele</div>
+                <div className="text-xs sm:text-sm font-medium text-gray-700 mb-2 text-center">Traditionele</div>
                 <div className="flex items-center justify-center">
-                  {renderValue(row.competitor)}
+                  {renderValue(row.competitor, false)}
                 </div>
               </div>
             </div>
