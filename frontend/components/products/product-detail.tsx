@@ -612,6 +612,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                           height={64}
                           className="object-contain transition-all duration-300 hover:scale-110"
                           style={{ background: '#ffffff' }}
+                          quality={75} // 🚀 PERFORMANCE: Lower quality voor kleine icons (sneller)
+                          loading="lazy" // 🚀 PERFORMANCE: Lazy load icons
                         />
                       </div>
                     )}
