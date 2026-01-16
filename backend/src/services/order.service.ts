@@ -136,18 +136,33 @@ export class OrderService {
         customerNotes: data.customerNotes,
         shippingAddress: {
           create: {
-            ...data.shippingAddress,
-            // ✅ FIX: Don't include userId if null (database constraint)
-            // userId is optional in schema but may be required in DB migration
-            ...(data.shippingAddress.userId ? { userId: data.shippingAddress.userId } : {}),
+            firstName: data.shippingAddress.firstName,
+            lastName: data.shippingAddress.lastName,
+            street: data.shippingAddress.street,
+            houseNumber: data.shippingAddress.houseNumber,
+            addition: data.shippingAddress.addition,
+            postalCode: data.shippingAddress.postalCode,
+            city: data.shippingAddress.city,
+            country: data.shippingAddress.country,
+            phone: data.shippingAddress.phone,
+            // ✅ FIX: Don't include userId for guest orders (database constraint: user_id NOT NULL)
+            // The database migration has user_id as NOT NULL, so we can't pass null
+            // Guest orders don't have a userId, so we omit it entirely
           },
         },
         billingAddress: data.billingAddress
           ? {
               create: {
-                ...data.billingAddress,
-                // ✅ FIX: Don't include userId if null (database constraint)
-                ...(data.billingAddress.userId ? { userId: data.billingAddress.userId } : {}),
+                firstName: data.billingAddress.firstName,
+                lastName: data.billingAddress.lastName,
+                street: data.billingAddress.street,
+                houseNumber: data.billingAddress.houseNumber,
+                addition: data.billingAddress.addition,
+                postalCode: data.billingAddress.postalCode,
+                city: data.billingAddress.city,
+                country: data.billingAddress.country,
+                phone: data.billingAddress.phone,
+                // ✅ FIX: Don't include userId for guest orders (database constraint)
               },
             }
           : undefined,
