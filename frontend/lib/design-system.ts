@@ -176,11 +176,11 @@ export const DESIGN_SYSTEM = {
       imageUrl: '/images/hero-main.jpg',
     },
     
-    // Trust banner (onder hero) - ✅ GRADIENT: #3C3C3D → #7A7A7D
+    // Trust banner (onder hero) - ✅ ZWART: #000000
     trustBanner: {
-      bg: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',  // ✅ GRADIENT (was #000000)
-      bgStart: '#3C3C3D',    // ✅ GRADIENT START
-      bgEnd: '#7A7A7D',      // ✅ GRADIENT END
+      bg: '#000000',  // ✅ ZWART (was gradient)
+      bgStart: '#000000',    // ✅ ZWART
+      bgEnd: '#000000',      // ✅ ZWART
       color: '#ffffff',
       height: '60px',
       padding: '0 48px',
