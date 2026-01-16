@@ -30,7 +30,7 @@ export function ProductUspBanner() {
   ];
 
   return (
-    <div className="bg-white border-b border-gray-200 py-4 px-4 shadow-sm">
+    <div className="bg-black border-b border-gray-800 py-4 px-4 shadow-sm" style={{ background: '#000000' }}>
       <div className="container mx-auto">
         <div className="flex items-center justify-center md:justify-around gap-6 md:gap-10 flex-wrap">
           {usps.map((usp, index) => {
