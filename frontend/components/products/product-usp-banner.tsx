@@ -40,30 +40,21 @@ export function ProductUspBanner() {
                 key={index}
                 className="flex items-center gap-2.5"
               >
-                <div 
-                  className="flex-shrink-0 w-6 h-6 flex items-center justify-center"
-                  style={{
-                    background: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
-                  <Icon className="w-6 h-6" strokeWidth={2.5} style={{ color: '#3C3C3D' }} />
-                </div>
-                <span className="text-base md:text-lg whitespace-nowrap">
+                <Icon 
+                  className="w-6 h-6 flex-shrink-0" 
+                  strokeWidth={2.5} 
+                  style={{ color: '#ffffff' }} // ✅ ZWART: Witte icon op zwarte banner
+                />
+                <span className="text-base md:text-lg whitespace-nowrap text-white">
                   <span 
-                    className="font-extrabold"
+                    className="font-extrabold text-white"
                     style={{
-                      background: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
+                      color: '#ffffff', // ✅ ZWART: Witte highlight op zwarte banner
                     }}
                   >
                     {usp.highlight}
                   </span>{" "}
-                  <span className="font-normal text-gray-900">{usp.text}</span>
+                  <span className="font-normal text-white">{usp.text}</span>
                 </span>
               </div>
             );
