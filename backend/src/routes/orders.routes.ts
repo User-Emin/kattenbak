@@ -54,18 +54,32 @@ router.post(
       const { items, customer, shipping, paymentMethod } = req.body;
 
       // ✅ FIX: Use separate street/houseNumber if available, otherwise parse from address
-      const street = shipping.street || (() => {
-        // Parse from combined address if separate fields not provided
-        if (!shipping.address) return '';
-        const addressParts = shipping.address.trim().split(/(\d+[A-Za-z]*\s*.*?)$/);
-        return addressParts[0]?.trim() || shipping.address || '';
-      })();
-      const houseNumber = shipping.houseNumber || (() => {
-        // Parse from combined address if separate fields not provided
-        if (!shipping.address) return '1';
-        const addressParts = shipping.address.trim().split(/(\d+[A-Za-z]*\s*.*?)$/);
-        return addressParts[1]?.trim() || '1';
-      })();
+      // Ensure street and houseNumber are never empty
+      let street = shipping.street || '';
+      let houseNumber = shipping.houseNumber || '';
+      
+      // If separate fields are empty, try to parse from combined address
+      if ((!street || !houseNumber) && shipping.address) {
+        const addressMatch = shipping.address.trim().match(/^(.+?)\s+(\d+[A-Za-z]*.*?)$/);
+        if (addressMatch) {
+          street = street || addressMatch[1].trim();
+          houseNumber = houseNumber || addressMatch[2].trim();
+        }
+      }
+      
+      // ✅ FALLBACK: Ensure we have valid values
+      if (!street || !houseNumber) {
+        // If parsing failed, use defaults based on what we have
+        if (shipping.address && !street) {
+          street = shipping.address.trim();
+        }
+        if (!street) {
+          street = 'Onbekende straat';
+        }
+        if (!houseNumber) {
+          houseNumber = '1';
+        }
+      }
 
       // Transform frontend format → OrderService format
       const orderData = {
