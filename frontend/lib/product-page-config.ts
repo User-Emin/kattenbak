@@ -119,12 +119,12 @@ export const PRODUCT_PAGE_CONFIG = {
     },
     button: {
       size: 'w-full py-6 md:py-6', // ✅ DRUK MIJ: Verticaal langer (py-6 ipv py-4) - meer prominent
-      fontSize: 'text-lg md:text-lg', // ✅ DRUK MIJ: Grotere tekst (text-lg ipv text-base) - meer opvallend
+      fontSize: 'text-2xl md:text-2xl', // ✅ GROOT: Echt grote tekst (text-2xl ipv text-lg) - veel opvallender
       fontWeight: 'font-bold', // ✅ DIKKER: font-bold - vooral mobiel
       bgColor: 'bg-blue-600',
       hoverBgColor: 'hover:bg-blue-700',
       textColor: 'text-white',
-      borderRadius: 'rounded-lg', // ✅ RECHTHOEK: Rechthoekige vibe met ronde hoeken (rounded-lg ipv rounded-full)
+      borderRadius: 'rounded-2xl', // ✅ RONDER: Veel rondere hoeken (rounded-2xl ipv rounded-lg)
       transition: 'transition-all duration-200 hover:scale-[1.02]', // ✅ DRUK MIJ: Scale effect voor "druk mij" vibe
       icon: 'w-6 h-6 md:w-6 md:h-6', // ✅ DRUK MIJ: Groter icon (w-6 h-6 ipv w-5 h-5) - meer prominent
     },

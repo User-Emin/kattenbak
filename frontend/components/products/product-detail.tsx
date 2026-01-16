@@ -258,7 +258,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   }));
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50"> {/* ✅ GRIJZE TINT: Grijze achtergrond */}
       {/* Main Product Section - Breadcrumb binnen grid */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.topMargin, CONFIG.layout.sectionSpacing)}>
         {/* Breadcrumb - Bovenaan grid container */}
@@ -387,15 +387,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
           {/* Right: Product Info - SMALLER */}
           <div className={cn('flex flex-col', CONFIG.layout.productGrid.infoWidth)}>
-            {/* Title */}
-            <h1 className={cn(
-              CONFIG.info.title.fontSize,
-              CONFIG.info.title.fontWeight,
-              CONFIG.info.title.textColor,
-              CONFIG.info.title.marginBottom
-            )}>
-              {product.name}
-            </h1>
+            {/* ✅ KAART: Productnaam in kaart met ronde hoeken */}
+            <div className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-200">
+              <h1 className={cn(
+                CONFIG.info.title.fontSize,
+                CONFIG.info.title.fontWeight,
+                CONFIG.info.title.textColor,
+                CONFIG.info.title.marginBottom
+              )}>
+                {product.name}
+              </h1>
+            </div>
 
             {/* ✅ RATING VERWIJDERD: Geen sterren/reviews zonder redundantie */}
 
@@ -614,8 +616,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               )}
             </div>
 
-            {/* Safety Notice - WAARSCHUWING */}
-            <div className={CONFIG.safetyNotice.container}>
+            {/* ✅ KAART: Let op bericht in kaart met ronde hoeken */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
               <div className={CONFIG.safetyNotice.header.container}>
                 <AlertTriangle className={cn(
                   CONFIG.safetyNotice.header.icon.size,

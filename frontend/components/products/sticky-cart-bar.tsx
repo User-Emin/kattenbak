@@ -105,13 +105,13 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
                 </button>
               </div>
 
-              {/* Add to cart button - ✅ RECHTHOEK: Rechthoekige vibe met ronde hoeken, 1 woord */}
+              {/* Add to cart button - ✅ GROOT & RONDER: Echt grote tekst, rondere hoeken */}
               <button
                 onClick={handleAddToCart}
-                className="bg-accent hover:bg-accent-dark text-white font-bold px-6 py-4 rounded-lg transition-all duration-200 hover:scale-[1.02] flex items-center gap-2 text-lg"
+                className="bg-accent hover:bg-accent-dark text-white font-bold px-6 py-4 rounded-2xl transition-all duration-200 hover:scale-[1.02] flex items-center gap-2 text-2xl"
               >
-                <ShoppingCart className="h-5 w-5" />
-                Winkelwagen {/* ✅ 1 WOORD: "Winkelwagen" ipv "In Winkelwagen" */}
+                <ShoppingCart className="h-6 w-6" />
+                Winkelwagen {/* ✅ GROOT: text-2xl voor echt grote letters */}
               </button>
             </div>
           </div>
