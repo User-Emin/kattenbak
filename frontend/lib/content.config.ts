@@ -336,6 +336,19 @@ export const PRODUCT_CONTENT = {
     // Tekst wordt dynamisch uit product.description gehaald
   },
   
+  // Service USPs - ✅ BOVEN WINKELWAGEN BUTTON: 3 onder elkaar (DRY, geen hardcode)
+  serviceUsps: [
+    {
+      text: 'Gratis verzending binnen Nederland',
+    },
+    {
+      text: '30 dagen bedenktijd • Gratis retour',
+    },
+    {
+      text: 'Veilig betalen • SSL beveiligd',
+    },
+  ],
+
   // Product-specifieke USPs - ✅ AFBEELDINGEN: 3 naast elkaar onder winkelwagenbutton met afbeeldingen uit downloads
   productUsps: [
     {

@@ -34,6 +34,8 @@ import {
   Volume2,
   Settings,
   Maximize,
+  Truck,
+  Lock,
   AlertTriangle
 } from "lucide-react";
 
@@ -479,7 +481,27 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </p>
               )}
 
-              {/* Add to Cart Button - ✅ BOVEN USPs */}
+              {/* ✅ SERVICE USPs - 3 onder elkaar BOVEN WINKELWAGEN BUTTON - DRY & ZONDER HARDCODE */}
+              <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
+                {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
+                  // ✅ DRY: Icon mapping gebaseerd op tekst
+                  let Icon = Truck;
+                  if (usp.text.includes('bedenktijd') || usp.text.includes('retour')) {
+                    Icon = Shield;
+                  } else if (usp.text.includes('betalen') || usp.text.includes('SSL')) {
+                    Icon = Lock;
+                  }
+                  
+                  return (
+                    <div key={index} className="flex items-center gap-2 text-sm sm:text-base text-gray-700">
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 flex-shrink-0" />
+                      <span>{usp.text}</span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Add to Cart Button - ✅ ONDER SERVICE USPs */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
@@ -513,14 +535,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ BEZORGTIJD - Passend onder winkelwagen button */}
-              <div className="flex items-center justify-center gap-2 mt-3 sm:mt-4 mb-2 sm:mb-3">
-                <div className="flex items-center gap-1.5 text-sm sm:text-base text-gray-700">
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span className="font-medium">Bezorgtijd: <span className="text-green-600">1-2 werkdagen</span></span>
-                </div>
+              {/* ✅ BEZORGTIJD - Direct onder winkelwagen button (dichterbij) */}
+              <div className="flex items-center justify-center gap-1.5 mt-2 sm:mt-2.5 mb-4 sm:mb-5">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="text-sm sm:text-base font-medium text-gray-700">Bezorgtijd: <span className="text-green-600">1-2 werkdagen</span></span>
               </div>
 
               {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar ONDER WINKELWAGEN MET AFBEELDINGEN - DRY & SMOOTH */}
