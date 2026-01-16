@@ -20,63 +20,63 @@ interface ComparisonRow {
 const comparisonData: ComparisonRow[] = [
   {
     feature: 'Automatische reiniging',
-    ourProduct: true,
-    competitor: false, // ✅ NIET-AUTOMATISCH: Traditionele kattenbak
-    highlight: true, // ✅ HIGHLIGHT: Onze automatische reiniging
+    ourProduct: true, // ✅ VINKJE: Onze kattenbak reinigt automatisch
+    competitor: false, // ❌ KRUISJE: Traditionele kattenbak reinigt niet automatisch
+    highlight: true,
   },
   {
-    feature: 'Afvalbak capaciteit',
-    ourProduct: '10.5L',
-    competitor: 'Geen afvalbak',
-    highlight: true, // ✅ HIGHLIGHT: Onze unieke 10.5L
+    feature: '10.5L afvalbak capaciteit',
+    ourProduct: true, // ✅ VINKJE: Onze kattenbak heeft 10.5L afvalbak
+    competitor: false, // ❌ KRUISJE: Traditionele kattenbak heeft geen afvalbak
+    highlight: true,
   },
   {
-    feature: 'Dagelijks scheppen',
-    ourProduct: false,
-    competitor: true, // ✅ NIET-AUTOMATISCH: Moet dagelijks scheppen
-    highlight: true, // ✅ HIGHLIGHT: Geen scheppen nodig
+    feature: 'Geen dagelijks scheppen',
+    ourProduct: true, // ✅ VINKJE: Geen scheppen nodig
+    competitor: false, // ❌ KRUISJE: Moet dagelijks scheppen
+    highlight: true,
   },
   {
-    feature: 'Geurblokje nodig',
-    ourProduct: false,
-    competitor: true, // ✅ NIET-AUTOMATISCH: Heeft geurblokje nodig
-    highlight: true, // ✅ HIGHLIGHT: Geen geurblokje nodig
+    feature: 'Geen geurblokje nodig',
+    ourProduct: true, // ✅ VINKJE: Geen geurblokje nodig
+    competitor: false, // ❌ KRUISJE: Heeft geurblokje nodig
+    highlight: true,
   },
   {
-    feature: 'Kwats op vloer',
-    ourProduct: false,
-    competitor: true, // ✅ NIET-AUTOMATISCH: Kwats op vloer
-    highlight: true, // ✅ HIGHLIGHT: Geen kwats
+    feature: 'Geen kwats op vloer',
+    ourProduct: true, // ✅ VINKJE: Geen kwats
+    competitor: false, // ❌ KRUISJE: Kwats op vloer
+    highlight: true,
   },
   {
-    feature: 'Afvalzak vervangen',
-    ourProduct: '1x per 4-6 dagen',
-    competitor: 'Dagelijks schoonmaken',
-    highlight: true, // ✅ HIGHLIGHT: Minder onderhoud
+    feature: 'Minder onderhoud (1x per 4-6 dagen)',
+    ourProduct: true, // ✅ VINKJE: Minder onderhoud
+    competitor: false, // ❌ KRUISJE: Dagelijks schoonmaken
+    highlight: true,
   },
   {
     feature: 'App bediening',
-    ourProduct: true,
-    competitor: false,
-    highlight: true, // ✅ HIGHLIGHT: Smart control
+    ourProduct: true, // ✅ VINKJE: App bediening beschikbaar
+    competitor: false, // ❌ KRUISJE: Geen app bediening
+    highlight: true,
   },
   {
-    feature: 'Geluidsniveau',
-    ourProduct: '<40 dB',
-    competitor: 'Stil (geen motor)',
-    highlight: false,
+    feature: 'Stil geluidsniveau (<40 dB)',
+    ourProduct: true, // ✅ VINKJE: Zeer stil
+    competitor: true, // ✅ VINKJE: Ook stil (geen motor)
+    highlight: false, // Geen highlight (beide stil)
   },
   {
     feature: 'Gezondheidsmonitoring',
-    ourProduct: true,
-    competitor: false,
-    highlight: true, // ✅ HIGHLIGHT: Inzicht in gezondheid
+    ourProduct: true, // ✅ VINKJE: Gezondheidsmonitoring beschikbaar
+    competitor: false, // ❌ KRUISJE: Geen monitoring
+    highlight: true,
   },
   {
-    feature: 'Tijdbesparing',
-    ourProduct: '15 min/dag',
-    competitor: '0 min/dag',
-    highlight: true, // ✅ HIGHLIGHT: Tijdbesparing
+    feature: 'Tijdbesparing (15 min/dag)',
+    ourProduct: true, // ✅ VINKJE: Bespaart tijd
+    competitor: false, // ❌ KRUISJE: Geen tijdbesparing
+    highlight: true,
   },
 ];
 

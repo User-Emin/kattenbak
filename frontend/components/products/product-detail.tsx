@@ -461,8 +461,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       CONFIG.gallery.thumbnails.hoverOpacity,
                       'relative overflow-hidden bg-gray-100',
                       'transition-all',
-                      CONFIG.gallery.thumbnails.verticalSlide.border,
-                      index === selectedImageIndex && CONFIG.gallery.thumbnails.verticalSlide.activeBorder,
+                      'border-2', // ✅ FIX: Base border voor alle thumbnails
+                      index === selectedImageIndex 
+                        ? 'border-black z-10' // ✅ FIX: Zwarte border met z-index voor geselecteerde thumbnail
+                        : 'border-transparent', // ✅ FIX: Transparante border voor niet-geselecteerde
                       index > 0 && 'ml-0' // ✅ GEEN MARGIN: Direct naast elkaar
                     )}
                   >
@@ -470,7 +472,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       src={image}
                       alt={`${product.name} ${index + 1}`}
                       fill
-                      className="object-contain"
+                      className="object-cover"
+                      unoptimized={image.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
                     />
                   </button>
                 ))}
