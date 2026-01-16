@@ -184,30 +184,31 @@ export const PRODUCT_PAGE_CONFIG = {
     },
   },
 
-  // Edge-to-edge section configuratie - ✅ KORTER: Verticaal korter
+  // Edge-to-edge section configuratie - ✅ MOBIEL: Verticaal langer, tekst korter
   edgeSection: {
     container: 'relative w-full', // ✅ EDGE-TO-EDGE: Volledige breedte
     image: {
-      aspectRatio: 'aspect-[21/7] sm:aspect-[21/6]', // ✅ MOBIEL: Hoger op mobiel voor betere leesbaarheid
+      aspectRatio: 'aspect-[21/9] sm:aspect-[21/7] md:aspect-[21/6]', // ✅ MOBIEL: Verticaal langer op mobiel (21/9 ipv 21/7)
       objectFit: 'object-cover',
       brightness: 'brightness-75',
     },
     overlay: {
       position: 'absolute inset-0 flex items-center justify-center', // ✅ GECENTREERD VERTICAAL
       content: 'flex flex-col justify-center',
-      padding: 'px-8 lg:px-16',
+      padding: 'px-4 sm:px-8 lg:px-16', // ✅ EDGE-TO-EDGE: Minder padding op mobiel
       maxWidth: 'max-w-2xl',
       textAlign: 'text-center mx-auto', // ✅ GECENTREERD
     },
     title: {
-      fontSize: 'text-3xl lg:text-4xl',
+      fontSize: 'text-2xl sm:text-3xl md:text-4xl', // ✅ MOBIEL: Kleinere tekst op mobiel
       fontWeight: 'font-light', // ✅ DUNNER (was semibold)
       textColor: 'text-white',
-      marginBottom: 'mb-4',
+      marginBottom: 'mb-2 sm:mb-4', // ✅ MOBIEL: Kleinere margin op mobiel
     },
     description: {
-      fontSize: 'text-lg',
+      fontSize: 'text-sm sm:text-base md:text-lg', // ✅ MOBIEL: Kleinere tekst op mobiel
       textColor: 'text-white/90',
+      lineClamp: 'line-clamp-3 sm:line-clamp-none', // ✅ MOBIEL: Max 3 regels op mobiel, volledig op desktop
     },
     // Button verwijderd - geen accessoires beschikbaar
   },
@@ -231,7 +232,7 @@ export const PRODUCT_PAGE_CONFIG = {
     },
     image: {
       aspectRatio: 'aspect-[5/3]', // ✅ GROTER: Bredere afbeeldingen voor duidelijkheid (was aspect-[6/3])
-      borderRadius: 'rounded-xl', // ✅ GROTER: Grotere border radius (was rounded-lg)
+      borderRadius: 'rounded-2xl sm:rounded-3xl', // ✅ RONDER: Rondere hoeken (rounded-2xl op mobiel, rounded-3xl op desktop)
       objectFit: 'object-contain', // ✅ VOLLEDIG ZICHTBAAR: Zigzag foto's volledig zichtbaar (niet object-cover)
       bgColor: 'bg-white', // ✅ WIT: Witte achtergrond voor afbeeldingen
       gap: 'gap-0', // ✅ GEEN GAP: Geen grijze tussenruimtes tussen afbeeldingen

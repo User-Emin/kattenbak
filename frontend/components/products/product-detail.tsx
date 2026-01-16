@@ -995,8 +995,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className="border-t border-gray-300 my-6 sm:my-8"></div>
       </div>
 
-      {/* ✅ EDGE-TO-EDGE IMAGE SECTION: Tussen tabs en zigzag - DRY & DYNAMISCH - OPTIMAAL MOBIEL */}
-      <div className={cn(CONFIG.edgeSection.container, 'my-6 sm:my-8 md:my-10 lg:my-12')}>
+      {/* ✅ EDGE-TO-EDGE IMAGE SECTION: Tussen tabs en zigzag - DRY & DYNAMISCH - OPTIMAAL MOBIEL - EDGE-TO-EDGE */}
+      <div className={cn(CONFIG.edgeSection.container, 'my-4 sm:my-6 md:my-8 lg:my-10')}>
         <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')}>
           <Image
             src={
