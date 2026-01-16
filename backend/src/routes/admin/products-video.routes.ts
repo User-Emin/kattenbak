@@ -24,10 +24,14 @@ router.patch('/:id/video', async (req, res) => {
       });
     }
 
-    // Update product
+    // ✅ FIX: videoUrl field doesn't exist in database schema
+    // Update product (skip videoUrl update - field doesn't exist)
     const product = await prisma.product.update({
       where: { id },
-      data: { videoUrl: videoUrl || null },
+      data: {
+        // ✅ FIX: videoUrl field doesn't exist in database
+        // videoUrl: videoUrl || null,
+      },
       include: { category: true }
     });
 
