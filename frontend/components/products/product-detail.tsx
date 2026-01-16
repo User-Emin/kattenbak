@@ -297,13 +297,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className={cn('flex flex-col lg:flex-row', CONFIG.layout.gridGap, 'items-start', 'mt-6')}> {/* ✅ RUIMTE: mt-6 tussen breadcrumb en content */}
           {/* Left: Image Gallery - ✅ VERTICAAL BREDER, THUMBNAILS ONDER MET RUIMTE */}
           <div className={cn('flex flex-col', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height, 'self-start', 'gap-3')}> {/* ✅ RUIMTE: gap-3 tussen afbeelding en thumbnails */}
-            {/* Main Image - ✅ HORIZONTAAL LANGER: Horizontale rechthoek */}
+            {/* Main Image - ✅ EXACT PASSEND: Productafbeelding past exact aan veld */}
             <div className={cn('relative', 'aspect-[3/2]', CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden', 'w-full')}> {/* ✅ HORIZONTAAL: aspect-[3/2] - horizontaal langer, verticaal korter */}
               <Image
                 src={currentImage}
                 alt={product.name}
                 fill
-                className="object-contain"
+                className="object-cover" // ✅ COVER: Productafbeelding past exact aan veld (geen ruimte)
                 priority
               />
               
@@ -877,23 +877,20 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 key={index} 
                 className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
               >
-                {/* Image - ✅ EXACT PASSEND: Aanpast aan grootte veld */}
+                {/* Image - ✅ VOLLEDIG ZICHTBAAR: Zigzag foto's volledig zichtbaar */}
                 <div className={cn(
                   'relative',
                   isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right,
                   CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Container heeft juiste ratio
                   CONFIG.featureSection.image.borderRadius,
                   CONFIG.featureSection.image.bgColor,
-                  'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding exact past
+                  'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding binnen container blijft
                 )}>
                   <Image
                     src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
                     alt={feature.title}
                     fill // ✅ FILL: Vult container exact op
-                    className={cn(
-                      CONFIG.featureSection.image.objectFit, // ✅ OBJECT-FIT: Past exact aan veld aan
-                      'object-cover' // ✅ COVER: Vult veld exact op zonder ruimte
-                    )}
+                    className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
                   />
                 </div>
 

@@ -232,7 +232,7 @@ export const PRODUCT_PAGE_CONFIG = {
     image: {
       aspectRatio: 'aspect-[5/3]', // ✅ GROTER: Bredere afbeeldingen voor duidelijkheid (was aspect-[6/3])
       borderRadius: 'rounded-xl', // ✅ GROTER: Grotere border radius (was rounded-lg)
-      objectFit: 'object-contain', // ✅ VOLLEDIG: Object-contain zodat afbeelding volledig zichtbaar is
+      objectFit: 'object-contain', // ✅ VOLLEDIG ZICHTBAAR: Zigzag foto's volledig zichtbaar (niet object-cover)
       bgColor: 'bg-white', // ✅ WIT: Witte achtergrond voor afbeeldingen
       gap: 'gap-0', // ✅ GEEN GAP: Geen grijze tussenruimtes tussen afbeeldingen
     },
