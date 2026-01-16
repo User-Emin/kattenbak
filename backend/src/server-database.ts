@@ -804,14 +804,29 @@ app.get('/api/v1/admin/products/:id', authMiddleware, async (req: Request, res: 
       return res.status(404).json(error('Product not found'));
     }
 
-    // ✅ FIX: Sanitize product including variants
+    // ✅ FIX: Sanitize product including variants with error handling
     try {
-      const sanitized = sanitizeProduct(product);
+      // ✅ FIX: Check if variants exist before mapping
+      const productWithVariants = {
+        ...product,
+        variants: product.variants && Array.isArray(product.variants) ? product.variants : []
+      };
+      const sanitized = sanitizeProduct(productWithVariants);
       res.json(success(sanitized));
     } catch (sanitizeError: any) {
       // ✅ FIX: Return product anyway (zorg dat data niet verloren gaat)
-      console.error('Product sanitization error:', sanitizeError?.message || 'Unknown error');
-      res.json(success(product));
+      console.error('Product sanitization error:', {
+        message: sanitizeError?.message || 'Unknown error',
+        // ✅ SECURITY: No stack traces in logs
+      });
+      // ✅ FIX: Return raw product data (zorg dat data niet verloren gaat)
+      res.json(success({
+        ...product,
+        price: toNumber(product.price),
+        compareAtPrice: product.compareAtPrice ? toNumber(product.compareAtPrice) : null,
+        costPrice: product.costPrice ? toNumber(product.costPrice) : null,
+        weight: product.weight ? toNumber(product.weight) : null,
+      }));
     }
   } catch (err: any) {
     // ✅ SECURITY: Log error but don't leak details
