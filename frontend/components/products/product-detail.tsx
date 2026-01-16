@@ -259,7 +259,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   }));
 
   return (
-    <div className="min-h-screen bg-gray-100"> {/* ✅ GRIJZER: Iets grijzere achtergrond (bg-gray-100 ipv bg-gray-50) */}
+    <div className="min-h-screen bg-white"> {/* ✅ ECHT WIT: Volledig witte achtergrond (geen grijs) */}
       {/* Main Product Section - Breadcrumb binnen grid */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.topMargin, CONFIG.layout.sectionSpacing)}>
         {/* Breadcrumb - Bovenaan grid container */}
@@ -295,10 +295,42 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </nav>
         
         <div className={cn('flex flex-col lg:flex-row', CONFIG.layout.gridGap)}>
-          {/* Left: Image Gallery - STICKY ON SCROLL */}
-          <div className={cn('space-y-4', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height)}>
+          {/* Left: Image Gallery - THUMBNAILS LINKS IN VERTICALE SLIDE */}
+          <div className={cn('flex flex-row lg:flex-row gap-4', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height)}>
+            {/* ✅ THUMBNAILS LINKS: Verticale slide */}
+            {images.length > 1 && (
+              <div className={cn(
+                'flex flex-col gap-3 overflow-y-auto',
+                CONFIG.gallery.thumbnails.verticalSlide.container,
+                CONFIG.gallery.thumbnails.verticalSlide.maxHeight
+              )}>
+                {images.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImageIndex(index)}
+                    className={cn(
+                      CONFIG.gallery.thumbnails.verticalSlide.thumbnailSize,
+                      CONFIG.gallery.thumbnails.borderRadius,
+                      CONFIG.gallery.thumbnails.hoverOpacity,
+                      'relative overflow-hidden bg-gray-100 flex-shrink-0',
+                      'transition-all',
+                      CONFIG.gallery.thumbnails.verticalSlide.transition,
+                      index === selectedImageIndex && CONFIG.gallery.thumbnails.activeBorder
+                    )}
+                  >
+                    <Image
+                      src={image}
+                      alt={`${product.name} ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+            
             {/* Main Image */}
-            <div className={cn('relative', CONFIG.gallery.mainImage.aspectRatio, CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden')}>
+            <div className={cn('flex-1 relative', CONFIG.gallery.mainImage.aspectRatio, CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden')}>
               <Image
                 src={currentImage}
                 alt={product.name}
@@ -316,7 +348,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       CONFIG.gallery.navigation.buttonSize,
                       CONFIG.gallery.navigation.buttonBg,
                       CONFIG.gallery.navigation.buttonHover,
-                      CONFIG.gallery.navigation.borderRadius || 'rounded-full', // ✅ DYNAMISCH: Via config
+                      CONFIG.gallery.navigation.borderRadius || 'rounded-full',
                       'absolute left-4',
                       CONFIG.gallery.navigation.position,
                       'flex items-center justify-center',
@@ -332,7 +364,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       CONFIG.gallery.navigation.buttonSize,
                       CONFIG.gallery.navigation.buttonBg,
                       CONFIG.gallery.navigation.buttonHover,
-                      CONFIG.gallery.navigation.borderRadius || 'rounded-full', // ✅ DYNAMISCH: Via config
+                      CONFIG.gallery.navigation.borderRadius || 'rounded-full',
                       'absolute right-4',
                       CONFIG.gallery.navigation.position,
                       'flex items-center justify-center',
@@ -357,39 +389,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 {selectedImageIndex + 1} / {images.length}
               </div>
             </div>
-
-            {/* Thumbnails */}
-            {images.length > 1 && (
-              <div className={CONFIG.gallery.thumbnails.grid}>
-                {images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImageIndex(index)}
-                    className={cn(
-                      CONFIG.gallery.thumbnails.aspectRatio,
-                      CONFIG.gallery.thumbnails.borderRadius,
-                      CONFIG.gallery.thumbnails.hoverOpacity,
-                      'relative overflow-hidden bg-gray-100',
-                      'transition-all',
-                      index === selectedImageIndex && CONFIG.gallery.thumbnails.activeBorder
-                    )}
-                  >
-                    <Image
-                      src={image}
-                      alt={`${product.name} ${index + 1}`}
-                      fill
-                      className="object-contain"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
 
-          {/* Right: Product Info - SMALLER */}
+          {/* Right: Product Info - GEEN EXTRA KAART */}
           <div className={cn('flex flex-col', CONFIG.layout.productGrid.infoWidth)}>
-            {/* ✅ 1 KAART: Alles in 1 kaart met shadow - EXACT ZELFDE HOEKEN als Let op kaart */}
-            <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
+            {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
+            <div>
               {/* Productnaam */}
               <h1 className={cn(
                 CONFIG.info.title.fontSize,

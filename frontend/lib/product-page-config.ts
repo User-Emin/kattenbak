@@ -52,11 +52,18 @@ export const PRODUCT_PAGE_CONFIG = {
       bgColor: 'bg-gray-100',
     },
     thumbnails: {
-      grid: 'grid grid-cols-4 gap-4',
-      aspectRatio: 'aspect-[4/3]', // ✅ RECHTHOEK: Horizontaal langer dan verticaal (was aspect-square)
+      grid: 'grid grid-cols-4 gap-4', // ✅ FALLBACK: Voor mobile (horizontaal)
+      aspectRatio: 'aspect-square', // ✅ VIERKANT: Voor verticale slide
       borderRadius: 'rounded-md',
       activeBorder: 'ring-2 ring-black',
       hoverOpacity: 'hover:opacity-75',
+      // ✅ VERTICALE SLIDE: Links van hoofdafbeelding
+      verticalSlide: {
+        container: 'w-20 lg:w-24', // ✅ DRY: Breedte via config
+        maxHeight: 'max-h-[600px]', // ✅ DRY: Maximale hoogte
+        thumbnailSize: 'w-20 h-20 lg:w-24 lg:h-24', // ✅ DRY: Thumbnail grootte
+        transition: 'smooth-scroll', // ✅ SMOOTH: Smooth scroll effect
+      },
     },
     navigation: {
       buttonSize: 'w-10 h-10',

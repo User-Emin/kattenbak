@@ -59,6 +59,7 @@ export function ChatPopup() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
+  const [hasShownInitialMessage, setHasShownInitialMessage] = useState(false);
   
   // ✅ FIX: Safe access to CHAT_CONFIG with fallbacks (useMemo for performance) - MUST BE BEFORE ANY USAGE
   const safeChatConfig = useMemo(() => {
@@ -392,6 +393,33 @@ export function ChatPopup() {
     }
     return process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
   }, []);
+
+  // ✅ INITIAL MESSAGE: "Ik ben een assistent" vraag over product
+  useEffect(() => {
+    if (isExpanded && !hasShownInitialMessage && typeof window !== 'undefined') {
+      // Check if we're on a product page
+      const pathname = window.location.pathname;
+      const isProductPage = pathname.startsWith('/product/');
+      
+      if (isProductPage) {
+        // Get product name from page
+        const productNameElement = document.querySelector('h1');
+        const productName = productNameElement?.textContent?.trim() || 'dit product';
+        
+        // ✅ SMOOTH EFFECT: Delay voor smooth appearance
+        setTimeout(() => {
+          const initialMessage: Message = {
+            role: 'assistant',
+            content: `Hallo! Ik ben een assistent. Heb je vragen over ${productName}? Ik help je graag verder!`,
+            timestamp: new Date()
+          };
+          
+          setMessages([initialMessage]);
+          setHasShownInitialMessage(true);
+        }, 300); // ✅ SMOOTH: 300ms delay voor smooth effect
+      }
+    }
+  }, [isExpanded, hasShownInitialMessage]);
 
   // ✅ PERFORMANCE: useCallback voor stable function reference
   const handleSendMessage = useCallback(async () => {

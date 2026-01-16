@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ✅ SMOOTH SCROLL: Voor verticale thumbnail slide */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* ✅ GRADIENT TEXT UTILITY - #3C3C3D → #7A7A7D (vervangt text-black) */
 .gradient-text {
   background: linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%);
