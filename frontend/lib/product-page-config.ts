@@ -12,9 +12,9 @@ export const PRODUCT_PAGE_CONFIG = {
   // Layout configuratie
   layout: {
     maxWidth: 'max-w-7xl',
-    containerPadding: 'px-4 sm:px-6 lg:px-8',
-    sectionSpacing: 'py-8 lg:py-12', // ✅ Minder ruimte (was py-12 lg:py-16)
-    gridGap: 'gap-6 lg:gap-10',      // ✅ RUIMTE: gap-6 lg:gap-10 tussen afbeelding en product info
+    containerPadding: 'px-3 sm:px-4 md:px-6 lg:px-8', // ✅ RESPONSIVE: Kleinere padding op mobile
+    sectionSpacing: 'py-6 sm:py-8 lg:py-12', // ✅ RESPONSIVE: Minder ruimte op mobile
+    gridGap: 'gap-4 sm:gap-6 lg:gap-10',      // ✅ RESPONSIVE: Kleinere gaps op mobile
     topMargin: 'mt-0',                // ✅ ULTRA COMPACT - breadcrumb direct tegen navbar
     // Product Grid Ratio: Image vs Info (zoals Pergolux)
     productGrid: {

@@ -139,11 +139,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     );
   }
 
-  // Get product images
-  const images = product.images && product.images.length > 0 
-    ? product.images 
-    : ['/placeholder-image.jpg'];
-  const currentImage = images[selectedImageIndex];
+  // Get product images - ✅ FILTER: Alleen geüploade foto's (geen oude/placeholder)
+  const images = product.images && Array.isArray(product.images) && product.images.length > 0
+    ? product.images.filter((img: string) => {
+        // ✅ FILTER: Alleen geldige geüploade foto's (geen placeholder, geen oude paths)
+        if (!img || typeof img !== 'string') return false;
+        // Filter placeholder images
+        if (img.includes('placeholder') || img.includes('demo') || img.includes('default')) return false;
+        // Alleen geüploade foto's (van /uploads/ of /api/ of http/https)
+        return img.startsWith('/uploads/') || img.startsWith('/api/') || img.startsWith('http://') || img.startsWith('https://');
+      })
+    : [];
+  
+  // ✅ FALLBACK: Als geen geüploade foto's, toon placeholder
+  const displayImages = images.length > 0 ? images : ['/placeholder-image.jpg'];
+  const currentImage = displayImages[selectedImageIndex] || displayImages[0];
 
   // Handle add to cart - ✅ DIRECTE VERWIJZING: Naar winkelwagenpagina
   const handleAddToCart = async () => {
@@ -158,13 +168,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     }
   };
 
-  // Image navigation
+  // Image navigation - ✅ FIX: Gebruik displayImages
   const goToPreviousImage = () => {
-    setSelectedImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setSelectedImageIndex((prev) => (prev === 0 ? displayImages.length - 1 : prev - 1));
   };
 
   const goToNextImage = () => {
-    setSelectedImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    setSelectedImageIndex((prev) => (prev === displayImages.length - 1 ? 0 : prev + 1));
   };
 
   // Tabs configuration (DRY - dynamic tab management)
@@ -297,21 +307,43 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           </ol>
         </nav>
         
-        <div className={cn('flex flex-col lg:flex-row', CONFIG.layout.gridGap, 'items-start', 'mt-6')}> {/* ✅ RUIMTE: mt-6 tussen breadcrumb en content */}
+        <div className={cn(
+          'flex flex-col lg:flex-row', 
+          CONFIG.layout.gridGap, 
+          'items-start', 
+          'mt-4 sm:mt-6',
+          'gap-4 sm:gap-6 lg:gap-10' // ✅ RESPONSIVE: Kleinere gaps op mobile
+        )}> {/* ✅ RUIMTE: mt-6 tussen breadcrumb en content */}
           {/* Left: Image Gallery - ✅ VERTICAAL BREDER, THUMBNAILS ONDER MET RUIMTE */}
-          <div className={cn('flex flex-col', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height, 'self-start', 'gap-3')}> {/* ✅ RUIMTE: gap-3 tussen afbeelding en thumbnails */}
+          <div className={cn(
+            'flex flex-col', 
+            'w-full lg:w-[58%]', // ✅ RESPONSIVE: Full width op mobile, 58% op desktop
+            CONFIG.gallery.container.sticky, 
+            CONFIG.gallery.container.height, 
+            'self-start', 
+            'gap-2 sm:gap-3' // ✅ RESPONSIVE: Kleinere gap op mobile
+          )}> {/* ✅ RUIMTE: gap-3 tussen afbeelding en thumbnails */}
             {/* Main Image - ✅ EXACT PASSEND: Productafbeelding past exact aan veld */}
-            <div className={cn('relative', 'aspect-[3/2]', CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden', 'w-full')}> {/* ✅ HORIZONTAAL: aspect-[3/2] - horizontaal langer, verticaal korter */}
+            <div className={cn(
+              'relative', 
+              'aspect-[3/2] sm:aspect-[3/2]', // ✅ RESPONSIVE: Consistent aspect ratio
+              CONFIG.gallery.mainImage.borderRadius, 
+              CONFIG.gallery.mainImage.bgColor, 
+              'overflow-hidden', 
+              'w-full',
+              'min-h-[200px] sm:min-h-[300px]' // ✅ RESPONSIVE: Minimum hoogte voor mobile
+            )}> {/* ✅ HORIZONTAAL: aspect-[3/2] - horizontaal langer, verticaal korter */}
               <Image
                 src={currentImage}
                 alt={product.name}
                 fill
                 className="object-cover" // ✅ COVER: Productafbeelding past exact aan veld (geen ruimte)
                 priority
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 58vw, 58vw" // ✅ RESPONSIVE: Optimale image sizes
               />
               
               {/* Navigation Arrows */}
-              {images.length > 1 && (
+              {displayImages.length > 1 && (
                 <>
                   <button
                     onClick={goToPreviousImage}
@@ -357,18 +389,19 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 CONFIG.gallery.counter.fontSize,
                 CONFIG.gallery.counter.borderRadius
               )}>
-                {selectedImageIndex + 1} / {images.length}
+                {selectedImageIndex + 1} / {displayImages.length}
               </div>
             </div>
 
             {/* ✅ THUMBNAILS ONDER: Met ruimte tussen afbeelding en thumbnails */}
-            {images.length > 1 && (
+            {displayImages.length > 1 && (
               <div className={cn(
                 'flex flex-row gap-2 overflow-x-auto', // ✅ RUIMTE: gap-2 tussen thumbnails
                 'w-full',
-                'smooth-scroll'
+                'smooth-scroll',
+                'pb-2' // ✅ MOBILE: Extra padding voor scroll indicator
               )}>
-                {images.map((image, index) => (
+                {displayImages.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImageIndex(index)}
@@ -396,15 +429,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           </div>
 
           {/* Right: Product Info - GEEN EXTRA KAART - ✅ ALIGN TOP: Begint opzelfde hoogte als afbeelding */}
-          <div className={cn('flex flex-col', CONFIG.layout.productGrid.infoWidth, 'self-start')}> {/* ✅ SELF-START: Product info bovenaan */}
+          <div className={cn(
+            'flex flex-col', 
+            'w-full lg:w-[42%]', // ✅ RESPONSIVE: Full width op mobile, 42% op desktop
+            'self-start',
+            'mt-4 sm:mt-0' // ✅ RESPONSIVE: Margin top op mobile
+          )}> {/* ✅ SELF-START: Product info bovenaan */}
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
               {/* Productnaam - ✅ BOVENAAN: Gelijk met afbeelding */}
               <h1 className={cn(
-                CONFIG.info.title.fontSize,
+                'text-2xl sm:text-3xl lg:text-4xl', // ✅ RESPONSIVE: Kleinere tekst op mobile
                 CONFIG.info.title.fontWeight,
                 CONFIG.info.title.textColor,
-                CONFIG.info.title.marginBottom
+                CONFIG.info.title.marginBottom,
+                'leading-tight' // ✅ RESPONSIVE: Tighter line height op mobile
               )}>
                 {product.name}
               </h1>
@@ -439,7 +478,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               )}
 
               {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar SMOOTH BOVEN WINKELWAGEN (geen grijze kaarten) */}
-              <div className="grid grid-cols-3 gap-2 mb-4"> {/* ✅ COMPACT: gap-2 ipv gap-4, mb-4 ipv mt-6 */}
+              <div className="grid grid-cols-3 gap-1 sm:gap-2 mb-3 sm:mb-4"> {/* ✅ RESPONSIVE: Kleinere gap op mobile */}
                 {PRODUCT_CONTENT.productUsps.map((usp, index) => (
                   <div key={index} className="flex flex-col items-center text-center">
                     {/* ✅ AFBEELDING: Smooth, direct op witte achtergrond */}
@@ -470,15 +509,18 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 onClick={handleAddToCart}
                 disabled={isAdding}
                 className={cn(
-                  CONFIG.info.button.size,
-                  CONFIG.info.button.fontSize,
+                  'w-full',
+                  'py-4 sm:py-6', // ✅ RESPONSIVE: Kleinere padding op mobile
+                  'text-lg sm:text-2xl', // ✅ RESPONSIVE: Kleinere tekst op mobile
                   CONFIG.info.button.fontWeight,
                   CONFIG.info.button.bgColor,
                   CONFIG.info.button.hoverBgColor,
                   CONFIG.info.button.textColor,
                   CONFIG.info.button.borderRadius,
                   CONFIG.info.button.transition,
-                  'flex items-center justify-center gap-2 mb-6',
+                  'flex items-center justify-center gap-2',
+                  'mb-4 sm:mb-6', // ✅ RESPONSIVE: Kleinere margin op mobile
+                  'touch-manipulation', // ✅ MOBILE: Betere touch response
                   isAdding && 'bg-green-600 hover:bg-green-600'
                 )}
               >
