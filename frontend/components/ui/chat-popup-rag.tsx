@@ -615,6 +615,15 @@ export function ChatPopup() {
           }}
         >
           <div className="bg-white rounded-lg shadow-xl border border-gray-200 p-4 relative">
+            {/* ✅ KRUISJE: Sluit chatwolk en toon niet meer */}
+            <button
+              onClick={handleDismissChatBubble}
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Sluit chatwolk"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            
             {/* ✅ SPEECH BUBBLE ARROW: Wijs naar chatbutton */}
             <div className="absolute bottom-0 right-6 transform translate-y-full">
               <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-gray-200"></div>
@@ -623,7 +632,7 @@ export function ChatPopup() {
               <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
             </div>
             
-            <p className="text-sm text-gray-900 font-medium leading-relaxed">
+            <p className="text-sm text-gray-900 font-medium leading-relaxed pr-6">
               Ik ben een AI assistent. Heb je vragen over dit product?
             </p>
           </div>
