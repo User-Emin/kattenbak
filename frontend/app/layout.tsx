@@ -14,6 +14,7 @@ import { CookieConsentManager } from "@/components/ui/cookie-consent-manager";
 import { ChatPopup } from "@/components/ui/chat-popup-rag";
 import { ChatPopupErrorBoundary } from "@/components/ui/chat-popup-error-boundary";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { initializeCSSVerification } from "@/lib/css-verification";
 
 /**
  * 🎨 NOTO SANS - Voor body EN headings
@@ -40,6 +41,11 @@ const notoSansFont = Noto_Sans({
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
+
+  // ✅ CSS VERIFICATION: Ensure CSS always loads
+  if (typeof window !== 'undefined') {
+    initializeCSSVerification();
+  }
 
   return (
     <html lang="nl" className={notoSansFont.variable}>

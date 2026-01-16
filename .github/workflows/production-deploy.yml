@@ -288,6 +288,21 @@ jobs:
             rm -rf .next
             NODE_ENV=production npm run build
             
+            # ✅ CSS VERIFICATION: Ensure CSS files are generated
+            echo "🔍 Verifying CSS build..."
+            if [ ! -d ".next/static/css" ]; then
+              echo "❌ ERROR: CSS directory not found after build"
+              exit 1
+            fi
+            
+            CSS_FILES=$(find .next/static/css -name "*.css" 2>/dev/null | wc -l)
+            if [ "$CSS_FILES" -eq 0 ]; then
+              echo "❌ ERROR: No CSS files generated"
+              exit 1
+            fi
+            
+            echo "✅ CSS verification passed: $CSS_FILES CSS file(s) found"
+            
             # Copy static files to standalone build (CRITICAL for Next.js standalone mode)
             echo "📦 Copying static files to standalone..."
             mkdir -p .next/standalone/frontend/.next
