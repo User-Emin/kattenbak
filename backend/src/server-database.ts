@@ -367,6 +367,11 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
 
     console.log(`✅ Order created: ${order.orderNumber} | €${total}`);
 
+    // ✅ SECURITY: Validate MOLLIE_API_KEY before creating payment
+    if (!ENV.MOLLIE_API_KEY || ENV.MOLLIE_API_KEY === 'test_dummy_key_for_now' || (!ENV.MOLLIE_API_KEY.startsWith('test_') && !ENV.MOLLIE_API_KEY.startsWith('live_'))) {
+      throw new Error('Payment service is not properly configured');
+    }
+
     // ✅ REAL Mollie payment integration (direct client, geen @ imports)
     const redirectUrl = `${ENV.FRONTEND_URL}/success?order=${order.id}`;
     const payment = await mollieClient.payments.create({
@@ -391,8 +396,24 @@ app.post('/api/v1/orders', async (req: Request, res: Response) => {
       }
     }));
   } catch (err: any) {
-    console.error('Order creation error:', err.message);
-    res.status(500).json(error('Could not create order'));
+    // ✅ SECURITY: Log error details but don't leak to client
+    console.error('Order creation error:', {
+      message: err?.message,
+      code: err?.code,
+      // ✅ SECURITY: No stack traces, API keys, or sensitive data in logs
+    });
+    
+    // ✅ SECURITY: Generic error message for client (geen gevoelige data)
+    let errorMessage = 'Bestelling kon niet worden geplaatst. Probeer het opnieuw.';
+    
+    // ✅ SECURITY: Check for specific error types without leaking details
+    if (err?.message?.includes('Mollie') || err?.code === 'ECONNREFUSED' || err?.message?.includes('payment')) {
+      errorMessage = 'Betaling kon niet worden gestart. Controleer je gegevens en probeer het opnieuw.';
+    } else if (err?.message?.includes('database') || err?.message?.includes('prisma')) {
+      errorMessage = 'Er is een technische fout opgetreden. Probeer het later opnieuw.';
+    }
+    
+    res.status(500).json(error(errorMessage));
   }
 });
 
