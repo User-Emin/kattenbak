@@ -387,8 +387,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 alt={product.name}
                 fill
                 className="object-cover" // ✅ COVER: Productafbeelding past exact aan veld (geen ruimte)
-                priority
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 58vw, 58vw" // ✅ RESPONSIVE: Optimale image sizes
+                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 58vw, 58vw" // 🚀 PERFORMANCE: Optimale responsive sizes
+                quality={85} // 🚀 PERFORMANCE: High quality WebP/AVIF
+                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
                 unoptimized={currentImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (served by backend)
               />
               
@@ -473,6 +475,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       alt={`${product.name} ${index + 1}`}
                       fill
                       className="object-cover"
+                      sizes="80px" // 🚀 PERFORMANCE: Thumbnail size (80x80px)
+                      quality={75} // 🚀 PERFORMANCE: Lower quality voor thumbnails (sneller)
+                      loading="lazy" // 🚀 PERFORMANCE: Lazy load thumbnails
                       unoptimized={image.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
                     />
                   </button>
@@ -1012,8 +1017,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             alt={product.name}
             fill
             className={cn(CONFIG.edgeSection.image.objectFit, CONFIG.edgeSection.image.brightness)}
-            sizes="100vw"
-            priority={false}
+            sizes="100vw" // 🚀 PERFORMANCE: Full viewport width (edge-to-edge)
+            priority={false} // 🚀 PERFORMANCE: Below-the-fold, lazy load
+            quality={85} // 🚀 PERFORMANCE: High quality WebP/AVIF
+            loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold)
             unoptimized={(images && images.length > 0 && images[0].startsWith('/uploads/')) || (PRODUCT_CONTENT.edgeImageSection.image || '/placeholder-image.jpg').startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
             onError={(e) => {
               // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
@@ -1083,6 +1090,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     alt={feature.title}
                     fill // ✅ FILL: Vult container exact op
                     className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag
+                    quality={85} // 🚀 PERFORMANCE: High quality WebP/AVIF
+                    loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold)
                     unoptimized={(feature.image && feature.image.startsWith('/uploads/')) || false} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
                   />
                 </div>

@@ -157,14 +157,20 @@ export default function HomePage() {
 
           {/* RECHTS: AFBEELDING - ✅ RESPONSIVE: Mobile full width/height, Desktop 65% */}
           <div 
-            className="relative md:absolute top-0 right-0 w-full md:w-[65%] h-64 md:h-full" // ✅ RESPONSIVE: Mobile relative met height, Desktop absolute 65%
-            style={{
-              backgroundImage: `url('${DESIGN_SYSTEM.layout.hero.imageUrl}')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-            }}
-          />
+            className="relative md:absolute top-0 right-0 w-full md:w-[65%] h-64 md:h-full overflow-hidden" // ✅ RESPONSIVE: Mobile relative met height, Desktop absolute 65%
+          >
+            <Image
+              src={heroImage}
+              alt="Premium automatische kattenbak"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 65vw" // 🚀 PERFORMANCE: Responsive sizes voor hero
+              priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
+              quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
+              loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
+              unoptimized={heroImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+            />
+          </div>
         </div>
       </section>
 

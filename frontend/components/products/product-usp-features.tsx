@@ -1,6 +1,7 @@
 "use client";
 
 import { Package, Volume2, Check } from "lucide-react";
+import Image from "next/image";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { PRODUCT_PAGE_CONFIG } from "@/lib/product-page-config";
 import { cn } from "@/lib/utils";
@@ -70,19 +71,23 @@ export function ProductUspFeatures() {
               {/* Image - ✅ EXACT ZELFDE: Geen negatieve margin, gebruikt container padding */}
               <div className={cn(
                 'relative',
-                isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right // ✅ EXACT ZELFDE: Image order zoals productdetail
+                isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right, // ✅ EXACT ZELFDE: Image order zoals productdetail
+                CONFIG.featureSection.image.aspectRatio, // ✅ EXACT ZELFDE: Aspect ratio zoals productdetail
+                CONFIG.featureSection.image.borderRadius, // ✅ EXACT ZELFDE: Border radius zoals productdetail (rounded-lg)
+                CONFIG.featureSection.image.bgColor, // ✅ EXACT ZELFDE: Background color zoals productdetail
+                'overflow-hidden' // 🚀 PERFORMANCE: Overflow hidden voor Image component
               )}>
-                <img
+                <Image
                   src={feature.image}
                   alt={feature.imageAlt}
+                  fill
                   className={cn(
-                    'w-full',
-                    CONFIG.featureSection.image.aspectRatio, // ✅ EXACT ZELFDE: Aspect ratio zoals productdetail
-                    CONFIG.featureSection.image.borderRadius, // ✅ EXACT ZELFDE: Border radius zoals productdetail (rounded-lg)
-                    CONFIG.featureSection.image.objectFit, // ✅ EXACT ZELFDE: Object fit zoals productdetail
-                    CONFIG.featureSection.image.bgColor // ✅ EXACT ZELFDE: Background color zoals productdetail
+                    CONFIG.featureSection.image.objectFit // ✅ EXACT ZELFDE: Object fit zoals productdetail
                   )}
-                  loading="lazy"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag
+                  quality={85} // 🚀 PERFORMANCE: High quality WebP/AVIF
+                  loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold)
+                  unoptimized={feature.image.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
                 />
               </div>
 

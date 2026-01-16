@@ -49,7 +49,7 @@ const nextConfig: NextConfig = {
     return config;
   },
   
-  // 🚀 PERFORMANCE: Custom headers for caching
+  // 🚀 PERFORMANCE: Custom headers for caching - MAXIMALE SNELHEID
   async headers() {
     return [
       {
@@ -57,7 +57,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            value: 'public, max-age=31536000, immutable, stale-while-revalidate=86400',
           },
         ],
       },
@@ -66,7 +66,27 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            value: 'public, max-age=31536000, immutable, stale-while-revalidate=86400',
+          },
+        ],
+      },
+      // 🚀 PERFORMANCE: Image caching voor alle image paths
+      {
+        source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable, stale-while-revalidate=86400',
+          },
+        ],
+      },
+      // 🚀 PERFORMANCE: Next.js optimized images caching
+      {
+        source: '/_next/image/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable, stale-while-revalidate=86400',
           },
         ],
       },
@@ -114,10 +134,17 @@ const nextConfig: NextConfig = {
         hostname: "**.unsplash.com",
       },
     ],
-    formats: ["image/webp", "image/avif"], // Auto WebP/AVIF conversion
+    // 🚀 PERFORMANCE: WebP/AVIF prioriteit voor maximale snelheid
+    formats: ["image/avif", "image/webp"], // AVIF eerst (kleinste), dan WebP fallback
+    // 🚀 PERFORMANCE: Optimale device sizes voor responsive images
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 31536000, // 1 year cache for optimized images
+    // 🚀 PERFORMANCE: Optimale image sizes voor thumbnails en kleine images
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512],
+    // 🚀 PERFORMANCE: 1 jaar cache voor optimized images (maximale snelheid)
+    minimumCacheTTL: 31536000,
+    // 🚀 PERFORMANCE: Content-Disposition header voor betere caching
+    dangerouslyAllowSVG: false, // 🔒 SECURITY: Geen SVG (XSS preventie)
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;", // 🔒 SECURITY: CSP voor images
   },
 };
 
