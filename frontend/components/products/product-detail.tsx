@@ -479,34 +479,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </p>
               )}
 
-              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar SMOOTH BOVEN WINKELWAGEN (geen grijze kaarten) */}
-              <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-4 mb-4 sm:mb-6 md:mb-6 lg:mb-6"> {/* ✅ SYMMETRISCH: Gelijk spacing */}
-                {PRODUCT_CONTENT.productUsps.map((usp, index) => (
-                  <div key={index} className="flex flex-col items-center text-center">
-                    {/* ✅ AFBEELDING: Smooth, direct op witte achtergrond */}
-                    {usp.image && (
-                      <div className="relative mb-3" style={{ width: '64px', height: '64px' }}>
-                        <Image
-                          src={usp.image}
-                          alt={usp.title}
-                          width={64}
-                          height={64}
-                          className="object-contain transition-all duration-300 hover:scale-110"
-                          style={{ background: '#ffffff' }}
-                        />
-                      </div>
-                    )}
-                    <h4 className="text-xs font-semibold text-gray-900 mb-1">
-                      {usp.title}
-                    </h4>
-                    <p className="text-[10px] text-gray-600">
-                      {usp.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Add to Cart Button - ✅ ONDER USPs */}
+              {/* Add to Cart Button - ✅ BOVEN USPs */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
@@ -540,7 +513,27 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* Specificaties Accordion - ONDER WINKELWAGEN */}
+              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar ONDER WINKELWAGEN MET VIJKJES - DRY & SMOOTH */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-4 mt-4 sm:mt-6 md:mt-6 lg:mt-6 mb-4 sm:mb-6 md:mb-6 lg:mb-6"> {/* ✅ SYMMETRISCH: Gelijk spacing */}
+                {PRODUCT_CONTENT.productUsps.map((usp, index) => (
+                  <div key={index} className="flex flex-col items-center text-center">
+                    {/* ✅ VIJKJE: Smooth, direct op witte achtergrond */}
+                    <div className="relative mb-2 sm:mb-3 flex items-center justify-center">
+                      <div className="bg-green-50 border border-green-200 rounded-full p-1.5 sm:p-2 transition-all duration-300 hover:scale-110">
+                        <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                      </div>
+                    </div>
+                    <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-1">
+                      {usp.title}
+                    </h4>
+                    <p className="text-[10px] sm:text-xs text-gray-600 leading-tight">
+                      {usp.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Specificaties Accordion - ONDER USPs */}
               <div className={cn(CONFIG.features.accordion.container, 'mt-6')}>
               {/* Eerste features altijd zichtbaar */}
               {specifications.slice(0, CONFIG.features.showMore.initialVisible).map((spec, index) => {
@@ -918,16 +911,28 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className="border-t border-gray-300 my-8"></div>
       </div>
 
-      {/* ✅ EDGE-TO-EDGE IMAGE SECTION: Tussen tabs en zigzag - DRY & DYNAMISCH */}
+      {/* ✅ EDGE-TO-EDGE IMAGE SECTION: Tussen tabs en zigzag - DRY & DYNAMISCH - ECHTE AFBEELDING */}
       <div className={cn(CONFIG.edgeSection.container, 'my-8 sm:my-10 md:my-12 lg:my-12')}>
-        <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden')}>
+        <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')}>
           <Image
-            src={PRODUCT_CONTENT.edgeImageSection.image}
+            src={
+              // ✅ DYNAMISCH: Gebruik eerste echte product image (gefilterd), anders fallback
+              images && images.length > 0
+                ? images[0]
+                : (PRODUCT_CONTENT.edgeImageSection.image || '/placeholder-image.jpg')
+            }
             alt={product.name}
             fill
             className={cn(CONFIG.edgeSection.image.objectFit, CONFIG.edgeSection.image.brightness)}
             sizes="100vw"
             priority={false}
+            onError={(e) => {
+              // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
+              const target = e.target as HTMLImageElement;
+              if (target && !target.src.includes('placeholder')) {
+                target.src = '/placeholder-image.jpg';
+              }
+            }}
           />
           {/* Overlay met tekst - ✅ DYNAMISCH: Gebruik product.description of fallback */}
           <div className={CONFIG.edgeSection.overlay.position}>
