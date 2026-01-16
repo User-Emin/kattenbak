@@ -1077,6 +1077,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     alt={feature.title}
                     fill // ✅ FILL: Vult container exact op
                     className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
+                    unoptimized={(feature.image && feature.image.startsWith('/uploads/')) || false} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
                   />
                 </div>
 
