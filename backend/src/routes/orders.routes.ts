@@ -106,11 +106,27 @@ router.post(
         },
       });
 
+      logger.info('Order with details fetched for email:', {
+        orderId: order.id,
+        hasShippingAddress: !!orderWithDetails?.shippingAddress,
+        hasItems: !!orderWithDetails?.items,
+        itemsCount: orderWithDetails?.items?.length || 0,
+        customerEmail: orderWithDetails?.customerEmail,
+      });
+
       // ✅ FIX: Send order confirmation email immediately (not waiting for payment)
-      if (orderWithDetails && orderWithDetails.shippingAddress && orderWithDetails.items) {
+      if (orderWithDetails && orderWithDetails.shippingAddress && orderWithDetails.items && orderWithDetails.items.length > 0) {
         try {
           const customerName = `${orderWithDetails.shippingAddress.firstName} ${orderWithDetails.shippingAddress.lastName}`;
           
+          logger.info('Preparing to send order confirmation email:', {
+            orderId: order.id,
+            orderNumber: orderWithDetails.orderNumber,
+            customerEmail: orderWithDetails.customerEmail,
+            customerName,
+            itemsCount: orderWithDetails.items.length,
+          });
+
           await EmailService.sendOrderConfirmation({
             customerEmail: orderWithDetails.customerEmail,
             customerName,
@@ -135,15 +151,30 @@ router.post(
             },
           });
 
-          logger.info('Order confirmation email sent:', { orderId: order.id, email: order.customerEmail });
+          logger.info('✅ Order confirmation email sent successfully:', { 
+            orderId: order.id, 
+            orderNumber: orderWithDetails.orderNumber,
+            email: orderWithDetails.customerEmail 
+          });
         } catch (emailError: any) {
           // ✅ SECURITY: Log email error but don't fail order creation
-          logger.error('Failed to send order confirmation email:', {
+          logger.error('❌ Failed to send order confirmation email:', {
             orderId: order.id,
+            orderNumber: orderWithDetails?.orderNumber,
+            email: orderWithDetails?.customerEmail,
             error: emailError?.message,
+            stack: emailError?.stack,
           });
           // Don't throw - order is still created successfully
         }
+      } else {
+        logger.warn('⚠️ Skipping email - order details incomplete:', {
+          orderId: order.id,
+          hasOrderWithDetails: !!orderWithDetails,
+          hasShippingAddress: !!orderWithDetails?.shippingAddress,
+          hasItems: !!orderWithDetails?.items,
+          itemsLength: orderWithDetails?.items?.length || 0,
+        });
       }
 
       // Create Mollie payment with SUCCESS page redirect
