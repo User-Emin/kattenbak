@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { DESIGN_SYSTEM } from '@/lib/design-system';
 
 export default function Error({
   error,
