@@ -222,8 +222,9 @@ app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
             id: true,
             productId: true,
             name: true,
-            colorName: true,
-            colorHex: true,
+            // ✅ FIX: Skip colorName/colorHex if columns don't exist
+            // colorName: true,
+            // colorHex: true,
             priceAdjustment: true,
             sku: true,
             stock: true,
@@ -258,7 +259,11 @@ app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
     }
   } catch (err: any) {
     // ✅ SECURITY: Log error but don't leak details
-    console.error('Product by slug error:', err?.message || 'Unknown error');
+    console.error('Product by slug error:', {
+      message: err?.message || 'Unknown error',
+      code: err?.code,
+      // ✅ SECURITY: No stack traces, API keys, or sensitive data in logs
+    });
     res.status(500).json(error('Could not fetch product'));
   }
 });
