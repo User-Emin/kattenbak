@@ -51,18 +51,47 @@ function CheckoutContent() {
   useEffect(() => {
     const loadProduct = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
+
+        // ✅ FIX: Eerst proberen product uit cart items te halen (beter, geen API call nodig)
         const productId = searchParams.get("product");
         const qty = parseInt(searchParams.get("quantity") || "1", 10);
 
+        // ✅ PREFER CART: Als cart items beschikbaar zijn, gebruik die (sneller, betrouwbaarder)
+        if (items && items.length > 0) {
+          const cartProduct = items.find(item => item.product.id === productId) || items[0];
+          if (cartProduct && cartProduct.product) {
+            setProduct(cartProduct.product);
+            setQuantity(cartProduct.quantity || qty);
+            setIsLoading(false);
+            return;
+          }
+        }
+
+        // ✅ FALLBACK: Als geen cart items, haal via API
         if (!productId) {
           router.push("/");
           return;
         }
 
-        const data = await productsApi.getById(productId);
-        setProduct(data);
-        setQuantity(qty);
-      } catch (err) {
+        // ✅ RETRY LOGIC: Probeer eerst met ID, dan met slug als fallback
+        try {
+          const data = await productsApi.getById(productId);
+          setProduct(data);
+          setQuantity(qty);
+        } catch (idError) {
+          // ✅ FALLBACK: Als ID niet werkt, probeer als slug (voor oude links)
+          try {
+            const slugData = await productsApi.getBySlug(productId);
+            setProduct(slugData);
+            setQuantity(qty);
+          } catch (slugError) {
+            throw new Error("Product niet gevonden");
+          }
+        }
+      } catch (err: any) {
+        console.error('Product load error:', err);
         setError("Product niet gevonden");
       } finally {
         setIsLoading(false);
@@ -70,7 +99,7 @@ function CheckoutContent() {
     };
 
     loadProduct();
-  }, [searchParams, router]);
+  }, [searchParams, router, items]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
