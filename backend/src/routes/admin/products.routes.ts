@@ -9,7 +9,9 @@ import {
 } from '../../validators/product.validator';
 import { logAuditAction } from '../../lib/audit';
 import { transformProduct, transformProducts } from '../../lib/transformers';
+import { deleteFile } from '../../middleware/upload.middleware';
 import { z } from 'zod';
+import path from 'path';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -277,6 +279,42 @@ router.put('/:id', async (req, res) => {
           success: false,
           error: 'Slug bestaat al'
         });
+      }
+    }
+    
+    // ✅ FIX: Cleanup oude images die niet meer gebruikt worden
+    if (data.images && Array.isArray(data.images) && Array.isArray(existing.images)) {
+      const oldImages = existing.images as string[];
+      const newImages = data.images as string[];
+      
+      // Vind images die niet meer gebruikt worden
+      const imagesToDelete = oldImages.filter(img => !newImages.includes(img));
+      
+      // Verwijder ongebruikte images van disk
+      for (const imagePath of imagesToDelete) {
+        try {
+          // Extract filename from path (e.g., "/uploads/products/filename.jpg" -> "filename.jpg")
+          const filename = imagePath.replace('/uploads/products/', '').replace('/uploads/', '');
+          const filePath = path.join('/var/www/uploads/products', filename);
+          
+          await deleteFile(filePath);
+          console.log(`[CLEANUP] Deleted unused image: ${filePath}`);
+          
+          // Also delete WebP variants if they exist
+          const baseName = path.parse(filename).name;
+          const variants = ['thumbnail', 'medium', 'large'];
+          for (const variant of variants) {
+            const variantPath = path.join('/var/www/uploads/products', `${baseName}-${variant}.webp`);
+            try {
+              await deleteFile(variantPath);
+            } catch {
+              // Variant might not exist, that's ok
+            }
+          }
+        } catch (error) {
+          console.warn(`[CLEANUP] Failed to delete image ${imagePath}:`, error);
+          // Continue with other images even if one fails
+        }
       }
     }
     
