@@ -945,6 +945,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
       {/* ✅ VERGELIJKINGSTABEL: Modern, smooth, gebaseerd op echte info */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}>
+        {/* ✅ AFBEELDING BOVEN TABEL: Traditionele kattenbak - Gebruik afbeelding uit screenshot */}
+        <div className="mb-8">
+          <div className="relative aspect-[5/3] rounded-xl overflow-hidden bg-white border border-gray-200">
+            <Image
+              src="/images/traditional-litter-box-optimized.jpg"
+              alt="Traditionele kattenbak vergelijking"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
         <ProductComparisonTable />
       </div>
 
