@@ -48,9 +48,9 @@ export const PRODUCT_PAGE_CONFIG = {
       height: 'lg:h-fit',
     },
     mainImage: {
-      aspectRatio: 'aspect-[4/3]', // ✅ RECHTHOEK HORIZONTAAL: Horizontaal langer dan verticaal (was aspect-square)
+      aspectRatio: 'aspect-[5/3]', // ✅ BREDER: Horizontaal breder (5/3 ipv 4/3) - meer ruimte voor afbeeldingen
       borderRadius: 'rounded-lg',
-      bgColor: 'bg-gray-100',
+      bgColor: 'bg-white', // ✅ WIT: Witte achtergrond (geen grijs)
     },
     thumbnails: {
       grid: 'grid grid-cols-4 gap-4', // ✅ FALLBACK: Voor mobile (horizontaal)
@@ -216,10 +216,10 @@ export const PRODUCT_PAGE_CONFIG = {
   featureSection: {
     containerSpacing: 'space-y-16 lg:space-y-24',
     zigzag: {
-      // Image LEFT, text RIGHT (default)
-      leftLayout: 'grid md:grid-cols-2 gap-8 lg:gap-16 items-center',
-      // Image RIGHT, text LEFT (reversed)
-      rightLayout: 'grid md:grid-cols-2 gap-8 lg:gap-16 items-center',
+      // Image LEFT, text RIGHT (default) - ✅ GEEN GRIJZE TUSSENRUIMTES
+      leftLayout: 'grid md:grid-cols-2 gap-0 lg:gap-0 items-center', // ✅ GEEN GAP: Geen grijze tussenruimtes
+      // Image RIGHT, text LEFT (reversed) - ✅ GEEN GRIJZE TUSSENRUIMTES
+      rightLayout: 'grid md:grid-cols-2 gap-0 lg:gap-0 items-center', // ✅ GEEN GAP: Geen grijze tussenruimtes
       imageOrder: {
         left: 'order-1 md:order-1',
         right: 'order-1 md:order-2',
@@ -230,10 +230,11 @@ export const PRODUCT_PAGE_CONFIG = {
       },
     },
     image: {
-      aspectRatio: 'aspect-[5/3]', // ✅ BREDER: Horizontaal breder (5/3 ipv 4/3) - eerste afbeelding volledig erin
+      aspectRatio: 'aspect-[6/3]', // ✅ EXTRA BREDER: Nog breder (6/3 = 2:1) - geen grijze tussenruimtes
       borderRadius: 'rounded-lg',
       objectFit: 'object-contain', // ✅ VOLLEDIG: Object-contain zodat afbeelding volledig zichtbaar is
       bgColor: 'bg-white', // ✅ WIT: Witte achtergrond voor afbeeldingen
+      gap: 'gap-0', // ✅ GEEN GAP: Geen grijze tussenruimtes tussen afbeeldingen
     },
     text: {
       container: 'space-y-4',

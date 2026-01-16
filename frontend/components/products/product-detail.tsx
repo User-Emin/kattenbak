@@ -330,8 +330,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             )}
             
-            {/* Main Image */}
-            <div className={cn('flex-1 relative', CONFIG.gallery.mainImage.aspectRatio, CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden')}>
+            {/* Main Image - ✅ BREDER: Meer ruimte voor afbeeldingen */}
+            <div className={cn('flex-1 relative', CONFIG.gallery.mainImage.aspectRatio, CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden', 'w-full')}>
               <Image
                 src={currentImage}
                 alt={product.name}
@@ -406,8 +406,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 {product.name}
               </h1>
 
-              {/* ✅ SCHEIDINGSTREEP: Tussen naam en prijs - IETS GRIJZER */}
-              <div className="border-t border-gray-300 my-4"></div>
+              {/* ✅ SCHEIDINGSTREEP: Dun of weg tussen naam en prijs */}
+              <div className="border-t border-gray-200 my-2 opacity-50"></div>
 
               {/* Price */}
               <div className={CONFIG.info.price.spacing}>
@@ -465,41 +465,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar met afbeeldingen uit downloads (witte achtergrond) */}
-              <div className={CONFIG.info.usps.spacing}>
-                {PRODUCT_CONTENT.productUsps.map((usp, index) => (
-                    <div key={index} className={CONFIG.info.usps.item.container}>
-                    <div className={cn(CONFIG.info.usps.item.iconContainer, 'bg-white rounded-lg p-1.5')}>
-                      {/* ✅ AFBEELDING: Uit downloads met witte achtergrond alsof het erin zit - COMPACTER */}
-                      {usp.image && (
-                        <div className="relative" style={{ width: '64px', height: '64px' }}>
-                          <Image
-                            src={usp.image}
-                            alt={usp.title}
-                            width={64}
-                            height={64}
-                            className="object-contain"
-                            style={{ background: '#ffffff' }} // ✅ WITTE ACHTERGROND: Alsof het erin zit
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <h4 className={cn(
-                      CONFIG.info.usps.item.title.fontSize,
-                      CONFIG.info.usps.item.title.textColor,
-                      CONFIG.info.usps.item.title.marginBottom
-                    )}>
-                      {usp.title}
-                    </h4>
-                    <p className={cn(
-                      CONFIG.info.usps.item.description.fontSize,
-                      CONFIG.info.usps.item.description.textColor
-                    )}>
-                      {usp.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              {/* ✅ PRODUCT-SPECIFIEKE USPs VERWIJDERD - Geen grijze kaarten meer */}
 
               {/* Specificaties Accordion - ONDER USPs */}
               <div className={cn(CONFIG.features.accordion.container, 'mt-6')}>
