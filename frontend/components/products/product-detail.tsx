@@ -396,9 +396,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           <div className={cn('flex flex-col', CONFIG.layout.productGrid.infoWidth)}>
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
-              {/* ✅ SCHEIDINGSTREEP: Tussen breadcrumb en productnaam */}
-              <div className="border-t border-gray-200 pt-4 mb-4"></div>
-
               {/* Productnaam */}
               <h1 className={cn(
                 CONFIG.info.title.fontSize,
@@ -409,8 +406,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 {product.name}
               </h1>
 
-              {/* ✅ SCHEIDINGSTREEP: Tussen naam en prijs */}
-              <div className="border-t border-gray-200 my-4"></div>
+              {/* ✅ SCHEIDINGSTREEP: Tussen naam en prijs - IETS GRIJZER */}
+              <div className="border-t border-gray-300 my-4"></div>
 
               {/* Price */}
               <div className={CONFIG.info.price.spacing}>
@@ -423,8 +420,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </span>
               </div>
 
-              {/* ✅ SCHEIDINGSTREEP: Tussen prijs en beschrijving */}
-              <div className="border-t border-gray-200 my-4"></div>
+              {/* ✅ SCHEIDINGSTREEP: Tussen prijs en beschrijving - IETS GRIJZER */}
+              <div className="border-t border-gray-300 my-4"></div>
 
               {/* Short Description */}
               {product.shortDescription && (
@@ -872,9 +869,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en zigzag begin - SMOOTH */}
+      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en zigzag begin - IETS GRIJZER */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
-        <div className="border-t border-gray-200 my-8"></div>
+        <div className="border-t border-gray-300 my-8"></div>
       </div>
 
       {/* ✅ PREMIUM KWALITEIT SECTIE VERWIJDERD - Focus op 10.5L afvalbak */}

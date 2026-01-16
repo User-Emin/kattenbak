@@ -22,7 +22,7 @@ export const PRODUCT_PAGE_CONFIG = {
       infoWidth: 'lg:w-[42%]',  // Info smaller
     },
     separator: {
-      color: 'border-gray-200', // ✅ GRIJZE SCHEIDINGSTREEP: Smooth border tussen secties
+      color: 'border-gray-300', // ✅ GRIJZER: Iets donkerder voor betere zichtbaarheid
       height: 'border-t', // ✅ BORDER TOP: Horizontale lijn
       fullWidth: 'w-full',
       spacing: 'my-8', // ✅ SPACING: Ruimte rond scheidingstreep

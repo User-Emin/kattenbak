@@ -249,7 +249,7 @@ export const PRODUCT_CONTENT = {
     {
       title: 'App Bediening',
       description: 'Smart control',
-      image: '/images/usp-app.jpg', // ✅ AFBEELDING: Uit downloads met witte achtergrond
+      image: '/images/app-bediening-smart-optimized.jpg', // ✅ AFBEELDING: Exact uit screenshot (77cec053-5521-4344-8603-43d4c84d4bc9.jpg), geoptimaliseerd
     },
     {
       title: 'Automatisch',
