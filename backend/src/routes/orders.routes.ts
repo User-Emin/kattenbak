@@ -56,11 +56,13 @@ router.post(
       // ✅ FIX: Use separate street/houseNumber if available, otherwise parse from address
       const street = shipping.street || (() => {
         // Parse from combined address if separate fields not provided
+        if (!shipping.address) return '';
         const addressParts = shipping.address.trim().split(/(\d+[A-Za-z]*\s*.*?)$/);
-        return addressParts[0]?.trim() || shipping.address;
+        return addressParts[0]?.trim() || shipping.address || '';
       })();
       const houseNumber = shipping.houseNumber || (() => {
         // Parse from combined address if separate fields not provided
+        if (!shipping.address) return '1';
         const addressParts = shipping.address.trim().split(/(\d+[A-Za-z]*\s*.*?)$/);
         return addressParts[1]?.trim() || '1';
       })();
