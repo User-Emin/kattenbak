@@ -295,43 +295,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </nav>
         
         <div className={cn('flex flex-col lg:flex-row', CONFIG.layout.gridGap, 'items-start')}> {/* ✅ ALIGN TOP: Afbeelding en naam beginnen opzelfde hoogte */}
-          {/* Left: Image Gallery - THUMBNAILS LINKS IN VERTICALE SLIDE */}
-          <div className={cn('flex flex-row lg:flex-row gap-4', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height, 'self-start')}> {/* ✅ SELF-START: Afbeelding bovenaan */}
-            {/* ✅ THUMBNAILS LINKS: Verticale slide - BORDER FIX */}
-            {images.length > 1 && (
-              <div className={cn(
-                'flex flex-col gap-3 overflow-y-auto',
-                CONFIG.gallery.thumbnails.verticalSlide.container,
-                CONFIG.gallery.thumbnails.verticalSlide.maxHeight
-              )}>
-                {images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImageIndex(index)}
-                    className={cn(
-                      CONFIG.gallery.thumbnails.verticalSlide.thumbnailSize,
-                      CONFIG.gallery.thumbnails.borderRadius,
-                      CONFIG.gallery.thumbnails.hoverOpacity,
-                      'relative overflow-hidden bg-gray-100 flex-shrink-0',
-                      'transition-all',
-                      CONFIG.gallery.thumbnails.verticalSlide.transition,
-                      CONFIG.gallery.thumbnails.verticalSlide.border, // ✅ FIX: Transparante border
-                      index === selectedImageIndex && CONFIG.gallery.thumbnails.verticalSlide.activeBorder // ✅ FIX: Active border met offset
-                    )}
-                  >
-                    <Image
-                      src={image}
-                      alt={`${product.name} ${index + 1}`}
-                      fill
-                      className="object-contain"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-            
-            {/* Main Image - ✅ BREDER: Meer ruimte voor afbeeldingen */}
-            <div className={cn('flex-1 relative', CONFIG.gallery.mainImage.aspectRatio, CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden', 'w-full')}>
+          {/* Left: Image Gallery - ✅ VERTICAAL BREDER, THUMBNAILS ONDER */}
+          <div className={cn('flex flex-col', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height, 'self-start', 'gap-2')}> {/* ✅ COMPACT: gap-2 ipv gap-4 */}
+            {/* Main Image - ✅ VERTICAAL BREDER: Meer hoogte */}
+            <div className={cn('relative', 'aspect-[4/5]', CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden', 'w-full')}> {/* ✅ VERTICAAL BREDER: aspect-[4/5] ipv aspect-[5/3] */}
               <Image
                 src={currentImage}
                 alt={product.name}
@@ -390,6 +357,38 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 {selectedImageIndex + 1} / {images.length}
               </div>
             </div>
+
+            {/* ✅ THUMBNAILS ONDER: Horizontale slide onder hoofdafbeelding - COMPACT */}
+            {images.length > 1 && (
+              <div className={cn(
+                'flex flex-row gap-2 overflow-x-auto', // ✅ COMPACT: gap-2 ipv gap-3
+                'w-full',
+                'smooth-scroll'
+              )}>
+                {images.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImageIndex(index)}
+                    className={cn(
+                      'w-20 h-20 flex-shrink-0', // ✅ COMPACT: Kleinere thumbnails
+                      CONFIG.gallery.thumbnails.borderRadius,
+                      CONFIG.gallery.thumbnails.hoverOpacity,
+                      'relative overflow-hidden bg-gray-100',
+                      'transition-all',
+                      CONFIG.gallery.thumbnails.verticalSlide.border,
+                      index === selectedImageIndex && CONFIG.gallery.thumbnails.verticalSlide.activeBorder
+                    )}
+                  >
+                    <Image
+                      src={image}
+                      alt={`${product.name} ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Right: Product Info - GEEN EXTRA KAART - ✅ ALIGN TOP: Begint opzelfde hoogte als afbeelding */}
@@ -435,7 +434,34 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </p>
               )}
 
-              {/* Add to Cart Button */}
+              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar SMOOTH BOVEN WINKELWAGEN (geen grijze kaarten) */}
+              <div className="grid grid-cols-3 gap-2 mb-4"> {/* ✅ COMPACT: gap-2 ipv gap-4, mb-4 ipv mt-6 */}
+                {PRODUCT_CONTENT.productUsps.map((usp, index) => (
+                  <div key={index} className="flex flex-col items-center text-center">
+                    {/* ✅ AFBEELDING: Smooth, direct op witte achtergrond */}
+                    {usp.image && (
+                      <div className="relative mb-3" style={{ width: '64px', height: '64px' }}>
+                        <Image
+                          src={usp.image}
+                          alt={usp.title}
+                          width={64}
+                          height={64}
+                          className="object-contain transition-all duration-300 hover:scale-110"
+                          style={{ background: '#ffffff' }}
+                        />
+                      </div>
+                    )}
+                    <h4 className="text-xs font-semibold text-gray-900 mb-1">
+                      {usp.title}
+                    </h4>
+                    <p className="text-[10px] text-gray-600">
+                      {usp.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Add to Cart Button - ✅ ONDER USPs */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
@@ -465,34 +491,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar SMOOTH (geen grijze kaarten) */}
-              <div className="grid grid-cols-3 gap-4 mt-6">
-                {PRODUCT_CONTENT.productUsps.map((usp, index) => (
-                  <div key={index} className="flex flex-col items-center text-center">
-                    {/* ✅ AFBEELDING: Smooth, direct op witte achtergrond */}
-                    {usp.image && (
-                      <div className="relative mb-3" style={{ width: '64px', height: '64px' }}>
-                        <Image
-                          src={usp.image}
-                          alt={usp.title}
-                          width={64}
-                          height={64}
-                          className="object-contain transition-all duration-300 hover:scale-110"
-                          style={{ background: '#ffffff' }}
-                        />
-                      </div>
-                    )}
-                    <h4 className="text-xs font-semibold text-gray-900 mb-1">
-                      {usp.title}
-                    </h4>
-                    <p className="text-[10px] text-gray-600">
-                      {usp.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Specificaties Accordion - ONDER USPs */}
+              {/* Specificaties Accordion - ONDER WINKELWAGEN */}
               <div className={cn(CONFIG.features.accordion.container, 'mt-6')}>
               {/* Eerste features altijd zichtbaar */}
               {specifications.slice(0, CONFIG.features.showMore.initialVisible).map((spec, index) => {

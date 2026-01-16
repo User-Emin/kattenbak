@@ -61,6 +61,7 @@ export function ChatPopup() {
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
   const [hasShownInitialMessage, setHasShownInitialMessage] = useState(false);
   const [showChatBubble, setShowChatBubble] = useState(false);
+  const [chatBubbleDismissed, setChatBubbleDismissed] = useState(false); // ✅ SLUITEN: State voor chatwolk sluiten
   
   // ✅ FIX: Safe access to CHAT_CONFIG with fallbacks (useMemo for performance) - MUST BE BEFORE ANY USAGE
   const safeChatConfig = useMemo(() => {
@@ -399,11 +400,18 @@ export function ChatPopup() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
+    // ✅ SLUITEN: Check localStorage of chatwolk is gesloten
+    const dismissed = localStorage.getItem('chatBubbleDismissed') === 'true';
+    if (dismissed) {
+      setChatBubbleDismissed(true);
+      return;
+    }
+    
     // Check if we're on a product page
     const pathname = window.location.pathname;
     const isProductPage = pathname.startsWith('/product/');
     
-    if (isProductPage && !isExpanded) {
+    if (isProductPage && !isExpanded && !chatBubbleDismissed) {
       // ✅ SMOOTH EFFECT: Show bubble after delay (alleen als chat gesloten is)
       const bubbleTimer = setTimeout(() => {
         setShowChatBubble(true);
@@ -416,7 +424,16 @@ export function ChatPopup() {
       // ✅ HIDE: Verberg bubble als chat open is of niet op product pagina
       setShowChatBubble(false);
     }
-  }, [isExpanded]);
+  }, [isExpanded, chatBubbleDismissed]);
+
+  // ✅ SLUITEN: Functie om chatwolk te sluiten en niet meer te tonen
+  const handleDismissChatBubble = useCallback(() => {
+    setShowChatBubble(false);
+    setChatBubbleDismissed(true);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('chatBubbleDismissed', 'true');
+    }
+  }, []);
 
   // ✅ INITIAL MESSAGE: "Ik ben een assistent" vraag over product
   useEffect(() => {
@@ -582,8 +599,8 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* ✅ CHAT BUBBLE: "Ik ben AI assistent" vraag BUITEN chatbutton (smooth effect) - GROTER */}
-      {showChatBubble && !isExpanded && (
+      {/* ✅ CHAT BUBBLE: "Ik ben AI assistent" vraag BUITEN chatbutton (smooth effect) - MET KRUISJE */}
+      {showChatBubble && !isExpanded && !chatBubbleDismissed && (
         <div
           className={cn(
             'fixed z-[101]', // ✅ BOVEN: Boven chatbutton (z-[100])
