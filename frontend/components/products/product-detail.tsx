@@ -254,7 +254,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const features = PRODUCT_CONTENT.features.map((feature, index) => ({
     ...feature,
     image: index === 0 
-      ? DESIGN_SYSTEM.layout.features.capacity.imageUrl // ✅ DYNAMISCH: Via DESIGN_SYSTEM (geen hardcode) - EXACT ZELFDE ALS HOME
+      ? '/images/capacity-10.5l.jpg' // ✅ FOTO UIT DOWNLOADS: Exact zoals screenshot
       : '/images/feature-2.jpg', // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode) - EXACT IDENTIEK
   }));
 

@@ -209,16 +209,16 @@ export const PRODUCT_CONTENT = {
   // Aantal specs dat standaard zichtbaar is
   initialVisibleSpecs: 4,
 
-  // Feature sections (ZIGZAG) - ✅ SAMENGEVAT: Behoud doel, korter voor betere UX
+  // Feature sections (ZIGZAG) - ✅ 10.5L AFVALBAK: Eerste zigzag met foto uit downloads
   features: [
     {
-      title: 'Hoogwaardige ABS Materialen',
-      description: 'Duurzaam, krasbestendig en eenvoudig te reinigen. Geurwerend en hypoallergeen.',
+      title: '10.5L Afvalbak',
+      description: 'Extra grote afvalbak capaciteit. De afvalzak moet er overheen geplaatst worden voor optimale werking.',
       items: [
-        'Duurzaam ABS kunststof',
-        'Kras- en slijtvast',
-        'Antibacteriële coating',
-        'Milieuvriendelijk materiaal',
+        '10.5L XL capaciteit',
+        '17% meer dan concurrentie',
+        'Voor 1 kat: 7-10 dagen',
+        'Meerdere katten: 3-5 dagen',
       ],
     },
     {
