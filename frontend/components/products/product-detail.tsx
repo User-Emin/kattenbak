@@ -309,11 +309,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         
         <div className={cn(
           'flex flex-col lg:flex-row', 
-          CONFIG.layout.gridGap, 
           'items-start', 
-          'mt-4 sm:mt-6',
-          'gap-4 sm:gap-6 lg:gap-10' // ✅ RESPONSIVE: Kleinere gaps op mobile
-        )}> {/* ✅ RUIMTE: mt-6 tussen breadcrumb en content */}
+          'mt-6 sm:mt-8 md:mt-10 lg:mt-10', // ✅ SYMMETRISCH: Gelijk boven
+          'gap-6 sm:gap-8 md:gap-10 lg:gap-10', // ✅ SYMMETRISCH: Gelijk tussen image en info
+          'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
+        )}> {/* ✅ SYMMETRISCH: Perfecte balans op alle schermformaten */}
           {/* Left: Image Gallery - ✅ VERTICAAL BREDER, THUMBNAILS ONDER MET RUIMTE */}
           <div className={cn(
             'flex flex-col', 
@@ -321,8 +321,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             CONFIG.gallery.container.sticky, 
             CONFIG.gallery.container.height, 
             'self-start', 
-            'gap-2 sm:gap-3' // ✅ RESPONSIVE: Kleinere gap op mobile
-          )}> {/* ✅ RUIMTE: gap-3 tussen afbeelding en thumbnails */}
+            'gap-3 sm:gap-4 md:gap-4 lg:gap-4', // ✅ SYMMETRISCH: Gelijk tussen image en thumbnails
+            'mx-auto lg:mx-0' // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
+          )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
             {/* Main Image - ✅ EXACT PASSEND: Productafbeelding past exact aan veld */}
             <div className={cn(
               'relative', 
@@ -433,8 +434,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'flex flex-col', 
             'w-full lg:w-[42%]', // ✅ RESPONSIVE: Full width op mobile, 42% op desktop
             'self-start',
-            'mt-4 sm:mt-0' // ✅ RESPONSIVE: Margin top op mobile
-          )}> {/* ✅ SELF-START: Product info bovenaan */}
+            'mt-6 sm:mt-8 md:mt-0 lg:mt-0', // ✅ SYMMETRISCH: Gelijk spacing op mobile, geen margin op desktop
+            'mx-auto lg:mx-0' // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
+          )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
               {/* Productnaam - ✅ BOVENAAN: Gelijk met afbeelding */}
@@ -478,7 +480,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               )}
 
               {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar SMOOTH BOVEN WINKELWAGEN (geen grijze kaarten) */}
-              <div className="grid grid-cols-3 gap-1 sm:gap-2 mb-3 sm:mb-4"> {/* ✅ RESPONSIVE: Kleinere gap op mobile */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-4 mb-4 sm:mb-6 md:mb-6 lg:mb-6"> {/* ✅ SYMMETRISCH: Gelijk spacing */}
                 {PRODUCT_CONTENT.productUsps.map((usp, index) => (
                   <div key={index} className="flex flex-col items-center text-center">
                     {/* ✅ AFBEELDING: Smooth, direct op witte achtergrond */}
@@ -510,8 +512,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 disabled={isAdding}
                 className={cn(
                   'w-full',
-                  'py-4 sm:py-6', // ✅ RESPONSIVE: Kleinere padding op mobile
-                  'text-lg sm:text-2xl', // ✅ RESPONSIVE: Kleinere tekst op mobile
+                  'py-5 sm:py-6 md:py-6 lg:py-6', // ✅ SYMMETRISCH: Gelijk padding boven/onder
+                  'px-4 sm:px-6 md:px-6 lg:px-6', // ✅ SYMMETRISCH: Gelijk padding links/rechts
+                  'text-lg sm:text-xl md:text-2xl lg:text-2xl', // ✅ SYMMETRISCH: Gelijk tekst scaling
                   CONFIG.info.button.fontWeight,
                   CONFIG.info.button.bgColor,
                   CONFIG.info.button.hoverBgColor,
@@ -519,7 +522,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   CONFIG.info.button.borderRadius,
                   CONFIG.info.button.transition,
                   'flex items-center justify-center gap-2',
-                  'mb-4 sm:mb-6', // ✅ RESPONSIVE: Kleinere margin op mobile
+                  'mb-6 sm:mb-8 md:mb-8 lg:mb-8', // ✅ SYMMETRISCH: Gelijk margin onder
                   'touch-manipulation', // ✅ MOBILE: Betere touch response
                   isAdding && 'bg-green-600 hover:bg-green-600'
                 )}
@@ -690,8 +693,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* Tabs Section */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'pb-12')}>
+      {/* Tabs Section - ✅ SYMMETRISCH: Gelijk padding */}
+      <div className={cn(
+        CONFIG.layout.maxWidth, 
+        'mx-auto', 
+        CONFIG.layout.containerPadding, 
+        'py-8 sm:py-10 md:py-12 lg:py-12' // ✅ SYMMETRISCH: Gelijk boven/onder
+      )}>
         {/* Tab Buttons */}
         <div className={CONFIG.tabs.container.borderBottom}>
           <div className={CONFIG.tabs.container.spacing}>
@@ -912,8 +920,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
       {/* ✅ PREMIUM KWALITEIT SECTIE VERWIJDERD - Focus op 10.5L afvalbak */}
 
-      {/* Feature Sections - ZIGZAG PATTERN (Pergolux style) */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.sectionSpacing)}>
+      {/* Feature Sections - ZIGZAG PATTERN (Pergolux style) - ✅ SYMMETRISCH */}
+      <div className={cn(
+        CONFIG.layout.maxWidth, 
+        'mx-auto', 
+        CONFIG.layout.containerPadding, 
+        'py-8 sm:py-10 md:py-12 lg:py-12' // ✅ SYMMETRISCH: Gelijk boven/onder
+      )}>
         <div className={CONFIG.featureSection.containerSpacing}>
           {features.map((feature, index) => {
             const isEven = index % 2 === 0;

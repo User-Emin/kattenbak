@@ -9,12 +9,12 @@
 import { DESIGN_SYSTEM } from './design-system';
 
 export const PRODUCT_PAGE_CONFIG = {
-  // Layout configuratie
+  // Layout configuratie - ✅ SYMMETRISCH: Perfecte balans op alle schermformaten
   layout: {
     maxWidth: 'max-w-7xl',
-    containerPadding: 'px-3 sm:px-4 md:px-6 lg:px-8', // ✅ RESPONSIVE: Kleinere padding op mobile
-    sectionSpacing: 'py-6 sm:py-8 lg:py-12', // ✅ RESPONSIVE: Minder ruimte op mobile
-    gridGap: 'gap-4 sm:gap-6 lg:gap-10',      // ✅ RESPONSIVE: Kleinere gaps op mobile
+    containerPadding: 'px-4 sm:px-6 md:px-8 lg:px-8', // ✅ SYMMETRISCH: Gelijk links/rechts op alle breakpoints
+    sectionSpacing: 'py-8 sm:py-10 md:py-12 lg:py-12', // ✅ SYMMETRISCH: Gelijk boven/onder
+    gridGap: 'gap-6 sm:gap-8 md:gap-10 lg:gap-10',      // ✅ SYMMETRISCH: Gelijk tussen elementen
     topMargin: 'mt-0',                // ✅ ULTRA COMPACT - breadcrumb direct tegen navbar
     // Product Grid Ratio: Image vs Info (zoals Pergolux)
     productGrid: {
