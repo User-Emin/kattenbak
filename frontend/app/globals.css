@@ -87,10 +87,8 @@
  * UTILITY CLASSES
  */
 @layer utilities {
-  /* Alle buttons krijgen subtiele rounded corners */
-  button:not(.rounded-full):not(.rounded-none) {
-    border-radius: 0.125rem !important; /* 2px - subtiel */
-  }
+  /* ✅ DRY: Alle buttons krijgen border radius via DESIGN_SYSTEM.button.borderRadius (rounded-xl) */
+  /* Deze regel is verwijderd - buttons gebruiken nu DESIGN_SYSTEM.button.borderRadius */
   
   /* Alle input elementen krijgen subtiele rounded corners */
   input:not([type="radio"]):not([type="checkbox"]):not(.rounded-none),

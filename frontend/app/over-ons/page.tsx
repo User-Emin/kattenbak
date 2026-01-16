@@ -58,7 +58,7 @@ export default function OverOnsPage() {
             </p>
             <a 
               href="/contact"
-              className="inline-block bg-accent hover:bg-accent-dark text-gray-900 font-semibold py-4 px-10 rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
+              className={`inline-block bg-accent hover:bg-accent-dark text-gray-900 font-semibold py-4 px-10 ${DESIGN_SYSTEM.button.borderRadius} transition-all duration-300 hover:scale-105 active:scale-95`}
             >
               Contact Opnemen
             </a>

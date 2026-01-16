@@ -191,7 +191,7 @@ export const FORM_CONFIG = {
       textColor: 'text-gray-900', // DESIGN_SYSTEM.colors.text.primary - Tailwind class
       fontWeight: 'font-semibold', // DESIGN_SYSTEM.typography.fontWeight.semibold - Tailwind class
       padding: 'py-4 px-8', // DESIGN_SYSTEM.spacing[4] + custom - Tailwind classes
-      borderRadius: 'rounded-full', // Tailwind class (full rounded for contact form)
+      borderRadius: DESIGN_SYSTEM.button.borderRadius, // ✅ DRY: Via DESIGN_SYSTEM (exact zoals Let op kaart)
       transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
       hoverScale: 'hover:scale-105', // Tailwind class
       activeScale: 'active:scale-95', // Tailwind class

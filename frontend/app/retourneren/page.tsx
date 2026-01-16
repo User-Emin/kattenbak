@@ -244,7 +244,7 @@ export default function RetournerenPage() {
               {/* Submit button */}
               <Button
                 type="submit"
-                className="w-full h-12 text-base rounded-sm bg-brand hover:bg-brand-dark text-white font-normal transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`w-full h-12 text-base ${DESIGN_SYSTEM.button.borderRadius} bg-brand hover:bg-brand-dark text-white font-normal transition-all disabled:opacity-50 disabled:cursor-not-allowed`}
                 disabled={!isFormValid || isSubmitting}
               >
                 {isSubmitting ? (

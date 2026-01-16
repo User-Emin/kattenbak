@@ -136,7 +136,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
               size="lg" 
               fullWidth 
               variant="outline"
-              className="border-2 border-gray-300 hover:border-accent bg-white text-gray-900 font-semibold rounded-sm"
+              className="border-2 border-gray-300 hover:border-accent bg-white text-gray-900 font-semibold"
               onClick={() => handleNavigate('/cart')}
             >
               {SHARED_CONTENT.buttons.viewCart}
@@ -147,7 +147,6 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
             size="lg" 
             fullWidth 
             variant="cta"
-            className="rounded-sm"
             onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
           >
             {SHARED_CONTENT.buttons.checkout}

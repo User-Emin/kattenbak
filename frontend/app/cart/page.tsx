@@ -88,7 +88,7 @@ export default function CartPage() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="w-9 h-9 sm:w-10 sm:h-10 rounded border-2 border-gray-300 hover:border-accent flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
+                          className={`w-9 h-9 sm:w-10 sm:h-10 ${DESIGN_SYSTEM.button.borderRadius} border-2 border-gray-300 hover:border-accent flex items-center justify-center hover:bg-gray-50 transition active:scale-95`}
                         >
                           <Minus className="h-3 w-3 sm:h-4 sm:w-4" />
                         </button>
@@ -99,7 +99,7 @@ export default function CartPage() {
 
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="w-9 h-9 sm:w-10 sm:h-10 rounded border-2 border-gray-300 hover:border-accent flex items-center justify-center hover:bg-gray-50 transition active:scale-95"
+                          className={`w-9 h-9 sm:w-10 sm:h-10 ${DESIGN_SYSTEM.button.borderRadius} border-2 border-gray-300 hover:border-accent flex items-center justify-center hover:bg-gray-50 transition active:scale-95`}
                           disabled={item.quantity >= item.product.stock}
                         >
                           <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
