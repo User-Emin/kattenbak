@@ -12,6 +12,7 @@ import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { PRODUCT_CONTENT } from "@/lib/content.config";
 import { PRODUCT_USP_ICONS } from "@/components/products/product-usp-icons";
 import { PremiumQualitySection } from "@/components/shared/premium-quality-section";
+import { ProductComparisonTable } from "@/components/products/product-comparison-table";
 import type { Product } from "@/types/product";
 import { 
   ChevronLeft, 
@@ -938,6 +939,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             );
           })}
         </div>
+      </div>
+
+      {/* ✅ VERGELIJKINGSTABEL: Modern, smooth, gebaseerd op echte info */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}>
+        <ProductComparisonTable />
       </div>
 
     </div>

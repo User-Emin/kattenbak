@@ -54,7 +54,7 @@ export const HOME_CONTENT = {
     },
     {
       q: 'Hoe vaak moet ik de afvalbak legen?',
-      a: 'Bij één kat ongeveer 1x per week. De 10L capaciteit betekent minder onderhoud.',
+      a: 'Bij één kat: 1x per 4-6 dagen. Bij 2 katten: 1x per 3-5 dagen. Bij 3 katten: 1x per 2-3 dagen. De 10.5L capaciteit betekent minder onderhoud.',
     },
     {
       q: 'Is de app-bediening inbegrepen?',
@@ -223,7 +223,7 @@ export const PRODUCT_CONTENT = {
     },
     {
       title: 'Dubbele Veiligheidssensoren',
-      description: 'IR- en gewichtssensoren stoppen automatisch bij beweging. Getest op 10.000+ cycli.',
+      description: 'IR- en gewichtssensoren stoppen automatisch bij beweging. Getest op 10.000+ cycli. Ultieme veiligheid voor jouw kat.',
       items: [
         'IR bewegingssensor',
         'Gewichtdetectie technologie',
@@ -232,6 +232,87 @@ export const PRODUCT_CONTENT = {
       ],
     },
   ],
+
+  // ✅ VERGELIJKINGSTABEL DATA: Gebaseerd op echte info van Poopy.nl
+  comparison: {
+    title: 'Vergelijking',
+    subtitle: 'Onze kattenbak vs. concurrent',
+    rows: [
+      {
+        feature: 'Afvalbak capaciteit',
+        ourProduct: '10.5L',
+        competitor: 'Niet vermeld',
+        highlight: true,
+      },
+      {
+        feature: 'Geluidsniveau',
+        ourProduct: '<40 dB',
+        competitor: '±55 dB',
+        highlight: true,
+      },
+      {
+        feature: 'Formaat (L×B×H)',
+        ourProduct: '65 × 53 × 65 cm',
+        competitor: '48 × 52 × 50 cm',
+        highlight: false,
+      },
+      {
+        feature: 'Gewicht',
+        ourProduct: '8.5 kg',
+        competitor: '±7 kg',
+        highlight: false,
+      },
+      {
+        feature: 'Veiligheidssensoren',
+        ourProduct: 'Dubbele sensoren (IR + gewicht)',
+        competitor: 'Gewichtssensoren',
+        highlight: true,
+      },
+      {
+        feature: 'Geschikt voor katten',
+        ourProduct: 'Tot 7kg',
+        competitor: '1-3 katten (vanaf 1kg)',
+        highlight: false,
+      },
+      {
+        feature: 'Minimum leeftijd',
+        ourProduct: '6 maanden',
+        competitor: '3-4 maanden',
+        highlight: false,
+      },
+      {
+        feature: 'WiFi verbinding',
+        ourProduct: '2.4GHz',
+        competitor: '2.4GHz',
+        highlight: false,
+      },
+      {
+        feature: 'App bediening',
+        ourProduct: true,
+        competitor: true,
+        highlight: false,
+      },
+      {
+        feature: 'Garantie',
+        ourProduct: '2 jaar',
+        competitor: '2 jaar',
+        highlight: false,
+      },
+      {
+        feature: 'Materiaal',
+        ourProduct: 'ABS',
+        competitor: 'ABS',
+        highlight: false,
+      },
+      {
+        feature: 'Automatische reiniging',
+        ourProduct: true,
+        competitor: true,
+        highlight: false,
+      },
+    ],
+    footerNote: '* Gebaseerd op publiek beschikbare informatie. Specificaties kunnen variëren.',
+  },
 
   // Safety Notice - ✅ VERKORT: Behoud doel, korter voor betere UX
   safetyNotice: {
