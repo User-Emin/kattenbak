@@ -208,6 +208,36 @@ export const PRODUCT_CONTENT = {
   
   // Aantal specs dat standaard zichtbaar is
   initialVisibleSpecs: 4,
+
+  // Feature sections (ZIGZAG) - ✅ VERKORT: Behoud doel, korter voor betere UX
+  features: [
+    {
+      title: 'Hoogwaardige ABS Materialen',
+      description: 'Duurzaam ABS-materiaal, krasbestendig en eenvoudig te reinigen. Geurwerend en hypoallergeen.',
+      items: [
+        'Duurzaam ABS kunststof',
+        'Kras- en slijtvast',
+        'Antibacteriële coating',
+        'Milieuvriendelijk materiaal',
+      ],
+    },
+    {
+      title: 'Dubbele Veiligheidssensoren',
+      description: 'IR- en gewichtssensoren stoppen automatisch wanneer uw kat de bak betreedt. Getest op 10.000+ cycli.',
+      items: [
+        'IR bewegingssensor',
+        'Gewichtdetectie technologie',
+        'Automatische pauze functie',
+        '10.000+ cycli getest',
+      ],
+    },
+  ],
+
+  // Safety Notice - ✅ VERKORT: Behoud doel, korter voor betere UX
+  safetyNotice: {
+    title: 'Let op',
+    text: 'Niet geschikt voor kittens onder 6 maanden. Geschikt voor katten van 1,5KG tot 12,5KG.',
+  },
 } as const;
 
 // ============================================

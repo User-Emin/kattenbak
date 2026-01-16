@@ -9,6 +9,7 @@ import { productsApi } from "@/lib/api/products";
 import { formatPrice } from "@/lib/utils";
 import { PRODUCT_PAGE_CONFIG, cn } from "@/lib/product-page-config";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { PRODUCT_CONTENT } from "@/lib/content.config";
 import { PremiumQualitySection } from "@/components/shared/premium-quality-section";
 import type { Product } from "@/types/product";
 import { 
@@ -248,31 +249,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     });
   };
 
-  // Features data - GEBASEERD OP ECHTE SPECIFICATIES (Alibaba + Screenshots)
-  const features = [
-    {
-      title: 'Hoogwaardige ABS Materialen',
-      description: 'Gemaakt van duurzaam, milieuvriendelijk ABS-materiaal dat bestand is tegen krassen en eenvoudig te reinigen. Geurwerend en hypoallergeen voor optimale hygiëne.',
-      image: DESIGN_SYSTEM.layout.features.capacity.imageUrl, // ✅ DYNAMISCH: Via DESIGN_SYSTEM (geen hardcode) - EXACT ZELFDE ALS HOME
-      items: [
-        'Duurzaam ABS kunststof',
-        'Kras- en slijtvast',
-        'Antibacteriële coating',
-        'Milieuvriendelijk materiaal',
-      ],
-    },
-    {
-      title: 'Dubbele Veiligheidssensoren',
-      description: 'Uitgerust met infrarood- en gewichtssensoren die automatisch stoppen wanneer uw kat de bak betreedt. Getest op 10.000+ cycli voor maximale betrouwbaarheid.',
-      image: '/images/feature-2.jpg', // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode) - EXACT IDENTIEK
-      items: [
-        'IR bewegingssensor',
-        'Gewichtdetectie technologie',
-        'Automatische pauze functie',
-        '10.000+ cycli getest',
-      ],
-    },
-  ];
+  // Features data - ✅ DRY: Via PRODUCT_CONTENT (geen hardcode)
+  const features = PRODUCT_CONTENT.features.map((feature, index) => ({
+    ...feature,
+    image: index === 0 
+      ? DESIGN_SYSTEM.layout.features.capacity.imageUrl // ✅ DYNAMISCH: Via DESIGN_SYSTEM (geen hardcode) - EXACT ZELFDE ALS HOME
+      : '/images/feature-2.jpg', // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode) - EXACT IDENTIEK
+  }));
 
   return (
     <div className="min-h-screen bg-white">
@@ -645,7 +628,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   CONFIG.safetyNotice.header.title.fontWeight,
                   CONFIG.safetyNotice.header.title.textColor
                 )}>
-                  Let op
+                  {PRODUCT_CONTENT.safetyNotice.title}
                 </h4>
               </div>
               <p className={cn(
@@ -653,7 +636,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 CONFIG.safetyNotice.content.textColor,
                 CONFIG.safetyNotice.content.lineHeight
               )}>
-                Niet geschikt voor kittens onder 6 maanden. De smart cat litter is alleen geschikt voor katten die niet meer wegen dan 3,3 lbs (1,5KG), en het wordt aanbevolen dat het maximale gewicht van de kat niet meer dan 27,5 lbs (12,5KG) mag zijn.
+                {PRODUCT_CONTENT.safetyNotice.text}
               </p>
             </div>
           </div>
