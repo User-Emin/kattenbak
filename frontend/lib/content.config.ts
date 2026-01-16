@@ -50,7 +50,7 @@ export const HOME_CONTENT = {
     },
     {
       q: 'Voor welke katten is dit geschikt?',
-      a: 'Geschikt voor katten van alle maten tot 7kg. De ruime binnenruimte zorgt voor comfort.',
+      a: 'Geschikt voor katten van alle maten tot 7kg.',
     },
     {
       q: 'Hoe vaak moet ik de afvalbak legen?',
