@@ -259,7 +259,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   }));
 
   return (
-    <div className="min-h-screen bg-gray-50"> {/* ✅ GRIJZER: Lichte grijze achtergrond voor smoothheid */}
+    <div className="min-h-screen bg-white"> {/* ✅ WIT: Volledig witte achtergrond */}
       {/* Main Product Section - Breadcrumb binnen grid */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.topMargin, CONFIG.layout.sectionSpacing)}>
         {/* Breadcrumb - Bovenaan grid container */}
