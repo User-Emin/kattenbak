@@ -158,7 +158,7 @@ export function ProductComparisonTable() {
       {/* Footer Note */}
       <div className="bg-gray-50 border-t border-gray-200 px-6 py-3">
         <p className="text-xs text-gray-500 text-center">
-          * Gebaseerd op publiek beschikbare informatie. Specificaties kunnen variëren.
+          * Vergelijking met traditionele niet-automatische kattenbak. Specificaties kunnen variëren.
         </p>
       </div>
     </div>

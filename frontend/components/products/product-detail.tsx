@@ -256,7 +256,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     ...feature,
     image: index === 0 
       ? '/images/capacity-10.5l-optimized.jpg' // ✅ FOTO GEOPTIMALISEERD: Exact zoals screenshot, geoptimaliseerd
-      : '/images/feature-2.jpg', // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode) - EXACT IDENTIEK
+      : index === 1
+      ? '/images/feature-2.jpg' // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode) - EXACT IDENTIEK
+      : '/images/traditional-litter-box-optimized.jpg', // ✅ 3E ZIGZAG: Geurblokje, kwats & afvalzak
   }));
 
   return (
