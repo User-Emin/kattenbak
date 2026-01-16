@@ -130,7 +130,15 @@ export const apiFetch = async <T>(
   const response = await fetch(url, fetchOptions);
   
   if (!response.ok) {
-    throw new Error(`API Error: ${response.statusText}`);
+    // ✅ SECURITY: Generic error - geen gevoelige data
+    let errorMessage = 'Er is een fout opgetreden';
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorData.message || errorMessage;
+    } catch {
+      // If JSON parse fails, use generic message
+    }
+    throw new Error(errorMessage);
   }
 
   return response.json();

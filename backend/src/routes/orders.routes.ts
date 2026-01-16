@@ -103,9 +103,20 @@ router.post(
         'Order created successfully',
         201
       );
-    } catch (error) {
-      logger.error('Order creation failed:', error);
-      next(error);
+    } catch (error: any) {
+      // ✅ SECURITY: Log error details but don't leak to client
+      logger.error('Order creation failed:', {
+        message: error?.message,
+        code: error?.code,
+        // ✅ SECURITY: No stack traces, API keys, or sensitive data in logs
+      });
+      
+      // ✅ SECURITY: Generic error message for client
+      const errorMessage = error?.message?.includes('Mollie') || error?.message?.includes('payment')
+        ? 'Betaling kon niet worden gestart. Controleer je gegevens en probeer het opnieuw.'
+        : 'Bestelling kon niet worden geplaatst. Probeer het opnieuw.';
+      
+      next(new Error(errorMessage));
     }
   }
 );

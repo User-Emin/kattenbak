@@ -122,7 +122,13 @@ function CheckoutContent() {
         throw new Error("Payment URL not available");
       }
     } catch (err: any) {
-      setError(err.message || "Er is iets misgegaan. Probeer het opnieuw.");
+      // ✅ SECURITY: Generic error message - geen gevoelige data lekken
+      const errorMessage = err?.response?.data?.error || err?.message;
+      // ✅ SECURITY: Filter gevoelige informatie (API keys, stack traces, etc.)
+      const safeMessage = errorMessage && !errorMessage.includes('API') && !errorMessage.includes('key') && !errorMessage.includes('stack')
+        ? errorMessage
+        : "Er is iets misgegaan bij het plaatsen van je bestelling. Probeer het opnieuw of neem contact met ons op.";
+      setError(safeMessage);
       setIsProcessing(false);
     }
   };
