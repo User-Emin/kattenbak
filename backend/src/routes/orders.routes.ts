@@ -33,15 +33,13 @@ const createOrderSchema = z.object({
       phone: z.string().min(10, 'Valid phone required').optional(),
     }),
     shipping: z.object({
-      address: z.string().min(5, 'Address required').optional(), // ✅ Optional: Can use separate fields
-      street: z.string().min(2, 'Street required').optional(), // ✅ Optional: Can use combined address
-      houseNumber: z.string().min(1, 'House number required').optional(), // ✅ Optional: Can parse from address
+      address: z.string().min(1).optional(), // ✅ Optional: Combined address or separate fields
+      street: z.string().min(1).optional(), // ✅ Optional: Can use combined address
+      houseNumber: z.string().min(1).optional(), // ✅ Optional: Can parse from address
       addition: z.string().optional(), // ✅ Optional: House number addition
       city: z.string().min(2, 'City required'),
       postalCode: z.string().min(6, 'Postal code required'),
       country: z.string().default('NL'),
-    }).refine((data) => data.address || (data.street && data.houseNumber), {
-      message: 'Either combined address or separate street/houseNumber required',
     }),
     paymentMethod: z.enum(['ideal', 'paypal', 'creditcard', 'bancontact']).default('ideal'),
   }),
