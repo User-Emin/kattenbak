@@ -395,26 +395,25 @@ export function ChatPopup() {
     return process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
   }, []);
 
-  // ✅ CHAT BUBBLE: "Ik ben AI assistent" vraag bij chatbutton (smooth effect)
+  // ✅ CHAT BUBBLE: "Ik ben AI assistent" vraag bij chatbutton (smooth effect) - BUITEN CHATBUTTON
   useEffect(() => {
-    if (!isExpanded && typeof window !== 'undefined') {
-      // Check if we're on a product page
-      const pathname = window.location.pathname;
-      const isProductPage = pathname.startsWith('/product/');
+    if (typeof window === 'undefined') return;
+    
+    // Check if we're on a product page
+    const pathname = window.location.pathname;
+    const isProductPage = pathname.startsWith('/product/');
+    
+    if (isProductPage && !isExpanded) {
+      // ✅ SMOOTH EFFECT: Show bubble after delay (alleen als chat gesloten is)
+      const bubbleTimer = setTimeout(() => {
+        setShowChatBubble(true);
+      }, 2000); // ✅ SMOOTH: 2 seconden delay voor smooth appearance
       
-      if (isProductPage) {
-        // ✅ SMOOTH EFFECT: Show bubble after delay
-        const bubbleTimer = setTimeout(() => {
-          setShowChatBubble(true);
-        }, 2000); // ✅ SMOOTH: 2 seconden delay voor smooth appearance
-        
-        // Hide bubble when chat opens
-        return () => {
-          clearTimeout(bubbleTimer);
-          setShowChatBubble(false);
-        };
-      }
+      return () => {
+        clearTimeout(bubbleTimer);
+      };
     } else {
+      // ✅ HIDE: Verberg bubble als chat open is of niet op product pagina
       setShowChatBubble(false);
     }
   }, [isExpanded]);
@@ -583,18 +582,22 @@ export function ChatPopup() {
 
   return (
     <>
-      {/* ✅ CHAT BUBBLE: "Ik ben AI assistent" vraag bij chatbutton (smooth effect) */}
+      {/* ✅ CHAT BUBBLE: "Ik ben AI assistent" vraag BUITEN chatbutton (smooth effect) */}
       {showChatBubble && !isExpanded && (
         <div
           className={cn(
-            'fixed right-6 z-[100]',
+            'fixed z-[101]', // ✅ BOVEN: Boven chatbutton (z-[100])
+            'right-6', // ✅ POSITION: Rechts uitgelijnd met chatbutton
             buttonBottomClass,
-            'mb-20', // ✅ POSITION: Boven chatbutton
+            'mb-24', // ✅ POSITION: Boven chatbutton (mb-24 voor ruimte)
             'animate-in fade-in slide-in-from-bottom-4 duration-500', // ✅ SMOOTH: Smooth fade-in en slide-up
             'max-w-xs'
           )}
+          style={{
+            animation: 'fadeInUp 0.5s ease-out', // ✅ SMOOTH: Custom animation
+          }}
         >
-          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 relative">
+          <div className="bg-white rounded-lg shadow-xl border border-gray-200 p-3 relative">
             {/* ✅ SPEECH BUBBLE ARROW: Wijs naar chatbutton */}
             <div className="absolute bottom-0 right-6 transform translate-y-full">
               <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-gray-200"></div>
@@ -603,7 +606,7 @@ export function ChatPopup() {
               <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
             </div>
             
-            <p className="text-sm text-gray-900 font-medium">
+            <p className="text-xs text-gray-900 font-medium leading-tight">
               Ik ben een AI assistent. Heb je vragen over dit product?
             </p>
           </div>

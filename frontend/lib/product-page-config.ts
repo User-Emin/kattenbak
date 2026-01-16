@@ -138,18 +138,18 @@ export const PRODUCT_PAGE_CONFIG = {
       icon: 'w-6 h-6 md:w-6 md:h-6', // ✅ DRUK MIJ: Groter icon (w-6 h-6 ipv w-5 h-5) - meer prominent
     },
     usps: {
-      spacing: 'grid grid-cols-3 gap-4 mt-6', // ✅ 3 NAAST ELKAAR: Grid layout
+      spacing: 'grid grid-cols-3 gap-3 mt-6', // ✅ COMPACTER: Kleinere gap (gap-3 ipv gap-4)
       item: {
-        container: 'flex flex-col items-center text-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors', // ✅ SMOOTH: Witte kaart met hover
-        iconContainer: 'mb-3 flex items-center justify-center', // ✅ CUSTOM: Icon container
-        iconSize: 'w-12 h-12', // ✅ GROTER: Custom vector icons
+        container: 'flex flex-col items-center text-center p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors', // ✅ COMPACTER: Kleinere padding (p-3 ipv p-4)
+        iconContainer: 'mb-2 flex items-center justify-center', // ✅ COMPACTER: Kleinere margin (mb-2 ipv mb-3)
+        iconSize: 'w-16 h-16', // ✅ COMPACTER: Kleinere icons (w-16 h-16 ipv w-24 h-24)
         title: {
-          fontSize: 'text-sm font-semibold',
+          fontSize: 'text-xs font-semibold', // ✅ COMPACTER: Kleinere tekst (text-xs ipv text-sm)
           textColor: 'text-gray-900',
-          marginBottom: 'mb-1',
+          marginBottom: 'mb-0.5', // ✅ COMPACTER: Kleinere margin
         },
         description: {
-          fontSize: 'text-xs',
+          fontSize: 'text-[10px]', // ✅ COMPACTER: Extra kleine tekst
           textColor: 'text-gray-600',
         },
       },

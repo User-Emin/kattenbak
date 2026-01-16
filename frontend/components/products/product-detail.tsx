@@ -461,16 +461,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar met afbeeldingen uit downloads (witte achtergrond) */}
               <div className={CONFIG.info.usps.spacing}>
                 {PRODUCT_CONTENT.productUsps.map((usp, index) => (
-                  <div key={index} className={CONFIG.info.usps.item.container}>
-                    <div className={cn(CONFIG.info.usps.item.iconContainer, 'bg-white rounded-lg p-2')}>
-                      {/* ✅ AFBEELDING: Uit downloads met witte achtergrond alsof het erin zit */}
+                    <div key={index} className={CONFIG.info.usps.item.container}>
+                    <div className={cn(CONFIG.info.usps.item.iconContainer, 'bg-white rounded-lg p-1.5')}>
+                      {/* ✅ AFBEELDING: Uit downloads met witte achtergrond alsof het erin zit - COMPACTER */}
                       {usp.image && (
-                        <div className="relative w-full h-full">
+                        <div className="relative" style={{ width: '64px', height: '64px' }}>
                           <Image
                             src={usp.image}
                             alt={usp.title}
-                            width={96}
-                            height={96}
+                            width={64}
+                            height={64}
                             className="object-contain"
                             style={{ background: '#ffffff' }} // ✅ WITTE ACHTERGROND: Alsof het erin zit
                           />
