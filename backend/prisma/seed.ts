@@ -5,32 +5,40 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Starting database seed...');
   
-  // 1. Create Category
-  console.log('1️⃣ Creating category...');
-  const category = await prisma.category.create({
-    data: {
-      name: 'Kattenbakken',
-      slug: 'kattenbakken',
-      description: 'Slimme en automatische kattenbakken voor moderne kattenliefhebbers',
-      isActive: true,
-      sortOrder: 1
-    }
+  // 1. Create or Get Category (zorg dat data niet verloren gaat)
+  console.log('1️⃣ Creating/getting category...');
+  let category = await prisma.category.findUnique({
+    where: { slug: 'kattenbakken' }
   });
-  console.log(`✅ Category created: ${category.name}`);
   
-  // 2. Create Main Product
-  console.log('\n2️⃣ Creating product...');
-  // ✅ FIX: Check if product already exists (zorg dat data niet verloren gaat)
-  const existingProduct = await prisma.product.findUnique({
+  if (!category) {
+    category = await prisma.category.create({
+      data: {
+        name: 'Kattenbakken',
+        slug: 'kattenbakken',
+        description: 'Slimme en automatische kattenbakken voor moderne kattenliefhebbers',
+        isActive: true,
+        sortOrder: 1
+      }
+    });
+    console.log(`✅ Category created: ${category.name}`);
+  } else {
+    console.log(`✅ Category already exists: ${category.name}`);
+  }
+  
+  // 2. Create or Get Main Product (zorg dat data niet verloren gaat)
+  console.log('\n2️⃣ Creating/getting product...');
+  let product = await prisma.product.findUnique({
     where: { slug: 'automatische-kattenbak-premium' }
   });
   
-  if (existingProduct) {
-    console.log(`✅ Product already exists: ${existingProduct.name}`);
+  if (product) {
+    console.log(`✅ Product already exists: ${product.name} (€${product.price})`);
+    console.log('✅ Skipping product creation to preserve existing data');
     return;
   }
   
-  const product = await prisma.product.create({
+  product = await prisma.product.create({
     data: {
       sku: 'KB-AUTO-001',
       name: 'Automatische Kattenbak Premium',
