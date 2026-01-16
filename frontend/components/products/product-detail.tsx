@@ -75,28 +75,45 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   useEffect(() => {
     let isMounted = true;
     let retryCount = 0;
-    const MAX_RETRIES = 3;
+    const MAX_RETRIES = 5; // ✅ VERHOOGD: Meer retries voor betrouwbaarheid
     const RETRY_DELAY = 1000; // 1 second
 
     const loadProduct = async () => {
       try {
         const productData = await productsApi.getBySlug(slug);
-        if (isMounted) {
+        if (isMounted && productData) {
           setProduct(productData);
+          setLoading(false);
+        } else if (isMounted) {
+          // ✅ FIX: Als product null is, probeer opnieuw (mogelijk tijdelijke fout)
+          if (retryCount < MAX_RETRIES) {
+            retryCount++;
+            setTimeout(() => {
+              if (isMounted) {
+                loadProduct();
+              }
+            }, RETRY_DELAY * retryCount);
+            return;
+          }
           setLoading(false);
         }
       } catch (error: any) {
-        // ✅ SECURITY: Log error server-side only
+        // ✅ SECURITY: Log error server-side only (geen gevoelige data)
         if (typeof window === 'undefined') {
-          console.error('Product load error:', error);
+          console.error('Product load error:', error?.message || 'Unknown error');
         }
         
-        // ✅ RETRY: Probeer opnieuw bij network errors
+        // ✅ RETRY: Probeer opnieuw bij network errors, 502, 503, 504
         if (retryCount < MAX_RETRIES && (
           error?.isNetworkError || 
           error?.isGatewayError || 
+          error?.status === 502 ||
+          error?.status === 503 ||
+          error?.status === 504 ||
           error?.message?.includes('verbinding') ||
-          error?.message?.includes('tijdelijk niet beschikbaar')
+          error?.message?.includes('tijdelijk niet beschikbaar') ||
+          error?.message?.includes('Bad Gateway') ||
+          error?.message?.includes('Service Unavailable')
         )) {
           retryCount++;
           setTimeout(() => {
@@ -104,11 +121,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               loadProduct();
             }
           }, RETRY_DELAY * retryCount); // Exponential backoff
-        } else {
-          // ✅ FIX: Geen "Fout bij laden" - toon product niet gevonden (graceful degradation)
-          if (isMounted) {
+          return;
+        }
+        
+        // ✅ FIX: Alleen "Product niet gevonden" tonen bij 404, niet bij andere errors
+        if (isMounted) {
+          // Alleen set loading false als het echt niet gevonden is (404)
+          // Bij andere errors blijven we proberen of tonen we een betere error
+          if (error?.status === 404) {
             setLoading(false);
-            // Product blijft null, wordt afgehandeld door "Product not found" UI
+          } else {
+            // ✅ FIX: Bij andere errors, blijf proberen of toon loading state
+            // Dit voorkomt dat "Product niet gevonden" wordt getoond bij tijdelijke fouten
+            if (retryCount >= MAX_RETRIES) {
+              setLoading(false);
+            }
           }
         }
       }
@@ -129,14 +156,33 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     );
   }
 
-  // Product not found
-  if (!product) {
+  // ✅ FIX: Product not found - alleen tonen als loading klaar is EN product echt niet bestaat
+  // Dit voorkomt dat "Product niet gevonden" wordt getoond tijdens retries
+  if (!loading && !product) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <h1 className="text-3xl font-semibold mb-4">Product niet gevonden</h1>
-        <Link href="/" className="text-gray-600 hover:text-gray-700">
+      <div className="min-h-screen flex flex-col items-center justify-center px-4">
+        <AlertTriangle className="w-16 h-16 text-gray-400 mb-4" />
+        <h1 className="text-3xl font-semibold mb-4 text-center">Product niet gevonden</h1>
+        <p className="text-gray-600 mb-6 text-center max-w-md">
+          Het product dat je zoekt bestaat niet of is niet meer beschikbaar.
+        </p>
+        <Link 
+          href="/" 
+          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          <Home className="w-5 h-5" />
           Terug naar Home
         </Link>
+      </div>
+    );
+  }
+  
+  // ✅ FIX: Loading state - toon loading tijdens retries
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+        <p className="text-gray-600">Product laden...</p>
       </div>
     );
   }
