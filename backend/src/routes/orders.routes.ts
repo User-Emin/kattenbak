@@ -126,15 +126,28 @@ router.post(
       logger.error('Order creation failed:', {
         message: error?.message,
         code: error?.code,
+        name: error?.name,
         // ✅ SECURITY: No stack traces, API keys, or sensitive data in logs
       });
       
-      // ✅ SECURITY: Generic error message for client
-      const errorMessage = error?.message?.includes('Mollie') || error?.message?.includes('payment')
-        ? 'Betaling kon niet worden gestart. Controleer je gegevens en probeer het opnieuw.'
-        : 'Bestelling kon niet worden geplaatst. Probeer het opnieuw.';
+      // ✅ FIX: Better error handling - check for specific error types
+      let errorMessage = 'Bestelling kon niet worden geplaatst. Probeer het opnieuw.';
       
-      next(new Error(errorMessage));
+      if (error?.message?.includes('not found') || error?.message?.includes('NotFound')) {
+        errorMessage = 'Product niet gevonden. Controleer je winkelwagen en probeer het opnieuw.';
+      } else if (error?.message?.includes('Mollie') || error?.message?.includes('payment')) {
+        errorMessage = 'Betaling kon niet worden gestart. Controleer je gegevens en probeer het opnieuw.';
+      } else if (error?.message?.includes('validation') || error?.message?.includes('Validation')) {
+        errorMessage = 'Ongeldige gegevens. Controleer alle velden en probeer het opnieuw.';
+      } else if (error?.message?.includes('database') || error?.message?.includes('Database') || error?.message?.includes('Prisma')) {
+        errorMessage = 'Database fout. Probeer het later opnieuw.';
+      }
+      
+      // ✅ FIX: Use errorResponse instead of next() for proper error response
+      return res.status(500).json({
+        success: false,
+        error: errorMessage,
+      });
     }
   }
 );

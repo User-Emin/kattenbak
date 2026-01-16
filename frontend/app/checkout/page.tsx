@@ -118,10 +118,26 @@ function CheckoutContent() {
         saveCustomerData(formData);
       }
 
+      // ✅ FIX: Ensure we use the correct product ID (CUID from cart, not numeric from URL)
+      // If product ID is numeric "1", try to find the matching product from cart with CUID
+      let productIdToUse = product.id;
+      if (product.id === "1" && items && items.length > 0) {
+        // Find matching product from cart by name or use first cart item's CUID
+        const cartProduct = items.find(item => 
+          item.product.name === product.name || 
+          item.product.slug === product.slug
+        );
+        if (cartProduct && cartProduct.product.id && cartProduct.product.id !== "1") {
+          productIdToUse = cartProduct.product.id; // ✅ Use CUID from cart
+        } else if (items[0] && items[0].product.id && items[0].product.id !== "1") {
+          productIdToUse = items[0].product.id; // ✅ Fallback to first cart item's CUID
+        }
+      }
+
       // ✅ DRY: Match backend schema exactly
       const orderData = {
         items: [{ 
-          productId: product.id, 
+          productId: productIdToUse, // ✅ Use CUID instead of numeric ID
           quantity,
           price: product.price 
         }],
