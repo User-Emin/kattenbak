@@ -12,10 +12,10 @@ export const CHAT_CONFIG = {
   button: {
     size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
     borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
-    backgroundColor: 'bg-brand', // ✅ ZICHTBAAR: Brand color (#005980) - echt opvallend
+    backgroundColor: 'bg-black', // ✅ ZWART: Volledig zwart zoals gevraagd
     textColor: 'text-white', // ✅ WIT SYMBOOL: Symbool wit
-    hoverBackgroundColor: 'hover:bg-brand-dark', // ✅ HOVER: Donkerder brand color
-    border: 'border-2 border-brand-dark', // ✅ BORDER: Donkerder brand border voor contrast
+    hoverBackgroundColor: 'hover:bg-gray-900', // ✅ HOVER: Donkerder zwart
+    border: 'border-2 border-gray-800', // ✅ BORDER: Donkere border voor contrast
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     zIndex: 'z-[50]', // ✅ DYNAMISCH: DESIGN_SYSTEM.layoutUtils.zIndex.dropdown - Tailwind class
     position: {

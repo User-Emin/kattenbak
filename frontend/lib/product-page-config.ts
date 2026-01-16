@@ -221,7 +221,7 @@ export const PRODUCT_PAGE_CONFIG = {
       title: {
         fontSize: 'text-2xl lg:text-3xl',
         fontWeight: 'font-light', // ✅ DUNNER (was semibold)
-        textColor: 'text-gray-900',
+        textColor: 'text-black', // ✅ ZWARTER: Volledig zwart voor titels zoals "10.5L Capaciteit"
       },
       description: {
         fontSize: 'text-base',

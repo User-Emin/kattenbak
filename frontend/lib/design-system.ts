@@ -37,11 +37,12 @@ export const DESIGN_SYSTEM = {
       900: '#171717',        // Darkest
     },
     
-    // Text colors - ✅ GRADIENT: #3C3C3D → #7A7A7D (was #000000)
+    // Text colors - ✅ ZWARTER: Titels en belangrijke teksten zwarter gemaakt
     text: {
-      primary: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',     // ✅ GRADIENT: Hoofdtekst
-      primaryStart: '#3C3C3D',  // ✅ GRADIENT START
-      primaryEnd: '#7A7A7D',    // ✅ GRADIENT END
+      primary: '#000000',     // ✅ ZWART: Volledig zwart voor titels (was gradient)
+      primaryStart: '#000000',  // ✅ ZWART: Voor compatibiliteit
+      primaryEnd: '#000000',    // ✅ ZWART: Voor compatibiliteit
+      dark: '#000000',          // ✅ ZWART: Nieuwe dark variant voor titels zoals "Waarom deze kattenbak?"
       secondary: '#666666',   // Secondary tekst
       muted: '#999999',       // Muted/disabled tekst
       inverse: '#ffffff',     // Tekst op donkere achtergrond

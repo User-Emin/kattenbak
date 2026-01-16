@@ -92,9 +92,9 @@ export function ProductUspFeatures() {
                 isEven ? CONFIG.featureSection.zigzag.textOrder.left : CONFIG.featureSection.zigzag.textOrder.right // ✅ EXACT ZELFDE: Text order zoals productdetail
               )}>
               <h3 className={cn(
-                'text-2xl lg:text-3xl', // ✅ EXACT ZELFDE: Font size zoals productdetail (CONFIG.featureSection.text.title.fontSize)
-                'font-light', // ✅ EXACT ZELFDE: Font weight zoals productdetail (CONFIG.featureSection.text.title.fontWeight)
-                'text-gray-900' // ✅ EXACT ZELFDE: Text color zoals productdetail (CONFIG.featureSection.text.title.textColor)
+                CONFIG.featureSection.text.title.fontSize, // ✅ DYNAMISCH: Via config
+                CONFIG.featureSection.text.title.fontWeight, // ✅ DYNAMISCH: Via config
+                CONFIG.featureSection.text.title.textColor // ✅ DYNAMISCH: Via config (nu text-black)
               )}>
                 {feature.title}
               </h3>
