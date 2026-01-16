@@ -617,7 +617,7 @@ app.post('/api/v1/admin/products', authMiddleware, async (req: Request, res: Res
 // ADMIN: Update product - ✅ SECURITY: JWT auth required
 app.put('/api/v1/admin/products/:id', authMiddleware, async (req: Request, res: Response) => {
   try {
-    // Remove read-only fields that should not be updated
+    // ✅ FIX: Remove read-only fields and nested objects that should not be updated
     const { 
       id, 
       createdAt, 
@@ -626,13 +626,25 @@ app.put('/api/v1/admin/products/:id', authMiddleware, async (req: Request, res: 
       category,  // Remove nested objects
       variants,  // Variants are updated separately
       orderItems,
+      categoryId, // Handle separately if needed
       ...updateData 
     } = req.body as any;
     
-    // Clean undefined/null values (keep explicit null for optional fields)
+    // ✅ FIX: Only allow fields that exist in Product model
+    const allowedFields = [
+      'sku', 'name', 'slug', 'description', 'shortDescription',
+      'price', 'compareAtPrice', 'costPrice',
+      'stock', 'lowStockThreshold', 'trackInventory',
+      'weight', 'dimensions', 'images',
+      'metaTitle', 'metaDescription',
+      'isActive', 'isFeatured',
+      'categoryId'
+    ];
+    
+    // Clean undefined/null values and filter to allowed fields only
     const cleanData: any = {};
     Object.keys(updateData).forEach(key => {
-      if (updateData[key] !== undefined) {
+      if (updateData[key] !== undefined && allowedFields.includes(key)) {
         cleanData[key] = updateData[key];
       }
     });
@@ -646,24 +658,81 @@ app.put('/api/v1/admin/products/:id', authMiddleware, async (req: Request, res: 
       return res.status(404).json(error('Product niet gevonden'));
     }
     
-    // Update product with clean data
+    // ✅ FIX: Update product with clean data (only existing fields)
     const product = await prisma.product.update({
       where: { id: req.params.id },
       data: cleanData,
-      include: {
-        category: true,
-        variants: true
+      select: {
+        id: true,
+        sku: true,
+        name: true,
+        slug: true,
+        description: true,
+        shortDescription: true,
+        price: true,
+        compareAtPrice: true,
+        costPrice: true,
+        stock: true,
+        lowStockThreshold: true,
+        trackInventory: true,
+        weight: true,
+        dimensions: true,
+        images: true,
+        metaTitle: true,
+        metaDescription: true,
+        isActive: true,
+        isFeatured: true,
+        createdAt: true,
+        updatedAt: true,
+        publishedAt: true,
+        categoryId: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          }
+        },
+        variants: {
+          select: {
+            id: true,
+            productId: true,
+            name: true,
+            priceAdjustment: true,
+            sku: true,
+            stock: true,
+            images: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true,
+          }
+        }
       }
     });
 
     // Sanitize for response (convert Decimals)
-    const sanitizedProduct = sanitizeProduct(product);
-
-    console.log(`✅ Admin updated product: ${product.name}`);
-    res.json(success(sanitizedProduct));
+    try {
+      const sanitizedProduct = sanitizeProduct(product);
+      console.log(`✅ Admin updated product: ${product.name}`);
+      res.json(success(sanitizedProduct));
+    } catch (sanitizeError: any) {
+      // ✅ FIX: Return product anyway if sanitization fails (zorg dat data niet verloren gaat)
+      console.error('Product sanitization error:', sanitizeError?.message || 'Unknown error');
+      res.json(success({
+        ...product,
+        price: toNumber(product.price),
+        compareAtPrice: product.compareAtPrice ? toNumber(product.compareAtPrice) : null,
+        costPrice: product.costPrice ? toNumber(product.costPrice) : null,
+        weight: product.weight ? toNumber(product.weight) : null,
+      }));
+    }
   } catch (err: any) {
-    console.error('Admin update product error:', err);
-    console.error('Request body:', JSON.stringify(req.body, null, 2));
+    // ✅ SECURITY: Log error but don't leak details
+    console.error('Admin update product error:', {
+      message: err?.message || 'Unknown error',
+      code: err?.code,
+      // ✅ SECURITY: No stack traces, API keys, or sensitive data in logs
+    });
     res.status(500).json(error('Could not update product'));
   }
 });
