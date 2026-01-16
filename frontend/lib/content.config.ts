@@ -250,7 +250,7 @@ export const SHARED_CONTENT = {
   },
   
   buttons: {
-    addToCart: 'In Winkelwagen',
+    addToCart: 'Winkelwagen', // ✅ 1 WOORD: "Winkelwagen" ipv "In Winkelwagen"
     addingToCart: 'Toevoegen...',
     viewProduct: 'Bekijk Product',
     viewCart: 'Bekijk Winkelwagen',

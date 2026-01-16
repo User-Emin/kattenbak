@@ -128,7 +128,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
             loading={isAdding}
             leftIcon={!isAdding && product.stock > 0 ? <ShoppingCart className="w-4 h-4" /> : undefined}
           >
-            {product.stock === 0 ? "Uitverkocht" : "In Winkelwagen"}
+            {product.stock === 0 ? "Uitverkocht" : "Winkelwagen"} {/* ✅ 1 WOORD: "Winkelwagen" ipv "In Winkelwagen" */}
           </Button>
         </CardFooter>
       </Link>

@@ -443,14 +443,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               {isAdding ? (
                 <>
                   <Check className={CONFIG.info.button.icon} />
-                  Toegevoegd aan winkelwagen
+                  Toegevoegd
                 </>
               ) : (
                 <>
                   <ShoppingCart className={CONFIG.info.button.icon} />
-                  <span className="hidden md:inline">Toevoegen aan Winkelwagen - </span> {/* ✅ RESPONSIVE: Desktop volledige tekst */}
-                  <span className="md:hidden">Toevoegen - </span> {/* ✅ RESPONSIVE: Mobile kortere tekst */}
-                  {formatPrice(product.price)}
+                  Winkelwagen {/* ✅ 1 WOORD: "Winkelwagen" ipv "In Winkelwagen" */}
                 </>
               )}
             </button>
