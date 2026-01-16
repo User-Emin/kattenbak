@@ -86,8 +86,8 @@ export class ProductService {
       prisma.product.count({ where }),
     ]);
 
-    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
-    const products = productsRaw.map(p => ({ ...p, heroVideoUrl: null })) as Product[];
+    // ✅ FIX: Add heroVideoUrl and videoUrl: null to match Product type (fields don't exist in DB)
+    const products = productsRaw.map(p => ({ ...p, heroVideoUrl: null, videoUrl: null })) as Product[];
 
     return { products, total };
   }
@@ -102,8 +102,8 @@ export class ProductService {
       if (cached) {
         logger.debug(`Product ${id} served from cache`);
         const parsed = JSON.parse(cached);
-        // ✅ FIX: Ensure heroVideoUrl is null if missing
-        return { ...parsed, heroVideoUrl: parsed.heroVideoUrl || null } as Product;
+        // ✅ FIX: Ensure heroVideoUrl and videoUrl are null if missing
+        return { ...parsed, heroVideoUrl: parsed.heroVideoUrl || null, videoUrl: parsed.videoUrl || null } as Product;
       }
     }
 
@@ -200,7 +200,7 @@ export class ProductService {
         weight: true,
         dimensions: true,
         images: true,
-        videoUrl: true,
+        // videoUrl: false, // ✅ FIX: Exclude video_url - column doesn't exist in DB
         // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
         metaTitle: true,
         metaDescription: true,
@@ -269,7 +269,7 @@ export class ProductService {
         weight: true,
         dimensions: true,
         images: true,
-        videoUrl: true,
+        // videoUrl: false, // ✅ FIX: Exclude video_url - column doesn't exist in DB
         // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
         metaTitle: true,
         metaDescription: true,
@@ -289,8 +289,8 @@ export class ProductService {
       },
     });
 
-    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
-    return productsRaw.map(p => ({ ...p, heroVideoUrl: null })) as Product[];
+    // ✅ FIX: Add heroVideoUrl and videoUrl: null to match Product type (fields don't exist in DB)
+    return productsRaw.map(p => ({ ...p, heroVideoUrl: null, videoUrl: null })) as Product[];
   }
 
   /**
@@ -328,7 +328,7 @@ export class ProductService {
         weight: true,
         dimensions: true,
         images: true,
-        videoUrl: true,
+        // videoUrl: false, // ✅ FIX: Exclude video_url - column doesn't exist in DB
         // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
         metaTitle: true,
         metaDescription: true,
@@ -355,8 +355,8 @@ export class ProductService {
       },
     });
 
-    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
-    const product = { ...productRaw, heroVideoUrl: null } as Product;
+    // ✅ FIX: Add heroVideoUrl and videoUrl: null to match Product type (fields don't exist in DB)
+    const product = { ...productRaw, heroVideoUrl: null, videoUrl: null } as Product;
 
     logger.info(`Product created: ${product.id} (${product.sku})`);
 
@@ -395,7 +395,7 @@ export class ProductService {
         weight: true,
         dimensions: true,
         images: true,
-        videoUrl: true,
+        // videoUrl: false, // ✅ FIX: Exclude video_url - column doesn't exist in DB
         // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
         metaTitle: true,
         metaDescription: true,
@@ -422,8 +422,8 @@ export class ProductService {
       },
     });
 
-    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
-    const product = { ...productRaw, heroVideoUrl: null } as Product;
+    // ✅ FIX: Add heroVideoUrl and videoUrl: null to match Product type (fields don't exist in DB)
+    const product = { ...productRaw, heroVideoUrl: null, videoUrl: null } as Product;
 
     // Invalidate cache
     if (RedisClient.isAvailable()) {
@@ -548,7 +548,7 @@ export class ProductService {
         weight: true,
         dimensions: true,
         images: true,
-        videoUrl: true,
+        // videoUrl: false, // ✅ FIX: Exclude video_url - column doesn't exist in DB
         // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
         metaTitle: true,
         metaDescription: true,
@@ -568,8 +568,8 @@ export class ProductService {
       },
     });
 
-    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
-    return productsRaw.map(p => ({ ...p, heroVideoUrl: null })) as Product[];
+    // ✅ FIX: Add heroVideoUrl and videoUrl: null to match Product type (fields don't exist in DB)
+    return productsRaw.map(p => ({ ...p, heroVideoUrl: null, videoUrl: null })) as Product[];
   }
 }
 
