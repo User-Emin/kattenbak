@@ -254,7 +254,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const features = PRODUCT_CONTENT.features.map((feature, index) => ({
     ...feature,
     image: index === 0 
-      ? '/images/capacity-10.5l.jpg' // ✅ FOTO UIT DOWNLOADS: Exact zoals screenshot
+      ? '/images/capacity-10.5l-optimized.jpg' // ✅ FOTO GEOPTIMALISEERD: Exact zoals screenshot, geoptimaliseerd
       : '/images/feature-2.jpg', // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode) - EXACT IDENTIEK
   }));
 
@@ -897,13 +897,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   <Image
                     src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
                     alt={feature.title}
-                    width={800}
-                    height={600}
+                    width={1200} // ✅ GROTER: Breder voor volledige afbeelding (5/3 ratio)
+                    height={720} // ✅ GROTER: 1200/720 = 1.67 (5/3)
                     className={cn(
                       CONFIG.featureSection.image.aspectRatio,
                       CONFIG.featureSection.image.borderRadius,
                       CONFIG.featureSection.image.objectFit,
-                      CONFIG.featureSection.image.bgColor
+                      CONFIG.featureSection.image.bgColor,
+                      'w-full h-auto' // ✅ RESPONSIVE: Past aan als te groot
                     )}
                   />
                 </div>
