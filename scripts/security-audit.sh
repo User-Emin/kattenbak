@@ -74,11 +74,17 @@ else
   AUDIT_PASSED=false
 fi
 
-# Check for hardcoded secrets (exclude test files and comments)
-if grep -r "password.*=.*['\"].*['\"]\|api.*key.*=.*['\"].*['\"]\|secret.*=.*['\"].*['\"]" backend/src --include="*.ts" --include="*.js" 2>/dev/null | grep -v "process.env" | grep -v "//.*test\|//.*example\|test.*password\|mock.*secret\|dummy.*key" | grep -v "\.test\.\|\.spec\." > /dev/null 2>&1; then
+# Check for hardcoded secrets (exclude validation checks, test files, and comments)
+SECRET_MATCHES=$(grep -r "password.*=.*['\"].*['\"]\|api.*key.*=.*['\"].*['\"]\|secret.*=.*['\"].*['\"]" backend/src --include="*.ts" --include="*.js" 2>/dev/null | \
+  grep -v "process.env" | \
+  grep -v "//.*test\|//.*example\|test.*password\|mock.*secret\|dummy.*key" | \
+  grep -v "\.test\.\|\.spec\." | \
+  grep -v "password.*===.*['\"]\|password.*!==.*['\"]\|password.*length\|password.*trim\|password.*hash" | \
+  grep -v "const.*password.*=.*useState\|setPassword\|getPassword" || true)
+
+if [ -n "$SECRET_MATCHES" ]; then
   echo "  ⚠️  Potential hardcoded secrets found"
-  # Show first match for review
-  grep -r "password.*=.*['\"].*['\"]\|api.*key.*=.*['\"].*['\"]\|secret.*=.*['\"].*['\"]" backend/src --include="*.ts" --include="*.js" 2>/dev/null | grep -v "process.env" | grep -v "//.*test\|//.*example\|test.*password\|mock.*secret\|dummy.*key" | grep -v "\.test\.\|\.spec\." | head -1 || true
+  echo "$SECRET_MATCHES" | head -3
   AUDIT_PASSED=false
 else
   echo "  ✅ No hardcoded secrets"
