@@ -387,8 +387,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
           {/* Right: Product Info - SMALLER */}
           <div className={cn('flex flex-col', CONFIG.layout.productGrid.infoWidth)}>
-            {/* ✅ KAART: Productnaam in kaart met ronde hoeken */}
-            <div className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-200">
+            {/* ✅ 1 KAART: Alles in 1 kaart met shadow */}
+            <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-200">
+              {/* Productnaam */}
               <h1 className={cn(
                 CONFIG.info.title.fontSize,
                 CONFIG.info.title.fontWeight,
@@ -397,88 +398,84 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               )}>
                 {product.name}
               </h1>
-            </div>
 
-            {/* ✅ RATING VERWIJDERD: Geen sterren/reviews zonder redundantie */}
+              {/* Price */}
+              <div className={CONFIG.info.price.spacing}>
+                <span className={cn(
+                  CONFIG.info.price.current.fontSize,
+                  CONFIG.info.price.current.fontWeight,
+                  CONFIG.info.price.current.textColor
+                )}>
+                  {formatPrice(product.price)}
+                </span>
+              </div>
 
-            {/* Price */}
-            <div className={CONFIG.info.price.spacing}>
-              <span className={cn(
-                CONFIG.info.price.current.fontSize,
-                CONFIG.info.price.current.fontWeight,
-                CONFIG.info.price.current.textColor
-              )}>
-                {formatPrice(product.price)}
-              </span>
-              {/* ✅ KORTING VERWIJDERD: Geen korting badge meer */}
-            </div>
-
-            {/* Short Description */}
-            {product.shortDescription && (
-              <p className={cn(
-                CONFIG.info.description.fontSize,
-                CONFIG.info.description.textColor,
-                CONFIG.info.description.lineHeight,
-                CONFIG.info.description.marginBottom
-              )}>
-                {product.shortDescription}
-              </p>
-            )}
-
-            {/* Add to Cart Button */}
-            <button
-              onClick={handleAddToCart}
-              disabled={isAdding}
-              className={cn(
-                CONFIG.info.button.size,
-                CONFIG.info.button.fontSize,
-                CONFIG.info.button.fontWeight,
-                CONFIG.info.button.bgColor,
-                CONFIG.info.button.hoverBgColor,
-                CONFIG.info.button.textColor,
-                CONFIG.info.button.borderRadius,
-                CONFIG.info.button.transition,
-                'flex items-center justify-center gap-2',
-                isAdding && 'bg-green-600 hover:bg-green-600'
+              {/* Short Description */}
+              {product.shortDescription && (
+                <p className={cn(
+                  CONFIG.info.description.fontSize,
+                  CONFIG.info.description.textColor,
+                  CONFIG.info.description.lineHeight,
+                  CONFIG.info.description.marginBottom
+                )}>
+                  {product.shortDescription}
+                </p>
               )}
-            >
-              {isAdding ? (
-                <>
-                  <Check className={CONFIG.info.button.icon} />
-                  Toegevoegd
-                </>
-              ) : (
-                <>
-                  <ShoppingCart className={CONFIG.info.button.icon} />
-                  Winkelwagen {/* ✅ 1 WOORD: "Winkelwagen" ipv "In Winkelwagen" */}
-                </>
-              )}
-            </button>
 
-            {/* USPs */}
-            <div className={CONFIG.info.usps.spacing}>
-              <div className={CONFIG.info.usps.item.gap}>
-                <Check className={cn(CONFIG.info.usps.item.iconSize, CONFIG.info.usps.item.iconColor)} />
-                <span className={cn(CONFIG.info.usps.item.fontSize, CONFIG.info.usps.item.textColor)}>
-                  Gratis verzending
-                </span>
-              </div>
-              <div className={CONFIG.info.usps.item.gap}>
-                <Check className={cn(CONFIG.info.usps.item.iconSize, CONFIG.info.usps.item.iconColor)} />
-                <span className={cn(CONFIG.info.usps.item.fontSize, CONFIG.info.usps.item.textColor)}>
-                  30 dagen retour
-                </span>
-              </div>
-              <div className={CONFIG.info.usps.item.gap}>
-                <Check className={cn(CONFIG.info.usps.item.iconSize, CONFIG.info.usps.item.iconColor)} />
-                <span className={cn(CONFIG.info.usps.item.fontSize, CONFIG.info.usps.item.textColor)}>
-                  2 jaar garantie
-                </span>
-              </div>
-            </div>
+              {/* Add to Cart Button */}
+              <button
+                onClick={handleAddToCart}
+                disabled={isAdding}
+                className={cn(
+                  CONFIG.info.button.size,
+                  CONFIG.info.button.fontSize,
+                  CONFIG.info.button.fontWeight,
+                  CONFIG.info.button.bgColor,
+                  CONFIG.info.button.hoverBgColor,
+                  CONFIG.info.button.textColor,
+                  CONFIG.info.button.borderRadius,
+                  CONFIG.info.button.transition,
+                  'flex items-center justify-center gap-2 mb-6',
+                  isAdding && 'bg-green-600 hover:bg-green-600'
+                )}
+              >
+                {isAdding ? (
+                  <>
+                    <Check className={CONFIG.info.button.icon} />
+                    Toegevoegd
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className={CONFIG.info.button.icon} />
+                    Winkelwagen
+                  </>
+                )}
+              </button>
 
-            {/* Specificaties Accordion - ONDER USPs */}
-            <div className={CONFIG.features.accordion.container}>
+              {/* USPs */}
+              <div className={CONFIG.info.usps.spacing}>
+                <div className={CONFIG.info.usps.item.gap}>
+                  <Check className={cn(CONFIG.info.usps.item.iconSize, CONFIG.info.usps.item.iconColor)} />
+                  <span className={cn(CONFIG.info.usps.item.fontSize, CONFIG.info.usps.item.textColor)}>
+                    Gratis verzending
+                  </span>
+                </div>
+                <div className={CONFIG.info.usps.item.gap}>
+                  <Check className={cn(CONFIG.info.usps.item.iconSize, CONFIG.info.usps.item.iconColor)} />
+                  <span className={cn(CONFIG.info.usps.item.fontSize, CONFIG.info.usps.item.textColor)}>
+                    30 dagen retour
+                  </span>
+                </div>
+                <div className={CONFIG.info.usps.item.gap}>
+                  <Check className={cn(CONFIG.info.usps.item.iconSize, CONFIG.info.usps.item.iconColor)} />
+                  <span className={cn(CONFIG.info.usps.item.fontSize, CONFIG.info.usps.item.textColor)}>
+                    2 jaar garantie
+                  </span>
+                </div>
+              </div>
+
+              {/* Specificaties Accordion - ONDER USPs */}
+              <div className={cn(CONFIG.features.accordion.container, 'mt-6')}>
               {/* Eerste features altijd zichtbaar */}
               {specifications.slice(0, CONFIG.features.showMore.initialVisible).map((spec, index) => {
                 const Icon = spec.icon;
@@ -614,30 +611,31 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   )}
                 </button>
               )}
-            </div>
-
-            {/* ✅ KAART: Let op bericht in kaart met ronde hoeken */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-              <div className={CONFIG.safetyNotice.header.container}>
-                <AlertTriangle className={cn(
-                  CONFIG.safetyNotice.header.icon.size,
-                  CONFIG.safetyNotice.header.icon.color
-                )} />
-                <h4 className={cn(
-                  CONFIG.safetyNotice.header.title.fontSize,
-                  CONFIG.safetyNotice.header.title.fontWeight,
-                  CONFIG.safetyNotice.header.title.textColor
-                )}>
-                  {PRODUCT_CONTENT.safetyNotice.title}
-                </h4>
               </div>
-              <p className={cn(
-                CONFIG.safetyNotice.content.fontSize,
-                CONFIG.safetyNotice.content.textColor,
-                CONFIG.safetyNotice.content.lineHeight
-              )}>
-                {PRODUCT_CONTENT.safetyNotice.text}
-              </p>
+
+              {/* ✅ ROOD: Let op bericht terug naar rood */}
+              <div className={cn(CONFIG.safetyNotice.container, 'mt-6')}>
+                <div className={CONFIG.safetyNotice.header.container}>
+                  <AlertTriangle className={cn(
+                    CONFIG.safetyNotice.header.icon.size,
+                    CONFIG.safetyNotice.header.icon.color
+                  )} />
+                  <h4 className={cn(
+                    CONFIG.safetyNotice.header.title.fontSize,
+                    CONFIG.safetyNotice.header.title.fontWeight,
+                    CONFIG.safetyNotice.header.title.textColor
+                  )}>
+                    {PRODUCT_CONTENT.safetyNotice.title}
+                  </h4>
+                </div>
+                <p className={cn(
+                  CONFIG.safetyNotice.content.fontSize,
+                  CONFIG.safetyNotice.content.textColor,
+                  CONFIG.safetyNotice.content.lineHeight
+                )}>
+                  {PRODUCT_CONTENT.safetyNotice.text}
+                </p>
+              </div>
             </div>
           </div>
         </div>
