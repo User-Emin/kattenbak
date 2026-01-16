@@ -945,10 +945,58 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
       {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en edge-to-edge - IETS GRIJZER */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
-        <div className="border-t border-gray-300 my-8"></div>
+        <div className="border-t border-gray-300 my-6 sm:my-8"></div>
       </div>
 
-      {/* ✅ EDGE-TO-EDGE SECTIE VERWIJDERD: Tussen tabs en zigzag - zoals gevraagd */}
+      {/* ✅ EDGE-TO-EDGE IMAGE SECTION: Tussen tabs en zigzag - DRY & DYNAMISCH - OPTIMAAL MOBIEL */}
+      <div className={cn(CONFIG.edgeSection.container, 'my-6 sm:my-8 md:my-10 lg:my-12')}>
+        <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')}>
+          <Image
+            src={
+              // ✅ DYNAMISCH: Gebruik eerste echte product image (gefilterd), anders fallback
+              images && images.length > 0
+                ? images[0]
+                : (PRODUCT_CONTENT.edgeImageSection.image || '/placeholder-image.jpg')
+            }
+            alt={product.name}
+            fill
+            className={cn(CONFIG.edgeSection.image.objectFit, CONFIG.edgeSection.image.brightness)}
+            sizes="100vw"
+            priority={false}
+            onError={(e) => {
+              // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
+              const target = e.target as HTMLImageElement;
+              if (target && !target.src.includes('placeholder')) {
+                target.src = '/placeholder-image.jpg';
+              }
+            }}
+          />
+          {/* Overlay met tekst - ✅ DYNAMISCH & MOBIEL OPTIMAAL: Gebruik product.description of fallback */}
+          <div className={CONFIG.edgeSection.overlay.position}>
+            <div className={cn(CONFIG.edgeSection.overlay.content, CONFIG.edgeSection.overlay.textAlign, 'px-4 sm:px-8 lg:px-16')}>
+              <h2 className={cn(
+                'text-xl sm:text-2xl md:text-3xl lg:text-4xl', // ✅ MOBIEL: Kleinere tekst op mobiel
+                CONFIG.edgeSection.title.fontWeight,
+                CONFIG.edgeSection.title.textColor,
+                CONFIG.edgeSection.title.marginBottom
+              )}>
+                {product.name}
+              </h2>
+              <p className={cn(
+                'text-sm sm:text-base md:text-lg', // ✅ MOBIEL: Responsive tekst
+                CONFIG.edgeSection.description.textColor
+              )}>
+                {product.description || product.shortDescription || PRODUCT_CONTENT.mainDescription}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ✅ SCHEIDINGSTREEP: Tussen edge-to-edge en zigzag begin */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
+        <div className="border-t border-gray-300 my-6 sm:my-8"></div>
+      </div>
 
       {/* ✅ PREMIUM KWALITEIT SECTIE VERWIJDERD - Focus op 10.5L afvalbak */}
 

@@ -188,7 +188,7 @@ export const PRODUCT_PAGE_CONFIG = {
   edgeSection: {
     container: 'relative w-full', // ✅ EDGE-TO-EDGE: Volledige breedte
     image: {
-      aspectRatio: 'aspect-[21/6]', // ✅ KORTER: Verticaal korter (was aspect-[21/9])
+      aspectRatio: 'aspect-[21/7] sm:aspect-[21/6]', // ✅ MOBIEL: Hoger op mobiel voor betere leesbaarheid
       objectFit: 'object-cover',
       brightness: 'brightness-75',
     },

@@ -95,13 +95,14 @@ export function ProductComparisonTable() {
   return (
     <div className="w-full bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
       {/* Header */}
-      <div className="bg-gray-50 border-b border-gray-200 px-6 py-4">
-        <h3 className="text-xl font-semibold text-gray-900">Vergelijking</h3>
-        <p className="text-sm text-gray-600 mt-1">Onze automatische kattenbak vs. traditionele kattenbak</p>
+      <div className="bg-gray-50 border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4">
+        <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Vergelijking</h3>
+        <p className="text-xs sm:text-sm text-gray-600 mt-1">Onze automatische kattenbak vs. traditionele kattenbak</p>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
+      {/* ✅ RESPONSIVE TABLE: Desktop tabel, mobiel cards */}
+      {/* Desktop Table */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
@@ -132,7 +133,7 @@ export function ProductComparisonTable() {
                 key={index}
                 className={cn(
                   'transition-colors hover:bg-gray-50',
-                  row.highlight && 'bg-green-50/50' // ✅ HIGHLIGHT: Onze voordelen
+                  row.highlight && 'bg-green-50/50'
                 )}
               >
                 <td className="px-6 py-4 text-sm font-medium text-gray-900">
@@ -154,8 +155,37 @@ export function ProductComparisonTable() {
         </table>
       </div>
 
+      {/* ✅ MOBIEL: Cards layout voor betere leesbaarheid */}
+      <div className="md:hidden divide-y divide-gray-200">
+        {comparisonData.map((row, index) => (
+          <div
+            key={index}
+            className={cn(
+              'p-4 transition-colors',
+              row.highlight && 'bg-green-50/50'
+            )}
+          >
+            <div className="text-xs font-semibold text-gray-900 mb-3">{row.feature}</div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col items-center">
+                <div className="text-xs text-gray-600 mb-1.5">Onze Kattenbak</div>
+                <div className="flex items-center justify-center">
+                  {renderValue(row.ourProduct)}
+                </div>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="text-xs text-gray-600 mb-1.5">Traditionele</div>
+                <div className="flex items-center justify-center">
+                  {renderValue(row.competitor)}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
       {/* Footer Note */}
-      <div className="bg-gray-50 border-t border-gray-200 px-6 py-3">
+      <div className="bg-gray-50 border-t border-gray-200 px-4 sm:px-6 py-2.5 sm:py-3">
         <p className="text-xs text-gray-500 text-center">
           * Vergelijking met traditionele niet-automatische kattenbak. Specificaties kunnen variëren.
         </p>
