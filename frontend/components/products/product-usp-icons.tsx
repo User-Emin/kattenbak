@@ -35,7 +35,7 @@ export function HygieneIcon({ className = 'w-12 h-12' }: IconProps) {
   );
 }
 
-// ✅ APP BEDIENING ICON - Custom vector voor "Smart control"
+// ✅ APP BEDIENING ICON - Exact zoals screenshot: Wit smartphone/tablet icoon
 export function AppIcon({ className = 'w-12 h-12' }: IconProps) {
   return (
     <svg
@@ -44,43 +44,34 @@ export function AppIcon({ className = 'w-12 h-12' }: IconProps) {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      {/* Smartphone outline */}
+      {/* ✅ EXACT SCREENSHOT: Wit smartphone outline met witte border */}
       <rect
-        x="14"
-        y="6"
-        width="20"
-        height="36"
-        rx="3"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        className="text-gray-800"
+        x="12"
+        y="8"
+        width="24"
+        height="40"
+        rx="2"
+        fill="white"
+        stroke="white"
+        strokeWidth="1.5"
       />
-      {/* Screen */}
+      {/* Screen area - donkerder voor contrast */}
       <rect
-        x="17"
-        y="12"
-        width="14"
-        height="20"
+        x="15"
+        y="14"
+        width="18"
+        height="28"
         rx="1"
-        fill="currentColor"
-        className="text-gray-900"
+        fill="#1a1a1a"
       />
-      {/* App icons grid */}
-      <circle cx="21" cy="18" r="1.5" fill="currentColor" className="text-white" />
-      <circle cx="25" cy="18" r="1.5" fill="currentColor" className="text-white" />
-      <circle cx="29" cy="18" r="1.5" fill="currentColor" className="text-white" />
-      <circle cx="21" cy="24" r="1.5" fill="currentColor" className="text-white" />
-      <circle cx="25" cy="24" r="1.5" fill="currentColor" className="text-white" />
-      <circle cx="29" cy="24" r="1.5" fill="currentColor" className="text-white" />
-      {/* Home button */}
+      {/* Home indicator bar - wit */}
       <rect
-        x="22"
-        y="35"
-        width="4"
+        x="20"
+        y="38"
+        width="8"
         height="2"
         rx="1"
-        fill="currentColor"
-        className="text-gray-600"
+        fill="white"
       />
     </svg>
   );

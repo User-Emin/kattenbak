@@ -55,7 +55,7 @@ export const PRODUCT_PAGE_CONFIG = {
       grid: 'grid grid-cols-4 gap-4', // ✅ FALLBACK: Voor mobile (horizontaal)
       aspectRatio: 'aspect-square', // ✅ VIERKANT: Voor verticale slide
       borderRadius: 'rounded-md',
-      activeBorder: 'ring-2 ring-black',
+      activeBorder: 'ring-2 ring-black ring-offset-2', // ✅ FIX: ring-offset-2 voorkomt overlap
       hoverOpacity: 'hover:opacity-75',
       // ✅ VERTICALE SLIDE: Links van hoofdafbeelding
       verticalSlide: {
@@ -63,6 +63,8 @@ export const PRODUCT_PAGE_CONFIG = {
         maxHeight: 'max-h-[600px]', // ✅ DRY: Maximale hoogte
         thumbnailSize: 'w-20 h-20 lg:w-24 lg:h-24', // ✅ DRY: Thumbnail grootte
         transition: 'smooth-scroll', // ✅ SMOOTH: Smooth scroll effect
+        border: 'border-2 border-transparent', // ✅ FIX: Transparante border voorkomt overlap
+        activeBorder: 'ring-2 ring-black ring-offset-2', // ✅ FIX: ring-offset-2 voorkomt overlap
       },
     },
     navigation: {

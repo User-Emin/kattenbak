@@ -297,7 +297,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className={cn('flex flex-col lg:flex-row', CONFIG.layout.gridGap)}>
           {/* Left: Image Gallery - THUMBNAILS LINKS IN VERTICALE SLIDE */}
           <div className={cn('flex flex-row lg:flex-row gap-4', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height)}>
-            {/* ✅ THUMBNAILS LINKS: Verticale slide */}
+            {/* ✅ THUMBNAILS LINKS: Verticale slide - BORDER FIX */}
             {images.length > 1 && (
               <div className={cn(
                 'flex flex-col gap-3 overflow-y-auto',
@@ -315,7 +315,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       'relative overflow-hidden bg-gray-100 flex-shrink-0',
                       'transition-all',
                       CONFIG.gallery.thumbnails.verticalSlide.transition,
-                      index === selectedImageIndex && CONFIG.gallery.thumbnails.activeBorder
+                      CONFIG.gallery.thumbnails.verticalSlide.border, // ✅ FIX: Transparante border
+                      index === selectedImageIndex && CONFIG.gallery.thumbnails.verticalSlide.activeBorder // ✅ FIX: Active border met offset
                     )}
                   >
                     <Image
@@ -687,6 +688,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <li>• 1x Afvalzak (starter)</li>
                 <li>• 1x Borstel (voor onderhoud)</li>
                 <li>• 1x Geurfilter</li>
+                <li>• 1x Inloopmat</li> {/* ✅ TOEGEVOEGD: Inloopmat */}
                 <li>• 1x Handleiding (NL/EN)</li>
               </ul>
               <p className="mt-4 text-sm text-gray-600 italic">
