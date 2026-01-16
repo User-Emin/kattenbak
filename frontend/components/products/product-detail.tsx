@@ -389,6 +389,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 className="object-cover" // ✅ COVER: Productafbeelding past exact aan veld (geen ruimte)
                 priority
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 58vw, 58vw" // ✅ RESPONSIVE: Optimale image sizes
+                unoptimized={currentImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (served by backend)
               />
               
               {/* Navigation Arrows */}
