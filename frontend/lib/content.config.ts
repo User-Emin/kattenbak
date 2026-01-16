@@ -209,11 +209,11 @@ export const PRODUCT_CONTENT = {
   // Aantal specs dat standaard zichtbaar is
   initialVisibleSpecs: 4,
 
-  // Feature sections (ZIGZAG) - ✅ VERKORT: Behoud doel, korter voor betere UX
+  // Feature sections (ZIGZAG) - ✅ SAMENGEVAT: Behoud doel, korter voor betere UX
   features: [
     {
       title: 'Hoogwaardige ABS Materialen',
-      description: 'Duurzaam ABS-materiaal, krasbestendig en eenvoudig te reinigen. Geurwerend en hypoallergeen.',
+      description: 'Duurzaam, krasbestendig en eenvoudig te reinigen. Geurwerend en hypoallergeen.',
       items: [
         'Duurzaam ABS kunststof',
         'Kras- en slijtvast',
@@ -223,7 +223,7 @@ export const PRODUCT_CONTENT = {
     },
     {
       title: 'Dubbele Veiligheidssensoren',
-      description: 'IR- en gewichtssensoren stoppen automatisch wanneer uw kat de bak betreedt. Getest op 10.000+ cycli.',
+      description: 'IR- en gewichtssensoren stoppen automatisch bij beweging. Getest op 10.000+ cycli.',
       items: [
         'IR bewegingssensor',
         'Gewichtdetectie technologie',

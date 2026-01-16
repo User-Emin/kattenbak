@@ -93,7 +93,7 @@ export const PRODUCT_PAGE_CONFIG = {
     },
     price: {
       current: {
-        fontSize: 'text-4xl',
+        fontSize: 'text-3xl', // ✅ KLEINER: Iets kleiner (text-3xl ipv text-4xl)
         fontWeight: 'font-light',
         textColor: 'text-gray-900',
       },
@@ -223,7 +223,7 @@ export const PRODUCT_PAGE_CONFIG = {
       title: {
         fontSize: 'text-2xl lg:text-3xl',
         fontWeight: 'font-light', // ✅ DUNNER (was semibold)
-        textColor: 'text-black', // ✅ ZWARTER: Volledig zwart voor titels zoals "10.5L Capaciteit"
+        textColor: 'text-black', // ✅ ZWARTER: Volledig zwart voor zigzag titles
       },
       description: {
         fontSize: 'text-base',
