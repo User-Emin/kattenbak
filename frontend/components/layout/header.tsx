@@ -156,8 +156,8 @@ export function Header() {
             className="fixed right-0 w-full max-w-md bg-white shadow-2xl animate-slide-in-right flex flex-col"
             style={{
               zIndex: 130, // ✅ ONDER banner (z-[160]) en navbar (z-[165]) - geen overlap
-              top: DESIGN_SYSTEM.layout.uspBanner.height, // ✅ TOP: Start onder banner (geen overlap)
-              height: `calc(100vh - ${DESIGN_SYSTEM.layout.uspBanner.height})`, // ✅ HEIGHT: Volledige hoogte minus banner
+              top: DESIGN_SYSTEM.layout.header.totalHeight, // ✅ DRY: Start onder banner + navbar (geen overlap)
+              height: `calc(100vh - ${DESIGN_SYSTEM.layout.header.totalHeight})`, // ✅ DRY: Volledige hoogte minus banner + navbar
             }}
           >
             <div 

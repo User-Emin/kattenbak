@@ -206,6 +206,11 @@ export const DESIGN_SYSTEM = {
       zIndex: '999',         // ✅ ONDER USP banner
     },
     
+    // ✅ DRY: Totale header hoogte (banner + navbar) voor sidebar positioning
+    header: {
+      totalHeight: 'calc(40px + 72px)', // ✅ DRY: uspBanner.height + navbar.height (geen hardcode)
+    },
+    
     // Feature section (edge-to-edge afbeelding) - ✅ SMOOTH PASSEND: Legale foto onder hero
     featureSection: {
       minHeight: '400px',

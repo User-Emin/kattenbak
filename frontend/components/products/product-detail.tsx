@@ -929,24 +929,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* Related Products (placeholder) */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.sectionSpacing, 'pb-16')}>
-        <h2 className={cn(
-          CONFIG.relatedProducts.title.fontSize,
-          CONFIG.relatedProducts.title.fontWeight,
-          CONFIG.relatedProducts.title.textColor,
-          CONFIG.relatedProducts.title.marginBottom,
-          CONFIG.relatedProducts.title.textAlign
-        )}>
-          Gerelateerde Producten
-        </h2>
-        <div className={CONFIG.relatedProducts.grid}>
-          {/* Placeholder - in productie zou dit uit API komen */}
-          <p className="col-span-full text-center text-gray-600">
-            Gerelateerde producten worden binnenkort geladen.
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
