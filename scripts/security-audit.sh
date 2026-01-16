@@ -74,13 +74,15 @@ else
   AUDIT_PASSED=false
 fi
 
-# Check for hardcoded secrets (exclude validation checks, test files, and comments)
+# Check for hardcoded secrets (exclude validation checks, test files, regex patterns, and comments)
 SECRET_MATCHES=$(grep -r "password.*=.*['\"].*['\"]\|api.*key.*=.*['\"].*['\"]\|secret.*=.*['\"].*['\"]" backend/src --include="*.ts" --include="*.js" 2>/dev/null | \
   grep -v "process.env" | \
   grep -v "//.*test\|//.*example\|test.*password\|mock.*secret\|dummy.*key" | \
   grep -v "\.test\.\|\.spec\." | \
   grep -v "password.*===.*['\"]\|password.*!==.*['\"]\|password.*length\|password.*trim\|password.*hash" | \
-  grep -v "const.*password.*=.*useState\|setPassword\|getPassword" || true)
+  grep -v "const.*password.*=.*useState\|setPassword\|getPassword" | \
+  grep -v "pattern.*api\|pattern.*password\|Generic API Key\|/api\|/password" | \
+  grep -v "secret.*trim.*===.*['\"]\|secret.*trim.*!==.*['\"]" || true)
 
 if [ -n "$SECRET_MATCHES" ]; then
   echo "  ⚠️  Potential hardcoded secrets found"
