@@ -74,6 +74,24 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' })); // WATERDICHT FIX: 413 error - increased for image uploads
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
+// ✅ SECURITY: Serve static uploads - images and videos
+// Security: Only serve files from trusted upload directory, no path traversal
+app.use('/uploads', express.static('/var/www/uploads', {
+  // ✅ SECURITY: Set security headers for static files
+  setHeaders: (res, path) => {
+    // ✅ SECURITY: Prevent MIME type sniffing
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    // ✅ SECURITY: Cache control for immutable files (UUID filenames)
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    // ✅ SECURITY: Prevent XSS via images
+    res.setHeader('X-Frame-Options', 'DENY');
+  },
+  // ✅ SECURITY: Only serve files, not directory listings
+  index: false,
+  // ✅ SECURITY: Don't expose dotfiles
+  dotfiles: 'ignore'
+}));
+
 // ENV config
 const ENV = {
   NODE_ENV: process.env.NODE_ENV || 'production',
