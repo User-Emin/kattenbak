@@ -10,6 +10,7 @@ import { formatPrice } from "@/lib/utils";
 import { PRODUCT_PAGE_CONFIG, cn } from "@/lib/product-page-config";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { PRODUCT_CONTENT } from "@/lib/content.config";
+import { PRODUCT_USP_ICONS } from "@/components/products/product-usp-icons";
 import { PremiumQualitySection } from "@/components/shared/premium-quality-section";
 import type { Product } from "@/types/product";
 import { 
@@ -452,26 +453,33 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* USPs */}
+              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar met custom vector icons */}
               <div className={CONFIG.info.usps.spacing}>
-                <div className={CONFIG.info.usps.item.gap}>
-                  <Check className={cn(CONFIG.info.usps.item.iconSize, CONFIG.info.usps.item.iconColor)} />
-                  <span className={cn(CONFIG.info.usps.item.fontSize, CONFIG.info.usps.item.textColor)}>
-                    Gratis verzending
-                  </span>
-                </div>
-                <div className={CONFIG.info.usps.item.gap}>
-                  <Check className={cn(CONFIG.info.usps.item.iconSize, CONFIG.info.usps.item.iconColor)} />
-                  <span className={cn(CONFIG.info.usps.item.fontSize, CONFIG.info.usps.item.textColor)}>
-                    30 dagen retour
-                  </span>
-                </div>
-                <div className={CONFIG.info.usps.item.gap}>
-                  <Check className={cn(CONFIG.info.usps.item.iconSize, CONFIG.info.usps.item.iconColor)} />
-                  <span className={cn(CONFIG.info.usps.item.fontSize, CONFIG.info.usps.item.textColor)}>
-                    2 jaar garantie
-                  </span>
-                </div>
+                {PRODUCT_CONTENT.productUsps.map((usp, index) => {
+                  const IconComponent = PRODUCT_USP_ICONS[usp.icon as keyof typeof PRODUCT_USP_ICONS];
+                  if (!IconComponent) return null;
+                  
+                  return (
+                    <div key={index} className={CONFIG.info.usps.item.container}>
+                      <div className={CONFIG.info.usps.item.iconContainer}>
+                        <IconComponent className={CONFIG.info.usps.item.iconSize} />
+                      </div>
+                      <h4 className={cn(
+                        CONFIG.info.usps.item.title.fontSize,
+                        CONFIG.info.usps.item.title.textColor,
+                        CONFIG.info.usps.item.title.marginBottom
+                      )}>
+                        {usp.title}
+                      </h4>
+                      <p className={cn(
+                        CONFIG.info.usps.item.description.fontSize,
+                        CONFIG.info.usps.item.description.textColor
+                      )}>
+                        {usp.description}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Specificaties Accordion - ONDER USPs */}
@@ -491,14 +499,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       className={CONFIG.features.accordion.button.container}
                     >
                       <div className="flex items-center flex-1">
-                        <div className={CONFIG.features.accordion.button.icon.container}>
-                          <Icon 
-                            className={cn(
-                              CONFIG.features.accordion.button.icon.size,
-                              CONFIG.features.accordion.button.icon.color
-                            )}
-                          />
-                        </div>
+                        {/* ✅ ICONS WEGGEHAALD: Geen icon container meer */}
                         <span className={cn(
                           CONFIG.features.accordion.button.title.fontSize,
                           CONFIG.features.accordion.button.title.fontWeight,
@@ -548,14 +549,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       className={CONFIG.features.accordion.button.container}
                     >
                       <div className="flex items-center flex-1">
-                        <div className={CONFIG.features.accordion.button.icon.container}>
-                          <Icon 
-                            className={cn(
-                              CONFIG.features.accordion.button.icon.size,
-                              CONFIG.features.accordion.button.icon.color
-                            )}
-                          />
-                        </div>
+                        {/* ✅ ICONS WEGGEHAALD: Geen icon container meer */}
                         <span className={cn(
                           CONFIG.features.accordion.button.title.fontSize,
                           CONFIG.features.accordion.button.title.fontWeight,

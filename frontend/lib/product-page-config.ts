@@ -131,13 +131,20 @@ export const PRODUCT_PAGE_CONFIG = {
       icon: 'w-6 h-6 md:w-6 md:h-6', // ✅ DRUK MIJ: Groter icon (w-6 h-6 ipv w-5 h-5) - meer prominent
     },
     usps: {
-      spacing: 'flex flex-col gap-2 mt-6',
+      spacing: 'grid grid-cols-3 gap-4 mt-6', // ✅ 3 NAAST ELKAAR: Grid layout
       item: {
-        fontSize: 'text-sm',
-        textColor: 'text-gray-700',
-        iconColor: 'text-green-600',
-        iconSize: 'w-5 h-5',
-        gap: 'flex items-center gap-2',
+        container: 'flex flex-col items-center text-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors', // ✅ SMOOTH: Witte kaart met hover
+        iconContainer: 'mb-3 flex items-center justify-center', // ✅ CUSTOM: Icon container
+        iconSize: 'w-12 h-12', // ✅ GROTER: Custom vector icons
+        title: {
+          fontSize: 'text-sm font-semibold',
+          textColor: 'text-gray-900',
+          marginBottom: 'mb-1',
+        },
+        description: {
+          fontSize: 'text-xs',
+          textColor: 'text-gray-600',
+        },
       },
     },
   },

@@ -238,6 +238,25 @@ export const PRODUCT_CONTENT = {
     title: 'Let op',
     text: 'Niet geschikt voor kittens onder 6 maanden. Geschikt voor katten van 1,5KG tot 12,5KG.',
   },
+  
+  // Product-specifieke USPs - ✅ CUSTOM: 3 naast elkaar onder winkelwagenbutton
+  productUsps: [
+    {
+      title: 'Hygiene',
+      description: 'Nooit meer scheppen',
+      icon: 'hygiene', // ✅ CUSTOM: Custom SVG vector icon
+    },
+    {
+      title: 'App Bediening',
+      description: 'Smart control',
+      icon: 'app', // ✅ CUSTOM: Custom SVG vector icon
+    },
+    {
+      title: 'Automatisch',
+      description: 'Zelfreinigend',
+      icon: 'automatic', // ✅ CUSTOM: Custom SVG vector icon
+    },
+  ],
 } as const;
 
 // ============================================
