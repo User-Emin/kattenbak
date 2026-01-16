@@ -513,16 +513,33 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar ONDER WINKELWAGEN MET VIJKJES - DRY & SMOOTH */}
+              {/* ✅ BEZORGTIJD - Passend onder winkelwagen button */}
+              <div className="flex items-center justify-center gap-2 mt-3 sm:mt-4 mb-2 sm:mb-3">
+                <div className="flex items-center gap-1.5 text-sm sm:text-base text-gray-700">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="font-medium">Bezorgtijd: <span className="text-green-600">1-2 werkdagen</span></span>
+                </div>
+              </div>
+
+              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar ONDER WINKELWAGEN MET AFBEELDINGEN - DRY & SMOOTH */}
               <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-4 mt-4 sm:mt-6 md:mt-6 lg:mt-6 mb-4 sm:mb-6 md:mb-6 lg:mb-6"> {/* ✅ SYMMETRISCH: Gelijk spacing */}
                 {PRODUCT_CONTENT.productUsps.map((usp, index) => (
                   <div key={index} className="flex flex-col items-center text-center">
-                    {/* ✅ VIJKJE: Smooth, direct op witte achtergrond */}
-                    <div className="relative mb-2 sm:mb-3 flex items-center justify-center">
-                      <div className="bg-green-50 border border-green-200 rounded-full p-1.5 sm:p-2 transition-all duration-300 hover:scale-110">
-                        <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                    {/* ✅ AFBEELDING: Smooth, direct op witte achtergrond */}
+                    {usp.image && (
+                      <div className="relative mb-2 sm:mb-3" style={{ width: '64px', height: '64px' }}>
+                        <Image
+                          src={usp.image}
+                          alt={usp.title}
+                          width={64}
+                          height={64}
+                          className="object-contain transition-all duration-300 hover:scale-110"
+                          style={{ background: '#ffffff' }}
+                        />
                       </div>
-                    </div>
+                    )}
                     <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-1">
                       {usp.title}
                     </h4>
