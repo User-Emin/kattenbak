@@ -1038,9 +1038,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               )}>
                 {product.name}
               </h2>
+              {/* ✅ MOBIEL: Alleen productnaam, geen beschrijving op mobiel */}
               <p className={cn(
                 'text-sm sm:text-base md:text-lg', // ✅ MOBIEL: Responsive tekst
-                CONFIG.edgeSection.description.textColor
+                CONFIG.edgeSection.description.textColor,
+                'hidden sm:block' // ✅ MOBIEL: Verberg beschrijving op mobiel
               )}>
                 {product.description || product.shortDescription || PRODUCT_CONTENT.mainDescription}
               </p>
@@ -1109,25 +1111,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   )}>
                     {feature.description}
                   </p>
-                  <ul className={CONFIG.featureSection.text.list.spacing}>
-                    {feature.items.map((item, itemIndex) => (
-                      <li key={itemIndex} className={CONFIG.featureSection.text.list.item.gap}>
-                        {/* ✅ SYMBOLEN: Direct in witte achtergrond met lichte border */}
-                        <div className={CONFIG.featureSection.text.list.item.iconContainer}>
-                          <Check className={cn(
-                            CONFIG.featureSection.text.list.item.iconSize,
-                            CONFIG.featureSection.text.list.item.iconColor
-                          )} />
-                        </div>
-                        <span className={cn(
-                          CONFIG.featureSection.text.list.item.fontSize,
-                          CONFIG.featureSection.text.list.item.textColor
-                        )}>
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving */}
                 </div>
               </div>
             );

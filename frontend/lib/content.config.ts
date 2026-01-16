@@ -209,37 +209,22 @@ export const PRODUCT_CONTENT = {
   // Aantal specs dat standaard zichtbaar is
   initialVisibleSpecs: 4,
 
-  // Feature sections (ZIGZAG) - ✅ 10.5L AFVALBAK: Eerste zigzag met foto uit downloads
+  // Feature sections (ZIGZAG) - ✅ ALLEEN TITEL EN BESCHRIJVING: Geen bullet points
   features: [
     {
       title: '10.5L Afvalbak',
       description: 'Extra grote afvalbak capaciteit. De afvalzak moet er overheen geplaatst worden voor optimale werking.',
-      items: [
-        '10.5L XL capaciteit',
-        '17% meer dan concurrentie',
-        'Voor 1 kat: 7-10 dagen',
-        'Meerdere katten: 3-5 dagen',
-      ],
+      // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
     {
       title: 'Dubbele Veiligheidssensoren',
       description: 'IR- en gewichtssensoren stoppen automatisch bij beweging. Getest op 10.000+ cycli. Ultieme veiligheid voor jouw kat.',
-      items: [
-        'IR bewegingssensor',
-        'Gewichtdetectie technologie',
-        'Automatische pauze functie',
-        '10.000+ cycli getest',
-      ],
+      // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
     {
       title: 'Geurblokje, Kwats & Afvalzak',
       description: 'Geen geurblokje nodig dankzij luchtdichte afvalzak. Geen kwats op de vloer. Eenvoudig afvalzak vervangen.',
-      items: [
-        'Geen geurblokje nodig',
-        'Geen kwats op vloer',
-        'Luchtdichte afvalzak',
-        'Eenvoudig te vervangen',
-      ],
+      // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
   ],
 
