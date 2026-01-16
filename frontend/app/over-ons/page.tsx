@@ -1,3 +1,5 @@
+import { DESIGN_SYSTEM } from '@/lib/design-system';
+
 export default function OverOnsPage() {
   return (
     <div className="min-h-screen bg-white py-20">
