@@ -24,8 +24,34 @@ const prisma = new PrismaClient();
 const { createMollieClient } = require('@mollie/api-client');
 const mollieClient = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY || '' });
 
-// Middleware
-app.use(cors({ origin: '*', credentials: true }));
+// ✅ SECURITY: CORS configuratie - specifieke origins voor credentials
+const allowedOrigins = [
+  'http://localhost:3100',
+  'http://localhost:3102',
+  'https://catsupply.nl',
+  'https://admin.catsupply.nl',
+  process.env.FRONTEND_URL,
+  process.env.ADMIN_URL,
+].filter(Boolean) as string[];
+
+app.use(cors({ 
+  origin: (origin, callback) => {
+    // ✅ SECURITY: Allow requests with no origin (mobile apps, Postman, etc.) in development
+    if (!origin && process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+    // ✅ SECURITY: Check if origin is allowed
+    if (origin && allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+}));
 app.use(express.json({ limit: '50mb' })); // WATERDICHT FIX: 413 error - increased for image uploads
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
@@ -492,8 +518,8 @@ app.post('/api/v1/webhooks/mollie', async (req: Request, res: Response) => {
 // ADMIN ENDPOINTS - CRUD OPERATIONS
 // =============================================================================
 
-// ADMIN: Create product
-app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
+// ADMIN: Create product - ✅ SECURITY: JWT auth required
+app.post('/api/v1/admin/products', authMiddleware, async (req: Request, res: Response) => {
   try {
     const productData = req.body;
 
@@ -527,8 +553,8 @@ app.post('/api/v1/admin/products', async (req: Request, res: Response) => {
   }
 });
 
-// ADMIN: Update product
-app.put('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
+// ADMIN: Update product - ✅ SECURITY: JWT auth required
+app.put('/api/v1/admin/products/:id', authMiddleware, async (req: Request, res: Response) => {
   try {
     // Remove read-only fields that should not be updated
     const { 
@@ -596,8 +622,8 @@ app.delete('/api/v1/admin/products/:id', async (req: Request, res: Response) => 
   }
 });
 
-// ADMIN: Get all products (with filters)
-app.get('/api/v1/admin/products', async (req: Request, res: Response) => {
+// ADMIN: Get all products (with filters) - ✅ SECURITY: JWT auth required
+app.get('/api/v1/admin/products', authMiddleware, async (req: Request, res: Response) => {
   try {
     const products = await prisma.product.findMany({
       orderBy: { createdAt: 'desc' },
@@ -613,15 +639,61 @@ app.get('/api/v1/admin/products', async (req: Request, res: Response) => {
   }
 });
 
-// ADMIN: Get single product
-app.get('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
+// ADMIN: Get single product - ✅ SECURITY: JWT auth required
+app.get('/api/v1/admin/products/:id', authMiddleware, async (req: Request, res: Response) => {
   try {
+    // ✅ FIX: Select only fields that exist in database (zorg dat data niet verloren gaat)
     const product = await prisma.product.findUnique({
       where: { id: req.params.id },
-      include: { 
-        category: true,
-        variants: true, // ✅ FIX: Include variants for admin editing
-      },
+      select: {
+        id: true,
+        sku: true,
+        name: true,
+        slug: true,
+        description: true,
+        shortDescription: true,
+        price: true,
+        compareAtPrice: true,
+        costPrice: true,
+        stock: true,
+        lowStockThreshold: true,
+        trackInventory: true,
+        weight: true,
+        dimensions: true,
+        images: true,
+        metaTitle: true,
+        metaDescription: true,
+        isActive: true,
+        isFeatured: true,
+        createdAt: true,
+        updatedAt: true,
+        publishedAt: true,
+        categoryId: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          }
+        },
+        variants: {
+          select: {
+            id: true,
+            productId: true,
+            name: true,
+            // ✅ FIX: Skip colorName/colorHex if columns don't exist
+            // colorName: true,
+            // colorHex: true,
+            priceAdjustment: true,
+            sku: true,
+            stock: true,
+            images: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true,
+          }
+        }
+      }
     });
 
     if (!product) {
@@ -629,9 +701,21 @@ app.get('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
     }
 
     // ✅ FIX: Sanitize product including variants
-    res.json(success(sanitizeProduct(product)));
+    try {
+      const sanitized = sanitizeProduct(product);
+      res.json(success(sanitized));
+    } catch (sanitizeError: any) {
+      // ✅ FIX: Return product anyway (zorg dat data niet verloren gaat)
+      console.error('Product sanitization error:', sanitizeError?.message || 'Unknown error');
+      res.json(success(product));
+    }
   } catch (err: any) {
-    console.error('Admin product error:', err.message);
+    // ✅ SECURITY: Log error but don't leak details
+    console.error('Admin product error:', {
+      message: err?.message || 'Unknown error',
+      code: err?.code,
+      // ✅ SECURITY: No stack traces, API keys, or sensitive data in logs
+    });
     res.status(500).json(error('Could not fetch product'));
   }
 });
@@ -803,6 +887,40 @@ app.get('/api/v1/admin/contact', async (req: Request, res: Response) => {
 // Import auth utilities
 const bcrypt = require('bcryptjs'); // ✅ FIX: Use bcryptjs (installed package)
 const jwt = require('jsonwebtoken');
+
+// ✅ SECURITY: JWT Authentication Middleware voor admin endpoints
+const authMiddleware = async (req: Request, res: Response, next: any) => {
+  try {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({
+        success: false,
+        error: 'Geen authenticatie token gevonden'
+      });
+    }
+
+    const token = authHeader.substring(7);
+    const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+    
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      (req as any).user = decoded;
+      next();
+    } catch (jwtError: any) {
+      return res.status(401).json({
+        success: false,
+        error: 'Ongeldige of verlopen token'
+      });
+    }
+  } catch (error: any) {
+    // ✅ SECURITY: Generic error (geen gevoelige data)
+    return res.status(401).json({
+      success: false,
+      error: 'Authenticatie mislukt'
+    });
+  }
+};
 
 // Admin login endpoint
 app.post('/api/v1/admin/auth/login', async (req: Request, res: Response) => {
