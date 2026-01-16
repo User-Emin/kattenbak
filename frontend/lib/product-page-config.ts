@@ -124,7 +124,7 @@ export const PRODUCT_PAGE_CONFIG = {
       bgColor: 'bg-blue-600',
       hoverBgColor: 'hover:bg-blue-700',
       textColor: 'text-white',
-      borderRadius: 'rounded-2xl', // ✅ RONDER: Veel rondere hoeken (rounded-2xl ipv rounded-lg)
+      borderRadius: 'rounded-xl', // ✅ EXACT ZELFDE: Zoals Let op kaart (rounded-xl)
       transition: 'transition-all duration-200 hover:scale-[1.02]', // ✅ DRUK MIJ: Scale effect voor "druk mij" vibe
       icon: 'w-6 h-6 md:w-6 md:h-6', // ✅ DRUK MIJ: Groter icon (w-6 h-6 ipv w-5 h-5) - meer prominent
     },

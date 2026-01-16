@@ -387,8 +387,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
           {/* Right: Product Info - SMALLER */}
           <div className={cn('flex flex-col', CONFIG.layout.productGrid.infoWidth)}>
-            {/* ✅ 1 KAART: Alles in 1 kaart met shadow */}
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-200">
+            {/* ✅ 1 KAART: Alles in 1 kaart met shadow - EXACT ZELFDE HOEKEN als Let op kaart */}
+            <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
               {/* Productnaam */}
               <h1 className={cn(
                 CONFIG.info.title.fontSize,
