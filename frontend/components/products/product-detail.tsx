@@ -259,7 +259,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   }));
 
   return (
-    <div className="min-h-screen bg-white"> {/* ✅ ECHT WIT: Volledig witte achtergrond (geen grijs) */}
+    <div className="min-h-screen bg-gray-50"> {/* ✅ GRIJZER: Lichte grijze achtergrond voor smoothheid */}
       {/* Main Product Section - Breadcrumb binnen grid */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.topMargin, CONFIG.layout.sectionSpacing)}>
         {/* Breadcrumb - Bovenaan grid container */}
@@ -396,6 +396,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           <div className={cn('flex flex-col', CONFIG.layout.productGrid.infoWidth)}>
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
+              {/* ✅ SCHEIDINGSTREEP: Tussen breadcrumb en productnaam */}
+              <div className="border-t border-gray-200 pt-4 mb-4"></div>
+
               {/* Productnaam */}
               <h1 className={cn(
                 CONFIG.info.title.fontSize,
@@ -405,6 +408,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               )}>
                 {product.name}
               </h1>
+
+              {/* ✅ SCHEIDINGSTREEP: Tussen naam en prijs */}
+              <div className="border-t border-gray-200 my-4"></div>
 
               {/* Price */}
               <div className={CONFIG.info.price.spacing}>
@@ -416,6 +422,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   {formatPrice(product.price)}
                 </span>
               </div>
+
+              {/* ✅ SCHEIDINGSTREEP: Tussen prijs en beschrijving */}
+              <div className="border-t border-gray-200 my-4"></div>
 
               {/* Short Description */}
               {product.shortDescription && (
@@ -861,6 +870,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             </div>
           )}
         </div>
+      </div>
+
+      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en zigzag begin - SMOOTH */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
+        <div className="border-t border-gray-200 my-8"></div>
       </div>
 
       {/* ✅ PREMIUM KWALITEIT SECTIE VERWIJDERD - Focus op 10.5L afvalbak */}
