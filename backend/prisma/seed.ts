@@ -20,6 +20,16 @@ async function main() {
   
   // 2. Create Main Product
   console.log('\n2️⃣ Creating product...');
+  // ✅ FIX: Check if product already exists (zorg dat data niet verloren gaat)
+  const existingProduct = await prisma.product.findUnique({
+    where: { slug: 'automatische-kattenbak-premium' }
+  });
+  
+  if (existingProduct) {
+    console.log(`✅ Product already exists: ${existingProduct.name}`);
+    return;
+  }
+  
   const product = await prisma.product.create({
     data: {
       sku: 'KB-AUTO-001',

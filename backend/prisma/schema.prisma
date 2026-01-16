@@ -189,9 +189,9 @@ model Product {
   // Images (array of URLs)
   images Json @default("[]")
 
-  // Video URLs (supports up to 50MB)
-  heroVideoUrl String? @map("hero_video_url") // 10-20MB, homepage hero background
-  videoUrl     String? @map("video_url") // 20-50MB, product demo + "Zie Het in Actie"
+  // Video URLs (supports up to 50MB) - ✅ OPTIONAL: Only if columns exist in database
+  // heroVideoUrl String? @map("hero_video_url") // 10-20MB, homepage hero background
+  // videoUrl     String? @map("video_url") // 20-50MB, product demo + "Zie Het in Actie"
 
   // SEO
   metaTitle       String? @map("meta_title")
