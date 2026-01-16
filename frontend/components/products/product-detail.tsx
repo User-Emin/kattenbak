@@ -294,9 +294,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           </ol>
         </nav>
         
-        <div className={cn('flex flex-col lg:flex-row', CONFIG.layout.gridGap)}>
+        <div className={cn('flex flex-col lg:flex-row', CONFIG.layout.gridGap, 'items-start')}> {/* ✅ ALIGN TOP: Afbeelding en naam beginnen opzelfde hoogte */}
           {/* Left: Image Gallery - THUMBNAILS LINKS IN VERTICALE SLIDE */}
-          <div className={cn('flex flex-row lg:flex-row gap-4', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height)}>
+          <div className={cn('flex flex-row lg:flex-row gap-4', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height, 'self-start')}> {/* ✅ SELF-START: Afbeelding bovenaan */}
             {/* ✅ THUMBNAILS LINKS: Verticale slide - BORDER FIX */}
             {images.length > 1 && (
               <div className={cn(
@@ -392,11 +392,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             </div>
           </div>
 
-          {/* Right: Product Info - GEEN EXTRA KAART */}
-          <div className={cn('flex flex-col', CONFIG.layout.productGrid.infoWidth)}>
+          {/* Right: Product Info - GEEN EXTRA KAART - ✅ ALIGN TOP: Begint opzelfde hoogte als afbeelding */}
+          <div className={cn('flex flex-col', CONFIG.layout.productGrid.infoWidth, 'self-start')}> {/* ✅ SELF-START: Product info bovenaan */}
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
-              {/* Productnaam */}
+              {/* Productnaam - ✅ BOVENAAN: Gelijk met afbeelding */}
               <h1 className={cn(
                 CONFIG.info.title.fontSize,
                 CONFIG.info.title.fontWeight,
@@ -465,7 +465,32 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ PRODUCT-SPECIFIEKE USPs VERWIJDERD - Geen grijze kaarten meer */}
+              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar SMOOTH (geen grijze kaarten) */}
+              <div className="grid grid-cols-3 gap-4 mt-6">
+                {PRODUCT_CONTENT.productUsps.map((usp, index) => (
+                  <div key={index} className="flex flex-col items-center text-center">
+                    {/* ✅ AFBEELDING: Smooth, direct op witte achtergrond */}
+                    {usp.image && (
+                      <div className="relative mb-3" style={{ width: '64px', height: '64px' }}>
+                        <Image
+                          src={usp.image}
+                          alt={usp.title}
+                          width={64}
+                          height={64}
+                          className="object-contain transition-all duration-300 hover:scale-110"
+                          style={{ background: '#ffffff' }}
+                        />
+                      </div>
+                    )}
+                    <h4 className="text-xs font-semibold text-gray-900 mb-1">
+                      {usp.title}
+                    </h4>
+                    <p className="text-[10px] text-gray-600">
+                      {usp.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
 
               {/* Specificaties Accordion - ONDER USPs */}
               <div className={cn(CONFIG.features.accordion.container, 'mt-6')}>
