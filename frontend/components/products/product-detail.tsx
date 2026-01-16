@@ -297,8 +297,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className={cn('flex flex-col lg:flex-row', CONFIG.layout.gridGap, 'items-start', 'mt-6')}> {/* ✅ RUIMTE: mt-6 tussen breadcrumb en content */}
           {/* Left: Image Gallery - ✅ VERTICAAL BREDER, THUMBNAILS ONDER MET RUIMTE */}
           <div className={cn('flex flex-col', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height, 'self-start', 'gap-3')}> {/* ✅ RUIMTE: gap-3 tussen afbeelding en thumbnails */}
-            {/* Main Image - ✅ VERTICAAL BREDER: Meer hoogte */}
-            <div className={cn('relative', 'aspect-[4/5]', CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden', 'w-full')}> {/* ✅ VERTICAAL BREDER: aspect-[4/5] */}
+            {/* Main Image - ✅ HORIZONTAAL LANGER: Horizontale rechthoek */}
+            <div className={cn('relative', 'aspect-[3/2]', CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden', 'w-full')}> {/* ✅ HORIZONTAAL: aspect-[3/2] - horizontaal langer, verticaal korter */}
               <Image
                 src={currentImage}
                 alt={product.name}

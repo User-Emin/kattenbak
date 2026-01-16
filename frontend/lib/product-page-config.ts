@@ -48,7 +48,7 @@ export const PRODUCT_PAGE_CONFIG = {
       height: 'lg:h-fit',
     },
     mainImage: {
-      aspectRatio: 'aspect-[5/3]', // ✅ BREDER: Horizontaal breder (5/3 ipv 4/3) - meer ruimte voor afbeeldingen
+      aspectRatio: 'aspect-[3/2]', // ✅ HORIZONTAAL: Horizontale rechthoek (3/2) - horizontaal langer, verticaal korter
       borderRadius: 'rounded-lg',
       bgColor: 'bg-white', // ✅ WIT: Witte achtergrond (geen grijs)
     },
