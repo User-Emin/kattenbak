@@ -186,7 +186,7 @@ export const PRODUCT_CONTENT = {
     {
       icon: 'maximize',
       title: 'Compact Footprint, Groot Interieur',
-      description: 'Klein aan de buitenkant, ruim van binnen. Optimaal ruimtegebruik voor je huis.',
+      description: 'Klein aan de buitenkant, optimaal voor je huis.',
       hasFeature: true,
       competitors: [false, false],
     },
