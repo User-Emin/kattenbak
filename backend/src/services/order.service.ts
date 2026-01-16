@@ -137,14 +137,17 @@ export class OrderService {
         shippingAddress: {
           create: {
             ...data.shippingAddress,
-            userId: null, // Guest order
+            // ✅ FIX: Don't include userId if null (database constraint)
+            // userId is optional in schema but may be required in DB migration
+            ...(data.shippingAddress.userId ? { userId: data.shippingAddress.userId } : {}),
           },
         },
         billingAddress: data.billingAddress
           ? {
               create: {
                 ...data.billingAddress,
-                userId: null,
+                // ✅ FIX: Don't include userId if null (database constraint)
+                ...(data.billingAddress.userId ? { userId: data.billingAddress.userId } : {}),
               },
             }
           : undefined,
