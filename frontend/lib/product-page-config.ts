@@ -118,15 +118,15 @@ export const PRODUCT_PAGE_CONFIG = {
       marginBottom: 'mb-6',
     },
     button: {
-      size: 'w-full py-4 md:py-4', // ✅ RESPONSIVE: Mobile groter (py-4 ipv py-3) - verticaal langer
-      fontSize: 'text-base md:text-base', // ✅ RESPONSIVE: Mobile groter (text-base ipv text-sm) - dikker tekst
-      fontWeight: 'font-bold', // ✅ DIKKER: font-bold (was font-semibold) - vooral mobiel
+      size: 'w-full py-6 md:py-6', // ✅ DRUK MIJ: Verticaal langer (py-6 ipv py-4) - meer prominent
+      fontSize: 'text-lg md:text-lg', // ✅ DRUK MIJ: Grotere tekst (text-lg ipv text-base) - meer opvallend
+      fontWeight: 'font-bold', // ✅ DIKKER: font-bold - vooral mobiel
       bgColor: 'bg-blue-600',
       hoverBgColor: 'hover:bg-blue-700',
       textColor: 'text-white',
-      borderRadius: 'rounded-lg',
-      transition: 'transition-colors',
-      icon: 'w-5 h-5 md:w-5 md:h-5', // ✅ RESPONSIVE: Mobile groter (w-5 h-5 ipv w-4 h-4)
+      borderRadius: 'rounded-full', // ✅ DRUK MIJ: Volledig rond (rounded-full ipv rounded-lg) - ronder
+      transition: 'transition-all duration-200 hover:scale-[1.02]', // ✅ DRUK MIJ: Scale effect voor "druk mij" vibe
+      icon: 'w-6 h-6 md:w-6 md:h-6', // ✅ DRUK MIJ: Groter icon (w-6 h-6 ipv w-5 h-5) - meer prominent
     },
     usps: {
       spacing: 'flex flex-col gap-2 mt-6',

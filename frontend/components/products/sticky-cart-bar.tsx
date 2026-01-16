@@ -105,12 +105,12 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
                 </button>
               </div>
 
-              {/* Add to cart button - SUBTIELE RONDE HOEKEN */}
+              {/* Add to cart button - ✅ DRUK MIJ: Volledig rond, verticaal langer, grotere tekst */}
               <button
                 onClick={handleAddToCart}
-                className="bg-accent hover:bg-accent-dark text-white font-bold px-6 py-2.5 rounded-sm transition-colors flex items-center gap-2"
+                className="bg-accent hover:bg-accent-dark text-white font-bold px-6 py-4 rounded-full transition-all duration-200 hover:scale-[1.02] flex items-center gap-2 text-lg"
               >
-                <ShoppingCart className="h-4 w-4" />
+                <ShoppingCart className="h-5 w-5" />
                 <span className="hidden sm:inline">In Winkelwagen</span>
                 <span className="sm:hidden">Toevoegen</span>
               </button>
