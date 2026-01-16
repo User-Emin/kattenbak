@@ -294,11 +294,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           </ol>
         </nav>
         
-        <div className={cn('flex flex-col lg:flex-row', CONFIG.layout.gridGap, 'items-start')}> {/* ✅ ALIGN TOP: Afbeelding en naam beginnen opzelfde hoogte */}
-          {/* Left: Image Gallery - ✅ VERTICAAL BREDER, THUMBNAILS DIREKT ONDER - GEEN RUIMTE */}
-          <div className={cn('flex flex-col', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height, 'self-start', 'gap-0')}> {/* ✅ GEEN RUIMTE: gap-0 */}
-            {/* Main Image - ✅ VERTICAAL BREDER: Volledige hoogte, geen ruimte */}
-            <div className={cn('relative', 'aspect-[3/4]', CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden', 'w-full')}> {/* ✅ EXTRA VERTICAAL BREDER: aspect-[3/4] - nog meer hoogte */}
+        <div className={cn('flex flex-col lg:flex-row', CONFIG.layout.gridGap, 'items-start', 'mt-6')}> {/* ✅ RUIMTE: mt-6 tussen breadcrumb en content */}
+          {/* Left: Image Gallery - ✅ VERTICAAL BREDER, THUMBNAILS ONDER MET RUIMTE */}
+          <div className={cn('flex flex-col', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height, 'self-start', 'gap-3')}> {/* ✅ RUIMTE: gap-3 tussen afbeelding en thumbnails */}
+            {/* Main Image - ✅ VERTICAAL BREDER: Meer hoogte */}
+            <div className={cn('relative', 'aspect-[4/5]', CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden', 'w-full')}> {/* ✅ VERTICAAL BREDER: aspect-[4/5] */}
               <Image
                 src={currentImage}
                 alt={product.name}
@@ -358,13 +358,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             </div>
 
-            {/* ✅ THUMBNAILS DIREKT ONDER: Geen ruimte tussen afbeelding en thumbnails */}
+            {/* ✅ THUMBNAILS ONDER: Met ruimte tussen afbeelding en thumbnails */}
             {images.length > 1 && (
               <div className={cn(
-                'flex flex-row gap-0 overflow-x-auto', // ✅ DIREKT: gap-0 - geen ruimte
+                'flex flex-row gap-2 overflow-x-auto', // ✅ RUIMTE: gap-2 tussen thumbnails
                 'w-full',
-                'smooth-scroll',
-                'mt-0' // ✅ GEEN MARGIN: Direct tegen afbeelding
+                'smooth-scroll'
               )}>
                 {images.map((image, index) => (
                   <button
