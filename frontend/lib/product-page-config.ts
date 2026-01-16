@@ -14,7 +14,7 @@ export const PRODUCT_PAGE_CONFIG = {
     maxWidth: 'max-w-7xl',
     containerPadding: 'px-4 sm:px-6 lg:px-8',
     sectionSpacing: 'py-8 lg:py-12', // ✅ Minder ruimte (was py-12 lg:py-16)
-    gridGap: 'gap-6 lg:gap-10',      // ✅ Minder gap (was gap-8 lg:gap-12)
+    gridGap: 'gap-0 lg:gap-0',      // ✅ GEEN RUIMTE: gap-0 - geen tussenruimte
     topMargin: 'mt-0',                // ✅ ULTRA COMPACT - breadcrumb direct tegen navbar
     // Product Grid Ratio: Image vs Info (zoals Pergolux)
     productGrid: {

@@ -295,10 +295,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </nav>
         
         <div className={cn('flex flex-col lg:flex-row', CONFIG.layout.gridGap, 'items-start')}> {/* ✅ ALIGN TOP: Afbeelding en naam beginnen opzelfde hoogte */}
-          {/* Left: Image Gallery - ✅ VERTICAAL BREDER, THUMBNAILS ONDER */}
-          <div className={cn('flex flex-col', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height, 'self-start', 'gap-2')}> {/* ✅ COMPACT: gap-2 ipv gap-4 */}
-            {/* Main Image - ✅ VERTICAAL BREDER: Meer hoogte */}
-            <div className={cn('relative', 'aspect-[4/5]', CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden', 'w-full')}> {/* ✅ VERTICAAL BREDER: aspect-[4/5] ipv aspect-[5/3] */}
+          {/* Left: Image Gallery - ✅ VERTICAAL BREDER, THUMBNAILS DIREKT ONDER - GEEN RUIMTE */}
+          <div className={cn('flex flex-col', CONFIG.layout.productGrid.imageWidth, CONFIG.gallery.container.sticky, CONFIG.gallery.container.height, 'self-start', 'gap-0')}> {/* ✅ GEEN RUIMTE: gap-0 */}
+            {/* Main Image - ✅ VERTICAAL BREDER: Volledige hoogte, geen ruimte */}
+            <div className={cn('relative', 'aspect-[3/4]', CONFIG.gallery.mainImage.borderRadius, CONFIG.gallery.mainImage.bgColor, 'overflow-hidden', 'w-full')}> {/* ✅ EXTRA VERTICAAL BREDER: aspect-[3/4] - nog meer hoogte */}
               <Image
                 src={currentImage}
                 alt={product.name}
@@ -358,12 +358,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             </div>
 
-            {/* ✅ THUMBNAILS ONDER: Horizontale slide onder hoofdafbeelding - COMPACT */}
+            {/* ✅ THUMBNAILS DIREKT ONDER: Geen ruimte tussen afbeelding en thumbnails */}
             {images.length > 1 && (
               <div className={cn(
-                'flex flex-row gap-2 overflow-x-auto', // ✅ COMPACT: gap-2 ipv gap-3
+                'flex flex-row gap-0 overflow-x-auto', // ✅ DIREKT: gap-0 - geen ruimte
                 'w-full',
-                'smooth-scroll'
+                'smooth-scroll',
+                'mt-0' // ✅ GEEN MARGIN: Direct tegen afbeelding
               )}>
                 {images.map((image, index) => (
                   <button
@@ -376,7 +377,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       'relative overflow-hidden bg-gray-100',
                       'transition-all',
                       CONFIG.gallery.thumbnails.verticalSlide.border,
-                      index === selectedImageIndex && CONFIG.gallery.thumbnails.verticalSlide.activeBorder
+                      index === selectedImageIndex && CONFIG.gallery.thumbnails.verticalSlide.activeBorder,
+                      index > 0 && 'ml-0' // ✅ GEEN MARGIN: Direct naast elkaar
                     )}
                   >
                     <Image
