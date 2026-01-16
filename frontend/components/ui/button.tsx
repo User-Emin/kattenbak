@@ -2,6 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { COMPONENT_COLORS } from "@/lib/theme-colors";
+import { DESIGN_SYSTEM } from "@/lib/design-system";
 
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'brand' | 'cta';
 type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
@@ -53,7 +54,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          'inline-flex items-center justify-center gap-2 font-medium rounded transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:scale-105 active:scale-95',
+          'inline-flex items-center justify-center gap-2 font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:scale-105 active:scale-95',
+          DESIGN_SYSTEM.button.borderRadius, // ✅ DRY: Via DESIGN_SYSTEM (exact zoals Let op kaart)
           VARIANT_STYLES[variant],
           SIZE_STYLES[size],
           fullWidth && 'w-full',

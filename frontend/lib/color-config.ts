@@ -149,16 +149,18 @@ export const SEMANTIC_COLORS = {
 // COMPONENT SPECIFIC COLORS
 // ============================================
 
+import { DESIGN_SYSTEM } from './design-system';
+
 export const COMPONENT_COLORS = {
   button: {
     // CTA Button (BLAUW) - Checkout, Cart, etc.
-    cta: `${SEMANTIC_COLORS.cta.bg} ${SEMANTIC_COLORS.cta.bgHover} ${SEMANTIC_COLORS.cta.text} font-semibold rounded-md`,
+    cta: `${SEMANTIC_COLORS.cta.bg} ${SEMANTIC_COLORS.cta.bgHover} ${SEMANTIC_COLORS.cta.text} font-semibold ${DESIGN_SYSTEM.button.borderRadius}`, // ✅ DRY: Via DESIGN_SYSTEM
     
     // Primary Button (Zwart)
-    primary: `${SEMANTIC_COLORS.primary.bg} ${SEMANTIC_COLORS.primary.bgHover} ${SEMANTIC_COLORS.primary.text} font-semibold rounded-md`,
+    primary: `${SEMANTIC_COLORS.primary.bg} ${SEMANTIC_COLORS.primary.bgHover} ${SEMANTIC_COLORS.primary.text} font-semibold ${DESIGN_SYSTEM.button.borderRadius}`, // ✅ DRY: Via DESIGN_SYSTEM
     
     // Outline Button
-    outline: 'bg-transparent border-2 border-gray-300 hover:border-black text-gray-900 rounded-md',
+    outline: `bg-transparent border-2 border-gray-300 hover:border-black text-gray-900 ${DESIGN_SYSTEM.button.borderRadius}`, // ✅ DRY: Via DESIGN_SYSTEM
   },
   
   badge: {

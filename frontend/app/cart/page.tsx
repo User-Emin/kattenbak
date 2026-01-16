@@ -23,7 +23,7 @@ export default function CartPage() {
             Ontdek onze premium zelfreinigende kattenbak
           </p>
           <Link href="/">
-            <Button size="lg" className="bg-brand hover:bg-brand-dark text-white font-semibold px-8 rounded-md" rightIcon={<ArrowRight className="h-5 w-5" />}>
+            <Button size="lg" className="bg-brand hover:bg-brand-dark text-white font-semibold px-8" rightIcon={<ArrowRight className="h-5 w-5" />}>
               Verder Winkelen
             </Button>
           </Link>
@@ -149,7 +149,7 @@ export default function CartPage() {
 
               <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
                 <Button 
-                  className="w-full text-white font-semibold py-3 px-6 rounded-md flex items-center justify-center gap-2" 
+                  className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2" 
                   style={{
                     background: `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart} 0%, ${DESIGN_SYSTEM.colors.primaryEnd} 100%)`, // ✅ GRADIENT GRIJS: Via DESIGN_SYSTEM (geen hardcode)
                   }}

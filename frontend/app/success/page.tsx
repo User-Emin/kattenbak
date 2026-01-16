@@ -126,12 +126,12 @@ function SuccessContent() {
         {/* CTA Buttons - Oranje voor consistentie */}
         <div className="flex flex-wrap gap-3 justify-center">
           <Link href="/">
-            <Button variant="cta" size="lg" className="rounded-md">
+            <Button variant="cta" size="lg">
               Terug naar Home
             </Button>
           </Link>
           <Link href="/contact">
-            <Button variant="brand" size="lg" className="rounded-md">
+            <Button variant="brand" size="lg">
               Contacteer Ons
             </Button>
           </Link>

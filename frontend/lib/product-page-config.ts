@@ -6,6 +6,8 @@
  * ✅ Waterdicht: Type-safe configuratie
  */
 
+import { DESIGN_SYSTEM } from './design-system';
+
 export const PRODUCT_PAGE_CONFIG = {
   // Layout configuratie
   layout: {
@@ -124,7 +126,7 @@ export const PRODUCT_PAGE_CONFIG = {
       bgColor: 'bg-blue-600',
       hoverBgColor: 'hover:bg-blue-700',
       textColor: 'text-white',
-      borderRadius: 'rounded-xl', // ✅ EXACT ZELFDE: Zoals Let op kaart (rounded-xl)
+      borderRadius: DESIGN_SYSTEM.button.borderRadius, // ✅ DRY: Via DESIGN_SYSTEM (exact zoals Let op kaart)
       transition: 'transition-all duration-200 hover:scale-[1.02]', // ✅ DRUK MIJ: Scale effect voor "druk mij" vibe
       icon: 'w-6 h-6 md:w-6 md:h-6', // ✅ DRUK MIJ: Groter icon (w-6 h-6 ipv w-5 h-5) - meer prominent
     },

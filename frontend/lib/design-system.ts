@@ -244,6 +244,10 @@ export const DESIGN_SYSTEM = {
    */
   effects: {
     // Border radius - ✅ DYNAMISCH: Alle border radius waarden
+    // ✅ DRY: Button border radius - EXACT ZELFDE als Let op kaart
+    button: {
+      borderRadius: 'rounded-xl', // ✅ EXACT ZELFDE: Zoals Let op kaart (rounded-xl)
+    },
     borderRadius: {
       none: '0',
       sm: '0.125rem',     // 2px - subtle

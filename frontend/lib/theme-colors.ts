@@ -239,12 +239,14 @@ export const SEMANTIC_COLORS = {
 // Navbar gebruikt bg-brand class (zie globals.css: #005980)
 const NAVBAR_COLOR = 'bg-brand' as const;
 
+import { DESIGN_SYSTEM } from './design-system';
+
 export const COMPONENT_COLORS = {
   button: {
-    primary: 'bg-gradient-to-br from-gray-900 to-black hover:from-gray-800 hover:to-gray-900 text-white font-bold rounded-full',
-    secondary: 'bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full',
-    cta: 'bg-brand hover:bg-brand-dark text-white font-bold rounded-full transform hover:scale-[1.02] transition-all duration-200', // ✅ WINKELWAGEN BLAUW (was oranje)
-    outline: 'border-2 border-current rounded-full',
+    primary: `bg-gradient-to-br from-gray-900 to-black hover:from-gray-800 hover:to-gray-900 text-white font-bold ${DESIGN_SYSTEM.button.borderRadius}`, // ✅ DRY: Via DESIGN_SYSTEM
+    secondary: `bg-blue-600 hover:bg-blue-700 text-white font-bold ${DESIGN_SYSTEM.button.borderRadius}`, // ✅ DRY: Via DESIGN_SYSTEM
+    cta: `bg-brand hover:bg-brand-dark text-white font-bold ${DESIGN_SYSTEM.button.borderRadius} transform hover:scale-[1.02] transition-all duration-200`, // ✅ DRY: Via DESIGN_SYSTEM
+    outline: `border-2 border-current ${DESIGN_SYSTEM.button.borderRadius}`, // ✅ DRY: Via DESIGN_SYSTEM
   },
   navbar: {
     bg: `${NAVBAR_COLOR}`, // ✅ DRY: bg-brand (#005980)
