@@ -1010,6 +1010,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             className={cn(CONFIG.edgeSection.image.objectFit, CONFIG.edgeSection.image.brightness)}
             sizes="100vw"
             priority={false}
+            unoptimized={(images && images.length > 0 && images[0].startsWith('/uploads/')) || (PRODUCT_CONTENT.edgeImageSection.image || '/placeholder-image.jpg').startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
             onError={(e) => {
               // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
               const target = e.target as HTMLImageElement;
