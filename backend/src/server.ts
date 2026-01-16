@@ -152,7 +152,11 @@ class Server {
     const webhookRoutes = (await import('./routes/webhook.routes')).default;
     this.app.use('/api/v1/webhooks', webhookRoutes);
 
-    logger.info('✅ Routes initialized (admin + products + orders + returns + contact + payment-methods + webhooks)');
+    // Test email routes - ✅ DEVELOPMENT: For testing email configuration
+    const testEmailRoutes = (await import('./routes/test-email.routes')).default;
+    this.app.use('/api/v1/test-email', testEmailRoutes);
+
+    logger.info('✅ Routes initialized (admin + products + orders + returns + contact + payment-methods + webhooks + test-email)');
   }
 
   /**
