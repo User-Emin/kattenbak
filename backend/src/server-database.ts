@@ -607,8 +607,8 @@ app.put('/api/v1/admin/products/:id', authMiddleware, async (req: Request, res: 
   }
 });
 
-// ADMIN: Delete product
-app.delete('/api/v1/admin/products/:id', async (req: Request, res: Response) => {
+// ADMIN: Delete product - ✅ SECURITY: JWT auth required
+app.delete('/api/v1/admin/products/:id', authMiddleware, async (req: Request, res: Response) => {
   try {
     await prisma.product.delete({
       where: { id: req.params.id },
@@ -883,44 +883,6 @@ app.get('/api/v1/admin/contact', async (req: Request, res: Response) => {
 // =============================================================================
 // ADMIN AUTH ENDPOINTS - JWT + Bcrypt
 // =============================================================================
-
-// Import auth utilities
-const bcrypt = require('bcryptjs'); // ✅ FIX: Use bcryptjs (installed package)
-const jwt = require('jsonwebtoken');
-
-// ✅ SECURITY: JWT Authentication Middleware voor admin endpoints
-const authMiddleware = async (req: Request, res: Response, next: any) => {
-  try {
-    const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({
-        success: false,
-        error: 'Geen authenticatie token gevonden'
-      });
-    }
-
-    const token = authHeader.substring(7);
-    const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-    
-    try {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      (req as any).user = decoded;
-      next();
-    } catch (jwtError: any) {
-      return res.status(401).json({
-        success: false,
-        error: 'Ongeldige of verlopen token'
-      });
-    }
-  } catch (error: any) {
-    // ✅ SECURITY: Generic error (geen gevoelige data)
-    return res.status(401).json({
-      success: false,
-      error: 'Authenticatie mislukt'
-    });
-  }
-};
 
 // Admin login endpoint
 app.post('/api/v1/admin/auth/login', async (req: Request, res: Response) => {
