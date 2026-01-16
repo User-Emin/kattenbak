@@ -240,8 +240,9 @@ export const PRODUCT_PAGE_CONFIG = {
       container: 'space-y-6', // ✅ GROTER: Meer ruimte tussen elementen (was space-y-4)
       title: {
         fontSize: 'text-3xl lg:text-4xl', // ✅ GROTER: Grotere titels voor duidelijkheid (was text-2xl lg:text-3xl)
-        fontWeight: 'font-semibold', // ✅ DIKKER: font-semibold voor duidelijkheid (was font-light)
+        fontWeight: 'font-medium', // ✅ DUNNER: Exact zoals productnaam (font-medium ipv font-semibold)
         textColor: 'text-black', // ✅ ZWARTER: Volledig zwart voor zigzag titles
+        letterSpacing: 'tracking-tight', // ✅ EXACT ZELFDE: Zoals productnaam
       },
       description: {
         fontSize: 'text-lg lg:text-xl', // ✅ GROTER: Grotere beschrijving (was text-base)

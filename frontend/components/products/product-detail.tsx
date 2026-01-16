@@ -877,22 +877,22 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 key={index} 
                 className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
               >
-                {/* Image */}
+                {/* Image - ✅ EXACT PASSEND: Aanpast aan grootte veld */}
                 <div className={cn(
                   'relative',
-                  isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right
+                  isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right,
+                  CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Container heeft juiste ratio
+                  CONFIG.featureSection.image.borderRadius,
+                  CONFIG.featureSection.image.bgColor,
+                  'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding exact past
                 )}>
                   <Image
                     src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
                     alt={feature.title}
-                    width={1400} // ✅ GROTER: Breder voor duidelijkheid (was 1200)
-                    height={840} // ✅ GROTER: 1400/840 = 1.67 (5/3 ratio)
+                    fill // ✅ FILL: Vult container exact op
                     className={cn(
-                      CONFIG.featureSection.image.aspectRatio,
-                      CONFIG.featureSection.image.borderRadius,
-                      CONFIG.featureSection.image.objectFit,
-                      CONFIG.featureSection.image.bgColor,
-                      'w-full h-auto' // ✅ RESPONSIVE: Past aan als te groot
+                      CONFIG.featureSection.image.objectFit, // ✅ OBJECT-FIT: Past exact aan veld aan
+                      'object-cover' // ✅ COVER: Vult veld exact op zonder ruimte
                     )}
                   />
                 </div>
@@ -905,7 +905,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   <h3 className={cn(
                     CONFIG.featureSection.text.title.fontSize,
                     CONFIG.featureSection.text.title.fontWeight,
-                    CONFIG.featureSection.text.title.textColor
+                    CONFIG.featureSection.text.title.textColor,
+                    CONFIG.featureSection.text.title.letterSpacing // ✅ EXACT ZELFDE: Letter spacing zoals productnaam
                   )}>
                     {feature.title}
                   </h3>
