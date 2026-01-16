@@ -583,9 +583,39 @@ export function ChatPopup() {
 
   return (
     <>
+      {/* ✅ CHAT BUBBLE: "Ik ben AI assistent" vraag bij chatbutton (smooth effect) */}
+      {showChatBubble && !isExpanded && (
+        <div
+          className={cn(
+            'fixed right-6 z-[100]',
+            buttonBottomClass,
+            'mb-20', // ✅ POSITION: Boven chatbutton
+            'animate-in fade-in slide-in-from-bottom-4 duration-500', // ✅ SMOOTH: Smooth fade-in en slide-up
+            'max-w-xs'
+          )}
+        >
+          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 relative">
+            {/* ✅ SPEECH BUBBLE ARROW: Wijs naar chatbutton */}
+            <div className="absolute bottom-0 right-6 transform translate-y-full">
+              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-gray-200"></div>
+            </div>
+            <div className="absolute bottom-0 right-6 transform translate-y-full -mt-px">
+              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
+            </div>
+            
+            <p className="text-sm text-gray-900 font-medium">
+              Ik ben een AI assistent. Heb je vragen over dit product?
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* ✅ ULTRA MODERN: Floating Chat Button - 100% Dynamisch via DESIGN_SYSTEM */}
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={() => {
+          setIsExpanded(!isExpanded);
+          setShowChatBubble(false); // ✅ HIDE: Verberg bubble bij klik
+        }}
         className={cn(
           safeChatConfig.button.position.type,
           safeChatConfig.button.position.right,
