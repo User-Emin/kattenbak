@@ -488,8 +488,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   let Icon = Truck;
                   if (usp.text.includes('bedenktijd') || usp.text.includes('retour')) {
                     Icon = Shield;
-                  } else if (usp.text.includes('betalen') || usp.text.includes('SSL')) {
-                    Icon = Lock;
+                  } else if (usp.text.includes('Geleverd met') || usp.text.includes('inloopmat') || usp.text.includes('afvalzak')) {
+                    Icon = Package;
                   }
                   
                   return (
@@ -535,8 +535,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ BEZORGTIJD - Direct onder winkelwagen button (dichterbij) */}
-              <div className="flex items-center justify-center gap-1.5 mt-2 sm:mt-2.5 mb-4 sm:mb-5">
+              {/* ✅ BEZORGTIJD - Direct onder winkelwagen button (minimale witruimte) */}
+              <div className="flex items-center justify-center gap-1.5 mt-1 sm:mt-1.5 mb-4 sm:mb-5">
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -757,12 +757,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className={CONFIG.tabs.content.padding}>
           {activeTab === 'omschrijving' && (
             <div className={cn(CONFIG.tabs.content.spacing, CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor, CONFIG.tabs.content.lineHeight)}>
-              <h3 className="text-lg font-semibold mb-2">Product Omschrijving</h3>
-              <p className="mb-3">
+              <h3 className="text-base sm:text-lg font-semibold mb-2">Product Omschrijving</h3>
+              <p className="text-sm sm:text-base mb-3">
                 {product.description || 'De beste automatische kattenbak met zelfreinigende functie. Perfect voor katten tot 7kg. Volledig automatisch met app-bediening.'}
               </p>
-              <h4 className="font-semibold mb-1.5">Standaard meegeleverd:</h4>
-              <ul className="space-y-1 ml-4">
+              <h4 className="text-sm sm:text-base font-semibold mb-1.5">Standaard meegeleverd:</h4>
+              <ul className="space-y-1 ml-4 text-sm sm:text-base">
                 <li>• 1x Automatische Kattenbak Premium</li>
                 <li>• 1x Stroomadapter</li>
                 <li>• 1x Afvalzak (starter)</li>
@@ -771,7 +771,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <li>• 1x Inloopmat</li>
                 <li>• 1x Handleiding (NL/EN)</li>
               </ul>
-              <p className="mt-3 text-sm text-gray-600 italic">
+              <p className="mt-3 text-xs sm:text-sm text-gray-600 italic">
                 * Kattenbakvulling niet inbegrepen. Geschikt voor klonterende klei, plantaardige en gemixte vulling.
               </p>
             </div>
@@ -948,55 +948,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className="border-t border-gray-300 my-8"></div>
       </div>
 
-      {/* ✅ EDGE-TO-EDGE IMAGE SECTION: Tussen tabs en zigzag - DRY & DYNAMISCH - ECHTE AFBEELDING */}
-      <div className={cn(CONFIG.edgeSection.container, 'my-8 sm:my-10 md:my-12 lg:my-12')}>
-        <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')}>
-          <Image
-            src={
-              // ✅ DYNAMISCH: Gebruik eerste echte product image (gefilterd), anders fallback
-              images && images.length > 0
-                ? images[0]
-                : (PRODUCT_CONTENT.edgeImageSection.image || '/placeholder-image.jpg')
-            }
-            alt={product.name}
-            fill
-            className={cn(CONFIG.edgeSection.image.objectFit, CONFIG.edgeSection.image.brightness)}
-            sizes="100vw"
-            priority={false}
-            onError={(e) => {
-              // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
-              const target = e.target as HTMLImageElement;
-              if (target && !target.src.includes('placeholder')) {
-                target.src = '/placeholder-image.jpg';
-              }
-            }}
-          />
-          {/* Overlay met tekst - ✅ DYNAMISCH: Gebruik product.description of fallback */}
-          <div className={CONFIG.edgeSection.overlay.position}>
-            <div className={cn(CONFIG.edgeSection.overlay.content, CONFIG.edgeSection.overlay.textAlign)}>
-              <h2 className={cn(
-                CONFIG.edgeSection.title.fontSize,
-                CONFIG.edgeSection.title.fontWeight,
-                CONFIG.edgeSection.title.textColor,
-                CONFIG.edgeSection.title.marginBottom
-              )}>
-                {product.name}
-              </h2>
-              <p className={cn(
-                CONFIG.edgeSection.description.fontSize,
-                CONFIG.edgeSection.description.textColor
-              )}>
-                {product.description || product.shortDescription || PRODUCT_CONTENT.mainDescription}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ✅ SCHEIDINGSTREEP: Tussen edge-to-edge en zigzag begin */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
-        <div className="border-t border-gray-300 my-8"></div>
-      </div>
+      {/* ✅ EDGE-TO-EDGE SECTIE VERWIJDERD: Tussen tabs en zigzag - zoals gevraagd */}
 
       {/* ✅ PREMIUM KWALITEIT SECTIE VERWIJDERD - Focus op 10.5L afvalbak */}
 
@@ -1080,17 +1032,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
       {/* ✅ VERGELIJKINGSTABEL: Modern, smooth, gebaseerd op echte info */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}>
-        {/* ✅ AFBEELDING BOVEN TABEL: Traditionele kattenbak - Gebruik afbeelding uit screenshot */}
-        <div className="mb-8">
-          <div className="relative aspect-[5/3] rounded-xl overflow-hidden bg-white border border-gray-200">
-            <Image
-              src="/images/traditional-litter-box-optimized.jpg"
-              alt="Traditionele kattenbak vergelijking"
-              fill
-              className="object-contain"
-            />
-          </div>
-        </div>
         <ProductComparisonTable />
       </div>
 

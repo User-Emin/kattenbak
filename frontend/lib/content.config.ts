@@ -345,7 +345,7 @@ export const PRODUCT_CONTENT = {
       text: '30 dagen bedenktijd • Gratis retour',
     },
     {
-      text: 'Veilig betalen • SSL beveiligd',
+      text: 'Geleverd met inloopmat en afvalzak',
     },
   ],
 
