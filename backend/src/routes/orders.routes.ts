@@ -33,10 +33,15 @@ const createOrderSchema = z.object({
       phone: z.string().min(10, 'Valid phone required').optional(),
     }),
     shipping: z.object({
-      address: z.string().min(5, 'Address required'),
+      address: z.string().min(5, 'Address required').optional(), // ✅ Optional: Can use separate fields
+      street: z.string().min(2, 'Street required').optional(), // ✅ Optional: Can use combined address
+      houseNumber: z.string().min(1, 'House number required').optional(), // ✅ Optional: Can parse from address
+      addition: z.string().optional(), // ✅ Optional: House number addition
       city: z.string().min(2, 'City required'),
       postalCode: z.string().min(6, 'Postal code required'),
       country: z.string().default('NL'),
+    }).refine((data) => data.address || (data.street && data.houseNumber), {
+      message: 'Either combined address or separate street/houseNumber required',
     }),
     paymentMethod: z.enum(['ideal', 'paypal', 'creditcard', 'bancontact']).default('ideal'),
   }),
@@ -50,6 +55,18 @@ router.post(
     try {
       const { items, customer, shipping, paymentMethod } = req.body;
 
+      // ✅ FIX: Use separate street/houseNumber if available, otherwise parse from address
+      const street = shipping.street || (() => {
+        // Parse from combined address if separate fields not provided
+        const addressParts = shipping.address.trim().split(/(\d+[A-Za-z]*\s*.*?)$/);
+        return addressParts[0]?.trim() || shipping.address;
+      })();
+      const houseNumber = shipping.houseNumber || (() => {
+        // Parse from combined address if separate fields not provided
+        const addressParts = shipping.address.trim().split(/(\d+[A-Za-z]*\s*.*?)$/);
+        return addressParts[1]?.trim() || '1';
+      })();
+
       // Transform frontend format → OrderService format
       const orderData = {
         items: items.map((item: any) => ({
@@ -61,8 +78,9 @@ router.post(
         shippingAddress: {
           firstName: customer.firstName,
           lastName: customer.lastName,
-          street: shipping.address,
-          houseNumber: '', // Extract from address if needed
+          street: street,
+          houseNumber: houseNumber,
+          addition: shipping.addition, // ✅ ADD: Include addition if provided
           postalCode: shipping.postalCode,
           city: shipping.city,
           country: shipping.country || 'NL',

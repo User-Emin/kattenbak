@@ -132,7 +132,10 @@ function CheckoutContent() {
           phone: formData.phone || undefined,
         },
         shipping: {
-          address: `${formData.street} ${formData.houseNumber}${formData.addition ? ' ' + formData.addition : ''}`,
+          address: `${formData.street} ${formData.houseNumber}${formData.addition ? ' ' + formData.addition : ''}`, // ✅ Combined for display
+          street: formData.street, // ✅ ADD: Separate street for backend parsing
+          houseNumber: formData.houseNumber, // ✅ ADD: Separate houseNumber for backend
+          addition: formData.addition, // ✅ ADD: Separate addition
           city: formData.city,
           postalCode: formData.postalCode,
           country: formData.country,
