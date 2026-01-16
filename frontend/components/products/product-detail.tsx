@@ -677,21 +677,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className={CONFIG.tabs.content.padding}>
           {activeTab === 'omschrijving' && (
             <div className={cn(CONFIG.tabs.content.spacing, CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor, CONFIG.tabs.content.lineHeight)}>
-              <h3 className="text-lg font-semibold mb-3">Product Omschrijving</h3>
-              <p className="mb-4">
+              <h3 className="text-lg font-semibold mb-2">Product Omschrijving</h3>
+              <p className="mb-3">
                 {product.description || 'De beste automatische kattenbak met zelfreinigende functie. Perfect voor katten tot 7kg. Volledig automatisch met app-bediening.'}
               </p>
-              <h4 className="font-semibold mb-2">Standaard meegeleverd:</h4>
-              <ul className="space-y-1.5 ml-4">
+              <h4 className="font-semibold mb-1.5">Standaard meegeleverd:</h4>
+              <ul className="space-y-1 ml-4">
                 <li>• 1x Automatische Kattenbak Premium</li>
                 <li>• 1x Stroomadapter</li>
                 <li>• 1x Afvalzak (starter)</li>
                 <li>• 1x Borstel (voor onderhoud)</li>
                 <li>• 1x Geurfilter</li>
-                <li>• 1x Inloopmat</li> {/* ✅ TOEGEVOEGD: Inloopmat */}
+                <li>• 1x Inloopmat</li>
                 <li>• 1x Handleiding (NL/EN)</li>
               </ul>
-              <p className="mt-4 text-sm text-gray-600 italic">
+              <p className="mt-3 text-sm text-gray-600 italic">
                 * Kattenbakvulling niet inbegrepen. Geschikt voor klonterende klei, plantaardige en gemixte vulling.
               </p>
             </div>
@@ -863,8 +863,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* ✅ PREMIUM KWALITEIT & VEILIGHEID - ✅ SHARED COMPONENT: Exact zoals home, dynamisch, geen hardcode */}
-      <PremiumQualitySection />
+      {/* ✅ PREMIUM KWALITEIT SECTIE VERWIJDERD - Focus op 10.5L afvalbak */}
 
       {/* Feature Sections - ZIGZAG PATTERN (Pergolux style) */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.sectionSpacing)}>
@@ -917,10 +916,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   <ul className={CONFIG.featureSection.text.list.spacing}>
                     {feature.items.map((item, itemIndex) => (
                       <li key={itemIndex} className={CONFIG.featureSection.text.list.item.gap}>
-                        <Check className={cn(
-                          CONFIG.featureSection.text.list.item.iconSize,
-                          CONFIG.featureSection.text.list.item.iconColor
-                        )} />
+                        {/* ✅ SYMBOLEN: Direct in witte achtergrond met lichte border */}
+                        <div className={CONFIG.featureSection.text.list.item.iconContainer}>
+                          <Check className={cn(
+                            CONFIG.featureSection.text.list.item.iconSize,
+                            CONFIG.featureSection.text.list.item.iconColor
+                          )} />
+                        </div>
                         <span className={cn(
                           CONFIG.featureSection.text.list.item.fontSize,
                           CONFIG.featureSection.text.list.item.textColor

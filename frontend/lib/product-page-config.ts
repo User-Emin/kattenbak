@@ -175,11 +175,11 @@ export const PRODUCT_PAGE_CONFIG = {
       transition: 'transition-colors',
     },
     content: {
-      padding: 'py-8',
+      padding: 'py-6', // ✅ KORTER: Verticaal korter (py-6 ipv py-8)
       fontSize: 'text-base',
       textColor: 'text-gray-700',
       lineHeight: 'leading-relaxed',
-      spacing: 'space-y-4',
+      spacing: 'space-y-3', // ✅ KORTER: Kleinere spacing (space-y-3 ipv space-y-4)
     },
   },
 
@@ -229,10 +229,10 @@ export const PRODUCT_PAGE_CONFIG = {
       },
     },
     image: {
-      aspectRatio: 'aspect-[4/3]',
+      aspectRatio: 'aspect-[5/3]', // ✅ BREDER: Horizontaal breder (5/3 ipv 4/3) - eerste afbeelding volledig erin
       borderRadius: 'rounded-lg',
-      objectFit: 'object-cover',
-      bgColor: 'bg-gray-100',
+      objectFit: 'object-contain', // ✅ VOLLEDIG: Object-contain zodat afbeelding volledig zichtbaar is
+      bgColor: 'bg-white', // ✅ WIT: Witte achtergrond voor afbeeldingen
     },
     text: {
       container: 'space-y-4',
@@ -254,6 +254,8 @@ export const PRODUCT_PAGE_CONFIG = {
           iconColor: 'text-green-600',
           iconSize: 'w-5 h-5',
           gap: 'flex items-center gap-2',
+          // ✅ SYMBOLEN: Direct in witte achtergrond met lichte border
+          iconContainer: 'bg-white border border-gray-200 rounded-md p-1.5', // ✅ WIT: Witte achtergrond met lichte border
         },
       },
     },
