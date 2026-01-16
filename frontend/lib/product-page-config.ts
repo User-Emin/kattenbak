@@ -214,12 +214,12 @@ export const PRODUCT_PAGE_CONFIG = {
 
   // Feature section (ZIGZAG met afbeeldingen - Pergolux style)
   featureSection: {
-    containerSpacing: 'space-y-16 lg:space-y-24',
+    containerSpacing: 'space-y-20 lg:space-y-32', // ✅ GROTER: Meer ruimte tussen zigzag secties (was space-y-16 lg:space-y-24)
     zigzag: {
-      // Image LEFT, text RIGHT (default) - ✅ GEEN GRIJZE TUSSENRUIMTES
-      leftLayout: 'grid md:grid-cols-2 gap-0 lg:gap-0 items-center', // ✅ GEEN GAP: Geen grijze tussenruimtes
-      // Image RIGHT, text LEFT (reversed) - ✅ GEEN GRIJZE TUSSENRUIMTES
-      rightLayout: 'grid md:grid-cols-2 gap-0 lg:gap-0 items-center', // ✅ GEEN GAP: Geen grijze tussenruimtes
+      // Image LEFT, text RIGHT (default) - ✅ GROTER EN DUIDELIJKER
+      leftLayout: 'grid md:grid-cols-2 gap-8 lg:gap-12 items-center', // ✅ GROTER: gap-8 lg:gap-12 voor meer ruimte en duidelijkheid
+      // Image RIGHT, text LEFT (reversed) - ✅ GROTER EN DUIDELIJKER
+      rightLayout: 'grid md:grid-cols-2 gap-8 lg:gap-12 items-center', // ✅ GROTER: gap-8 lg:gap-12 voor meer ruimte en duidelijkheid
       imageOrder: {
         left: 'order-1 md:order-1',
         right: 'order-1 md:order-2',
@@ -230,32 +230,32 @@ export const PRODUCT_PAGE_CONFIG = {
       },
     },
     image: {
-      aspectRatio: 'aspect-[6/3]', // ✅ EXTRA BREDER: Nog breder (6/3 = 2:1) - geen grijze tussenruimtes
-      borderRadius: 'rounded-lg',
+      aspectRatio: 'aspect-[5/3]', // ✅ GROTER: Bredere afbeeldingen voor duidelijkheid (was aspect-[6/3])
+      borderRadius: 'rounded-xl', // ✅ GROTER: Grotere border radius (was rounded-lg)
       objectFit: 'object-contain', // ✅ VOLLEDIG: Object-contain zodat afbeelding volledig zichtbaar is
       bgColor: 'bg-white', // ✅ WIT: Witte achtergrond voor afbeeldingen
       gap: 'gap-0', // ✅ GEEN GAP: Geen grijze tussenruimtes tussen afbeeldingen
     },
     text: {
-      container: 'space-y-4',
+      container: 'space-y-6', // ✅ GROTER: Meer ruimte tussen elementen (was space-y-4)
       title: {
-        fontSize: 'text-2xl lg:text-3xl',
-        fontWeight: 'font-light', // ✅ DUNNER (was semibold)
+        fontSize: 'text-3xl lg:text-4xl', // ✅ GROTER: Grotere titels voor duidelijkheid (was text-2xl lg:text-3xl)
+        fontWeight: 'font-semibold', // ✅ DIKKER: font-semibold voor duidelijkheid (was font-light)
         textColor: 'text-black', // ✅ ZWARTER: Volledig zwart voor zigzag titles
       },
       description: {
-        fontSize: 'text-base',
-        textColor: 'text-gray-700',
+        fontSize: 'text-lg lg:text-xl', // ✅ GROTER: Grotere beschrijving (was text-base)
+        textColor: 'text-gray-800', // ✅ DONKERDER: text-gray-800 voor beter contrast (was text-gray-700)
         lineHeight: 'leading-relaxed',
       },
       list: {
-        spacing: 'space-y-2 mt-4',
+        spacing: 'space-y-3 mt-6', // ✅ GROTER: Meer ruimte tussen items (was space-y-2 mt-4)
         item: {
-          fontSize: 'text-sm',
-          textColor: 'text-gray-700',
+          fontSize: 'text-base lg:text-lg', // ✅ GROTER: Grotere tekst voor duidelijkheid (was text-sm)
+          textColor: 'text-gray-800', // ✅ DONKERDER: text-gray-800 voor beter contrast (was text-gray-700)
           iconColor: 'text-green-600',
-          iconSize: 'w-5 h-5',
-          gap: 'flex items-center gap-2',
+          iconSize: 'w-6 h-6', // ✅ GROTER: Grotere icons (was w-5 h-5)
+          gap: 'flex items-center gap-3', // ✅ GROTER: Meer ruimte tussen icon en tekst (was gap-2)
           // ✅ SYMBOLEN: Direct in witte achtergrond met lichte border
           iconContainer: 'bg-white border border-gray-200 rounded-md p-1.5', // ✅ WIT: Witte achtergrond met lichte border
         },

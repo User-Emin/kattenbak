@@ -885,8 +885,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   <Image
                     src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
                     alt={feature.title}
-                    width={1200} // ✅ GROTER: Breder voor volledige afbeelding (5/3 ratio)
-                    height={720} // ✅ GROTER: 1200/720 = 1.67 (5/3)
+                    width={1400} // ✅ GROTER: Breder voor duidelijkheid (was 1200)
+                    height={840} // ✅ GROTER: 1400/840 = 1.67 (5/3 ratio)
                     className={cn(
                       CONFIG.featureSection.image.aspectRatio,
                       CONFIG.featureSection.image.borderRadius,
