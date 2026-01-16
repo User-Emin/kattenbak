@@ -1078,9 +1078,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 key={index} 
                 className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
               >
-                {/* Image - ✅ VOLLEDIG ZICHTBAAR: Zigzag foto's volledig zichtbaar */}
+                {/* Image - ✅ MOBIEL: Centraal, desktop zigzag */}
                 <div className={cn(
                   'relative',
+                  'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
                   isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right,
                   CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Container heeft juiste ratio
                   CONFIG.featureSection.image.borderRadius,
@@ -1108,14 +1109,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     CONFIG.featureSection.text.title.fontSize,
                     CONFIG.featureSection.text.title.fontWeight,
                     CONFIG.featureSection.text.title.textColor,
-                    CONFIG.featureSection.text.title.letterSpacing // ✅ EXACT ZELFDE: Letter spacing zoals productnaam
+                    CONFIG.featureSection.text.title.letterSpacing, // ✅ EXACT ZELFDE: Letter spacing zoals productnaam
+                    CONFIG.featureSection.text.title.textAlign // ✅ MOBIEL: Centraal, desktop links
                   )}>
                     {feature.title}
                   </h3>
                   <p className={cn(
                     CONFIG.featureSection.text.description.fontSize,
                     CONFIG.featureSection.text.description.textColor,
-                    CONFIG.featureSection.text.description.lineHeight
+                    CONFIG.featureSection.text.description.lineHeight,
+                    CONFIG.featureSection.text.description.textAlign // ✅ MOBIEL: Centraal, desktop links
                   )}>
                     {feature.description}
                   </p>

@@ -217,17 +217,17 @@ export const PRODUCT_PAGE_CONFIG = {
   featureSection: {
     containerSpacing: 'space-y-20 lg:space-y-32', // ✅ GROTER: Meer ruimte tussen zigzag secties (was space-y-16 lg:space-y-24)
     zigzag: {
-      // Image LEFT, text RIGHT (default) - ✅ GROTER EN DUIDELIJKER
-      leftLayout: 'grid md:grid-cols-2 gap-8 lg:gap-12 items-center', // ✅ GROTER: gap-8 lg:gap-12 voor meer ruimte en duidelijkheid
-      // Image RIGHT, text LEFT (reversed) - ✅ GROTER EN DUIDELIJKER
-      rightLayout: 'grid md:grid-cols-2 gap-8 lg:gap-12 items-center', // ✅ GROTER: gap-8 lg:gap-12 voor meer ruimte en duidelijkheid
+      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder
+      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: Flex column centraal, desktop grid
+      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder
+      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: Flex column centraal, desktop grid
       imageOrder: {
-        left: 'order-1 md:order-1',
-        right: 'order-1 md:order-2',
+        left: 'order-1 md:order-1', // ✅ MOBIEL: Altijd eerste (boven)
+        right: 'order-1 md:order-2', // ✅ MOBIEL: Altijd eerste (boven), desktop rechts
       },
       textOrder: {
-        left: 'order-2 md:order-2',
-        right: 'order-2 md:order-1',
+        left: 'order-2 md:order-2', // ✅ MOBIEL: Altijd tweede (onder), desktop rechts
+        right: 'order-2 md:order-1', // ✅ MOBIEL: Altijd tweede (onder), desktop links
       },
     },
     image: {
@@ -238,17 +238,19 @@ export const PRODUCT_PAGE_CONFIG = {
       gap: 'gap-0', // ✅ GEEN GAP: Geen grijze tussenruimtes tussen afbeeldingen
     },
     text: {
-      container: 'space-y-6', // ✅ GROTER: Meer ruimte tussen elementen (was space-y-4)
+      container: 'space-y-6 w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto width
       title: {
         fontSize: 'text-3xl lg:text-4xl', // ✅ GROTER: Grotere titels voor duidelijkheid (was text-2xl lg:text-3xl)
         fontWeight: 'font-medium', // ✅ DUNNER: Exact zoals productnaam (font-medium ipv font-semibold)
         textColor: 'text-black', // ✅ ZWARTER: Volledig zwart voor zigzag titles
         letterSpacing: 'tracking-tight', // ✅ EXACT ZELFDE: Zoals productnaam
+        textAlign: 'text-center md:text-left', // ✅ MOBIEL: Centraal, desktop links
       },
       description: {
         fontSize: 'text-lg lg:text-xl', // ✅ GROTER: Grotere beschrijving (was text-base)
         textColor: 'text-gray-800', // ✅ DONKERDER: text-gray-800 voor beter contrast (was text-gray-700)
         lineHeight: 'leading-relaxed',
+        textAlign: 'text-center md:text-left', // ✅ MOBIEL: Centraal, desktop links
       },
       list: {
         spacing: 'space-y-3 mt-6', // ✅ GROTER: Meer ruimte tussen items (was space-y-2 mt-4)
