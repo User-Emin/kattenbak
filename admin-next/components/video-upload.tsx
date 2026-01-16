@@ -252,7 +252,7 @@ export function VideoUpload({ value = '', onChange, maxSizeMB = 100 }: VideoUplo
               value={urlInput}
               onChange={(e) => setUrlInput(e.target.value)}
               placeholder="https://www.youtube.com/watch?v=... of https://vimeo.com/..."
-              className="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+              className="flex-1 px-4 py-2 bg-black text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500/20 focus:border-gray-500 placeholder:text-gray-400"
             />
             <Button
               type="button"

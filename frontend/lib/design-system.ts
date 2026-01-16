@@ -186,13 +186,13 @@ export const DESIGN_SYSTEM = {
       padding: '0 48px',
     },
     
-    // USP banner (boven navbar) - ✅ GRADIENT: #3C3C3D → #7A7A7D
+    // USP banner (boven navbar) - ✅ ZWART: #000000
     uspBanner: {
-      bg: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',  // ✅ GRADIENT (was #000000)
-      bgStart: '#3C3C3D',    // ✅ GRADIENT START
-      bgEnd: '#7A7A7D',      // ✅ GRADIENT END
+      bg: '#000000',  // ✅ ZWART (was gradient)
+      bgStart: '#000000',    // ✅ ZWART
+      bgEnd: '#000000',      // ✅ ZWART
       color: '#ffffff',      // WIT
-      height: '48px',
+      height: '40px',        // ✅ KORTER: 40px (was 48px)
       animationDuration: '3000ms', // 3 seconden per USP
       zIndex: '160',        // ✅ ONDER sidebar (z-[170]) maar BOVEN navbar (z-165)
     },
