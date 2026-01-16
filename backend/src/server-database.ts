@@ -737,7 +737,7 @@ app.get('/api/v1/admin/contact', async (req: Request, res: Response) => {
 // =============================================================================
 
 // Import auth utilities
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs'); // ✅ FIX: Use bcryptjs (installed package)
 const jwt = require('jsonwebtoken');
 
 // Admin login endpoint
