@@ -300,12 +300,13 @@ app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
       }
     });
 
-    // ✅ FIX: Check if product exists and is active (zorg dat data niet verloren gaat)
+    // ✅ FIX: Check if product exists (zorg dat data niet verloren gaat)
     if (!product) {
       return res.status(404).json(error('Product not found'));
     }
     
-    // ✅ SECURITY: Only return active products (geen gevoelige data lekken)
+    // ✅ SECURITY: Only return active products for webshop (geen gevoelige data lekken)
+    // Admin panel can access inactive products via /admin/products endpoint
     if (!product.isActive) {
       return res.status(404).json(error('Product not found'));
     }
