@@ -458,33 +458,40 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar met custom vector icons */}
+              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar met afbeeldingen uit downloads (witte achtergrond) */}
               <div className={CONFIG.info.usps.spacing}>
-                {PRODUCT_CONTENT.productUsps.map((usp, index) => {
-                  const IconComponent = PRODUCT_USP_ICONS[usp.icon as keyof typeof PRODUCT_USP_ICONS];
-                  if (!IconComponent) return null;
-                  
-                  return (
-                    <div key={index} className={CONFIG.info.usps.item.container}>
-                      <div className={CONFIG.info.usps.item.iconContainer}>
-                        <IconComponent className={CONFIG.info.usps.item.iconSize} />
-                      </div>
-                      <h4 className={cn(
-                        CONFIG.info.usps.item.title.fontSize,
-                        CONFIG.info.usps.item.title.textColor,
-                        CONFIG.info.usps.item.title.marginBottom
-                      )}>
-                        {usp.title}
-                      </h4>
-                      <p className={cn(
-                        CONFIG.info.usps.item.description.fontSize,
-                        CONFIG.info.usps.item.description.textColor
-                      )}>
-                        {usp.description}
-                      </p>
+                {PRODUCT_CONTENT.productUsps.map((usp, index) => (
+                  <div key={index} className={CONFIG.info.usps.item.container}>
+                    <div className={cn(CONFIG.info.usps.item.iconContainer, 'bg-white rounded-lg p-2')}>
+                      {/* ✅ AFBEELDING: Uit downloads met witte achtergrond alsof het erin zit */}
+                      {usp.image && (
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={usp.image}
+                            alt={usp.title}
+                            width={96}
+                            height={96}
+                            className="object-contain"
+                            style={{ background: '#ffffff' }} // ✅ WITTE ACHTERGROND: Alsof het erin zit
+                          />
+                        </div>
+                      )}
                     </div>
-                  );
-                })}
+                    <h4 className={cn(
+                      CONFIG.info.usps.item.title.fontSize,
+                      CONFIG.info.usps.item.title.textColor,
+                      CONFIG.info.usps.item.title.marginBottom
+                    )}>
+                      {usp.title}
+                    </h4>
+                    <p className={cn(
+                      CONFIG.info.usps.item.description.fontSize,
+                      CONFIG.info.usps.item.description.textColor
+                    )}>
+                      {usp.description}
+                    </p>
+                  </div>
+                ))}
               </div>
 
               {/* Specificaties Accordion - ONDER USPs */}

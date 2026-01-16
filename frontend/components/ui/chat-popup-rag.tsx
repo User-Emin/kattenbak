@@ -60,6 +60,7 @@ export function ChatPopup() {
   const [error, setError] = useState<string | null>(null);
   const [stickyCartVisible, setStickyCartVisible] = useState(false);
   const [hasShownInitialMessage, setHasShownInitialMessage] = useState(false);
+  const [showChatBubble, setShowChatBubble] = useState(false);
   
   // ✅ FIX: Safe access to CHAT_CONFIG with fallbacks (useMemo for performance) - MUST BE BEFORE ANY USAGE
   const safeChatConfig = useMemo(() => {
@@ -394,6 +395,30 @@ export function ChatPopup() {
     return process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
   }, []);
 
+  // ✅ CHAT BUBBLE: "Ik ben AI assistent" vraag bij chatbutton (smooth effect)
+  useEffect(() => {
+    if (!isExpanded && typeof window !== 'undefined') {
+      // Check if we're on a product page
+      const pathname = window.location.pathname;
+      const isProductPage = pathname.startsWith('/product/');
+      
+      if (isProductPage) {
+        // ✅ SMOOTH EFFECT: Show bubble after delay
+        const bubbleTimer = setTimeout(() => {
+          setShowChatBubble(true);
+        }, 2000); // ✅ SMOOTH: 2 seconden delay voor smooth appearance
+        
+        // Hide bubble when chat opens
+        return () => {
+          clearTimeout(bubbleTimer);
+          setShowChatBubble(false);
+        };
+      }
+    } else {
+      setShowChatBubble(false);
+    }
+  }, [isExpanded]);
+
   // ✅ INITIAL MESSAGE: "Ik ben een assistent" vraag over product
   useEffect(() => {
     if (isExpanded && !hasShownInitialMessage && typeof window !== 'undefined') {
@@ -410,7 +435,7 @@ export function ChatPopup() {
         setTimeout(() => {
           const initialMessage: Message = {
             role: 'assistant',
-            content: `Hallo! Ik ben een assistent. Heb je vragen over ${productName}? Ik help je graag verder!`,
+            content: `Hallo! Ik ben een AI assistent. Heb je vragen over ${productName}? Ik help je graag verder!`,
             timestamp: new Date()
           };
           
