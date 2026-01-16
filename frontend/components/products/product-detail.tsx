@@ -913,7 +913,45 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en zigzag begin - IETS GRIJZER */}
+      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en edge-to-edge - IETS GRIJZER */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
+        <div className="border-t border-gray-300 my-8"></div>
+      </div>
+
+      {/* ✅ EDGE-TO-EDGE IMAGE SECTION: Tussen tabs en zigzag - DRY & DYNAMISCH */}
+      <div className={cn(CONFIG.edgeSection.container, 'my-8 sm:my-10 md:my-12 lg:my-12')}>
+        <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden')}>
+          <Image
+            src={PRODUCT_CONTENT.edgeImageSection.image}
+            alt={product.name}
+            fill
+            className={cn(CONFIG.edgeSection.image.objectFit, CONFIG.edgeSection.image.brightness)}
+            sizes="100vw"
+            priority={false}
+          />
+          {/* Overlay met tekst - ✅ DYNAMISCH: Gebruik product.description of fallback */}
+          <div className={CONFIG.edgeSection.overlay.position}>
+            <div className={cn(CONFIG.edgeSection.overlay.content, CONFIG.edgeSection.overlay.textAlign)}>
+              <h2 className={cn(
+                CONFIG.edgeSection.title.fontSize,
+                CONFIG.edgeSection.title.fontWeight,
+                CONFIG.edgeSection.title.textColor,
+                CONFIG.edgeSection.title.marginBottom
+              )}>
+                {product.name}
+              </h2>
+              <p className={cn(
+                CONFIG.edgeSection.description.fontSize,
+                CONFIG.edgeSection.description.textColor
+              )}>
+                {product.description || product.shortDescription || PRODUCT_CONTENT.mainDescription}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ✅ SCHEIDINGSTREEP: Tussen edge-to-edge en zigzag begin */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
         <div className="border-t border-gray-300 my-8"></div>
       </div>
