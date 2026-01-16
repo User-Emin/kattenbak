@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, X } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
@@ -18,76 +19,64 @@ interface ComparisonRow {
 
 const comparisonData: ComparisonRow[] = [
   {
+    feature: 'Automatische reiniging',
+    ourProduct: true,
+    competitor: false, // ✅ NIET-AUTOMATISCH: Traditionele kattenbak
+    highlight: true, // ✅ HIGHLIGHT: Onze automatische reiniging
+  },
+  {
     feature: 'Afvalbak capaciteit',
     ourProduct: '10.5L',
-    competitor: 'Niet vermeld',
+    competitor: 'Geen afvalbak',
     highlight: true, // ✅ HIGHLIGHT: Onze unieke 10.5L
   },
   {
-    feature: 'Geluidsniveau',
-    ourProduct: '<40 dB',
-    competitor: '±55 dB',
-    highlight: true, // ✅ HIGHLIGHT: Stiller
+    feature: 'Dagelijks scheppen',
+    ourProduct: false,
+    competitor: true, // ✅ NIET-AUTOMATISCH: Moet dagelijks scheppen
+    highlight: true, // ✅ HIGHLIGHT: Geen scheppen nodig
   },
   {
-    feature: 'Formaat (L×B×H)',
-    ourProduct: '65 × 53 × 65 cm',
-    competitor: '48 × 52 × 50 cm',
-    highlight: false,
+    feature: 'Geurblokje nodig',
+    ourProduct: false,
+    competitor: true, // ✅ NIET-AUTOMATISCH: Heeft geurblokje nodig
+    highlight: true, // ✅ HIGHLIGHT: Geen geurblokje nodig
   },
   {
-    feature: 'Gewicht',
-    ourProduct: '8.5 kg',
-    competitor: '±7 kg',
-    highlight: false,
+    feature: 'Kwats op vloer',
+    ourProduct: false,
+    competitor: true, // ✅ NIET-AUTOMATISCH: Kwats op vloer
+    highlight: true, // ✅ HIGHLIGHT: Geen kwats
   },
   {
-    feature: 'Veiligheidssensoren',
-    ourProduct: 'Dubbele sensoren (IR + gewicht)',
-    competitor: 'Gewichtssensoren',
-    highlight: true, // ✅ HIGHLIGHT: Dubbele veiligheid
-  },
-  {
-    feature: 'Geschikt voor katten',
-    ourProduct: 'Tot 7kg',
-    competitor: '1-3 katten (vanaf 1kg)',
-    highlight: false,
-  },
-  {
-    feature: 'Minimum leeftijd',
-    ourProduct: '6 maanden',
-    competitor: '3-4 maanden',
-    highlight: false,
-  },
-  {
-    feature: 'WiFi verbinding',
-    ourProduct: '2.4GHz',
-    competitor: '2.4GHz',
-    highlight: false,
+    feature: 'Afvalzak vervangen',
+    ourProduct: '1x per 4-6 dagen',
+    competitor: 'Dagelijks schoonmaken',
+    highlight: true, // ✅ HIGHLIGHT: Minder onderhoud
   },
   {
     feature: 'App bediening',
     ourProduct: true,
-    competitor: true,
+    competitor: false,
+    highlight: true, // ✅ HIGHLIGHT: Smart control
+  },
+  {
+    feature: 'Geluidsniveau',
+    ourProduct: '<40 dB',
+    competitor: 'Stil (geen motor)',
     highlight: false,
   },
   {
-    feature: 'Garantie',
-    ourProduct: '2 jaar',
-    competitor: '2 jaar',
-    highlight: false,
-  },
-  {
-    feature: 'Materiaal',
-    ourProduct: 'ABS',
-    competitor: 'ABS',
-    highlight: false,
-  },
-  {
-    feature: 'Automatische reiniging',
+    feature: 'Gezondheidsmonitoring',
     ourProduct: true,
-    competitor: true,
-    highlight: false,
+    competitor: false,
+    highlight: true, // ✅ HIGHLIGHT: Inzicht in gezondheid
+  },
+  {
+    feature: 'Tijdbesparing',
+    ourProduct: '15 min/dag',
+    competitor: '0 min/dag',
+    highlight: true, // ✅ HIGHLIGHT: Tijdbesparing
   },
 ];
 
@@ -108,7 +97,7 @@ export function ProductComparisonTable() {
       {/* Header */}
       <div className="bg-gray-50 border-b border-gray-200 px-6 py-4">
         <h3 className="text-xl font-semibold text-gray-900">Vergelijking</h3>
-        <p className="text-sm text-gray-600 mt-1">Onze kattenbak vs. concurrent</p>
+        <p className="text-sm text-gray-600 mt-1">Onze automatische kattenbak vs. traditionele kattenbak</p>
       </div>
 
       {/* Table */}
@@ -123,7 +112,17 @@ export function ProductComparisonTable() {
                 Onze Kattenbak
               </th>
               <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600 w-1/3">
-                Concurrent
+                <div className="flex flex-col items-center gap-2">
+                  <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200 bg-white">
+                    <Image
+                      src="/images/traditional-litter-box-optimized.jpg"
+                      alt="Traditionele kattenbak"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <span>Traditionele Kattenbak</span>
+                </div>
               </th>
             </tr>
           </thead>

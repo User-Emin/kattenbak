@@ -231,6 +231,16 @@ export const PRODUCT_CONTENT = {
         '10.000+ cycli getest',
       ],
     },
+    {
+      title: 'Geurblokje, Kwats & Afvalzak',
+      description: 'Geen geurblokje nodig dankzij luchtdichte afvalzak. Geen kwats op de vloer. Eenvoudig afvalzak vervangen.',
+      items: [
+        'Geen geurblokje nodig',
+        'Geen kwats op vloer',
+        'Luchtdichte afvalzak',
+        'Eenvoudig te vervangen',
+      ],
+    },
   ],
 
   // ✅ VERGELIJKINGSTABEL DATA: Gebaseerd op echte info van Poopy.nl
