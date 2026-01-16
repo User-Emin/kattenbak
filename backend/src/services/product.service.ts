@@ -154,8 +154,8 @@ export class ProductService {
       },
     });
 
-    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
-    const product = productRaw ? { ...productRaw, heroVideoUrl: null } as Product : null;
+    // ✅ FIX: Add heroVideoUrl and videoUrl: null to match Product type (fields don't exist in DB)
+    const product = productRaw ? { ...productRaw, heroVideoUrl: null, videoUrl: null } as Product : null;
 
     if (!product) {
       throw new NotFoundError(`Product with ID ${id} not found`);
@@ -227,8 +227,8 @@ export class ProductService {
       },
     });
 
-    // ✅ FIX: Add heroVideoUrl: null to match Product type (field doesn't exist in DB)
-    const product = productRaw ? { ...productRaw, heroVideoUrl: null } as Product : null;
+    // ✅ FIX: Add heroVideoUrl and videoUrl: null to match Product type (fields don't exist in DB)
+    const product = productRaw ? { ...productRaw, heroVideoUrl: null, videoUrl: null } as Product : null;
 
     if (!product) {
       throw new NotFoundError(`Product with slug ${slug} not found`);
