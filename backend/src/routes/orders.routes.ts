@@ -110,34 +110,57 @@ router.post(
         order = await OrderService.createOrder(orderData);
       } catch (dbError: any) {
         logger.error('Database error during order creation:', dbError);
-        // ✅ FALLBACK: If database unavailable, create order without saving
-        // Return payment URL directly from Mollie (graceful degradation)
-        const { createMollieClient } = require('@mollie/api-client');
-        const mollie = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY || '' });
+        // ✅ FALLBACK: If database unavailable, calculate total from items with prices
+        // Calculate total from items (items have price field from frontend)
+        const totalAmount = orderData.items.reduce((sum: number, item: any) => {
+          const itemPrice = typeof item.price === 'number' ? item.price : parseFloat(item.price || '0');
+          return sum + (item.quantity * itemPrice);
+        }, 0);
         
-        const payment = await mollie.payments.create({
-          amount: {
-            currency: 'EUR',
-            value: orderData.items.reduce((sum: number, item: any) => sum + (item.quantity * (item.price || 0)), 0).toFixed(2),
-          },
-          description: `Order ${Date.now()}`,
-          redirectUrl: `${process.env.FRONTEND_URL || 'https://catsupply.nl'}/checkout/success`,
-          webhookUrl: `${process.env.FRONTEND_URL || 'https://catsupply.nl'}/api/v1/webhooks/mollie`,
-          method: paymentMethod || 'ideal',
-        });
+        if (totalAmount <= 0) {
+          return res.status(400).json({
+            success: false,
+            error: 'Ongeldig orderbedrag. Controleer je winkelwagen.'
+          });
+        }
         
-        return res.status(201).json({
-          success: true,
-          data: {
-            order: {
-              id: `temp-${Date.now()}`,
-              orderNumber: `TEMP-${Date.now()}`,
-              status: 'PENDING',
-              total: orderData.items.reduce((sum: number, item: any) => sum + (item.quantity * (item.price || 0)), 0),
+        // ✅ FALLBACK: Create payment directly from Mollie (no database save)
+        try {
+          const { createMollieClient } = require('@mollie/api-client');
+          const mollie = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY || '' });
+          
+          const payment = await mollie.payments.create({
+            amount: {
+              currency: 'EUR',
+              value: totalAmount.toFixed(2),
             },
-            paymentUrl: payment.getCheckoutUrl(),
-          },
-        });
+            description: `Order ${Date.now()}`,
+            redirectUrl: `${process.env.FRONTEND_URL || 'https://catsupply.nl'}/checkout/success`,
+            webhookUrl: `${process.env.FRONTEND_URL || 'https://catsupply.nl'}/api/v1/webhooks/mollie`,
+            method: paymentMethod || 'ideal',
+          });
+          
+          logger.info('Payment created via fallback (DB unavailable):', { paymentId: payment.id, amount: totalAmount });
+          
+          return res.status(201).json({
+            success: true,
+            data: {
+              order: {
+                id: `temp-${Date.now()}`,
+                orderNumber: `TEMP-${Date.now()}`,
+                status: 'PENDING',
+                total: totalAmount,
+              },
+              paymentUrl: payment.getCheckoutUrl(),
+            },
+          });
+        } catch (mollieError: any) {
+          logger.error('Mollie payment creation failed in fallback:', mollieError);
+          return res.status(500).json({
+            success: false,
+            error: 'Betaling kon niet worden gestart. Probeer het later opnieuw.'
+          });
+        }
       }
 
       // ✅ FIX: Fetch order with includes for email (OrderService returns order without relations)

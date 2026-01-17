@@ -442,11 +442,7 @@ function CheckoutContent() {
                   <Button 
                     type="submit" 
                     variant="brand"
-                    className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2" 
-                    style={{
-                      backgroundColor: '#005980', // ✅ BLAUW: Winkelwagen blauw
-                      color: '#ffffff',
-                    }}
+                    className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2 !bg-[#005980] hover:!bg-[#004760]" 
                     size="lg" 
                     disabled={isProcessing}
                   >
