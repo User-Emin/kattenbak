@@ -70,16 +70,40 @@ function CheckoutContent() {
         // ✅ RETRY LOGIC: Probeer eerst met ID, dan met slug als fallback
         try {
           const data = await productsApi.getById(productId);
+          // ✅ DEBUG: Log product data
+          console.log('Checkout loaded product:', {
+            id: data.id,
+            name: data.name,
+            price: data.price,
+            priceType: typeof data.price,
+          });
+          if (!data || !data.id || !data.name) {
+            throw new Error("Product data incompleet");
+          }
+          if (!data.price || data.price <= 0) {
+            console.warn('⚠️ Product heeft geen geldige prijs:', data);
+            throw new Error("Product prijs niet gevonden");
+          }
           setProduct(data);
           setQuantity(qty);
-        } catch (idError) {
+        } catch (idError: any) {
+          console.error('Product ID lookup failed:', idError);
           // ✅ FALLBACK: Als ID niet werkt, probeer als slug (voor oude links)
           try {
             const slugData = await productsApi.getBySlug(productId);
+            console.log('Checkout loaded product by slug:', {
+              id: slugData.id,
+              name: slugData.name,
+              price: slugData.price,
+            });
+            if (!slugData || !slugData.id || !slugData.name || !slugData.price || slugData.price <= 0) {
+              throw new Error("Product data incompleet");
+            }
             setProduct(slugData);
             setQuantity(qty);
-          } catch (slugError) {
-            throw new Error("Product niet gevonden");
+          } catch (slugError: any) {
+            console.error('Product slug lookup failed:', slugError);
+            setError("Product niet gevonden. Probeer het opnieuw of ga terug naar de winkelwagen.");
           }
         }
       } catch (err: any) {
@@ -463,7 +487,7 @@ function CheckoutContent() {
                   <Button 
                     type="submit" 
                     variant="brand"
-                    className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2" 
+                    className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2 !bg-[#005980] hover:!bg-[#004760]" 
                     style={{ backgroundColor: BRAND_COLORS_HEX.primary }} // ✅ BLAUW: Winkelwagen blauw via design system (niet hardcoded)
                     size="lg" 
                     disabled={isProcessing}

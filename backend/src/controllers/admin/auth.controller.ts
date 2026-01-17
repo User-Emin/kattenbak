@@ -42,16 +42,16 @@ export class AdminAuthController {
       // Try database first (if available)
       try {
         user = await prisma.user.findUnique({
-          where: { email },
-          select: {
-            id: true,
-            email: true,
-            passwordHash: true,
-            role: true,
-            firstName: true,
-            lastName: true,
-          }
-        });
+        where: { email },
+        select: {
+          id: true,
+          email: true,
+          passwordHash: true,
+          role: true,
+          firstName: true,
+          lastName: true,
+        }
+      });
         useDatabase = true;
       } catch (dbError: any) {
         // Database not available, use fallback
@@ -71,8 +71,8 @@ export class AdminAuthController {
         const isPasswordValid = await comparePasswords(password, ADMIN_PASSWORD_HASH);
         
         if (!isPasswordValid) {
-          throw new UnauthorizedError('Ongeldige inloggegevens');
-        }
+        throw new UnauthorizedError('Ongeldige inloggegevens');
+      }
 
         // Use fallback user data
         user = {
@@ -85,26 +85,26 @@ export class AdminAuthController {
         };
       } else {
         // User found in database - verify role and password
-        if (user.role !== 'ADMIN') {
-          logger.warn(`❌ Non-admin login attempt: ${email} (role: ${user.role})`);
-          throw new UnauthorizedError('Ongeldige inloggegevens');
-        }
+      if (user.role !== 'ADMIN') {
+        logger.warn(`❌ Non-admin login attempt: ${email} (role: ${user.role})`);
+        throw new UnauthorizedError('Ongeldige inloggegevens');
+      }
 
-        // Security: Compare passwords with bcrypt (timing-attack safe)
-        const isPasswordValid = await comparePasswords(password, user.passwordHash);
-        
-        if (!isPasswordValid) {
-          logger.warn(`❌ Invalid password for admin: ${email}`);
-          throw new UnauthorizedError('Ongeldige inloggegevens');
-        }
+      // Security: Compare passwords with bcrypt (timing-attack safe)
+      const isPasswordValid = await comparePasswords(password, user.passwordHash);
+      
+      if (!isPasswordValid) {
+        logger.warn(`❌ Invalid password for admin: ${email}`);
+        throw new UnauthorizedError('Ongeldige inloggegevens');
+      }
 
         // DRY: Update last login timestamp (only if database available)
         if (useDatabase) {
           try {
-            await prisma.user.update({
-              where: { id: user.id },
-              data: { lastLoginAt: new Date() }
-            });
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { lastLoginAt: new Date() }
+      });
           } catch (updateError) {
             // Ignore update errors (not critical)
             logger.warn('⚠️ Could not update last login timestamp');
