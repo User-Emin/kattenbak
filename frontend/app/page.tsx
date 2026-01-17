@@ -16,6 +16,7 @@ import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { SHARED_CONTENT } from "@/lib/content.config";
+import { BRAND_COLORS_HEX } from "@/lib/color-config";
 import { PremiumQualitySection } from "@/components/shared/premium-quality-section";
 
 /**
@@ -142,9 +143,7 @@ export default function HomePage() {
                 <button 
                   className="inline-flex items-center gap-2 md:gap-3 transition-opacity hover:opacity-80 text-sm md:text-base" // ✅ RESPONSIVE: Mobile kleinere gap en tekst
                   style={{
-                    background: typeof DESIGN_SYSTEM.colors.primary === 'string' && DESIGN_SYSTEM.colors.primary.includes('gradient') 
-                      ? DESIGN_SYSTEM.colors.primary 
-                      : `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart || '#3C3C3D'} 0%, ${DESIGN_SYSTEM.colors.primaryEnd || '#7A7A7D'} 100%)`, // ✅ GRADIENT
+                    background: BRAND_COLORS_HEX.buttonCta, // ✅ BLAUW: Winkelwagen blauw via design system
                     color: DESIGN_SYSTEM.colors.text.inverse,
                     padding: `${DESIGN_SYSTEM.spacing[3]} ${DESIGN_SYSTEM.spacing[6]}`, // ✅ RESPONSIVE: Mobile kleinere padding (was spacing[4] spacing[8])
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
@@ -298,7 +297,8 @@ export default function HomePage() {
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between text-left transition-colors hover:bg-gray-50/50"
+                  className="w-full flex items-center justify-between text-left transition-colors"
+                  style={{ backgroundColor: DESIGN_SYSTEM.colors.secondary }}
                   style={{
                     padding: DESIGN_SYSTEM.spacing[6],
                   }}
