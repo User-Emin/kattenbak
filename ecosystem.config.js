@@ -34,7 +34,7 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         PORT: 3000,  // ✅ FIX: Changed from 3102 to 3000 (standard frontend port)
-        HOSTNAME: '0.0.0.0',
+        HOSTNAME: '0.0.0.0',  // ✅ FIX: Listen on all interfaces (IPv4 + IPv6)
         NEXT_TELEMETRY_DISABLED: 1
       },
       error_file: '../logs/frontend-error.log',
