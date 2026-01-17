@@ -443,6 +443,10 @@ function CheckoutContent() {
                     type="submit" 
                     variant="brand"
                     className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2" 
+                    style={{
+                      backgroundColor: '#005980', // ✅ BLAUW: Winkelwagen blauw
+                      color: '#ffffff',
+                    }}
                     size="lg" 
                     disabled={isProcessing}
                   >

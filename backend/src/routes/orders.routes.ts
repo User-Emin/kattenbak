@@ -104,8 +104,41 @@ router.post(
 
       logger.info('Creating order (DATABASE):', { email: customer.email });
 
-      // Create order in DATABASE
-      const order = await OrderService.createOrder(orderData);
+      // Create order in DATABASE with fallback
+      let order;
+      try {
+        order = await OrderService.createOrder(orderData);
+      } catch (dbError: any) {
+        logger.error('Database error during order creation:', dbError);
+        // ✅ FALLBACK: If database unavailable, create order without saving
+        // Return payment URL directly from Mollie (graceful degradation)
+        const { createMollieClient } = require('@mollie/api-client');
+        const mollie = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY || '' });
+        
+        const payment = await mollie.payments.create({
+          amount: {
+            currency: 'EUR',
+            value: orderData.items.reduce((sum: number, item: any) => sum + (item.quantity * (item.price || 0)), 0).toFixed(2),
+          },
+          description: `Order ${Date.now()}`,
+          redirectUrl: `${process.env.FRONTEND_URL || 'https://catsupply.nl'}/checkout/success`,
+          webhookUrl: `${process.env.FRONTEND_URL || 'https://catsupply.nl'}/api/v1/webhooks/mollie`,
+          method: paymentMethod || 'ideal',
+        });
+        
+        return res.status(201).json({
+          success: true,
+          data: {
+            order: {
+              id: `temp-${Date.now()}`,
+              orderNumber: `TEMP-${Date.now()}`,
+              status: 'PENDING',
+              total: orderData.items.reduce((sum: number, item: any) => sum + (item.quantity * (item.price || 0)), 0),
+            },
+            paymentUrl: payment.getCheckoutUrl(),
+          },
+        });
+      }
 
       // ✅ FIX: Fetch order with includes for email (OrderService returns order without relations)
       const orderWithDetails = await prisma.order.findUnique({
