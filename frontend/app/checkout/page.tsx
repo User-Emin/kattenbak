@@ -19,6 +19,7 @@ import { getProductImage } from "@/lib/image-config";
 import { useCookieConsent } from "@/lib/hooks/use-cookie-consent";
 import { PaymentMethodSelector, type PaymentMethodType } from "@/components/payment/payment-method-selector";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { BRAND_COLORS_HEX } from "@/lib/color-config";
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -439,13 +440,13 @@ function CheckoutContent() {
 
                 <Separator variant="float" spacing="sm" />
 
-                {/* CTA Button rechts - Prominent ORANJE */}
+                {/* CTA Button rechts - Prominent BLAUW */}
                 <div className="mt-6">
                   <Button 
                     type="submit" 
                     variant="brand"
                     className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2" 
-                    style={{ backgroundColor: '#005980' }} // ✅ FIX: Force blue with inline style (overrides all CSS)
+                    style={{ backgroundColor: BRAND_COLORS_HEX.primary }} // ✅ BLAUW: Winkelwagen blauw via design system (niet hardcoded)
                     size="lg" 
                     disabled={isProcessing}
                   >
