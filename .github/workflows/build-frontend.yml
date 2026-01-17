@@ -29,8 +29,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          # Cache disabled to avoid warnings - not critical for build success
       
       - name: 📥 Install Dependencies
         working-directory: ./frontend
@@ -59,9 +58,9 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          source: "frontend/.next/*,frontend/public/*"
-          target: "/var/www/kattenbak/frontend"
-          strip_components: 1
+          source: "frontend/.next,frontend/public"
+          target: "/var/www/kattenbak"
+          strip_components: 0
       
       - name: 🔄 Restart Frontend
         uses: appleboy/ssh-action@master
