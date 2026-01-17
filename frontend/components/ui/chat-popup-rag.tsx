@@ -89,7 +89,7 @@ export function ChatPopup() {
           textColor: 'text-white',
           shadow: 'shadow-lg',
           hoverBackgroundColor: 'hover:bg-gray-900', // ✅ ZWART HOVER: Donkerder hover
-          border: 'border-2 border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border
+          border: 'border-2 border-black', // ✅ ZWART BORDER: Geen grijs meer
           display: 'flex',
           align: 'items-center',
           justify: 'justify-center',
@@ -563,7 +563,7 @@ export function ChatPopup() {
       textColor: 'text-white', // ✅ WIT SYMBOOL: Symbool wit
       shadow: 'shadow-lg',
       hoverBackgroundColor: 'hover:bg-gray-900', // ✅ ZWART HOVER: Donkerder hover
-      border: 'border-2 border-gray-400', // ✅ GRIJS BORDER: Duidelijkere border
+      border: 'border-2 border-black', // ✅ ZWART BORDER: Geen grijs meer
       display: 'flex',
       align: 'items-center',
       justify: 'justify-center',
