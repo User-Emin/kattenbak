@@ -298,9 +298,9 @@ export default function HomePage() {
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full flex items-center justify-between text-left transition-colors"
-                  style={{ backgroundColor: DESIGN_SYSTEM.colors.secondary }}
                   style={{
                     padding: DESIGN_SYSTEM.spacing[6],
+                    backgroundColor: DESIGN_SYSTEM.colors.secondary,
                   }}
                 >
                   <span 
