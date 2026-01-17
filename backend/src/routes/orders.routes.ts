@@ -109,21 +109,65 @@ router.post(
       try {
         order = await OrderService.createOrder(orderData);
       } catch (dbError: any) {
-        logger.error('Database error during order creation:', dbError);
+        logger.error('Database error during order creation:', {
+          message: dbError?.message,
+          code: dbError?.code,
+          name: dbError?.name,
+          // ✅ DEBUG: Log items to see what we're working with
+          itemsCount: items?.length || 0,
+          items: items?.map((item: any) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            price: item.price,
+            priceType: typeof item.price,
+          })) || [],
+        });
+        
         // ✅ FALLBACK: If database unavailable, calculate total from items with prices
         // Calculate total from items (items have price field from frontend)
         // ✅ FIX: Use req.body.items directly (has price from frontend), not orderData.items (doesn't have price)
-        const totalAmount = items.reduce((sum: number, item: any) => {
+        let totalAmount = 0;
+        const calculatedItems = items.map((item: any) => {
           // ✅ FIX: Explicitly convert to number - handle both string and number
-          const itemPrice = typeof item.price === 'number' ? item.price : parseFloat(String(item.price || '0'));
-          const qty = typeof item.quantity === 'number' ? item.quantity : parseInt(String(item.quantity || '1'), 10);
-          return sum + (qty * itemPrice);
-        }, 0);
+          const itemPrice = typeof item.price === 'number' 
+            ? item.price 
+            : parseFloat(String(item.price || '0'));
+          const qty = typeof item.quantity === 'number' 
+            ? item.quantity 
+            : parseInt(String(item.quantity || '1'), 10);
+          const itemTotal = qty * itemPrice;
+          totalAmount += itemTotal;
+          
+          // ✅ DEBUG: Log each item calculation
+          logger.info('Fallback item calculation:', {
+            productId: item.productId,
+            quantity: qty,
+            price: itemPrice,
+            itemTotal,
+            runningTotal: totalAmount,
+          });
+          
+          return { productId: item.productId, quantity: qty, price: itemPrice, itemTotal };
+        });
         
+        // ✅ FIX: Better error message with debug info
         if (totalAmount <= 0) {
+          logger.error('Invalid order amount calculated:', {
+            totalAmount,
+            items: calculatedItems,
+            originalItems: items,
+          });
           return res.status(400).json({
             success: false,
-            error: 'Ongeldig orderbedrag. Controleer je winkelwagen.'
+            error: 'Ongeldig orderbedrag. Controleer je winkelwagen.',
+            // ✅ DEBUG: Include debug info in development only
+            ...(process.env.NODE_ENV !== 'production' && {
+              debug: {
+                totalAmount,
+                itemsCount: items?.length || 0,
+                calculatedItems,
+              },
+            }),
           });
         }
         

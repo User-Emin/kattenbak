@@ -128,9 +128,27 @@ function CheckoutContent() {
 
       // ✅ DRY: Match backend schema exactly
       // ✅ FIX: Ensure price is always a number (convert string to number)
-      const productPrice = typeof product.price === 'number' ? product.price : parseFloat(String(product.price || '0'));
+      const productPrice = typeof product.price === 'number' 
+        ? product.price 
+        : parseFloat(String(product.price || '0'));
       
-      if (!productPrice || productPrice <= 0) {
+      // ✅ DEBUG: Log price calculation
+      console.log('Checkout price calculation:', {
+        productId: product.id,
+        productIdToUse,
+        originalPrice: product.price,
+        priceType: typeof product.price,
+        calculatedPrice: productPrice,
+        quantity,
+        total: productPrice * quantity,
+      });
+      
+      if (!productPrice || productPrice <= 0 || isNaN(productPrice)) {
+        console.error('Invalid product price detected:', {
+          product,
+          productPrice,
+          calculatedPrice: typeof product.price === 'number' ? product.price : parseFloat(String(product.price || '0')),
+        });
         setError('Ongeldig productprijs. Controleer je winkelwagen.');
         setIsProcessing(false);
         return;
@@ -139,8 +157,8 @@ function CheckoutContent() {
       const orderData = {
         items: [{ 
           productId: productIdToUse, // ✅ Use CUID instead of numeric ID
-          quantity,
-          price: productPrice // ✅ FIX: Explicitly use number
+          quantity: Number(quantity) || 1, // ✅ FIX: Ensure quantity is number
+          price: Number(productPrice) // ✅ FIX: Explicitly use Number() to ensure it's a number
         }],
         customer: {
           firstName: formData.firstName,
