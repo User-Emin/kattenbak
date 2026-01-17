@@ -444,27 +444,20 @@ jobs:
               ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/kattenbak/admin-next/
           fi
       
-      - name: ✅ Verify Uploads Preserved (Stability Check)
+      - name: ✅ Stabilize Uploads (CPU-Friendly Protection)
         run: |
           ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
             set -e
-            echo "✅ Verifying uploads preserved after deployment..."
-            UPLOADS_DIR="/var/www/uploads/products"
-            if [ -d "$UPLOADS_DIR" ]; then
-              FILE_COUNT=$(find "$UPLOADS_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" \) 2>/dev/null | wc -l)
-              echo "✅ Uploads preserved: $FILE_COUNT files in $UPLOADS_DIR"
-              if [ "$FILE_COUNT" -eq 0 ]; then
-                echo "⚠️  No files found - checking backup..."
-                BACKUP_DIR="/var/www/uploads-backup"
-                if [ -d "$BACKUP_DIR" ]; then
-                  LATEST_BACKUP=$(ls -td "$BACKUP_DIR"/uploads_* 2>/dev/null | head -1)
-                  if [ -n "$LATEST_BACKUP" ]; then
-                    echo "📦 Latest backup found: $LATEST_BACKUP"
-                  fi
-                fi
-              fi
+            echo "🛡️  Stabilizing uploads (CPU-friendly)..."
+            if [ -f "/var/www/kattenbak/scripts/stabilize-uploads.sh" ]; then
+              /var/www/kattenbak/scripts/stabilize-uploads.sh
             else
-              echo "⚠️  Uploads directory not found"
+              echo "⚠️  Stabilize script not found, using fallback..."
+              UPLOADS_DIR="/var/www/uploads/products"
+              if [ -d "$UPLOADS_DIR" ]; then
+                FILE_COUNT=$(find "$UPLOADS_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" \) 2>/dev/null | wc -l)
+                echo "✅ Uploads: $FILE_COUNT files"
+              fi
             fi
           EOF
       
