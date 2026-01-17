@@ -289,8 +289,8 @@ export const PRODUCT_CONTENT = {
       },
       {
         feature: 'Garantie',
-        ourProduct: '2 jaar',
-        competitor: '2 jaar',
+        ourProduct: '1 jaar',
+        competitor: '1 jaar',
         highlight: false,
       },
       {
@@ -426,7 +426,7 @@ export const SHARED_CONTENT = {
   
   // ✅ DYNAMISCH: Trust banner content (onder hero)
   trustBanner: {
-    text: 'Gratis verzending • 30 dagen bedenktijd • 2 jaar garantie',
+    text: 'Gratis verzending • 30 dagen bedenktijd • 1 jaar garantie',
   },
   
   success: {

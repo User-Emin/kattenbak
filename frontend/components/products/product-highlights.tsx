@@ -26,7 +26,7 @@ export function ProductHighlights() {
     },
     {
       icon: Shield,
-      title: "2 jaar garantie",
+      title: "1 jaar garantie",
       subtitle: "Volledige dekking",
       color: "text-brand",
     },

@@ -1,0 +1,66 @@
+name: 🧪 E2E Verification - catsupply.nl
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *' # Every 6 hours
+
+jobs:
+  e2e-verification:
+    name: ✅ E2E Verification
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🔍 Health Check
+        run: |
+          echo "Testing backend health..."
+          RESPONSE=$(curl -sf https://catsupply.nl/api/v1/health || curl -sf http://catsupply.nl/api/v1/health || echo "FAILED")
+          if echo "$RESPONSE" | grep -q "success\|healthy"; then
+            echo "✅ Backend: OK"
+          else
+            echo "❌ Backend: FAILED"
+            exit 1
+          fi
+      
+      - name: 🔍 Products API
+        run: |
+          echo "Testing products API..."
+          RESPONSE=$(curl -sf https://catsupply.nl/api/v1/products || curl -sf http://catsupply.nl/api/v1/products || echo "FAILED")
+          if echo "$RESPONSE" | grep -q "success\|products"; then
+            echo "✅ Products API: OK"
+          else
+            echo "❌ Products API: FAILED"
+            exit 1
+          fi
+      
+      - name: 🔍 Frontend
+        run: |
+          echo "Testing frontend..."
+          RESPONSE=$(curl -sfI https://catsupply.nl/ || curl -sfI http://catsupply.nl/ || echo "FAILED")
+          if echo "$RESPONSE" | grep -q "200\|HTTP"; then
+            echo "✅ Frontend: OK"
+          else
+            echo "❌ Frontend: FAILED"
+            exit 1
+          fi
+      
+      - name: 🔍 SSL Certificate
+        run: |
+          echo "Testing SSL..."
+          SSL_INFO=$(echo | openssl s_client -servername catsupply.nl -connect catsupply.nl:443 2>/dev/null | openssl x509 -noout -dates 2>/dev/null || echo "")
+          if [ -n "$SSL_INFO" ]; then
+            echo "✅ SSL: Valid"
+          else
+            echo "⚠️  SSL: Not configured (HTTP only)"
+          fi
+      
+      - name: ✅ E2E Success
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ E2E VERIFICATION SUCCESS"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🌐 catsupply.nl: OPERATIONAL"
+          echo "✅ Backend: Working"
+          echo "✅ Products API: Working"
+          echo "✅ Frontend: Accessible"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

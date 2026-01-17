@@ -99,6 +99,13 @@ export function ProductImage({
   const transformOrigin = `${mousePosition.x}% ${mousePosition.y}%`;
   const baseClassName = className || 'object-cover';
 
+  // 🚀 PERFORMANCE: Optimized image sizes for fastest loading
+  const sizes = fill 
+    ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px"
+    : width 
+    ? `(max-width: 640px) 100vw, (max-width: 1024px) ${width}px, ${width}px`
+    : "(max-width: 640px) 100vw, (max-width: 1024px) 600px, 800px";
+
   // Main image with hover zoom
   const imageElement = (
     <div
@@ -114,6 +121,8 @@ export function ProductImage({
           src={imageSrc}
           alt={alt}
           fill
+          sizes={sizes}
+          quality={85}
           unoptimized={isUploadPath}
           className={`${baseClassName} transition-transform duration-200 ease-out ${
             enableZoom ? 'cursor-zoom-in' : ''
@@ -123,6 +132,8 @@ export function ProductImage({
             transformOrigin: transformOrigin,
           }}
           priority={priority}
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
         />
       ) : (
         <Image
@@ -130,6 +141,8 @@ export function ProductImage({
           alt={alt}
           width={width || 800}
           height={height || 800}
+          sizes={sizes}
+          quality={85}
           unoptimized={isUploadPath}
           className={`${baseClassName} transition-transform duration-200 ease-out ${
             enableZoom ? 'cursor-zoom-in' : ''
@@ -139,6 +152,8 @@ export function ProductImage({
             transformOrigin: transformOrigin,
           }}
           priority={priority}
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
         />
       )}
       

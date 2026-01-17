@@ -8,7 +8,7 @@
 export function MovingBanner() {
   const usps = [
     "Gratis verzending",
-    "2 jaar garantie",
+    "1 jaar garantie",
     "Vandaag besteld, morgen in huis",
     "30 dagen bedenktijd",
   ];

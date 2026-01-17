@@ -71,6 +71,22 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [showAllFeatures, setShowAllFeatures] = useState(false); // ✅ Toon meer features state
   const [openSpecs, setOpenSpecs] = useState<Set<number>>(new Set());
 
+  // 🚀 PERFORMANCE: Preload first image for fastest loading
+  useEffect(() => {
+    if (product?.images && product.images.length > 0) {
+      const firstImage = product.images[0];
+      if (firstImage && !firstImage.startsWith('/placeholder')) {
+        // Preload main product image for instant display
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = firstImage;
+        link.fetchPriority = 'high';
+        document.head.appendChild(link);
+      }
+    }
+  }, [product]);
+
   // Fetch product data - ✅ FIX: Retry logic voor betrouwbaar laden
   useEffect(() => {
     let isMounted = true;
@@ -343,7 +359,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       ? '/images/capacity-10.5l-optimized.jpg' // ✅ FOTO GEOPTIMALISEERD: Exact zoals screenshot, geoptimaliseerd
       : index === 1
       ? '/images/feature-2.jpg' // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode) - EXACT IDENTIEK
-      : '/images/traditional-litter-box-optimized.jpg', // ✅ 3E ZIGZAG: Geurblokje, kwats & afvalzak
+      : '/uploads/products/27cb78df-2f8e-4f42-8c27-886fdc2dfda8.jpg', // ✅ 3E ZIGZAG: Geurblokje, kwats & afvalzak (geüploade foto)
   }));
 
   return (
@@ -415,10 +431,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 fill
                 className="object-cover" // ✅ COVER: Productafbeelding past exact aan veld (geen ruimte)
                 priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 58vw, 58vw" // 🚀 PERFORMANCE: Optimale responsive sizes
-                quality={85} // 🚀 PERFORMANCE: High quality WebP/AVIF
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px" // 🚀 PERFORMANCE: Optimized responsive sizes (fastest loading)
+                quality={85} // 🚀 PERFORMANCE: High quality WebP/AVIF (optimal balance)
                 loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
+                placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for instant perceived loading
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Tiny 1x1 pixel blur (instant display)
                 unoptimized={currentImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (served by backend)
+                fetchPriority="high" // 🚀 PERFORMANCE: High fetch priority (fastest loading)
               />
               
               {/* Navigation Arrows */}
@@ -502,10 +521,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       alt={`${product.name} ${index + 1}`}
                       fill
                       className="object-cover"
-                      sizes="80px" // 🚀 PERFORMANCE: Thumbnail size (80x80px)
-                      quality={75} // 🚀 PERFORMANCE: Lower quality voor thumbnails (sneller)
-                      loading="lazy" // 🚀 PERFORMANCE: Lazy load thumbnails
+                      sizes="80px" // 🚀 PERFORMANCE: Thumbnail size (80x80px) - exact size for fastest loading
+                      quality={70} // 🚀 PERFORMANCE: Lower quality voor thumbnails (faster loading, still good quality)
+                      loading="lazy" // 🚀 PERFORMANCE: Lazy load thumbnails (load only when visible)
                       unoptimized={image.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+                      placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
                     />
                   </button>
                 ))}
@@ -1020,7 +1041,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-1">Hoe werkt de garantie?</h4>
-                  <p className="text-sm">Je krijgt 2 jaar volledige garantie. Bij problemen kun je contact opnemen met onze klantenservice voor een snelle oplossing of vervanging.</p>
+                  <p className="text-sm">Je krijgt 1 jaar volledige garantie. Bij problemen kun je contact opnemen met onze klantenservice voor een snelle oplossing of vervanging.</p>
                 </div>
               </div>
             </div>
@@ -1048,8 +1069,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             className={cn(CONFIG.edgeSection.image.objectFit, CONFIG.edgeSection.image.brightness)}
             sizes="100vw" // 🚀 PERFORMANCE: Full viewport width (edge-to-edge)
             priority={false} // 🚀 PERFORMANCE: Below-the-fold, lazy load
-            quality={85} // 🚀 PERFORMANCE: High quality WebP/AVIF
-            loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold)
+            quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster loading)
+            loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when scrolled)
+            placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth perceived loading
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
             unoptimized={(images && images.length > 0 && images[0].startsWith('/uploads/')) || (PRODUCT_CONTENT.edgeImageSection.image || '/placeholder-image.jpg').startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
             onError={(e) => {
               // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
@@ -1120,9 +1143,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     alt={feature.title}
                     fill // ✅ FILL: Vult container exact op
                     className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag
-                    quality={85} // 🚀 PERFORMANCE: High quality WebP/AVIF
-                    loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold)
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag (fastest loading)
+                    quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster)
+                    loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)
+                    placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
                     unoptimized={(feature.image && feature.image.startsWith('/uploads/')) || false} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
                   />
                 </div>

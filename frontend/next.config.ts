@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // ✅ FIX: Removed "standalone" for compatibility with npm start
-  // output: "standalone",
+  // ✅ DEPLOYMENT: Enable standalone for minimal server setup
+  output: "standalone",
   
   // 🚀 PERFORMANCE: Enable compression
   compress: true,
@@ -112,12 +112,14 @@ const nextConfig: NextConfig = {
     ],
     // 🚀 PERFORMANCE: WebP/AVIF prioriteit voor maximale snelheid
     formats: ["image/avif", "image/webp"], // AVIF eerst (kleinste), dan WebP fallback
-    // 🚀 PERFORMANCE: Optimale device sizes voor responsive images
+    // 🚀 PERFORMANCE: Optimale device sizes voor responsive images (snelste laadtijden)
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     // 🚀 PERFORMANCE: Optimale image sizes voor thumbnails en kleine images
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512],
     // 🚀 PERFORMANCE: 1 jaar cache voor optimized images (maximale snelheid)
     minimumCacheTTL: 31536000,
+    // 🚀 PERFORMANCE: Image quality balance (85 = best quality/size ratio)
+    quality: 85,
     // ✅ CPU-FRIENDLY: Reduce image optimization CPU usage
     // Optimized images are cached, so runtime CPU is minimal
     dangerouslyAllowSVG: false, // 🔒 SECURITY: Geen SVG (XSS preventie)

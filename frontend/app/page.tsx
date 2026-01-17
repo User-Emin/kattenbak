@@ -106,7 +106,7 @@ export default function HomePage() {
           <div 
             className="space-y-4 md:space-y-6 z-10 w-full md:w-[35%] px-4 md:px-12 pt-6 md:pt-0" // ✅ RESPONSIVE: Mobile extra top padding voor witruimte tussen navbar
             style={{
-              backgroundColor: DESIGN_SYSTEM.colors.gray[50],
+              backgroundColor: DESIGN_SYSTEM.colors.secondary, // ✅ WIT: Was gray[50], nu wit
             }}
           >
             {/* Heading - ✅ RESPONSIVE: Mobile smaller, Laptop smaller, Desktop smaller */}

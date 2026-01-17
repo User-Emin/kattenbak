@@ -27,14 +27,14 @@ module.exports = {
     },
     {
       name: 'frontend',
-      script: 'npm',  // ✅ FIX: Use npm start (compatible with standard Next.js build)
-      args: 'start',
+      script: '.next/standalone/frontend/server.js',  // ✅ CPU-FRIENDLY: Use pre-built standalone (NO BUILD on server)
       cwd: './frontend',
       instances: 1,
+      exec_mode: 'fork',
       env: {
         NODE_ENV: 'production',
-        PORT: 3000,  // ✅ FIX: Changed from 3102 to 3000 (standard frontend port)
-        HOSTNAME: '0.0.0.0',  // ✅ FIX: Listen on all interfaces (IPv4 + IPv6)
+        PORT: 3102,  // ✅ FIX: Port 3102 (matches Nginx config)
+        HOSTNAME: '0.0.0.0',
         NEXT_TELEMETRY_DISABLED: 1
       },
       error_file: '../logs/frontend-error.log',
@@ -48,15 +48,27 @@ module.exports = {
     },
     {
       name: 'admin',
-      script: 'npm',
-      args: 'start',
+      script: 'node_modules/.bin/next',
+      args: 'start -p 3103 -H 0.0.0.0',
       cwd: './admin-next',
       instances: 1,
+      exec_mode: 'fork',
       env: {
         NODE_ENV: 'production',
-        PORT: 3102,  // ✅ FIX: Admin op poort 3102 (was 3002) - matcht nginx config
+        PORT: 3103,
+        HOSTNAME: '0.0.0.0',
+        NEXT_PUBLIC_API_URL: 'https://catsupply.nl/api/v1',
         NEXT_TELEMETRY_DISABLED: 1
       },
+      error_file: '../logs/admin-error.log',
+      out_file: '../logs/admin-out.log',
+      max_memory_restart: '500M',
+      watch: false,
+      autorestart: true,
+      max_restarts: 10,
+      min_uptime: '10s',
+      max_cpu_restart: '70%'
+    }
       error_file: '../logs/admin-error.log',
       out_file: '../logs/admin-out.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss',

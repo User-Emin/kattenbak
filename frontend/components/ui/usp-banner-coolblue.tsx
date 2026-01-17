@@ -28,11 +28,11 @@ export function UspBannerCoolblue() {
             </span>
           </div>
           
-          {/* USP 3: 2 jaar garantie */}
+          {/* USP 3: 1 jaar garantie */}
           <div className="flex items-center gap-2">
             <Shield className="h-5 w-5 text-[#0071ce] flex-shrink-0" />
             <span className="text-gray-800">
-              <strong className="font-bold">2 jaar</strong> garantie
+              <strong className="font-bold">1 jaar</strong> garantie
             </span>
           </div>
         </div>
