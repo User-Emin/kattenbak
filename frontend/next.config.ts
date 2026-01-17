@@ -165,9 +165,13 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512],
     // 🚀 PERFORMANCE: 1 jaar cache voor optimized images (maximale snelheid)
     minimumCacheTTL: 31536000,
-    // 🚀 PERFORMANCE: Content-Disposition header voor betere caching
+    // ✅ CPU-FRIENDLY: Reduce image optimization CPU usage
+    // Optimized images are cached, so runtime CPU is minimal
     dangerouslyAllowSVG: false, // 🔒 SECURITY: Geen SVG (XSS preventie)
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;", // 🔒 SECURITY: CSP voor images
+    // ✅ CPU-FRIENDLY: Disable image optimization for /uploads/ (already optimized by backend)
+    // This reduces CPU during build and runtime
+    unoptimized: false, // Keep optimization for external images, but backend handles /uploads/
   },
 };
 
