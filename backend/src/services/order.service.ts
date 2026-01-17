@@ -9,6 +9,7 @@ interface CreateOrderData {
   items: Array<{
     productId: string;
     quantity: number;
+    price?: number; // ✅ ADD: Allow price to be passed from frontend for fallback
   }>;
   customerEmail: string;
   customerPhone?: string;
@@ -102,9 +103,15 @@ export class OrderService {
             );
           }
 
+          // ✅ FIX: Use price from frontend if provided and valid, otherwise use database price
+          const priceToUse = item.price !== undefined && item.price > 0 
+            ? item.price 
+            : parseFloat(product.price.toString());
+
           return {
             product,
             quantity: item.quantity,
+            price: priceToUse, // ✅ ADD: Use determined price
           };
         } catch (productError: any) {
           // ✅ DEBUG: Log product lookup errors
@@ -121,8 +128,11 @@ export class OrderService {
 
     // Calculate totals
     let subtotal = new Decimal(0);
-    const orderItems = productDetails.map(({ product, quantity }) => {
-      const price = new Decimal(product.price.toString());
+    const orderItems = productDetails.map(({ product, quantity, price: itemPrice }) => {
+      // ✅ FIX: Use price from productDetails (may be from frontend) or fallback to product.price
+      const price = itemPrice !== undefined 
+        ? new Decimal(itemPrice.toString())
+        : new Decimal(product.price.toString());
       const itemTotal = price.times(quantity);
       subtotal = subtotal.plus(itemTotal);
 
