@@ -246,6 +246,7 @@ export const COMPONENT_COLORS = {
     primary: `bg-gradient-to-br from-gray-900 to-black hover:from-gray-800 hover:to-gray-900 text-white font-bold ${DESIGN_SYSTEM.button.borderRadius}`, // ✅ DRY: Via DESIGN_SYSTEM
     secondary: `bg-blue-600 hover:bg-blue-700 text-white font-bold ${DESIGN_SYSTEM.button.borderRadius}`, // ✅ DRY: Via DESIGN_SYSTEM
     cta: `bg-brand hover:bg-brand-dark text-white font-bold ${DESIGN_SYSTEM.button.borderRadius} transform hover:scale-[1.02] transition-all duration-200`, // ✅ DRY: Via DESIGN_SYSTEM
+    brand: `bg-brand hover:bg-brand-dark text-white font-bold ${DESIGN_SYSTEM.button.borderRadius}`, // ✅ BLAUW: Geen gradient, solid brand color
     outline: `border-2 border-current ${DESIGN_SYSTEM.button.borderRadius}`, // ✅ DRY: Via DESIGN_SYSTEM
   },
   navbar: {

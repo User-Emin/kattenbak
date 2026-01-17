@@ -23,7 +23,7 @@ const VARIANT_STYLES: Record<ButtonVariant, string> = {
   cta: `${COMPONENT_COLORS.button.cta} border-2 border-transparent`, // Oranje + invisible border voor gelijke dikte
   outline: 'bg-transparent border-2 border-current hover:bg-white', // ✅ WIT: Was gray-50, nu wit (consistent)
   ghost: 'bg-transparent hover:bg-white', // ✅ WIT: Was gray-50, nu wit (consistent)
-  brand: 'bg-brand text-white hover:bg-brand-dark border-2 border-transparent',
+  brand: `${COMPONENT_COLORS.button.brand} border-2 border-transparent`, // ✅ BLAUW: Solid brand color (geen gradient)
 };
 
 const SIZE_STYLES: Record<ButtonSize, string> = {

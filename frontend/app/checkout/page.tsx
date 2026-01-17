@@ -487,8 +487,8 @@ function CheckoutContent() {
                   <Button 
                     type="submit" 
                     variant="brand"
-                    className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2 !bg-[#005980] hover:!bg-[#004760]" 
-                    style={{ backgroundColor: BRAND_COLORS_HEX.primary }} // ✅ BLAUW: Winkelwagen blauw via design system (niet hardcoded)
+                    className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2" 
+                    style={{ backgroundColor: BRAND_COLORS_HEX.primary, border: 'none' }} // ✅ BLAUW: Force blue via inline style (overrides classes)
                     size="lg" 
                     disabled={isProcessing}
                   >
