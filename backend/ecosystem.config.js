@@ -7,27 +7,26 @@
 module.exports = {
   apps: [
     {
-      name: 'frontend',
-      script: 'npm',
-      args: 'start',
-      cwd: '/var/www/kattenbak/frontend',
+      name: 'backend',
+      script: 'dist/server-database.js',
+      cwd: '/var/www/kattenbak/backend',
       instances: 1, // ✅ SINGLE INSTANCE: Reduce CPU usage
-      exec_mode: 'fork', // ✅ FORK MODE: Lower overhead than cluster
-      max_memory_restart: '500M', // ✅ MEMORY LIMIT: Prevent leaks
+      exec_mode: 'fork',
+      max_memory_restart: '300M', // ✅ MEMORY LIMIT: Prevent leaks
       env: {
         NODE_ENV: 'production',
-        PORT: 3000,
+        PORT: 3101,
       },
       // ✅ CPU LIMIT: Max 40% CPU usage
       min_uptime: '10s',
       max_restarts: 10,
-      error_file: '/var/log/pm2/frontend-error.log',
-      out_file: '/var/log/pm2/frontend-out.log',
+      error_file: '/var/log/pm2/backend-error.log',
+      out_file: '/var/log/pm2/backend-out.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
       merge_logs: true,
       autorestart: true,
       watch: false, // ✅ NO WATCH: Prevents CPU usage
-      ignore_watch: ['node_modules', '.next', '.git'],
+      ignore_watch: ['node_modules', 'dist', '.git'],
     },
   ],
 };
