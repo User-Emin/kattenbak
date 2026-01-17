@@ -10,10 +10,15 @@ import { API_CONFIG, apiFetch } from "@/lib/config";
  * Approved by: Dr. Sarah Chen, Prof. Anderson, Marcus Rodriguez, Elena Volkov
  */
 function transformProduct(apiProduct: any): Product {
+  // ✅ FIX: Handle price correctly - check for null/undefined, but allow 0 as valid price
+  const price = apiProduct.price !== null && apiProduct.price !== undefined 
+    ? (typeof apiProduct.price === 'number' ? apiProduct.price : parseFloat(String(apiProduct.price))) 
+    : 0;
+  
   return {
     ...apiProduct,
     // ✅ NO transformation - prices already in euros from Decimal DB field
-    price: apiProduct.price || 0,
+    price: isNaN(price) ? 0 : price, // Only default to 0 if parsing fails
     compareAtPrice: apiProduct.compareAtPrice || null,
   };
 }

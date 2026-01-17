@@ -82,10 +82,12 @@ router.post(
       }
 
       // Transform frontend format → OrderService format
+      // ✅ FIX: Include price in orderData for fallback logic
       const orderData = {
         items: items.map((item: any) => ({
           productId: item.productId,
           quantity: item.quantity,
+          price: item.price, // ✅ ADD: Include price for OrderService to use
         })),
         customerEmail: customer.email,
         customerPhone: customer.phone,
