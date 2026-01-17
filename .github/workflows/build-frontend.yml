@@ -55,8 +55,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           source: "frontend/.next,frontend/public"
-          target: "/var/www/kattenbak/frontend"
-          strip_components: 1
+          target: "/var/www/kattenbak"
+          strip_components: 0
       
       - name: 🔄 Restart Frontend
         uses: appleboy/ssh-action@master
