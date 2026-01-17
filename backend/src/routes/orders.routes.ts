@@ -102,7 +102,16 @@ router.post(
         },
       };
 
-      logger.info('Creating order (DATABASE):', { email: customer.email });
+      logger.info('Creating order (DATABASE):', { 
+        email: customer.email,
+        itemsCount: items?.length || 0,
+        items: items?.map((item: any) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.price,
+          priceType: typeof item.price,
+        })) || [],
+      });
 
       // Create order in DATABASE with fallback
       let order;

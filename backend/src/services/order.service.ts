@@ -69,25 +69,53 @@ export class OrderService {
    * Create new order
    */
   static async createOrder(data: CreateOrderData): Promise<Order> {
+    // ✅ DEBUG: Log incoming order data
+    logger.info('OrderService.createOrder called:', {
+      itemsCount: data.items?.length || 0,
+      items: data.items?.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })) || [],
+      customerEmail: data.customerEmail,
+    });
+
     // Validate products and availability
     const productDetails = await Promise.all(
       data.items.map(async (item) => {
-        const product = await ProductService.getProductById(item.productId);
-        const available = await ProductService.checkAvailability(
-          item.productId,
-          item.quantity
-        );
+        try {
+          const product = await ProductService.getProductById(item.productId);
+          logger.info('Product found for order:', {
+            productId: item.productId,
+            productName: product.name,
+            productPrice: product.price,
+            requestedQuantity: item.quantity,
+          });
 
-        if (!available) {
-          throw new ValidationError(
-            `Product "${product.name}" is not available in requested quantity`
+          const available = await ProductService.checkAvailability(
+            item.productId,
+            item.quantity
           );
-        }
 
-        return {
-          product,
-          quantity: item.quantity,
-        };
+          if (!available) {
+            throw new ValidationError(
+              `Product "${product.name}" is not available in requested quantity`
+            );
+          }
+
+          return {
+            product,
+            quantity: item.quantity,
+          };
+        } catch (productError: any) {
+          // ✅ DEBUG: Log product lookup errors
+          logger.error('Product lookup failed in OrderService:', {
+            productId: item.productId,
+            error: productError?.message,
+            errorName: productError?.name,
+            errorCode: productError?.code,
+          });
+          throw productError; // Re-throw to trigger fallback in routes
+        }
       })
     );
 
