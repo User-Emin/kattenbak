@@ -141,9 +141,9 @@ export default function HomePage() {
             <div className="pt-4 pb-8 md:pb-4"> {/* ✅ RESPONSIVE: Mobile extra bottom padding zodat button niet aan afbeelding plakt */}
               <Link href={`/product/${productSlug}`}>
                 <button 
-                  className="inline-flex items-center gap-2 md:gap-3 transition-opacity hover:opacity-80 text-sm md:text-base" // ✅ RESPONSIVE: Mobile kleinere gap en tekst
+                  className="inline-flex items-center gap-2 md:gap-3 transition-all hover:opacity-90 text-sm md:text-base" // ✅ RESPONSIVE: Mobile kleinere gap en tekst
                   style={{
-                    background: BRAND_COLORS_HEX.buttonCta, // ✅ BLAUW: Winkelwagen blauw via design system
+                    background: DESIGN_SYSTEM.colors.text.primary, // ✅ ZWART: Volledig zwart via design system (was buttonCta/blue)
                     color: DESIGN_SYSTEM.colors.text.inverse,
                     padding: `${DESIGN_SYSTEM.spacing[3]} ${DESIGN_SYSTEM.spacing[6]}`, // ✅ RESPONSIVE: Mobile kleinere padding (was spacing[4] spacing[8])
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
