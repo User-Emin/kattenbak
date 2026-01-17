@@ -199,7 +199,7 @@ function CheckoutContent() {
     return (
       <div className="container mx-auto px-6 py-20 text-center">
         <h1 className="text-2xl font-bold mb-4">Oeps!</h1>
-        <p className="text-gray-600 mb-8">{error}</p>
+        <p className="mb-8" style={{ color: DESIGN_SYSTEM.colors.text.primary }}>{error}</p>
         <Button onClick={() => router.push("/")}>Terug naar home</Button>
       </div>
     );
@@ -224,8 +224,8 @@ function CheckoutContent() {
     <div className="bg-white min-h-screen py-12"> {/* ✅ ECHT WIT: bg-white */}
       <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-semibold mb-2 text-gray-900">Afrekenen</h1>
-          <p className="text-gray-600 text-base">Vul je gegevens in voor een snelle checkout</p>
+          <h1 className="text-3xl md:text-4xl font-semibold mb-2" style={{ color: DESIGN_SYSTEM.colors.text.primary }}>Afrekenen</h1>
+          <p className="text-base" style={{ color: DESIGN_SYSTEM.colors.text.primary }}>Vul je gegevens in voor een snelle checkout</p>
         </div>
 
         <form onSubmit={handleSubmit}>

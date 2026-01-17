@@ -210,7 +210,7 @@ export function Footer() {
                 className="pt-2"
                 style={{
                   fontSize: DESIGN_SYSTEM.typography.fontSize.xs,
-                  color: DESIGN_SYSTEM.colors.gray[500],
+                  color: DESIGN_SYSTEM.colors.text.inverse, // ✅ ZWART/WIT: Was gray[500], nu wit (consistent met footer)
                 }}
               >
                 Ma-Vr: 9:00 - 17:00
@@ -223,7 +223,7 @@ export function Footer() {
         <div 
           className="pt-8 border-t flex flex-col sm:flex-row justify-between items-center gap-4"
           style={{
-            borderColor: DESIGN_SYSTEM.colors.gray[800],
+            borderColor: DESIGN_SYSTEM.colors.text.primary, // ✅ ZWART: Was gray[800], nu zwart (consistent met brand)
           }}
         >
           <p 

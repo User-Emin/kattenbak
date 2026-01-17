@@ -21,8 +21,8 @@ const VARIANT_STYLES: Record<ButtonVariant, string> = {
   primary: `${COMPONENT_COLORS.button.primary} border-2 border-transparent`, // Zwart + invisible border
   secondary: `${COMPONENT_COLORS.button.secondary} border-2 border-transparent`, // Blauw + invisible border
   cta: `${COMPONENT_COLORS.button.cta} border-2 border-transparent`, // Oranje + invisible border voor gelijke dikte
-  outline: 'bg-transparent border-2 border-current hover:bg-gray-50',
-  ghost: 'bg-transparent hover:bg-gray-50',
+  outline: 'bg-transparent border-2 border-current hover:bg-white', // ✅ WIT: Was gray-50, nu wit (consistent)
+  ghost: 'bg-transparent hover:bg-white', // ✅ WIT: Was gray-50, nu wit (consistent)
   brand: 'bg-brand text-white hover:bg-brand-dark border-2 border-transparent',
 };
 
