@@ -58,18 +58,9 @@ function CheckoutContent() {
         const productId = searchParams.get("product");
         const qty = parseInt(searchParams.get("quantity") || "1", 10);
 
-        // ✅ PREFER CART: Als cart items beschikbaar zijn, gebruik die (sneller, betrouwbaarder)
-        if (items && items.length > 0) {
-          const cartProduct = items.find(item => item.product.id === productId) || items[0];
-          if (cartProduct && cartProduct.product) {
-            setProduct(cartProduct.product);
-            setQuantity(cartProduct.quantity || qty);
-            setIsLoading(false);
-            return;
-          }
-        }
-
-        // ✅ FALLBACK: Als geen cart items, haal via API
+        // ✅ FIX: ALTIJD API gebruiken voor actuele prijs (niet cart localStorage)
+        // Cart prijzen kunnen verouderd zijn na admin wijzigingen
+        // API geeft altijd de actuele database prijs
         if (!productId) {
           router.push("/");
           return;
