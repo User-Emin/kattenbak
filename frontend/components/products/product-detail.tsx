@@ -212,10 +212,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </Link>
       </div>
     );
-  }"></div>
-        <p className="text-gray-600">Product laden...</p>
-      </div>
-    );
   }
 
   // Get product images - ✅ FILTER: Alleen geüploade foto's (geen oude/placeholder)
