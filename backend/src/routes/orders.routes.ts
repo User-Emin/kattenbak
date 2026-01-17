@@ -112,9 +112,12 @@ router.post(
         logger.error('Database error during order creation:', dbError);
         // ✅ FALLBACK: If database unavailable, calculate total from items with prices
         // Calculate total from items (items have price field from frontend)
-        const totalAmount = orderData.items.reduce((sum: number, item: any) => {
-          const itemPrice = typeof item.price === 'number' ? item.price : parseFloat(item.price || '0');
-          return sum + (item.quantity * itemPrice);
+        // ✅ FIX: Use req.body.items directly (has price from frontend), not orderData.items (doesn't have price)
+        const totalAmount = items.reduce((sum: number, item: any) => {
+          // ✅ FIX: Explicitly convert to number - handle both string and number
+          const itemPrice = typeof item.price === 'number' ? item.price : parseFloat(String(item.price || '0'));
+          const qty = typeof item.quantity === 'number' ? item.quantity : parseInt(String(item.quantity || '1'), 10);
+          return sum + (qty * itemPrice);
         }, 0);
         
         if (totalAmount <= 0) {

@@ -135,11 +135,20 @@ function CheckoutContent() {
       }
 
       // ✅ DRY: Match backend schema exactly
+      // ✅ FIX: Ensure price is always a number (convert string to number)
+      const productPrice = typeof product.price === 'number' ? product.price : parseFloat(String(product.price || '0'));
+      
+      if (!productPrice || productPrice <= 0) {
+        setError('Ongeldig productprijs. Controleer je winkelwagen.');
+        setIsProcessing(false);
+        return;
+      }
+
       const orderData = {
         items: [{ 
           productId: productIdToUse, // ✅ Use CUID instead of numeric ID
           quantity,
-          price: product.price 
+          price: productPrice // ✅ FIX: Explicitly use number
         }],
         customer: {
           firstName: formData.firstName,
@@ -209,7 +218,9 @@ function CheckoutContent() {
   // DRY: Nederlandse consumentenprijzen zijn INCLUSIEF BTW
   // Product.price = €299,99 INCL. BTW
   // We moeten BTW component berekenen voor transparantie
-  const subtotal = product.price * quantity; // Incl. BTW
+  // ✅ FIX: Ensure price is always a number
+  const productPrice = typeof product.price === 'number' ? product.price : parseFloat(String(product.price || '0'));
+  const subtotal = productPrice * quantity; // Incl. BTW
   const shipping = subtotal >= SHIPPING_CONFIG.FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_CONFIG.DEFAULT_COST; // ✅ DRY: Always €0
   
   // BTW berekening: uit INCLUSIEF prijs halen
@@ -442,7 +453,8 @@ function CheckoutContent() {
                   <Button 
                     type="submit" 
                     variant="brand"
-                    className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2 !bg-[#005980] hover:!bg-[#004760]" 
+                    className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2" 
+                    style={{ backgroundColor: '#005980' }} // ✅ FIX: Force blue with inline style (overrides all CSS)
                     size="lg" 
                     disabled={isProcessing}
                   >
