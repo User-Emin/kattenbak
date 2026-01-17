@@ -15,6 +15,7 @@ import { ChatPopup } from "@/components/ui/chat-popup-rag";
 import { ChatPopupErrorBoundary } from "@/components/ui/chat-popup-error-boundary";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { initializeCSSVerification } from "@/lib/css-verification";
+import { API_CONFIG } from "@/lib/config";
 
 /**
  * 🎨 NOTO SANS - Voor body EN headings
@@ -50,9 +51,14 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <html lang="nl" className={notoSansFont.variable}>
       <head>
-        {/* Performance: DNS prefetch */}
+        {/* 🚀 PERFORMANCE: DNS prefetch & preconnect voor snellere resource loading */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href={API_CONFIG.BASE_URL} />
+        <link rel="preconnect" href={API_CONFIG.BASE_URL} crossOrigin="anonymous" />
+        
+        {/* 🚀 PERFORMANCE: Preload critical resources for instant display */}
+        <link rel="preload" as="font" type="font/woff2" crossOrigin="anonymous" href="https://fonts.gstatic.com/s/notosans/v36/o-0IIpQlx3QUlC5A4PNb4j5Ba_2c7A.woff2" />
         
         {/* URL BAR: ✅ WIT - Echt wit voor duidelijkheid */}
         <meta name="theme-color" content="#ffffff" />

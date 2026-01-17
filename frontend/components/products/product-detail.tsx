@@ -148,10 +148,47 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     };
   }, [slug]);
 
+  // 🚀 PERFORMANCE: Show skeleton loading state (not blank spinner) for better UX
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      <div className="min-h-screen">
+        {/* 🚀 PERFORMANCE: Skeleton header with breadcrumb */}
+        <div className="border-b bg-white">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-20 bg-gray-200 rounded animate-pulse"></div>
+              <ChevronRight className="h-4 w-4 text-gray-400" />
+              <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* 🚀 PERFORMANCE: Skeleton product content */}
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Image skeleton */}
+            <div className="space-y-4">
+              <div className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
+              <div className="flex gap-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-20 h-20 bg-gray-200 rounded animate-pulse"></div>
+                ))}
+              </div>
+            </div>
+
+            {/* Content skeleton */}
+            <div className="space-y-6">
+              <div className="h-8 w-3/4 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-6 w-1/2 bg-gray-200 rounded animate-pulse"></div>
+              <div className="space-y-2">
+                <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-4 w-4/6 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+              <div className="h-12 w-full bg-gray-200 rounded animate-pulse"></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -175,13 +212,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </Link>
       </div>
     );
-  }
-  
-  // ✅ FIX: Loading state - toon loading tijdens retries
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+  }"></div>
         <p className="text-gray-600">Product laden...</p>
       </div>
     );

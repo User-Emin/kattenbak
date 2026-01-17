@@ -81,7 +81,10 @@ export default function HomePage() {
   }, []);
 
   const productSlug = product?.slug || SITE_CONFIG.DEFAULT_PRODUCT_SLUG;
-  const heroImage = product?.images?.[0] || IMAGE_CONFIG.hero.main;
+  // 🚀 PERFORMANCE: Always show fallback hero image immediately (no waiting for product fetch)
+  const heroImage = IMAGE_CONFIG.hero.main; // ✅ FIX: Direct fallback, no API dependency
+  // ✅ OPTIONAL: Update hero image if product loads successfully (progressive enhancement)
+  const optimizedHeroImage = product?.images?.[0] || heroImage;
 
   return (
     <div>
@@ -159,17 +162,34 @@ export default function HomePage() {
           <div 
             className="relative md:absolute top-0 right-0 w-full md:w-[65%] h-64 md:h-full overflow-hidden" // ✅ RESPONSIVE: Mobile relative met height, Desktop absolute 65%
           >
-            <Image
-              src={heroImage}
-              alt="Premium automatische kattenbak"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 65vw" // 🚀 PERFORMANCE: Responsive sizes voor hero
-              priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
-              quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
-              loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
-              unoptimized={heroImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
-            />
+            {/* 🚀 PERFORMANCE: Show fallback immediately, upgrade to product image if available */}
+            {optimizedHeroImage !== heroImage ? (
+              <Image
+                key="optimized-hero"
+                src={optimizedHeroImage}
+                alt="Premium automatische kattenbak"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 65vw" // 🚀 PERFORMANCE: Responsive sizes voor hero
+                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
+                quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
+                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
+                unoptimized={optimizedHeroImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+              />
+            ) : (
+              <Image
+                key="fallback-hero"
+                src={heroImage}
+                alt="Premium automatische kattenbak"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 65vw" // 🚀 PERFORMANCE: Responsive sizes voor hero
+                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
+                quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
+                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
+                unoptimized={heroImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+              />
+            )}
           </div>
         </div>
       </section>
