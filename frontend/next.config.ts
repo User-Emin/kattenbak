@@ -21,28 +21,51 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
 
-  // 🚀 CPU-FRIENDLY: Optimize build for low CPU usage
-  swcMinify: true, // Use SWC minifier (faster than Terser, lower CPU)
+  // 🚀 CPU-FRIENDLY: Optimize for minimal CPU usage
+  // ✅ REMOVED: swcMinify (deprecated in Next.js 15, causes warnings)
   
-  // 🚀 PERFORMANCE: Optimize webpack for CPU efficiency
+  // 🚀 PERFORMANCE: Optimize webpack for CPU efficiency - MAXIMUM CPU REDUCTION
   webpack: (config, { isServer, dev }) => {
-    // ✅ CPU-friendly: Reduce parallel processing in production
-    if (!dev && !isServer) {
+    // ✅ CPU-friendly: Reduce parallel processing in ALL modes (build + runtime)
+    if (!isServer) {
       config.optimization = {
         ...config.optimization,
-        minimize: true,
-        // ✅ Reduce CPU load during build (limit parallel workers)
+        minimize: !dev, // Only minimize in production
+        // ✅ CRITICAL: Limit parallel workers to 1 (minimal CPU usage)
         minimizer: config.optimization.minimizer?.map((plugin: any) => {
           if (plugin.constructor.name === 'TerserPlugin' || plugin.constructor.name === 'SwcMinifyPlugin') {
             return {
               ...plugin,
               options: {
                 ...plugin.options,
-                parallel: 2, // Limit parallel workers (CPU-friendly)
+                parallel: 1, // ✅ CRITICAL: Single worker (minimal CPU usage)
               },
             };
           }
           return plugin;
+        }),
+      };
+      
+      // ✅ CPU-FRIENDLY: Reduce module parsing overhead
+      config.module = {
+        ...config.module,
+        rules: config.module.rules?.map((rule: any) => {
+          if (rule.use && Array.isArray(rule.use)) {
+            rule.use = rule.use.map((loader: any) => {
+              if (loader.loader?.includes('babel') || loader.loader?.includes('swc')) {
+                return {
+                  ...loader,
+                  options: {
+                    ...loader.options,
+                    cacheDirectory: true, // Enable caching to reduce CPU
+                    compact: !dev, // Only in production
+                  },
+                };
+              }
+              return loader;
+            });
+          }
+          return rule;
         }),
       };
     }
