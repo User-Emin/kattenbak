@@ -315,7 +315,7 @@ export default function HomePage() {
                   {openFaq === i ? (
                     <ChevronUp className="h-5 w-5 flex-shrink-0 ml-4" style={{ color: DESIGN_SYSTEM.colors.text.primary }} />
                   ) : (
-                    <ChevronDown className="h-5 w-5 flex-shrink-0 ml-4" style={{ color: DESIGN_SYSTEM.colors.text.secondary }} />
+                    <ChevronDown className="h-5 w-5 flex-shrink-0 ml-4" style={{ color: DESIGN_SYSTEM.colors.text.primary }} />
                   )}
                 </button>
                 {openFaq === i && (

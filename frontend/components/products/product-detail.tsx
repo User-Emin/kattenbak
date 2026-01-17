@@ -230,11 +230,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     );
   }
 
-  // Get product images - ✅ FILTER: Alleen geüploade foto's (geen oude/placeholder)
+  // Get product images - ✅ FILTER: Alleen geüploade foto's (geen oude/placeholder, geen SVG data URLs)
   const images = product.images && Array.isArray(product.images) && product.images.length > 0
     ? product.images.filter((img: string) => {
-        // ✅ FILTER: Alleen geldige geüploade foto's (geen placeholder, geen oude paths)
+        // ✅ FILTER: Alleen geldige geüploade foto's (geen placeholder, geen SVG data URLs, geen oude paths)
         if (!img || typeof img !== 'string') return false;
+        // Filter SVG data URLs (data:image/svg+xml)
+        if (img.startsWith('data:image/svg+xml') || img.startsWith('data:')) return false;
         // Filter placeholder images
         if (img.includes('placeholder') || img.includes('demo') || img.includes('default')) return false;
         // Alleen geüploade foto's (van /uploads/ of /api/ of http/https)
@@ -1059,10 +1061,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')}>
           <Image
             src={
-              // ✅ DYNAMISCH: Gebruik eerste echte product image (gefilterd), anders fallback
-              images && images.length > 0
+              // ✅ DYNAMISCH: Gebruik eerste echte geüploade product image (gefilterd), anders PRODUCT_CONTENT fallback
+              images && images.length > 0 && !images[0].startsWith('data:')
                 ? images[0]
-                : (PRODUCT_CONTENT.edgeImageSection.image || '/placeholder-image.jpg')
+                : (PRODUCT_CONTENT.edgeImageSection.image || '/uploads/products/cf4fd5a6-a162-4466-b922-7bc7a8c121a0.jpg')
             }
             alt={product.name}
             fill
