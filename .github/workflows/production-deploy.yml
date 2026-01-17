@@ -619,7 +619,7 @@ jobs:
         run: |
           echo "Checking backend health..."
           for i in {1..5}; do
-            RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://catsupply.nl/api/v1/health || echo "000")
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://catsupply.nl/api/v1/health || echo "000")
             if [ "$RESPONSE" = "200" ]; then
               echo "✅ Backend: OK (HTTP $RESPONSE)"
               exit 0
@@ -628,13 +628,13 @@ jobs:
             sleep 3
           done
           echo "❌ Backend health check FAILED"
-          exit 1
+            exit 1
       
       - name: 🏥 Health Check - Frontend
         run: |
           echo "Checking frontend..."
           for i in {1..5}; do
-            RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://catsupply.nl/ || echo "000")
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://catsupply.nl/ || echo "000")
             if [ "$RESPONSE" = "200" ]; then
               echo "✅ Frontend: OK (HTTP $RESPONSE)"
               exit 0
@@ -643,7 +643,7 @@ jobs:
             sleep 3
           done
           echo "❌ Frontend health check FAILED"
-          exit 1
+            exit 1
       
       - name: 🏥 Health Check - Admin
         run: |
