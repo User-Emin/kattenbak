@@ -50,7 +50,7 @@ const envSchema = z.object({
   SMTP_PORT: z.string().regex(/^\d+$/).default('587'),
   SMTP_USER: z.string().optional(),
   SMTP_PASSWORD: z.string().optional(),
-  EMAIL_FROM: z.string().email().default('noreply@kattenbak.nl'),
+  EMAIL_FROM: z.string().email().default('info@catsupply.nl'),
   EMAIL_PROVIDER: z.enum(['console', 'smtp', 'sendgrid']).default('console'),
   SENDGRID_API_KEY: z.string().optional(),
   ADMIN_EMAIL: z.string().optional().transform((val) => {
