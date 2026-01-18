@@ -125,28 +125,19 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
  * - Geen data leakage via errors
  */
 export default async function ProductPage({ params }: ProductPageProps) {
+  // ✅ SIMPLIFIED: Direct await params without Promise.race to avoid SSR errors
   let slug: string = 'automatische-kattenbak-premium'; // Safe fallback
   
   try {
-    // ✅ SECURITY: Safe unwrap of params Promise (Next.js 15)
-    const resolvedParams = await Promise.race([
-      params,
-      new Promise<{ slug: string }>((_, reject) => 
-        setTimeout(() => reject(new Error('Params timeout')), 3000)
-      )
-    ]) as { slug: string };
-    
-    // ✅ VALIDATION: Ensure slug is valid string
+    const resolvedParams = await params;
     if (resolvedParams?.slug && typeof resolvedParams.slug === 'string' && resolvedParams.slug.length > 0) {
       slug = resolvedParams.slug;
     }
   } catch (error: any) {
     // ✅ SECURITY: Silent fallback - no error details exposed
-    // Log server-side only (not exposed to client)
     if (typeof window === 'undefined') {
       console.error('[Server] ProductPage params error (using fallback):', error?.name || 'Unknown');
     }
-    // Fallback slug already set above
   }
 
   // ✅ STANDARDS: Always render - client component handles loading/errors gracefully
