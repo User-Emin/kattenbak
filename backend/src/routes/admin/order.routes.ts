@@ -51,33 +51,28 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     ]);
 
     // Transform for React Admin compatibility
-    const transformedOrders = orders.map(order => ({
-      id: order.id,
-      orderNumber: order.orderNumber,
-      customerEmail: order.customerEmail,
-      customerPhone: order.customerPhone,
-      customerName: order.shippingAddress 
+    // ✅ FIX: Use transformOrder from transformers.ts to ensure shippingAddress is included correctly
+    const transformedOrdersRaw = transformOrders(orders);
+    
+    // ✅ FIX: Add customerName and other fields if not present in transform
+    const transformedOrders = transformedOrdersRaw.map((order: any) => ({
+      ...order,
+      customerName: order.customerName || (order.shippingAddress 
         ? `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`
-        : 'Unknown',
-      total: Number(order.total),
-      subtotal: Number(order.subtotal),
-      tax: Number(order.tax),
-      shippingCost: Number(order.shippingCost),
-      status: order.status,
-      paymentStatus: order.payment?.status || 'PENDING', // ✅ FIXED: Changed from 'payments[0]' to 'payment'
-      shippingAddress: order.shippingAddress,
-      billingAddress: order.billingAddress,
-      items: order.items.map(item => ({
+        : 'Unknown'),
+      customerPhone: order.customerPhone || undefined,
+      paymentStatus: order.paymentStatus || (order.payment?.status || 'PENDING'),
+      items: order.items ? order.items.map((item: any) => ({
         id: item.id,
         productId: item.productId,
-        productName: item.productName,
-        productSku: item.productSku,
+        productName: item.productName || item.product?.name,
+        productSku: item.productSku || item.product?.sku,
         quantity: item.quantity,
         price: Number(item.price),
-        subtotal: Number(item.subtotal),
-      })),
-      createdAt: order.createdAt.toISOString(),
-      updatedAt: order.updatedAt.toISOString(),
+        subtotal: Number(item.subtotal || (Number(item.price) * item.quantity)),
+      })) : [],
+      createdAt: order.createdAt || order.createdAt?.toISOString(),
+      updatedAt: order.updatedAt || order.updatedAt?.toISOString(),
     }));
 
     logger.info(`Admin: Retrieved ${orders.length} orders from database`);
