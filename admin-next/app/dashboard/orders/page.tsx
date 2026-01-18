@@ -137,10 +137,18 @@ export default function OrdersPage() {
                     </TableCell>
                     <TableCell>
                       <div>
-                        <p className="font-medium">{order.customerName || 'Onbekend'}</p>
+                        <p className="font-medium">
+                          {order.shippingAddress?.firstName || order.customerName || 'Onbekend'} {order.shippingAddress?.lastName || ''}
+                        </p>
                         <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
-                        {order.shippingAddress?.postalCode && (
+                        {order.shippingAddress?.street && (
                           <p className="text-xs text-muted-foreground mt-1">
+                            {order.shippingAddress.street} {order.shippingAddress.houseNumber}
+                            {order.shippingAddress.addition && ` ${order.shippingAddress.addition}`}
+                          </p>
+                        )}
+                        {order.shippingAddress?.postalCode && (
+                          <p className="text-xs text-muted-foreground">
                             📮 {order.shippingAddress.postalCode} {order.shippingAddress.city}
                           </p>
                         )}
