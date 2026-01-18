@@ -104,8 +104,17 @@ async function getProductMetadata(slug: string): Promise<Metadata> {
  * ✅ SEO 10/10: Export metadata for product page
  */
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  return getProductMetadata(slug);
+  try {
+    const { slug } = await params;
+    return getProductMetadata(slug);
+  } catch (error) {
+    // ✅ FIX: If metadata generation fails, return defaults - don't crash page
+    console.error('generateMetadata error:', error);
+    return {
+      title: SEO_CONFIG.defaults.title,
+      description: SEO_CONFIG.defaults.description,
+    };
+  }
 }
 
 /**
