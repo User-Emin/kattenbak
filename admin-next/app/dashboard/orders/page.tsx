@@ -166,7 +166,7 @@ export default function OrdersPage() {
                       {format(new Date(order.createdAt), 'dd MMM yyyy', { locale: nl })}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Link href={`/admin/dashboard/orders/${order.id}`}>
+                      <Link href={`/dashboard/orders/${order.id}`}>
                         <Button variant="outline" size="sm">
                           Bekijk Details
                         </Button>
