@@ -61,6 +61,11 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         {/* 🚀 PERFORMANCE: Preload critical resources for instant display */}
         <link rel="preload" as="font" type="font/woff2" crossOrigin="anonymous" href="https://fonts.gstatic.com/s/notosans/v36/o-0IIpQlx3QUlC5A4PNb4j5Ba_2c7A.woff2" />
         
+        {/* ✅ SEO 10/10: Favicon & Icons */}
+        <link rel="icon" href="/logos/logo.webp" type="image/webp" />
+        <link rel="apple-touch-icon" href="/logos/logo.webp" />
+        <link rel="shortcut icon" href="/logos/logo.webp" type="image/webp" />
+        
         {/* URL BAR: ✅ WIT - Echt wit voor duidelijkheid */}
         <meta name="theme-color" content="#ffffff" />
         <meta name="msapplication-navbutton-color" content="#ffffff" />
