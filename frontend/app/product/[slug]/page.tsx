@@ -16,11 +16,17 @@ export const dynamic = 'force-dynamic';
  */
 async function getProductMetadata(slug: string): Promise<Metadata> {
   try {
+    // ✅ FIX: Use absolute URL for server-side fetch (required in Next.js App Router)
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
-    const apiProductUrl = `${apiUrl}/products/slug/${slug}`;
+    const apiProductUrl = apiUrl.startsWith('http') 
+      ? `${apiUrl}/products/slug/${slug}` 
+      : `https://catsupply.nl/api/v1/products/slug/${slug}`;
     
     const response = await fetch(apiProductUrl, {
       next: { revalidate: 300 }, // Cache for 5 minutes
+      headers: {
+        'Accept': 'application/json',
+      },
     });
     
     if (!response.ok) {
