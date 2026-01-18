@@ -112,9 +112,18 @@ export function Header() {
                 style={{
                   maxHeight: '48px',
                   width: 'auto',
+                  display: 'block',
                 }}
                 loading="eager"
                 fetchPriority="high"
+                onError={(e) => {
+                  console.error('Logo failed to load:', e);
+                  // Fallback naar PNG als WebP faalt
+                  const target = e.target as HTMLImageElement;
+                  if (target.src && !target.src.includes('.png')) {
+                    target.src = '/logos/4626096c-52ac-4d02-9373-c9bba0671dae-optimized.png';
+                  }
+                }}
               />
             </Link>
           </div>
