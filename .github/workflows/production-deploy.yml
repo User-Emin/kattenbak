@@ -504,12 +504,18 @@ jobs:
             echo "🔍 Verifying frontend (pre-built from GitHub)..."
             if [ -d "frontend/.next" ]; then
               echo "✅ Frontend pre-built directory exists"
-              # Copy standalone if needed (NO BUILD)
-              if [ ! -f "frontend/.next/standalone/frontend/server.js" ] && [ -d "frontend/.next/static" ]; then
-                echo "📦 Copying static files (no build)..."
+              # ✅ FIX: Copy static files to standalone (required for CSS/JS/Images to load)
+              if [ -d "frontend/.next/static" ]; then
+                echo "📦 Copying static files to standalone build (CSS/JS/Images)..."
+                # Copy to both possible standalone paths
                 mkdir -p frontend/.next/standalone/frontend/.next
-                cp -r frontend/.next/static frontend/.next/standalone/frontend/.next/ 2>/dev/null || echo "Static files OK"
-                [ -d "frontend/public" ] && cp -r frontend/public frontend/.next/standalone/frontend/ 2>/dev/null || echo "Public files OK"
+                mkdir -p frontend/.next/standalone/kattenbak/frontend/.next
+                cp -r frontend/.next/static/* frontend/.next/standalone/frontend/.next/ 2>/dev/null || true
+                cp -r frontend/.next/static/* frontend/.next/standalone/kattenbak/frontend/.next/ 2>/dev/null || true
+                # ✅ FIX: Copy public directory (logos, images) to standalone
+                [ -d "frontend/public" ] && mkdir -p frontend/.next/standalone/frontend/public && cp -r frontend/public/* frontend/.next/standalone/frontend/public/ 2>/dev/null || true
+                [ -d "frontend/public" ] && mkdir -p frontend/.next/standalone/kattenbak/frontend/public && cp -r frontend/public/* frontend/.next/standalone/kattenbak/frontend/public/ 2>/dev/null || true
+                echo "✅ Static files and public assets copied to standalone directories"
               fi
             else
               echo "⚠️  Frontend not built yet (will be on next GitHub Actions build)"

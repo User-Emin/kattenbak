@@ -62,21 +62,13 @@ module.exports = {
       },
       error_file: '../logs/admin-error.log',
       out_file: '../logs/admin-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss',
       max_memory_restart: '500M',
       watch: false,
       autorestart: true,
       max_restarts: 10,
       min_uptime: '10s',
       max_cpu_restart: '70%'
-    }
-      error_file: '../logs/admin-error.log',
-      out_file: '../logs/admin-out.log',
-      log_date_format: 'YYYY-MM-DD HH:mm:ss',
-      max_memory_restart: '500M',
-      watch: false,
-      autorestart: true,
-      max_restarts: 10,
-      min_uptime: '10s'
     }
   ],
 
