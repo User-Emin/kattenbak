@@ -128,7 +128,11 @@ export default function OrdersPage() {
               </TableHeader>
               <TableBody>
                 {orders.map((order) => (
-                  <TableRow key={order.id}>
+                  <TableRow 
+                    key={order.id}
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => window.location.href = `/dashboard/orders/${order.id}`}
+                  >
                     <TableCell className="font-mono text-sm">
                       {order.orderNumber}
                     </TableCell>

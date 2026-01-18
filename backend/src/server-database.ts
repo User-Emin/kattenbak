@@ -1024,6 +1024,7 @@ app.get('/api/v1/orders/by-number/:orderNumber', async (req: Request, res: Respo
                 id: true,
                 name: true,
                 images: true,
+                sku: true,
               },
             },
           },
@@ -1055,6 +1056,68 @@ app.get('/api/v1/orders/by-number/:orderNumber', async (req: Request, res: Respo
   } catch (err: any) {
     console.error('Order by number error:', err.message);
     res.status(500).json(error('Could not fetch order'));
+  }
+});
+
+// ✅ ADMIN: Get order by orderNumber (alternative lookup)
+app.get('/api/v1/admin/orders/by-number/:orderNumber', async (req: Request, res: Response) => {
+  try {
+    // ✅ SECURITY: Verify admin authentication
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({
+        success: false,
+        error: 'Geen authenticatie token gevonden',
+      });
+    }
+
+    const { orderNumber } = req.params;
+    
+    const order = await prisma.order.findUnique({
+      where: { orderNumber },
+      include: {
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                images: true,
+                sku: true,
+              },
+            },
+          },
+        },
+        shippingAddress: true,
+        billingAddress: true,
+        payment: true,
+        returns: {
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        error: `Order ${orderNumber} not found`,
+      });
+    }
+
+    // ✅ FIX: Transform order to include all address fields and convert Decimal to number
+    const { transformOrder } = require('./lib/transformers');
+    const transformed = transformOrder(order);
+
+    res.json({
+      success: true,
+      data: transformed,
+    });
+  } catch (err: any) {
+    console.error('Admin order by number error:', err.message);
+    res.status(500).json({
+      success: false,
+      error: 'Could not fetch order',
+    });
   }
 });
 
