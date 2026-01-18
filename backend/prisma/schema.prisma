@@ -247,7 +247,8 @@ model ProductVariant {
 
   // Indexes for performance
   @@index([productId])
-  @@index([colorName])
+  // ✅ FIX: Removed colorName index - column may not exist in all databases
+  // @@index([colorName])
   @@map("product_variants")
 }
 

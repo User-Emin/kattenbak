@@ -67,7 +67,17 @@ function CheckoutContent() {
           return;
         }
 
-        // ✅ RETRY LOGIC: Probeer eerst met ID, dan met slug als fallback
+        // ✅ FALLBACK PRIORITY: Eerst cart, dan API (cart is betrouwbaarder als API faalt)
+        // Check cart first for immediate fallback
+        let productFromCart = null;
+        if (items && items.length > 0) {
+          productFromCart = items.find(item => 
+            item.product.id === productId || 
+            item.product.slug === productId
+          );
+        }
+        
+        // ✅ RETRY LOGIC: Probeer eerst met ID, dan met slug als fallback, dan cart
         try {
           const data = await productsApi.getById(productId);
           // ✅ DEBUG: Log product data
@@ -105,22 +115,39 @@ function CheckoutContent() {
             console.error('Product slug lookup failed:', slugError);
             
             // ✅ FALLBACK: Probeer product uit cart items te halen (laatste redmiddel)
-            if (items && items.length > 0) {
-              const cartProduct = items.find(item => 
-                item.product.id === productId || 
-                item.product.slug === productId ||
-                item.product.id === "1" // Fallback voor oude numeric IDs
-              );
-              
-              if (cartProduct && cartProduct.product) {
-                console.log('Checkout loaded product from cart:', {
-                  id: cartProduct.product.id,
-                  name: cartProduct.product.name,
-                  price: cartProduct.product.price,
-                });
-                setProduct(cartProduct.product);
-                setQuantity(cartProduct.quantity || qty);
-                return;
+            if (productFromCart && productFromCart.product) {
+              console.log('Checkout loaded product from cart (fallback):', {
+                id: productFromCart.product.id,
+                name: productFromCart.product.name,
+                price: productFromCart.product.price,
+              });
+              setProduct(productFromCart.product);
+              setQuantity(productFromCart.quantity || qty);
+              return;
+            }
+            
+            // ✅ FALLBACK: Probeer ook uit localStorage cart (als context niet geladen is)
+            if (typeof window !== 'undefined') {
+              try {
+                const cartData = localStorage.getItem('kb_cart');
+                if (cartData) {
+                  const cartItems = JSON.parse(cartData);
+                  const localStorageCartProduct = cartItems.find((item: any) => 
+                    item.product?.id === productId || 
+                    item.product?.slug === productId
+                  );
+                  if (localStorageCartProduct && localStorageCartProduct.product) {
+                    console.log('Checkout loaded product from localStorage cart:', {
+                      id: localStorageCartProduct.product.id,
+                      name: localStorageCartProduct.product.name,
+                    });
+                    setProduct(localStorageCartProduct.product);
+                    setQuantity(localStorageCartProduct.quantity || qty);
+                    return;
+                  }
+                }
+              } catch (localStorageError) {
+                console.error('localStorage cart fallback failed:', localStorageError);
               }
             }
             
