@@ -372,7 +372,31 @@ export default function OrderDetailPage() {
               </div>
             </div>
           ) : (
-            <p className="text-muted-foreground">Geen items gevonden</p>
+            <div className="space-y-4">
+              <p className="text-muted-foreground">Geen items gevonden in deze order</p>
+              <div className="pt-4 border-t space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Subtotaal</span>
+                  <span>€ {order.subtotal?.toFixed(2) || '0.00'}</span>
+                </div>
+                {order.shippingCost > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Verzendkosten</span>
+                    <span>€ {order.shippingCost.toFixed(2)}</span>
+                  </div>
+                )}
+                {order.tax > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">BTW</span>
+                    <span>€ {order.tax.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="flex justify-between text-lg font-bold pt-2">
+                  <span>Totaal</span>
+                  <span>€ {order.total.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
           )}
         </CardContent>
       </Card>
