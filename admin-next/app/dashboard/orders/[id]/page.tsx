@@ -114,17 +114,36 @@ export default function OrderDetailPage() {
       if (response && response.data) {
         // ✅ FIX: Extract customerName from shippingAddress if not present
         const orderData = response.data;
+        
+        // ✅ DEBUG: Log order data to see what we receive
+        console.log('Order data received:', {
+          id: orderData.id,
+          orderNumber: orderData.orderNumber,
+          hasShippingAddress: !!orderData.shippingAddress,
+          hasBillingAddress: !!orderData.billingAddress,
+          hasItems: !!orderData.items,
+          itemsCount: orderData.items?.length || 0,
+          customerEmail: orderData.customerEmail,
+        });
+        
         if (!orderData.customerName && orderData.shippingAddress) {
           orderData.customerName = `${orderData.shippingAddress.firstName} ${orderData.shippingAddress.lastName}`;
         }
+        
         setOrder(orderData);
       } else {
+        console.error('No order data in response:', response);
         toast.error('Bestelling niet gevonden');
         router.push('/dashboard/orders');
       }
     } catch (error: any) {
-      console.error('Load order error:', error);
-      toast.error('Fout bij laden van bestelling');
+      console.error('Load order error:', {
+        message: error.message,
+        status: error.status,
+        details: error.details,
+        url: error.url,
+      });
+      toast.error(error.message || 'Fout bij laden van bestelling');
       router.push('/dashboard/orders');
     } finally {
       setIsLoading(false);
