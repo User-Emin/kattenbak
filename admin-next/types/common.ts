@@ -12,6 +12,14 @@ export interface Order {
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   createdAt: string;
   updatedAt: string;
+  shippingAddress?: {
+    street: string;
+    houseNumber: string;
+    addition?: string;
+    postalCode: string;
+    city: string;
+    country: string;
+  };
 }
 
 export interface Category {

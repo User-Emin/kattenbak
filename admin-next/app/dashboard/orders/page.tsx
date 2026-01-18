@@ -137,6 +137,11 @@ export default function OrdersPage() {
                       <div>
                         <p className="font-medium">{order.customerName || 'Onbekend'}</p>
                         <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
+                        {order.shippingAddress?.postalCode && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            📮 {order.shippingAddress.postalCode} {order.shippingAddress.city}
+                          </p>
+                        )}
                       </div>
                     </TableCell>
                     <TableCell className="font-medium">
