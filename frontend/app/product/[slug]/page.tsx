@@ -46,7 +46,6 @@ async function getProductMetadata(slug: string): Promise<Metadata> {
     const productTitle = product.metaTitle || product.name || SEO_CONFIG.defaults.title;
     const productDescription = product.metaDescription || product.shortDescription || product.description || SEO_CONFIG.defaults.description;
     const productUrl = `${SEO_CONFIG.site.url}/product/${slug}`;
-    const productPrice = product.price ? `€${product.price.toFixed(2)}` : '';
     
     return {
       title: `${productTitle} | ${SEO_CONFIG.site.name}`,
