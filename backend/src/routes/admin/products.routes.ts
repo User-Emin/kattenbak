@@ -62,15 +62,16 @@ router.get('/', async (req, res) => {
               slug: true
             }
           },
-          variants: {
-            select: {
-              id: true,
-              name: true,
-              colorName: true,
-              stock: true,
-              isActive: true
-            }
-          }
+          // ✅ FIX: Temporarily disabled - colorName column doesn't exist in database
+          // variants: {
+          //   select: {
+          //     id: true,
+          //     name: true,
+          //     colorName: true,
+          //     stock: true,
+          //     isActive: true
+          //   }
+          // }
         }
       }),
       prisma.product.count({ where })
