@@ -27,7 +27,7 @@ module.exports = {
     },
     {
       name: 'frontend',
-      script: '.next/standalone/kattenbak/frontend/server.js',  // ✅ CPU-FRIENDLY: Use pre-built standalone (NO BUILD on server)
+      script: '.next/standalone/frontend/server.js',  // ✅ CPU-FRIENDLY: Use pre-built standalone (NO BUILD on server)
       cwd: './frontend',
       instances: 1,
       exec_mode: 'fork',
