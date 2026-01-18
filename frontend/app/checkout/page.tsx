@@ -103,6 +103,27 @@ function CheckoutContent() {
             setQuantity(qty);
           } catch (slugError: any) {
             console.error('Product slug lookup failed:', slugError);
+            
+            // ✅ FALLBACK: Probeer product uit cart items te halen (laatste redmiddel)
+            if (items && items.length > 0) {
+              const cartProduct = items.find(item => 
+                item.product.id === productId || 
+                item.product.slug === productId ||
+                item.product.id === "1" // Fallback voor oude numeric IDs
+              );
+              
+              if (cartProduct && cartProduct.product) {
+                console.log('Checkout loaded product from cart:', {
+                  id: cartProduct.product.id,
+                  name: cartProduct.product.name,
+                  price: cartProduct.product.price,
+                });
+                setProduct(cartProduct.product);
+                setQuantity(cartProduct.quantity || qty);
+                return;
+              }
+            }
+            
             setError("Product niet gevonden. Probeer het opnieuw of ga terug naar de winkelwagen.");
           }
         }
