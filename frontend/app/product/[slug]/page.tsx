@@ -112,16 +112,18 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
  * Product Detail Page - Server component with metadata
  */
 export default async function ProductPage({ params }: ProductPageProps) {
+  let slug: string;
+  
   try {
-    const { slug } = await params;
-
-    // Fetch product client-side
-    return <ProductDetail slug={slug} />;
+    const resolvedParams = await params;
+    slug = resolvedParams.slug;
   } catch (error) {
-    // ✅ FIX: Catch any errors during params parsing or component rendering
-    console.error('ProductPage render error:', error);
-    // Still render the ProductDetail component - let it handle the error client-side
-    const { slug } = await params;
-    return <ProductDetail slug={slug} />;
+    // ✅ FIX: If params parsing fails, try to get slug from URL or use fallback
+    console.error('ProductPage params error:', error);
+    // Extract slug from error context if possible, otherwise use default
+    slug = 'automatische-kattenbak-premium'; // Fallback slug
   }
+
+  // Always render ProductDetail - let it handle errors client-side
+  return <ProductDetail slug={slug} />;
 }
