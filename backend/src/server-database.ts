@@ -1169,21 +1169,48 @@ app.get('/api/v1/admin/orders/:id', async (req: Request, res: Response) => {
     const order = await prisma.order.findUnique({
       where: { id: req.params.id },
       include: {
-        items: true,
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                images: true,
+                sku: true,
+              },
+            },
+          },
+        },
         shippingAddress: true,
+        billingAddress: true,
         payment: true,
+        returns: {
+          orderBy: { createdAt: 'desc' },
+        },
       },
     });
 
     if (!order) {
-      return res.status(404).json(error('Order not found'));
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found',
+      });
     }
 
-    // DEFENSIVE: Convert Decimals to Numbers
-    res.json(success(sanitizeOrder(order)));
+    // ✅ FIX: Transform order to include all address fields and convert Decimal to number
+    const { transformOrder } = require('./lib/transformers');
+    const transformed = transformOrder(order);
+
+    res.json({
+      success: true,
+      data: transformed,
+    });
   } catch (err: any) {
     console.error('Admin order by ID error:', err.message);
-    res.status(500).json(error('Could not fetch order'));
+    res.status(500).json({
+      success: false,
+      error: 'Could not fetch order',
+    });
   }
 });
 
