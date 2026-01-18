@@ -72,8 +72,28 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
           }
         `}} />
         
-        <title>CatSupply - Premium Automatische Kattenbak</title>
-        <meta name="description" content="De meest geavanceerde zelfreinigende kattenbak. Automatisch, hygiënisch, en stijlvol." />
+        {/* ✅ SEO 10/10: Title & Meta Description */}
+        <title>{SEO_CONFIG.defaults.title}</title>
+        <meta name="description" content={SEO_CONFIG.defaults.description} />
+        
+        {/* ✅ SEO 10/10: Canonical URL - Dynamic via useEffect */}
+        <link rel="canonical" href={typeof window !== 'undefined' ? window.location.href.split('?')[0] : SEO_CONFIG.site.url} />
+        
+        {/* ✅ SEO 10/10: Open Graph Tags */}
+        <meta property="og:title" content={SEO_CONFIG.defaults.title} />
+        <meta property="og:description" content={SEO_CONFIG.defaults.description} />
+        <meta property="og:image" content={SEO_CONFIG.defaults.image} />
+        <meta property="og:url" content={typeof window !== 'undefined' ? window.location.href.split('?')[0] : SEO_CONFIG.site.url} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={SEO_CONFIG.site.name} />
+        <meta property="og:locale" content={SEO_CONFIG.site.locale} />
+        
+        {/* ✅ SEO 10/10: Twitter Card Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={SEO_CONFIG.defaults.title} />
+        <meta name="twitter:description" content={SEO_CONFIG.defaults.description} />
+        <meta name="twitter:image" content={SEO_CONFIG.defaults.image} />
+        <meta name="twitter:site" content="@CatSupply" />
       </head>
       <body 
         className="antialiased bg-white" // ✅ ECHT WIT: bg-white class + style
