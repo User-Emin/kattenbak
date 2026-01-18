@@ -27,14 +27,16 @@ async function main() {
   }
   
   // 2. Create or Get Main Product (zorg dat data niet verloren gaat)
-  console.log('\n2️⃣ Creating/getting product...');
+  // ✅ CRITICAL: NEVER overwrite existing product data - always preserve admin changes
+  console.log('\n2️⃣ Checking for existing product...');
   let product = await prisma.product.findUnique({
     where: { slug: 'automatische-kattenbak-premium' }
   });
   
   if (product) {
     console.log(`✅ Product already exists: ${product.name} (€${product.price})`);
-    console.log('✅ Skipping product creation to preserve existing data');
+    console.log('✅ Skipping product creation to preserve existing admin data');
+    console.log('✅ Dynamic data preserved - admin changes will NOT be overwritten');
     return;
   }
   

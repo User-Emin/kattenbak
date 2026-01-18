@@ -5,8 +5,9 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Mail, Package, Truck, Home, Loader2 } from "lucide-react";
+import { Mail, Package, Truck, Home, Loader2, FileText } from "lucide-react";
 import { ordersApi } from "@/lib/api/orders";
+import { useRouter } from "next/navigation";
 
 /**
  * SUCCESS PAGE - Bedank pagina met OrderID
@@ -50,7 +51,9 @@ const NEXT_STEPS = [
 
 function SuccessContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
   const [customerEmail, setCustomerEmail] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -58,9 +61,10 @@ function SuccessContent() {
     const fetchOrderDetails = async () => {
       try {
         // ✅ FIX: Check both "order" and "orderId" parameters for backwards compatibility
-        const orderId = searchParams.get("order") || searchParams.get("orderId");
-        if (orderId) {
-          const order = await ordersApi.getById(orderId);
+        const id = searchParams.get("order") || searchParams.get("orderId");
+        if (id) {
+          setOrderId(id);
+          const order = await ordersApi.getById(id);
           setOrderNumber(order.orderNumber);
           setCustomerEmail(order.customerEmail || (order as any).customer?.email);
         }
@@ -125,6 +129,17 @@ function SuccessContent() {
 
         {/* CTA Buttons - Oranje voor consistentie */}
         <div className="flex flex-wrap gap-3 justify-center">
+          {orderId && (
+            <Button 
+              variant="brand" 
+              size="lg"
+              onClick={() => router.push(`/orders/${orderId}`)}
+              className="flex items-center gap-2"
+            >
+              <FileText className="h-5 w-5" />
+              Bestelling Details Bekijken
+            </Button>
+          )}
           <Link href="/">
             <Button variant="cta" size="lg">
               Terug naar Home

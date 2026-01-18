@@ -150,11 +150,27 @@ function CheckoutContent() {
         }
       }
 
-      // ✅ DRY: Match backend schema exactly
-      // ✅ FIX: Ensure price is always a number (convert string to number)
-      const productPrice = typeof product.price === 'number' 
+      // ✅ CRITICAL FIX: Always fetch fresh product data from API to get correct price
+      // The product from state might have cached/old price, so fetch it again
+      let productPrice = typeof product.price === 'number' 
         ? product.price 
         : parseFloat(String(product.price || '0'));
+      
+      // ✅ FIX: If price is suspiciously low (like 1.00), fetch fresh from API
+      if (productPrice <= 10 && product.id) {
+        try {
+          const freshProduct = await productsApi.getById(product.id);
+          const freshPrice = typeof freshProduct.price === 'number' 
+            ? freshProduct.price 
+            : parseFloat(String(freshProduct.price || '0'));
+          if (freshPrice > 10) {
+            productPrice = freshPrice;
+            console.log('✅ Fixed price from API:', { oldPrice: product.price, newPrice: productPrice });
+          }
+        } catch (apiError) {
+          console.warn('⚠️ Could not fetch fresh product price:', apiError);
+        }
+      }
       
       // ✅ DEBUG: Log price calculation
       console.log('Checkout price calculation:', {

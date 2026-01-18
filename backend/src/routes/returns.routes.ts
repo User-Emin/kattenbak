@@ -214,6 +214,7 @@ router.post('/', async (req: Request, res: Response) => {
  * POST /api/v1/returns/validate/:orderId
  * Validate if order is eligible for return
  * DRY: Business logic validation with real database
+ * ✅ FIX: Must be BEFORE /:returnId route to avoid conflicts
  */
 router.post('/validate/:orderId', async (req: Request, res: Response) => {
   try {
@@ -299,41 +300,6 @@ router.get('/:returnId', async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: error.message || 'Failed to get return details',
-    });
-  }
-});
-
-/**
- * POST /api/v1/returns/:returnId/resend-email
- * Resend return email (admin action)
- * DRY: Reuse email service
- */
-router.post('/:returnId/resend-email', async (req: Request, res: Response) => {
-  try {
-    const { returnId } = req.params;
-    const { customerEmail } = req.body;
-
-    if (!customerEmail) {
-      return res.status(400).json({
-        success: false,
-        error: 'customerEmail is required',
-      });
-    }
-
-    // TODO: Fetch return data from database
-    // For now, return success
-    logger.info(`Resending return email for ${returnId} to ${customerEmail}`);
-
-    res.json({
-      success: true,
-      message: 'Return email resent successfully',
-    });
-  } catch (error: any) {
-    logger.error('Resend return email failed:', error);
-
-    res.status(500).json({
-      success: false,
-      error: error.message || 'Failed to resend return email',
     });
   }
 });

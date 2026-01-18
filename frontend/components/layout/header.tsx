@@ -100,12 +100,22 @@ export function Header() {
               href="/" 
               className="transition-opacity hover:opacity-70"
               style={{ 
-                fontSize: DESIGN_SYSTEM.typography.fontSize['2xl'],
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-                color: DESIGN_SYSTEM.colors.text.primary,
+                display: 'flex',
+                alignItems: 'center',
+                height: '100%',
               }}
             >
-              CatSupply
+              <img
+                src="/logos/logo.webp"
+                alt="CatSupply Logo"
+                className="h-12 w-auto object-contain"
+                style={{
+                  maxHeight: '48px',
+                  width: 'auto',
+                }}
+                loading="eager"
+                fetchPriority="high"
+              />
             </Link>
           </div>
 

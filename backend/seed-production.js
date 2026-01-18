@@ -21,10 +21,17 @@ async function main() {
   });
 
   // Seed product
-  const product = await prisma.product.upsert({
-    where: { slug: 'automatische-kattenbak-premium' },
-    update: {},
-    create: {
+  // ✅ CRITICAL: Only create if doesn't exist - NEVER update existing products
+  // This ensures admin changes are NEVER overwritten
+  let product = await prisma.product.findUnique({
+    where: { slug: 'automatische-kattenbak-premium' }
+  });
+  
+  if (product) {
+    console.log(`✅ Product already exists: ${product.name} (€${product.price})`);
+    console.log('✅ Skipping product seed to preserve admin data');
+  } else {
+    product = await prisma.product.create({
       sku: 'KB-AUTO-001',
       slug: 'automatische-kattenbak-premium',
       name: 'Automatische Kattenbak Premium',
