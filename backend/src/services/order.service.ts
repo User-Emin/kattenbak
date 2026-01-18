@@ -136,14 +136,31 @@ export class OrderService {
       const itemTotal = price.times(quantity);
       subtotal = subtotal.plus(itemTotal);
 
+      // ✅ CRITICAL FIX: Convert price to number for Prisma Decimal field
+      // Prisma Decimal fields expect a number or Prisma.Decimal, not a Decimal.js object
+      const priceForDb = price.toNumber();
+
       return {
         productId: product.id,
         productName: product.name,
         productSku: product.sku,
-        price: product.price,
+        price: priceForDb, // ✅ FIX: Use converted number instead of product.price (Decimal.js object)
         quantity,
         subtotal: itemTotal.toNumber(),
       };
+    });
+
+    // ✅ DEBUG: Log orderItems before creation
+    logger.info('Order items prepared for database:', {
+      itemsCount: orderItems.length,
+      items: orderItems.map(item => ({
+        productId: item.productId,
+        productName: item.productName,
+        quantity: item.quantity,
+        price: item.price,
+        priceType: typeof item.price,
+        subtotal: item.subtotal,
+      })),
     });
 
     // DRY: GRATIS VERZENDING ALTIJD (zoals frontend config)
@@ -226,7 +243,18 @@ export class OrderService {
       )
     );
 
-    logger.info(`Order created: ${order.orderNumber} (ID: ${order.id})`);
+    logger.info(`Order created: ${order.orderNumber} (ID: ${order.id})`, {
+      orderId: order.id,
+      orderNumber: order.orderNumber,
+      itemsCount: order.items.length,
+      items: order.items.map(item => ({
+        id: item.id,
+        productId: item.productId,
+        productName: item.productName,
+        quantity: item.quantity,
+        price: Number(item.price),
+      })),
+    });
 
     return order;
   }

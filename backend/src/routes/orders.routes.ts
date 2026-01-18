@@ -320,6 +320,68 @@ router.post(
           hasItems: !!orderWithDetails?.items,
           itemsLength: orderWithDetails?.items?.length || 0,
         });
+        
+        // ✅ FIX: Send email even if items are missing (use order data from response)
+        // This ensures email is sent for all orders, even if items weren't saved
+        try {
+          const customerName = orderWithDetails?.shippingAddress 
+            ? `${orderWithDetails.shippingAddress.firstName} ${orderWithDetails.shippingAddress.lastName}`
+            : order.customerEmail.split('@')[0];
+          
+          logger.info('Sending order confirmation email without items (fallback):', {
+            orderId: order.id,
+            orderNumber: order.orderNumber,
+            customerEmail: order.customerEmail,
+            customerName,
+          });
+
+          await EmailService.sendOrderConfirmation({
+            customerEmail: order.customerEmail,
+            customerName,
+            orderNumber: order.orderNumber,
+            orderId: order.id,
+            items: data.items?.map((item: any) => ({
+              name: item.productName || `Product ${item.productId}`,
+              quantity: item.quantity,
+              price: item.price || 0,
+            })) || [{
+              name: 'Product',
+              quantity: 1,
+              price: Number(order.total),
+            }],
+            subtotal: Number(order.subtotal),
+            shippingCost: Number(order.shippingCost),
+            tax: Number(order.tax),
+            total: Number(order.total),
+            shippingAddress: orderWithDetails?.shippingAddress ? {
+              street: orderWithDetails.shippingAddress.street,
+              houseNumber: orderWithDetails.shippingAddress.houseNumber,
+              addition: orderWithDetails.shippingAddress.addition || undefined,
+              postalCode: orderWithDetails.shippingAddress.postalCode,
+              city: orderWithDetails.shippingAddress.city,
+              country: orderWithDetails.shippingAddress.country,
+            } : {
+              street: '',
+              houseNumber: '',
+              postalCode: '',
+              city: '',
+              country: 'NL',
+            },
+          });
+
+          logger.info('✅ Order confirmation email sent successfully (fallback):', { 
+            orderId: order.id, 
+            orderNumber: order.orderNumber,
+            email: order.customerEmail 
+          });
+        } catch (fallbackEmailError: any) {
+          logger.error('❌ Failed to send order confirmation email (fallback):', {
+            orderId: order.id,
+            orderNumber: order.orderNumber,
+            email: order.customerEmail,
+            error: fallbackEmailError?.message,
+          });
+        }
       }
 
       // Create Mollie payment with SUCCESS page redirect
