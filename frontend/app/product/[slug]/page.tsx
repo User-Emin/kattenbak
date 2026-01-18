@@ -17,9 +17,9 @@ export const dynamic = 'force-dynamic';
 async function getProductMetadata(slug: string): Promise<Metadata> {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
-    const productUrl = `${apiUrl}/products/slug/${slug}`;
+    const apiProductUrl = `${apiUrl}/products/slug/${slug}`;
     
-    const response = await fetch(productUrl, {
+    const response = await fetch(apiProductUrl, {
       next: { revalidate: 300 }, // Cache for 5 minutes
     });
     
