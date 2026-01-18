@@ -124,21 +124,18 @@ export default function OrdersPage() {
                   <TableHead>Totaal</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Datum</TableHead>
+                  <TableHead className="text-right">Acties</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {orders.map((order) => (
-                  <TableRow 
-                    key={order.id}
-                    className="cursor-pointer hover:bg-muted/50"
-                    onClick={() => window.location.href = `/dashboard/orders/${order.id}`}
-                  >
+                  <TableRow key={order.id}>
                     <TableCell className="font-mono text-sm">
                       {order.orderNumber}
                     </TableCell>
                     <TableCell>
                       <div>
-                        <p className="font-medium">{order.customerName}</p>
+                        <p className="font-medium">{order.customerName || 'Onbekend'}</p>
                         <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
                       </div>
                     </TableCell>
@@ -152,6 +149,13 @@ export default function OrdersPage() {
                     </TableCell>
                     <TableCell>
                       {format(new Date(order.createdAt), 'dd MMM yyyy', { locale: nl })}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Link href={`/admin/dashboard/orders/${order.id}`}>
+                        <Button variant="outline" size="sm">
+                          Bekijk Details
+                        </Button>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}
