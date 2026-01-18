@@ -15,6 +15,8 @@ import { ChatPopupErrorBoundary } from "@/components/ui/chat-popup-error-boundar
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { initializeCSSVerification } from "@/lib/css-verification";
 import { API_CONFIG } from "@/lib/config";
+import { SEO_CONFIG } from "@/lib/seo.config";
+import { useEffect } from "react";
 
 /**
  * 🎨 NOTO SANS - Voor body EN headings

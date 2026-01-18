@@ -1,0 +1,17 @@
+# robots.txt for catsupply.nl
+# ✅ SEO 10/10: Proper robots.txt configuration
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /success
+Disallow: /orders/
+
+# Sitemap location
+Sitemap: https://catsupply.nl/sitemap.xml
+
+# Crawl-delay (optional - helps prevent server overload)
+Crawl-delay: 1
