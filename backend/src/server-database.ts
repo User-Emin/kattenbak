@@ -1008,6 +1008,56 @@ app.get('/api/v1/admin/orders', async (req: Request, res: Response) => {
 });
 
 // ✅ PUBLIC: Get order by ID (for success page)
+// GET /api/v1/orders/by-number/:orderNumber - Get order by orderNumber
+// ✅ FIX: Added for return page to find order by ORD1768729461323
+app.get('/api/v1/orders/by-number/:orderNumber', async (req: Request, res: Response) => {
+  try {
+    const { orderNumber } = req.params;
+    
+    const order = await prisma.order.findUnique({
+      where: { orderNumber },
+      include: {
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                images: true,
+              },
+            },
+          },
+        },
+        shippingAddress: true,
+        billingAddress: true,
+        payment: true,
+        returns: {
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        error: `Order ${orderNumber} not found`,
+      });
+    }
+
+    // ✅ FIX: Transform order to include all address fields and convert Decimal to number
+    const { transformOrder } = require('./lib/transformers');
+    const transformed = transformOrder(order);
+
+    res.json({
+      success: true,
+      data: transformed,
+    });
+  } catch (err: any) {
+    console.error('Order by number error:', err.message);
+    res.status(500).json(error('Could not fetch order'));
+  }
+});
+
 // SECURITY: Only returns minimal info (orderNumber, customerEmail, status)
 // No authentication required - order ID is the security token
 app.get('/api/v1/orders/:id', async (req: Request, res: Response) => {
