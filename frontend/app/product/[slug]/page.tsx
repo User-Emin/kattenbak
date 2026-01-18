@@ -22,12 +22,17 @@ async function getProductMetadata(slug: string): Promise<Metadata> {
       ? `${apiUrl}/products/slug/${slug}` 
       : `https://catsupply.nl/api/v1/products/slug/${slug}`;
     
+    // ✅ FIX: Add timeout to prevent hanging fetches
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+    
     const response = await fetch(apiProductUrl, {
       next: { revalidate: 300 }, // Cache for 5 minutes
       headers: {
         'Accept': 'application/json',
       },
-    });
+      signal: controller.signal,
+    }).finally(() => clearTimeout(timeoutId));
     
     if (!response.ok) {
       return {
@@ -37,7 +42,7 @@ async function getProductMetadata(slug: string): Promise<Metadata> {
     }
     
     const data = await response.json();
-    if (!data.success || !data.data) {
+    if (!data || !data.success || !data.data) {
       return {
         title: SEO_CONFIG.defaults.title,
         description: SEO_CONFIG.defaults.description,
@@ -45,6 +50,13 @@ async function getProductMetadata(slug: string): Promise<Metadata> {
     }
     
     const product = data.data;
+    if (!product) {
+      return {
+        title: SEO_CONFIG.defaults.title,
+        description: SEO_CONFIG.defaults.description,
+      };
+    }
+    
     const productImage = product.images?.[0] 
       ? (product.images[0].startsWith('http') ? product.images[0] : `${SEO_CONFIG.site.url}${product.images[0]}`)
       : SEO_CONFIG.defaults.image;
@@ -76,8 +88,11 @@ async function getProductMetadata(slug: string): Promise<Metadata> {
         canonical: productUrl,
       },
     };
-  } catch (error) {
-    console.error('Error fetching product metadata:', error);
+  } catch (error: any) {
+    // ✅ FIX: Silently fail metadata - don't crash the page
+    if (error?.name !== 'AbortError') {
+      console.error('Error fetching product metadata:', error?.message || error);
+    }
     return {
       title: SEO_CONFIG.defaults.title,
       description: SEO_CONFIG.defaults.description,
@@ -97,8 +112,16 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
  * Product Detail Page - Server component with metadata
  */
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { slug } = await params;
+  try {
+    const { slug } = await params;
 
-  // Fetch product client-side
-  return <ProductDetail slug={slug} />;
+    // Fetch product client-side
+    return <ProductDetail slug={slug} />;
+  } catch (error) {
+    // ✅ FIX: Catch any errors during params parsing or component rendering
+    console.error('ProductPage render error:', error);
+    // Still render the ProductDetail component - let it handle the error client-side
+    const { slug } = await params;
+    return <ProductDetail slug={slug} />;
+  }
 }
