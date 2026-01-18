@@ -13,10 +13,8 @@ export function Footer() {
   return (
     <footer 
       style={{ 
-        background: typeof DESIGN_SYSTEM.colors.primary === 'string' && DESIGN_SYSTEM.colors.primary.includes('gradient')
-          ? DESIGN_SYSTEM.colors.primary
-          : `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart || '#3C3C3D'} 0%, ${DESIGN_SYSTEM.colors.primaryEnd || '#7A7A7D'} 100%)`, // ✅ GRADIENT
-        color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit voor duidelijkheid (was gray[400])
+        background: '#000000', // ✅ ZWART: Volledig zwart (was gradient)
+        color: '#FFFFFF', // ✅ WIT: Alle tekst wit
       }}
     >
       <div 
