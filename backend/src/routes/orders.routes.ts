@@ -120,13 +120,18 @@ router.post(
       try {
         order = await OrderService.createOrder(orderData);
       } catch (dbError: any) {
+        // ✅ CRITICAL: Use req.body.items directly (ensures we have original data with price)
+        const fallbackItems = req.body.items || items || [];
+        
         logger.error('Database error during order creation:', {
           message: dbError?.message,
           code: dbError?.code,
           name: dbError?.name,
           // ✅ DEBUG: Log items to see what we're working with
-          itemsCount: items?.length || 0,
-          items: items?.map((item: any) => ({
+          itemsCount: fallbackItems?.length || 0,
+          itemsFromBody: req.body.items?.length || 0,
+          itemsFromScope: items?.length || 0,
+          items: fallbackItems?.map((item: any) => ({
             productId: item.productId,
             quantity: item.quantity,
             price: item.price,
@@ -136,9 +141,9 @@ router.post(
         
         // ✅ FALLBACK: If database unavailable, calculate total from items with prices
         // Calculate total from items (items have price field from frontend)
-        // ✅ FIX: Use req.body.items directly (has price from frontend), not orderData.items (doesn't have price)
+        // ✅ CRITICAL FIX: Use req.body.items directly (has price from frontend), not orderData.items (doesn't have price)
         let totalAmount = 0;
-        const calculatedItems = items.map((item: any) => {
+        const calculatedItems = fallbackItems.map((item: any) => {
           // ✅ FIX: Explicitly convert to number - handle both string and number
           const itemPrice = typeof item.price === 'number' 
             ? item.price 
@@ -161,42 +166,54 @@ router.post(
           return { productId: item.productId, quantity: qty, price: itemPrice, itemTotal };
         });
         
-        // ✅ FIX: Better error message with debug info
-        if (totalAmount <= 0) {
-          logger.error('Invalid order amount calculated:', {
+        // ✅ SECURITY: Validate total amount is valid
+        if (!totalAmount || totalAmount <= 0 || isNaN(totalAmount)) {
+          logger.error('Invalid order amount calculated in fallback:', {
             totalAmount,
+            totalAmountType: typeof totalAmount,
             items: calculatedItems,
             originalItems: items,
+            originalItemsCount: items?.length || 0,
           });
           return res.status(400).json({
             success: false,
             error: 'Ongeldig orderbedrag. Controleer je winkelwagen.',
-            // ✅ DEBUG: Include debug info in development only
-            ...(process.env.NODE_ENV !== 'production' && {
-              debug: {
-                totalAmount,
-                itemsCount: items?.length || 0,
-                calculatedItems,
-              },
-            }),
+            // ✅ DEBUG: Always include debug info for fallback errors (security: helps identify issues)
+            debug: {
+              totalAmount,
+              totalAmountType: typeof totalAmount,
+              itemsCount: items?.length || 0,
+              calculatedItems,
+              originalItems: items?.map((item: any) => ({
+                productId: item.productId,
+                quantity: item.quantity,
+                price: item.price,
+                priceType: typeof item.price,
+              })),
+            },
           });
         }
         
+        // ✅ SECURITY: Log successful fallback calculation
+        logger.info('Fallback order calculation successful:', {
+          totalAmount,
+          itemsCount: calculatedItems.length,
+          calculatedItems,
+        });
+        
         // ✅ FALLBACK: Create payment directly from Mollie (no database save)
         try {
-          const { createMollieClient } = require('@mollie/api-client');
-          const mollie = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY || '' });
+          // ✅ DRY: Use MollieService instead of direct client
+          const redirectUrl = `${env.FRONTEND_URL || 'https://catsupply.nl'}/checkout/success`;
+          const tempOrderId = `temp-${Date.now()}`;
           
-          const payment = await mollie.payments.create({
-            amount: {
-              currency: 'EUR',
-              value: totalAmount.toFixed(2),
-            },
-            description: `Order ${Date.now()}`,
-            redirectUrl: `${process.env.FRONTEND_URL || 'https://catsupply.nl'}/checkout/success`,
-            webhookUrl: `${process.env.FRONTEND_URL || 'https://catsupply.nl'}/api/v1/webhooks/mollie`,
-            method: paymentMethod || 'ideal',
-          });
+          const payment = await MollieService.createPayment(
+            tempOrderId,
+            totalAmount,
+            `Order ${Date.now()}`,
+            redirectUrl,
+            paymentMethod || 'ideal'
+          );
           
           logger.info('Payment created via fallback (DB unavailable):', { paymentId: payment.id, amount: totalAmount });
           
@@ -204,19 +221,19 @@ router.post(
             success: true,
             data: {
               order: {
-                id: `temp-${Date.now()}`,
+                id: tempOrderId,
                 orderNumber: `TEMP-${Date.now()}`,
                 status: 'PENDING',
                 total: totalAmount,
               },
-              paymentUrl: payment.getCheckoutUrl(),
+              paymentUrl: payment.checkoutUrl,
             },
           });
         } catch (mollieError: any) {
           logger.error('Mollie payment creation failed in fallback:', mollieError);
           return res.status(500).json({
             success: false,
-            error: 'Betaling kon niet worden gestart. Probeer het later opnieuw.'
+            error: 'Betaling kon niet worden gestart. Controleer je gegevens en probeer het opnieuw.'
           });
         }
       }
@@ -376,6 +393,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // GET /api/v1/orders/by-number/:orderNumber - Get order by orderNumber
+// ✅ FIX: Include billingAddress and returns for complete order info
 router.get('/by-number/:orderNumber', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { orderNumber } = req.params;
@@ -385,11 +403,21 @@ router.get('/by-number/:orderNumber', async (req: Request, res: Response, next: 
       include: {
         items: {
           include: {
-            product: true,
+            product: {
+              select: {
+                id: true,
+                name: true,
+                images: true,
+              },
+            },
           },
         },
         shippingAddress: true,
+        billingAddress: true,
         payment: true,
+        returns: {
+          orderBy: { createdAt: 'desc' },
+        },
       },
     });
 

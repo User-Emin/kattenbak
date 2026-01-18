@@ -13,6 +13,7 @@ import {
   checkReturnEligibility,
   createReturnRequest,
 } from '@/lib/api/returns';
+import { ordersApi } from '@/lib/api/orders';
 import type { ReturnReason, ReturnItem, CreateReturnRequest } from '@/types/return';
 import {
   GRADIENTS,
@@ -67,35 +68,68 @@ export default function ReturnRequestPage({ params }: Props) {
     customerNotes: '',
   });
 
-  // Mock order data (TODO: Replace with real API call)
-  const [orderData] = useState({
-    orderNumber: 'ORD-2024-001',
-    customerName: 'Test Klant',
-    customerEmail: 'test@example.com',
-    shippingAddress: {
-      street: 'Teststraat',
-      houseNumber: '1',
-      postalCode: '1234AB',
-      city: 'Amsterdam',
-      country: 'NL',
-    },
-    items: [
-      {
-        productId: '1',
-        productName: 'Automatische Kattenbak Premium',
-        productImage: '/images/product.jpg',
-        quantity: 1,
-        price: 299.99,
-      },
-    ],
-  });
+  // ✅ FIX: Fetch real order data from API
+  const [orderData, setOrderData] = useState<any>(null);
+  const [orderLoading, setOrderLoading] = useState(true);
+
+  // Fetch order data on mount
+  useEffect(() => {
+    if (orderId) {
+      fetchOrderData();
+    }
+  }, [orderId]);
+
+  async function fetchOrderData() {
+    if (!orderId) return;
+    
+    setOrderLoading(true);
+    try {
+      // ✅ FIX: Try by orderNumber first (ORD1768729461323), then by ID
+      let order: any;
+      try {
+        order = await ordersApi.getByOrderNumber(orderId);
+      } catch {
+        // If orderNumber lookup fails, try by ID
+        try {
+          order = await ordersApi.getById(orderId);
+        } catch {
+          throw new Error('Order niet gevonden');
+        }
+      }
+
+      // Transform order data to match expected format
+      setOrderData({
+        orderNumber: order.orderNumber,
+        customerName: order.shippingAddress 
+          ? `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`
+          : order.customerEmail,
+        customerEmail: order.customerEmail,
+        shippingAddress: order.shippingAddress || {},
+        items: order.items?.map((item: any) => ({
+          productId: item.productId,
+          productName: item.productName,
+          productImage: item.product?.images?.[0] || '/images/placeholder.jpg',
+          quantity: item.quantity,
+          price: item.price || 0,
+        })) || [],
+      });
+
+      // Check eligibility after order is loaded
+      checkEligibility();
+    } catch (err: any) {
+      setError(err.message || 'Kon order niet ophalen');
+      setLoading(false);
+    } finally {
+      setOrderLoading(false);
+    }
+  }
 
   // Check eligibility on mount (DRY: Only when orderId available)
   useEffect(() => {
-    if (orderId) {
+    if (orderId && orderData) {
       checkEligibility();
     }
-  }, [orderId]);
+  }, [orderId, orderData]);
 
   async function checkEligibility() {
     if (!orderId) return;
@@ -171,12 +205,14 @@ export default function ReturnRequestPage({ params }: Props) {
   }
 
   // Loading state (DRY: GRADIENTS)
-  if (loading) {
+  if (loading || orderLoading || !orderData) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-secondary/5">
         <div className="text-center">
           <div className={`animate-spin ${BORDER_RADIUS.full} h-16 w-16 border-4 border-t-transparent ${BRAND_COLORS.secondary[600]} mx-auto mb-6`} />
-          <p className="text-muted-foreground text-lg">Retour controleren...</p>
+          <p className="text-muted-foreground text-lg">
+            {orderLoading ? 'Order ophalen...' : 'Retour controleren...'}
+          </p>
         </div>
       </div>
     );

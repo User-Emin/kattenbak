@@ -54,7 +54,8 @@ export const transformProducts = (products: any[]): any[] => {
 };
 
 /**
- * Transform Order with price fields
+ * Transform Order with price fields and address info
+ * ✅ CRITICAL: Includes all address fields for admin panel
  */
 export const transformOrder = (order: any): any => {
   return {
@@ -64,6 +65,29 @@ export const transformOrder = (order: any): any => {
     tax: decimalToNumber(order.tax),
     discount: decimalToNumber(order.discount),
     total: decimalToNumber(order.total),
+    // ✅ FIX: Ensure shippingAddress and billingAddress are included
+    shippingAddress: order.shippingAddress ? {
+      firstName: order.shippingAddress.firstName,
+      lastName: order.shippingAddress.lastName,
+      street: order.shippingAddress.street,
+      houseNumber: order.shippingAddress.houseNumber,
+      addition: order.shippingAddress.addition,
+      postalCode: order.shippingAddress.postalCode,
+      city: order.shippingAddress.city,
+      country: order.shippingAddress.country,
+      phone: order.shippingAddress.phone,
+    } : null,
+    billingAddress: order.billingAddress ? {
+      firstName: order.billingAddress.firstName,
+      lastName: order.billingAddress.lastName,
+      street: order.billingAddress.street,
+      houseNumber: order.billingAddress.houseNumber,
+      addition: order.billingAddress.addition,
+      postalCode: order.billingAddress.postalCode,
+      city: order.billingAddress.city,
+      country: order.billingAddress.country,
+      phone: order.billingAddress.phone,
+    } : null,
   };
 };
 

@@ -328,6 +328,8 @@ app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
       code: err?.code,
       // ✅ SECURITY: No stack traces, API keys, or sensitive data in logs
     });
+    // ✅ CRITICAL: NO FALLBACK to mock data - always return error if database fails
+    // This ensures dynamic data from admin is NEVER overwritten by hardcoded values
     res.status(500).json(error('Could not fetch product'));
   }
 });
@@ -1276,6 +1278,26 @@ app.post('/api/v1/admin/upload/videos', uploadMiddleware.single('video'), async 
 });
 
 console.log('✅ Admin upload endpoints loaded: /api/v1/admin/upload/images, /api/v1/admin/upload/videos');
+
+// =============================================================================
+// RETURN ENDPOINTS
+// =============================================================================
+
+// Import return routes
+// ✅ FIX: Handle both default and named exports
+let returnsRoutes;
+try {
+  returnsRoutes = require('./routes/returns.routes').default;
+  if (!returnsRoutes) {
+    returnsRoutes = require('./routes/returns.routes');
+  }
+} catch (e) {
+  console.error('Failed to load returns routes:', e);
+  returnsRoutes = require('./routes/returns.routes');
+}
+app.use('/api/v1/returns', returnsRoutes);
+
+console.log('✅ Return endpoints loaded: /api/v1/returns');
 
 // =============================================================================
 // RAG ENDPOINTS - AI Chat with Enhanced Pipeline

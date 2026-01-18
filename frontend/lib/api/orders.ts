@@ -32,4 +32,18 @@ export const ordersApi = {
     );
     return result.data;
   },
+
+  /**
+   * Get order by orderNumber
+   * ✅ FIX: Added for return page to find order by ORD1768729461323
+   */
+  async getByOrderNumber(orderNumber: string): Promise<Order> {
+    const result = await apiFetch<{ success: boolean; data: Order }>(
+      `/orders/by-number/${orderNumber}`,
+      {
+        cache: 'no-store' as any, // Always fresh for order status
+      }
+    );
+    return result.data;
+  },
 };
