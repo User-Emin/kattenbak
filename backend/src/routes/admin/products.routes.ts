@@ -117,11 +117,11 @@ router.get('/:id', async (req, res) => {
       where: { id: req.params.id },
       include: {
         category: true,
-        variants: true,
-        orderItems: {
-          take: 10,
-          orderBy: { createdAt: 'desc' }
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' }
         }
+        // ✅ FIX: orderItems removed - not needed for admin product view and may cause errors
       }
     });
     
@@ -141,9 +141,11 @@ router.get('/:id', async (req, res) => {
     });
   } catch (error: any) {
     console.error('Get product error:', error);
+    console.error('Error details:', error.message, error.stack);
     return res.status(500).json({
       success: false,
-      error: 'Fout bij ophalen product'
+      error: 'Fout bij ophalen product',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 });
