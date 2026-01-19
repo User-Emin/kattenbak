@@ -64,9 +64,9 @@ export function Header() {
             maxHeight: '80px',
           }}
         >
-          {/* LEFT: EMAIL + SUPPORT */}
+          {/* LEFT: EMAIL + SUPPORT - MOBIEL: LEEG, DESKTOP: EMAIL + SUPPORT */}
           <div className="flex items-center gap-6">
-            {/* Email */}
+            {/* Email - Alleen desktop */}
             <a
               href={`mailto:${DESIGN_SYSTEM.contact.email}`}
               className="hidden md:flex items-center gap-2 transition-opacity hover:opacity-60"
@@ -80,7 +80,7 @@ export function Header() {
               <span>{DESIGN_SYSTEM.contact.email}</span>
             </a>
 
-            {/* Support */}
+            {/* Support - Alleen desktop */}
             <a
               href={`tel:${DESIGN_SYSTEM.contact.phone}`}
               className="hidden md:flex items-center gap-2 transition-opacity hover:opacity-60"
