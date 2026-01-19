@@ -80,12 +80,12 @@ export function ProductVariantsSection() {
           padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
         }}
       >
-        {/* ✅ TITEL: "Onze varianten" - DRY via DESIGN_SYSTEM */}
+        {/* ✅ TITEL: "Onze varianten" - DRY via DESIGN_SYSTEM - GROTER */}
         <h2
           className="text-center mb-8 md:mb-12"
           style={{
             fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-            fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'],
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)', // ✅ GROTER: Responsive, groter dan 4xl
             fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
             color: '#FFFFFF', // ✅ WIT: Volledig wit tekst
             letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,

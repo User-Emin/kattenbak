@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Truck, Shield, Lock } from "lucide-react";
+import { Check } from "lucide-react";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { BRAND_COLORS_HEX } from "@/lib/color-config";
 
 /**
  * 🎨 USP BANNER - BOVEN NAVBAR
@@ -13,21 +14,22 @@ import { DESIGN_SYSTEM } from "@/lib/design-system";
  * ✅ Responsive (mobiel: 1 USP, desktop: 1 USP smooth fade)
  * ✅ DRY: Alle config uit DESIGN_SYSTEM
  * ✅ Security: Geen user input, geen XSS vectors
+ * ✅ BLAUWE VIJKJES: 3 blauwe vinkjes voor "Gratis verzending binnen Nederland" (exact logo blauw)
  */
 
 // DRY: USPs configuratie
 const USPS = [
   {
-    icon: Truck,
     text: "Gratis verzending binnen Nederland",
+    showCheckmarks: true, // ✅ 3 blauwe vinkjes
   },
   {
-    icon: Shield,
     text: "30 dagen bedenktijd • Gratis retour",
+    showCheckmarks: false,
   },
   {
-    icon: Lock,
     text: "Veilig betalen • SSL beveiligd",
+    showCheckmarks: false,
   },
 ] as const;
 
@@ -56,7 +58,6 @@ export function UspBanner() {
     >
       {/* Smooth fade animatie voor elk USP item */}
       {USPS.map((usp, index) => {
-        const Icon = usp.icon;
         const isActive = index === currentIndex;
         
         return (
@@ -68,11 +69,19 @@ export function UspBanner() {
               transform: isActive ? 'translateY(0)' : 'translateY(10px)',
             }}
           >
-            <Icon 
-              className="w-4 h-4 flex-shrink-0" 
-              strokeWidth={2}
-              style={{ color: DESIGN_SYSTEM.layout.uspBanner.color }}
-            />
+            {/* ✅ BLAUWE VIJKJES: 3 blauwe vinkjes voor "Gratis verzending binnen Nederland" (exact logo blauw) */}
+            {usp.showCheckmarks ? (
+              <div className="flex items-center gap-1.5">
+                {[1, 2, 3].map((i) => (
+                  <Check
+                    key={i}
+                    className="w-4 h-4 flex-shrink-0"
+                    strokeWidth={3}
+                    style={{ color: BRAND_COLORS_HEX.primary }} // ✅ EXACT LOGO BLAUW: #005980
+                  />
+                ))}
+              </div>
+            ) : null}
             <span 
               style={{
                 fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
