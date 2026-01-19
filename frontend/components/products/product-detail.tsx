@@ -716,6 +716,83 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </p>
               )}
 
+              {/* ✅ VARIANT SYSTEM: Variant Selector - BOVEN SERVICE USPs */}
+              {variants.length > 0 && (
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Kies een kleur:
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    {variants.map((variant: any) => {
+                      const isSelected = selectedVariant === variant.id || (!selectedVariant && variant === variants[0]);
+                      const previewImage = variant.previewImage || variant.colorImageUrl || (variant.images && variant.images.length > 0 ? variant.images[0] : null);
+                      const isOutOfStock = variant.stock <= 0;
+                      
+                      return (
+                        <button
+                          key={variant.id}
+                          onClick={() => !isOutOfStock && handleVariantSelect(variant.id)}
+                          disabled={isOutOfStock}
+                          className={cn(
+                            'relative',
+                            'w-16 h-16 sm:w-20 sm:h-20',
+                            'rounded-lg',
+                            'border-2',
+                            'transition-all',
+                            'overflow-hidden',
+                            isSelected
+                              ? 'border-black ring-2 ring-black ring-offset-2'
+                              : 'border-gray-300 hover:border-gray-400',
+                            isOutOfStock && 'opacity-50 cursor-not-allowed grayscale'
+                          )}
+                          title={variant.name + (isOutOfStock ? ' (Niet op voorraad)' : '')}
+                        >
+                          {previewImage ? (
+                            <Image
+                              src={previewImage}
+                              alt={variant.name}
+                              fill
+                              className="object-cover"
+                              sizes="80px"
+                              quality={70}
+                              loading="lazy"
+                              unoptimized={previewImage.startsWith('/uploads/')}
+                            />
+                          ) : variant.colorHex ? (
+                            <div
+                              className="w-full h-full"
+                              style={{ backgroundColor: variant.colorHex }}
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                              <span className="text-xs text-gray-500 text-center px-1">{variant.colorName || variant.name}</span>
+                            </div>
+                          )}
+                          {isSelected && (
+                            <div className="absolute inset-0 border-2 border-black rounded-lg pointer-events-none" />
+                          )}
+                          {isOutOfStock && (
+                            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                              <span className="text-xs text-white font-semibold">Uitverkocht</span>
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {activeVariant && (
+                    <p className="mt-2 text-sm text-gray-600">
+                      Geselecteerd: <span className="font-medium">{activeVariant.name}</span>
+                      {activeVariant.stock > 0 && activeVariant.stock < 10 && (
+                        <span className="ml-2 text-orange-600">
+                          (Nog {activeVariant.stock} op voorraad)
+                        </span>
+                      )}
+                    </p>
+                  )}
+                </div>
+              )}
+
               {/* ✅ SERVICE USPs - 3 onder elkaar BOVEN WINKELWAGEN BUTTON - DRY & ZONDER HARDCODE */}
               <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
                 {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {

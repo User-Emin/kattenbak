@@ -137,10 +137,35 @@ export class VariantService {
       }
     }
 
-    // Update variant
+    // ✅ VARIANT SYSTEM: Update variant with colorCode and colorImageUrl
+    // ✅ SECURITY: Validate colorCode against whitelist to prevent injection
+    const validColorCodes = ['WIT', 'ZWART', 'GRIJS', 'ZILVER', 'BEIGE', 'BLAUW', 'ROOD', 'GROEN'];
+    if (data.colorCode && !validColorCodes.includes(data.colorCode.toUpperCase())) {
+      throw new AppError(`Ongeldige kleurcode: ${data.colorCode}. Toegestane waarden: ${validColorCodes.join(', ')}`, 400);
+    }
+    
+    // ✅ SECURITY: Validate colorImageUrl to prevent path traversal
+    if (data.colorImageUrl) {
+      if (data.colorImageUrl.includes('..') || data.colorImageUrl.includes('//')) {
+        throw new AppError('Ongeldige preview image URL', 400);
+      }
+    }
+    
+    // Update variant - ✅ SECURITY: Only update allowed fields
+    const updateData: any = {};
+    if (data.name !== undefined) updateData.name = data.name;
+    if (data.colorCode !== undefined) updateData.colorCode = data.colorCode ? data.colorCode.toUpperCase() : null;
+    if (data.colorImageUrl !== undefined) updateData.colorImageUrl = data.colorImageUrl || null;
+    if (data.priceAdjustment !== undefined) updateData.priceAdjustment = data.priceAdjustment;
+    if (data.sku !== undefined) updateData.sku = data.sku;
+    if (data.stock !== undefined) updateData.stock = data.stock;
+    if (data.images !== undefined) updateData.images = data.images;
+    if (data.isActive !== undefined) updateData.isActive = data.isActive;
+    if (data.sortOrder !== undefined) updateData.sortOrder = data.sortOrder;
+    
     const variant = await prisma.productVariant.update({
       where: { id },
-      data,
+      data: updateData,
     });
 
     return variant;
