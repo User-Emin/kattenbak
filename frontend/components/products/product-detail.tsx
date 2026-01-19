@@ -708,7 +708,36 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-
+              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs met alleen belangrijke woorden blauw */}
+              {PRODUCT_CONTENT.serviceUsps.length > 0 && (
+                <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
+                  {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
+                    // ✅ BLAUWE HIGHLIGHTS: Alleen belangrijke woorden blauw (zonder hardcode)
+                    const formatText = (text: string, highlightWords?: string[]) => {
+                      if (!highlightWords || highlightWords.length === 0) return text;
+                      
+                      let formatted = text;
+                      highlightWords.forEach(hw => {
+                        const regex = new RegExp(`(${hw})`, 'gi');
+                        formatted = formatted.replace(regex, `<span style="color: #005980; font-weight: 600;">$1</span>`);
+                      });
+                      return formatted;
+                    };
+                    
+                    return (
+                      <div key={index} className="flex items-center gap-2 text-sm sm:text-base text-gray-700">
+                        {/* ✅ BLAUW VIJKJE: Exact logo blauw (#005980) */}
+                        <Check
+                          className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+                          strokeWidth={3}
+                          style={{ color: '#005980' }}
+                        />
+                        <span dangerouslySetInnerHTML={{ __html: formatText(usp.text, usp.highlightWords) }} />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
               {/* Add to Cart Button - ✅ ONDER SERVICE USPs */}
               <button
@@ -753,37 +782,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   <span>Bezorgtijd: <span style={{ color: '#005980', fontWeight: 600 }}>1-2 werkdagen</span></span>
                 </span>
               </div>
-
-              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs met alleen belangrijke woorden blauw */}
-              {PRODUCT_CONTENT.serviceUsps.length > 0 && (
-                <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
-                  {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
-                    // ✅ BLAUWE HIGHLIGHTS: Alleen belangrijke woorden blauw (zonder hardcode)
-                    const formatText = (text: string, highlightWords?: string[]) => {
-                      if (!highlightWords || highlightWords.length === 0) return text;
-                      
-                      let formatted = text;
-                      highlightWords.forEach(hw => {
-                        const regex = new RegExp(`(${hw})`, 'gi');
-                        formatted = formatted.replace(regex, `<span style="color: #005980; font-weight: 600;">$1</span>`);
-                      });
-                      return formatted;
-                    };
-                    
-                    return (
-                      <div key={index} className="flex items-center gap-2 text-sm sm:text-base text-gray-700">
-                        {/* ✅ BLAUW VIJKJE: Exact logo blauw (#005980) */}
-                        <Check
-                          className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
-                          strokeWidth={3}
-                          style={{ color: '#005980' }}
-                        />
-                        <span dangerouslySetInnerHTML={{ __html: formatText(usp.text, usp.highlightWords) }} />
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
 
               {/* Specificaties Accordion - ONDER USPs */}
               <div className={cn(CONFIG.features.accordion.container, 'mt-6')}>
