@@ -687,12 +687,30 @@ jobs:
       - name: 🏥 Health Check - Admin
         run: |
           echo "Checking admin panel..."
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://catsupply.nl/admin || echo "000")
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://catsupply.nl/admin/login || echo "000")
           if [ "$RESPONSE" != "200" ]; then
             echo "❌ Admin health check FAILED (HTTP $RESPONSE)"
             exit 1
           fi
           echo "✅ Admin: OK (HTTP $RESPONSE)"
+      
+      - name: 🧪 E2E Admin Test - Complete Verification
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🧪 E2E ADMIN TEST - Complete Verification"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          chmod +x scripts/e2e-admin-test.sh
+          ./scripts/e2e-admin-test.sh || {
+            echo "❌ E2E admin tests FAILED"
+            echo "🚫 Deployment verification failed - system not stable"
+            exit 1
+          }
+          echo "✅ All E2E admin tests passed - system is stable"
+        env:
+          SERVER_HOST: catsupply.nl
+          ADMIN_EMAIL: admin@catsupply.nl
+          ADMIN_PASSWORD: admin123
+        continue-on-error: false
       
       - name: 📦 Checkout (for verification scripts)
         uses: actions/checkout@v4
