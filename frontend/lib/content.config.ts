@@ -321,31 +321,32 @@ export const PRODUCT_CONTENT = {
     // Tekst wordt dynamisch uit product.description gehaald
   },
   
-  // Service USPs - ✅ VERWIJDERD: Geen service USPs meer (bevordering en bezorgtijd onder button)
-  serviceUsps: [],
-
-  // Product-specifieke USPs - ✅ AFBEELDINGEN: 3 naast elkaar onder winkelwagenbutton met afbeeldingen uit downloads
-  // ✅ BLAUWE HIGHLIGHTS: Belangrijke woorden blauw (dynamisch, geen hardcode)
-  productUsps: [
+  // Service USPs - ✅ ONDER WINKELWAGEN BUTTON: Met vinkjes, onder elkaar, belangrijke woorden blauw
+  serviceUsps: [
     {
-      title: 'Volledig automatisch',
-      description: 'Zelfreinigend systeem',
+      text: 'Volledig automatisch • Zelfreinigend systeem',
       highlightWords: ['Volledig automatisch', 'Zelfreinigend'],
-      image: '/images/usp-automatic.jpg',
     },
     {
-      title: 'App Bediening',
-      description: 'Smart control',
+      text: 'App Bediening • Smart control',
       highlightWords: ['App Bediening', 'Smart'],
-      image: '/images/app-bediening-smart-optimized.jpg',
     },
     {
-      title: 'Hygiënisch',
-      description: 'Altijd schoon',
+      text: 'Hygiënisch • Altijd schoon',
       highlightWords: ['Hygiënisch', 'Altijd schoon'],
-      image: '/images/usp-hygiene.jpg',
+    },
+    {
+      text: 'Binnen 30 dagen gratis retour',
+      highlightWords: ['30 dagen', 'gratis retour'],
+    },
+    {
+      text: '1 jaar garantie',
+      highlightWords: ['1 jaar', 'garantie'],
     },
   ],
+
+  // Product-specifieke USPs - ✅ VERWIJDERD: Geen foto's meer, alleen service USPs met vinkjes
+  productUsps: [],
 } as const;
 
 // ============================================

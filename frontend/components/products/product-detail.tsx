@@ -754,51 +754,36 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </span>
               </div>
 
-              {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar ONDER WINKELWAGEN MET AFBEELDINGEN - DRY & SMOOTH - BLAUWE HIGHLIGHTS */}
-              <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-4 mt-4 sm:mt-6 md:mt-6 lg:mt-6 mb-4 sm:mb-6 md:mb-6 lg:mb-6">
-                {PRODUCT_CONTENT.productUsps.map((usp, index) => {
-                  // ✅ BLAUWE HIGHLIGHTS: Dynamisch belangrijke woorden blauw maken (zonder hardcode)
-                  const formatText = (text: string, highlightWords?: string[]) => {
-                    if (!highlightWords || highlightWords.length === 0) return text;
+              {/* ✅ SERVICE USPs - ONDER WINKELWAGEN BUTTON: Met vinkjes, onder elkaar, belangrijke woorden blauw (zonder hardcode) */}
+              {PRODUCT_CONTENT.serviceUsps.length > 0 && (
+                <div className="flex flex-col gap-2 sm:gap-2.5 mt-4 sm:mt-5 mb-4 sm:mb-5">
+                  {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
+                    // ✅ BLAUWE HIGHLIGHTS: Dynamisch belangrijke woorden blauw maken (zonder hardcode)
+                    const formatText = (text: string, highlightWords?: string[]) => {
+                      if (!highlightWords || highlightWords.length === 0) return text;
+                      
+                      let formatted = text;
+                      highlightWords.forEach(hw => {
+                        const regex = new RegExp(`(${hw})`, 'gi');
+                        formatted = formatted.replace(regex, `<span style="color: #005980; font-weight: 600;">$1</span>`);
+                      });
+                      return formatted;
+                    };
                     
-                    let formatted = text;
-                    highlightWords.forEach(hw => {
-                      const regex = new RegExp(`(${hw})`, 'gi');
-                      formatted = formatted.replace(regex, `<span style="color: #005980; font-weight: 600;">$1</span>`);
-                    });
-                    return formatted;
-                  };
-                  
-                  return (
-                    <div key={index} className="flex flex-col items-center text-center">
-                      {/* ✅ AFBEELDING: Smooth, direct op witte achtergrond */}
-                      {usp.image && (
-                        <div className="relative mb-2 sm:mb-3" style={{ width: '64px', height: '64px' }}>
-                          <Image
-                            src={usp.image}
-                            alt={usp.title}
-                            width={64}
-                            height={64}
-                            className="object-contain transition-all duration-300 hover:scale-110"
-                            style={{ background: '#ffffff' }}
-                            quality={75}
-                            loading="lazy"
-                            unoptimized={usp.image.startsWith('/uploads/')}
-                          />
-                        </div>
-                      )}
-                      <h4 
-                        className="text-xs sm:text-sm font-semibold text-gray-900 mb-1"
-                        dangerouslySetInnerHTML={{ __html: formatText(usp.title, usp.highlightWords) }}
-                      />
-                      <p 
-                        className="text-[10px] sm:text-xs text-gray-600 leading-tight"
-                        dangerouslySetInnerHTML={{ __html: formatText(usp.description, usp.highlightWords) }}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+                    return (
+                      <div key={index} className="flex items-center gap-2 text-sm sm:text-base text-gray-700">
+                        {/* ✅ BLAUW VIJKJE: Exact logo blauw (#005980) */}
+                        <Check
+                          className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+                          strokeWidth={3}
+                          style={{ color: '#005980' }}
+                        />
+                        <span dangerouslySetInnerHTML={{ __html: formatText(usp.text, usp.highlightWords) }} />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
               {/* Specificaties Accordion - ONDER USPs */}
               <div className={cn(CONFIG.features.accordion.container, 'mt-6')}>

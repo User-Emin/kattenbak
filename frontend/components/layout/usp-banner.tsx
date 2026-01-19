@@ -89,34 +89,10 @@ export function UspBanner() {
               style={{
                 fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                 fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-                color: DESIGN_SYSTEM.layout.uspBanner.color,
+                color: DESIGN_SYSTEM.layout.uspBanner.color, // ✅ WIT: Tekst blijft wit in zwarte banner
               }}
             >
-              {usp.text.split(' • ').map((part, idx, arr) => {
-                const words = part.split(' ');
-                return (
-                  <span key={idx}>
-                    {words.map((word, wordIdx) => {
-                      const shouldHighlight = usp.highlightWords?.some(hw => 
-                        word.toLowerCase().includes(hw.toLowerCase())
-                      );
-                      return (
-                        <span key={wordIdx}>
-                          {shouldHighlight ? (
-                            <span style={{ color: BRAND_COLORS_HEX.primary }}>
-                              {word}
-                            </span>
-                          ) : (
-                            word
-                          )}
-                          {wordIdx < words.length - 1 && ' '}
-                        </span>
-                      );
-                    })}
-                    {idx < arr.length - 1 && ' • '}
-                  </span>
-                );
-              })}
+              {usp.text}
             </span>
           </div>
         );
