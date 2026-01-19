@@ -43,9 +43,9 @@ const comparisonData: ComparisonRow[] = [
     highlight: true,
   },
   {
-    feature: 'Geen kwats op vloer',
-    ourProduct: true, // ✅ VINKJE: Geen kwats
-    competitor: false, // ❌ KRUISJE: Kwats op vloer
+    feature: 'Geen kwast op vloer',
+    ourProduct: true, // ✅ VINKJE: Geen kwast
+    competitor: false, // ❌ KRUISJE: Kwast op vloer
     highlight: true,
   },
   {

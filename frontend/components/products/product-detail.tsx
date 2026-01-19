@@ -411,7 +411,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       ? '/images/capacity-10.5l-optimized.jpg' // ✅ FOTO GEOPTIMALISEERD: Exact zoals screenshot, geoptimaliseerd
       : index === 1
       ? '/images/feature-2.jpg' // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode) - EXACT IDENTIEK
-      : '/uploads/products/27cb78df-2f8e-4f42-8c27-886fdc2dfda8.jpg', // ✅ 3E ZIGZAG: Geurblokje, kwats & afvalzak (geüploade foto)
+      : '/uploads/products/27cb78df-2f8e-4f42-8c27-886fdc2dfda8.jpg', // ✅ 3E ZIGZAG: Geurblokje, kwast & afvalzak (geüploade foto)
   }));
 
   return (

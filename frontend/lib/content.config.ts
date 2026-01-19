@@ -222,8 +222,8 @@ export const PRODUCT_CONTENT = {
       // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
     {
-      title: 'Geurblokje, Kwats & Afvalzak',
-      description: 'Geen geurblokje nodig dankzij luchtdichte afvalzak. Geen kwats op de vloer. Eenvoudig afvalzak vervangen.',
+      title: 'Geurblokje, Kwast & Afvalzak',
+      description: 'Geen geurblokje nodig dankzij luchtdichte afvalzak. Geen kwast op de vloer. Eenvoudig afvalzak vervangen.',
       // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
   ],
