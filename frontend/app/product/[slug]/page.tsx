@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation";
+"use client";
+
 import { Suspense } from "react";
 import { ProductDetail } from "@/components/products/product-detail";
 import { Metadata } from "next";
@@ -10,10 +11,9 @@ interface ProductPageProps {
   }>;
 }
 
-export const dynamic = 'force-dynamic';
-
 /**
  * ✅ SEO 10/10: Generate metadata for product pages
+ * ✅ EXPERT: Client-side page - metadata via head tags
  */
 async function getProductMetadata(slug: string): Promise<Metadata> {
   try {
@@ -110,71 +110,67 @@ async function getProductMetadata(slug: string): Promise<Metadata> {
 }
 
 /**
- * ✅ SEO 10/10: Export metadata for product page
- * ✅ EXPERT FIX: Robuuste metadata fetch met fallback - nooit crash
- */
-export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  try {
-    const { slug } = await params;
-    
-    // ✅ EXPERT: Try to fetch product metadata, but never crash
-    try {
-      return await getProductMetadata(slug);
-    } catch (metadataError: any) {
-      // ✅ SECURITY: Silent fallback - log server-side only
-      if (typeof window === 'undefined') {
-        console.error('[Server] Metadata fetch failed (using defaults):', metadataError?.name || 'Unknown');
-      }
-      // Return defaults with slug-based title for better SEO
-      return {
-        title: `${slug.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} | ${SEO_CONFIG.site.name}`,
-        description: SEO_CONFIG.defaults.description,
-      };
-    }
-  } catch (error: any) {
-    // ✅ SECURITY: Ultimate fallback - never crash
-    if (typeof window === 'undefined') {
-      console.error('[Server] generateMetadata params error:', error?.name || 'Unknown');
-    }
-    return {
-      title: SEO_CONFIG.defaults.title,
-      description: SEO_CONFIG.defaults.description,
-    };
-  }
-}
-
-/**
  * ✅ SECURITY & STANDARDS: Product Detail Page
- * - Server component voor SEO metadata (best practice)
- * - Client-side ProductDetail component voor interactiviteit
+ * ✅ EXPERT FIX: Client-side page to avoid SSR errors
+ * - Client component voor volledige controle
+ * - SEO metadata via useEffect en head tags
  * - Robuuste error handling op alle niveaus
  * - Geen data leakage via errors
  */
-export default async function ProductPage({ params }: ProductPageProps) {
-  // ✅ SIMPLIFIED: Direct await params without Promise.race to avoid SSR errors
-  let slug: string = 'automatische-kattenbak-premium'; // Safe fallback
-  
-  try {
-    const resolvedParams = await params;
-    if (resolvedParams?.slug && typeof resolvedParams.slug === 'string' && resolvedParams.slug.length > 0) {
-      slug = resolvedParams.slug;
-    }
-  } catch (error: any) {
-    // ✅ SECURITY: Silent fallback - no error details exposed
-    if (typeof window === 'undefined') {
-      console.error('[Server] ProductPage params error (using fallback):', error?.name || 'Unknown');
-    }
-  }
+export default function ProductPage({ params }: ProductPageProps) {
+  const [slug, setSlug] = React.useState<string>('automatische-kattenbak-premium');
+  const [mounted, setMounted] = React.useState(false);
 
-  // ✅ STANDARDS: Always render - client component handles loading/errors gracefully
-  // ✅ EXPERT: Wrap in Suspense to prevent SSR errors
-  return (
-    <Suspense fallback={
+  React.useEffect(() => {
+    setMounted(true);
+    // ✅ EXPERT: Resolve params client-side
+    params.then((resolved) => {
+      if (resolved?.slug && typeof resolved.slug === 'string' && resolved.slug.length > 0) {
+        setSlug(resolved.slug);
+      }
+    }).catch(() => {
+      // Silent fallback
+    });
+  }, [params]);
+
+  // ✅ SEO: Update head tags client-side
+  React.useEffect(() => {
+    if (!mounted || !slug) return;
+    
+    // Update title and meta tags
+    const updateMetadata = async () => {
+      try {
+        const metadata = await getProductMetadata(slug);
+        if (metadata.title) {
+          document.title = metadata.title as string;
+        }
+        if (metadata.description) {
+          const metaDesc = document.querySelector('meta[name="description"]');
+          if (metaDesc) {
+            metaDesc.setAttribute('content', metadata.description as string);
+          } else {
+            const meta = document.createElement('meta');
+            meta.name = 'description';
+            meta.content = metadata.description as string;
+            document.head.appendChild(meta);
+          }
+        }
+      } catch (error) {
+        // Silent fail
+      }
+    };
+    
+    updateMetadata();
+  }, [mounted, slug]);
+
+  if (!mounted) {
+    return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
       </div>
-    }>
-      <ProductDetail slug={slug} />
-    </Suspense>
-  );
+    );
+  }
+
+  // ✅ STANDARDS: Always render - client component handles loading/errors gracefully
+  return <ProductDetail slug={slug} />;
 }
