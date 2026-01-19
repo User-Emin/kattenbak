@@ -120,12 +120,21 @@ fi
 
 # Test 6: Response Time Check (CPU-friendly)
 echo -e "\n6️⃣  Performance Check"
-START_TIME=$(date +%s%N)
-curl -s "${API_BASE}/health" > /dev/null 2>&1
-END_TIME=$(date +%s%N)
-DURATION=$(( (END_TIME - START_TIME) / 1000000 )) # Convert to milliseconds
+if command -v gdate > /dev/null 2>&1; then
+    # Use gdate (GNU date) if available (brew install coreutils)
+    START_TIME=$(gdate +%s%N)
+    curl -s "${API_BASE}/health" > /dev/null 2>&1
+    END_TIME=$(gdate +%s%N)
+    DURATION=$(( (END_TIME - START_TIME) / 1000000 ))
+else
+    # Fallback for macOS date (seconds only)
+    START_TIME=$(date +%s)
+    curl -s "${API_BASE}/health" > /dev/null 2>&1
+    END_TIME=$(date +%s)
+    DURATION=$(( (END_TIME - START_TIME) * 1000 )) # Convert seconds to milliseconds
+fi
 
-if [ "$DURATION" -lt 1000 ]; then
+if [ "$DURATION" -lt 2000 ]; then
     log_success "Response time acceptable (${DURATION}ms)"
 else
     log_warning "Response time slow (${DURATION}ms)"
