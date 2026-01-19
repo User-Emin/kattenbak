@@ -46,7 +46,7 @@ echo "=============================================="
 echo -e "\n1️⃣  Health Check"
 HEALTH_RESPONSE=$(curl -s -w "\n%{http_code}" "${API_BASE}/health" 2>&1)
 HTTP_CODE=$(echo "$HEALTH_RESPONSE" | tail -1)
-BODY=$(echo "$HEALTH_RESPONSE" | head -n -1)
+BODY=$(echo "$HEALTH_RESPONSE" | sed '$d')
 
 if [ "$HTTP_CODE" = "200" ]; then
     if echo "$BODY" | jq -e '.success == true' > /dev/null 2>&1; then
@@ -62,7 +62,7 @@ fi
 echo -e "\n2️⃣  Public Product API"
 PRODUCT_RESPONSE=$(curl -s -w "\n%{http_code}" "${API_BASE}/products/slug/automatische-kattenbak-premium" 2>&1)
 HTTP_CODE=$(echo "$PRODUCT_RESPONSE" | tail -1)
-BODY=$(echo "$PRODUCT_RESPONSE" | head -n -1)
+BODY=$(echo "$PRODUCT_RESPONSE" | sed '$d')
 
 if [ "$HTTP_CODE" = "200" ]; then
     if echo "$BODY" | jq -e '.success == true and .data.name' > /dev/null 2>&1; then
@@ -81,7 +81,7 @@ fi
 echo -e "\n3️⃣  Featured Products API"
 FEATURED_RESPONSE=$(curl -s -w "\n%{http_code}" "${API_BASE}/products/featured" 2>&1)
 HTTP_CODE=$(echo "$FEATURED_RESPONSE" | tail -1)
-BODY=$(echo "$FEATURED_RESPONSE" | head -n -1)
+BODY=$(echo "$FEATURED_RESPONSE" | sed '$d')
 
 if [ "$HTTP_CODE" = "200" ]; then
     if echo "$BODY" | jq -e '.success == true' > /dev/null 2>&1; then
@@ -110,7 +110,7 @@ fi
 # Test 5: Error Handling (404 endpoint)
 echo -e "\n5️⃣  Error Handling"
 ERROR_RESPONSE=$(curl -s -w "\n%{http_code}" "${API_BASE}/nonexistent-endpoint" 2>&1)
-HTTP_CODE=$(echo "$ERROR_RESPONSE" | tail -1)
+HTTP_CODE=$(echo "$ERROR_RESPONSE" | tail -1 | tr -d '\n')
 
 if [ "$HTTP_CODE" = "404" ]; then
     log_success "Error handling works correctly (404 for non-existent endpoint)"
