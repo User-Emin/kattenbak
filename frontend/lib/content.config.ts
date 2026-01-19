@@ -321,27 +321,19 @@ export const PRODUCT_CONTENT = {
     // Tekst wordt dynamisch uit product.description gehaald
   },
   
-  // Service USPs - ✅ ONDER WINKELWAGEN BUTTON: Met vinkjes, onder elkaar, belangrijke woorden blauw
+  // Service USPs - ✅ BOVEN WINKELWAGEN BUTTON: 3 USPs met alleen belangrijke woorden blauw
   serviceUsps: [
     {
-      text: 'Volledig automatisch • Zelfreinigend systeem',
-      highlightWords: ['Volledig automatisch', 'Zelfreinigend'],
+      text: 'Volledig automatisch • App bediening • Altijd schoon',
+      highlightWords: ['Volledig automatisch', 'App bediening', 'Altijd schoon'],
     },
     {
-      text: 'App Bediening • Smart control',
-      highlightWords: ['App Bediening', 'Smart'],
+      text: 'Binnen 30 dagen gratis retour • 1 jaar garantie',
+      highlightWords: ['30 dagen', 'gratis retour', '1 jaar garantie'],
     },
     {
-      text: 'Hygiënisch • Altijd schoon',
-      highlightWords: ['Hygiënisch', 'Altijd schoon'],
-    },
-    {
-      text: 'Binnen 30 dagen gratis retour',
-      highlightWords: ['30 dagen', 'gratis retour'],
-    },
-    {
-      text: '1 jaar garantie',
-      highlightWords: ['1 jaar', 'garantie'],
+      text: 'Zelfreinigend systeem • Hygiënisch',
+      highlightWords: ['Zelfreinigend', 'Hygiënisch'],
     },
   ],
 

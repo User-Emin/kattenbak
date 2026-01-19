@@ -631,11 +631,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
               
-              {/* ✅ VARIANT SYSTEM: Variant Selector - EFFICIËNT RUIMTEGEBRUIK: Kleur direct na label */}
+              {/* ✅ VARIANT SYSTEM: Variant Selector - OPTIMAAL: Label boven kleur selectie */}
               {variants.length > 0 && (
                 <div className="mt-6 mb-4">
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                  <label className="text-sm font-medium text-gray-700 block mb-3">
                     Kies een kleur:
                   </label>
                   <div className="flex flex-wrap gap-3">
@@ -744,8 +743,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ BEZORGTIJD & GRATIS VERZENDING - Direct onder winkelwagen button (dichtbij, smooth) - BLAUWE HIGHLIGHTS */}
-              <div className="flex items-center justify-center mt-2 sm:mt-2.5 mb-4 sm:mb-5">
+              {/* ✅ BEZORGTIJD & GRATIS VERZENDING - Direct onder winkelwagen button (minimale witruimte) */}
+              <div className="flex items-center justify-center mt-1 mb-0">
                 <Truck className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5" style={{ color: '#005980' }} />
                 <span className="text-sm sm:text-base text-gray-700">
                   <span style={{ color: '#005980', fontWeight: 600 }}>Gratis verzending</span>
