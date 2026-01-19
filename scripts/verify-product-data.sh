@@ -38,7 +38,7 @@ echo ""
 echo "✅ Test 2: Product Data Verification"
 PRODUCT_RESPONSE=$(curl -s -w "\n%{http_code}" "$API_URL/products/slug/$PRODUCT_SLUG" || echo "FAILED")
 PRODUCT_HTTP_CODE=$(echo "$PRODUCT_RESPONSE" | tail -n1)
-PRODUCT_DATA=$(echo "$PRODUCT_RESPONSE" | head -n -1)
+PRODUCT_DATA=$(echo "$PRODUCT_RESPONSE" | sed '$d')
 
 if [ "$PRODUCT_HTTP_CODE" != "200" ]; then
   echo "   ✗ Product API call failed (HTTP $PRODUCT_HTTP_CODE)"
