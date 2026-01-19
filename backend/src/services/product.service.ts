@@ -179,6 +179,7 @@ export class ProductService {
 
   /**
    * Get product by slug
+   * ✅ VARIANT SYSTEM: Includes active variants with preview images
    */
   static async getProductBySlug(slug: string): Promise<Product> {
     // ✅ FIX: Use same select pattern to avoid hero_video_url column
@@ -223,6 +224,23 @@ export class ProductService {
             createdAt: true,
             updatedAt: true,
           },
+        },
+        // ✅ VARIANT SYSTEM: Include active variants with preview images
+        variants: {
+          where: { isActive: true },
+          select: {
+            id: true,
+            name: true,
+            colorCode: true,
+            colorImageUrl: true,
+            priceAdjustment: true,
+            sku: true,
+            stock: true,
+            images: true,
+            sortOrder: true,
+            isActive: true,
+          },
+          orderBy: { sortOrder: 'asc' },
         },
       },
     });

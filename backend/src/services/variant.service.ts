@@ -6,27 +6,30 @@
 import { prisma } from '../config/database.config';
 import { AppError } from '../middleware/error.middleware';
 
+// ✅ VARIANT SYSTEM: Updated interfaces to match database schema
 export interface CreateVariantData {
   productId: string;
   name: string;
-  colorName: string;
-  colorHex: string;
+  colorCode?: string; // e.g. "WIT", "ZWART", "GRIJS"
+  colorImageUrl?: string; // Preview image URL for this color variant
   priceAdjustment: number;
   sku: string;
   stock: number;
   images?: string[];
   isActive?: boolean;
+  sortOrder?: number;
 }
 
 export interface UpdateVariantData {
   name?: string;
-  colorName?: string;
-  colorHex?: string;
+  colorCode?: string; // e.g. "WIT", "ZWART", "GRIJS"
+  colorImageUrl?: string; // Preview image URL for this color variant
   priceAdjustment?: number;
   sku?: string;
   stock?: number;
   images?: string[];
   isActive?: boolean;
+  sortOrder?: number;
 }
 
 export class VariantService {
@@ -80,18 +83,33 @@ export class VariantService {
       throw new AppError('SKU already exists', 400);
     }
 
+    // ✅ VARIANT SYSTEM: Create variant with colorCode and colorImageUrl
+    // ✅ SECURITY: Validate colorCode against whitelist to prevent injection
+    const validColorCodes = ['WIT', 'ZWART', 'GRIJS', 'ZILVER', 'BEIGE', 'BLAUW', 'ROOD', 'GROEN'];
+    if (data.colorCode && !validColorCodes.includes(data.colorCode.toUpperCase())) {
+      throw new AppError(`Ongeldige kleurcode: ${data.colorCode}. Toegestane waarden: ${validColorCodes.join(', ')}`, 400);
+    }
+    
+    // ✅ SECURITY: Validate colorImageUrl to prevent path traversal
+    if (data.colorImageUrl) {
+      if (data.colorImageUrl.includes('..') || data.colorImageUrl.includes('//')) {
+        throw new AppError('Ongeldige preview image URL', 400);
+      }
+    }
+    
     // Create variant
     const variant = await prisma.productVariant.create({
       data: {
         productId: data.productId,
         name: data.name,
-        colorName: data.colorName,
-        colorHex: data.colorHex,
+        colorCode: data.colorCode ? data.colorCode.toUpperCase() : null,
+        colorImageUrl: data.colorImageUrl || null,
         priceAdjustment: data.priceAdjustment,
         sku: data.sku,
         stock: data.stock,
         images: data.images || [],
         isActive: data.isActive ?? true,
+        sortOrder: data.sortOrder || 0,
       },
     });
 

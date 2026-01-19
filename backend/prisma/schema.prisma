@@ -222,9 +222,10 @@ model ProductVariant {
 
   // Variant info
   name      String // e.g. "Premium Wit", "Groot - Zwart"
-  // ✅ FIX: Temporarily commented out - columns don't exist in database yet
-  // colorName String @map("color_name") // e.g. "Wit"
-  // colorHex  String @map("color_hex") // e.g. "#ffffff"
+  
+  // ✅ VARIANT SYSTEM: Color information with preview image
+  colorCode    String? @map("color_code") // e.g. "WIT", "ZWART", "GRIJS"
+  colorImageUrl String? @map("color_image_url") // Preview image URL for this color variant
 
   // Pricing (adjustment from base product price)
   priceAdjustment Decimal @default(0) @map("price_adjustment") @db.Decimal(10, 2) // +/- from base
@@ -238,6 +239,7 @@ model ProductVariant {
 
   // Status
   isActive Boolean @default(true) @map("is_active")
+  sortOrder Int    @default(0) @map("sort_order") // Display order
 
   // Timestamps
   createdAt DateTime @default(now()) @map("created_at")
@@ -248,8 +250,7 @@ model ProductVariant {
 
   // Indexes for performance
   @@index([productId])
-  // ✅ FIX: Removed colorName index - column may not exist in all databases
-  // @@index([colorName])
+  @@index([colorCode])
   @@map("product_variants")
 }
 

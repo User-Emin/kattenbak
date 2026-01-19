@@ -71,6 +71,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [showAllSpecs, setShowAllSpecs] = useState(false); // ✅ Toon meer specs state
   const [showAllFeatures, setShowAllFeatures] = useState(false); // ✅ Toon meer features state
   const [openSpecs, setOpenSpecs] = useState<Set<number>>(new Set());
+  // ✅ VARIANT SYSTEM: Selected variant state
+  const [selectedVariant, setSelectedVariant] = useState<string | null>(null); // Variant ID
 
   // 🚀 PERFORMANCE: Preload first image for fastest loading
   useEffect(() => {
@@ -231,8 +233,19 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     );
   }
 
+  // ✅ VARIANT SYSTEM: Get selected variant or default to first variant
+  const variants = product.variants || [];
+  const activeVariant = selectedVariant 
+    ? variants.find((v: any) => v.id === selectedVariant) 
+    : variants.length > 0 ? variants[0] : null;
+  
+  // ✅ VARIANT SYSTEM: Use variant images if variant selected, otherwise use product images
+  const variantImages = activeVariant && activeVariant.images && Array.isArray(activeVariant.images) && activeVariant.images.length > 0
+    ? activeVariant.images
+    : null;
+  
   // Get product images - ✅ FILTER: Alleen geüploade foto's (geen oude/placeholder, geen SVG data URLs)
-  const images = product.images && Array.isArray(product.images) && product.images.length > 0
+  const images = (variantImages || (product.images && Array.isArray(product.images) && product.images.length > 0
     ? product.images.filter((img: string) => {
         // ✅ FILTER: Alleen geldige geüploade foto's (geen placeholder, geen SVG data URLs, geen oude paths)
         if (!img || typeof img !== 'string') return false;
@@ -243,17 +256,38 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         // Alleen geüploade foto's (van /uploads/ of /api/ of http/https)
         return img.startsWith('/uploads/') || img.startsWith('/api/') || img.startsWith('http://') || img.startsWith('https://');
       })
-    : [];
+    : []));
   
   // ✅ FALLBACK: Als geen geüploade foto's, toon placeholder
   const displayImages = images.length > 0 ? images : ['/placeholder-image.jpg'];
   const currentImage = displayImages[selectedImageIndex] || displayImages[0];
+  
+  // ✅ VARIANT SYSTEM: Calculate price with variant adjustment
+  const displayPrice = activeVariant && activeVariant.priceAdjustment
+    ? product.price + activeVariant.priceAdjustment
+    : product.price;
 
+  // ✅ VARIANT SYSTEM: Handle variant selection
+  const handleVariantSelect = (variantId: string) => {
+    setSelectedVariant(variantId);
+    setSelectedImageIndex(0); // Reset to first image when variant changes
+  };
+  
   // Handle add to cart - ✅ DIRECTE VERWIJZING: Naar winkelwagenpagina
+  // ✅ VARIANT SYSTEM: Include variant in cart item
   const handleAddToCart = async () => {
     setIsAdding(true);
     try {
-      addItem(product, quantity);
+      // ✅ VARIANT SYSTEM: Create product with variant info
+      const productToAdd = activeVariant ? {
+        ...product,
+        variantId: activeVariant.id,
+        variantName: activeVariant.name,
+        variantSku: activeVariant.sku,
+        price: displayPrice, // Use variant-adjusted price
+      } : product;
+      
+      addItem(productToAdd, quantity);
       // ✅ DIRECT: Navigeer direct naar winkelwagenpagina
       window.location.href = '/cart';
     } catch (error) {
@@ -574,16 +608,98 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               {/* ✅ SCHEIDINGSTREEP: Dun of weg tussen naam en prijs */}
               <div className="border-t border-gray-200 my-2 opacity-50"></div>
 
-              {/* Price */}
+              {/* Price - ✅ VARIANT SYSTEM: Show variant-adjusted price */}
               <div className={CONFIG.info.price.spacing}>
                 <span className={cn(
                   CONFIG.info.price.current.fontSize,
                   CONFIG.info.price.current.fontWeight,
                   CONFIG.info.price.current.textColor
                 )}>
-                  {formatPrice(product.price)}
+                  {formatPrice(displayPrice)}
                 </span>
+                {activeVariant && activeVariant.priceAdjustment !== 0 && (
+                  <span className="text-sm text-gray-500 ml-2">
+                    {activeVariant.priceAdjustment > 0 ? '+' : ''}{formatPrice(activeVariant.priceAdjustment)}
+                  </span>
+                )}
               </div>
+              
+              {/* ✅ VARIANT SYSTEM: Variant Selector */}
+              {variants.length > 0 && (
+                <div className="mt-6 mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Kies een kleur:
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    {variants.map((variant: any) => {
+                      const isSelected = selectedVariant === variant.id || (!selectedVariant && variant === variants[0]);
+                      const previewImage = variant.previewImage || variant.colorImageUrl || (variant.images && variant.images.length > 0 ? variant.images[0] : null);
+                      const isOutOfStock = variant.stock <= 0;
+                      
+                      return (
+                        <button
+                          key={variant.id}
+                          onClick={() => !isOutOfStock && handleVariantSelect(variant.id)}
+                          disabled={isOutOfStock}
+                          className={cn(
+                            'relative',
+                            'w-16 h-16 sm:w-20 sm:h-20',
+                            'rounded-lg',
+                            'border-2',
+                            'transition-all',
+                            'overflow-hidden',
+                            isSelected
+                              ? 'border-black ring-2 ring-black ring-offset-2'
+                              : 'border-gray-300 hover:border-gray-400',
+                            isOutOfStock && 'opacity-50 cursor-not-allowed grayscale'
+                          )}
+                          title={variant.name + (isOutOfStock ? ' (Niet op voorraad)' : '')}
+                        >
+                          {previewImage ? (
+                            <Image
+                              src={previewImage}
+                              alt={variant.name}
+                              fill
+                              className="object-cover"
+                              sizes="80px"
+                              quality={70}
+                              loading="lazy"
+                              unoptimized={previewImage.startsWith('/uploads/')}
+                            />
+                          ) : variant.colorHex ? (
+                            <div
+                              className="w-full h-full"
+                              style={{ backgroundColor: variant.colorHex }}
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                              <span className="text-xs text-gray-500 text-center px-1">{variant.colorName || variant.name}</span>
+                            </div>
+                          )}
+                          {isSelected && (
+                            <div className="absolute inset-0 border-2 border-black rounded-lg pointer-events-none" />
+                          )}
+                          {isOutOfStock && (
+                            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                              <span className="text-xs text-white font-semibold">Uitverkocht</span>
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {activeVariant && (
+                    <p className="mt-2 text-sm text-gray-600">
+                      Geselecteerd: <span className="font-medium">{activeVariant.name}</span>
+                      {activeVariant.stock > 0 && activeVariant.stock < 10 && (
+                        <span className="ml-2 text-orange-600">
+                          (Nog {activeVariant.stock} op voorraad)
+                        </span>
+                      )}
+                    </p>
+                  )}
+                </div>
+              )}
 
               {/* ✅ SCHEIDINGSTREEP: Tussen prijs en beschrijving - IETS GRIJZER */}
               <div className="border-t border-gray-300 my-4"></div>

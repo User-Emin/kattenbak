@@ -112,16 +112,16 @@ export function Header() {
               }}
             >
               <img
-                src="/logos/logo.webp"
+                src="/logos/logo-navbar-original.png"
                 alt="CatSupply Logo"
                 style={{
-                  height: '100%', // ✅ 0 MARGIN: Logo vult navbar volledig
-                  maxHeight: '80px', // ✅ SMALLER: Max hoogte = navbar hoogte
+                  height: '100%', // ✅ OPTIMAAL: Logo vult navbar volledig (80px)
+                  maxHeight: '80px', // ✅ OPTIMAAL: Exact navbar hoogte
                   width: 'auto',
-                  maxWidth: '100%',
+                  maxWidth: '300px', // ✅ OPTIMAAL: Max breedte voor goede verhouding
                   display: 'block',
-                  objectFit: 'contain',
-                  objectPosition: 'center',
+                  objectFit: 'contain', // ✅ OPTIMAAL: Behoud aspect ratio
+                  objectPosition: 'center', // ✅ OPTIMAAL: Perfect gecentreerd
                   margin: 0, // ✅ 0 MARGIN: Geen margin rondom logo
                   padding: 0, // ✅ 0 PADDING: Geen padding rondom logo
                 }}
@@ -129,10 +129,10 @@ export function Header() {
                 fetchPriority="high"
                 onError={(e) => {
                   console.error('Logo failed to load:', e);
-                  // Fallback naar PNG als WebP faalt
+                  // Fallback naar WebP als PNG faalt
                   const target = e.target as HTMLImageElement;
-                  if (target.src && !target.src.includes('.png')) {
-                    target.src = '/logos/4626096c-52ac-4d02-9373-c9bba0671dae-optimized.png';
+                  if (target.src && !target.src.includes('.webp')) {
+                    target.src = '/logos/logo.webp';
                   }
                 }}
               />

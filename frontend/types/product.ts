@@ -37,16 +37,22 @@ export interface Product {
 }
 
 // DRY: Product Variant (Color/Size)
+// ✅ VARIANT SYSTEM: Includes preview image for color selection
 export interface ProductVariant {
   id: string;
   productId?: string;
   name: string; // e.g. "Premium Wit"
-  colorName: string; // e.g. "Wit"
-  colorHex: string; // e.g. "#ffffff"
+  colorName?: string; // e.g. "Wit" (from colorCode)
+  colorHex?: string | null; // e.g. "#ffffff" (converted from colorCode)
+  colorCode?: string | null; // e.g. "WIT", "ZWART"
+  previewImage?: string | null; // Preview image URL for this color variant
+  priceAdjustment?: number; // Price difference (+/- from base price)
   price: number; // Price difference (+/- from base price)
   stock: number;
   sku: string;
   images: string[]; // Variant-specific images
+  sortOrder?: number; // Display order
+  isActive?: boolean;
 }
 
 export interface CreateOrderData {

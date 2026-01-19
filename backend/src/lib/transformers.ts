@@ -35,6 +35,7 @@ export const transformProduct = (product: any): any => {
 /**
  * Transform ProductVariant from Prisma to API format
  * Maps priceAdjustment to both priceAdjustment AND price for frontend compatibility
+ * ✅ VARIANT SYSTEM: Includes colorCode and colorImageUrl for preview images
  */
 export const transformVariant = (variant: any): any => {
   const adjustment = decimalToNumber(variant.priceAdjustment);
@@ -43,7 +44,32 @@ export const transformVariant = (variant: any): any => {
     priceAdjustment: adjustment,
     price: adjustment, // Frontend expects 'price'
     sortOrder: variant.sortOrder || 0,
+    // ✅ VARIANT SYSTEM: Include color information and preview image
+    colorName: variant.colorCode || variant.name, // Fallback to name if no colorCode
+    colorHex: variant.colorCode ? getColorHex(variant.colorCode) : null, // Convert color code to hex
+    previewImage: variant.colorImageUrl || (Array.isArray(variant.images) && variant.images.length > 0 ? variant.images[0] : null),
   };
+};
+
+/**
+ * ✅ VARIANT SYSTEM: Convert color code to hex color
+ * Security: Whitelist only known color codes to prevent injection
+ */
+const COLOR_CODE_TO_HEX: Record<string, string> = {
+  'WIT': '#FFFFFF',
+  'ZWART': '#000000',
+  'GRIJS': '#808080',
+  'ZILVER': '#C0C0C0',
+  'BEIGE': '#F5F5DC',
+  'BLAUW': '#0000FF',
+  'ROOD': '#FF0000',
+  'GROEN': '#008000',
+};
+
+const getColorHex = (colorCode: string | null | undefined): string | null => {
+  if (!colorCode) return null;
+  const upperCode = colorCode.toUpperCase();
+  return COLOR_CODE_TO_HEX[upperCode] || null; // ✅ SECURITY: Only return whitelisted colors
 };
 
 /**
