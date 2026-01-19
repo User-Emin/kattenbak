@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { ProductDetail } from "@/components/products/product-detail";
 import { Metadata } from "next";
 import { SEO_CONFIG } from "@/lib/seo.config";
@@ -166,5 +167,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   // ✅ STANDARDS: Always render - client component handles loading/errors gracefully
-  return <ProductDetail slug={slug} />;
+  // ✅ EXPERT: Wrap in Suspense to prevent SSR errors
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    }>
+      <ProductDetail slug={slug} />
+    </Suspense>
+  );
 }

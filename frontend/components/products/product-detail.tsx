@@ -368,7 +368,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   return (
     <div className="min-h-screen bg-white"> {/* ✅ WIT: Volledig witte achtergrond */}
       {/* ✅ SEO 10/10: JSON-LD Structured Data voor Google Rich Results - alleen als product geladen is */}
-      {!loading && product && <ProductJsonLd product={product} />}
+      {/* ✅ EXPERT: Render JSON-LD alleen client-side na mount om SSR errors te voorkomen */}
+      {typeof window !== 'undefined' && !loading && product && <ProductJsonLd product={product} />}
       
       {/* Main Product Section - Breadcrumb binnen grid */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.topMargin, CONFIG.layout.sectionSpacing)}>
