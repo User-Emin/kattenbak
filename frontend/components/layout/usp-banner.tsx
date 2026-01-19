@@ -17,21 +17,21 @@ import { BRAND_COLORS_HEX } from "@/lib/color-config";
  * ✅ BLAUWE VIJKJES: 3 blauwe vinkjes voor "Gratis verzending binnen Nederland" (exact logo blauw)
  */
 
-// DRY: USPs configuratie - ✅ NIEUWE USPs met belangrijke woorden blauw
+// DRY: USPs configuratie - ✅ SERVICE-GERICHTE USPs: praktische voordelen voor klanten
 const USPS = [
   {
-    text: "10.5L capaciteit • Grootste afvalbak",
-    highlightWords: ["10.5L", "Grootste"],
+    text: "Gratis verzending binnen Nederland",
+    highlightWords: ["Gratis verzending"],
     showCheckmarks: true,
   },
   {
-    text: "Ultra-stille motor • Onder 40dB",
-    highlightWords: ["Ultra-stille", "40dB"],
+    text: "30 dagen bedenktijd • Gratis retour",
+    highlightWords: ["30 dagen", "Gratis retour"],
     showCheckmarks: true,
   },
   {
-    text: "Volledig automatisch • App-bediening",
-    highlightWords: ["Volledig automatisch", "App-bediening"],
+    text: "Nooit meer scheppen • Altijd schoon",
+    highlightWords: ["Nooit meer scheppen", "Altijd schoon"],
     showCheckmarks: true,
   },
 ] as const;
