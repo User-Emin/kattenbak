@@ -133,8 +133,8 @@ export const PRODUCT_PAGE_CONFIG = {
       size: 'w-full py-6 md:py-6', // ✅ DRUK MIJ: Verticaal langer (py-6 ipv py-4) - meer prominent
       fontSize: 'text-2xl md:text-2xl', // ✅ GROOT: Echt grote tekst (text-2xl ipv text-lg) - veel opvallender
       fontWeight: 'font-bold', // ✅ DIKKER: font-bold - vooral mobiel
-      bgColor: 'bg-blue-600',
-      hoverBgColor: 'hover:bg-blue-700',
+      bgColor: 'bg-black', // ✅ ZWART: Volledig zwart (was bg-blue-600)
+      hoverBgColor: 'hover:bg-gray-900', // ✅ ZWART: Donkergrijs hover (was hover:bg-blue-700)
       textColor: 'text-white',
       borderRadius: DESIGN_SYSTEM.button.borderRadius, // ✅ DRY: Via DESIGN_SYSTEM (exact zoals Let op kaart)
       transition: 'transition-all duration-200 hover:scale-[1.02]', // ✅ DRUK MIJ: Scale effect voor "druk mij" vibe

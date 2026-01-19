@@ -17,7 +17,7 @@ import { useUI } from "@/context/ui-context";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { SHARED_CONTENT } from "@/lib/content.config";
 import { BRAND_COLORS_HEX } from "@/lib/color-config";
-import { PremiumQualitySection } from "@/components/shared/premium-quality-section";
+import { ProductVariantsSection } from "@/components/shared/product-variants-section";
 
 /**
  * 🎨 HOMEPAGE - MINIMALISTISCH ZWART-WIT DESIGN
@@ -196,8 +196,8 @@ export default function HomePage() {
 
       {/* ✅ TRUST BANNER VERWIJDERD: Onder hero weggehaald */}
       
-      {/* 🎨 PREMIUM KWALITEIT & VEILIGHEID - ✅ SHARED COMPONENT: Dynamisch, geen hardcode */}
-      <PremiumQualitySection />
+      {/* ✅ VARIANTEN SECTIE: Dynamisch, smooth effect, tekst in afbeelding - DRY & ZONDER HARDCODE */}
+      <ProductVariantsSection />
 
       {/* SEPARATOR */}
       <div 
