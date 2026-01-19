@@ -708,6 +708,31 @@ jobs:
             exit 1
           }
       
+      - name: ✅ Verify Data Consistency (Admin vs Frontend)
+        run: |
+          echo "Verifying admin and frontend API return same data..."
+          chmod +x scripts/verify-data-consistency.sh
+          ./scripts/verify-data-consistency.sh || {
+            echo "⚠️  Data consistency verification failed!"
+            echo "   Admin and frontend API return different data."
+            echo "   This may indicate admin is using mock data instead of database."
+            exit 1
+          }
+      
+      - name: ✅ Verify Database Consistency (Server)
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            set -e
+            cd /var/www/kattenbak
+            echo "Verifying database consistency on server..."
+            chmod +x scripts/verify-database-consistency.sh
+            ./scripts/verify-database-consistency.sh || {
+              echo "⚠️  Database consistency verification failed!"
+              echo "   Multiple products with same slug or incorrect data found."
+              exit 1
+            }
+          EOF
+      
       - name: 🧪 API Endpoint Tests
         run: |
           echo "Testing critical API endpoints..."
