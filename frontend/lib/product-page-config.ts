@@ -37,7 +37,7 @@ export const PRODUCT_PAGE_CONFIG = {
     separator: '/',
     spacing: 'flex items-center space-x-1 md:space-x-1.5', // ✅ RESPONSIVE: Mobile kleinere spacing
     iconSize: 'w-3 h-3 md:w-3.5 md:h-3.5',    // ✅ RESPONSIVE: Mobile kleinere icons
-    containerPadding: 'pb-2 pt-2 px-4 md:px-0 md:pb-1 md:pt-0',   // ✅ RESPONSIVE: Mobile meer padding (pt-2 pb-2), Desktop normale padding
+    containerPadding: 'pb-1 pt-2 px-4 md:px-0 md:pb-0.5 md:pt-0',   // ✅ COMPACT: Minder padding onder breadcrumb voor dichter bij afbeelding
     // Bottom border verwijderd - breadcrumb zit nu in grid
   },
 

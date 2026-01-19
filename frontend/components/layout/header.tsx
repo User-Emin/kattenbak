@@ -98,18 +98,16 @@ export function Header() {
 
           {/* CENTER: LOGO - MOBIEL: LINKS, DESKTOP: CENTER - ✅ DRY: Via DESIGN_SYSTEM */}
           <div 
-            className="flex items-center" 
+            className="flex items-center justify-start md:justify-center" 
             style={{ 
               height: '100%', 
               margin: 0, 
               padding: 0,
-              // ✅ MOBIEL: Links uitgelijnd, DESKTOP: Gecentreerd
-              justifyContent: 'flex-start', // Mobiel: links
             }}
           >
             <Link 
               href="/" 
-              className="transition-opacity hover:opacity-80 md:mx-auto"
+              className="transition-opacity hover:opacity-80"
               style={{ 
                 display: 'flex',
                 alignItems: 'center',
@@ -129,11 +127,10 @@ export function Header() {
                   maxWidth: '200px', // Mobiel: smaller max width
                   display: 'block',
                   objectFit: 'contain',
-                  objectPosition: 'left center', // Mobiel: links uitgelijnd
                   margin: 0,
                   padding: 0,
                 }}
-                className="md:h-full md:max-h-[80px] md:max-w-[300px] md:object-center"
+                className="md:h-full md:max-h-[80px] md:max-w-[300px]"
                 loading="eager"
                 fetchPriority="high"
                 onError={(e) => {

@@ -457,10 +457,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className={cn(
           'flex flex-col lg:flex-row', 
           'items-start', 
-          'mt-6 sm:mt-8 md:mt-10 lg:mt-10', // ✅ SYMMETRISCH: Gelijk boven
+          'mt-2 sm:mt-3 md:mt-4 lg:mt-4', // ✅ COMPACT: Dichter bij breadcrumb zonder redundantie
           'gap-6 sm:gap-8 md:gap-10 lg:gap-10', // ✅ SYMMETRISCH: Gelijk tussen image en info
           'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
-        )}> {/* ✅ SYMMETRISCH: Perfecte balans op alle schermformaten */}
+        )}> {/* ✅ COMPACT: Afbeeldingveld dichter bij breadcrumb */}
           {/* Left: Image Gallery - ✅ VERTICAAL BREDER, THUMBNAILS ONDER MET RUIMTE */}
           <div className={cn(
             'flex flex-col', 
