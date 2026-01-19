@@ -134,10 +134,16 @@ export function Header() {
                 loading="eager"
                 fetchPriority="high"
                 onError={(e) => {
-                  console.error('Logo failed to load:', e);
+                  // ✅ SECURITY: Silent error handling (no console logs in production)
                   const target = e.target as HTMLImageElement;
+                  // ✅ FALLBACK: Try multiple logo paths
                   if (target.src && !target.src.includes('.webp')) {
                     target.src = '/logos/logo.webp';
+                  } else if (target.src && !target.src.includes('.png')) {
+                    target.src = '/logos/logo-navbar-original.png';
+                  } else {
+                    // ✅ FINAL FALLBACK: Hide logo on error (graceful degradation)
+                    target.style.display = 'none';
                   }
                 }}
               />
