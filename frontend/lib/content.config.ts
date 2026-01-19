@@ -321,35 +321,29 @@ export const PRODUCT_CONTENT = {
     // Tekst wordt dynamisch uit product.description gehaald
   },
   
-  // Service USPs - ✅ BOVEN WINKELWAGEN BUTTON: 3 onder elkaar (DRY, geen hardcode)
-  serviceUsps: [
-    {
-      text: 'Gratis verzending binnen Nederland',
-    },
-    {
-      text: '30 dagen bedenktijd • Gratis retour',
-    },
-    {
-      text: 'Geleverd met inloopmat en afvalzak',
-    },
-  ],
+  // Service USPs - ✅ VERWIJDERD: Geen service USPs meer (bevordering en bezorgtijd onder button)
+  serviceUsps: [],
 
   // Product-specifieke USPs - ✅ AFBEELDINGEN: 3 naast elkaar onder winkelwagenbutton met afbeeldingen uit downloads
+  // ✅ BLAUWE HIGHLIGHTS: Belangrijke woorden blauw (dynamisch, geen hardcode)
   productUsps: [
     {
-      title: 'Hygiene',
-      description: 'Nooit meer scheppen',
-      image: '/images/usp-hygiene.jpg', // ✅ AFBEELDING: Uit downloads met witte achtergrond
+      title: 'Volledig automatisch',
+      description: 'Zelfreinigend systeem',
+      highlightWords: ['Volledig automatisch', 'Zelfreinigend'],
+      image: '/images/usp-automatic.jpg',
     },
     {
       title: 'App Bediening',
       description: 'Smart control',
-      image: '/images/app-bediening-smart-optimized.jpg', // ✅ AFBEELDING: Exact uit screenshot (77cec053-5521-4344-8603-43d4c84d4bc9.jpg), geoptimaliseerd
+      highlightWords: ['App Bediening', 'Smart'],
+      image: '/images/app-bediening-smart-optimized.jpg',
     },
     {
-      title: 'Automatisch',
-      description: 'Zelfreinigend',
-      image: '/images/usp-automatic.jpg', // ✅ AFBEELDING: Uit downloads met witte achtergrond
+      title: 'Hygiënisch',
+      description: 'Altijd schoon',
+      highlightWords: ['Hygiënisch', 'Altijd schoon'],
+      image: '/images/usp-hygiene.jpg',
     },
   ],
 } as const;

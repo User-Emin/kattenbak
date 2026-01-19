@@ -709,35 +709,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               )}
 
 
-              {/* ✅ SERVICE USPs - 3 onder elkaar BOVEN WINKELWAGEN BUTTON - DRY & ZONDER HARDCODE */}
-              {/* ✅ BLAUWE VIJKJE: 1 blauw vinkje voor alle USPs (exact logo blauw) */}
-              {/* ✅ VETGEDRUKTE WOORDEN: Belangrijke woorden vetgedrukt zonder hardcode */}
-              <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
-                {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
-                  // ✅ VETGEDRUKTE WOORDEN: Dynamisch belangrijke woorden vetgedrukt
-                  const importantWords = ['Gratis verzending', 'binnen Nederland', '30 dagen', 'bedenktijd', 'Gratis retour', 'Geleverd met', 'inloopmat', 'afvalzak'];
-                  const formatText = (text: string) => {
-                    let formatted = text;
-                    importantWords.forEach(word => {
-                      const regex = new RegExp(`(${word})`, 'gi');
-                      formatted = formatted.replace(regex, '<strong>$1</strong>');
-                    });
-                    return formatted;
-                  };
-                  
-                  return (
-                    <div key={index} className="flex items-center gap-2 text-sm sm:text-base text-gray-700">
-                      {/* ✅ 1 BLAUW VIJKJE: Exact logo blauw (#005980) */}
-                      <Check
-                        className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
-                        strokeWidth={3}
-                        style={{ color: '#005980' }} // ✅ EXACT LOGO BLAUW
-                      />
-                      <span dangerouslySetInnerHTML={{ __html: formatText(usp.text) }} />
-                    </div>
-                  );
-                })}
-              </div>
 
               {/* Add to Cart Button - ✅ ONDER SERVICE USPs */}
               <button
@@ -773,12 +744,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ BEZORGTIJD - Direct onder winkelwagen button (minimale witruimte) - BLAUW */}
-              <div className="flex items-center justify-center gap-1.5 mt-1 sm:mt-1.5 mb-4 sm:mb-5">
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#005980' }}>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span className="text-sm sm:text-base font-medium text-gray-700">Bezorgtijd: <span style={{ color: '#005980' }}>1-2 werkdagen</span></span>
+              {/* ✅ BEZORGTIJD & GRATIS VERZENDING - Direct onder winkelwagen button (dichtbij, smooth) - BLAUWE HIGHLIGHTS */}
+              <div className="flex items-center justify-center mt-2 sm:mt-2.5 mb-4 sm:mb-5">
+                <Truck className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5" style={{ color: '#005980' }} />
+                <span className="text-sm sm:text-base text-gray-700">
+                  <span style={{ color: '#005980', fontWeight: 600 }}>Gratis verzending</span>
+                  {' • '}
+                  <span>Bezorgtijd: <span style={{ color: '#005980', fontWeight: 600 }}>1-2 werkdagen</span></span>
+                </span>
               </div>
 
               {/* ✅ PRODUCT-SPECIFIEKE USPs - 3 naast elkaar ONDER WINKELWAGEN MET AFBEELDINGEN - DRY & SMOOTH */}

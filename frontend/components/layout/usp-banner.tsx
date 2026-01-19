@@ -17,19 +17,22 @@ import { BRAND_COLORS_HEX } from "@/lib/color-config";
  * ✅ BLAUWE VIJKJES: 3 blauwe vinkjes voor "Gratis verzending binnen Nederland" (exact logo blauw)
  */
 
-// DRY: USPs configuratie
+// DRY: USPs configuratie - ✅ NIEUWE USPs met belangrijke woorden blauw
 const USPS = [
   {
-    text: "Gratis verzending binnen Nederland",
-    showCheckmarks: true, // ✅ 3 blauwe vinkjes
+    text: "10.5L capaciteit • Grootste afvalbak",
+    highlightWords: ["10.5L", "Grootste"],
+    showCheckmarks: true,
   },
   {
-    text: "30 dagen bedenktijd • Gratis retour",
-    showCheckmarks: false,
+    text: "Ultra-stille motor • Onder 40dB",
+    highlightWords: ["Ultra-stille", "40dB"],
+    showCheckmarks: true,
   },
   {
-    text: "Veilig betalen • SSL beveiligd",
-    showCheckmarks: false,
+    text: "Volledig automatisch • App-bediening",
+    highlightWords: ["Volledig automatisch", "App-bediening"],
+    showCheckmarks: true,
   },
 ] as const;
 
@@ -69,7 +72,7 @@ export function UspBanner() {
               transform: isActive ? 'translateY(0)' : 'translateY(10px)',
             }}
           >
-            {/* ✅ BLAUWE VIJKJES: 3 blauwe vinkjes voor "Gratis verzending binnen Nederland" (exact logo blauw) */}
+            {/* ✅ BLAUWE VIJKJES: 3 blauwe vinkjes (exact logo blauw) */}
             {usp.showCheckmarks ? (
               <div className="flex items-center gap-1.5">
                 {[1, 2, 3].map((i) => (
@@ -89,7 +92,31 @@ export function UspBanner() {
                 color: DESIGN_SYSTEM.layout.uspBanner.color,
               }}
             >
-              {usp.text}
+              {usp.text.split(' • ').map((part, idx, arr) => {
+                const words = part.split(' ');
+                return (
+                  <span key={idx}>
+                    {words.map((word, wordIdx) => {
+                      const shouldHighlight = usp.highlightWords?.some(hw => 
+                        word.toLowerCase().includes(hw.toLowerCase())
+                      );
+                      return (
+                        <span key={wordIdx}>
+                          {shouldHighlight ? (
+                            <span style={{ color: BRAND_COLORS_HEX.primary }}>
+                              {word}
+                            </span>
+                          ) : (
+                            word
+                          )}
+                          {wordIdx < words.length - 1 && ' '}
+                        </span>
+                      );
+                    })}
+                    {idx < arr.length - 1 && ' • '}
+                  </span>
+                );
+              })}
             </span>
           </div>
         );
