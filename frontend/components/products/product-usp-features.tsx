@@ -1,6 +1,6 @@
 "use client";
 
-import { Package, Volume2, Check } from "lucide-react";
+import { Package, Volume2, Check, Sparkles, Brush, Box } from "lucide-react";
 import Image from "next/image";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { PRODUCT_PAGE_CONFIG } from "@/lib/product-page-config";
@@ -46,6 +46,19 @@ export function ProductUspFeatures() {
       // ✅ DYNAMISCH: Lokale foto uit Downloads (geen hardcode) - EXACT ZELFDE FOTO
       image: "/images/feature-2.jpg",
       imageAlt: "Ultra-stille motor onder 40dB"
+    },
+    {
+      icon: Box,
+      title: "Geleverd met alles wat je nodig hebt",
+      description: "Geurblokje, Kwast, Afvalzak en Inloopmat - alles inbegrepen voor direct gebruik.",
+      items: [
+        "Geurblokje voor langdurige geurneutralisatie",
+        "Kwast voor eenvoudige reiniging",
+        "Afvalzak (1 rol) voor hygiënische afvalverwerking",
+        "Inloopmat voor schone poten"
+      ],
+      image: "/images/feature-3.jpg", // ✅ FALLBACK: Placeholder tot echte foto beschikbaar
+      imageAlt: "Geleverd met geurblokje, kwast, afvalzak en inloopmat"
     }
   ];
 

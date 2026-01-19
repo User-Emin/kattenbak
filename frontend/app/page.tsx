@@ -244,7 +244,7 @@ export default function HomePage() {
               color: DESIGN_SYSTEM.colors.text.secondary,
             }}
           >
-            De twee belangrijkste features die het verschil maken
+            De belangrijkste features die het verschil maken
           </p>
         </div>
         
