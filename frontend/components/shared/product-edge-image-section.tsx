@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { PRODUCT_PAGE_CONFIG, cn } from "@/lib/product-page-config";
+import { PRODUCT_CONTENT } from "@/lib/content.config";
 import { productsApi } from "@/lib/api/products";
 import type { Product } from "@/types/product";
 
@@ -87,33 +89,51 @@ export function ProductEdgeImageSection() {
   };
 
   const imageSrc = getImageSrc();
+  const CONFIG = PRODUCT_PAGE_CONFIG;
 
   return (
-    <div 
-      className="relative w-full my-8 md:my-12 overflow-hidden"
-      style={{
-        aspectRatio: '16/9', // ✅ ASPECT RATIO: Breed formaat voor edge-to-edge
-        backgroundColor: DESIGN_SYSTEM.colors.gray[100], // ✅ FALLBACK: Grijze achtergrond tijdens laden
-      }}
-    >
-      <Image
-        src={imageSrc}
-        alt={product.name || 'Product afbeelding'}
-        fill
-        className="object-cover"
-        sizes="100vw" // ✅ EDGE-TO-EDGE: Volledige viewport breedte
-        priority={false} // ✅ PERFORMANCE: Below-the-fold, lazy load
-        quality={85} // ✅ QUALITY: Goede kwaliteit
-        loading="lazy" // ✅ PERFORMANCE: Lazy load
-        unoptimized={imageSrc.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization voor /uploads/
-        onError={(e) => {
-          // ✅ SECURE: Error handling met fallback
-          const target = e.target as HTMLImageElement;
-          if (target && !target.src.includes('placeholder')) {
-            target.src = '/placeholder-image.jpg';
-          }
-        }}
-      />
+    <div className={cn(CONFIG.edgeSection.container, 'my-4 sm:my-6 md:my-8 lg:my-10')}>
+      <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')}>
+        <Image
+          src={imageSrc}
+          alt={product.name || 'Product afbeelding'}
+          fill
+          className={cn(CONFIG.edgeSection.image.objectFit, CONFIG.edgeSection.image.brightness)}
+          sizes="100vw" // ✅ EDGE-TO-EDGE: Volledige viewport breedte
+          priority={false} // ✅ PERFORMANCE: Below-the-fold, lazy load
+          quality={85} // ✅ QUALITY: Goede kwaliteit
+          loading="lazy" // ✅ PERFORMANCE: Lazy load
+          unoptimized={imageSrc.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization voor /uploads/
+          onError={(e) => {
+            // ✅ SECURE: Error handling met fallback
+            const target = e.target as HTMLImageElement;
+            if (target && !target.src.includes('placeholder')) {
+              target.src = '/placeholder-image.jpg';
+            }
+          }}
+        />
+        {/* ✅ OVERLAY MET TEKST: Realistische product informatie - DYNAMISCH & MOBIEL OPTIMAAL */}
+        <div className={CONFIG.edgeSection.overlay.position}>
+          <div className={cn(CONFIG.edgeSection.overlay.content, CONFIG.edgeSection.overlay.textAlign, 'px-4 sm:px-8 lg:px-16')}>
+            <h2 className={cn(
+              'text-xl sm:text-2xl md:text-3xl lg:text-4xl', // ✅ MOBIEL: Kleinere tekst op mobiel
+              CONFIG.edgeSection.title.fontWeight,
+              CONFIG.edgeSection.title.textColor,
+              CONFIG.edgeSection.title.marginBottom
+            )}>
+              {product.name}
+            </h2>
+            {/* ✅ MOBIEL: Alleen productnaam, geen beschrijving op mobiel */}
+            <p className={cn(
+              'text-sm sm:text-base md:text-lg', // ✅ MOBIEL: Responsive tekst
+              CONFIG.edgeSection.description.textColor,
+              'hidden sm:block' // ✅ MOBIEL: Verberg beschrijving op mobiel
+            )}>
+              {product.description || product.shortDescription || PRODUCT_CONTENT.mainDescription}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -198,14 +198,14 @@ export default function HomePage() {
 
       {/* ✅ TRUST BANNER VERWIJDERD: Onder hero weggehaald */}
       
-      {/* ✅ PRODUCT BESCHRIJVING SECTIE: Dynamisch - DRY & ZONDER HARDCODE */}
-      <ProductDescriptionSection />
+      {/* ✅ VARIANTEN SECTIE: Direct na hero - Dynamisch, smooth effect, tekst in afbeelding - DRY & ZONDER HARDCODE */}
+      <ProductVariantsSection />
 
-      {/* ✅ EDGE-TO-EDGE IMAGE SECTIE: Tussen ALP1071 en varianten - 3e foto, dynamisch, secure - DRY & ZONDER HARDCODE */}
+      {/* ✅ EDGE-TO-EDGE IMAGE SECTIE: Na varianten, met tekst overlay - 3e foto, dynamisch, secure - DRY & ZONDER HARDCODE */}
       <ProductEdgeImageSection />
 
-      {/* ✅ VARIANTEN SECTIE: Dynamisch, smooth effect, tekst in afbeelding - DRY & ZONDER HARDCODE */}
-      <ProductVariantsSection />
+      {/* ✅ PRODUCT BESCHRIJVING SECTIE: Na edge-to-edge - Dynamisch - DRY & ZONDER HARDCODE */}
+      <ProductDescriptionSection />
 
       {/* SEPARATOR */}
       <div 
