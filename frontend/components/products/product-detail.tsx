@@ -729,13 +729,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               )}
 
               {/* ✅ SERVICE USPs - 3 onder elkaar BOVEN WINKELWAGEN BUTTON - DRY & ZONDER HARDCODE */}
-              {/* ✅ BLAUWE VIJKJES: 3 blauwe vinkjes voor "Gratis verzending binnen Nederland" (exact logo blauw) */}
+              {/* ✅ BLAUWE VIJKJE: 1 blauw vinkje voor alle USPs (exact logo blauw) */}
               {/* ✅ VETGEDRUKTE WOORDEN: Belangrijke woorden vetgedrukt zonder hardcode */}
               <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
                 {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
-                  // ✅ BLAUWE VIJKJES: Alleen voor "Gratis verzending binnen Nederland"
-                  const isShipping = usp.text.includes('Gratis verzending');
-                  
                   // ✅ VETGEDRUKTE WOORDEN: Dynamisch belangrijke woorden vetgedrukt
                   const importantWords = ['Gratis verzending', 'binnen Nederland', '30 dagen', 'bedenktijd', 'Gratis retour', 'Geleverd met', 'inloopmat', 'afvalzak'];
                   const formatText = (text: string) => {
@@ -749,26 +746,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   
                   return (
                     <div key={index} className="flex items-center gap-2 text-sm sm:text-base text-gray-700">
-                      {isShipping ? (
-                        // ✅ 3 BLAUWE VIJKJES: Exact logo blauw (#005980)
-                        <div className="flex items-center gap-1">
-                          {[1, 2, 3].map((i) => (
-                            <Check
-                              key={i}
-                              className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
-                              strokeWidth={3}
-                              style={{ color: '#005980' }} // ✅ EXACT LOGO BLAUW
-                            />
-                          ))}
-                        </div>
-                      ) : (
-                        // ✅ ANDERE USPs: Blauwe vinkjes (exact logo blauw)
-                        <Check
-                          className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
-                          strokeWidth={3}
-                          style={{ color: '#005980' }} // ✅ EXACT LOGO BLAUW
-                        />
-                      )}
+                      {/* ✅ 1 BLAUW VIJKJE: Exact logo blauw (#005980) */}
+                      <Check
+                        className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+                        strokeWidth={3}
+                        style={{ color: '#005980' }} // ✅ EXACT LOGO BLAUW
+                      />
                       <span dangerouslySetInnerHTML={{ __html: formatText(usp.text) }} />
                     </div>
                   );

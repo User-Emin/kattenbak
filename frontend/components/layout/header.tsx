@@ -55,7 +55,7 @@ export function Header() {
         }}
       >
         <div 
-          className="w-full mx-auto grid grid-cols-3 items-center"
+          className="w-full mx-auto flex items-center justify-between md:grid md:grid-cols-3"
           style={{
             maxWidth: DESIGN_SYSTEM.layout.navbar.maxWidth,
             padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
@@ -65,11 +65,11 @@ export function Header() {
           }}
         >
           {/* LEFT: EMAIL + SUPPORT - MOBIEL: LEEG, DESKTOP: EMAIL + SUPPORT */}
-          <div className="flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-6">
             {/* Email - Alleen desktop */}
             <a
               href={`mailto:${DESIGN_SYSTEM.contact.email}`}
-              className="hidden md:flex items-center gap-2 transition-opacity hover:opacity-60"
+              className="flex items-center gap-2 transition-opacity hover:opacity-60"
               style={{
                 fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                 color: DESIGN_SYSTEM.colors.text.secondary,
@@ -83,7 +83,7 @@ export function Header() {
             {/* Support - Alleen desktop */}
             <a
               href={`tel:${DESIGN_SYSTEM.contact.phone}`}
-              className="hidden md:flex items-center gap-2 transition-opacity hover:opacity-60"
+              className="flex items-center gap-2 transition-opacity hover:opacity-60"
               style={{
                 fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                 color: DESIGN_SYSTEM.colors.text.secondary,
@@ -120,11 +120,11 @@ export function Header() {
                 src="/logos/logo-navbar-original.png"
                 alt="CatSupply Logo"
                 style={{
-                  // ✅ MOBIEL: Kleiner (60px), DESKTOP: Normaal (80px)
-                  height: '60px', // Mobiel: kleiner
-                  maxHeight: '60px', // Mobiel: kleiner
+                  // ✅ MOBIEL: Kleiner (50px) en links, DESKTOP: Normaal (80px) en center
+                  height: '50px', // Mobiel: kleiner
+                  maxHeight: '50px', // Mobiel: kleiner
                   width: 'auto',
-                  maxWidth: '200px', // Mobiel: smaller max width
+                  maxWidth: '150px', // Mobiel: smaller max width
                   display: 'block',
                   objectFit: 'contain',
                   margin: 0,
