@@ -19,6 +19,7 @@ import { SHARED_CONTENT } from "@/lib/content.config";
 import { BRAND_COLORS_HEX } from "@/lib/color-config";
 import { ProductVariantsSection } from "@/components/shared/product-variants-section";
 import { ProductDescriptionSection } from "@/components/shared/product-description-section";
+import { ProductEdgeImageSection } from "@/components/shared/product-edge-image-section";
 
 /**
  * 🎨 HOMEPAGE - MINIMALISTISCH ZWART-WIT DESIGN
@@ -197,11 +198,14 @@ export default function HomePage() {
 
       {/* ✅ TRUST BANNER VERWIJDERD: Onder hero weggehaald */}
       
+      {/* ✅ PRODUCT BESCHRIJVING SECTIE: Dynamisch - DRY & ZONDER HARDCODE */}
+      <ProductDescriptionSection />
+
+      {/* ✅ EDGE-TO-EDGE IMAGE SECTIE: Tussen ALP1071 en varianten - 3e foto, dynamisch, secure - DRY & ZONDER HARDCODE */}
+      <ProductEdgeImageSection />
+
       {/* ✅ VARIANTEN SECTIE: Dynamisch, smooth effect, tekst in afbeelding - DRY & ZONDER HARDCODE */}
       <ProductVariantsSection />
-
-      {/* ✅ PRODUCT BESCHRIJVING SECTIE: Dynamisch onder variantensectie - DRY & ZONDER HARDCODE */}
-      <ProductDescriptionSection />
 
       {/* SEPARATOR */}
       <div 
