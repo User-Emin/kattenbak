@@ -59,7 +59,10 @@ export function Header() {
           style={{
             maxWidth: DESIGN_SYSTEM.layout.navbar.maxWidth,
             padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
-            height: DESIGN_SYSTEM.layout.navbar.height,
+            minHeight: '100px', // ✅ OPTIMAAL: Meer ruimte voor groot logo (was 64px)
+            height: 'auto', // ✅ OPTIMAAL: Auto height voor flexibele logo grootte
+            paddingTop: '10px', // ✅ OPTIMAAL: Extra padding boven voor logo
+            paddingBottom: '10px', // ✅ OPTIMAAL: Extra padding onder voor logo
           }}
         >
           {/* LEFT: EMAIL + SUPPORT */}
@@ -94,26 +97,31 @@ export function Header() {
             </a>
           </div>
 
-          {/* CENTER: LOGO */}
-          <div className="flex justify-center">
+          {/* CENTER: LOGO - OPTIMAAL GECENTREERD */}
+          <div className="flex justify-center items-center">
             <Link 
               href="/" 
-              className="transition-opacity hover:opacity-70"
+              className="transition-opacity hover:opacity-80 flex items-center justify-center"
               style={{ 
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'center',
                 height: '100%',
+                width: '100%',
               }}
             >
               <img
                 src="/logos/logo.webp"
                 alt="CatSupply Logo"
-                className="w-auto object-contain"
+                className="object-contain"
                 style={{
-                  height: '120px', // ✅ GROTER: Van 64px (h-16) naar 120px
-                  maxHeight: '140px', // ✅ GROTER: Van 80px naar 140px
+                  height: '140px', // ✅ OPTIMAAL: 140px voor maximale zichtbaarheid
+                  maxHeight: '160px', // ✅ OPTIMAAL: Max 160px voor responsive
                   width: 'auto',
+                  maxWidth: '100%', // ✅ RESPONSIVE: Past binnen container
                   display: 'block',
+                  objectFit: 'contain', // ✅ OPTIMAAL: Behoud aspect ratio
+                  objectPosition: 'center', // ✅ OPTIMAAL: Perfect gecentreerd
                 }}
                 loading="eager"
                 fetchPriority="high"
