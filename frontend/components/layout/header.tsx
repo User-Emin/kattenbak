@@ -108,9 +108,10 @@ export function Header() {
               <img
                 src="/logos/logo.webp"
                 alt="CatSupply Logo"
-                className="h-16 w-auto object-contain"
+                className="w-auto object-contain"
                 style={{
-                  maxHeight: '80px',
+                  height: '120px', // ✅ GROTER: Van 64px (h-16) naar 120px
+                  maxHeight: '140px', // ✅ GROTER: Van 80px naar 140px
                   width: 'auto',
                   display: 'block',
                 }}
