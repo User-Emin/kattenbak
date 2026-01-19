@@ -13,6 +13,7 @@ import { PRODUCT_CONTENT } from "@/lib/content.config";
 import { PRODUCT_USP_ICONS } from "@/components/products/product-usp-icons";
 import { PremiumQualitySection } from "@/components/shared/premium-quality-section";
 import { ProductComparisonTable } from "@/components/products/product-comparison-table";
+import { ProductJsonLd } from "@/components/seo/product-json-ld";
 import type { Product } from "@/types/product";
 import { 
   ChevronLeft, 
@@ -556,6 +557,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               )}>
                 {product.name}
               </h1>
+              
+              {/* ✅ SEO 10/10: SKU zichtbaar en stabiel (KB-AUTO-001, ALP1071, etc.) - NIET BEÏNVLOEDBAAR */}
+              {product.sku && (
+                <div className="mb-2">
+                  <span className="text-sm text-gray-600 font-medium">
+                    Productcode: <span className="text-gray-900 font-semibold">{product.sku}</span>
+                  </span>
+                </div>
+              )}
 
               {/* ✅ SCHEIDINGSTREEP: Dun of weg tussen naam en prijs */}
               <div className="border-t border-gray-200 my-2 opacity-50"></div>

@@ -102,15 +102,36 @@ async function getProductMetadata(slug: string): Promise<Metadata> {
 
 /**
  * ✅ SEO 10/10: Export metadata for product page
- * ⚠️ TEMPORARY: Simplified to avoid SSR errors - will restore full metadata after fix
+ * ✅ EXPERT FIX: Robuuste metadata fetch met fallback - nooit crash
  */
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  // ✅ TEMP FIX: Return defaults immediately to avoid SSR errors
-  // TODO: Restore getProductMetadata after SSR error is resolved
-  return {
-    title: SEO_CONFIG.defaults.title,
-    description: SEO_CONFIG.defaults.description,
-  };
+  try {
+    const { slug } = await params;
+    
+    // ✅ EXPERT: Try to fetch product metadata, but never crash
+    try {
+      return await getProductMetadata(slug);
+    } catch (metadataError: any) {
+      // ✅ SECURITY: Silent fallback - log server-side only
+      if (typeof window === 'undefined') {
+        console.error('[Server] Metadata fetch failed (using defaults):', metadataError?.name || 'Unknown');
+      }
+      // Return defaults with slug-based title for better SEO
+      return {
+        title: `${slug.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} | ${SEO_CONFIG.site.name}`,
+        description: SEO_CONFIG.defaults.description,
+      };
+    }
+  } catch (error: any) {
+    // ✅ SECURITY: Ultimate fallback - never crash
+    if (typeof window === 'undefined') {
+      console.error('[Server] generateMetadata params error:', error?.name || 'Unknown');
+    }
+    return {
+      title: SEO_CONFIG.defaults.title,
+      description: SEO_CONFIG.defaults.description,
+    };
+  }
 }
 
 /**
