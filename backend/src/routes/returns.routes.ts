@@ -114,7 +114,14 @@ router.post('/', async (req: Request, res: Response) => {
           orderDate: new Date().toLocaleDateString('nl-NL'),
           returnDeadline: returnDeadline.toLocaleDateString('nl-NL'),
           trackingCode: returnLabel.trackingCode,
-          returnAddress: env.MYPARCEL_RETURN_ADDRESS || 'CatSupply, Retouren',
+          returnAddress: {
+            company: env.MYPARCEL_RETURN_ADDRESS.company,
+            street: env.MYPARCEL_RETURN_ADDRESS.street,
+            number: env.MYPARCEL_RETURN_ADDRESS.number,
+            postalCode: env.MYPARCEL_RETURN_ADDRESS.postalCode,
+            city: env.MYPARCEL_RETURN_ADDRESS.city,
+            country: env.MYPARCEL_RETURN_ADDRESS.country,
+          },
         });
       } catch (pdfError: any) {
         logger.warn('Could not generate return instructions PDF:', pdfError.message);

@@ -344,10 +344,10 @@ router.post(
             customerName,
             orderNumber: order.orderNumber,
             orderId: order.id,
-            items: data.items?.map((item: any) => ({
-              name: item.productName || `Product ${item.productId}`,
+            items: orderWithDetails?.items?.map((item: any) => ({
+              name: item.product?.name || item.productName || `Product ${item.productId || item.id}`,
               quantity: item.quantity,
-              price: item.price || 0,
+              price: Number(item.price || 0),
             })) || [{
               name: 'Product',
               quantity: 1,

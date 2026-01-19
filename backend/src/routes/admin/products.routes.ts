@@ -396,15 +396,24 @@ router.put('/:id', async (req, res) => {
       delete (data as any).variants;
     }
     
+    // Extract categoryId separately to avoid type conflicts
+    const { categoryId, ...updateData } = data as any;
+    const updatePayload: any = {
+      ...updateData,
+      publishedAt: data.isActive === true && !existing.publishedAt 
+        ? new Date() 
+        : existing.publishedAt
+    };
+    
+    // Only include categoryId if it's actually being updated
+    if (categoryId) {
+      updatePayload.categoryId = categoryId;
+    }
+    
     // Update product
     const product = await prisma.product.update({
       where: { id: req.params.id },
-      data: {
-        ...data,
-        publishedAt: data.isActive === true && !existing.publishedAt 
-          ? new Date() 
-          : existing.publishedAt
-      },
+      data: updatePayload,
       include: {
         category: true,
         variants: {
