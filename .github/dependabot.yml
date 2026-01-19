@@ -1,66 +1,103 @@
-# ═══════════════════════════════════════════════════════════════
-# 🤖 DEPENDABOT - AUTOMATED DEPENDENCY UPDATES
-# ═══════════════════════════════════════════════════════════════
+# ✅ DEPENDABOT - Automated Dependency Updates
+# Security: Monitors dependencies for security vulnerabilities
+# E2E Secure: Automatic PR creation for dependency updates
 
 version: 2
 updates:
-  # Backend (Node.js)
+  # Backend Dependencies (npm)
   - package-ecosystem: "npm"
     directory: "/backend"
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "06:00"
-    open-pull-requests-limit: 10
+      time: "09:00"
+    open-pull-requests-limit: 5
     reviewers:
       - "User-Emin"
-    commit-message:
-      prefix: "🔒 [Security]"
-      include: "scope"
+    assignees:
+      - "User-Emin"
     labels:
       - "dependencies"
       - "backend"
-      - "security"
-    ignore:
-      # Wait for stable releases
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-    
-  # Frontend (Next.js)
+    commit-message:
+      prefix: "chore(backend)"
+      include: "scope"
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Frontend Dependencies (npm)
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "06:00"
-    open-pull-requests-limit: 10
+      time: "09:00"
+    open-pull-requests-limit: 5
     reviewers:
       - "User-Emin"
-    commit-message:
-      prefix: "🎨 [Frontend]"
-      include: "scope"
+    assignees:
+      - "User-Emin"
     labels:
       - "dependencies"
       - "frontend"
-      - "security"
-    
-  # Admin Panel
+    commit-message:
+      prefix: "chore(frontend)"
+      include: "scope"
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Admin Dependencies (npm)
   - package-ecosystem: "npm"
-    directory: "/admin-next"
+    directory: "/admin"
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "06:00"
-    open-pull-requests-limit: 10
+      time: "09:00"
+    open-pull-requests-limit: 3
     reviewers:
       - "User-Emin"
-    commit-message:
-      prefix: "⚙️  [Admin]"
-      include: "scope"
+    assignees:
+      - "User-Emin"
     labels:
       - "dependencies"
       - "admin"
-      - "security"
+    commit-message:
+      prefix: "chore(admin)"
+      include: "scope"
+
+  # Docker Dependencies
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "User-Emin"
+    assignees:
+      - "User-Emin"
+    labels:
+      - "dependencies"
+      - "docker"
 
   # GitHub Actions
   - package-ecosystem: "github-actions"
@@ -68,11 +105,12 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "06:00"
-    commit-message:
-      prefix: "🚀 [CI/CD]"
+      time: "09:00"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "User-Emin"
+    assignees:
+      - "User-Emin"
     labels:
       - "dependencies"
       - "github-actions"
-      - "security"
-

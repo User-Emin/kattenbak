@@ -1,0 +1,163 @@
+# ✅ SECURITY MONITORING - Automated Security Checks & Notifications
+# E2E Secure: Monitors security vulnerabilities and sends email alerts
+# Runs daily at 06:00 UTC (07:00 CET)
+
+name: Security Monitoring & Alerting
+
+on:
+  schedule:
+    # Run daily at 06:00 UTC (07:00 CET, 08:00 CEST)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  security-audit:
+    name: Security Audit & Dependency Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Backend Security Audit
+      - name: Backend Security Audit
+        working-directory: ./backend
+        run: |
+          npm audit --audit-level=moderate --json > backend-audit.json || true
+          if [ -s backend-audit.json ]; then
+            VULNERABILITIES=$(jq -r '.metadata.vulnerabilities.total // 0' backend-audit.json)
+            if [ "$VULNERABILITIES" -gt 0 ]; then
+              echo "⚠️ Backend: $VULNERABILITIES vulnerabilities found"
+              echo "BACKEND_VULNERABILITIES=$VULNERABILITIES" >> $GITHUB_ENV
+              jq -r '.vulnerabilities[] | "\(.name): \(.severity) - \(.title)"' backend-audit.json > backend-vulns.txt
+            else
+              echo "✅ Backend: No vulnerabilities"
+            fi
+          fi
+
+      # Frontend Security Audit
+      - name: Frontend Security Audit
+        working-directory: ./frontend
+        run: |
+          npm audit --audit-level=moderate --json > ../frontend-audit.json || true
+          if [ -s ../frontend-audit.json ]; then
+            VULNERABILITIES=$(jq -r '.metadata.vulnerabilities.total // 0' ../frontend-audit.json)
+            if [ "$VULNERABILITIES" -gt 0 ]; then
+              echo "⚠️ Frontend: $VULNERABILITIES vulnerabilities found"
+              echo "FRONTEND_VULNERABILITIES=$VULNERABILITIES" >> $GITHUB_ENV
+              jq -r '.vulnerabilities[] | "\(.name): \(.severity) - \(.title)"' ../frontend-audit.json > ../frontend-vulns.txt
+            else
+              echo "✅ Frontend: No vulnerabilities"
+            fi
+          fi
+
+      # Admin Security Audit
+      - name: Admin Security Audit
+        working-directory: ./admin
+        run: |
+          npm audit --audit-level=moderate --json > ../admin-audit.json || true
+          if [ -s ../admin-audit.json ]; then
+            VULNERABILITIES=$(jq -r '.metadata.vulnerabilities.total // 0' ../admin-audit.json)
+            if [ "$VULNERABILITIES" -gt 0 ]; then
+              echo "⚠️ Admin: $VULNERABILITIES vulnerabilities found"
+              echo "ADMIN_VULNERABILITIES=$VULNERABILITIES" >> $GITHUB_ENV
+              jq -r '.vulnerabilities[] | "\(.name): \(.severity) - \(.title)"' ../admin-audit.json > ../admin-vulns.txt
+            else
+              echo "✅ Admin: No vulnerabilities"
+            fi
+          fi
+
+      # Send Email Alert if vulnerabilities found
+      - name: Send Security Alert Email
+        if: env.BACKEND_VULNERABILITIES > 0 || env.FRONTEND_VULNERABILITIES > 0 || env.ADMIN_VULNERABILITIES > 0
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "🔒 Security Alert: Vulnerabilities Detected - catsupply.nl"
+          to: emin@catsupply.nl
+          from: Security Monitor
+          body: |
+            Security vulnerabilities detected in catsupply.nl dependencies.
+            
+            Summary:
+            - Backend: ${{ env.BACKEND_VULNERABILITIES || 0 }} vulnerabilities
+            - Frontend: ${{ env.FRONTEND_VULNERABILITIES || 0 }} vulnerabilities
+            - Admin: ${{ env.ADMIN_VULNERABILITIES || 0 }} vulnerabilities
+            
+            Please review and update dependencies.
+            
+            Full audit reports available in GitHub Actions.
+            
+            Repository: https://github.com/${{ github.repository }}
+            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          html_body: |
+            <h2>🔒 Security Alert: Vulnerabilities Detected</h2>
+            <p>Security vulnerabilities detected in <strong>catsupply.nl</strong> dependencies.</p>
+            
+            <h3>Summary</h3>
+            <ul>
+              <li>Backend: <strong>${{ env.BACKEND_VULNERABILITIES || 0 }}</strong> vulnerabilities</li>
+              <li>Frontend: <strong>${{ env.FRONTEND_VULNERABILITIES || 0 }}</strong> vulnerabilities</li>
+              <li>Admin: <strong>${{ env.ADMIN_VULNERABILITIES || 0 }}</strong> vulnerabilities</li>
+            </ul>
+            
+            <p>Please review and update dependencies.</p>
+            
+            <p>
+              <a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">
+                View Full Report
+              </a>
+            </p>
+
+      # Dependency Update Check
+      - name: Check for Outdated Dependencies
+        run: |
+          echo "Checking for outdated dependencies..."
+          
+          cd backend && npm outdated --json > ../backend-outdated.json || true
+          cd ../frontend && npm outdated --json > ../frontend-outdated.json || true
+          cd ../admin && npm outdated --json > ../admin-outdated.json || true
+          
+          BACKEND_OUTDATED=$(jq -r 'length' backend-outdated.json 2>/dev/null || echo "0")
+          FRONTEND_OUTDATED=$(jq -r 'length' frontend-outdated.json 2>/dev/null || echo "0")
+          ADMIN_OUTDATED=$(jq -r 'length' admin-outdated.json 2>/dev/null || echo "0")
+          
+          TOTAL_OUTDATED=$((BACKEND_OUTDATED + FRONTEND_OUTDATED + ADMIN_OUTDATED))
+          
+          echo "BACKEND_OUTDATED=$BACKEND_OUTDATED" >> $GITHUB_ENV
+          echo "FRONTEND_OUTDATED=$FRONTEND_OUTDATED" >> $GITHUB_ENV
+          echo "ADMIN_OUTDATED=$ADMIN_OUTDATED" >> $GITHUB_ENV
+          echo "TOTAL_OUTDATED=$TOTAL_OUTDATED" >> $GITHUB_ENV
+
+      # Send Dependency Update Alert (weekly summary)
+      - name: Send Dependency Update Alert
+        if: env.TOTAL_OUTDATED > 10
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "📦 Dependency Update Alert - catsupply.nl"
+          to: emin@catsupply.nl
+          from: Dependency Monitor
+          body: |
+            Multiple outdated dependencies detected in catsupply.nl.
+            
+            Summary:
+            - Backend: ${{ env.BACKEND_OUTDATED }} outdated packages
+            - Frontend: ${{ env.FRONTEND_OUTDATED }} outdated packages
+            - Admin: ${{ env.ADMIN_OUTDATED }} outdated packages
+            - Total: ${{ env.TOTAL_OUTDATED }} outdated packages
+            
+            Consider updating dependencies to latest versions.
+            
+            Repository: https://github.com/${{ github.repository }}
