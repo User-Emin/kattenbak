@@ -692,18 +692,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       );
                     })}
                   </div>
-                    {/* ✅ EFFICIËNT: Gekozen kleur inline na selectie */}
+                  {/* ✅ OPTIMAAL: Gekozen kleur onder selectie */}
                   {activeVariant && (
-                      <span className="text-sm text-gray-600">
-                        <span className="font-medium">{activeVariant.name}</span>
+                    <span className="text-sm text-gray-600 mt-2 block">
+                      <span className="font-medium">{activeVariant.name}</span>
                       {activeVariant.stock > 0 && activeVariant.stock < 10 && (
                         <span className="ml-2 text-orange-600">
                           (Nog {activeVariant.stock} op voorraad)
                         </span>
                       )}
-                      </span>
+                    </span>
                   )}
-                  </div>
                 </div>
               )}
 
