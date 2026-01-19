@@ -705,6 +705,12 @@ jobs:
           else
             echo "✅ Products API: OK"
           fi
+          
+          # ✅ PRODUCT API TEST: Verify dynamic data (no hardcoded fallbacks)
+          echo ""
+          echo "🔍 Running Product API Test Script..."
+          chmod +x scripts/test-product-api.sh
+          ./scripts/test-product-api.sh || exit 1
       
       - name: 📊 Server CPU Check Post-Deployment
         run: |
