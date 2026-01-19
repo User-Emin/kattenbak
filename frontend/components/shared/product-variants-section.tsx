@@ -81,18 +81,32 @@ export function ProductVariantsSection() {
         }}
       >
         {/* ✅ TITEL: "Onze varianten" - DRY via DESIGN_SYSTEM - GROTER */}
-        <h2
-          className="text-center mb-8 md:mb-12"
-          style={{
-            fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)', // ✅ GROTER: Responsive, groter dan 4xl
-            fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
-            color: '#FFFFFF', // ✅ WIT: Volledig wit tekst
-            letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
-          }}
-        >
-          Onze varianten
-        </h2>
+        <div className="text-center mb-8 md:mb-12">
+          <h2
+            style={{
+              fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)', // ✅ GROTER: Responsive, groter dan 4xl
+              fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
+              color: '#FFFFFF', // ✅ WIT: Volledig wit tekst
+              letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
+              marginBottom: DESIGN_SYSTEM.spacing[3], // ✅ SPACING: Ruimte tussen titel en subtekst
+            }}
+          >
+            Onze varianten
+          </h2>
+          {/* ✅ SUBTEKST: Passende beschrijving onder titel */}
+          <p
+            style={{
+              fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
+              fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+              color: '#FFFFFF', // ✅ WIT: Volledig wit tekst
+              opacity: 0.9, // ✅ SUBTIELE: Iets transparanter voor hiërarchie
+              lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
+            }}
+          >
+            Kies jouw favoriete kleur en stijl
+          </p>
+        </div>
 
         {/* ✅ GRID: 2 kaarten centraal naast elkaar desktop, onder elkaar mobiel - DRY & RESPONSIVE */}
         <div

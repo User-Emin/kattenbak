@@ -92,7 +92,7 @@ export function ProductEdgeImageSection() {
   const CONFIG = PRODUCT_PAGE_CONFIG;
 
   return (
-    <div className={cn(CONFIG.edgeSection.container, 'my-4 sm:my-6 md:my-8 lg:my-10')}>
+    <div className={cn(CONFIG.edgeSection.container, 'mt-0')}>
       <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')}>
         <Image
           src={imageSrc}
