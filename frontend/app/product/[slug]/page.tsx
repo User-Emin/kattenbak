@@ -64,10 +64,12 @@ async function getProductMetadata(slug: string): Promise<Metadata> {
     const productTitle = product.metaTitle || product.name || SEO_CONFIG.defaults.title;
     const productDescription = product.metaDescription || product.shortDescription || product.description || SEO_CONFIG.defaults.description;
     const productUrl = `${SEO_CONFIG.site.url}/product/${slug}`;
+    const productSku = product.sku || ''; // ✅ STABIEL: SKU altijd meenemen (KB-AUTO-001, ALP1071, etc.)
     
     return {
       title: `${productTitle} | ${SEO_CONFIG.site.name}`,
       description: productDescription,
+      keywords: productSku ? `${product.name}, ${productSku}, automatische kattenbak, zelfreinigende kattenbak` : undefined, // ✅ SEO: Keywords met SKU
       openGraph: {
         title: productTitle,
         description: productDescription,
@@ -86,6 +88,12 @@ async function getProductMetadata(slug: string): Promise<Metadata> {
       },
       alternates: {
         canonical: productUrl,
+      },
+      other: {
+        'product:sku': productSku, // ✅ SEO: SKU in metadata
+        'product:price:amount': typeof product.price === 'number' ? product.price.toFixed(2) : String(product.price || '0'),
+        'product:price:currency': 'EUR',
+        'product:availability': product.stock > 0 ? 'in stock' : 'out of stock',
       },
     };
   } catch (error: any) {
