@@ -1,0 +1,45 @@
+name: Admin E2E Test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'admin-next/**'
+      - 'backend/src/routes/admin/**'
+      - 'deployment/nginx-catsupply.conf'
+      - 'scripts/e2e-admin-test.sh'
+      - 'scripts/fix-admin-deploy.sh'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'admin-next/**'
+      - 'backend/src/routes/admin/**'
+  workflow_dispatch:
+
+jobs:
+  admin-e2e-test:
+    name: Admin E2E Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run E2E Admin Tests
+        run: |
+          chmod +x scripts/e2e-admin-test.sh
+          ./scripts/e2e-admin-test.sh
+        env:
+          SERVER_HOST: catsupply.nl
+          ADMIN_EMAIL: admin@catsupply.nl
+          ADMIN_PASSWORD: admin123
+      
+      - name: Report Results
+        if: always()
+        run: |
+          if [ $? -eq 0 ]; then
+            echo "✅ All admin E2E tests passed"
+          else
+            echo "❌ Admin E2E tests failed"
+            exit 1
+          fi
