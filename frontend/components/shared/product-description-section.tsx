@@ -52,10 +52,12 @@ export function ProductDescriptionSection() {
   const displayName = product.name || 'ALP1071 Kattenbak';
   const displayDescription = product.description || product.shortDescription || 'De beste automatische kattenbak met zelfreinigende functie. Perfect voor katten tot 7kg. Volledig automatisch met app-bediening.';
 
-  // ✅ DYNAMISCH: Eerste afbeelding van product (zoals in productdetail)
-  const productImage = product.images && product.images.length > 0 
-    ? product.images[0] 
-    : '/placeholder-image.jpg';
+  // ✅ DYNAMISCH: 2e afbeelding van product (index 1)
+  const productImage = product.images && product.images.length > 1
+    ? product.images[1] // ✅ 2E FOTO: Index 1 (tweede geüploade foto)
+    : (product.images && product.images.length > 0 
+      ? product.images[0] // ✅ FALLBACK: Eerste foto als 2e niet beschikbaar
+      : '/placeholder-image.jpg');
 
   return (
     <section

@@ -143,24 +143,15 @@ export function ProductVariantsSection() {
                     >
                       {variantName}
                     </h3>
-
-                    {/* ✅ KLEUR INDICATOR: Alleen tonen als kleur beschikbaar */}
-                    {variantColor && (
-                      <div
-                        className="mt-2 w-6 h-6 rounded-full border-2 border-white/90 transition-all duration-300 group-hover:scale-110"
-                        style={{
-                          backgroundColor: variantColor,
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.7)',
-                        }}
-                      />
-                    )}
                   </div>
 
-                  {/* ✅ PLUSJE RECHTS ONDER: In afbeelding, geen rondje */}
+                  {/* ✅ PLUSJE RECHTS ONDER: In afbeelding, met eigen cirkel */}
                   <div className="absolute bottom-4 right-4 transition-all duration-300 group-hover:scale-110">
-                    <svg className="w-8 h-8 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                    </svg>
+                    <div className="bg-white/90 hover:bg-white rounded-full p-2 shadow-lg">
+                      <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
               </Link>
