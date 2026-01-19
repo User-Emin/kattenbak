@@ -199,8 +199,15 @@ jobs:
             echo "❌ Standalone build not found - Next.js standalone output required"
             exit 1
           fi
-          if [ ! -f ".next/standalone/frontend/server.js" ]; then
-            echo "❌ Standalone server.js not found"
+          # ✅ FIX: Check for standalone server.js in correct location
+          if [ -f ".next/standalone/kattenbak/frontend/server.js" ]; then
+            echo "✅ Standalone server.js found at .next/standalone/kattenbak/frontend/server.js"
+          elif [ -f ".next/standalone/frontend/server.js" ]; then
+            echo "✅ Standalone server.js found at .next/standalone/frontend/server.js"
+          else
+            echo "❌ Standalone server.js not found in expected locations"
+            echo "🔍 Searching for server.js..."
+            find .next/standalone -name "server.js" -type f 2>/dev/null | head -5 || echo "No server.js found"
             exit 1
           fi
           echo "✅ Standalone build verified"
@@ -504,20 +511,44 @@ jobs:
             echo "🔍 Verifying frontend (pre-built from GitHub)..."
             if [ -d "frontend/.next" ]; then
               echo "✅ Frontend pre-built directory exists"
+              
+              # ✅ FIX: Determine standalone structure (kattenbak/frontend or frontend)
+              STANDALONE_BASE="frontend/.next/standalone"
+              if [ -d "$STANDALONE_BASE/kattenbak/frontend" ]; then
+                STANDALONE_PATH="$STANDALONE_BASE/kattenbak/frontend"
+                echo "📁 Using standalone path: kattenbak/frontend"
+              elif [ -d "$STANDALONE_BASE/frontend" ]; then
+                STANDALONE_PATH="$STANDALONE_BASE/frontend"
+                echo "📁 Using standalone path: frontend"
+              else
+                echo "⚠️  Standalone structure not found, checking..."
+                find "$STANDALONE_BASE" -name "server.js" -type f 2>/dev/null | head -1 || echo "❌ No server.js found in standalone"
+                STANDALONE_PATH="$STANDALONE_BASE/frontend"
+              fi
+              
               # ✅ FIX: Copy static files to standalone (required for CSS/JS/Images to load)
               if [ -d "frontend/.next/static" ]; then
                 echo "📦 Copying static files to standalone build (CSS/JS/Images)..."
-                # Copy static to standalone/.next/static
-                mkdir -p frontend/.next/standalone/frontend/.next/static
-                cp -r frontend/.next/static/* frontend/.next/standalone/frontend/.next/static/ 2>/dev/null || true
-                echo "✅ Static files copied to standalone/.next/static"
+                mkdir -p "$STANDALONE_PATH/.next/static"
+                cp -r frontend/.next/static/* "$STANDALONE_PATH/.next/static/" 2>/dev/null || true
+                echo "✅ Static files copied to $STANDALONE_PATH/.next/static"
               fi
+              
               # ✅ FIX: Copy public directory (logos, images, favicon) to standalone
               if [ -d "frontend/public" ]; then
                 echo "📦 Copying public directory to standalone (logos, images, favicon)..."
-                mkdir -p frontend/.next/standalone/frontend/public
-                cp -r frontend/public/* frontend/.next/standalone/frontend/public/ 2>/dev/null || true
-                echo "✅ Public directory copied to standalone/public"
+                mkdir -p "$STANDALONE_PATH/public"
+                cp -r frontend/public/* "$STANDALONE_PATH/public/" 2>/dev/null || true
+                echo "✅ Public directory copied to $STANDALONE_PATH/public"
+              fi
+              
+              # ✅ VERIFY: Check that server.js exists
+              if [ -f "$STANDALONE_PATH/server.js" ]; then
+                echo "✅ Standalone server.js found at $STANDALONE_PATH/server.js"
+              else
+                echo "⚠️  WARNING: server.js not found at $STANDALONE_PATH/server.js"
+                echo "🔍 Searching for server.js..."
+                find "$STANDALONE_BASE" -name "server.js" -type f 2>/dev/null | head -3
               fi
             else
               echo "⚠️  Frontend not built yet (will be on next GitHub Actions build)"
@@ -538,7 +569,7 @@ jobs:
               apps: [
                 {
                   name: 'frontend',
-                  script: '.next/standalone/frontend/server.js',
+                  script: '.next/standalone/kattenbak/frontend/server.js',
                   cwd: '/var/www/kattenbak/frontend',
                   instances: 1,
                   exec_mode: 'fork',
