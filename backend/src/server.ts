@@ -120,8 +120,8 @@ class Server {
       });
     });
 
-    // Load simple product routes (no database needed)
-    const productRoutes = (await import('./routes/product.routes.simple')).default;
+    // Load product routes (uses database via ProductService)
+    const productRoutes = (await import('./routes/product.routes')).default;
     this.app.use('/api/v1/products', productRoutes);
     
     // Admin routes - IMPORTANT for admin panel
