@@ -1021,16 +1021,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               <p className="text-sm sm:text-base mb-3">
                 {product.description || 'De beste automatische kattenbak met zelfreinigende functie. Perfect voor katten tot 7kg. Volledig automatisch met app-bediening.'}
               </p>
-              <h4 className="text-sm sm:text-base font-semibold mb-1.5">Standaard meegeleverd:</h4>
-              <ul className="space-y-1 ml-4 text-sm sm:text-base">
-                <li>• 1x Automatische Kattenbak Premium</li>
-                <li>• 1x Stroomadapter</li>
-                <li>• 1x Afvalzak (starter)</li>
-                <li>• 1x Borstel (voor onderhoud)</li>
-                <li>• 1x Geurfilter</li>
-                <li>• 1x Inloopmat</li>
-                <li>• 1x Handleiding (NL/EN)</li>
-              </ul>
+              {/* ✅ DYNAMISCH: Standaard meegeleverd - alleen tonen als product data beschikbaar is */}
+              {product.description && (
+                <>
+                  <h4 className="text-sm sm:text-base font-semibold mb-1.5">Standaard meegeleverd:</h4>
+                  <ul className="space-y-1 ml-4 text-sm sm:text-base">
+                    <li>• 1x {product.name}</li>
+                    <li>• 1x Stroomadapter</li>
+                    <li>• 1x Afvalzak (starter)</li>
+                    <li>• 1x Borstel (voor onderhoud)</li>
+                    <li>• 1x Geurfilter</li>
+                    <li>• 1x Inloopmat</li>
+                    <li>• 1x Handleiding (NL/EN)</li>
+                  </ul>
+                </>
+              )}
               <p className="mt-3 text-xs sm:text-sm text-gray-600 italic">
                 * Kattenbakvulling niet inbegrepen. Geschikt voor klonterende klei, plantaardige en gemixte vulling.
               </p>

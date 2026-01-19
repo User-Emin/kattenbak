@@ -28,7 +28,7 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     const productUrl = `${SEO_CONFIG.site.url}/product/${product.slug || 'automatische-kattenbak-premium'}`;
     const price = typeof product.price === 'number' ? product.price : parseFloat(String(product.price || 0)) || 0;
     const availability = (product.stock || 0) > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
-    const productSku = product.sku || 'KB-AUTO-001'; // ✅ STABIEL: Fallback SKU (KB-AUTO-001, ALP1071, etc.)
+    const productSku = product.sku || ''; // ✅ DYNAMISCH: Geen hardcoded fallback - alleen database SKU
 
     const jsonLd: any = {
       "@context": "https://schema.org",
