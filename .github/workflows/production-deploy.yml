@@ -694,6 +694,20 @@ jobs:
           fi
           echo "✅ Admin: OK (HTTP $RESPONSE)"
       
+      - name: 📦 Checkout (for verification scripts)
+        uses: actions/checkout@v4
+      
+      - name: ✅ Verify Product Data Stability
+        run: |
+          echo "Verifying product data is correct and not reset..."
+          chmod +x scripts/verify-product-data.sh
+          ./scripts/verify-product-data.sh || {
+            echo "⚠️  Product data verification failed!"
+            echo "   This may indicate data was reset during deployment."
+            echo "   Run scripts/restore-product-data.sh on the server to restore."
+            exit 1
+          }
+      
       - name: 🧪 API Endpoint Tests
         run: |
           echo "Testing critical API endpoints..."
