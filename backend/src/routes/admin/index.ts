@@ -18,6 +18,7 @@ const router = Router();
 
 // DRY: Centralized route mounting
 router.use('/auth', authRoutes);
+// ✅ FIX: Use database route (products.routes), not mock route (product.routes)
 router.use('/products', productRoutes);
 router.use('/orders', orderRoutes);
 router.use('/categories', categoryRoutes);

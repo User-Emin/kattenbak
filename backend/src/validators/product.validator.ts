@@ -5,6 +5,39 @@ import { z } from 'zod';
  * Security: Input validation prevents XSS, SQL injection, malformed data
  */
 
+// ✅ FIX: Define ProductVariantCreateSchema FIRST to avoid circular dependency
+export const ProductVariantCreateSchema = z.object({
+  productId: z.string().cuid('Ongeldige product ID'),
+  name: z.string().min(2).max(100).trim(),
+  colorName: z.string().min(2).max(50).trim().optional(), // Optional, will be converted to colorCode
+  colorCode: z.enum(['WIT', 'ZWART', 'GRIJS', 'ZILVER', 'BEIGE', 'BLAUW', 'ROOD', 'GROEN']).optional(), // ✅ SECURITY: Whitelist
+  colorImageUrl: z.string()
+    .refine(
+      (val) => !val || (val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://')),
+      'Preview image URL moet een geldige URL of pad zijn'
+    )
+    .refine(
+      (val) => !val || (!val.includes('..') && !val.includes('//')),
+      'Preview image URL mag geen path traversal bevatten'
+    )
+    .optional()
+    .nullable(),
+  colorHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Ongeldige kleur hex code').optional(),
+  priceAdjustment: z.number().min(-999999).max(999999).multipleOf(0.01).default(0),
+  sku: z.string().regex(/^[A-Z0-9-]+$/).min(2).max(50),
+  stock: z.number().int().min(0).max(999999),
+  images: z.array(
+    z.string()
+      .min(1)
+      .refine(
+        (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
+        'Afbeelding moet een geldige URL of pad zijn'
+      )
+  ).max(10).default([]),
+  isActive: z.boolean().default(true),
+  sortOrder: z.number().int().min(0).default(0)
+});
+
 // Base product schema
 export const ProductCreateSchema = z.object({
   name: z.string()
@@ -129,39 +162,6 @@ export const ProductQuerySchema = z.object({
   isFeatured: z.enum(['true', 'false']).transform(val => val === 'true').optional(),
   sortBy: z.enum(['name', 'price', 'stock', 'createdAt', 'updatedAt']).optional().default('createdAt'),
   sortOrder: z.enum(['asc', 'desc']).optional().default('desc')
-});
-
-// ✅ VARIANT SYSTEM: Updated variant schema with colorCode and colorImageUrl
-export const ProductVariantCreateSchema = z.object({
-  productId: z.string().cuid('Ongeldige product ID'),
-  name: z.string().min(2).max(100).trim(),
-  colorName: z.string().min(2).max(50).trim().optional(), // Optional, will be converted to colorCode
-  colorCode: z.enum(['WIT', 'ZWART', 'GRIJS', 'ZILVER', 'BEIGE', 'BLAUW', 'ROOD', 'GROEN']).optional(), // ✅ SECURITY: Whitelist
-  colorImageUrl: z.string()
-    .refine(
-      (val) => !val || (val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://')),
-      'Preview image URL moet een geldige URL of pad zijn'
-    )
-    .refine(
-      (val) => !val || (!val.includes('..') && !val.includes('//')),
-      'Preview image URL mag geen path traversal bevatten'
-    )
-    .optional()
-    .nullable(),
-  colorHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Ongeldige kleur hex code').optional(),
-  priceAdjustment: z.number().min(-999999).max(999999).multipleOf(0.01).default(0),
-  sku: z.string().regex(/^[A-Z0-9-]+$/).min(2).max(50),
-  stock: z.number().int().min(0).max(999999),
-  images: z.array(
-    z.string()
-      .min(1)
-      .refine(
-        (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
-        'Afbeelding moet een geldige URL of pad zijn'
-      )
-  ).max(10).default([]),
-  isActive: z.boolean().default(true),
-  sortOrder: z.number().int().min(0).default(0)
 });
 
 export const ProductVariantUpdateSchema = ProductVariantCreateSchema.partial().omit({ productId: true });
