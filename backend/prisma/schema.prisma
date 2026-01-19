@@ -314,6 +314,11 @@ model OrderItem {
   quantity    Int
   subtotal    Decimal @db.Decimal(10, 2)
 
+  // ✅ VARIANT SYSTEM: Variant info (optional, for products with variants)
+  variantId   String? @map("variant_id")
+  variantName String? @map("variant_name") // e.g. "Premium Wit", "Premium Zwart"
+  variantSku  String? @map("variant_sku")  // Variant-specific SKU
+
   // Timestamps
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

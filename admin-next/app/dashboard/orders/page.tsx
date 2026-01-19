@@ -123,6 +123,7 @@ export default function OrdersPage() {
                 <TableRow>
                   <TableHead>Bestelnummer</TableHead>
                   <TableHead>Klant</TableHead>
+                  <TableHead>Items</TableHead>
                   <TableHead>Totaal</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Datum</TableHead>
@@ -153,6 +154,29 @@ export default function OrdersPage() {
                           </p>
                         )}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      {/* ✅ VARIANT SYSTEM: Display order items with variant info */}
+                      {order.items && order.items.length > 0 ? (
+                        <div className="space-y-1">
+                          {order.items.map((item: any, idx: number) => (
+                            <div key={item.id || idx} className="text-sm">
+                              <p className="font-medium">{item.productName || 'Onbekend product'}</p>
+                              {item.variantName && (
+                                <p className="text-xs text-muted-foreground">
+                                  🎨 {item.variantName}
+                                  {item.variantSku && ` (${item.variantSku})`}
+                                </p>
+                              )}
+                              <p className="text-xs text-muted-foreground">
+                                {item.quantity}x €{item.price?.toFixed(2) || '0.00'}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <span className="text-sm text-muted-foreground">Geen items</span>
+                      )}
                     </TableCell>
                     <TableCell className="font-medium">
                       € {order.total.toFixed(2)}

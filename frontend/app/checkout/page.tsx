@@ -246,7 +246,11 @@ function CheckoutContent() {
         items: [{ 
           productId: productIdToUse, // ✅ Use CUID instead of numeric ID
           quantity: Number(quantity) || 1, // ✅ FIX: Ensure quantity is number
-          price: Number(productPrice) // ✅ FIX: Explicitly use Number() to ensure it's a number
+          price: Number(productPrice), // ✅ FIX: Explicitly use Number() to ensure it's a number
+          // ✅ VARIANT SYSTEM: Include variant info if product has variant
+          variantId: (product as any).variantId,
+          variantName: (product as any).variantName,
+          variantSku: (product as any).variantSku,
         }],
         customer: {
           firstName: formData.firstName,

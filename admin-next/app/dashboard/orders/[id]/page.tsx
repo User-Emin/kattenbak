@@ -77,6 +77,10 @@ interface OrderDetail {
     quantity: number;
     price: number;
     subtotal: number;
+    // ✅ VARIANT SYSTEM: Variant info
+    variantId?: string;
+    variantName?: string;
+    variantSku?: string;
     product?: {
       id: string;
       name: string;
@@ -337,6 +341,13 @@ export default function OrderDetailPage() {
                     <p className="font-medium">{item.productName}</p>
                     {item.productSku && (
                       <p className="text-sm text-muted-foreground">SKU: {item.productSku}</p>
+                    )}
+                    {/* ✅ VARIANT SYSTEM: Display variant info if present - DRY: Via constants */}
+                    {item.variantName && (
+                      <p className="text-sm text-muted-foreground mt-1">
+                        🎨 Variant: <span className="font-medium">{item.variantName}</span>
+                        {item.variantSku && <span className="ml-1">({item.variantSku})</span>}
+                      </p>
                     )}
                     <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                       <span>Aantal: {item.quantity}</span>

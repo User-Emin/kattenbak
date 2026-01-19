@@ -82,6 +82,7 @@ export const transformProducts = (products: any[]): any[] => {
 /**
  * Transform Order with price fields and address info
  * ✅ CRITICAL: Includes all address fields for admin panel
+ * ✅ VARIANT SYSTEM: Includes variant info in order items
  */
 export const transformOrder = (order: any): any => {
   return {
@@ -91,6 +92,25 @@ export const transformOrder = (order: any): any => {
     tax: decimalToNumber(order.tax),
     discount: decimalToNumber(order.discount),
     total: decimalToNumber(order.total),
+    // ✅ VARIANT SYSTEM: Transform order items to include variant info
+    items: order.items ? order.items.map((item: any) => ({
+      id: item.id,
+      productId: item.productId,
+      productName: item.productName,
+      productSku: item.productSku,
+      quantity: item.quantity,
+      price: decimalToNumber(item.price),
+      subtotal: decimalToNumber(item.subtotal),
+      // ✅ VARIANT SYSTEM: Include variant info if present
+      variantId: item.variantId || null,
+      variantName: item.variantName || null,
+      variantSku: item.variantSku || null,
+      product: item.product ? {
+        id: item.product.id,
+        name: item.product.name,
+        images: item.product.images,
+      } : null,
+    })) : [],
     // ✅ FIX: Ensure shippingAddress and billingAddress are included
     shippingAddress: order.shippingAddress ? {
       firstName: order.shippingAddress.firstName,

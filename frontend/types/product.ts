@@ -59,6 +59,10 @@ export interface CreateOrderData {
   items: Array<{
     productId: string;
     quantity: number;
+    // ✅ VARIANT SYSTEM: Variant info (optional)
+    variantId?: string;
+    variantName?: string;
+    variantSku?: string;
   }>;
   customerEmail: string;
   customerPhone?: string;
@@ -118,6 +122,10 @@ export interface OrderItem {
   price: number;
   quantity: number;
   subtotal: number;
+  // ✅ VARIANT SYSTEM: Variant info (optional)
+  variantId?: string;
+  variantName?: string;
+  variantSku?: string;
   product: Product;
 }
 

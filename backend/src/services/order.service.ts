@@ -10,6 +10,10 @@ interface CreateOrderData {
     productId: string;
     quantity: number;
     price?: number; // ✅ ADD: Allow price to be passed from frontend for fallback
+    // ✅ VARIANT SYSTEM: Variant info (optional)
+    variantId?: string;
+    variantName?: string;
+    variantSku?: string;
   }>;
   customerEmail: string;
   customerPhone?: string;
@@ -112,6 +116,7 @@ export class OrderService {
             product,
             quantity: item.quantity,
             price: priceToUse, // ✅ ADD: Use determined price
+            item, // ✅ VARIANT SYSTEM: Pass full item to access variant info
           };
         } catch (productError: any) {
           // ✅ DEBUG: Log product lookup errors
@@ -128,7 +133,7 @@ export class OrderService {
 
     // Calculate totals
     let subtotal = new Decimal(0);
-    const orderItems = productDetails.map(({ product, quantity, price: itemPrice }) => {
+    const orderItems = productDetails.map(({ product, quantity, price: itemPrice, item }) => {
       // ✅ FIX: Use price from productDetails (may be from frontend) or fallback to product.price
       const price = itemPrice !== undefined 
         ? new Decimal(itemPrice.toString())
@@ -147,6 +152,10 @@ export class OrderService {
         price: priceForDb, // ✅ FIX: Use converted number instead of product.price (Decimal.js object)
         quantity,
         subtotal: itemTotal.toNumber(),
+        // ✅ VARIANT SYSTEM: Include variant info if provided
+        variantId: item.variantId,
+        variantName: item.variantName,
+        variantSku: item.variantSku,
       };
     });
 

@@ -83,11 +83,15 @@ router.post(
 
       // Transform frontend format → OrderService format
       // ✅ FIX: Include price in orderData for fallback logic
+      // ✅ VARIANT SYSTEM: Include variant info if provided
       const orderData = {
         items: items.map((item: any) => ({
           productId: item.productId,
           quantity: item.quantity,
           price: item.price, // ✅ ADD: Include price for OrderService to use
+          variantId: item.variantId, // ✅ VARIANT SYSTEM: Variant ID
+          variantName: item.variantName, // ✅ VARIANT SYSTEM: Variant name (e.g. "Premium Wit")
+          variantSku: item.variantSku, // ✅ VARIANT SYSTEM: Variant SKU
         })),
         customerEmail: customer.email,
         customerPhone: customer.phone,

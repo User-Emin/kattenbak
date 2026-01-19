@@ -96,40 +96,48 @@ export function Header() {
             </a>
           </div>
 
-          {/* CENTER: LOGO - 0 MARGIN, DIRECT IN NAVBAR */}
-          <div className="flex justify-center items-center" style={{ height: '100%', margin: 0, padding: 0 }}>
+          {/* CENTER: LOGO - MOBIEL: LINKS, DESKTOP: CENTER - ✅ DRY: Via DESIGN_SYSTEM */}
+          <div 
+            className="flex items-center" 
+            style={{ 
+              height: '100%', 
+              margin: 0, 
+              padding: 0,
+              // ✅ MOBIEL: Links uitgelijnd, DESKTOP: Gecentreerd
+              justifyContent: 'flex-start', // Mobiel: links
+            }}
+          >
             <Link 
               href="/" 
-              className="transition-opacity hover:opacity-80"
+              className="transition-opacity hover:opacity-80 md:mx-auto"
               style={{ 
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
                 height: '100%',
-                width: '100%',
-                margin: 0, // ✅ 0 MARGIN: Geen margin
-                padding: 0, // ✅ 0 PADDING: Geen padding
+                margin: 0,
+                padding: 0,
               }}
             >
               <img
                 src="/logos/logo-navbar-original.png"
                 alt="CatSupply Logo"
                 style={{
-                  height: '100%', // ✅ OPTIMAAL: Logo vult navbar volledig (80px)
-                  maxHeight: '80px', // ✅ OPTIMAAL: Exact navbar hoogte
+                  // ✅ MOBIEL: Kleiner (60px), DESKTOP: Normaal (80px)
+                  height: '60px', // Mobiel: kleiner
+                  maxHeight: '60px', // Mobiel: kleiner
                   width: 'auto',
-                  maxWidth: '300px', // ✅ OPTIMAAL: Max breedte voor goede verhouding
+                  maxWidth: '200px', // Mobiel: smaller max width
                   display: 'block',
-                  objectFit: 'contain', // ✅ OPTIMAAL: Behoud aspect ratio
-                  objectPosition: 'center', // ✅ OPTIMAAL: Perfect gecentreerd
-                  margin: 0, // ✅ 0 MARGIN: Geen margin rondom logo
-                  padding: 0, // ✅ 0 PADDING: Geen padding rondom logo
+                  objectFit: 'contain',
+                  objectPosition: 'left center', // Mobiel: links uitgelijnd
+                  margin: 0,
+                  padding: 0,
                 }}
+                className="md:h-full md:max-h-[80px] md:max-w-[300px] md:object-center"
                 loading="eager"
                 fetchPriority="high"
                 onError={(e) => {
                   console.error('Logo failed to load:', e);
-                  // Fallback naar WebP als PNG faalt
                   const target = e.target as HTMLImageElement;
                   if (target.src && !target.src.includes('.webp')) {
                     target.src = '/logos/logo.webp';

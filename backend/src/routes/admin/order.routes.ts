@@ -71,6 +71,10 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
         quantity: item.quantity,
         price: Number(item.price),
         subtotal: Number(item.subtotal || (Number(item.price) * item.quantity)),
+        // ✅ VARIANT SYSTEM: Include variant info if present
+        variantId: item.variantId || null,
+        variantName: item.variantName || null,
+        variantSku: item.variantSku || null,
       })) : [],
       createdAt: order.createdAt || order.createdAt?.toISOString(),
       updatedAt: order.updatedAt || order.updatedAt?.toISOString(),
