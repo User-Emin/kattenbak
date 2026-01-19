@@ -59,10 +59,9 @@ export function Header() {
           style={{
             maxWidth: DESIGN_SYSTEM.layout.navbar.maxWidth,
             padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
-            minHeight: '100px', // ✅ OPTIMAAL: Meer ruimte voor groot logo (was 64px)
-            height: 'auto', // ✅ OPTIMAAL: Auto height voor flexibele logo grootte
-            paddingTop: '10px', // ✅ OPTIMAAL: Extra padding boven voor logo
-            paddingBottom: '10px', // ✅ OPTIMAAL: Extra padding onder voor logo
+            height: '80px', // ✅ SMALLER: Navbar smaller (was 100px+)
+            minHeight: '80px',
+            maxHeight: '80px',
           }}
         >
           {/* LEFT: EMAIL + SUPPORT */}
@@ -97,31 +96,34 @@ export function Header() {
             </a>
           </div>
 
-          {/* CENTER: LOGO - OPTIMAAL GECENTREERD */}
-          <div className="flex justify-center items-center">
+          {/* CENTER: LOGO - 0 MARGIN, DIRECT IN NAVBAR */}
+          <div className="flex justify-center items-center" style={{ height: '100%', margin: 0, padding: 0 }}>
             <Link 
               href="/" 
-              className="transition-opacity hover:opacity-80 flex items-center justify-center"
+              className="transition-opacity hover:opacity-80"
               style={{ 
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: '100%',
                 width: '100%',
+                margin: 0, // ✅ 0 MARGIN: Geen margin
+                padding: 0, // ✅ 0 PADDING: Geen padding
               }}
             >
               <img
                 src="/logos/logo.webp"
                 alt="CatSupply Logo"
-                className="object-contain"
                 style={{
-                  height: '140px', // ✅ OPTIMAAL: 140px voor maximale zichtbaarheid
-                  maxHeight: '160px', // ✅ OPTIMAAL: Max 160px voor responsive
+                  height: '100%', // ✅ 0 MARGIN: Logo vult navbar volledig
+                  maxHeight: '80px', // ✅ SMALLER: Max hoogte = navbar hoogte
                   width: 'auto',
-                  maxWidth: '100%', // ✅ RESPONSIVE: Past binnen container
+                  maxWidth: '100%',
                   display: 'block',
-                  objectFit: 'contain', // ✅ OPTIMAAL: Behoud aspect ratio
-                  objectPosition: 'center', // ✅ OPTIMAAL: Perfect gecentreerd
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  margin: 0, // ✅ 0 MARGIN: Geen margin rondom logo
+                  padding: 0, // ✅ 0 PADDING: Geen padding rondom logo
                 }}
                 loading="eager"
                 fetchPriority="high"
