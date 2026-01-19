@@ -1,8 +1,7 @@
 "use client";
 
-import { Suspense } from "react";
+import React from "react";
 import { ProductDetail } from "@/components/products/product-detail";
-import { Metadata } from "next";
 import { SEO_CONFIG } from "@/lib/seo.config";
 
 interface ProductPageProps {
@@ -11,11 +10,17 @@ interface ProductPageProps {
   }>;
 }
 
+interface ProductMetadata {
+  title?: string;
+  description?: string;
+  keywords?: string;
+}
+
 /**
  * ✅ SEO 10/10: Generate metadata for product pages
  * ✅ EXPERT: Client-side page - metadata via head tags
  */
-async function getProductMetadata(slug: string): Promise<Metadata> {
+async function getProductMetadata(slug: string): Promise<ProductMetadata> {
   try {
     // ✅ FIX: Use absolute URL for server-side fetch (required in Next.js App Router)
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
@@ -71,31 +76,6 @@ async function getProductMetadata(slug: string): Promise<Metadata> {
       title: `${productTitle} | ${SEO_CONFIG.site.name}`,
       description: productDescription,
       keywords: productSku ? `${product.name}, ${productSku}, automatische kattenbak, zelfreinigende kattenbak` : undefined, // ✅ SEO: Keywords met SKU
-      openGraph: {
-        title: productTitle,
-        description: productDescription,
-        images: [productImage],
-        url: productUrl,
-        type: 'product',
-        siteName: SEO_CONFIG.site.name,
-        locale: SEO_CONFIG.site.locale,
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: productTitle,
-        description: productDescription,
-        images: [productImage],
-        site: '@CatSupply',
-      },
-      alternates: {
-        canonical: productUrl,
-      },
-      other: {
-        'product:sku': productSku, // ✅ SEO: SKU in metadata
-        'product:price:amount': typeof product.price === 'number' ? product.price.toFixed(2) : String(product.price || '0'),
-        'product:price:currency': 'EUR',
-        'product:availability': product.stock > 0 ? 'in stock' : 'out of stock',
-      },
     };
   } catch (error: any) {
     // ✅ FIX: Silently fail metadata - don't crash the page
@@ -142,17 +122,28 @@ export default function ProductPage({ params }: ProductPageProps) {
       try {
         const metadata = await getProductMetadata(slug);
         if (metadata.title) {
-          document.title = metadata.title as string;
+          document.title = metadata.title;
         }
         if (metadata.description) {
-          const metaDesc = document.querySelector('meta[name="description"]');
+          let metaDesc = document.querySelector('meta[name="description"]');
           if (metaDesc) {
-            metaDesc.setAttribute('content', metadata.description as string);
+            metaDesc.setAttribute('content', metadata.description);
           } else {
-            const meta = document.createElement('meta');
-            meta.name = 'description';
-            meta.content = metadata.description as string;
-            document.head.appendChild(meta);
+            metaDesc = document.createElement('meta');
+            metaDesc.setAttribute('name', 'description');
+            metaDesc.setAttribute('content', metadata.description);
+            document.head.appendChild(metaDesc);
+          }
+        }
+        if (metadata.keywords) {
+          let metaKeywords = document.querySelector('meta[name="keywords"]');
+          if (metaKeywords) {
+            metaKeywords.setAttribute('content', metadata.keywords);
+          } else {
+            metaKeywords = document.createElement('meta');
+            metaKeywords.setAttribute('name', 'keywords');
+            metaKeywords.setAttribute('content', metadata.keywords);
+            document.head.appendChild(metaKeywords);
           }
         }
       } catch (error) {
