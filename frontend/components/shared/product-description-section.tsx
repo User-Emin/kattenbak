@@ -52,6 +52,11 @@ export function ProductDescriptionSection() {
   const displayName = product.name || 'ALP1071 Kattenbak';
   const displayDescription = product.description || product.shortDescription || 'De beste automatische kattenbak met zelfreinigende functie. Perfect voor katten tot 7kg. Volledig automatisch met app-bediening.';
 
+  // ✅ DYNAMISCH: Eerste afbeelding van product (zoals in productdetail)
+  const productImage = product.images && product.images.length > 0 
+    ? product.images[0] 
+    : '/placeholder-image.jpg';
+
   return (
     <section
       className="relative w-full py-12 md:py-16"
@@ -66,49 +71,62 @@ export function ProductDescriptionSection() {
           padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
         }}
       >
-        {/* ✅ PRODUCT NAAM & BESCHRIJVING: Dynamisch, geen hardcode */}
-        <div className="text-center space-y-4 md:space-y-6">
-          <h2
-            style={{
-              fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-              fontSize: DESIGN_SYSTEM.typography.fontSize['3xl'],
-              fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
-              color: DESIGN_SYSTEM.colors.text.primary,
-              letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
-            }}
-          >
-            {displayName}
-          </h2>
-          
-          <p
-            className="max-w-2xl mx-auto"
-            style={{
-              fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
-              fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-              color: DESIGN_SYSTEM.colors.text.secondary,
-              lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
-            }}
-          >
-            {displayDescription}
-          </p>
+        {/* ✅ PRODUCT AFBEELDING & INFORMATIE: Dynamisch, zoals productdetail */}
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+          {/* ✅ AFBEELDING: Eerste foto van product (dynamisch) */}
+          <div className="relative w-full md:w-1/2 aspect-square rounded-lg overflow-hidden">
+            <img
+              src={productImage}
+              alt={displayName}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
 
-          {/* ✅ CTA BUTTON: Link naar product detail */}
-          <div className="pt-4">
-            <Link href={`/product/${product.slug}`}>
-              <button
-                className="inline-flex items-center gap-2 transition-all hover:opacity-90"
-                style={{
-                  background: DESIGN_SYSTEM.colors.text.primary, // ✅ ZWART
-                  color: DESIGN_SYSTEM.colors.text.inverse,
-                  padding: `${DESIGN_SYSTEM.spacing[3]} ${DESIGN_SYSTEM.spacing[6]}`,
-                  fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-                  borderRadius: DESIGN_SYSTEM.effects.borderRadius.xl,
-                }}
-              >
-                <span>Bekijk Product</span>
-                <ArrowRight className="w-4 h-4" strokeWidth={2} />
-              </button>
-            </Link>
+          {/* ✅ PRODUCT NAAM & BESCHRIJVING: Dynamisch, geen hardcode */}
+          <div className="w-full md:w-1/2 text-center md:text-left space-y-4 md:space-y-6">
+            <h2
+              style={{
+                fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
+                fontSize: DESIGN_SYSTEM.typography.fontSize['3xl'],
+                fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
+                color: DESIGN_SYSTEM.colors.text.primary,
+                letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
+              }}
+            >
+              {displayName}
+            </h2>
+            
+            <p
+              className="max-w-2xl mx-auto md:mx-0"
+              style={{
+                fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
+                fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                color: DESIGN_SYSTEM.colors.text.secondary,
+                lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
+              }}
+            >
+              {displayDescription}
+            </p>
+
+            {/* ✅ CTA BUTTON: Link naar product detail */}
+            <div className="pt-4">
+              <Link href={`/product/${product.slug}`}>
+                <button
+                  className="inline-flex items-center gap-2 transition-all hover:opacity-90"
+                  style={{
+                    background: DESIGN_SYSTEM.colors.text.primary, // ✅ ZWART
+                    color: DESIGN_SYSTEM.colors.text.inverse,
+                    padding: `${DESIGN_SYSTEM.spacing[3]} ${DESIGN_SYSTEM.spacing[6]}`,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+                    borderRadius: DESIGN_SYSTEM.effects.borderRadius.xl,
+                  }}
+                >
+                  <span>Bekijk Product</span>
+                  <ArrowRight className="w-4 h-4" strokeWidth={2} />
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

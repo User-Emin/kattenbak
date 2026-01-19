@@ -154,15 +154,13 @@ export function ProductVariantsSection() {
                         }}
                       />
                     )}
+                  </div>
 
-                    {/* ✅ PLUSJE IN BUTTON: Duidelijk plusje voor actie */}
-                    <div className="mt-4 flex items-center justify-center">
-                      <div className="bg-white/90 hover:bg-white rounded-full p-2 transition-all duration-300 group-hover:scale-110">
-                        <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                        </svg>
-                      </div>
-                    </div>
+                  {/* ✅ PLUSJE RECHTS ONDER: In afbeelding, geen rondje */}
+                  <div className="absolute bottom-4 right-4 transition-all duration-300 group-hover:scale-110">
+                    <svg className="w-8 h-8 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
                   </div>
                 </div>
               </Link>
