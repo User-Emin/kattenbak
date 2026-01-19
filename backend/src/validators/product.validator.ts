@@ -70,7 +70,7 @@ export const ProductCreateSchema = z.object({
     .multipleOf(0.01, 'Prijs moet 2 decimalen hebben'),
   
   compareAtPrice: z.number()
-    .positive()
+    .min(0, 'Compare at price kan niet negatief zijn') // ✅ FIX: Allow 0, only reject negative
     .max(999999.99)
     .multipleOf(0.01)
     .optional()
@@ -97,15 +97,15 @@ export const ProductCreateSchema = z.object({
   trackInventory: z.boolean().default(true),
   
   weight: z.number()
-    .positive()
+    .min(0, 'Gewicht kan niet negatief zijn') // ✅ FIX: Allow 0, only reject negative
     .max(9999.99, 'Gewicht mag maximaal 9999.99 kg zijn')
     .optional()
     .nullable(),
   
   dimensions: z.object({
-    length: z.number().positive().max(9999),
-    width: z.number().positive().max(9999),
-    height: z.number().positive().max(9999)
+    length: z.number().min(0, 'Lengte kan niet negatief zijn').max(9999), // ✅ FIX: Allow 0, only reject negative
+    width: z.number().min(0, 'Breedte kan niet negatief zijn').max(9999), // ✅ FIX: Allow 0, only reject negative
+    height: z.number().min(0, 'Hoogte kan niet negatief zijn').max(9999) // ✅ FIX: Allow 0, only reject negative
   }).optional().nullable(),
   
   images: z.array(

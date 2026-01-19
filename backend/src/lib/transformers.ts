@@ -24,9 +24,18 @@ export const transformProduct = (product: any): any => {
   return {
     ...product,
     price: decimalToNumber(product.price),
-    compareAtPrice: decimalToNumber(product.compareAtPrice),
-    costPrice: decimalToNumber(product.costPrice),
-    weight: decimalToNumber(product.weight),
+    // ✅ FIX: Preserve null for optional fields (don't convert to 0)
+    compareAtPrice: product.compareAtPrice !== null && product.compareAtPrice !== undefined 
+      ? decimalToNumber(product.compareAtPrice) 
+      : null,
+    costPrice: product.costPrice !== null && product.costPrice !== undefined
+      ? decimalToNumber(product.costPrice)
+      : null,
+    weight: product.weight !== null && product.weight !== undefined
+      ? decimalToNumber(product.weight)
+      : null,
+    // ✅ FIX: Preserve null for dimensions (don't convert to {length: 0, ...})
+    dimensions: product.dimensions || null,
     // Transform variants if included
     variants: product.variants?.map(transformVariant),
   };
