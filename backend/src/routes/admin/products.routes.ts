@@ -319,6 +319,83 @@ router.put('/:id', async (req, res) => {
       }
     }
     
+    // ✅ VARIANT SYSTEM: Handle variants separately (create/update/delete)
+    if (data.variants && Array.isArray(data.variants)) {
+      // Get existing variants
+      const existingVariants = await prisma.productVariant.findMany({
+        where: { productId: req.params.id }
+      });
+      
+      const existingVariantIds = existingVariants.map(v => v.id);
+      const incomingVariantIds = data.variants
+        .filter((v: any) => v.id && v.id.startsWith('variant-') === false) // Exclude temporary IDs
+        .map((v: any) => v.id);
+      
+      // Delete variants that are no longer in the list
+      const variantsToDelete = existingVariantIds.filter(id => !incomingVariantIds.includes(id));
+      if (variantsToDelete.length > 0) {
+        await prisma.productVariant.deleteMany({
+          where: {
+            id: { in: variantsToDelete },
+            productId: req.params.id
+          }
+        });
+      }
+      
+      // Create/update variants
+      for (const variantData of data.variants) {
+        const { id, ...variantFields } = variantData as any;
+        
+        // ✅ VARIANT SYSTEM: Convert colorName to colorCode, extract colorImageUrl
+        const colorCode = variantFields.colorCode || (variantFields.colorName ? variantFields.colorName.toUpperCase() : null);
+        const colorImageUrl = variantFields.previewImage || variantFields.colorImageUrl || null;
+        
+        // ✅ SECURITY: Validate colorCode against whitelist
+        const validColorCodes = ['WIT', 'ZWART', 'GRIJS', 'ZILVER', 'BEIGE', 'BLAUW', 'ROOD', 'GROEN'];
+        if (colorCode && !validColorCodes.includes(colorCode)) {
+          console.warn(`[VARIANT] Invalid colorCode: ${colorCode}, skipping variant`);
+          continue;
+        }
+        
+        // ✅ SECURITY: Validate colorImageUrl to prevent path traversal
+        if (colorImageUrl && (colorImageUrl.includes('..') || colorImageUrl.includes('//'))) {
+          console.warn(`[VARIANT] Invalid colorImageUrl: ${colorImageUrl}, skipping`);
+          continue;
+        }
+        
+        const variantPayload: any = {
+          name: variantFields.name,
+          colorCode: colorCode,
+          colorImageUrl: colorImageUrl,
+          priceAdjustment: variantFields.priceAdjustment || 0,
+          sku: variantFields.sku,
+          stock: variantFields.stock || 0,
+          images: variantFields.images || [],
+          isActive: variantFields.isActive !== false,
+          sortOrder: variantFields.sortOrder || 0,
+        };
+        
+        if (id && !id.startsWith('variant-') && existingVariantIds.includes(id)) {
+          // Update existing variant
+          await prisma.productVariant.update({
+            where: { id },
+            data: variantPayload
+          });
+        } else {
+          // Create new variant
+          await prisma.productVariant.create({
+            data: {
+              ...variantPayload,
+              productId: req.params.id
+            }
+          });
+        }
+      }
+      
+      // Remove variants from data to prevent Prisma from trying to update them directly
+      delete (data as any).variants;
+    }
+    
     // Update product
     const product = await prisma.product.update({
       where: { id: req.params.id },
@@ -330,7 +407,10 @@ router.put('/:id', async (req, res) => {
       },
       include: {
         category: true,
-        variants: true
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' }
+        }
       }
     });
     

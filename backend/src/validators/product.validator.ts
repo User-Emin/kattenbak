@@ -105,7 +105,12 @@ export const ProductCreateSchema = z.object({
   isActive: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
   
-  categoryId: z.string().cuid('Ongeldige categorie ID')
+  categoryId: z.string().cuid('Ongeldige categorie ID'),
+  
+  // ✅ VARIANT SYSTEM: Optional variants array for product updates
+  variants: z.array(ProductVariantCreateSchema.omit({ productId: true }).extend({
+    id: z.string().optional() // Optional ID for updates
+  })).optional()
 });
 
 // Update schema (all fields optional except validation)
@@ -126,12 +131,24 @@ export const ProductQuerySchema = z.object({
   sortOrder: z.enum(['asc', 'desc']).optional().default('desc')
 });
 
-// Product variant schema
+// ✅ VARIANT SYSTEM: Updated variant schema with colorCode and colorImageUrl
 export const ProductVariantCreateSchema = z.object({
   productId: z.string().cuid('Ongeldige product ID'),
   name: z.string().min(2).max(100).trim(),
-  colorName: z.string().min(2).max(50).trim(),
-  colorHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Ongeldige kleur hex code'),
+  colorName: z.string().min(2).max(50).trim().optional(), // Optional, will be converted to colorCode
+  colorCode: z.enum(['WIT', 'ZWART', 'GRIJS', 'ZILVER', 'BEIGE', 'BLAUW', 'ROOD', 'GROEN']).optional(), // ✅ SECURITY: Whitelist
+  colorImageUrl: z.string()
+    .refine(
+      (val) => !val || (val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://')),
+      'Preview image URL moet een geldige URL of pad zijn'
+    )
+    .refine(
+      (val) => !val || (!val.includes('..') && !val.includes('//')),
+      'Preview image URL mag geen path traversal bevatten'
+    )
+    .optional()
+    .nullable(),
+  colorHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Ongeldige kleur hex code').optional(),
   priceAdjustment: z.number().min(-999999).max(999999).multipleOf(0.01).default(0),
   sku: z.string().regex(/^[A-Z0-9-]+$/).min(2).max(50),
   stock: z.number().int().min(0).max(999999),
@@ -143,7 +160,8 @@ export const ProductVariantCreateSchema = z.object({
         'Afbeelding moet een geldige URL of pad zijn'
       )
   ).max(10).default([]),
-  isActive: z.boolean().default(true)
+  isActive: z.boolean().default(true),
+  sortOrder: z.number().int().min(0).default(0)
 });
 
 export const ProductVariantUpdateSchema = ProductVariantCreateSchema.partial().omit({ productId: true });

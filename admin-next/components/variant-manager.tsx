@@ -27,25 +27,33 @@ interface VariantManagerProps {
 export function VariantManager({ variants = [], onChange }: VariantManagerProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  // ✅ VARIANT SYSTEM: Updated to use colorCode and colorImageUrl
   const [newVariant, setNewVariant] = useState<Partial<ProductVariant>>({
     name: '',
-    colorName: '',
+    colorName: '', // Will be converted to colorCode
+    colorCode: '', // e.g. "WIT", "ZWART", "GRIJS"
     colorHex: '#000000',
+    previewImage: '', // Preview image URL
     priceAdjustment: 0,
     stock: 0,
     sku: '',
     images: [],
   });
 
-  // Handle add variant
+  // Handle add variant - ✅ VARIANT SYSTEM: Convert colorName to colorCode
   const handleAdd = () => {
-    if (!newVariant.name || !newVariant.colorName) return;
+    if (!newVariant.name || (!newVariant.colorName && !newVariant.colorCode)) return;
 
+    // ✅ VARIANT SYSTEM: Convert colorName to colorCode (uppercase)
+    const colorCode = newVariant.colorCode || (newVariant.colorName ? newVariant.colorName.toUpperCase() : '');
+    
     const variant: ProductVariant = {
       id: `variant-${Date.now()}`,
       name: newVariant.name!,
-      colorName: newVariant.colorName!,
+      colorName: newVariant.colorName || colorCode,
+      colorCode: colorCode,
       colorHex: newVariant.colorHex || '#000000',
+      previewImage: newVariant.previewImage || null,
       priceAdjustment: newVariant.priceAdjustment || 0,
       stock: newVariant.stock || 0,
       sku: newVariant.sku || '',
@@ -58,7 +66,9 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
     setNewVariant({
       name: '',
       colorName: '',
+      colorCode: '',
       colorHex: '#000000',
+      previewImage: '',
       priceAdjustment: 0,
       stock: 0,
       sku: '',
@@ -137,10 +147,27 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
                 <Input
                   value={newVariant.colorName}
                   onChange={(e) =>
-                    setNewVariant({ ...newVariant, colorName: e.target.value })
+                    setNewVariant({ ...newVariant, colorName: e.target.value, colorCode: e.target.value.toUpperCase() })
                   }
-                  placeholder="Wit"
+                  placeholder="Wit (wordt WIT als colorCode)"
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Wordt automatisch omgezet naar colorCode (WIT, ZWART, GRIJS, etc.)
+                </p>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Preview Image URL</label>
+                <Input
+                  value={newVariant.previewImage || ''}
+                  onChange={(e) =>
+                    setNewVariant({ ...newVariant, previewImage: e.target.value })
+                  }
+                  placeholder="/uploads/variant-wit-preview.jpg"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Preview afbeelding die getoond wordt in variant selector
+                </p>
               </div>
 
               <div>

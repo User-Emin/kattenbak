@@ -115,13 +115,32 @@ export const productValidationSchema = z.object({
     height: z.coerce.number().min(0).max(9999),
   }).optional(),
   
-  // DRY: Product variants (color/size)
+  // ✅ VARIANT SYSTEM: Product variants with colorCode and previewImage
   variants: z.array(
     z.object({
       id: z.string().optional(),
       name: z.string().min(1, 'Variant naam verplicht'),
-      colorName: z.string().min(1, 'Kleur naam verplicht'),
-      colorHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Ongeldige hex kleur'),
+      colorName: z.string().min(1, 'Kleur naam verplicht').optional(), // Optional, converted to colorCode
+      colorCode: z.enum(['WIT', 'ZWART', 'GRIJS', 'ZILVER', 'BEIGE', 'BLAUW', 'ROOD', 'GROEN']).optional(), // ✅ SECURITY: Whitelist
+      colorImageUrl: z.string()
+        .refine(
+          (val) => !val || (val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://')),
+          'Preview image URL moet een geldige URL of pad zijn'
+        )
+        .refine(
+          (val) => !val || (!val.includes('..') && !val.includes('//')),
+          'Preview image URL mag geen path traversal bevatten'
+        )
+        .optional()
+        .nullable(),
+      previewImage: z.string()
+        .refine(
+          (val) => !val || (val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://')),
+          'Preview image URL moet een geldige URL of pad zijn'
+        )
+        .optional()
+        .nullable(),
+      colorHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Ongeldige hex kleur').optional(),
       priceAdjustment: z.coerce.number(),
       stock: z.coerce.number().int().min(0),
       sku: z.string().min(1, 'Variant SKU verplicht'),
@@ -134,6 +153,7 @@ export const productValidationSchema = z.object({
           )
       ).default([]),
       isActive: z.boolean().optional(),
+      sortOrder: z.number().int().min(0).optional().default(0),
     })
   ).optional(),
   
