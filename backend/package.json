@@ -60,7 +60,7 @@
     "@types/nodemailer": "^7.0.4",
     "@types/pdfkit": "^0.17.4",
     "@types/redis": "^4.0.10",
-    "@types/uuid": "^10.0.0",
+    "@types/uuid": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
     "eslint": "^9.17.0",
