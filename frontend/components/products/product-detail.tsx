@@ -730,10 +730,22 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               {/* ✅ SERVICE USPs - 3 onder elkaar BOVEN WINKELWAGEN BUTTON - DRY & ZONDER HARDCODE */}
               {/* ✅ BLAUWE VIJKJES: 3 blauwe vinkjes voor "Gratis verzending binnen Nederland" (exact logo blauw) */}
+              {/* ✅ VETGEDRUKTE WOORDEN: Belangrijke woorden vetgedrukt zonder hardcode */}
               <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
                 {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
                   // ✅ BLAUWE VIJKJES: Alleen voor "Gratis verzending binnen Nederland"
                   const isShipping = usp.text.includes('Gratis verzending');
+                  
+                  // ✅ VETGEDRUKTE WOORDEN: Dynamisch belangrijke woorden vetgedrukt
+                  const importantWords = ['Gratis verzending', 'binnen Nederland', '30 dagen', 'bedenktijd', 'Gratis retour', 'Geleverd met', 'inloopmat', 'afvalzak'];
+                  const formatText = (text: string) => {
+                    let formatted = text;
+                    importantWords.forEach(word => {
+                      const regex = new RegExp(`(${word})`, 'gi');
+                      formatted = formatted.replace(regex, '<strong>$1</strong>');
+                    });
+                    return formatted;
+                  };
                   
                   return (
                     <div key={index} className="flex items-center gap-2 text-sm sm:text-base text-gray-700">
@@ -757,7 +769,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                           style={{ color: '#005980' }} // ✅ EXACT LOGO BLAUW
                         />
                       )}
-                      <span>{usp.text}</span>
+                      <span dangerouslySetInnerHTML={{ __html: formatText(usp.text) }} />
                     </div>
                   );
                 })}

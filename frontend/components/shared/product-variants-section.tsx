@@ -94,11 +94,11 @@ export function ProductVariantsSection() {
           Onze varianten
         </h2>
 
-        {/* ✅ GRID: Varianten naast elkaar - DRY & RESPONSIVE */}
+        {/* ✅ GRID: 2 kaarten centraal naast elkaar desktop, onder elkaar mobiel - DRY & RESPONSIVE */}
         <div
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+          className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto"
         >
-          {variants.map((variant) => {
+          {variants.slice(0, 2).map((variant) => {
             const variantImage = variant.displayImage || (product.images && product.images.length > 0 ? product.images[0] : '/placeholder-image.jpg');
             const variantName = variant.displayName;
             const variantColor = variant.colorHex || variant.colorCode || null;
@@ -107,7 +107,7 @@ export function ProductVariantsSection() {
               <Link
                 key={variant.id}
                 href={`/product/${product.slug}${variant.id ? `?variant=${variant.id}` : ''}`}
-                className="group relative overflow-hidden rounded-lg transition-all duration-300 hover:scale-[1.02]"
+                className="group relative overflow-hidden rounded-lg transition-all duration-300 hover:scale-[1.02] w-full md:w-[48%]"
                 style={{
                   aspectRatio: '1/1', // ✅ VIERKANT: Perfect vierkant voor varianten
                 }}
@@ -119,7 +119,7 @@ export function ProductVariantsSection() {
                     alt={variantName}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    sizes="(max-width: 768px) 100vw, 48vw"
                     quality={85}
                     loading="lazy"
                     unoptimized={variantImage.startsWith('/uploads/')}
@@ -154,6 +154,15 @@ export function ProductVariantsSection() {
                         }}
                       />
                     )}
+
+                    {/* ✅ PLUSJE IN BUTTON: Duidelijk plusje voor actie */}
+                    <div className="mt-4 flex items-center justify-center">
+                      <div className="bg-white/90 hover:bg-white rounded-full p-2 transition-all duration-300 group-hover:scale-110">
+                        <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Link>

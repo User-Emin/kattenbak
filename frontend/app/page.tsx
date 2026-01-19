@@ -18,6 +18,7 @@ import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { SHARED_CONTENT } from "@/lib/content.config";
 import { BRAND_COLORS_HEX } from "@/lib/color-config";
 import { ProductVariantsSection } from "@/components/shared/product-variants-section";
+import { ProductDescriptionSection } from "@/components/shared/product-description-section";
 
 /**
  * 🎨 HOMEPAGE - MINIMALISTISCH ZWART-WIT DESIGN
@@ -198,6 +199,9 @@ export default function HomePage() {
       
       {/* ✅ VARIANTEN SECTIE: Dynamisch, smooth effect, tekst in afbeelding - DRY & ZONDER HARDCODE */}
       <ProductVariantsSection />
+
+      {/* ✅ PRODUCT BESCHRIJVING SECTIE: Dynamisch onder variantensectie - DRY & ZONDER HARDCODE */}
+      <ProductDescriptionSection />
 
       {/* SEPARATOR */}
       <div 
