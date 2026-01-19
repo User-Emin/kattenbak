@@ -125,25 +125,20 @@ export function ProductVariantsSection() {
                     unoptimized={variantImage.startsWith('/uploads/')}
                   />
 
-                  {/* ✅ SMOOTH OVERLAY: Gradient overlay voor tekst leesbaarheid */}
+                  {/* ✅ SMOOTH TEKST: Direct in afbeelding, altijd zichtbaar - DRY via DESIGN_SYSTEM */}
                   <div
-                    className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  />
-
-                  {/* ✅ SMOOTH TEKST: Direct in afbeelding, geen wit veld - DRY via DESIGN_SYSTEM */}
-                  <div
-                    className="absolute inset-0 flex flex-col items-center justify-end p-4 md:p-6"
+                    className="absolute inset-0 flex flex-col items-center justify-end p-4 md:p-6 transition-all duration-300 group-hover:bg-black/20"
                     style={{
-                      background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
+                      background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 40%, transparent 70%)',
                     }}
                   >
-                    {/* ✅ VARIANT NAAM: Smooth tekst direct in afbeelding */}
+                    {/* ✅ VARIANT NAAM: Smooth tekst direct in afbeelding, altijd zichtbaar */}
                     <h3
-                      className="text-white text-center font-semibold transition-all duration-300 group-hover:translate-y-0 translate-y-2"
+                      className="text-white text-center font-semibold transition-all duration-300"
                       style={{
                         fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
                         fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-                        textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+                        textShadow: '0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8)',
                       }}
                     >
                       {variantName}
@@ -152,10 +147,10 @@ export function ProductVariantsSection() {
                     {/* ✅ KLEUR INDICATOR: Alleen tonen als kleur beschikbaar */}
                     {variantColor && (
                       <div
-                        className="mt-2 w-6 h-6 rounded-full border-2 border-white/80 transition-all duration-300 group-hover:scale-110"
+                        className="mt-2 w-6 h-6 rounded-full border-2 border-white/90 transition-all duration-300 group-hover:scale-110"
                         style={{
                           backgroundColor: variantColor,
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.7)',
                         }}
                       />
                     )}
