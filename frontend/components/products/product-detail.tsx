@@ -631,12 +631,25 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
               
-              {/* ✅ VARIANT SYSTEM: Variant Selector - OPTIMAAL: Label boven kleur selectie */}
+              {/* ✅ VARIANT SYSTEM: Variant Selector - OPTIMAAL: Label met gekozen kleur opzelfde regel */}
               {variants.length > 0 && (
                 <div className="mt-6 mb-4">
-                  <label className="text-sm font-medium text-gray-700 block mb-3">
-                    Kies een kleur:
-                  </label>
+                  <div className="flex items-center gap-3 flex-wrap mb-3">
+                    <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                      Kies een kleur:
+                    </label>
+                    {/* ✅ Gekozen kleur opzelfde regel als label */}
+                    {activeVariant && (
+                      <span className="text-sm text-gray-600">
+                        <span className="font-medium">{activeVariant.name}</span>
+                        {activeVariant.stock > 0 && activeVariant.stock < 10 && (
+                          <span className="ml-2 text-orange-600">
+                            (Nog {activeVariant.stock} op voorraad)
+                          </span>
+                        )}
+                      </span>
+                    )}
+                  </div>
                   <div className="flex flex-wrap gap-3">
                     {variants.map((variant: any) => {
                       const isSelected = selectedVariant === variant.id || (!selectedVariant && variant === variants[0]);
@@ -652,11 +665,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                             'relative',
                             'w-16 h-16 sm:w-20 sm:h-20',
                             'rounded-lg',
-                            'border', // ✅ FIX: 1 lijn border (geen border-2)
+                            'border',
                             'transition-all',
                             'overflow-hidden',
                             isSelected
-                              ? 'border-black' // ✅ FIX: Alleen 1 lijn zwarte border bij selectie (geen ring, geen overlay)
+                              ? 'border-black'
                               : 'border-gray-300 hover:border-gray-400',
                             isOutOfStock && 'opacity-50 cursor-not-allowed grayscale'
                           )}
@@ -692,17 +705,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       );
                     })}
                   </div>
-                  {/* ✅ OPTIMAAL: Gekozen kleur onder selectie */}
-                  {activeVariant && (
-                    <span className="text-sm text-gray-600 mt-2 block">
-                      <span className="font-medium">{activeVariant.name}</span>
-                      {activeVariant.stock > 0 && activeVariant.stock < 10 && (
-                        <span className="ml-2 text-orange-600">
-                          (Nog {activeVariant.stock} op voorraad)
-                        </span>
-                      )}
-                    </span>
-                  )}
                 </div>
               )}
 
