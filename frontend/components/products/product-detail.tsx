@@ -753,11 +753,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </span>
               </div>
 
-              {/* ✅ SERVICE USPs - ONDER WINKELWAGEN BUTTON: Met vinkjes, onder elkaar, belangrijke woorden blauw (zonder hardcode) */}
+              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs met alleen belangrijke woorden blauw */}
               {PRODUCT_CONTENT.serviceUsps.length > 0 && (
-                <div className="flex flex-col gap-2 sm:gap-2.5 mt-4 sm:mt-5 mb-4 sm:mb-5">
+                <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
-                    // ✅ BLAUWE HIGHLIGHTS: Dynamisch belangrijke woorden blauw maken (zonder hardcode)
+                    // ✅ BLAUWE HIGHLIGHTS: Alleen belangrijke woorden blauw (zonder hardcode)
                     const formatText = (text: string, highlightWords?: string[]) => {
                       if (!highlightWords || highlightWords.length === 0) return text;
                       
