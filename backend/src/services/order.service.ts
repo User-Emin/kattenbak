@@ -186,8 +186,28 @@ export class OrderService {
 
     // Generate order number
     const orderNumber = await this.generateOrderNumber();
+    logger.info('✅ Order number generated:', { orderNumber });
+
+    // ✅ SECURITY: Verify database connection before creating order
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+    } catch (dbError: any) {
+      logger.error('❌ Database connection failed during order creation:', {
+        error: dbError?.message,
+        code: dbError?.code,
+      });
+      // Wait and retry once
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      try {
+        await prisma.$queryRaw`SELECT 1`;
+        logger.info('✅ Database connection recovered');
+      } catch (retryError: any) {
+        throw new Error('Database connection unavailable. Please try again.');
+      }
+    }
 
     // Create order with addresses and items
+    logger.info('🔄 Creating order in database with orderNumber:', { orderNumber });
     const order = await prisma.order.create({
       data: {
         orderNumber,

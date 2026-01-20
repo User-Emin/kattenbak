@@ -20,6 +20,29 @@ router.use(rateLimitMiddleware({ windowMs: 15 * 60 * 1000, max: 100 }));
 // GET /admin/orders - List all orders with pagination (DATABASE)
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // ✅ SECURITY: Verify database connection before querying
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      logger.info('✅ Database connection verified for admin orders query');
+    } catch (dbConnectionError: any) {
+      logger.error('❌ Database connection failed for admin orders query:', {
+        error: dbConnectionError?.message,
+        code: dbConnectionError?.code,
+      });
+      // Wait a bit and retry once
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      try {
+        await prisma.$queryRaw`SELECT 1`;
+        logger.info('✅ Database connection recovered after retry');
+      } catch (retryError: any) {
+        logger.error('❌ Database connection still failed after retry');
+        return res.status(503).json({
+          success: false,
+          error: 'Database connection unavailable. Please try again in a moment.',
+        });
+      }
+    }
+
     const page = parseInt(req.query.page as string) || 1;
     const pageSize = parseInt(req.query.pageSize as string) || 25;
     const skip = (page - 1) * pageSize;

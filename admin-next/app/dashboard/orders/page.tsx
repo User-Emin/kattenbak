@@ -137,20 +137,30 @@ export default function OrdersPage() {
                       {order.orderNumber}
                     </TableCell>
                     <TableCell>
-                      <div>
+                      <div className="space-y-1">
                         <p className="font-medium">
                           {order.shippingAddress?.firstName || order.customerName || 'Onbekend'} {order.shippingAddress?.lastName || ''}
                         </p>
                         <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
                         {order.shippingAddress?.street && (
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {order.shippingAddress.street} {order.shippingAddress.houseNumber}
+                          <p className="text-xs text-muted-foreground">
+                            📍 {order.shippingAddress.street} {order.shippingAddress.houseNumber}
                             {order.shippingAddress.addition && ` ${order.shippingAddress.addition}`}
                           </p>
                         )}
-                        {order.shippingAddress?.postalCode && (
+                        {order.shippingAddress?.postalCode && order.shippingAddress?.city && (
                           <p className="text-xs text-muted-foreground">
                             📮 {order.shippingAddress.postalCode} {order.shippingAddress.city}
+                          </p>
+                        )}
+                        {order.shippingAddress?.country && (
+                          <p className="text-xs text-muted-foreground">
+                            🌍 {order.shippingAddress.country}
+                          </p>
+                        )}
+                        {order.shippingAddress?.phone && (
+                          <p className="text-xs text-muted-foreground">
+                            📞 {order.shippingAddress.phone}
                           </p>
                         )}
                       </div>

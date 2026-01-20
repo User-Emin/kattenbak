@@ -119,10 +119,30 @@ router.post(
         })) || [],
       });
 
+      // ✅ SECURITY: Verify database connection before creating order
+      try {
+        await prisma.$queryRaw`SELECT 1`;
+        logger.info('✅ Database connection verified before order creation');
+      } catch (dbConnectionError: any) {
+        logger.error('❌ Database connection failed before order creation:', {
+          error: dbConnectionError?.message,
+          code: dbConnectionError?.code,
+        });
+        // Continue anyway - OrderService will handle the error
+      }
+
       // Create order in DATABASE with fallback
       let order;
       try {
+        logger.info('🔄 Creating order in database...', {
+          customerEmail: customer.email,
+          itemsCount: items.length,
+        });
         order = await OrderService.createOrder(orderData);
+        logger.info('✅ Order created successfully:', {
+          orderId: order.id,
+          orderNumber: order.orderNumber,
+        });
       } catch (dbError: any) {
         // ✅ CRITICAL: Use req.body.items directly (ensures we have original data with price)
         const fallbackItems = req.body.items || items || [];
