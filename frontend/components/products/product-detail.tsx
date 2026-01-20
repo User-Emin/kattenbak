@@ -666,9 +666,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   {formatPrice(displayPrice)}
                 </span>
                 {/* ✅ FIX: Alleen compareAtPrice tonen als het > 0 EN > displayPrice (echte korting) */}
-                {product.compareAtPrice && product.compareAtPrice > 0 && product.compareAtPrice > displayPrice && (
+                {/* ✅ FIX: Convert compareAtPrice to number (API returns string) */}
+                {(() => {
+                  const comparePrice = typeof product.compareAtPrice === 'string' 
+                    ? parseFloat(product.compareAtPrice) 
+                    : (product.compareAtPrice || 0);
+                  return comparePrice > 0 && comparePrice > displayPrice;
+                })() && (
                   <span className="text-base text-gray-500 line-through ml-3">
-                    {formatPrice(product.compareAtPrice)}
+                    {formatPrice(typeof product.compareAtPrice === 'string' 
+                      ? parseFloat(product.compareAtPrice) 
+                      : (product.compareAtPrice || 0))}
                   </span>
                 )}
                 {activeVariant && activeVariant.priceAdjustment !== 0 && (
