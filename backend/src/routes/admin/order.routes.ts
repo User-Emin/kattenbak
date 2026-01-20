@@ -92,28 +92,19 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
               adminNotes: true,
               createdAt: true,
               updatedAt: true,
-              items: {
-                select: {
-                  id: true,
-                  productId: true,
-                  productName: true,
-                  productSku: true,
-                  price: true,
-                  quantity: true,
-                  subtotal: true,
-                  // ✅ CRITICAL: Don't select variant fields - they don't exist in DB
-                },
-                include: {
-                  product: {
-                    select: {
-                      id: true,
-                      name: true,
-                      sku: true,
-                      images: true,
-                    },
+            items: {
+              // ✅ CRITICAL FIX: Can't use both select and include - use include only
+              include: {
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                    sku: true,
+                    images: true,
                   },
                 },
               },
+            },
               shippingAddress: true,
               billingAddress: true,
               payment: true,
