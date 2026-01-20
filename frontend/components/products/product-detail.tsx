@@ -414,24 +414,35 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     return img.includes('/uploads/') || img.startsWith('http://') || img.startsWith('https://');
   });
   
-  // ✅ DEBUG: Log voor verificatie (alleen in development)
-  if (process.env.NODE_ENV === 'development') {
-    console.log('📸 Product Images:', productImages.length, productImages);
-    console.log('📸 Uploaded Images:', uploadedImages.length, uploadedImages);
-    console.log('📸 4e foto (index 3):', uploadedImages[3]);
-    console.log('📸 5e foto (index 4):', uploadedImages[4]);
-  }
+  // ✅ DEBUG: Log voor verificatie (altijd, ook in production voor troubleshooting)
+  console.log('📸 Product Images Count:', productImages.length);
+  console.log('📸 Uploaded Images Count:', uploadedImages.length);
+  console.log('📸 Uploaded Images:', uploadedImages);
+  console.log('📸 4e foto (index 3):', uploadedImages[3]);
+  console.log('📸 5e foto (index 4):', uploadedImages[4]);
   
-  const features = PRODUCT_CONTENT.features.map((feature, index) => ({
-    ...feature,
-    // ✅ DYNAMISCH: 4e foto voor 10.5L (index 0), 5e foto voor Geurblokje/Kwast/Afvalzak (index 2)
-    // Fallback naar statische images als er niet genoeg geüploade foto's zijn
-    image: index === 0 
-      ? (uploadedImages[3] || '/images/capacity-10.5l-optimized.jpg') // ✅ 4E FOTO: 10.5L Afvalbak (index 3 = 4e foto)
-      : index === 1
-      ? '/images/feature-2.jpg' // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode)
-      : (uploadedImages[4] || '/images/feature-2.jpg'), // ✅ 5E FOTO: Geurblokje, kwast & afvalzak (index 4 = 5e foto)
-  }));
+  // ✅ DYNAMISCH: Features met 4e en 5e foto - ZONDER DUPLICATEN
+  const features = PRODUCT_CONTENT.features.map((feature, index) => {
+    let imageUrl: string;
+    
+    if (index === 0) {
+      // ✅ 4E FOTO: 10.5L Afvalbak (index 3 = 4e foto)
+      imageUrl = uploadedImages[3] || '/images/capacity-10.5l-optimized.jpg';
+    } else if (index === 1) {
+      // ✅ MIDDELSTE: Statische feature-2.jpg
+      imageUrl = '/images/feature-2.jpg';
+    } else {
+      // ✅ 5E FOTO: Geurblokje, kwast & afvalzak (index 4 = 5e foto)
+      imageUrl = uploadedImages[4] || '/images/feature-2.jpg';
+    }
+    
+    console.log(`📸 Feature ${index} (${feature.title}): ${imageUrl}`);
+    
+    return {
+      ...feature,
+      image: imageUrl,
+    };
+  });
 
   return (
     <div className="min-h-screen bg-white"> {/* ✅ WIT: Volledig witte achtergrond */}
