@@ -189,91 +189,112 @@ router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     
-    // ✅ CRITICAL FIX: Check if variant_color column exists (same as list query)
-    const columnCheck = await prisma.$queryRawUnsafe<Array<{exists: boolean}>>(`
-      SELECT EXISTS (
-        SELECT 1 
-        FROM information_schema.columns 
-        WHERE table_name = 'order_items' 
-        AND column_name = 'variant_color'
-      ) as exists;
-    `);
-    const hasVariantColumns = columnCheck[0]?.exists === true;
-    
+    // ✅ SECURITY: Defensive error handling with detailed logging
     let order: any;
-    if (hasVariantColumns) {
-      // ✅ Variant columns exist - use include (Prisma will get all fields including variant fields)
-      order = await prisma.order.findUnique({
-        where: { id },
-        include: {
-          items: {
-            include: {
-              product: {
-                select: {
-                  id: true,
-                  name: true,
-                  sku: true,
-                  images: true,
+    try {
+      // ✅ CRITICAL FIX: Check if variant_color column exists (same as list query)
+      let columnCheck: any[] = [];
+      try {
+        columnCheck = await prisma.$queryRawUnsafe<Array<{exists: boolean}>>(`
+          SELECT EXISTS (
+            SELECT 1 
+            FROM information_schema.columns 
+            WHERE table_name = 'order_items' 
+            AND column_name = 'variant_color'
+          ) as exists;
+        `);
+      } catch (checkError: any) {
+        console.warn('⚠️ Column check failed, assuming variant columns don\'t exist:', checkError.message);
+      }
+      
+      const hasVariantColumns = columnCheck[0]?.exists === true;
+      
+      if (hasVariantColumns) {
+        // ✅ Variant columns exist - use include (Prisma will get all fields including variant fields)
+        order = await prisma.order.findUnique({
+          where: { id },
+          include: {
+            items: {
+              include: {
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                    sku: true,
+                    images: true,
+                  },
                 },
               },
             },
+            payment: true,
+            shipment: true,
+            shippingAddress: true,
+            billingAddress: true,
+            returns: {
+              orderBy: { createdAt: 'desc' },
+            },
           },
-          payment: true,
-          shipment: true,
-          shippingAddress: true,
-          billingAddress: true,
-          returns: {
-            orderBy: { createdAt: 'desc' },
+        });
+      } else {
+        // ✅ Variant columns don't exist - use explicit select
+        order = await prisma.order.findUnique({
+          where: { id },
+          select: {
+            id: true,
+            orderNumber: true,
+            customerEmail: true,
+            customerPhone: true,
+            total: true,
+            subtotal: true,
+            tax: true,
+            shippingCost: true,
+            discount: true,
+            status: true,
+            customerNotes: true,
+            adminNotes: true,
+            createdAt: true,
+            updatedAt: true,
+            completedAt: true,
+            items: {
+              select: {
+                id: true,
+                productId: true,
+                productName: true,
+                productSku: true,
+                price: true,
+                quantity: true,
+                subtotal: true,
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                    sku: true,
+                    images: true,
+                  },
+                },
+              },
+            },
+            shippingAddress: true,
+            billingAddress: true,
+            payment: true,
+            shipment: true,
+            returns: {
+              orderBy: { createdAt: 'desc' },
+            },
           },
-        },
+        });
+      }
+    } catch (dbError: any) {
+      console.error('❌ Database error fetching order:', {
+        orderId: id,
+        error: dbError.message,
+        code: dbError.code,
+        name: dbError.name,
       });
-    } else {
-      // ✅ Variant columns don't exist - use explicit select
-      order = await prisma.order.findUnique({
-        where: { id },
-        select: {
-          id: true,
-          orderNumber: true,
-          customerEmail: true,
-          customerPhone: true,
-          total: true,
-          subtotal: true,
-          tax: true,
-          shippingCost: true,
-          discount: true,
-          status: true,
-          customerNotes: true,
-          adminNotes: true,
-          createdAt: true,
-          updatedAt: true,
-          completedAt: true,
-          items: {
-            select: {
-              id: true,
-              productId: true,
-              productName: true,
-              productSku: true,
-              price: true,
-              quantity: true,
-              subtotal: true,
-              product: {
-                select: {
-                  id: true,
-                  name: true,
-                  sku: true,
-                  images: true,
-                },
-              },
-            },
-          },
-          shippingAddress: true,
-          billingAddress: true,
-          payment: true,
-          shipment: true,
-          returns: {
-            orderBy: { createdAt: 'desc' },
-          },
-        },
+      return res.status(500).json({
+        success: false,
+        error: 'Database fout bij ophalen bestelling',
+        details: process.env.NODE_ENV === 'development' ? dbError.message : undefined,
       });
     }
     
@@ -285,17 +306,70 @@ router.get('/:id', async (req, res) => {
     }
     
     // ✅ Transform Decimal to number (includes variant info transformation)
-    const transformed = transformOrder(order);
+    let transformed: any;
+    try {
+      transformed = transformOrder(order);
+    } catch (transformError: any) {
+      console.error('❌ Transform order error:', {
+        orderId: id,
+        error: transformError.message,
+        stack: transformError.stack,
+      });
+      // ✅ FALLBACK: Return minimal order data if transform fails
+      transformed = {
+        id: order.id,
+        orderNumber: order.orderNumber || `ORDER-${order.id}`,
+        customerEmail: order.customerEmail || '',
+        customerPhone: order.customerPhone || null,
+        total: typeof order.total === 'number' ? order.total : parseFloat(String(order.total || '0')),
+        subtotal: typeof order.subtotal === 'number' ? order.subtotal : parseFloat(String(order.subtotal || '0')),
+        tax: typeof order.tax === 'number' ? order.tax : parseFloat(String(order.tax || '0')),
+        shippingCost: typeof order.shippingCost === 'number' ? order.shippingCost : parseFloat(String(order.shippingCost || '0')),
+        discount: typeof order.discount === 'number' ? order.discount : parseFloat(String(order.discount || '0')),
+        status: order.status || 'PENDING',
+        paymentStatus: order.payment?.status || 'PENDING',
+        items: (order.items || []).map((item: any) => ({
+          id: item.id,
+          productId: item.productId,
+          productName: item.productName || item.product?.name || 'Onbekend product',
+          productSku: item.productSku || item.product?.sku || null,
+          quantity: item.quantity || 0,
+          price: typeof item.price === 'number' ? item.price : parseFloat(String(item.price || '0')),
+          subtotal: typeof item.subtotal === 'number' ? item.subtotal : parseFloat(String(item.subtotal || '0')),
+          variantId: item.variantId || item.variant_id || null,
+          variantName: item.variantName || item.variant_name || null,
+          variantColor: item.variantColor || item.variant_color || null,
+          variantSku: item.variantColor || item.variant_color || null, // Backward compatibility
+          product: item.product ? {
+            id: item.product.id,
+            name: item.product.name,
+            images: item.product.images || [],
+          } : null,
+        })),
+        shippingAddress: order.shippingAddress || null,
+        billingAddress: order.billingAddress || null,
+        payment: order.payment || null,
+        createdAt: order.createdAt,
+        updatedAt: order.updatedAt,
+        _warning: 'Transform failed, using fallback',
+      };
+    }
     
     return res.json({
       success: true,
       data: transformed
     });
   } catch (error: any) {
-    console.error('Get order error:', error);
+    console.error('❌ Get order error:', {
+      orderId: req.params.id,
+      error: error.message,
+      stack: error.stack,
+      name: error.name,
+    });
     return res.status(500).json({
       success: false,
-      error: 'Fout bij ophalen bestelling'
+      error: 'Fout bij ophalen bestelling',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
     });
   }
 });
