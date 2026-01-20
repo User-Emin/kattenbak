@@ -16,6 +16,7 @@ interface CreateOrderData {
     variantId?: string;
     variantName?: string;
     variantSku?: string;
+    variantColor?: string; // ✅ ADD: Database has variant_color column
   }>;
   customerEmail: string;
   customerPhone?: string;

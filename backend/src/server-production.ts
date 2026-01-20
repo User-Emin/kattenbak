@@ -215,8 +215,9 @@ app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
 // Get product by ID
 app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
   try {
+    const productId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     const product = await prisma.product.findUnique({
-      where: { id: req.params.id },
+      where: { id: productId },
       include: {
         category: true,
         variants: {
