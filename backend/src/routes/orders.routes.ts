@@ -17,6 +17,7 @@ import { EmailService } from '../services/email.service';
 import { prisma } from '../config/database.config';
 import { normalizeAddress } from '../utils/address.util'; // ✅ DRY: Shared address utility
 import { transformOrder } from '../lib/transformers'; // ✅ DRY: Use shared transformer
+import { extractStringParam } from '../utils/params.util'; // ✅ SECURITY: Type-safe param extraction
 
 const router = Router();
 
@@ -499,7 +500,12 @@ router.get('/:id/payment-status', async (req: Request, res: Response, next: Next
 
     // ✅ FIX: According to Mollie docs - payment may not exist yet if order was just created
     // Return order info even if payment doesn't exist (payment will be created)
-    if (!order.payment || !order.payment.mollieId) {
+    // ✅ SECURITY: Defensive property access
+    const payment = order.payment && typeof order.payment === 'object' && 'mollieId' in order.payment
+      ? (order.payment as any)
+      : null;
+    
+    if (!payment || !payment.mollieId) {
       return res.json({
         success: true,
         paymentStatus: 'pending',
@@ -516,7 +522,7 @@ router.get('/:id/payment-status', async (req: Request, res: Response, next: Next
     // ✅ CRITICAL: Check payment status directly from Mollie API (not just database)
     // This ensures we have the real-time status, even if webhook hasn't processed yet
     try {
-      const molliePayment = await MollieService.getPaymentStatus(order.payment.mollieId);
+      const molliePayment = await MollieService.getPaymentStatus(payment.mollieId);
       
       // Map Mollie status to our status
       const status = molliePayment.status as string;
@@ -526,10 +532,10 @@ router.get('/:id/payment-status', async (req: Request, res: Response, next: Next
       const isPending = status === 'open' || status === 'pending';
 
       // ✅ SECURITY: Update database if status changed (webhook might not have processed yet)
-      if (order.payment.status !== status) {
+      if (payment.status !== status) {
         try {
           await prisma.payment.update({
-            where: { id: order.payment.id },
+            where: { id: payment.id },
             data: {
               status: isPaid ? 'PAID' : (isCancelled || isFailed ? 'FAILED' : 'PENDING'),
             },
@@ -553,9 +559,13 @@ router.get('/:id/payment-status', async (req: Request, res: Response, next: Next
           }
         } catch (updateError: any) {
           // Don't fail the request if update fails - just log it
+          // ✅ SECURITY: Defensive property access
+          const mollieId = order.payment && 'mollieId' in order.payment 
+            ? (order.payment as any).mollieId 
+            : null;
           logger.warn('Failed to update payment status in database:', {
             orderId,
-            mollieId: order.payment.mollieId,
+            mollieId: mollieId,
             error: updateError?.message,
           });
         }
@@ -572,19 +582,28 @@ router.get('/:id/payment-status', async (req: Request, res: Response, next: Next
         orderStatus: order.status,
       });
     } catch (mollieError: any) {
+      // ✅ SECURITY: Defensive property access
+      const mollieId = order.payment && 'mollieId' in order.payment 
+        ? (order.payment as any).mollieId 
+        : null;
       logger.error('Failed to get payment status from Mollie:', {
         orderId,
-        mollieId: order.payment.mollieId,
+        mollieId: mollieId,
         error: mollieError?.message,
       });
 
       // ✅ FALLBACK: Return database status if Mollie API fails
+      // ✅ SECURITY: Defensive property access
+      const paymentStatus = order.payment && 'status' in order.payment 
+        ? (order.payment as any).status 
+        : 'PENDING';
+      
       return res.json({
         success: true,
-        paymentStatus: order.payment.status || 'PENDING',
-        isPaid: order.payment.status === 'PAID',
-        isCancelled: order.status === 'CANCELLED' || order.payment.status === 'FAILED',
-        isFailed: order.payment.status === 'FAILED' || order.payment.status === 'EXPIRED',
+        paymentStatus: paymentStatus,
+        isPaid: paymentStatus === 'PAID',
+        isCancelled: order.status === 'CANCELLED' || paymentStatus === 'FAILED',
+        isFailed: paymentStatus === 'FAILED' || paymentStatus === 'EXPIRED',
         isPending: true, // Assume pending if we can't verify
         orderNumber: order.orderNumber,
         orderStatus: order.status,
@@ -614,9 +633,12 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
       });
     }
     
+    // ✅ SECURITY: Type-safe parameter extraction
+    const orderId = extractStringParam(req.params.id);
+    
     // ✅ FIX: Get order with all relations to ensure orderNumber is included
     const order = await prisma.order.findUnique({
-      where: { id },
+      where: { id: orderId },
       include: {
         items: {
           include: {
@@ -669,10 +691,11 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
 // ✅ FIX: Include billingAddress and returns for complete order info
 router.get('/by-number/:orderNumber', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { orderNumber } = req.params;
+    // ✅ SECURITY: Type-safe parameter extraction
+    const orderNumber = extractStringParam(req.params.orderNumber);
     
     const order = await prisma.order.findUnique({
-      where: { orderNumber },
+      where: { orderNumber: orderNumber },
       include: {
         items: {
           include: {
