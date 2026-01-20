@@ -25,34 +25,157 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     const skip = (page - 1) * pageSize;
 
     // Get orders from DATABASE with relationships
-    // ✅ SECURITY: Only select fields that exist in database (variant fields may not exist)
-    const [orders, total] = await Promise.all([
-      prisma.order.findMany({
-        skip,
-        take: pageSize,
-        include: {
-          items: {
+    // ✅ CRITICAL FIX: Prisma schema includes variant fields, but DB columns may not exist
+    // Use $queryRawUnsafe to check if columns exist, then use appropriate query
+    let orders: any[];
+    let total: number;
+    
+    try {
+      // Try to check if variant_sku column exists
+      const columnCheck = await prisma.$queryRawUnsafe<Array<{exists: boolean}>>(`
+        SELECT EXISTS (
+          SELECT 1 
+          FROM information_schema.columns 
+          WHERE table_name = 'order_items' 
+          AND column_name = 'variant_sku'
+        ) as exists;
+      `);
+      
+      const hasVariantColumns = columnCheck[0]?.exists === true;
+      
+      if (hasVariantColumns) {
+        // ✅ Variant columns exist - use normal Prisma query
+        [orders, total] = await Promise.all([
+          prisma.order.findMany({
+            skip,
+            take: pageSize,
             include: {
-              product: {
+              items: {
+                include: {
+                  product: {
+                    select: {
+                      id: true,
+                      name: true,
+                      sku: true,
+                      images: true,
+                    },
+                  },
+                },
+              },
+              shippingAddress: true,
+              billingAddress: true,
+              payment: true,
+            },
+            orderBy: { createdAt: 'desc' },
+          }),
+          prisma.order.count(),
+        ]);
+      } else {
+        // ✅ Variant columns don't exist - use select to exclude them
+        [orders, total] = await Promise.all([
+          prisma.order.findMany({
+            skip,
+            take: pageSize,
+            select: {
+              id: true,
+              orderNumber: true,
+              customerEmail: true,
+              customerPhone: true,
+              customerName: true,
+              total: true,
+              subtotal: true,
+              tax: true,
+              shippingCost: true,
+              discount: true,
+              status: true,
+              customerNotes: true,
+              adminNotes: true,
+              createdAt: true,
+              updatedAt: true,
+              items: {
                 select: {
                   id: true,
-                  name: true,
-                  sku: true,
-                  images: true,
+                  productId: true,
+                  productName: true,
+                  productSku: true,
+                  price: true,
+                  quantity: true,
+                  subtotal: true,
+                  // ✅ CRITICAL: Don't select variant fields - they don't exist in DB
+                },
+                include: {
+                  product: {
+                    select: {
+                      id: true,
+                      name: true,
+                      sku: true,
+                      images: true,
+                    },
+                  },
+                },
+              },
+              shippingAddress: true,
+              billingAddress: true,
+              payment: true,
+            },
+            orderBy: { createdAt: 'desc' },
+          }),
+          prisma.order.count(),
+        ]);
+      }
+    } catch (dbError: any) {
+      // ✅ FALLBACK: If column check fails, assume variant columns don't exist
+      logger.warn('Column check failed, using safe query without variant fields:', dbError.message);
+      [orders, total] = await Promise.all([
+        prisma.order.findMany({
+          skip,
+          take: pageSize,
+          select: {
+            id: true,
+            orderNumber: true,
+            customerEmail: true,
+            customerPhone: true,
+            customerName: true,
+            total: true,
+            subtotal: true,
+            tax: true,
+            shippingCost: true,
+            discount: true,
+            status: true,
+            customerNotes: true,
+            adminNotes: true,
+            createdAt: true,
+            updatedAt: true,
+            items: {
+              select: {
+                id: true,
+                productId: true,
+                productName: true,
+                productSku: true,
+                price: true,
+                quantity: true,
+                subtotal: true,
+              },
+              include: {
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                    sku: true,
+                    images: true,
+                  },
                 },
               },
             },
-            // ✅ FIX: Don't select variant fields in Prisma query - they may not exist in DB
-            // We'll handle variant fields in the transform with defensive checks
+            shippingAddress: true,
+            billingAddress: true,
+            payment: true,
           },
-          shippingAddress: true,
-          billingAddress: true,
-          payment: true, // ✅ FIXED: Changed from 'payments' to 'payment' (singular)
-        },
-        orderBy: { createdAt: 'desc' },
-      }),
-      prisma.order.count(),
-    ]);
+          orderBy: { createdAt: 'desc' },
+        }),
+        prisma.order.count(),
+      ]);
+    }
 
     // Transform for React Admin compatibility
     // ✅ FIX: Use transformOrder from transformers.ts to ensure shippingAddress is included correctly
