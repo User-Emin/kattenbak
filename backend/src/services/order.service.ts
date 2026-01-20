@@ -162,8 +162,9 @@ export class OrderService {
       // Prisma Decimal fields expect a number or Prisma.Decimal, not a Decimal.js object
       const priceForDb = price.toNumber();
 
-      // ✅ CRITICAL FIX: Check if variant columns exist before including them
-      // The database may not have variant_sku column, causing order creation to fail
+      // ✅ CRITICAL FIX: Don't include variant fields - database doesn't have variant_sku column
+      // The database schema may not have variant columns, so we exclude them to prevent errors
+      // Variant info can be stored in productName or notes if needed later
       const orderItemData: any = {
         productId: product.id,
         productName: product.name,
@@ -171,25 +172,9 @@ export class OrderService {
         price: priceForDb, // ✅ FIX: Use converted number instead of product.price (Decimal.js object)
         quantity,
         subtotal: itemTotal.toNumber(),
+        // ✅ FIX: Explicitly exclude variant fields to prevent database errors
+        // variantId, variantName, variantSku are NOT included because the database doesn't have these columns
       };
-      
-      // ✅ VARIANT SYSTEM: Only include variant fields if they exist in the database
-      // Check if variant columns exist by trying to query them (defensive approach)
-      // For now, we'll conditionally include them - if the database doesn't have them, Prisma will fail
-      // We'll handle this in the catch block by retrying without variant fields
-      if (item.variantId || item.variantName || item.variantSku) {
-        // Only add variant fields if they are provided
-        // Note: If the database doesn't have these columns, Prisma will throw an error
-        // which will be caught and handled in the order creation try-catch
-        orderItemData.variantId = item.variantId || null;
-        orderItemData.variantName = item.variantName || null;
-        // ✅ CRITICAL: Only include variantSku if the column exists in the database
-        // We'll check this dynamically or omit it if it causes errors
-        // For now, we'll include it but handle the error if it fails
-        if (item.variantSku) {
-          orderItemData.variantSku = item.variantSku;
-        }
-      }
       
       return orderItemData;
     });
