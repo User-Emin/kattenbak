@@ -706,27 +706,25 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   return null;
                 })()}
                 {/* ✅ FIX: Alleen variant adjustment tonen als het niet 0 is - NO € 0,00 */}
-                {activeVariant && (() => {
+                {(() => {
+                  if (!activeVariant) return null;
+                  
                   // ✅ SECURITY: Type-safe conversion - prevent string concatenation
                   const adjustment = typeof activeVariant.priceAdjustment === 'string'
                     ? parseFloat(activeVariant.priceAdjustment)
                     : (typeof activeVariant.priceAdjustment === 'number' ? activeVariant.priceAdjustment : 0);
-                  return adjustment !== 0 && !isNaN(adjustment) && isFinite(adjustment);
-                })() && (
-                  <span className="text-sm text-gray-500 ml-2">
-                    {(() => {
-                      const adjustment = typeof activeVariant.priceAdjustment === 'string'
-                        ? parseFloat(activeVariant.priceAdjustment)
-                        : (typeof activeVariant.priceAdjustment === 'number' ? activeVariant.priceAdjustment : 0);
-                      return adjustment > 0 ? '+' : '';
-                    })()}{formatPrice(() => {
-                      const adjustment = typeof activeVariant.priceAdjustment === 'string'
-                        ? parseFloat(activeVariant.priceAdjustment)
-                        : (typeof activeVariant.priceAdjustment === 'number' ? activeVariant.priceAdjustment : 0);
-                      return adjustment;
-                    }())}
-                  </span>
-                )}
+                  
+                  // ✅ FIX: Only show if adjustment is not 0
+                  if (adjustment === 0 || isNaN(adjustment) || !isFinite(adjustment)) {
+                    return null;
+                  }
+                  
+                  return (
+                    <span className="text-sm text-gray-500 ml-2">
+                      {adjustment > 0 ? '+' : ''}{formatPrice(adjustment)}
+                    </span>
+                  );
+                })()}
               </div>
               
               {/* ✅ VARIANT SYSTEM: Variant Selector - OPTIMAAL: Label met gekozen kleur opzelfde regel */}
