@@ -447,105 +447,10 @@ app.get('/api/v1/contact', async (req: Request, res: Response) => {
 // ORDERS ENDPOINTS - DATABASE (persistent storage)
 // =============================================================================
 
-// POST create order
-app.post('/api/v1/orders', async (req: Request, res: Response) => {
-  try {
-    const orderData = req.body;
-
-    // Calculate totals
-    // ✅ FIX: Prices are ALREADY INCL. BTW (21%)!
-    const subtotal = orderData.items.reduce((sum: number, item: any) => {
-      return sum + item.price * item.quantity;
-    }, 0);
-
-    // ✅ EXTRACT BTW from subtotal (don't ADD it!)
-    const totalInclBtw = subtotal;
-    const totalExclBtw = totalInclBtw / 1.21;  // Remove BTW
-    const tax = totalInclBtw - totalExclBtw;   // Extract BTW amount
-    
-    // ✅ GRATIS VERZENDING (always free, like frontend)
-    const shippingCost = 0;
-    
-    // ✅ Total = subtotal (already incl. BTW) + shipping (€0)
-    const total = totalInclBtw + shippingCost;
-
-    // Create order in database
-    const order = await prisma.order.create({
-      data: {
-        orderNumber: `ORD${Date.now()}`,
-        customerEmail: orderData.customer?.email || orderData.customerEmail,
-        subtotal,
-        shippingCost,
-        tax,
-        total,
-        status: 'PENDING',
-        customerNotes: orderData.customerNotes || null,
-        shippingAddress: {
-          create: {
-            firstName: orderData.customer?.firstName || orderData.shippingAddress?.firstName || '',
-            lastName: orderData.customer?.lastName || orderData.shippingAddress?.lastName || '',
-            street: orderData.shipping?.address || '',
-            houseNumber: '',
-            postalCode: orderData.shipping?.postalCode || '',
-            city: orderData.shipping?.city || '',
-            country: orderData.shipping?.country || 'NL',
-            phone: orderData.customer?.phone || '',
-          },
-        },
-      },
-    });
-
-    console.log(`✅ Order created: ${order.orderNumber} | €${total}`);
-
-    // ✅ SECURITY: Validate MOLLIE_API_KEY before creating payment
-    if (!ENV.MOLLIE_API_KEY || ENV.MOLLIE_API_KEY === 'test_dummy_key_for_now' || (!ENV.MOLLIE_API_KEY.startsWith('test_') && !ENV.MOLLIE_API_KEY.startsWith('live_'))) {
-      throw new Error('Payment service is not properly configured');
-    }
-
-    // ✅ REAL Mollie payment integration (direct client, geen @ imports)
-    const redirectUrl = `${ENV.FRONTEND_URL}/success?order=${order.id}`;
-    const payment = await mollieClient.payments.create({
-      amount: {
-        currency: 'EUR',
-        value: total.toFixed(2),
-      },
-      description: `Order ${order.orderNumber}`,
-      redirectUrl,
-      webhookUrl: `${ENV.FRONTEND_URL}/api/webhooks/mollie`,
-      metadata: {
-        orderId: order.id,
-      },
-      method: orderData.paymentMethod || 'ideal',
-    });
-
-    res.status(201).json(success({ 
-      order, 
-      payment: {
-        id: payment.id,
-        checkoutUrl: payment.getCheckoutUrl(),
-      }
-    }));
-  } catch (err: any) {
-    // ✅ SECURITY: Log error details but don't leak to client
-    console.error('Order creation error:', {
-      message: err?.message,
-      code: err?.code,
-      // ✅ SECURITY: No stack traces, API keys, or sensitive data in logs
-    });
-    
-    // ✅ SECURITY: Generic error message for client (geen gevoelige data)
-    let errorMessage = 'Bestelling kon niet worden geplaatst. Probeer het opnieuw.';
-    
-    // ✅ SECURITY: Check for specific error types without leaking details
-    if (err?.message?.includes('Mollie') || err?.code === 'ECONNREFUSED' || err?.message?.includes('payment')) {
-      errorMessage = 'Betaling kon niet worden gestart. Controleer je gegevens en probeer het opnieuw.';
-    } else if (err?.message?.includes('database') || err?.message?.includes('prisma')) {
-      errorMessage = 'Er is een technische fout opgetreden. Probeer het later opnieuw.';
-    }
-    
-    res.status(500).json(error(errorMessage));
-  }
-});
+// ✅ CRITICAL FIX: REMOVED DUPLICATE ORDER CREATION ENDPOINT (was at line 451-548)
+// This was causing orders to be created without proper validation, order number generation, and variant support
+// The duplicate endpoint used simple `ORD${Date.now()}` instead of proper `ORD2601200001` format
+// Now using ordersRoutes from routes/orders.routes.ts which uses OrderService.createOrder()
 
 // Mollie webhook
 app.post('/api/v1/webhooks/mollie', async (req: Request, res: Response) => {
