@@ -404,39 +404,32 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     });
   };
 
-  // ✅ DYNAMISCH: Features data - Gebruik geüploade foto's (4e en 5e) zonder hardcode
-  // Filter alleen geldige geüploade foto's (geen placeholder, geen data URLs)
-  // ✅ FIX: Accepteer zowel /uploads/ als https:// paths (sommige images hebben full URL)
-  const uploadedImages = productImages.filter((img: string) => {
-    if (!img || typeof img !== 'string') return false;
-    if (img.startsWith('data:')) return false; // Filter data URLs
-    // ✅ ACCEPTEER: /uploads/, https://catsupply.nl/uploads/, en http:// paths
-    return img.includes('/uploads/') || img.startsWith('http://') || img.startsWith('https://');
-  });
+  // ✅ DYNAMISCH: Features data - Gebruik DIRECT productImages (al gefilterd) voor 4e en 5e foto
+  // ✅ FIX: Gebruik productImages DIRECT - deze zijn al gefilterd en bevatten alle geüploade foto's
+  // Geen extra filter nodig - productImages bevat al alleen geldige /uploads/ en https:// paths
   
   // ✅ DEBUG: Log voor verificatie (altijd, ook in production voor troubleshooting)
   console.log('📸 Product Images Count:', productImages.length);
-  console.log('📸 Uploaded Images Count:', uploadedImages.length);
-  console.log('📸 Uploaded Images:', uploadedImages);
-  console.log('📸 4e foto (index 3):', uploadedImages[3]);
-  console.log('📸 5e foto (index 4):', uploadedImages[4]);
+  console.log('📸 Product Images:', productImages);
+  console.log('📸 4e foto (index 3):', productImages[3]);
+  console.log('📸 5e foto (index 4):', productImages[4]);
   
-  // ✅ DYNAMISCH: Features met 4e en 5e foto - ZONDER DUPLICATEN
+  // ✅ DYNAMISCH: Features met 4e en 5e foto - GEBRUIK DIRECT productImages (geen extra filter)
   const features = PRODUCT_CONTENT.features.map((feature, index) => {
     let imageUrl: string;
     
     if (index === 0) {
-      // ✅ 4E FOTO: 10.5L Afvalbak (index 3 = 4e foto)
-      imageUrl = uploadedImages[3] || '/images/capacity-10.5l-optimized.jpg';
+      // ✅ 4E FOTO: 10.5L Afvalbak (index 3 = 4e foto) - DIRECT uit productImages
+      imageUrl = productImages[3] || '/images/capacity-10.5l-optimized.jpg';
+      console.log(`📸 Feature ${index} (${feature.title}): Using productImages[3] = ${productImages[3] || 'FALLBACK'}`);
     } else if (index === 1) {
       // ✅ MIDDELSTE: Statische feature-2.jpg
       imageUrl = '/images/feature-2.jpg';
     } else {
-      // ✅ 5E FOTO: Geurblokje, kwast & afvalzak (index 4 = 5e foto)
-      imageUrl = uploadedImages[4] || '/images/feature-2.jpg';
+      // ✅ 5E FOTO: Geurblokje, kwast & afvalzak (index 4 = 5e foto) - DIRECT uit productImages
+      imageUrl = productImages[4] || '/images/feature-2.jpg';
+      console.log(`📸 Feature ${index} (${feature.title}): Using productImages[4] = ${productImages[4] || 'FALLBACK'}`);
     }
-    
-    console.log(`📸 Feature ${index} (${feature.title}): ${imageUrl}`);
     
     return {
       ...feature,
