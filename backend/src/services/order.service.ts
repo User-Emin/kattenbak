@@ -274,10 +274,36 @@ export class OrderService {
             create: orderItems,
           },
         },
-        include: {
+        select: {
+          id: true,
+          orderNumber: true,
+          customerEmail: true,
+          customerPhone: true,
+          subtotal: true,
+          shippingCost: true,
+          tax: true,
+          total: true,
+          status: true,
+          customerNotes: true,
+          createdAt: true,
+          updatedAt: true,
           items: {
-            include: {
-              product: true,
+            select: {
+              id: true,
+              productId: true,
+              productName: true,
+              productSku: true,
+              price: true,
+              quantity: true,
+              subtotal: true,
+              product: {
+                select: {
+                  id: true,
+                  name: true,
+                  sku: true,
+                  images: true,
+                },
+              },
             },
           },
           shippingAddress: true,
@@ -341,10 +367,36 @@ export class OrderService {
               create: orderItemsWithoutVariants,
             },
           },
-          include: {
+          select: {
+            id: true,
+            orderNumber: true,
+            customerEmail: true,
+            customerPhone: true,
+            subtotal: true,
+            shippingCost: true,
+            tax: true,
+            total: true,
+            status: true,
+            customerNotes: true,
+            createdAt: true,
+            updatedAt: true,
             items: {
-              include: {
-                product: true,
+              select: {
+                id: true,
+                productId: true,
+                productName: true,
+                productSku: true,
+                price: true,
+                quantity: true,
+                subtotal: true,
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                    sku: true,
+                    images: true,
+                  },
+                },
               },
             },
             shippingAddress: true,
