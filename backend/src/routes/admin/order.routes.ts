@@ -25,6 +25,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     const skip = (page - 1) * pageSize;
 
     // Get orders from DATABASE with relationships
+    // ✅ SECURITY: Only select fields that exist in database (variant fields may not exist)
     const [orders, total] = await Promise.all([
       prisma.order.findMany({
         skip,
@@ -41,6 +42,8 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
                 },
               },
             },
+            // ✅ FIX: Don't select variant fields in Prisma query - they may not exist in DB
+            // We'll handle variant fields in the transform with defensive checks
           },
           shippingAddress: true,
           billingAddress: true,
@@ -63,19 +66,26 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
         : 'Unknown'),
       customerPhone: order.customerPhone || undefined,
       paymentStatus: order.paymentStatus || (order.payment?.status || 'PENDING'),
-      items: order.items ? order.items.map((item: any) => ({
-        id: item.id,
-        productId: item.productId,
-        productName: item.productName || item.product?.name,
-        productSku: item.productSku || item.product?.sku,
-        quantity: item.quantity,
-        price: Number(item.price),
-        subtotal: Number(item.subtotal || (Number(item.price) * item.quantity)),
-        // ✅ VARIANT SYSTEM: Include variant info if present
-        variantId: item.variantId || null,
-        variantName: item.variantName || null,
-        variantSku: item.variantSku || null,
-      })) : [],
+      items: order.items ? order.items.map((item: any) => {
+        // ✅ SECURITY: Defensive null checks - variant fields may not exist in DB
+        const variantId = item.variantId || item.variant_id || null;
+        const variantName = item.variantName || item.variant_name || null;
+        const variantSku = item.variantSku || item.variant_sku || null;
+        
+        return {
+          id: item.id,
+          productId: item.productId,
+          productName: item.productName || item.product?.name,
+          productSku: item.productSku || item.product?.sku,
+          quantity: item.quantity,
+          price: Number(item.price),
+          subtotal: Number(item.subtotal || (Number(item.price) * item.quantity)),
+          // ✅ VARIANT SYSTEM: Include variant info if present (defensive - may not exist in DB)
+          variantId,
+          variantName,
+          variantSku,
+        };
+      }) : [],
       createdAt: order.createdAt || order.createdAt?.toISOString(),
       updatedAt: order.updatedAt || order.updatedAt?.toISOString(),
     }));
