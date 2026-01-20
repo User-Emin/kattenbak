@@ -28,31 +28,88 @@ router.get('/', async (req, res) => {
     let total = 0;
     
     try {
+      // ✅ CRITICAL FIX: Check if variant_sku column exists before querying
+      // Prisma will try to select ALL fields from schema, including variant_sku which may not exist
+      let columnCheck: any[] = [];
+      try {
+        columnCheck = await prisma.$queryRawUnsafe<Array<{exists: boolean}>>(`
+          SELECT EXISTS (
+            SELECT 1 
+            FROM information_schema.columns 
+            WHERE table_name = 'order_items' 
+            AND column_name = 'variant_sku'
+          ) as exists;
+        `);
+      } catch (checkError: any) {
+        // If check fails, assume columns don't exist
+        logger.warn('Column check failed, assuming variant columns don\'t exist:', checkError.message);
+      }
+      
+      const hasVariantColumns = columnCheck[0]?.exists === true;
+      
       // ✅ FIX: Try database connection with fallback
       const [ordersResult, totalResult] = await Promise.all([
-        prisma.order.findMany({
-          where,
-          skip,
-          take: parseInt(pageSize as string),
-          include: {
-            items: {
+        hasVariantColumns 
+          ? prisma.order.findMany({
+              where,
+              skip,
+              take: parseInt(pageSize as string),
               include: {
-                product: {
-                  select: {
-                    id: true,
-                    name: true,
-                    images: true
+                items: {
+                  include: {
+                    product: {
+                      select: {
+                        id: true,
+                        name: true,
+                        images: true
+                      }
+                    }
                   }
-                }
-              }
-            },
-            payment: true,
-            shipment: true,
-            shippingAddress: true,
-            billingAddress: true
-          },
-          orderBy: { createdAt: 'desc' }
-        }),
+                },
+                payment: true,
+                shipment: true,
+                shippingAddress: true,
+                billingAddress: true
+              },
+              orderBy: { createdAt: 'desc' }
+            })
+          : prisma.order.findMany({
+              where,
+              skip,
+              take: parseInt(pageSize as string),
+              select: {
+                id: true,
+                orderNumber: true,
+                customerEmail: true,
+                customerPhone: true,
+                total: true,
+                subtotal: true,
+                tax: true,
+                shippingCost: true,
+                discount: true,
+                status: true,
+                customerNotes: true,
+                adminNotes: true,
+                createdAt: true,
+                updatedAt: true,
+                items: {
+                  include: {
+                    product: {
+                      select: {
+                        id: true,
+                        name: true,
+                        images: true
+                      }
+                    }
+                  }
+                },
+                shippingAddress: true,
+                billingAddress: true,
+                payment: true,
+                shipment: true,
+              },
+              orderBy: { createdAt: 'desc' }
+            }),
         prisma.order.count({ where })
       ]);
       

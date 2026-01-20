@@ -44,7 +44,8 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
       const hasVariantColumns = columnCheck[0]?.exists === true;
       
       if (hasVariantColumns) {
-        // ✅ Variant columns exist - use normal Prisma query
+        // ✅ Variant columns exist - use normal Prisma query with include
+        // Note: Prisma will automatically select all fields including variant fields
         [orders, total] = await Promise.all([
           prisma.order.findMany({
             skip,
