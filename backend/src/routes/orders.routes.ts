@@ -481,7 +481,8 @@ router.post(
 // ✅ SECURITY: This endpoint verifies payment status directly from Mollie before showing success page
 router.get('/:id/payment-status', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id: orderId } = req.params;
+    // ✅ SECURITY: Type-safe parameter extraction
+    const orderId = extractStringParam(req.params.id);
 
     // Get order with payment
     const order = await prisma.order.findUnique({
