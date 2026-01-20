@@ -210,15 +210,20 @@ export class MollieService {
       // Map Mollie status to our status
       let status: PaymentStatus = PaymentStatus.PENDING;
       
-      // ✅ FIX: Type-safe status mapping
-      const mollieStatus = molliePayment.status as string;
+      // ✅ FIX: Type-safe status mapping - handle all Mollie statuses correctly
+      // According to Mollie docs: open, canceled, pending, expired, failed, paid, authorized, refunded
+      const mollieStatus = (molliePayment.status as string).toLowerCase();
       switch (mollieStatus) {
         case 'paid':
           status = PaymentStatus.PAID;
           break;
         case 'failed':
-        case 'canceled':
           status = PaymentStatus.FAILED;
+          break;
+        case 'canceled':
+        case 'cancelled':
+          // ✅ CRITICAL: Handle canceled status (iDEAL/PayPal cancellations)
+          status = PaymentStatus.FAILED; // Use FAILED enum value for canceled payments
           break;
         case 'expired':
           status = PaymentStatus.EXPIRED;
@@ -226,6 +231,9 @@ export class MollieService {
         case 'refunded':
           status = PaymentStatus.REFUNDED;
           break;
+        case 'open':
+        case 'pending':
+        case 'authorized':
         default:
           status = PaymentStatus.PENDING;
           break;
