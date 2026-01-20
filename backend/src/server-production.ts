@@ -180,9 +180,12 @@ app.get('/api/v1/products/featured', async (req: Request, res: Response) => {
 // Get product by slug
 app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
   try {
+    // ✅ SECURITY: Type-safe parameter extraction
+    const slug = Array.isArray(req.params.slug) ? req.params.slug[0] : req.params.slug;
+    
     const product = await prisma.product.findUnique({
       where: { 
-        slug: req.params.slug,
+        slug: slug,
         isActive: true
       },
       include: {

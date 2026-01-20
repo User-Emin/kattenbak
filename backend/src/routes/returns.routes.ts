@@ -5,6 +5,7 @@ import { PDFGeneratorService } from '../services/pdf-generator.service';
 import { logger } from '../config/logger.config';
 import { env } from '../config/env.config';
 import { prisma } from '../config/database.config';
+import { extractStringParam } from '../utils/params.util';
 import axios from 'axios';
 
 const router = Router();
@@ -225,7 +226,8 @@ router.post('/', async (req: Request, res: Response) => {
  */
 router.post('/validate/:orderId', async (req: Request, res: Response) => {
   try {
-    const { orderId } = req.params;
+    // ✅ SECURITY: Type-safe parameter extraction
+    const orderId = extractStringParam(req.params.orderId);
 
     // ✅ FIX: Fetch real order from database (by ID or orderNumber)
     const order = await prisma.order.findFirst({
@@ -255,13 +257,21 @@ router.post('/validate/:orderId', async (req: Request, res: Response) => {
       });
     }
 
+    // ✅ FIX: Type-safe property access with defensive checks
+    const shipmentDeliveredAt = order.shipment && 'deliveredAt' in order.shipment 
+      ? (order.shipment as any).deliveredAt 
+      : null;
+    const returnsArray = order.returns && Array.isArray(order.returns) 
+      ? order.returns 
+      : [];
+
     // Build order object for validation
     const orderForValidation = {
       id: order.id,
       status: order.status,
-      deliveredAt: order.shipment?.deliveredAt || order.completedAt,
+      deliveredAt: shipmentDeliveredAt || order.completedAt,
       completedAt: order.completedAt,
-      returnId: order.returns.length > 0 ? order.returns[0].id : null,
+      returnId: returnsArray.length > 0 ? returnsArray[0].id : null,
     };
 
     const validation = MyParcelReturnService.validateReturnEligibility(orderForValidation);
@@ -287,7 +297,8 @@ router.post('/validate/:orderId', async (req: Request, res: Response) => {
  */
 router.get('/:returnId', async (req: Request, res: Response) => {
   try {
-    const { returnId } = req.params;
+    // ✅ SECURITY: Type-safe parameter extraction
+    const returnId = extractStringParam(req.params.returnId);
 
     // TODO: Fetch from database
     // For now, return mock data
