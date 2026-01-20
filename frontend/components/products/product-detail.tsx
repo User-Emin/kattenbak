@@ -666,17 +666,34 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   {formatPrice(displayPrice)}
                 </span>
                 {/* ✅ FIX: Alleen compareAtPrice tonen als het > 0 EN > displayPrice (echte korting) */}
-                {/* ✅ FIX: Convert compareAtPrice to number (API returns string) */}
+                {/* ✅ SECURITY: Type-safe conversion - prevent injection via string manipulation */}
                 {(() => {
-                  const comparePrice = typeof product.compareAtPrice === 'string' 
-                    ? parseFloat(product.compareAtPrice) 
-                    : (product.compareAtPrice || 0);
+                  // ✅ SECURITY: Defensive type conversion with validation
+                  let comparePrice: number = 0;
+                  if (product.compareAtPrice !== null && product.compareAtPrice !== undefined) {
+                    if (typeof product.compareAtPrice === 'string') {
+                      const parsed = parseFloat(product.compareAtPrice);
+                      comparePrice = isNaN(parsed) || !isFinite(parsed) ? 0 : parsed;
+                    } else if (typeof product.compareAtPrice === 'number') {
+                      comparePrice = isNaN(product.compareAtPrice) || !isFinite(product.compareAtPrice) ? 0 : product.compareAtPrice;
+                    }
+                  }
+                  // ✅ FIX: Only show if > 0 AND > displayPrice (real discount) - NO € 0,00
                   return comparePrice > 0 && comparePrice > displayPrice;
                 })() && (
                   <span className="text-base text-gray-500 line-through ml-3">
-                    {formatPrice(typeof product.compareAtPrice === 'string' 
-                      ? parseFloat(product.compareAtPrice) 
-                      : (product.compareAtPrice || 0))}
+                    {formatPrice(() => {
+                      // ✅ SECURITY: Same defensive conversion for display
+                      if (product.compareAtPrice !== null && product.compareAtPrice !== undefined) {
+                        if (typeof product.compareAtPrice === 'string') {
+                          const parsed = parseFloat(product.compareAtPrice);
+                          return isNaN(parsed) || !isFinite(parsed) ? 0 : parsed;
+                        } else if (typeof product.compareAtPrice === 'number') {
+                          return isNaN(product.compareAtPrice) || !isFinite(product.compareAtPrice) ? 0 : product.compareAtPrice;
+                        }
+                      }
+                      return 0;
+                    }())}
                   </span>
                 )}
                 {activeVariant && activeVariant.priceAdjustment !== 0 && (

@@ -301,7 +301,27 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
                   <FormItem>
                     <FormLabel>Verkoopprijs *</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" step="0.01" placeholder="299.99" />
+                      {/* ✅ SECURITY: Type-safe number input - prevent string concatenation */}
+                      <Input 
+                        {...field} 
+                        type="number" 
+                        step="0.01" 
+                        placeholder="299.99"
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          // ✅ SECURITY: Defensive conversion - prevent extra zeros
+                          const value = e.target.value;
+                          if (value === '' || value === null || value === undefined) {
+                            field.onChange(0);
+                            return;
+                          }
+                          // ✅ FIX: Parse as float to prevent string concatenation (1 + 0 = "10")
+                          const numValue = parseFloat(value);
+                          if (!isNaN(numValue) && isFinite(numValue)) {
+                            field.onChange(numValue);
+                          }
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -315,7 +335,27 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
                   <FormItem>
                     <FormLabel>Was-prijs</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" step="0.01" placeholder="399.99" />
+                      {/* ✅ SECURITY: Type-safe number input - prevent string concatenation */}
+                      <Input 
+                        {...field} 
+                        type="number" 
+                        step="0.01" 
+                        placeholder="399.99"
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          // ✅ SECURITY: Defensive conversion - prevent extra zeros
+                          const value = e.target.value;
+                          if (value === '' || value === null || value === undefined) {
+                            field.onChange(0);
+                            return;
+                          }
+                          // ✅ FIX: Parse as float to prevent string concatenation (1 + 0 = "10")
+                          const numValue = parseFloat(value);
+                          if (!isNaN(numValue) && isFinite(numValue)) {
+                            field.onChange(numValue);
+                          }
+                        }}
+                      />
                     </FormControl>
                     <FormDescription>Voor kortingen</FormDescription>
                     <FormMessage />
