@@ -75,29 +75,60 @@ function SuccessContent() {
         
         setOrderId(id);
         
-        // ✅ CRITICAL: According to Mollie docs - check order FIRST, then verify payment status
-        // Order MUST exist (created before payment), so if order doesn't exist, it's an error
+        // ✅ CRITICAL: According to Mollie docs - check order FIRST with retry mechanism
+        // Order MUST exist (created before payment), but may need time to propagate
         let order: any = null;
-        try {
-          order = await ordersApi.getById(id);
-          
-          // ✅ SECURITY: Verify order actually exists and has orderNumber
-          if (!order || !order.orderNumber) {
-            setPaymentError('Bestelling niet gevonden. Controleer je bestelnummer of neem contact op.');
+        let retries = 0;
+        const maxRetries = 3;
+        
+        while (retries < maxRetries && !order) {
+          try {
+            order = await ordersApi.getById(id);
+            
+            // ✅ SECURITY: Verify order actually exists and has orderNumber
+            if (order && order.orderNumber) {
+              setOrderNumber(order.orderNumber);
+              setCustomerEmail(order.customerEmail || (order as any).customer?.email);
+              break; // Order found, exit retry loop
+            }
+            
+            // If order exists but no orderNumber, wait and retry (may be generating)
+            if (order && !order.orderNumber && retries < maxRetries - 1) {
+              await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
+              retries++;
+              continue;
+            }
+            
+            // Order doesn't exist or no orderNumber after retries
+            if (!order || !order.orderNumber) {
+              setPaymentError('Bestelling niet gevonden. Controleer je bestelnummer of neem contact op.');
+              setIsLoading(false);
+              return;
+            }
+          } catch (orderError: any) {
+            // ✅ RETRY: If order fetch fails, retry (may be race condition)
+            if (retries < maxRetries - 1) {
+              console.warn(`Order fetch failed (attempt ${retries + 1}/${maxRetries}), retrying...`, orderError);
+              await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
+              retries++;
+              continue;
+            }
+            
+            // ✅ CRITICAL: After all retries, show error
+            console.error("Failed to fetch order after retries:", orderError);
+            setPaymentError(
+              orderError?.message?.includes('404') || orderError?.message?.includes('not found')
+                ? 'Bestelling niet gevonden. De bestelling is mogelijk niet aangemaakt of de link is ongeldig.'
+                : 'Kon bestelling niet ophalen. Controleer je bestelnummer of neem contact op.'
+            );
             setIsLoading(false);
             return;
           }
-          
-          setOrderNumber(order.orderNumber);
-          setCustomerEmail(order.customerEmail || (order as any).customer?.email);
-        } catch (orderError: any) {
-          // ✅ CRITICAL: If order doesn't exist, it's an error (order is created before payment)
-          console.error("Failed to fetch order:", orderError);
-          setPaymentError(
-            orderError?.message?.includes('404') || orderError?.message?.includes('not found')
-              ? 'Bestelling niet gevonden. De bestelling is mogelijk niet aangemaakt of de link is ongeldig.'
-              : 'Kon bestelling niet ophalen. Controleer je bestelnummer of neem contact op.'
-          );
+        }
+        
+        // ✅ SECURITY: Final check - order must exist with orderNumber
+        if (!order || !order.orderNumber) {
+          setPaymentError('Bestelling niet gevonden. Controleer je bestelnummer of neem contact op.');
           setIsLoading(false);
           return;
         }

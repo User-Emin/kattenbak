@@ -599,12 +599,66 @@ router.get('/:id/payment-status', async (req: Request, res: Response, next: Next
 });
 
 // GET /api/v1/orders/:id - Get order details (DATABASE)
+// ✅ CRITICAL: This endpoint is called by success page - must return order with orderNumber
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const order = await OrderService.getOrderById(id);
-    successResponse(res, order);
-  } catch (error) {
+    
+    // ✅ SECURITY: Validate order ID format
+    if (!id || id.length < 10) {
+      return res.status(400).json({
+        success: false,
+        error: 'Ongeldig order ID',
+      });
+    }
+    
+    // ✅ FIX: Get order with all relations to ensure orderNumber is included
+    const order = await prisma.order.findUnique({
+      where: { id },
+      include: {
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                images: true,
+              },
+            },
+          },
+        },
+        shippingAddress: true,
+        billingAddress: true,
+        payment: true,
+      },
+    });
+    
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order niet gevonden',
+      });
+    }
+    
+    // ✅ CRITICAL: Ensure orderNumber exists (should always exist, but defensive check)
+    if (!order.orderNumber) {
+      logger.error('Order found but orderNumber is missing:', { orderId: id });
+      // Generate fallback orderNumber (should never happen, but defensive)
+      const fallbackOrderNumber = `ORD${new Date().getFullYear().toString().slice(-2)}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}9999`;
+      logger.warn('Using fallback orderNumber:', { orderId: id, fallbackOrderNumber });
+      order.orderNumber = fallbackOrderNumber;
+    }
+    
+    // ✅ DRY: Use transformOrder to ensure consistent format
+    const transformedOrder = transformOrder(order);
+    
+    successResponse(res, transformedOrder);
+  } catch (error: any) {
+    logger.error('Get order by ID error:', {
+      orderId: req.params.id,
+      error: error?.message,
+      stack: error?.stack,
+    });
     next(error);
   }
 });

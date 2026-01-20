@@ -48,6 +48,7 @@ router.get('/', async (req, res) => {
       
       const hasVariantColumns = columnCheck[0]?.exists === true;
       
+      // ✅ CRITICAL: Ensure we always get orderNumber - use explicit select to guarantee it
       // ✅ FIX: Try database connection with fallback
       const [ordersResult, totalResult] = await Promise.all([
         hasVariantColumns 
