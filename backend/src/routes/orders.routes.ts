@@ -519,7 +519,7 @@ router.get('/:id/payment-status', async (req: Request, res: Response, next: Next
       const molliePayment = await MollieService.getPaymentStatus(order.payment.mollieId);
       
       // Map Mollie status to our status
-      const status = molliePayment.status;
+      const status = molliePayment.status as string;
       const isPaid = status === 'paid';
       const isCancelled = status === 'canceled' || status === 'cancelled';
       const isFailed = status === 'failed' || status === 'expired';
