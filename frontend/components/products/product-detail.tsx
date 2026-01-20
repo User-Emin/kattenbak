@@ -744,15 +744,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
                     // ✅ GRIJZE TEKST: Volledig grijs, geen blauwe highlights
                     return (
-                      <div key={index} className="flex items-center gap-2 text-xs sm:text-sm text-gray-700">
+                      <div key={index} className="flex items-center gap-2 text-xs sm:text-sm">
                         {/* ✅ BLAUW VIJKJE: Exact logo blauw (#005980) - alleen vinkje is blauw */}
                         <Check
                           className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
                           strokeWidth={3}
                           style={{ color: '#005980' }}
                         />
-                        {/* ✅ GRIJZE TEKST: Normale tekst, geen blauwe highlights */}
-                        <span className="text-gray-700">{usp.text}</span>
+                        {/* ✅ GRIJZE TEKST: Explicit style override om blauwe kleur te voorkomen */}
+                        <span style={{ color: '#374151' }} className="text-gray-700">{usp.text}</span>
                       </div>
                     );
                   })}
@@ -1192,10 +1192,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')}>
           <Image
             src={
-              // ✅ DYNAMISCH: Gebruik eerste echte geüploade product image (gefilterd), anders PRODUCT_CONTENT fallback
+              // ✅ DYNAMISCH: Gebruik EERSTE geüploade product image (index 0) - dynamisch met eerste foto upload
               images && images.length > 0 && !images[0].startsWith('data:')
-                ? images[0]
-                : (PRODUCT_CONTENT.edgeImageSection.image || '/uploads/products/cf4fd5a6-a162-4466-b922-7bc7a8c121a0.jpg')
+                ? images[0] // ✅ EERSTE FOTO: Dynamisch met eerste foto upload
+                : (productImages && productImages.length > 0 && !productImages[0].startsWith('data:')
+                  ? productImages[0] // ✅ FALLBACK: productImages als images leeg is
+                  : (PRODUCT_CONTENT.edgeImageSection.image || '/images/feature-2.jpg'))
             }
             alt={product.name}
             fill
@@ -1206,12 +1208,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when scrolled)
             placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth perceived loading
             blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-            unoptimized={(images && images.length > 0 && images[0].startsWith('/uploads/')) || (PRODUCT_CONTENT.edgeImageSection.image || '/placeholder-image.jpg').startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+            unoptimized={(images && images.length > 0 && (images[0].startsWith('/uploads/') || images[0].startsWith('https://'))) || (productImages && productImages.length > 0 && (productImages[0].startsWith('/uploads/') || productImages[0].startsWith('https://')))} // ✅ FIX: Disable Next.js optimization for /uploads/ and https:// paths
             onError={(e) => {
               // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
               const target = e.target as HTMLImageElement;
               if (target && !target.src.includes('placeholder')) {
-                target.src = '/placeholder-image.jpg';
+                target.src = '/images/feature-2.jpg';
               }
             }}
           />
@@ -1226,13 +1228,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               )}>
                 {product.name}
               </h2>
-              {/* ✅ MOBIEL: Alleen productnaam, geen beschrijving op mobiel */}
+              {/* ✅ DYNAMISCH: Product beschrijving - gaat dynamisch mee met eerste foto upload */}
               <p className={cn(
                 'text-sm sm:text-base md:text-lg', // ✅ MOBIEL: Responsive tekst
                 CONFIG.edgeSection.description.textColor,
                 'hidden sm:block' // ✅ MOBIEL: Verberg beschrijving op mobiel
               )}>
-                {product.description || product.shortDescription || PRODUCT_CONTENT.mainDescription}
+                {product.description || product.shortDescription || `${product.name} - Premium zelfreinigende kattenbak met app-bediening`}
               </p>
             </div>
           </div>
@@ -1281,7 +1283,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)
                     placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
                     blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
-                    unoptimized={feature.image?.startsWith('/uploads/') || feature.image?.startsWith('/images/')} // ✅ FIX: Disable Next.js optimization for /uploads/ and /images/ paths
+                    unoptimized={feature.image?.startsWith('/uploads/') || feature.image?.startsWith('/images/') || feature.image?.startsWith('https://') || feature.image?.startsWith('http://')} // ✅ FIX: Disable Next.js optimization for /uploads/, /images/, and https:// paths
                     onError={(e) => {
                       // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
                       const target = e.target as HTMLImageElement;
