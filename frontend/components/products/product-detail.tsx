@@ -1250,7 +1250,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)
                     placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
                     blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
-                    unoptimized={(feature.image && feature.image.startsWith('/uploads/')) || false} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+                    unoptimized={feature.image?.startsWith('/uploads/') || feature.image?.startsWith('/images/')} // ✅ FIX: Disable Next.js optimization for /uploads/ and /images/ paths
+                    onError={(e) => {
+                      // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
+                      const target = e.target as HTMLImageElement;
+                      if (target && !target.src.includes('placeholder')) {
+                        target.src = '/images/placeholder.jpg';
+                      }
+                    }}
                   />
                 </div>
 
