@@ -15,6 +15,8 @@ import { z } from 'zod';
 import { logger } from '../config/logger.config';
 import { EmailService } from '../services/email.service';
 import { prisma } from '../config/database.config';
+import { normalizeAddress } from '../utils/address.util'; // ✅ DRY: Shared address utility
+import { transformOrder } from '../lib/transformers'; // ✅ DRY: Use shared transformer
 
 const router = Router();
 
