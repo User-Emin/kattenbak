@@ -51,13 +51,17 @@ export class OrderService {
    * Generate unique order number
    */
   private static async generateOrderNumber(): Promise<string> {
-    const date = new Date();
-    const year = date.getFullYear().toString().slice(-2);
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    // ✅ FIX: Create separate date objects to avoid mutation
+    const now = new Date();
+    const year = now.getFullYear().toString().slice(-2);
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    
+    // ✅ FIX: Create startOfDay without mutating the original date
+    const startOfDay = new Date(now);
+    startOfDay.setHours(0, 0, 0, 0);
     
     // Get count of orders today
-    const startOfDay = new Date(date.setHours(0, 0, 0, 0));
     const count = await prisma.order.count({
       where: {
         createdAt: {
@@ -67,7 +71,20 @@ export class OrderService {
     });
 
     const sequence = (count + 1).toString().padStart(4, '0');
-    return `ORD${year}${month}${day}${sequence}`;
+    const orderNumber = `ORD${year}${month}${day}${sequence}`;
+    
+    // ✅ DEBUG: Log order number generation
+    logger.info('Order number generated:', {
+      orderNumber,
+      year,
+      month,
+      day,
+      count,
+      sequence,
+      startOfDay: startOfDay.toISOString(),
+    });
+    
+    return orderNumber;
   }
 
   /**

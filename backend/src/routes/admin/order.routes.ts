@@ -272,7 +272,14 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
       updatedAt: order.updatedAt || order.updatedAt?.toISOString(),
     }));
 
-    logger.info(`Admin: Retrieved ${orders.length} orders from database`);
+    logger.info(`Admin: Retrieved ${orders.length} orders from database`, {
+      page,
+      pageSize,
+      total,
+      totalPages: Math.ceil(total / pageSize),
+      oldestOrderDate: orders.length > 0 ? orders[orders.length - 1].createdAt : null,
+      newestOrderDate: orders.length > 0 ? orders[0].createdAt : null,
+    });
 
     res.json({
       success: true,

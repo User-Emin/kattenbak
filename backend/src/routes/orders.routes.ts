@@ -418,7 +418,14 @@ router.post(
         paymentMethod
       );
 
-      logger.info('Order created successfully:', { orderId: order.id, orderNumber: order.orderNumber });
+      logger.info('✅ Order created successfully:', { 
+        orderId: order.id, 
+        orderNumber: order.orderNumber,
+        customerEmail: order.customerEmail,
+        total: order.total,
+        itemsCount: order.items?.length || 0,
+        createdAt: order.createdAt,
+      });
 
       successResponse(
         res,
