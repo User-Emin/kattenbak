@@ -404,14 +404,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     });
   };
 
-  // Features data - ✅ DRY: Via PRODUCT_CONTENT (geen hardcode)
+  // ✅ DYNAMISCH: Features data - Gebruik geüploade foto's (4e en 5e) zonder hardcode
+  // Filter alleen geldige geüploade foto's (geen placeholder, geen data URLs)
+  const uploadedImages = productImages.filter((img: string) => 
+    img && typeof img === 'string' && img.startsWith('/uploads/') && !img.startsWith('data:')
+  );
+  
   const features = PRODUCT_CONTENT.features.map((feature, index) => ({
     ...feature,
+    // ✅ DYNAMISCH: 4e foto voor 10.5L (index 0), 5e foto voor Geurblokje/Kwast/Afvalzak (index 2)
+    // Fallback naar statische images als er niet genoeg geüploade foto's zijn
     image: index === 0 
-      ? '/images/capacity-10.5l-optimized.jpg' // ✅ FOTO GEOPTIMALISEERD: Exact zoals screenshot, geoptimaliseerd
+      ? (uploadedImages[3] || '/images/capacity-10.5l-optimized.jpg') // ✅ 4E FOTO: 10.5L Afvalbak
       : index === 1
-      ? '/images/feature-2.jpg' // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode) - EXACT IDENTIEK
-      : '/uploads/products/27cb78df-2f8e-4f42-8c27-886fdc2dfda8.jpg', // ✅ 3E ZIGZAG: Geurblokje, kwast & afvalzak (geüploade foto)
+      ? '/images/feature-2.jpg' // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode)
+      : (uploadedImages[4] || '/uploads/products/27cb78df-2f8e-4f42-8c27-886fdc2dfda8.jpg'), // ✅ 5E FOTO: Geurblokje, kwast & afvalzak
   }));
 
   return (

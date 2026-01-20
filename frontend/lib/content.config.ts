@@ -222,8 +222,8 @@ export const PRODUCT_CONTENT = {
       // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
     {
-      title: 'Alles inbegrepen',
-      description: 'Geleverd met alles wat je nodig hebt: Geurblokje, Kwast, Afvalzak en Inloopmat - direct klaar voor gebruik.',
+      title: 'Geurblokje, Kwast & Afvalzak',
+      description: 'Geen geurblokje nodig dankzij luchtdichte afvalzak. Geen kwast op de vloer. Eenvoudig afvalzak vervangen.',
       // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
   ],
