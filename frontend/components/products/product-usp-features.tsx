@@ -49,7 +49,7 @@ export function ProductUspFeatures() {
     },
     {
       icon: Box,
-      title: "Geleverd met alles wat je nodig hebt",
+      title: "Alles inbegrepen",
       description: "Geurblokje, Kwast, Afvalzak en Inloopmat - alles inbegrepen voor direct gebruik.",
       items: [
         "Geurblokje voor langdurige geurneutralisatie",

@@ -256,6 +256,27 @@ ENDSSH
 echo -e "${GREEN}✓ Nginx updated${NC}"
 
 ##############################################################################
+# STEP 9: E2E Admin Test
+##############################################################################
+echo -e "\n${YELLOW}[9/9] Running E2E admin tests...${NC}"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+E2E_TEST_SCRIPT="${SCRIPT_DIR}/e2e-admin-test.sh"
+
+if [ -f "$E2E_TEST_SCRIPT" ]; then
+    if bash "$E2E_TEST_SCRIPT"; then
+        echo -e "${GREEN}✓ All E2E tests passed${NC}"
+    else
+        echo -e "${RED}❌ E2E tests failed!${NC}"
+        echo -e "${YELLOW}⚠ Deployment completed but tests failed. Please check the admin manually.${NC}"
+        exit 1
+    fi
+else
+    echo -e "${YELLOW}⚠ E2E test script not found at ${E2E_TEST_SCRIPT}${NC}"
+    echo -e "${YELLOW}⚠ Skipping E2E tests${NC}"
+fi
+
+##############################################################################
 # SUCCESS
 ##############################################################################
 echo -e "\n${GREEN}╔════════════════════════════════════════════════════╗${NC}"
@@ -263,3 +284,4 @@ echo -e "${GREEN}║  ✅ ADMIN DEPLOYMENT SUCCESSFUL                       ║$
 echo -e "${GREEN}╚════════════════════════════════════════════════════╝${NC}"
 echo -e "\n${BLUE}Admin is now available at: https://catsupply.nl/admin${NC}"
 echo -e "${BLUE}Login page: https://catsupply.nl/admin/login${NC}"
+echo -e "${BLUE}Credentials: admin@catsupply.nl / admin123${NC}"

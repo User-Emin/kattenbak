@@ -713,26 +713,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
                     // ✅ BLAUWE HIGHLIGHTS: Alleen belangrijke woorden blauw (zonder hardcode)
-                    const formatText = (text: string, highlightWords?: string[]) => {
-                      if (!highlightWords || highlightWords.length === 0) return text;
-                      
-                      let formatted = text;
-                      highlightWords.forEach(hw => {
-                        const regex = new RegExp(`(${hw})`, 'gi');
-                        formatted = formatted.replace(regex, `<span style="color: #005980; font-weight: 600;">$1</span>`);
-                      });
-                      return formatted;
-                    };
-                    
                     return (
-                      <div key={index} className="flex items-center gap-2 text-sm sm:text-base text-gray-700">
+                      <div key={index} className="flex items-center gap-2 text-xs sm:text-sm text-gray-700">
                         {/* ✅ BLAUW VIJKJE: Exact logo blauw (#005980) */}
                         <Check
                           className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
                           strokeWidth={3}
                           style={{ color: '#005980' }}
                         />
-                        <span dangerouslySetInnerHTML={{ __html: formatText(usp.text, usp.highlightWords) }} />
+                        <span>{usp.text}</span>
                       </div>
                     );
                   })}

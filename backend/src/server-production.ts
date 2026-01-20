@@ -13,6 +13,7 @@ import adminVariantsRoutes from './routes/admin/variants.routes';
 import adminOrdersRoutes from './routes/admin/orders.routes';
 import adminReturnsRoutes from './routes/admin/returns.routes';
 import adminUploadRoutes from './routes/admin/upload.routes';
+import adminAlertsRoutes from './routes/admin/alerts.routes';
 import ragRoutes from './routes/rag.routes';
 
 // Public Routes (Webshop)
@@ -258,6 +259,7 @@ app.use('/api/v1/admin/variants', adminVariantsRoutes);
 app.use('/api/v1/admin/orders', adminOrdersRoutes);
 app.use('/api/v1/admin/returns', adminReturnsRoutes);
 app.use('/api/v1/admin/upload', adminUploadRoutes);
+app.use('/api/v1/admin/alerts', adminAlertsRoutes);
 
 /**
  * RAG API
