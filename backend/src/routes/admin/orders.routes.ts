@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
 import { transformOrder, transformOrders } from '../../lib/transformers';
+import { logger } from '../../config/logger.config';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -42,7 +43,7 @@ router.get('/', async (req, res) => {
         `);
       } catch (checkError: any) {
         // If check fails, assume columns don't exist
-        logger.warn('Column check failed, assuming variant columns don\'t exist:', checkError.message);
+        console.warn('⚠️ Column check failed, assuming variant columns don\'t exist:', checkError.message);
       }
       
       const hasVariantColumns = columnCheck[0]?.exists === true;
