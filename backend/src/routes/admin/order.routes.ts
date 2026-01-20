@@ -135,7 +135,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
             orderNumber: true,
             customerEmail: true,
             customerPhone: true,
-            customerName: true,
+            // ✅ FIX: customerName doesn't exist in Order model - will be generated from shippingAddress
             total: true,
             subtotal: true,
             tax: true,
