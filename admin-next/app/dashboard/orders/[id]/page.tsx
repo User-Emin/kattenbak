@@ -77,10 +77,11 @@ interface OrderDetail {
     quantity: number;
     price: number;
     subtotal: number;
-    // ✅ VARIANT SYSTEM: Variant info
+    // ✅ VARIANT SYSTEM: Variant info (database has variant_id, variant_name, variant_color)
     variantId?: string;
     variantName?: string;
-    variantSku?: string;
+    variantSku?: string; // Backward compatibility (maps to variantColor)
+    variantColor?: string; // Actual database column
     product?: {
       id: string;
       name: string;
@@ -343,10 +344,12 @@ export default function OrderDetailPage() {
                       <p className="text-sm text-muted-foreground">SKU: {item.productSku}</p>
                     )}
                     {/* ✅ VARIANT SYSTEM: Display variant info if present - DRY: Via constants */}
-                    {item.variantName && (
+                    {(item.variantName || item.variantColor) && (
                       <p className="text-sm text-muted-foreground mt-1">
-                        🎨 Variant: <span className="font-medium">{item.variantName}</span>
-                        {item.variantSku && <span className="ml-1">({item.variantSku})</span>}
+                        🎨 Variant: <span className="font-medium">{item.variantName || item.variantColor || 'Onbekend'}</span>
+                        {item.variantColor && item.variantColor !== item.variantName && (
+                          <span className="ml-1 text-xs">({item.variantColor})</span>
+                        )}
                       </p>
                     )}
                     <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">

@@ -75,9 +75,8 @@
 - ✅ **SSL/TLS:** Let's Encrypt certificate actief
 
 ### ⚠️ WAARSCHUWINGEN
-- ⚠️ **TypeScript Build:** Faalt op server (dependencies issue)
-  - **Impact:** Geen - backend draait al (gebruikt oude build)
-  - **Fix:** `npm install` + `npx prisma generate` nodig
+- ✅ **TypeScript Build:** Gefixed (type assertion toegevoegd)
+- ✅ **Dependencies:** Geïnstalleerd (`npm install` + `prisma generate`)
 - ⚠️ **Redis:** Connection errors (caching disabled)
   - **Impact:** Laag - caching is optioneel
 - ⚠️ **MEDIA_ENCRYPTION_KEY:** Niet gezet

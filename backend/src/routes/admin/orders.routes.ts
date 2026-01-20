@@ -29,8 +29,8 @@ router.get('/', async (req, res) => {
     let total = 0;
     
     try {
-      // ✅ CRITICAL FIX: Check if variant_sku column exists before querying
-      // Prisma will try to select ALL fields from schema, including variant_sku which may not exist
+      // ✅ CRITICAL FIX: Check if variant_color column exists (correct column name in DB)
+      // Database has variant_id, variant_name, variant_color (NOT variant_sku)
       let columnCheck: any[] = [];
       try {
         columnCheck = await prisma.$queryRawUnsafe<Array<{exists: boolean}>>(`
@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
             SELECT 1 
             FROM information_schema.columns 
             WHERE table_name = 'order_items' 
-            AND column_name = 'variant_sku'
+            AND column_name = 'variant_color'
           ) as exists;
         `);
       } catch (checkError: any) {
@@ -187,21 +187,95 @@ router.get('/', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   try {
-    const order = await prisma.order.findUnique({
-      where: { id: req.params.id },
-      include: {
-        items: {
-          include: {
-            product: true
-          }
+    const { id } = req.params;
+    
+    // ✅ CRITICAL FIX: Check if variant_color column exists (same as list query)
+    const columnCheck = await prisma.$queryRawUnsafe<Array<{exists: boolean}>>(`
+      SELECT EXISTS (
+        SELECT 1 
+        FROM information_schema.columns 
+        WHERE table_name = 'order_items' 
+        AND column_name = 'variant_color'
+      ) as exists;
+    `);
+    const hasVariantColumns = columnCheck[0]?.exists === true;
+    
+    let order: any;
+    if (hasVariantColumns) {
+      // ✅ Variant columns exist - use include (Prisma will get all fields including variant fields)
+      order = await prisma.order.findUnique({
+        where: { id },
+        include: {
+          items: {
+            include: {
+              product: {
+                select: {
+                  id: true,
+                  name: true,
+                  sku: true,
+                  images: true,
+                },
+              },
+            },
+          },
+          payment: true,
+          shipment: true,
+          shippingAddress: true,
+          billingAddress: true,
+          returns: {
+            orderBy: { createdAt: 'desc' },
+          },
         },
-        payment: true,
-        shipment: true,
-        shippingAddress: true,
-        billingAddress: true,
-        returns: true
-      }
-    });
+      });
+    } else {
+      // ✅ Variant columns don't exist - use explicit select
+      order = await prisma.order.findUnique({
+        where: { id },
+        select: {
+          id: true,
+          orderNumber: true,
+          customerEmail: true,
+          customerPhone: true,
+          total: true,
+          subtotal: true,
+          tax: true,
+          shippingCost: true,
+          discount: true,
+          status: true,
+          customerNotes: true,
+          adminNotes: true,
+          createdAt: true,
+          updatedAt: true,
+          completedAt: true,
+          items: {
+            select: {
+              id: true,
+              productId: true,
+              productName: true,
+              productSku: true,
+              price: true,
+              quantity: true,
+              subtotal: true,
+              product: {
+                select: {
+                  id: true,
+                  name: true,
+                  sku: true,
+                  images: true,
+                },
+              },
+            },
+          },
+          shippingAddress: true,
+          billingAddress: true,
+          payment: true,
+          shipment: true,
+          returns: {
+            orderBy: { createdAt: 'desc' },
+          },
+        },
+      });
+    }
     
     if (!order) {
       return res.status(404).json({
@@ -210,7 +284,7 @@ router.get('/:id', async (req, res) => {
       });
     }
     
-    // Transform Decimal to number
+    // ✅ Transform Decimal to number (includes variant info transformation)
     const transformed = transformOrder(order);
     
     return res.json({

@@ -172,10 +172,12 @@ export default function OrdersPage() {
                           {order.items.map((item: any, idx: number) => (
                             <div key={item.id || idx} className="text-sm">
                               <p className="font-medium">{item.productName || 'Onbekend product'}</p>
-                              {item.variantName && (
+                              {(item.variantName || item.variantColor) && (
                                 <p className="text-xs text-muted-foreground">
-                                  🎨 {item.variantName}
-                                  {item.variantSku && ` (${item.variantSku})`}
+                                  🎨 {item.variantName || item.variantColor || 'Onbekend'}
+                                  {item.variantColor && item.variantColor !== item.variantName && (
+                                    <span className="ml-1">({item.variantColor})</span>
+                                  )}
                                 </p>
                               )}
                               <p className="text-xs text-muted-foreground">

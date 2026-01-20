@@ -136,9 +136,11 @@ export const transformOrder = (order: any): any => {
             price: decimalToNumber(item.price),
             subtotal: decimalToNumber(item.subtotal || (item.price && item.quantity ? item.price * item.quantity : 0)),
             // ✅ VARIANT SYSTEM: Include variant info if present
-            variantId: item.variantId || null,
-            variantName: item.variantName || null,
-            variantSku: item.variantSku || null,
+            // Database has variant_id, variant_name, variant_color (NOT variant_sku)
+            variantId: item.variantId || item.variant_id || null,
+            variantName: item.variantName || item.variant_name || null,
+            variantSku: item.variantColor || item.variant_color || null, // Use variant_color as SKU fallback
+            variantColor: item.variantColor || item.variant_color || null,
             product: item.product ? {
               id: item.product.id,
               name: item.product.name,
