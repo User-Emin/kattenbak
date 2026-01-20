@@ -65,8 +65,31 @@ router.get('/', async (req, res) => {
       total = 0;
     }
     
-    // Transform Decimal to number
-    const transformed = transformOrders(orders);
+    // ✅ SECURITY: Transform Decimal to number with error handling
+    let transformed: any[] = [];
+    try {
+      transformed = transformOrders(orders);
+    } catch (transformError: any) {
+      console.error('❌ Transform orders error:', transformError);
+      // ✅ FALLBACK: Try to transform individually with error recovery
+      transformed = orders.map((order: any) => {
+        try {
+          return transformOrder(order);
+        } catch (orderError: any) {
+          console.warn('⚠️ Failed to transform individual order:', orderError.message, { orderId: order?.id });
+          // Return minimal valid order object
+          return {
+            id: order?.id || 'unknown',
+            orderNumber: order?.orderNumber || 'UNKNOWN',
+            customerEmail: order?.customerEmail || '',
+            total: 0,
+            status: order?.status || 'ERROR',
+            items: [],
+            _error: 'Transform failed',
+          };
+        }
+      });
+    }
     
     return res.json({
       success: true,
@@ -79,9 +102,13 @@ router.get('/', async (req, res) => {
       }
     });
   } catch (error: any) {
-    console.error('Get orders error:', error);
-    // ✅ FALLBACK: Return empty array instead of 500 error
-    return res.json({
+    console.error('❌ Get orders error:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name,
+    });
+    // ✅ SECURITY: Never return 500 - always return valid response
+    return res.status(200).json({
       success: true,
       data: [],
       meta: {
@@ -89,7 +116,8 @@ router.get('/', async (req, res) => {
         pageSize: parseInt(req.query.pageSize as string) || 20,
         total: 0,
         totalPages: 0
-      }
+      },
+      _warning: 'Orders could not be loaded - please try again'
     });
   }
 });

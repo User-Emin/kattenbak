@@ -92,63 +92,161 @@ export const transformProducts = (products: any[]): any[] => {
  * Transform Order with price fields and address info
  * ✅ CRITICAL: Includes all address fields for admin panel
  * ✅ VARIANT SYSTEM: Includes variant info in order items
+ * ✅ SECURITY: Defensive error handling - never throw, always return valid object
  */
 export const transformOrder = (order: any): any => {
-  return {
-    ...order,
-    subtotal: decimalToNumber(order.subtotal),
-    shippingCost: decimalToNumber(order.shippingCost),
-    tax: decimalToNumber(order.tax),
-    discount: decimalToNumber(order.discount),
-    total: decimalToNumber(order.total),
-    // ✅ VARIANT SYSTEM: Transform order items to include variant info
-    items: order.items ? order.items.map((item: any) => ({
-      id: item.id,
-      productId: item.productId,
-      productName: item.productName,
-      productSku: item.productSku,
-      quantity: item.quantity,
-      price: decimalToNumber(item.price),
-      subtotal: decimalToNumber(item.subtotal),
-      // ✅ VARIANT SYSTEM: Include variant info if present
-      variantId: item.variantId || null,
-      variantName: item.variantName || null,
-      variantSku: item.variantSku || null,
-      product: item.product ? {
-        id: item.product.id,
-        name: item.product.name,
-        images: item.product.images,
+  try {
+    // ✅ SECURITY: Defensive null/undefined checks
+    if (!order || typeof order !== 'object') {
+      console.warn('⚠️ transformOrder: Invalid order input', { order });
+      return {
+        id: 'unknown',
+        orderNumber: 'UNKNOWN',
+        customerEmail: '',
+        total: 0,
+        subtotal: 0,
+        shippingCost: 0,
+        tax: 0,
+        discount: 0,
+        status: 'UNKNOWN',
+        items: [],
+        shippingAddress: null,
+        billingAddress: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+    }
+
+    return {
+      ...order,
+      // ✅ SECURITY: Preserve orderNumber (critical for admin)
+      orderNumber: order.orderNumber || `ORDER-${order.id?.substring(0, 8) || 'UNKNOWN'}`,
+      customerEmail: order.customerEmail || '',
+      customerPhone: order.customerPhone || null,
+      customerName: order.customerName || (order.shippingAddress 
+        ? `${order.shippingAddress.firstName || ''} ${order.shippingAddress.lastName || ''}`.trim()
+        : null),
+      subtotal: decimalToNumber(order.subtotal),
+      shippingCost: decimalToNumber(order.shippingCost),
+      tax: decimalToNumber(order.tax),
+      discount: decimalToNumber(order.discount),
+      total: decimalToNumber(order.total),
+      status: order.status || 'PENDING',
+      paymentStatus: order.payment?.status || order.paymentStatus || 'PENDING',
+      // ✅ VARIANT SYSTEM: Transform order items to include variant info
+      items: order.items && Array.isArray(order.items) ? order.items.map((item: any) => {
+        try {
+          return {
+            id: item.id || 'unknown',
+            productId: item.productId || null,
+            productName: item.productName || item.product?.name || 'Onbekend product',
+            productSku: item.productSku || item.product?.sku || null,
+            quantity: item.quantity || 0,
+            price: decimalToNumber(item.price),
+            subtotal: decimalToNumber(item.subtotal || (item.price && item.quantity ? item.price * item.quantity : 0)),
+            // ✅ VARIANT SYSTEM: Include variant info if present
+            variantId: item.variantId || null,
+            variantName: item.variantName || null,
+            variantSku: item.variantSku || null,
+            product: item.product ? {
+              id: item.product.id,
+              name: item.product.name,
+              images: item.product.images || [],
+            } : null,
+          };
+        } catch (itemError: any) {
+          console.warn('⚠️ transformOrder: Error transforming item', { item, error: itemError.message });
+          return {
+            id: item.id || 'unknown',
+            productId: item.productId || null,
+            productName: 'Error loading product',
+            quantity: 0,
+            price: 0,
+            subtotal: 0,
+          };
+        }
+      }) : [],
+      // ✅ FIX: Ensure shippingAddress and billingAddress are included
+      shippingAddress: order.shippingAddress ? {
+        firstName: order.shippingAddress.firstName || '',
+        lastName: order.shippingAddress.lastName || '',
+        street: order.shippingAddress.street || '',
+        houseNumber: order.shippingAddress.houseNumber || '',
+        addition: order.shippingAddress.addition || null,
+        postalCode: order.shippingAddress.postalCode || '',
+        city: order.shippingAddress.city || '',
+        country: order.shippingAddress.country || 'NL',
+        phone: order.shippingAddress.phone || null,
       } : null,
-    })) : [],
-    // ✅ FIX: Ensure shippingAddress and billingAddress are included
-    shippingAddress: order.shippingAddress ? {
-      firstName: order.shippingAddress.firstName,
-      lastName: order.shippingAddress.lastName,
-      street: order.shippingAddress.street,
-      houseNumber: order.shippingAddress.houseNumber,
-      addition: order.shippingAddress.addition,
-      postalCode: order.shippingAddress.postalCode,
-      city: order.shippingAddress.city,
-      country: order.shippingAddress.country,
-      phone: order.shippingAddress.phone,
-    } : null,
-    billingAddress: order.billingAddress ? {
-      firstName: order.billingAddress.firstName,
-      lastName: order.billingAddress.lastName,
-      street: order.billingAddress.street,
-      houseNumber: order.billingAddress.houseNumber,
-      addition: order.billingAddress.addition,
-      postalCode: order.billingAddress.postalCode,
-      city: order.billingAddress.city,
-      country: order.billingAddress.country,
-      phone: order.billingAddress.phone,
-    } : null,
-  };
+      billingAddress: order.billingAddress ? {
+        firstName: order.billingAddress.firstName || '',
+        lastName: order.billingAddress.lastName || '',
+        street: order.billingAddress.street || '',
+        houseNumber: order.billingAddress.houseNumber || '',
+        addition: order.billingAddress.addition || null,
+        postalCode: order.billingAddress.postalCode || '',
+        city: order.billingAddress.city || '',
+        country: order.billingAddress.country || 'NL',
+        phone: order.billingAddress.phone || null,
+      } : null,
+      // ✅ FIX: Ensure dates are strings
+      createdAt: order.createdAt ? (order.createdAt instanceof Date ? order.createdAt.toISOString() : order.createdAt) : new Date().toISOString(),
+      updatedAt: order.updatedAt ? (order.updatedAt instanceof Date ? order.updatedAt.toISOString() : order.updatedAt) : new Date().toISOString(),
+      // ✅ FIX: Include payment info if available
+      payment: order.payment ? {
+        id: order.payment.id,
+        status: order.payment.status,
+        mollieId: order.payment.mollieId || null,
+      } : null,
+    };
+  } catch (error: any) {
+    // ✅ SECURITY: Never throw - always return valid object
+    console.error('❌ transformOrder: Critical error', { error: error.message, orderId: order?.id });
+    return {
+      id: order?.id || 'error',
+      orderNumber: order?.orderNumber || 'ERROR',
+      customerEmail: order?.customerEmail || '',
+      total: 0,
+      subtotal: 0,
+      shippingCost: 0,
+      tax: 0,
+      discount: 0,
+      status: 'ERROR',
+      items: [],
+      shippingAddress: null,
+      billingAddress: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      _error: 'Transform error - data may be incomplete',
+    };
+  }
 };
 
 /**
  * Transform array of orders
+ * ✅ SECURITY: Defensive error handling - never throw, always return array
  */
 export const transformOrders = (orders: any[]): any[] => {
-  return orders.map(transformOrder);
+  if (!Array.isArray(orders)) {
+    console.warn('⚠️ transformOrders: Invalid input, expected array', { orders });
+    return [];
+  }
+  
+  return orders.map((order: any) => {
+    try {
+      return transformOrder(order);
+    } catch (error: any) {
+      console.warn('⚠️ transformOrders: Error transforming order', { orderId: order?.id, error: error.message });
+      // ✅ SECURITY: Return minimal valid order object instead of throwing
+      return {
+        id: order?.id || 'unknown',
+        orderNumber: order?.orderNumber || 'UNKNOWN',
+        customerEmail: order?.customerEmail || '',
+        total: 0,
+        status: order?.status || 'ERROR',
+        items: [],
+        _error: 'Transform failed',
+      };
+    }
+  });
 };
