@@ -63,50 +63,77 @@ function SuccessContent() {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        // ✅ FIX: Check both "order" and "orderId" parameters for backwards compatibility
+        // ✅ CRITICAL: Check both "order" and "orderId" parameters for backwards compatibility
         const id = searchParams.get("order") || searchParams.get("orderId");
-        if (id) {
-          setOrderId(id);
+        
+        // ✅ SECURITY: If no order ID, show error immediately
+        if (!id) {
+          setPaymentError('Geen bestelnummer gevonden. Controleer de URL of neem contact op.');
+          setIsLoading(false);
+          return;
+        }
+        
+        setOrderId(id);
+        
+        // ✅ CRITICAL: Check payment status FIRST via Mollie API before showing success
+        // This prevents showing success page for cancelled/failed payments
+        let paymentCheckPassed = false;
+        try {
+          const paymentData = await ordersApi.getPaymentStatus(id);
           
-          // ✅ CRITICAL: Check payment status FIRST via Mollie API before showing success
-          // This prevents showing success page for cancelled/failed payments
-          try {
-            const paymentData = await ordersApi.getPaymentStatus(id);
+          if (paymentData.success) {
+            setPaymentStatus(paymentData.paymentStatus);
+            paymentCheckPassed = true;
             
-            if (paymentData.success) {
-              setPaymentStatus(paymentData.paymentStatus);
-              
-              // ✅ SECURITY: Only show success if payment is actually paid
-              if (paymentData.isCancelled || paymentData.isFailed) {
-                setPaymentError(
-                  paymentData.isCancelled 
-                    ? 'Je betaling is geannuleerd. Probeer het opnieuw.' 
-                    : 'Je betaling is mislukt. Probeer het opnieuw.'
-                );
-                setIsLoading(false);
-                return; // Don't fetch order details if payment failed
-              }
-              
-              // If payment is pending, show a waiting message
-              if (paymentData.isPending && !paymentData.isPaid) {
-                setPaymentError('Je betaling wordt nog verwerkt. Je ontvangt een bevestiging zodra de betaling is voltooid.');
-                setIsLoading(false);
-                return;
-              }
+            // ✅ SECURITY: Only show success if payment is actually paid
+            if (paymentData.isCancelled || paymentData.isFailed) {
+              setPaymentError(
+                paymentData.isCancelled 
+                  ? 'Je betaling is geannuleerd. Probeer het opnieuw.' 
+                  : 'Je betaling is mislukt. Probeer het opnieuw.'
+              );
+              setIsLoading(false);
+              return; // Don't fetch order details if payment failed
             }
-          } catch (paymentError: any) {
-            console.error("Failed to check payment status:", paymentError);
-            // Continue to fetch order details anyway (fallback)
+            
+            // If payment is pending, show a waiting message
+            if (paymentData.isPending && !paymentData.isPaid) {
+              setPaymentError('Je betaling wordt nog verwerkt. Je ontvangt een bevestiging zodra de betaling is voltooid.');
+              setIsLoading(false);
+              return;
+            }
+          }
+        } catch (paymentError: any) {
+          console.error("Failed to check payment status:", paymentError);
+          // ✅ FIX: If payment check fails, we still need to verify order exists
+          // Don't show success if we can't verify payment AND order doesn't exist
+        }
+        
+        // ✅ CRITICAL: Fetch order details - if this fails, order doesn't exist
+        try {
+          const order = await ordersApi.getById(id);
+          
+          // ✅ SECURITY: Verify order actually exists and has orderNumber
+          if (!order || !order.orderNumber) {
+            setPaymentError('Bestelling niet gevonden. Controleer je bestelnummer of neem contact op.');
+            setIsLoading(false);
+            return;
           }
           
-          // Fetch order details only if payment is paid or we couldn't verify
-          const order = await ordersApi.getById(id);
           setOrderNumber(order.orderNumber);
           setCustomerEmail(order.customerEmail || (order as any).customer?.email);
+        } catch (orderError: any) {
+          // ✅ CRITICAL: If order fetch fails, show error (order doesn't exist)
+          console.error("Failed to fetch order:", orderError);
+          setPaymentError(
+            orderError?.message?.includes('404') || orderError?.message?.includes('not found')
+              ? 'Bestelling niet gevonden. De bestelling is mogelijk niet aangemaakt of de link is ongeldig.'
+              : 'Kon bestelling niet ophalen. Controleer je bestelnummer of neem contact op.'
+          );
         }
-      } catch (error) {
-        console.error("Failed to fetch order:", error);
-        setPaymentError('Kon bestelling niet ophalen. Controleer je bestelnummer of neem contact op.');
+      } catch (error: any) {
+        console.error("Failed to fetch order details:", error);
+        setPaymentError('Er is een fout opgetreden. Probeer het later opnieuw of neem contact op.');
       } finally {
         setIsLoading(false);
       }
@@ -158,6 +185,37 @@ function SuccessContent() {
     );
   }
 
+  // ✅ CRITICAL: Don't show success if no orderNumber (order doesn't exist)
+  if (!orderNumber) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-6">
+        <div className="max-w-2xl w-full text-center">
+          <div className="mb-8 p-6 bg-red-50 border-2 border-red-200 rounded-lg">
+            <h1 className="text-3xl font-semibold mb-3 text-red-900">
+              Bestelling niet gevonden
+            </h1>
+            <p className="text-lg text-red-700 mb-4">
+              {paymentError || 'De bestelling is mogelijk niet aangemaakt. Controleer je bestelnummer of neem contact op.'}
+            </p>
+          </div>
+          
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Link href="/">
+              <Button variant="cta" size="lg">
+                Terug naar Home
+              </Button>
+            </Link>
+            <Link href="/contact">
+              <Button variant="brand" size="lg">
+                Contacteer Ons
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-6">
       <div className="max-w-2xl w-full text-center">
@@ -170,17 +228,15 @@ function SuccessContent() {
         </p>
 
         {/* Order Number - PROMINENT */}
-        {orderNumber && (
-          <div className="mb-8 p-4 bg-white rounded-lg border-2 border-brand/20 inline-block">
-            <p className="text-sm text-gray-600 mb-1">Jouw bestelnummer</p>
-            <p className="text-2xl font-bold text-brand">{orderNumber}</p>
-            {customerEmail && (
-              <p className="text-sm text-gray-500 mt-2">
-                Bevestigingsmail verzonden naar: <strong>{customerEmail}</strong>
-              </p>
-            )}
-          </div>
-        )}
+        <div className="mb-8 p-4 bg-white rounded-lg border-2 border-brand/20 inline-block">
+          <p className="text-sm text-gray-600 mb-1">Jouw bestelnummer</p>
+          <p className="text-2xl font-bold text-brand">{orderNumber}</p>
+          {customerEmail && (
+            <p className="text-sm text-gray-500 mt-2">
+              Bevestigingsmail verzonden naar: <strong>{customerEmail}</strong>
+            </p>
+          )}
+        </div>
 
         <Separator variant="float" spacing="lg" />
 
