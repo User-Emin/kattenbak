@@ -278,9 +278,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const currentImage = displayImages[selectedImageIndex] || displayImages[0];
   
   // ✅ VARIANT SYSTEM: Calculate price with variant adjustment
-  const displayPrice = activeVariant && activeVariant.priceAdjustment
-    ? product.price + activeVariant.priceAdjustment
-    : product.price;
+  // ✅ SECURITY: Type-safe conversion - prevent string concatenation (1 + 0 = "10")
+  const basePrice = typeof product.price === 'string' 
+    ? parseFloat(product.price) 
+    : (typeof product.price === 'number' ? product.price : 0);
+  const variantAdjustment = activeVariant && activeVariant.priceAdjustment
+    ? (typeof activeVariant.priceAdjustment === 'string'
+        ? parseFloat(activeVariant.priceAdjustment)
+        : (typeof activeVariant.priceAdjustment === 'number' ? activeVariant.priceAdjustment : 0))
+    : 0;
+  const displayPrice = basePrice + variantAdjustment;
 
   // ✅ VARIANT SYSTEM: Handle variant selection
   const handleVariantSelect = (variantId: string) => {
@@ -698,9 +705,26 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   }
                   return null;
                 })()}
-                {activeVariant && activeVariant.priceAdjustment !== 0 && (
+                {/* ✅ FIX: Alleen variant adjustment tonen als het niet 0 is - NO € 0,00 */}
+                {activeVariant && (() => {
+                  // ✅ SECURITY: Type-safe conversion - prevent string concatenation
+                  const adjustment = typeof activeVariant.priceAdjustment === 'string'
+                    ? parseFloat(activeVariant.priceAdjustment)
+                    : (typeof activeVariant.priceAdjustment === 'number' ? activeVariant.priceAdjustment : 0);
+                  return adjustment !== 0 && !isNaN(adjustment) && isFinite(adjustment);
+                })() && (
                   <span className="text-sm text-gray-500 ml-2">
-                    {activeVariant.priceAdjustment > 0 ? '+' : ''}{formatPrice(activeVariant.priceAdjustment)}
+                    {(() => {
+                      const adjustment = typeof activeVariant.priceAdjustment === 'string'
+                        ? parseFloat(activeVariant.priceAdjustment)
+                        : (typeof activeVariant.priceAdjustment === 'number' ? activeVariant.priceAdjustment : 0);
+                      return adjustment > 0 ? '+' : '';
+                    })()}{formatPrice(() => {
+                      const adjustment = typeof activeVariant.priceAdjustment === 'string'
+                        ? parseFloat(activeVariant.priceAdjustment)
+                        : (typeof activeVariant.priceAdjustment === 'number' ? activeVariant.priceAdjustment : 0);
+                      return adjustment;
+                    }())}
                   </span>
                 )}
               </div>
