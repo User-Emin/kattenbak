@@ -57,6 +57,9 @@ function SuccessContent() {
   const [customerEmail, setCustomerEmail] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [paymentStatus, setPaymentStatus] = useState<'paid' | 'cancelled' | 'failed' | 'pending' | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
@@ -64,12 +67,47 @@ function SuccessContent() {
         const id = searchParams.get("order") || searchParams.get("orderId");
         if (id) {
           setOrderId(id);
+          
+          // ✅ CRITICAL: Check payment status FIRST via Mollie API before showing success
+          // This prevents showing success page for cancelled/failed payments
+          try {
+            const paymentStatusResponse = await fetch(`/api/v1/orders/${id}/payment-status`);
+            const paymentData = await paymentStatusResponse.json();
+            
+            if (paymentData.success) {
+              setPaymentStatus(paymentData.paymentStatus);
+              
+              // ✅ SECURITY: Only show success if payment is actually paid
+              if (paymentData.isCancelled || paymentData.isFailed) {
+                setPaymentError(
+                  paymentData.isCancelled 
+                    ? 'Je betaling is geannuleerd. Probeer het opnieuw.' 
+                    : 'Je betaling is mislukt. Probeer het opnieuw.'
+                );
+                setIsLoading(false);
+                return; // Don't fetch order details if payment failed
+              }
+              
+              // If payment is pending, show a waiting message
+              if (paymentData.isPending && !paymentData.isPaid) {
+                setPaymentError('Je betaling wordt nog verwerkt. Je ontvangt een bevestiging zodra de betaling is voltooid.');
+                setIsLoading(false);
+                return;
+              }
+            }
+          } catch (paymentError: any) {
+            console.error("Failed to check payment status:", paymentError);
+            // Continue to fetch order details anyway (fallback)
+          }
+          
+          // Fetch order details only if payment is paid or we couldn't verify
           const order = await ordersApi.getById(id);
           setOrderNumber(order.orderNumber);
           setCustomerEmail(order.customerEmail || (order as any).customer?.email);
         }
       } catch (error) {
         console.error("Failed to fetch order:", error);
+        setPaymentError('Kon bestelling niet ophalen. Controleer je bestelnummer of neem contact op.');
       } finally {
         setIsLoading(false);
       }
@@ -82,6 +120,41 @@ function SuccessContent() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <Loader2 className="h-12 w-12 animate-spin text-brand" />
+      </div>
+    );
+  }
+
+  // ✅ CRITICAL: Show error/warning if payment was cancelled or failed
+  if (paymentError) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-6">
+        <div className="max-w-2xl w-full text-center">
+          <div className="mb-8 p-6 bg-red-50 border-2 border-red-200 rounded-lg">
+            <h1 className="text-3xl font-semibold mb-3 text-red-900">
+              Betaling niet voltooid
+            </h1>
+            <p className="text-lg text-red-700 mb-4">
+              {paymentError}
+            </p>
+          </div>
+          
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Link href="/">
+              <Button variant="cta" size="lg">
+                Terug naar Home
+              </Button>
+            </Link>
+            {orderId && (
+              <Button 
+                variant="brand" 
+                size="lg"
+                onClick={() => window.location.reload()}
+              >
+                Status Opnieuw Controleren
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
     );
   }

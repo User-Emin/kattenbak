@@ -247,7 +247,8 @@ export class MollieService {
           },
         });
 
-        // Update order status
+        // ✅ CRITICAL: Update order status based on payment status
+        // According to Mollie docs: paid, failed, canceled, expired should update order
         if (status === PaymentStatus.PAID) {
           await tx.order.update({
             where: { id: payment.orderId },
@@ -255,6 +256,7 @@ export class MollieService {
               status: 'PAID',
             },
           });
+          logger.info(`Order ${payment.orderId} marked as PAID via webhook`);
         } else if (status === PaymentStatus.FAILED || status === PaymentStatus.EXPIRED) {
           await tx.order.update({
             where: { id: payment.orderId },
@@ -262,6 +264,16 @@ export class MollieService {
               status: 'CANCELLED',
             },
           });
+          logger.info(`Order ${payment.orderId} marked as CANCELLED via webhook (status: ${status})`);
+        } else if (mollieStatus === 'canceled' || mollieStatus === 'cancelled') {
+          // ✅ FIX: Explicitly handle 'canceled' status (Mollie uses this for iDEAL/PayPal cancellations)
+          await tx.order.update({
+            where: { id: payment.orderId },
+            data: {
+              status: 'CANCELLED',
+            },
+          });
+          logger.info(`Order ${payment.orderId} marked as CANCELLED via webhook (canceled by user)`);
         }
       });
 

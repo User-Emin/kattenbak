@@ -474,6 +474,122 @@ router.post(
   }
 );
 
+// GET /api/v1/orders/:id/payment-status - Check payment status via Mollie API
+// ✅ SECURITY: This endpoint verifies payment status directly from Mollie before showing success page
+router.get('/:id/payment-status', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id: orderId } = req.params;
+
+    // Get order with payment
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        payment: true,
+      },
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order niet gevonden',
+      });
+    }
+
+    if (!order.payment || !order.payment.mollieId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Geen betaling gevonden voor deze order',
+        paymentStatus: 'PENDING',
+      });
+    }
+
+    // ✅ CRITICAL: Check payment status directly from Mollie API (not just database)
+    // This ensures we have the real-time status, even if webhook hasn't processed yet
+    try {
+      const molliePayment = await MollieService.getPaymentStatus(order.payment.mollieId);
+      
+      // Map Mollie status to our status
+      const status = molliePayment.status;
+      const isPaid = status === 'paid';
+      const isCancelled = status === 'canceled' || status === 'cancelled';
+      const isFailed = status === 'failed' || status === 'expired';
+      const isPending = status === 'open' || status === 'pending';
+
+      // ✅ SECURITY: Update database if status changed (webhook might not have processed yet)
+      if (order.payment.status !== status) {
+        try {
+          await prisma.payment.update({
+            where: { id: order.payment.id },
+            data: {
+              status: isPaid ? 'PAID' : (isCancelled || isFailed ? 'FAILED' : 'PENDING'),
+            },
+          });
+
+          // Update order status if payment failed/cancelled
+          if (isCancelled || isFailed) {
+            await prisma.order.update({
+              where: { id: orderId },
+              data: {
+                status: 'CANCELLED',
+              },
+            });
+          } else if (isPaid) {
+            await prisma.order.update({
+              where: { id: orderId },
+              data: {
+                status: 'PAID',
+              },
+            });
+          }
+        } catch (updateError: any) {
+          // Don't fail the request if update fails - just log it
+          logger.warn('Failed to update payment status in database:', {
+            orderId,
+            mollieId: order.payment.mollieId,
+            error: updateError?.message,
+          });
+        }
+      }
+
+      return res.json({
+        success: true,
+        paymentStatus: status,
+        isPaid,
+        isCancelled,
+        isFailed,
+        isPending,
+        orderNumber: order.orderNumber,
+        orderStatus: order.status,
+      });
+    } catch (mollieError: any) {
+      logger.error('Failed to get payment status from Mollie:', {
+        orderId,
+        mollieId: order.payment.mollieId,
+        error: mollieError?.message,
+      });
+
+      // ✅ FALLBACK: Return database status if Mollie API fails
+      return res.json({
+        success: true,
+        paymentStatus: order.payment.status || 'PENDING',
+        isPaid: order.payment.status === 'PAID',
+        isCancelled: order.status === 'CANCELLED' || order.payment.status === 'FAILED',
+        isFailed: order.payment.status === 'FAILED' || order.payment.status === 'EXPIRED',
+        isPending: true, // Assume pending if we can't verify
+        orderNumber: order.orderNumber,
+        orderStatus: order.status,
+        warning: 'Kon betalingsstatus niet verifiëren bij Mollie',
+      });
+    }
+  } catch (error: any) {
+    logger.error('Payment status check error:', {
+      orderId: req.params.id,
+      error: error?.message,
+    });
+    next(error);
+  }
+});
+
 // GET /api/v1/orders/:id - Get order details (DATABASE)
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
