@@ -1328,6 +1328,20 @@ console.log('✅ Admin upload endpoints loaded: /api/v1/admin/upload/images, /ap
 // RETURN ENDPOINTS
 // =============================================================================
 
+// ✅ CRITICAL FIX: Import ordersRoutes (uses OrderService.createOrder() with proper order number generation)
+// Import order routes
+let ordersRoutes;
+try {
+  ordersRoutes = require('./routes/orders.routes').default;
+  if (!ordersRoutes) {
+    ordersRoutes = require('./routes/orders.routes');
+  }
+} catch (e) {
+  console.error('Failed to load orders routes:', e);
+  ordersRoutes = require('./routes/orders.routes');
+}
+app.use('/api/v1/orders', ordersRoutes);
+
 // Import return routes
 // ✅ FIX: Handle both default and named exports
 let returnsRoutes;
