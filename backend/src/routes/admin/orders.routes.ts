@@ -119,7 +119,7 @@ router.get('/', async (req, res) => {
       total = totalResult;
     } catch (dbError: any) {
       // ✅ FALLBACK: Database not available - return empty array (graceful degradation)
-      console.warn('⚠️ Database connection failed for orders, returning empty array:', dbError.message);
+      logger.warn('⚠️ Database connection failed for orders, returning empty array:', dbError.message);
       orders = [];
       total = 0;
     }
@@ -129,13 +129,13 @@ router.get('/', async (req, res) => {
     try {
       transformed = transformOrders(orders);
     } catch (transformError: any) {
-      console.error('❌ Transform orders error:', transformError);
+      logger.error('❌ Transform orders error:', transformError);
       // ✅ FALLBACK: Try to transform individually with error recovery
       transformed = orders.map((order: any) => {
         try {
           return transformOrder(order);
         } catch (orderError: any) {
-          console.warn('⚠️ Failed to transform individual order:', orderError.message, { orderId: order?.id });
+          logger.warn('⚠️ Failed to transform individual order:', orderError.message, { orderId: order?.id });
           // Return minimal valid order object
           return {
             id: order?.id || 'unknown',
@@ -161,7 +161,7 @@ router.get('/', async (req, res) => {
       }
     });
   } catch (error: any) {
-    console.error('❌ Get orders error:', {
+    logger.error('❌ Get orders error:', {
       message: error.message,
       stack: error.stack,
       name: error.name,
@@ -189,6 +189,8 @@ router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     
+    logger.info('📋 Fetching order detail:', { orderId: id });
+    
     // ✅ SECURITY: Defensive error handling with detailed logging
     let order: any;
     try {
@@ -204,7 +206,7 @@ router.get('/:id', async (req, res) => {
           ) as exists;
         `);
       } catch (checkError: any) {
-        console.warn('⚠️ Column check failed, assuming variant columns don\'t exist:', checkError.message);
+        logger.warn('⚠️ Column check failed, assuming variant columns don\'t exist:', checkError.message);
       }
       
       const hasVariantColumns = columnCheck[0]?.exists === true;
@@ -285,11 +287,12 @@ router.get('/:id', async (req, res) => {
         });
       }
     } catch (dbError: any) {
-      console.error('❌ Database error fetching order:', {
+      logger.error('❌ Database error fetching order:', {
         orderId: id,
         error: dbError.message,
         code: dbError.code,
         name: dbError.name,
+        stack: dbError.stack,
       });
       return res.status(500).json({
         success: false,
@@ -299,18 +302,25 @@ router.get('/:id', async (req, res) => {
     }
     
     if (!order) {
+      logger.warn('⚠️ Order not found:', { orderId: id });
       return res.status(404).json({
         success: false,
         error: 'Bestelling niet gevonden'
       });
     }
     
+    logger.info('✅ Order found:', { 
+      orderId: order.id, 
+      orderNumber: order.orderNumber,
+      itemsCount: order.items?.length || 0 
+    });
+    
     // ✅ Transform Decimal to number (includes variant info transformation)
     let transformed: any;
     try {
       transformed = transformOrder(order);
     } catch (transformError: any) {
-      console.error('❌ Transform order error:', {
+      logger.error('❌ Transform order error:', {
         orderId: id,
         error: transformError.message,
         stack: transformError.stack,
@@ -360,7 +370,7 @@ router.get('/:id', async (req, res) => {
       data: transformed
     });
   } catch (error: any) {
-    console.error('❌ Get order error:', {
+    logger.error('❌ Get order error:', {
       orderId: req.params.id,
       error: error.message,
       stack: error.stack,
@@ -403,7 +413,7 @@ router.put('/:id/status', async (req, res) => {
       }
     });
     
-    console.log(`[AUDIT] Order status updated by admin: ${(req as any).user.email}`, {
+    logger.info(`[AUDIT] Order status updated by admin: ${(req as any).user.email}`, {
       orderId: order.id,
       newStatus: status
     });
@@ -413,7 +423,7 @@ router.put('/:id/status', async (req, res) => {
       data: order
     });
   } catch (error: any) {
-    console.error('Update order status error:', error);
+    logger.error('Update order status error:', error);
     return res.status(500).json({
       success: false,
       error: 'Fout bij bijwerken order status'
@@ -439,7 +449,7 @@ router.put('/:id/notes', async (req, res) => {
       data: order
     });
   } catch (error: any) {
-    console.error('Update order notes error:', error);
+    logger.error('Update order notes error:', error);
     return res.status(500).json({
       success: false,
       error: 'Fout bij bijwerken notities'
