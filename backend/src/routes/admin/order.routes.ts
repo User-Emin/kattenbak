@@ -95,7 +95,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
           prisma.order.count(),
         ]);
       } else {
-        // ✅ Variant columns don't exist - use select to exclude them
+        // ✅ Variant columns don't exist - use select to explicitly get only existing fields
         [orders, total] = await Promise.all([
           prisma.order.findMany({
             skip,
@@ -105,7 +105,6 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
               orderNumber: true,
               customerEmail: true,
               customerPhone: true,
-              // ✅ FIX: customerName doesn't exist in Order model - will be generated from shippingAddress
               total: true,
               subtotal: true,
               tax: true,
@@ -116,22 +115,62 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
               adminNotes: true,
               createdAt: true,
               updatedAt: true,
-            items: {
-              // ✅ CRITICAL FIX: Can't use both select and include - use include only
-              include: {
-                product: {
-                  select: {
-                    id: true,
-                    name: true,
-                    sku: true,
-                    images: true,
+              // ✅ CRITICAL FIX: Use select for items (not include) to avoid variant column errors
+              items: {
+                select: {
+                  id: true,
+                  productId: true,
+                  productName: true,
+                  productSku: true,
+                  price: true,
+                  quantity: true,
+                  subtotal: true,
+                  // Explicitly exclude variantId, variantName, variantSku
+                  product: {
+                    select: {
+                      id: true,
+                      name: true,
+                      sku: true,
+                      images: true,
+                    },
                   },
                 },
               },
-            },
-              shippingAddress: true,
-              billingAddress: true,
-              payment: true,
+              shippingAddress: {
+                select: {
+                  id: true,
+                  firstName: true,
+                  lastName: true,
+                  street: true,
+                  houseNumber: true,
+                  addition: true,
+                  postalCode: true,
+                  city: true,
+                  country: true,
+                  phone: true,
+                },
+              },
+              billingAddress: {
+                select: {
+                  id: true,
+                  firstName: true,
+                  lastName: true,
+                  street: true,
+                  houseNumber: true,
+                  addition: true,
+                  postalCode: true,
+                  city: true,
+                  country: true,
+                  phone: true,
+                },
+              },
+              payment: {
+                select: {
+                  id: true,
+                  status: true,
+                  mollieId: true,
+                },
+              },
             },
             orderBy: { createdAt: 'desc' },
           }),
