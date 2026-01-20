@@ -406,19 +406,31 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   // ✅ DYNAMISCH: Features data - Gebruik geüploade foto's (4e en 5e) zonder hardcode
   // Filter alleen geldige geüploade foto's (geen placeholder, geen data URLs)
-  const uploadedImages = productImages.filter((img: string) => 
-    img && typeof img === 'string' && img.startsWith('/uploads/') && !img.startsWith('data:')
-  );
+  // ✅ FIX: Accepteer zowel /uploads/ als https:// paths (sommige images hebben full URL)
+  const uploadedImages = productImages.filter((img: string) => {
+    if (!img || typeof img !== 'string') return false;
+    if (img.startsWith('data:')) return false; // Filter data URLs
+    // ✅ ACCEPTEER: /uploads/, https://catsupply.nl/uploads/, en http:// paths
+    return img.includes('/uploads/') || img.startsWith('http://') || img.startsWith('https://');
+  });
+  
+  // ✅ DEBUG: Log voor verificatie (alleen in development)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('📸 Product Images:', productImages.length, productImages);
+    console.log('📸 Uploaded Images:', uploadedImages.length, uploadedImages);
+    console.log('📸 4e foto (index 3):', uploadedImages[3]);
+    console.log('📸 5e foto (index 4):', uploadedImages[4]);
+  }
   
   const features = PRODUCT_CONTENT.features.map((feature, index) => ({
     ...feature,
     // ✅ DYNAMISCH: 4e foto voor 10.5L (index 0), 5e foto voor Geurblokje/Kwast/Afvalzak (index 2)
     // Fallback naar statische images als er niet genoeg geüploade foto's zijn
     image: index === 0 
-      ? (uploadedImages[3] || '/images/capacity-10.5l-optimized.jpg') // ✅ 4E FOTO: 10.5L Afvalbak
+      ? (uploadedImages[3] || '/images/capacity-10.5l-optimized.jpg') // ✅ 4E FOTO: 10.5L Afvalbak (index 3 = 4e foto)
       : index === 1
       ? '/images/feature-2.jpg' // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode)
-      : (uploadedImages[4] || '/images/feature-2.jpg'), // ✅ 5E FOTO: Geurblokje, kwast & afvalzak - dynamisch met generieke fallback
+      : (uploadedImages[4] || '/images/feature-2.jpg'), // ✅ 5E FOTO: Geurblokje, kwast & afvalzak (index 4 = 5e foto)
   }));
 
   return (
