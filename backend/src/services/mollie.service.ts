@@ -75,7 +75,7 @@ export class MollieService {
       // ✅ SECURITY: Only allow https:// in production (no http://)
       if (env.IS_PRODUCTION && parsed.protocol !== 'https:') {
         logger.warn('Invalid redirect URL protocol in production, using FRONTEND_URL:', { url });
-        return `${env.FRONTEND_URL}/checkout/success`;
+        return `${env.FRONTEND_URL}/success`;
       }
       
       // ✅ SECURITY: Block localhost and private IPs in production
@@ -87,7 +87,7 @@ export class MollieService {
             hostname.startsWith('10.') ||
             hostname.startsWith('172.16.')) {
           logger.warn('Blocked localhost/private IP redirect URL in production, using FRONTEND_URL:', { url });
-          return `${env.FRONTEND_URL}/checkout/success`;
+          return `${env.FRONTEND_URL}/success`;
         }
       }
       
@@ -96,7 +96,7 @@ export class MollieService {
         const allowedDomain = 'catsupply.nl';
         if (!parsed.hostname.toLowerCase().endsWith(allowedDomain)) {
           logger.warn('Redirect URL not from allowed domain, using FRONTEND_URL:', { url, allowedDomain });
-          return `${env.FRONTEND_URL}/checkout/success`;
+          return `${env.FRONTEND_URL}/success`;
         }
       }
       

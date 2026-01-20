@@ -208,7 +208,7 @@ router.post(
         // ✅ FALLBACK: Create payment directly from Mollie (no database save)
         try {
           // ✅ DRY: Use MollieService instead of direct client
-          const redirectUrl = `${env.FRONTEND_URL || 'https://catsupply.nl'}/checkout/success`;
+          const redirectUrl = `${env.FRONTEND_URL || 'https://catsupply.nl'}/success`;
           const tempOrderId = `temp-${Date.now()}`;
           
           const payment = await MollieService.createPayment(
