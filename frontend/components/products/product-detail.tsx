@@ -679,23 +679,25 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     }
                   }
                   // ✅ FIX: Only show if > 0 AND > displayPrice (real discount) - NO € 0,00
-                  return comparePrice > 0 && comparePrice > displayPrice;
-                })() && (
-                  <span className="text-base text-gray-500 line-through ml-3">
-                    {formatPrice(() => {
-                      // ✅ SECURITY: Same defensive conversion for display
-                      if (product.compareAtPrice !== null && product.compareAtPrice !== undefined) {
-                        if (typeof product.compareAtPrice === 'string') {
-                          const parsed = parseFloat(product.compareAtPrice);
-                          return isNaN(parsed) || !isFinite(parsed) ? 0 : parsed;
-                        } else if (typeof product.compareAtPrice === 'number') {
-                          return isNaN(product.compareAtPrice) || !isFinite(product.compareAtPrice) ? 0 : product.compareAtPrice;
-                        }
+                  if (comparePrice > 0 && comparePrice > displayPrice) {
+                    // ✅ SECURITY: Same defensive conversion for display
+                    let displayComparePrice: number = 0;
+                    if (product.compareAtPrice !== null && product.compareAtPrice !== undefined) {
+                      if (typeof product.compareAtPrice === 'string') {
+                        const parsed = parseFloat(product.compareAtPrice);
+                        displayComparePrice = isNaN(parsed) || !isFinite(parsed) ? 0 : parsed;
+                      } else if (typeof product.compareAtPrice === 'number') {
+                        displayComparePrice = isNaN(product.compareAtPrice) || !isFinite(product.compareAtPrice) ? 0 : product.compareAtPrice;
                       }
-                      return 0;
-                    }())}
-                  </span>
-                )}
+                    }
+                    return (
+                      <span className="text-base text-gray-500 line-through ml-3">
+                        {formatPrice(displayComparePrice)}
+                      </span>
+                    );
+                  }
+                  return null;
+                })()}
                 {activeVariant && activeVariant.priceAdjustment !== 0 && (
                   <span className="text-sm text-gray-500 ml-2">
                     {activeVariant.priceAdjustment > 0 ? '+' : ''}{formatPrice(activeVariant.priceAdjustment)}
