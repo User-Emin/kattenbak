@@ -187,7 +187,8 @@ router.get('/', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   try {
-    const { id } = req.params;
+    // ✅ SECURITY: Type-safe parameter extraction
+    const id = extractStringParam(req.params.id);
     
     logger.info('📋 Fetching order detail:', { orderId: id });
     
@@ -280,9 +281,6 @@ router.get('/:id', async (req, res) => {
             billingAddress: true,
             payment: true,
             shipment: true,
-            returns: {
-              orderBy: { createdAt: 'desc' },
-            },
           },
         });
       }
