@@ -138,15 +138,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
             createdAt: true,
             updatedAt: true,
             items: {
-              select: {
-                id: true,
-                productId: true,
-                productName: true,
-                productSku: true,
-                price: true,
-                quantity: true,
-                subtotal: true,
-              },
+              // ✅ CRITICAL FIX: Can't use both select and include - use include only
               include: {
                 product: {
                   select: {
