@@ -46,4 +46,28 @@ export const ordersApi = {
     );
     return result.data;
   },
+
+  /**
+   * Get payment status for order
+   * ✅ CRITICAL: Checks Mollie API directly to verify payment status
+   */
+  async getPaymentStatus(orderId: string): Promise<{
+    success: boolean;
+    paymentStatus: string;
+    isPaid: boolean;
+    isCancelled: boolean;
+    isFailed: boolean;
+    isPending: boolean;
+    orderNumber?: string;
+    orderStatus?: string;
+    warning?: string;
+  }> {
+    const result = await apiFetch<{ success: boolean; [key: string]: any }>(
+      `/orders/${orderId}/payment-status`,
+      {
+        cache: 'no-store' as any, // Always fresh for payment status
+      }
+    );
+    return result as any;
+  },
 };

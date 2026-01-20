@@ -71,8 +71,7 @@ function SuccessContent() {
           // ✅ CRITICAL: Check payment status FIRST via Mollie API before showing success
           // This prevents showing success page for cancelled/failed payments
           try {
-            const paymentStatusResponse = await fetch(`/api/v1/orders/${id}/payment-status`);
-            const paymentData = await paymentStatusResponse.json();
+            const paymentData = await ordersApi.getPaymentStatus(id);
             
             if (paymentData.success) {
               setPaymentStatus(paymentData.paymentStatus);
