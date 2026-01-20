@@ -46,6 +46,16 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     const page = parseInt(req.query.page as string) || 1;
     const pageSize = parseInt(req.query.pageSize as string) || 25;
     const skip = (page - 1) * pageSize;
+    
+    // ✅ DEBUG: Log query parameters and current date
+    const now = new Date();
+    logger.info('Admin orders query:', {
+      page,
+      pageSize,
+      skip,
+      queryTime: now.toISOString(),
+      today: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`,
+    });
 
     // Get orders from DATABASE with relationships
     // ✅ CRITICAL FIX: Prisma schema includes variant fields, but DB columns may not exist
