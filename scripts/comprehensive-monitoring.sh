@@ -6,7 +6,7 @@
 # Features:
 # - Health checks (Backend, Frontend, Admin, Database, Nginx)
 # - 502 error detection and alerts
-# - Email alerts to emin@catsupply.nl
+# - Email alerts to emin@digihand.nl
 # - Automatic service recovery with fallbacks
 # - Resource monitoring (CPU, Memory, Disk)
 # - Security event logging
@@ -23,7 +23,7 @@ set -euo pipefail
 
 # ✅ SECURITY: Configuration from environment (no hardcoded secrets)
 # ✅ NOTE: This script runs on the server via cron, no SSH needed
-ALERT_EMAIL="${ALERT_EMAIL:-emin@catsupply.nl}"
+ALERT_EMAIL="${ALERT_EMAIL:-emin@digihand.nl}"
 CHECK_INTERVAL="${CHECK_INTERVAL:-300}" # 5 minutes default
 ALERT_COOLDOWN="${ALERT_COOLDOWN:-1800}" # 30 minutes cooldown between alerts
 
