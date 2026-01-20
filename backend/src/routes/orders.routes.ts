@@ -495,11 +495,19 @@ router.get('/:id/payment-status', async (req: Request, res: Response, next: Next
       });
     }
 
+    // ✅ FIX: According to Mollie docs - payment may not exist yet if order was just created
+    // Return order info even if payment doesn't exist (payment will be created)
     if (!order.payment || !order.payment.mollieId) {
-      return res.status(400).json({
-        success: false,
-        error: 'Geen betaling gevonden voor deze order',
-        paymentStatus: 'PENDING',
+      return res.json({
+        success: true,
+        paymentStatus: 'pending',
+        isPaid: false,
+        isCancelled: false,
+        isFailed: false,
+        isPending: true,
+        orderNumber: order.orderNumber,
+        orderStatus: order.status,
+        warning: 'Betaling wordt nog aangemaakt',
       });
     }
 

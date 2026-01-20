@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import authRoutes from './auth.routes';
 import productRoutes from './products.routes'; // ✅ FIX: Use database route, not mock route
-import orderRoutes from './order.routes';
+import orderRoutes from './orders.routes'; // ✅ FIX: Use orders.routes (not order.routes - duplicate removed)
 import categoryRoutes from './category.routes';
 import shipmentRoutes from './shipment.routes';
 import uploadRoutes from './upload.routes';

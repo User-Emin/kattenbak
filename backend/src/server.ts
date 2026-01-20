@@ -140,8 +140,8 @@ class Server {
     const orderRoutes = (await import('./routes/orders.routes')).default;
     this.app.use('/api/v1/orders', orderRoutes);
     
-    // Contact routes - SIMPLE: No database, no @ imports
-    const contactRoutes = (await import('./routes/contact.routes.simple')).default;
+    // Contact routes - ✅ FIX: Use main contact routes (simple removed - duplicate)
+    const contactRoutes = (await import('./routes/contact.routes')).default;
     this.app.use('/api/v1/contact', contactRoutes);
     
     // Payment methods routes - DRY: Fetch available Mollie payment methods

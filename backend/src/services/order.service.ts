@@ -4,6 +4,8 @@ import { NotFoundError, ValidationError } from '../utils/errors.util';
 import { logger } from '../config/logger.config';
 import { ProductService } from './product.service';
 import Decimal from 'decimal.js';
+import { numberToDecimal, extractTax } from '../utils/price.util'; // ✅ DRY: Use shared utilities
+import { normalizeAddress } from '../utils/address.util'; // ✅ DRY: Use shared utilities
 
 interface CreateOrderData {
   items: Array<{

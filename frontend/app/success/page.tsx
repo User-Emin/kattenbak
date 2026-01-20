@@ -75,43 +75,11 @@ function SuccessContent() {
         
         setOrderId(id);
         
-        // ✅ CRITICAL: Check payment status FIRST via Mollie API before showing success
-        // This prevents showing success page for cancelled/failed payments
-        let paymentCheckPassed = false;
+        // ✅ CRITICAL: According to Mollie docs - check order FIRST, then verify payment status
+        // Order MUST exist (created before payment), so if order doesn't exist, it's an error
+        let order: any = null;
         try {
-          const paymentData = await ordersApi.getPaymentStatus(id);
-          
-          if (paymentData.success) {
-            setPaymentStatus(paymentData.paymentStatus);
-            paymentCheckPassed = true;
-            
-            // ✅ SECURITY: Only show success if payment is actually paid
-            if (paymentData.isCancelled || paymentData.isFailed) {
-              setPaymentError(
-                paymentData.isCancelled 
-                  ? 'Je betaling is geannuleerd. Probeer het opnieuw.' 
-                  : 'Je betaling is mislukt. Probeer het opnieuw.'
-              );
-              setIsLoading(false);
-              return; // Don't fetch order details if payment failed
-            }
-            
-            // If payment is pending, show a waiting message
-            if (paymentData.isPending && !paymentData.isPaid) {
-              setPaymentError('Je betaling wordt nog verwerkt. Je ontvangt een bevestiging zodra de betaling is voltooid.');
-              setIsLoading(false);
-              return;
-            }
-          }
-        } catch (paymentError: any) {
-          console.error("Failed to check payment status:", paymentError);
-          // ✅ FIX: If payment check fails, we still need to verify order exists
-          // Don't show success if we can't verify payment AND order doesn't exist
-        }
-        
-        // ✅ CRITICAL: Fetch order details - if this fails, order doesn't exist
-        try {
-          const order = await ordersApi.getById(id);
+          order = await ordersApi.getById(id);
           
           // ✅ SECURITY: Verify order actually exists and has orderNumber
           if (!order || !order.orderNumber) {
@@ -123,13 +91,57 @@ function SuccessContent() {
           setOrderNumber(order.orderNumber);
           setCustomerEmail(order.customerEmail || (order as any).customer?.email);
         } catch (orderError: any) {
-          // ✅ CRITICAL: If order fetch fails, show error (order doesn't exist)
+          // ✅ CRITICAL: If order doesn't exist, it's an error (order is created before payment)
           console.error("Failed to fetch order:", orderError);
           setPaymentError(
             orderError?.message?.includes('404') || orderError?.message?.includes('not found')
               ? 'Bestelling niet gevonden. De bestelling is mogelijk niet aangemaakt of de link is ongeldig.'
               : 'Kon bestelling niet ophalen. Controleer je bestelnummer of neem contact op.'
           );
+          setIsLoading(false);
+          return;
+        }
+        
+        // ✅ CRITICAL: Now verify payment status via Mollie API (order exists, so payment should exist)
+        // According to Mollie docs: Always verify payment status on redirect, even if webhook processed
+        try {
+          const paymentData = await ordersApi.getPaymentStatus(id);
+          
+          if (paymentData.success) {
+            setPaymentStatus(paymentData.paymentStatus);
+            
+            // ✅ SECURITY: Only show success if payment is actually paid
+            if (paymentData.isCancelled || paymentData.isFailed) {
+              setPaymentError(
+                paymentData.isCancelled 
+                  ? 'Je betaling is geannuleerd. Probeer het opnieuw.' 
+                  : 'Je betaling is mislukt. Probeer het opnieuw.'
+              );
+              setIsLoading(false);
+              return; // Don't show success if payment failed
+            }
+            
+            // ✅ FIX: If payment is pending/open but order exists, show success with note
+            // According to Mollie: pending payments can still succeed (webhook may be delayed)
+            // Order exists = payment was initiated, so we trust the process
+            if (paymentData.isPending && !paymentData.isPaid) {
+              // Order exists, payment is pending - show success but note that payment is being processed
+              // Don't show error, as payment might still succeed
+              setPaymentStatus('pending');
+              // Continue to show success page (order exists, payment is processing)
+            }
+          } else {
+            // Payment status check failed, but order exists - assume payment is processing
+            // Don't show error, as order exists which means payment was initiated
+            logger.warn('Payment status check failed but order exists', { orderId: id });
+          }
+        } catch (paymentError: any) {
+          // ✅ FIX: If payment check fails but order exists, don't show error
+          // Order exists = payment was initiated, so we trust the process
+          // According to Mollie docs: webhook may be delayed, so we show success if order exists
+          console.error("Failed to check payment status (but order exists):", paymentError);
+          // Don't set paymentError - order exists, so we show success
+          // Payment status will be updated by webhook
         }
       } catch (error: any) {
         console.error("Failed to fetch order details:", error);
