@@ -715,20 +715,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs met alleen belangrijke woorden blauw */}
+              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs met GRIJZE tekst (niet blauw) */}
               {PRODUCT_CONTENT.serviceUsps.length > 0 && (
                 <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
-                    // ✅ BLAUWE HIGHLIGHTS: Alleen belangrijke woorden blauw (zonder hardcode)
+                    // ✅ GRIJZE TEKST: Volledig grijs, geen blauwe highlights
                     return (
                       <div key={index} className="flex items-center gap-2 text-xs sm:text-sm text-gray-700">
-                        {/* ✅ BLAUW VIJKJE: Exact logo blauw (#005980) */}
+                        {/* ✅ BLAUW VIJKJE: Exact logo blauw (#005980) - alleen vinkje is blauw */}
                         <Check
                           className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
                           strokeWidth={3}
                           style={{ color: '#005980' }}
                         />
-                        <span>{usp.text}</span>
+                        {/* ✅ GRIJZE TEKST: Normale tekst, geen blauwe highlights */}
+                        <span className="text-gray-700">{usp.text}</span>
                       </div>
                     );
                   })}

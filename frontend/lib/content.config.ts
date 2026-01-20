@@ -321,19 +321,19 @@ export const PRODUCT_CONTENT = {
     // Tekst wordt dynamisch uit product.description gehaald
   },
   
-  // Service USPs - ✅ BOVEN WINKELWAGEN BUTTON: 3 USPs met alleen belangrijke woorden blauw
+  // Service USPs - ✅ BOVEN WINKELWAGEN BUTTON: 3 USPs met GRIJZE tekst (niet blauw)
   serviceUsps: [
     {
       text: 'Volledig automatisch • App bediening • Altijd schoon',
-      highlightWords: ['Volledig automatisch', 'App bediening', 'Altijd schoon'],
+      // ✅ GEEN HIGHLIGHT: Tekst is volledig grijs, alleen vinkje is blauw
     },
     {
       text: 'Binnen 30 dagen gratis retour • 1 jaar garantie',
-      highlightWords: ['30 dagen', 'gratis retour', '1 jaar garantie'],
+      // ✅ GEEN HIGHLIGHT: Tekst is volledig grijs, alleen vinkje is blauw
     },
     {
       text: 'Zelfreinigend systeem • Hygiënisch',
-      highlightWords: ['Zelfreinigend', 'Hygiënisch'],
+      // ✅ GEEN HIGHLIGHT: Tekst is volledig grijs, alleen vinkje is blauw
     },
   ],
 
