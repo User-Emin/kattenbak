@@ -404,31 +404,48 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     });
   };
 
-  // ✅ DYNAMISCH: Features data - Gebruik DIRECT productImages (al gefilterd) voor 4e en 5e foto
-  // ✅ FIX: Gebruik productImages DIRECT - deze zijn al gefilterd en bevatten alle geüploade foto's
-  // Geen extra filter nodig - productImages bevat al alleen geldige /uploads/ en https:// paths
+  // ✅ DYNAMISCH: Features data - Gebruik DIRECT product.images (originele array) voor 4e en 5e foto
+  // ✅ FIX: Gebruik product.images DIRECT - deze bevat alle originele images zonder filtering
+  // productImages is al gefilterd, maar we hebben de originele indices nodig (3 en 4)
   
   // ✅ DEBUG: Log voor verificatie (altijd, ook in production voor troubleshooting)
-  console.log('📸 Product Images Count:', productImages.length);
-  console.log('📸 Product Images:', productImages);
-  console.log('📸 4e foto (index 3):', productImages[3]);
-  console.log('📸 5e foto (index 4):', productImages[4]);
+  const originalImages = product.images && Array.isArray(product.images) ? product.images : [];
+  console.log('📸 Original Product Images Count:', originalImages.length);
+  console.log('📸 Original Product Images:', originalImages);
+  console.log('📸 Filtered Product Images Count:', productImages.length);
+  console.log('📸 Filtered Product Images:', productImages);
+  console.log('📸 4e foto (original index 3):', originalImages[3]);
+  console.log('📸 5e foto (original index 4):', originalImages[4]);
   
-  // ✅ DYNAMISCH: Features met 4e en 5e foto - GEBRUIK DIRECT productImages (geen extra filter)
+  // ✅ DYNAMISCH: Features met 4e en 5e foto - GEBRUIK ORIGINELE product.images indices
   const features = PRODUCT_CONTENT.features.map((feature, index) => {
     let imageUrl: string;
     
     if (index === 0) {
-      // ✅ 4E FOTO: 10.5L Afvalbak (index 3 = 4e foto) - DIRECT uit productImages
-      imageUrl = productImages[3] || '/images/capacity-10.5l-optimized.jpg';
-      console.log(`📸 Feature ${index} (${feature.title}): Using productImages[3] = ${productImages[3] || 'FALLBACK'}`);
+      // ✅ 4E FOTO: 10.5L Afvalbak (index 3 = 4e foto) - DIRECT uit originele product.images
+      const fourthImage = originalImages[3];
+      // ✅ VALIDATIE: Check of image geldig is (geen placeholder, geen data URL)
+      if (fourthImage && typeof fourthImage === 'string' && !fourthImage.startsWith('data:') && !fourthImage.includes('placeholder')) {
+        imageUrl = fourthImage;
+        console.log(`✅ Feature ${index} (${feature.title}): Using originalImages[3] = ${fourthImage}`);
+      } else {
+        imageUrl = '/images/capacity-10.5l-optimized.jpg';
+        console.log(`⚠️ Feature ${index} (${feature.title}): FALLBACK - originalImages[3] invalid: ${fourthImage}`);
+      }
     } else if (index === 1) {
       // ✅ MIDDELSTE: Statische feature-2.jpg
       imageUrl = '/images/feature-2.jpg';
     } else {
-      // ✅ 5E FOTO: Geurblokje, kwast & afvalzak (index 4 = 5e foto) - DIRECT uit productImages
-      imageUrl = productImages[4] || '/images/feature-2.jpg';
-      console.log(`📸 Feature ${index} (${feature.title}): Using productImages[4] = ${productImages[4] || 'FALLBACK'}`);
+      // ✅ 5E FOTO: Geurblokje, kwast & afvalzak (index 4 = 5e foto) - DIRECT uit originele product.images
+      const fifthImage = originalImages[4];
+      // ✅ VALIDATIE: Check of image geldig is (geen placeholder, geen data URL)
+      if (fifthImage && typeof fifthImage === 'string' && !fifthImage.startsWith('data:') && !fifthImage.includes('placeholder')) {
+        imageUrl = fifthImage;
+        console.log(`✅ Feature ${index} (${feature.title}): Using originalImages[4] = ${fifthImage}`);
+      } else {
+        imageUrl = '/images/feature-2.jpg';
+        console.log(`⚠️ Feature ${index} (${feature.title}): FALLBACK - originalImages[4] invalid: ${fifthImage}`);
+      }
     }
     
     return {
