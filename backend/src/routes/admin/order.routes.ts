@@ -3,7 +3,7 @@ import { prisma } from '../../config/database.config';
 import { successResponse } from '../../utils/response.util';
 import { logger } from '../../config/logger.config';
 import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
-import { transformOrders } from '../../lib/transformers';
+import { transformOrders, transformOrder } from '../../lib/transformers';
 
 const router = Router();
 
@@ -256,47 +256,179 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
 
-    const order = await prisma.order.findUnique({
-      where: { id },
-      include: {
-        items: {
+    let order: any;
+    try {
+      // ✅ CRITICAL FIX: Check if variant_sku column exists before querying (same as list query)
+      const columnCheck = await prisma.$queryRawUnsafe<Array<{exists: boolean}>>(`
+        SELECT EXISTS (
+          SELECT 1 
+          FROM information_schema.columns 
+          WHERE table_name = 'order_items' 
+          AND column_name = 'variant_sku'
+        ) as exists;
+      `);
+      const hasVariantColumns = columnCheck[0]?.exists === true;
+
+      if (hasVariantColumns) {
+        // ✅ Variant columns exist - use normal Prisma query with include
+        order = await prisma.order.findUnique({
+          where: { id },
           include: {
-            product: true,
+            items: {
+              include: {
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                    sku: true,
+                    images: true,
+                  },
+                },
+              },
+            },
+            shippingAddress: true,
+            billingAddress: true,
+            payment: true,
+            shipment: true,
           },
-        },
-        shippingAddress: true,
-        billingAddress: true,
-        payment: true, // ✅ FIXED: Changed from 'payments' to 'payment' (singular)
-      },
-    });
+        });
+      } else {
+        // ✅ Variant columns don't exist - use select to explicitly get fields
+        order = await prisma.order.findUnique({
+          where: { id },
+          select: {
+            id: true,
+            orderNumber: true,
+            customerEmail: true,
+            customerPhone: true,
+            total: true,
+            subtotal: true,
+            tax: true,
+            shippingCost: true,
+            discount: true,
+            status: true,
+            customerNotes: true,
+            adminNotes: true,
+            createdAt: true,
+            updatedAt: true,
+            completedAt: true,
+            items: {
+              select: {
+                id: true,
+                productId: true,
+                productName: true,
+                productSku: true,
+                price: true,
+                quantity: true,
+                subtotal: true,
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                    sku: true,
+                    images: true,
+                  },
+                },
+              },
+            },
+            shippingAddress: true,
+            billingAddress: true,
+            payment: true,
+            shipment: true,
+          },
+        });
+      }
+    } catch (dbError: any) {
+      logger.warn('Single order query failed, attempting fallback with raw SQL:', dbError.message);
+      // Fallback to raw SQL query for single order
+      const rawOrder = await prisma.$queryRawUnsafe<any[]>(`
+        SELECT 
+          o.id, o."order_number" as "orderNumber", o."customer_email" as "customerEmail", o."customer_phone" as "customerPhone",
+          o.total, o.subtotal, o.tax, o."shipping_cost" as "shippingCost", o.discount, o.status,
+          o."customer_notes" as "customerNotes", o."admin_notes" as "adminNotes",
+          o."created_at" as "createdAt", o."updated_at" as "updatedAt", o."completed_at" as "completedAt",
+          sa."first_name" as "shippingAddress.firstName", sa."last_name" as "shippingAddress.lastName",
+          sa.street as "shippingAddress.street", sa."house_number" as "shippingAddress.houseNumber",
+          sa.addition as "shippingAddress.addition", sa."postal_code" as "shippingAddress.postalCode",
+          sa.city as "shippingAddress.city", sa.country as "shippingAddress.country", sa.phone as "shippingAddress.phone",
+          ba."first_name" as "billingAddress.firstName", ba."last_name" as "billingAddress.lastName",
+          ba.street as "billingAddress.street", ba."house_number" as "billingAddress.houseNumber",
+          ba.addition as "billingAddress.addition", ba."postal_code" as "billingAddress.postalCode",
+          ba.city as "billingAddress.city", ba.country as "billingAddress.country", ba.phone as "billingAddress.phone",
+          p.status as "payment.status", p."mollie_id" as "payment.mollieId",
+          s.status as "shipment.status", s."tracking_code" as "shipment.trackingCode"
+        FROM orders o
+        LEFT JOIN addresses sa ON o."shipping_address_id" = sa.id
+        LEFT JOIN addresses ba ON o."billing_address_id" = ba.id
+        LEFT JOIN payments p ON o.id = p."order_id"
+        LEFT JOIN shipments s ON o.id = s."order_id"
+        WHERE o.id = '${id}';
+      `);
+
+      if (rawOrder.length > 0) {
+        const row = rawOrder[0];
+        order = {
+          id: row.id,
+          orderNumber: row.orderNumber,
+          customerEmail: row.customerEmail,
+          customerPhone: row.customerPhone,
+          total: row.total,
+          subtotal: row.subtotal,
+          tax: row.tax,
+          shippingCost: row.shippingCost,
+          discount: row.discount,
+          status: row.status,
+          customerNotes: row.customerNotes,
+          adminNotes: row.adminNotes,
+          createdAt: row.createdAt,
+          updatedAt: row.updatedAt,
+          completedAt: row.completedAt,
+          items: [], // Items need to be fetched separately
+          payment: row['payment.status'] ? {
+            status: row['payment.status'],
+            mollieId: row['payment.mollieId'],
+          } : null,
+          shipment: row['shipment.status'] ? {
+            status: row['shipment.status'],
+            trackingCode: row['shipment.trackingCode'],
+          } : null,
+          shippingAddress: row['shippingAddress.firstName'] ? {
+            firstName: row['shippingAddress.firstName'],
+            lastName: row['shippingAddress.lastName'],
+            street: row['shippingAddress.street'],
+            houseNumber: row['shippingAddress.houseNumber'],
+            addition: row['shippingAddress.addition'],
+            postalCode: row['shippingAddress.postalCode'],
+            city: row['shippingAddress.city'],
+            country: row['shippingAddress.country'],
+            phone: row['shippingAddress.phone'],
+          } : null,
+          billingAddress: row['billingAddress.firstName'] ? {
+            firstName: row['billingAddress.firstName'],
+            lastName: row['billingAddress.lastName'],
+            street: row['billingAddress.street'],
+            houseNumber: row['billingAddress.houseNumber'],
+            addition: row['billingAddress.addition'],
+            postalCode: row['billingAddress.postalCode'],
+            city: row['billingAddress.city'],
+            country: row['billingAddress.country'],
+            phone: row['billingAddress.phone'],
+          } : null,
+        };
+      } else {
+        order = null;
+      }
+    }
 
     if (!order) {
       return res.status(404).json({
         success: false,
-        error: 'Order not found',
+        error: 'Bestelling niet gevonden',
       });
     }
 
-    // Transform for React Admin
-    const transformed = {
-      id: order.id,
-      orderNumber: order.orderNumber,
-      customerEmail: order.customerEmail,
-      customerPhone: order.customerPhone,
-      total: Number(order.total),
-      subtotal: Number(order.subtotal),
-      tax: Number(order.tax),
-      shippingCost: Number(order.shippingCost),
-      status: order.status,
-      shippingAddress: order.shippingAddress,
-      billingAddress: order.billingAddress,
-      items: order.items,
-      payment: order.payment, // ✅ FIXED: Changed from 'payments' to 'payment' (singular)
-      customerNotes: order.customerNotes,
-      adminNotes: order.adminNotes,
-      createdAt: order.createdAt.toISOString(),
-      updatedAt: order.updatedAt.toISOString(),
-    };
+    // ✅ FIX: Use transformOrder from transformers.ts to ensure proper transformation
+    const transformed = transformOrder(order);
 
     res.json({
       success: true,
