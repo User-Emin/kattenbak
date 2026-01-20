@@ -315,10 +315,10 @@ model OrderItem {
   subtotal    Decimal @db.Decimal(10, 2)
 
   // ✅ VARIANT SYSTEM: Variant info (optional, for products with variants)
-  // ✅ FIX: Commented out because database doesn't have these columns yet
-  // variantId   String? @map("variant_id")
-  // variantName String? @map("variant_name") // e.g. "Premium Wit", "Premium Zwart"
-  // variantSku  String? @map("variant_sku")  // Variant-specific SKU
+  // ✅ FIX: Database has variant_id, variant_name, variant_color (but NOT variant_sku)
+  variantId   String? @map("variant_id")
+  variantName String? @map("variant_name") // e.g. "Premium Wit", "Premium Zwart"
+  variantColor String? @map("variant_color") // Color code (can store SKU here if needed)
 
   // Timestamps
   createdAt DateTime @default(now()) @map("created_at")

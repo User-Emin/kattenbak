@@ -162,9 +162,9 @@ export class OrderService {
       // Prisma Decimal fields expect a number or Prisma.Decimal, not a Decimal.js object
       const priceForDb = price.toNumber();
 
-      // ✅ CRITICAL FIX: Don't include variant fields - database doesn't have variant_sku column
-      // The database schema may not have variant columns, so we exclude them to prevent errors
-      // Variant info can be stored in productName or notes if needed later
+      // ✅ VARIANT SYSTEM: Include variant info if provided
+      // Database has: variant_id, variant_name, variant_color (NOT variant_sku)
+      // We'll store variantSku in variant_color field if needed
       const orderItemData: any = {
         productId: product.id,
         productName: product.name,
@@ -172,8 +172,11 @@ export class OrderService {
         price: priceForDb, // ✅ FIX: Use converted number instead of product.price (Decimal.js object)
         quantity,
         subtotal: itemTotal.toNumber(),
-        // ✅ FIX: Explicitly exclude variant fields to prevent database errors
-        // variantId, variantName, variantSku are NOT included because the database doesn't have these columns
+        // ✅ VARIANT SYSTEM: Store variant info if provided
+        variantId: item.variantId || null,
+        variantName: item.variantName || null,
+        // ✅ FIX: Store variantSku in variant_color field (database doesn't have variant_sku column)
+        variantColor: item.variantSku || item.variantColor || null,
       };
       
       return orderItemData;
@@ -287,25 +290,28 @@ export class OrderService {
           customerNotes: true,
           createdAt: true,
           updatedAt: true,
-          items: {
-            select: {
-              id: true,
-              productId: true,
-              productName: true,
-              productSku: true,
-              price: true,
-              quantity: true,
-              subtotal: true,
-              product: {
-                select: {
-                  id: true,
-                  name: true,
-                  sku: true,
-                  images: true,
+            items: {
+              select: {
+                id: true,
+                productId: true,
+                productName: true,
+                productSku: true,
+                price: true,
+                quantity: true,
+                subtotal: true,
+                variantId: true,
+                variantName: true,
+                variantColor: true,
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                    sku: true,
+                    images: true,
+                  },
                 },
               },
             },
-          },
           shippingAddress: true,
           billingAddress: true,
         },
@@ -389,6 +395,9 @@ export class OrderService {
                 price: true,
                 quantity: true,
                 subtotal: true,
+                variantId: true,
+                variantName: true,
+                variantColor: true,
                 product: {
                   select: {
                     id: true,
