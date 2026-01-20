@@ -66,6 +66,48 @@ export class MollieService {
   }
 
   /**
+   * ✅ SECURITY: Validate and sanitize redirect URL to prevent open redirect attacks
+   */
+  private static validateRedirectUrl(url: string): string {
+    try {
+      const parsed = new URL(url);
+      
+      // ✅ SECURITY: Only allow https:// in production (no http://)
+      if (env.IS_PRODUCTION && parsed.protocol !== 'https:') {
+        logger.warn('Invalid redirect URL protocol in production, using FRONTEND_URL:', { url });
+        return `${env.FRONTEND_URL}/checkout/success`;
+      }
+      
+      // ✅ SECURITY: Block localhost and private IPs in production
+      if (env.IS_PRODUCTION) {
+        const hostname = parsed.hostname.toLowerCase();
+        if (hostname === 'localhost' || 
+            hostname === '127.0.0.1' || 
+            hostname.startsWith('192.168.') ||
+            hostname.startsWith('10.') ||
+            hostname.startsWith('172.16.')) {
+          logger.warn('Blocked localhost/private IP redirect URL in production, using FRONTEND_URL:', { url });
+          return `${env.FRONTEND_URL}/checkout/success`;
+        }
+      }
+      
+      // ✅ SECURITY: Ensure URL is from allowed domain (catsupply.nl in production)
+      if (env.IS_PRODUCTION) {
+        const allowedDomain = 'catsupply.nl';
+        if (!parsed.hostname.toLowerCase().endsWith(allowedDomain)) {
+          logger.warn('Redirect URL not from allowed domain, using FRONTEND_URL:', { url, allowedDomain });
+          return `${env.FRONTEND_URL}/checkout/success`;
+        }
+      }
+      
+      return url;
+    } catch (error) {
+      logger.warn('Invalid redirect URL format, using FRONTEND_URL:', { url, error });
+      return `${env.FRONTEND_URL}/checkout/success`;
+    }
+  }
+
+  /**
    * Create payment
    */
   static async createPayment(
@@ -76,6 +118,9 @@ export class MollieService {
     paymentMethod?: string
   ): Promise<Payment> {
     try {
+      // ✅ SECURITY: Validate and sanitize redirect URL
+      const validatedRedirectUrl = this.validateRedirectUrl(redirectUrl);
+      
       // Create Mollie payment with optional method
       const paymentData: any = {
         amount: {
@@ -83,7 +128,7 @@ export class MollieService {
           value: amount.toFixed(2),
         },
         description,
-        redirectUrl,
+        redirectUrl: validatedRedirectUrl,
         webhookUrl: env.MOLLIE_WEBHOOK_URL,
         metadata: {
           orderId,

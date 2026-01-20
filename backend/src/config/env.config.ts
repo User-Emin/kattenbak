@@ -230,8 +230,8 @@ class EnvironmentConfig {
   public readonly UPLOAD_ALLOWED_TYPES = validatedEnv.UPLOAD_ALLOWED_TYPES.split(',');
   public readonly UPLOAD_PATH = validatedEnv.UPLOAD_PATH;
 
-  // Frontend URLs - ✅ RUNTIME VALIDATED
-  public readonly FRONTEND_URL = validatedEnv.NEXT_PUBLIC_SITE_URL || validatedEnv.FRONTEND_URL || 'http://localhost:3001';
+  // Frontend URLs - ✅ RUNTIME VALIDATED + SECURITY: Production fallback to production domain
+  public readonly FRONTEND_URL = validatedEnv.NEXT_PUBLIC_SITE_URL || validatedEnv.FRONTEND_URL || (this.IS_PRODUCTION ? 'https://catsupply.nl' : 'http://localhost:3001');
 
   /**
    * ✅ SECURITY: Validate configuration on startup with production/development isolation
