@@ -410,12 +410,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   
   // ✅ DEBUG: Log voor verificatie (altijd, ook in production voor troubleshooting)
   const originalImages = product.images && Array.isArray(product.images) ? product.images : [];
+  const fourthImage = originalImages[3]; // ✅ 4E FOTO: 10.5L Afvalbak
+  const fifthImage = originalImages[4];  // ✅ 5E FOTO: Geurblokje, Kwast & Afvalzak
+  
   console.log('📸 Original Product Images Count:', originalImages.length);
   console.log('📸 Original Product Images:', originalImages);
-  console.log('📸 Filtered Product Images Count:', productImages.length);
-  console.log('📸 Filtered Product Images:', productImages);
-  console.log('📸 4e foto (original index 3):', originalImages[3]);
-  console.log('📸 5e foto (original index 4):', originalImages[4]);
+  console.log('📸 4e foto (index 3):', fourthImage);
+  console.log('📸 5e foto (index 4):', fifthImage);
+  console.log('📸 4e foto valid:', fourthImage && typeof fourthImage === 'string' && !fourthImage.startsWith('data:') && !fourthImage.includes('placeholder'));
+  console.log('📸 5e foto valid:', fifthImage && typeof fifthImage === 'string' && !fifthImage.startsWith('data:') && !fifthImage.includes('placeholder'));
   
   // ✅ DYNAMISCH: Features met 4e en 5e foto - GEBRUIK ORIGINELE product.images indices
   const features = PRODUCT_CONTENT.features.map((feature, index) => {
@@ -423,7 +426,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     
     if (index === 0) {
       // ✅ 4E FOTO: 10.5L Afvalbak (index 3 = 4e foto) - DIRECT uit originele product.images
-      const fourthImage = originalImages[3];
       // ✅ VALIDATIE: Check of image geldig is (geen placeholder, geen data URL)
       if (fourthImage && typeof fourthImage === 'string' && !fourthImage.startsWith('data:') && !fourthImage.includes('placeholder')) {
         imageUrl = fourthImage;
@@ -437,7 +439,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       imageUrl = '/images/feature-2.jpg';
     } else {
       // ✅ 5E FOTO: Geurblokje, kwast & afvalzak (index 4 = 5e foto) - DIRECT uit originele product.images
-      const fifthImage = originalImages[4];
       // ✅ VALIDATIE: Check of image geldig is (geen placeholder, geen data URL)
       if (fifthImage && typeof fifthImage === 'string' && !fifthImage.startsWith('data:') && !fifthImage.includes('placeholder')) {
         imageUrl = fifthImage;
@@ -664,6 +665,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}>
                   {formatPrice(displayPrice)}
                 </span>
+                {/* ✅ FIX: Alleen compareAtPrice tonen als het > 0 EN > displayPrice (echte korting) */}
+                {product.compareAtPrice && product.compareAtPrice > 0 && product.compareAtPrice > displayPrice && (
+                  <span className="text-base text-gray-500 line-through ml-3">
+                    {formatPrice(product.compareAtPrice)}
+                  </span>
+                )}
                 {activeVariant && activeVariant.priceAdjustment !== 0 && (
                   <span className="text-sm text-gray-500 ml-2">
                     {activeVariant.priceAdjustment > 0 ? '+' : ''}{formatPrice(activeVariant.priceAdjustment)}
