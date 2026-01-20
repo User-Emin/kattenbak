@@ -418,7 +418,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       ? (uploadedImages[3] || '/images/capacity-10.5l-optimized.jpg') // ✅ 4E FOTO: 10.5L Afvalbak
       : index === 1
       ? '/images/feature-2.jpg' // ✅ DYNAMISCH: Exact zelfde als home (geen hardcode)
-      : (uploadedImages[4] || '/uploads/products/27cb78df-2f8e-4f42-8c27-886fdc2dfda8.jpg'), // ✅ 5E FOTO: Geurblokje, kwast & afvalzak
+      : (uploadedImages[4] || '/images/feature-2.jpg'), // ✅ 5E FOTO: Geurblokje, kwast & afvalzak - dynamisch met generieke fallback
   }));
 
   return (

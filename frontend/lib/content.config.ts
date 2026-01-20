@@ -317,7 +317,7 @@ export const PRODUCT_CONTENT = {
 
   // Edge-to-edge image section (tussen tabs en zigzag)
   edgeImageSection: {
-    image: '/uploads/products/27cb78df-2f8e-4f42-8c27-886fdc2dfda8.jpg', // ✅ STABILIZED: Using existing image (9ef72bed was lost)
+    image: '/images/feature-2.jpg', // ✅ DYNAMISCH: Generieke statische image (geen hardcoded product ID)
     // Tekst wordt dynamisch uit product.description gehaald
   },
   

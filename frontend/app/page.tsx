@@ -87,8 +87,8 @@ export default function HomePage() {
   // 🚀 PERFORMANCE: Always show fallback hero image immediately (no waiting for product fetch)
   const heroImage = IMAGE_CONFIG.hero.main; // ✅ FIX: Direct fallback, no API dependency
   // ✅ OPTIONAL: Update hero image if product loads successfully (progressive enhancement)
-  // ✅ FIX: Use real product image if available, otherwise use uploaded image, otherwise fallback
-  const optimizedHeroImage = product?.images?.[0] || '/uploads/products/27cb78df-2f8e-4f42-8c27-886fdc2dfda8.jpg' || heroImage;
+  // ✅ FIX: Use real product image if available, otherwise use fallback hero image (geen hardcoded product ID)
+  const optimizedHeroImage = product?.images?.[0] || heroImage;
 
   return (
     <div>
