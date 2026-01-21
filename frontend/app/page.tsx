@@ -201,12 +201,12 @@ export default function HomePage() {
       {/* ✅ VARIANTEN SECTIE: Direct na hero - Dynamisch, smooth effect, tekst in afbeelding - DRY & ZONDER HARDCODE */}
       <ProductVariantsSection />
 
-      {/* ✅ EDGE-TO-EDGE IMAGE SECTIE: Desktop na varianten, Mobiel na zigzag - 3e foto, dynamisch, secure - DRY & ZONDER HARDCODE */}
+      {/* ✅ EDGE-TO-EDGE IMAGE SECTIE: Desktop na varianten - 3e foto, dynamisch, secure - DRY & ZONDER HARDCODE */}
       <div className="hidden md:block">
         <ProductEdgeImageSection />
       </div>
 
-      {/* ✅ PRODUCT BESCHRIJVING SECTIE: Na edge-to-edge - Dynamisch - DRY & ZONDER HARDCODE */}
+      {/* ✅ PRODUCT BESCHRIJVING SECTIE: Desktop na edge-to-edge - Dynamisch - DRY & ZONDER HARDCODE */}
       <div className="hidden md:block">
         <ProductDescriptionSection />
       </div>
