@@ -61,8 +61,7 @@ export function ProductUspFeatures() {
     <div className={cn(
       CONFIG.layout.maxWidth, // ✅ EXACT ZELFDE: Max-width zoals productdetail (max-w-7xl)
       'mx-auto',
-      CONFIG.layout.containerPadding, // ✅ EXACT ZELFDE: Container padding zoals productafbeeldingen en varianten (px-4 sm:px-6 md:px-8 lg:px-8)
-      CONFIG.layout.sectionSpacing, // ✅ EXACT ZELFDE: Section spacing zoals productdetail
+      CONFIG.layout.containerPadding, // ✅ EXACT ZELFDE: Container padding zoals varianten (px-4 sm:px-6 md:px-8 lg:px-8) - GEEN verticale padding
     )}>
       <div className={CONFIG.featureSection.containerSpacing}> {/* ✅ EXACT ZELFDE: Container spacing zoals productdetail */}
         {features.map((feature, index) => {
