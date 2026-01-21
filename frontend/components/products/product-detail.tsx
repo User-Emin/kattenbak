@@ -240,10 +240,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     ? variants.find((v: any) => v.id === selectedVariant) 
     : variants.length > 0 ? variants[0] : null;
   
-  // ✅ VARIANT SYSTEM: Correct logic for connecting product images to variant
-  // Priority: 1) variant.images, 2) variant.previewImage/colorImageUrl, 3) product.images
+  // ✅ VARIANT SYSTEM: Get variant images via shared utility (modulair, geen hardcode)
+  const variantImageUrl = getVariantImage(activeVariant, product.images as string[]);
   let variantImages: string[] | null = null;
-  if (activeVariant) {
+  if (activeVariant && variantImageUrl) {
     // First, check if variant has images array
     if (activeVariant.images && Array.isArray(activeVariant.images) && activeVariant.images.length > 0) {
       variantImages = activeVariant.images;
@@ -760,7 +760,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   <div className="flex flex-wrap gap-3">
                     {variants.map((variant: any) => {
                       const isSelected = selectedVariant === variant.id || (!selectedVariant && variant === variants[0]);
-                      const previewImage = variant.previewImage || variant.colorImageUrl || (variant.images && variant.images.length > 0 ? variant.images[0] : null);
+                      // ✅ VARIANT SYSTEM: Get variant image via shared utility (modulair, geen hardcode)
+                      const previewImage = getVariantImage(variant, product.images as string[]) || null;
                       const isOutOfStock = variant.stock <= 0;
                       
                       return (

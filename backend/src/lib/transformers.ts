@@ -51,7 +51,7 @@ export const transformVariant = (variant: any): any => {
     // ✅ VARIANT SYSTEM: Include color information and preview image
     colorName: variant.colorCode || variant.name, // Fallback to name if no colorCode
     colorHex: variant.colorCode ? getColorHex(variant.colorCode) : null, // Convert color code to hex
-    previewImage: variant.colorImageUrl || (Array.isArray(variant.images) && variant.images.length > 0 ? variant.images[0] : null),
+    previewImage: getVariantImage(variant), // ✅ VARIANT SYSTEM: Via shared utility (modulair, geen hardcode)
   };
 };
 
