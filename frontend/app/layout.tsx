@@ -16,6 +16,7 @@ import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { initializeCSSVerification } from "@/lib/css-verification";
 import { API_CONFIG } from "@/lib/config";
 import { SEO_CONFIG } from "@/lib/seo.config";
+import { getAllKeywords } from "@/lib/seo-maximized.config";
 import { useEffect } from "react";
 
 /**
@@ -77,10 +78,10 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
           }
         `}} />
         
-        {/* ✅ SEO 10/10: Title & Meta Description */}
+        {/* ✅ SEO 10/10: Title & Meta Description - Doelgroep geoptimaliseerd */}
         <title>{SEO_CONFIG.defaults.title}</title>
         <meta name="description" content={SEO_CONFIG.defaults.description} />
-        <meta name="keywords" content="automatische kattenbak, zelfreinigende kattenbak, premium kattenbak, kattenbak met app, automatische kattenbak Nederland, beste automatische kattenbak, kattenbak kopen, ALP1017, ALP1071" />
+        <meta name="keywords" content={getAllKeywords()} />
         <meta name="author" content="CatSupply" />
         <meta name="publisher" content="CatSupply" />
         <meta name="language" content="nl" />

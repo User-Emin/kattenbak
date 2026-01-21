@@ -21,6 +21,7 @@ import { ProductVariantsSection } from "@/components/shared/product-variants-sec
 import { ProductDescriptionSection } from "@/components/shared/product-description-section";
 import { ProductEdgeImageSection } from "@/components/shared/product-edge-image-section";
 import { HomepageJsonLd } from "@/components/seo/homepage-json-ld";
+import { RichSnippets } from "@/components/seo/rich-snippets";
 
 /**
  * 🎨 HOMEPAGE - MINIMALISTISCH ZWART-WIT DESIGN
@@ -95,6 +96,8 @@ export default function HomePage() {
     <>
       {/* ✅ SEO 10/10: Homepage Structured Data */}
       <HomepageJsonLd product={product} />
+      {/* ✅ SEO 10/10: Rich Snippets (FAQ, HowTo) */}
+      <RichSnippets />
       <div>
       {/* 🎨 HERO SECTION - RESPONSIVE: Mobile stacked, Desktop split (35/65) */}
       <section 

@@ -4,13 +4,13 @@ import { SEO_CONFIG } from '@/lib/seo.config';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SEO_CONFIG.site.url;
   
-  // Static pages
+  // Static pages - ✅ SEO: Optimal priorities en change frequencies
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1.0,
+      changeFrequency: 'daily', // ✅ Homepage: Dagelijks (nieuwe content, producten)
+      priority: 1.0, // ✅ Hoogste prioriteit
     },
     {
       url: `${baseUrl}/producten`,
