@@ -4,8 +4,11 @@
  * Security: Ensures consistent data format
  */
 
-import { Product, ProductVariant, Prisma } from '@prisma/client';
+import { Product, ProductVariant, Prisma, PrismaClient } from '@prisma/client';
 import { decimalToNumber } from '../utils/price.util'; // ✅ DRY: Use shared utility
+
+// ✅ VARIANT SYSTEM: Shared Prisma client instance for variant image fetching (modulair)
+const prisma = new PrismaClient();
 
 /**
  * Transform Product from Prisma to API format
@@ -84,8 +87,9 @@ export const transformProducts = (products: any[]): any[] => {
  * ✅ CRITICAL: Includes all address fields for admin panel
  * ✅ VARIANT SYSTEM: Includes variant info in order items
  * ✅ SECURITY: Defensive error handling - never throw, always return valid object
+ * ✅ VARIANT SYSTEM: Now async to fetch variant images dynamically
  */
-export const transformOrder = (order: any): any => {
+export const transformOrder = async (order: any): Promise<any> => {
   try {
     // ✅ SECURITY: Defensive null/undefined checks
     if (!order || typeof order !== 'object') {
@@ -124,9 +128,51 @@ export const transformOrder = (order: any): any => {
       total: decimalToNumber(order.total),
       status: order.status || 'PENDING',
       paymentStatus: order.payment?.status || order.paymentStatus || 'PENDING',
-      // ✅ VARIANT SYSTEM: Transform order items to include variant info
-      items: order.items && Array.isArray(order.items) ? order.items.map((item: any) => {
+      // ✅ VARIANT SYSTEM: Transform order items to include variant info and variant image
+      items: order.items && Array.isArray(order.items) ? await Promise.all(order.items.map(async (item: any) => {
         try {
+          // ✅ VARIANT SYSTEM: Get variant image if variantId is available (modulair, geen hardcode)
+          // Priority: variant.images[0] > variant.colorImageUrl > product.images[0]
+          let variantImage: string | null = null;
+          const variantId = item.variantId || item.variant_id || null;
+          
+          // ✅ VARIANT SYSTEM: Fetch variant image if variantId exists (modulair via Prisma, geen hardcode)
+          if (variantId && !item.variant) {
+            try {
+              const variant = await prisma.productVariant.findUnique({
+                where: { id: variantId },
+                select: {
+                  images: true,
+                  colorImageUrl: true,
+                },
+              });
+              
+              if (variant) {
+                // ✅ VARIANT SYSTEM: Priority: variant.images[0] > colorImageUrl (modulair, geen hardcode)
+                if (variant.images && Array.isArray(variant.images) && variant.images.length > 0) {
+                  variantImage = variant.images[0] as string;
+                } else if (variant.colorImageUrl) {
+                  variantImage = variant.colorImageUrl;
+                }
+              }
+            } catch (variantError: any) {
+              // Silent fail - variant image is optional (geen dataverlies)
+              console.warn('⚠️ Could not fetch variant image:', variantError.message);
+            }
+          } else if (item.variant) {
+            // Variant is already included in query
+            const variant = item.variant;
+            if (variant.images && Array.isArray(variant.images) && variant.images.length > 0) {
+              variantImage = variant.images[0];
+            } else if (variant.colorImageUrl) {
+              variantImage = variant.colorImageUrl;
+            }
+          }
+          
+          // ✅ VARIANT SYSTEM: Display image - variant image als maatstaf, fallback naar product image
+          const productImages = item.product?.images && Array.isArray(item.product.images) ? item.product.images : [];
+          const displayImage = variantImage || (productImages.length > 0 ? productImages[0] : null);
+          
           return {
             id: item.id || 'unknown',
             productId: item.productId || null,
@@ -135,17 +181,20 @@ export const transformOrder = (order: any): any => {
             quantity: item.quantity || 0,
             price: decimalToNumber(item.price),
             subtotal: decimalToNumber(item.subtotal || (item.price && item.quantity ? item.price * item.quantity : 0)),
-            // ✅ VARIANT SYSTEM: Include variant info if present
+            // ✅ VARIANT SYSTEM: Include variant info if present (modulair, geen hardcode)
             // Database has variant_id, variant_name, variant_color (NOT variant_sku)
-            variantId: item.variantId || item.variant_id || null,
+            variantId: variantId,
             variantName: item.variantName || item.variant_name || null,
             variantSku: item.variantColor || item.variant_color || null, // Use variant_color as SKU fallback
             variantColor: item.variantColor || item.variant_color || null,
+            variantImage: variantImage, // ✅ VARIANT SYSTEM: Variant-specific image (modulair)
             product: item.product ? {
               id: item.product.id,
               name: item.product.name,
-              images: item.product.images || [],
+              images: productImages,
             } : null,
+            // ✅ VARIANT SYSTEM: Display image - altijd variant image als maatstaf indien beschikbaar
+            displayImage: displayImage,
           };
         } catch (itemError: any) {
           console.warn('⚠️ transformOrder: Error transforming item', { item, error: itemError.message });
@@ -219,15 +268,15 @@ export const transformOrder = (order: any): any => {
  * Transform array of orders
  * ✅ SECURITY: Defensive error handling - never throw, always return array
  */
-export const transformOrders = (orders: any[]): any[] => {
+export const transformOrders = async (orders: any[]): Promise<any[]> => {
   if (!Array.isArray(orders)) {
     console.warn('⚠️ transformOrders: Invalid input, expected array', { orders });
     return [];
   }
   
-  return orders.map((order: any) => {
+  return Promise.all(orders.map(async (order: any) => {
     try {
-      return transformOrder(order);
+      return await transformOrder(order);
     } catch (error: any) {
       console.warn('⚠️ transformOrders: Error transforming order', { orderId: order?.id, error: error.message });
       // ✅ SECURITY: Return minimal valid order object instead of throwing
@@ -241,5 +290,5 @@ export const transformOrders = (orders: any[]): any[] => {
         _error: 'Transform failed',
       };
     }
-  });
+  }));
 };

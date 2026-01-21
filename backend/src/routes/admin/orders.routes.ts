@@ -128,13 +128,13 @@ router.get('/', async (req, res) => {
     // ✅ SECURITY: Transform Decimal to number with error handling
     let transformed: any[] = [];
     try {
-      transformed = transformOrders(orders);
+      transformed = await transformOrders(orders);
     } catch (transformError: any) {
       logger.error('❌ Transform orders error:', transformError);
       // ✅ FALLBACK: Try to transform individually with error recovery
-      transformed = orders.map((order: any) => {
+      transformed = await Promise.all(orders.map(async (order: any) => {
         try {
-          return transformOrder(order);
+          return await transformOrder(order);
         } catch (orderError: any) {
           logger.warn('⚠️ Failed to transform individual order:', orderError.message, { orderId: order?.id });
           // Return minimal valid order object
@@ -214,7 +214,7 @@ router.get('/:id', async (req, res) => {
         logger.warn('⚠️ Column check failed, assuming variant columns don\'t exist:', checkError.message);
       }
       
-      // ✅ STEP 2: Try Prisma query with all relations
+      // ✅ STEP 2: Try Prisma query with all relations including variant
       try {
         order = await prisma.order.findUnique({
           where: { id },
@@ -226,6 +226,15 @@ router.get('/:id', async (req, res) => {
                     id: true,
                     name: true,
                     sku: true,
+                    images: true,
+                  },
+                },
+                // ✅ VARIANT SYSTEM: Include variant to get variant image
+                variant: {
+                  select: {
+                    id: true,
+                    name: true,
+                    colorImageUrl: true,
                     images: true,
                   },
                 },
@@ -415,9 +424,11 @@ router.get('/:id', async (req, res) => {
               `;
             }
             
-            // Fetch product images for each item
+            // Fetch product images and variant images for each item
             for (const item of orderItems || []) {
               let productImages: string[] = [];
+              let variantImage: string | null = null;
+              
               try {
                 const product = await prisma.product.findUnique({
                   where: { id: item.product_id },
@@ -427,6 +438,33 @@ router.get('/:id', async (req, res) => {
               } catch (e: any) {
                 logger.warn('⚠️ Could not fetch product images for item:', e.message);
               }
+              
+              // ✅ VARIANT SYSTEM: Fetch variant image if variantId exists (modulair, geen hardcode)
+              if (hasVariantColumns && item.variant_id) {
+                try {
+                  const variant = await prisma.productVariant.findUnique({
+                    where: { id: item.variant_id },
+                    select: {
+                      images: true,
+                      colorImageUrl: true,
+                    },
+                  });
+                  
+                  if (variant) {
+                    // ✅ VARIANT SYSTEM: Priority: variant.images[0] > colorImageUrl (modulair)
+                    if (variant.images && Array.isArray(variant.images) && variant.images.length > 0) {
+                      variantImage = variant.images[0] as string;
+                    } else if (variant.colorImageUrl) {
+                      variantImage = variant.colorImageUrl;
+                    }
+                  }
+                } catch (variantError: any) {
+                  logger.warn('⚠️ Could not fetch variant image:', variantError.message);
+                }
+              }
+              
+              // ✅ VARIANT SYSTEM: Display image - altijd variant image als maatstaf indien beschikbaar
+              const displayImage = variantImage || (productImages.length > 0 ? productImages[0] : null);
               
               items.push({
                 id: item.id,
@@ -445,6 +483,8 @@ router.get('/:id', async (req, res) => {
                   variantId: item.variant_id || null,
                   variantName: item.variant_name || null,
                   variantColor: item.variant_color || null,
+                  variantImage: variantImage, // ✅ VARIANT SYSTEM: Variant image (modulair)
+                  displayImage: displayImage, // ✅ VARIANT SYSTEM: Display image (variant als maatstaf)
                 }),
               });
             }
@@ -507,7 +547,7 @@ router.get('/:id', async (req, res) => {
     // ✅ Transform Decimal to number (includes variant info transformation)
     let transformed: any;
     try {
-      transformed = transformOrder(order);
+      transformed = await transformOrder(order);
     } catch (transformError: any) {
       logger.error('❌ Transform order error:', {
         orderId: id,

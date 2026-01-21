@@ -55,10 +55,10 @@ router.get('/', async (req, res) => {
     ]);
     
     // Transform nested order data (contains Decimal fields)
-    const transformed = returns.map(ret => ({
+    const transformed = await Promise.all(returns.map(async (ret) => ({
       ...ret,
-      order: ret.order ? transformOrder(ret.order) : null
-    }));
+      order: ret.order ? await transformOrder(ret.order) : null
+    })));
     
     return res.json({
       success: true,
@@ -110,9 +110,10 @@ router.get('/:id', async (req, res) => {
     }
     
     // Transform nested order data
+    const transformedOrder = returnRecord.order ? await transformOrder(returnRecord.order) : null;
     const transformed = {
       ...returnRecord,
-      order: returnRecord.order ? transformOrder(returnRecord.order) : null
+      order: transformedOrder
     };
     
     return res.json({

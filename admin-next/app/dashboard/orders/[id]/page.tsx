@@ -329,11 +329,15 @@ export default function OrderDetailPage() {
         <CardContent>
           {order.items && order.items.length > 0 ? (
             <div className="space-y-4">
-              {order.items.map((item) => (
+              {order.items.map((item) => {
+                // ✅ VARIANT SYSTEM: Always use variant image as maatstaf if available, fallback to product image (modulair, geen hardcode)
+                const displayImage = (item as any).variantImage || (item as any).displayImage || (item.product?.images?.[0] || null);
+                
+                return (
                 <div key={item.id} className="flex items-start gap-4 pb-4 border-b last:border-0">
-                  {item.product?.images?.[0] && (
+                  {displayImage && (
                     <img
-                      src={item.product.images[0]}
+                      src={displayImage}
                       alt={item.productName}
                       className="w-16 h-16 object-cover rounded"
                     />
@@ -361,7 +365,8 @@ export default function OrderDetailPage() {
                     <p className="font-bold">€ {item.subtotal.toFixed(2)}</p>
                   </div>
                 </div>
-              ))}
+                );
+              })}
               <div className="pt-4 border-t space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Subtotaal</span>

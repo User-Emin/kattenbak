@@ -952,7 +952,7 @@ app.get('/api/v1/orders/by-number/:orderNumber', async (req: Request, res: Respo
 
     // ✅ FIX: Transform order to include all address fields and convert Decimal to number
     const { transformOrder } = require('./lib/transformers');
-    const transformed = transformOrder(order);
+    const transformed = await transformOrder(order);
 
     res.json({
       success: true,
@@ -1011,7 +1011,7 @@ app.get('/api/v1/admin/orders/by-number/:orderNumber', async (req: Request, res:
 
     // ✅ FIX: Transform order to include all address fields and convert Decimal to number
     const { transformOrder } = require('./lib/transformers');
-    const transformed = transformOrder(order);
+    const transformed = await transformOrder(order);
 
     res.json({
       success: true,
@@ -1104,7 +1104,7 @@ app.get('/api/v1/admin/orders/:id', async (req: Request, res: Response) => {
 
     // ✅ FIX: Transform order to include all address fields and convert Decimal to number
     const { transformOrder } = require('./lib/transformers');
-    const transformed = transformOrder(order);
+    const transformed = await transformOrder(order);
 
     res.json({
       success: true,

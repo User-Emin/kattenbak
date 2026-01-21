@@ -675,7 +675,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     }
     
     // ✅ DRY: Use transformOrder to ensure consistent format
-    const transformedOrder = transformOrder(order);
+    const transformedOrder = await transformOrder(order);
     
     successResponse(res, transformedOrder);
   } catch (error: any) {

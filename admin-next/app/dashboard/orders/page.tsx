@@ -171,16 +171,19 @@ export default function OrdersPage() {
                         <div className="space-y-2">
                           {order.items.map((item: any, idx: number) => (
                             <div key={item.id || idx} className="flex items-start gap-2">
-                              {/* ✅ VARIANT SYSTEM: Show product/variant image */}
-                              {item.product?.images && item.product.images.length > 0 && (
-                                <div className="relative w-12 h-12 bg-gray-50 rounded overflow-hidden flex-shrink-0">
-                                  <img
-                                    src={item.product.images[0]}
-                                    alt={item.productName || 'Product'}
-                                    className="w-full h-full object-cover"
-                                  />
-                                </div>
-                              )}
+                              {/* ✅ VARIANT SYSTEM: Always use variant image as maatstaf if available, fallback to product image (modulair, geen hardcode) */}
+                              {(() => {
+                                const displayImage = (item as any).variantImage || (item as any).displayImage || (item.product?.images?.[0] || null);
+                                return displayImage ? (
+                                  <div className="relative w-12 h-12 bg-gray-50 rounded overflow-hidden flex-shrink-0">
+                                    <img
+                                      src={displayImage}
+                                      alt={item.productName || 'Product'}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </div>
+                                ) : null;
+                              })()}
                               <div className="flex-1 min-w-0">
                                 <p className="font-medium text-sm">{item.productName || 'Onbekend product'}</p>
                                 {(item.variantName || item.variantColor) && (

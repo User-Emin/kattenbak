@@ -242,15 +242,21 @@ function CheckoutContent() {
         return;
       }
 
+      // ✅ VARIANT SYSTEM: Get variant info from cart item (not product) - modulair, geen hardcode
+      const cartItem = items && items.length > 0 ? items[0] : null;
+      const variantId = cartItem?.variantId || null;
+      const variantName = cartItem?.variantName || null;
+      const variantSku = cartItem?.variantColor || null; // variantColor contains variant SKU/color info
+      
       const orderData = {
         items: [{ 
           productId: productIdToUse, // ✅ Use CUID instead of numeric ID
           quantity: Number(quantity) || 1, // ✅ FIX: Ensure quantity is number
           price: Number(productPrice), // ✅ FIX: Explicitly use Number() to ensure it's a number
-          // ✅ VARIANT SYSTEM: Include variant info if product has variant
-          variantId: (product as any).variantId,
-          variantName: (product as any).variantName,
-          variantSku: (product as any).variantSku,
+          // ✅ VARIANT SYSTEM: Include variant info from cart item (modulair, geen hardcode)
+          variantId: variantId,
+          variantName: variantName,
+          variantSku: variantSku,
         }],
         customer: {
           firstName: formData.firstName,
@@ -500,6 +506,7 @@ function CheckoutContent() {
                 
                 <div className="flex gap-4 my-6">
                   <div className="relative w-24 h-24 bg-white rounded overflow-hidden flex-shrink-0 shadow-sm">
+                    {/* ✅ VARIANT SYSTEM: Always use variant image as maatstaf if available, fallback to product image */}
                     <ProductImage 
                       src={items[0]?.variantImage || getProductImage(product.images)} 
                       alt={product.name} 
