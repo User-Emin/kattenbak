@@ -76,10 +76,9 @@ export function ProductVariantsSection() {
       }}
     >
       <div
-        className="mx-auto"
+        className="mx-auto px-0 sm:px-4 md:px-6 lg:px-8"
         style={{
           maxWidth: DESIGN_SYSTEM.layout.maxWidth['2xl'],
-          padding: `0 ${DESIGN_SYSTEM.spacing.containerPadding}`,
         }}
       >
         {/* ✅ TITEL: "Onze varianten" - DRY via DESIGN_SYSTEM - GROTER */}
@@ -110,7 +109,7 @@ export function ProductVariantsSection() {
           </p>
         </div>
 
-        {/* ✅ GRID: 2 kaarten centraal naast elkaar desktop, onder elkaar mobiel - DRY & RESPONSIVE */}
+        {/* ✅ GRID: 2 kaarten centraal naast elkaar desktop, onder elkaar mobiel - EDGE-TO-EDGE: Identiek aan productafbeeldingen */}
         <div
           className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto"
         >
@@ -123,13 +122,13 @@ export function ProductVariantsSection() {
               <Link
                 key={variant.id}
                 href={`/product/${product.slug}${variant.id ? `?variant=${variant.id}` : ''}`}
-                className="group relative overflow-hidden rounded-lg transition-all duration-300 hover:scale-[1.02] w-full md:w-[48%]"
+                className="group relative overflow-hidden rounded-2xl sm:rounded-3xl transition-all duration-300 hover:scale-[1.02] w-full md:w-[48%]"
                 style={{
                   aspectRatio: '1/1', // ✅ VIERKANT: Perfect vierkant voor varianten
                 }}
               >
-                {/* ✅ AFBEELDING: Eerste afbeelding van variant */}
-                <div className="relative w-full h-full">
+                {/* ✅ AFBEELDING: Eerste afbeelding van variant - EXACT PASSEND: Past exact aan veld zoals productafbeeldingen */}
+                <div className="relative w-full h-full overflow-hidden">
                   <Image
                     src={variantImage}
                     alt={variantName}
@@ -138,7 +137,7 @@ export function ProductVariantsSection() {
                     sizes="(max-width: 768px) 100vw, 48vw"
                     quality={85}
                     loading="lazy"
-                    unoptimized={variantImage.startsWith('/uploads/')}
+                    unoptimized={variantImage.startsWith('/uploads/') || variantImage.startsWith('/images/') || variantImage.startsWith('https://') || variantImage.startsWith('http://')}
                   />
 
                   {/* ✅ SMOOTH TEKST: Direct in afbeelding, altijd zichtbaar - DRY via DESIGN_SYSTEM */}
