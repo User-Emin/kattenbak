@@ -132,7 +132,7 @@ router.get('/', async (req, res) => {
     } catch (transformError: any) {
       logger.error('❌ Transform orders error:', transformError);
       // ✅ FALLBACK: Try to transform individually with error recovery
-      transformed = await Promise.all(orders.map(async (order: any) => {
+      const transformPromises = orders.map(async (order: any) => {
         try {
           return await transformOrder(order);
         } catch (orderError: any) {
@@ -149,6 +149,7 @@ router.get('/', async (req, res) => {
           };
         }
       });
+      transformed = await Promise.all(transformPromises);
     }
     
     return res.json({
@@ -229,15 +230,8 @@ router.get('/:id', async (req, res) => {
                     images: true,
                   },
                 },
-                // ✅ VARIANT SYSTEM: Include variant to get variant image
-                variant: {
-                  select: {
-                    id: true,
-                    name: true,
-                    colorImageUrl: true,
-                    images: true,
-                  },
-                },
+                // ✅ VARIANT SYSTEM: Variant data is already in order_items table (variant_id, variant_name, variant_color)
+                // We'll fetch variant images separately in the transformer if needed
               },
             },
             shippingAddress: true,
