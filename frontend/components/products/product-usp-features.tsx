@@ -61,7 +61,7 @@ export function ProductUspFeatures() {
     <div className={cn(
       CONFIG.layout.maxWidth, // ✅ EXACT ZELFDE: Max-width zoals productdetail (max-w-7xl)
       'mx-auto',
-      'px-0 sm:px-4 md:px-6 lg:px-8', // ✅ EDGE-TO-EDGE: Minder margin, meer naar zijkanten zoals product detail
+      CONFIG.layout.containerPadding, // ✅ EXACT ZELFDE: Container padding zoals productdetail (px-4 sm:px-6 md:px-8 lg:px-8)
       CONFIG.layout.sectionSpacing, // ✅ EXACT ZELFDE: Section spacing zoals productdetail
     )}>
       <div className={CONFIG.featureSection.containerSpacing}> {/* ✅ EXACT ZELFDE: Container spacing zoals productdetail */}
@@ -76,15 +76,15 @@ export function ProductUspFeatures() {
                 isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout // ✅ EXACT ZELFDE: Layout zoals productdetail
               )}
             >
-              {/* Image - ✅ EDGE-TO-EDGE: Minder margin, meer naar zijkanten zoals product detail */}
+              {/* Image - ✅ EXACT ZELFDE: Identiek aan product detail - rondige hoeken, edge-to-edge */}
               <div className={cn(
                 'relative',
                 'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
                 isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right, // ✅ EXACT ZELFDE: Image order zoals productdetail
                 CONFIG.featureSection.image.aspectRatio, // ✅ EXACT ZELFDE: Aspect ratio zoals productdetail
-                CONFIG.featureSection.image.borderRadius, // ✅ EXACT ZELFDE: Border radius zoals productdetail (rounded-lg)
+                CONFIG.featureSection.image.borderRadius, // ✅ EXACT ZELFDE: Rondige hoeken (rounded-2xl sm:rounded-3xl) zoals productdetail
                 CONFIG.featureSection.image.bgColor, // ✅ EXACT ZELFDE: Background color zoals productdetail
-                'overflow-hidden' // 🚀 PERFORMANCE: Overflow hidden voor Image component
+                'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding binnen container blijft
               )}>
                 <Image
                   src={feature.image}
