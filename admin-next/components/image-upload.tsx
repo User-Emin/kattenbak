@@ -163,43 +163,50 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
       {/* Image previews */}
       {value.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {value.filter(img => img && img.trim() !== '').map((image, index) => (
-            <div
-              key={index}
-              className="relative aspect-square rounded-lg border bg-muted overflow-hidden group"
-            >
-              {image && image.trim() ? (
-                <img
-                  src={
-                    // Support absolute URLs (http/https), data URIs, and relative paths
-                    image.startsWith('http') || image.startsWith('data:') 
-                      ? image 
-                      : `${typeof window !== 'undefined' ? window.location.origin : ''}${image.startsWith('/') ? image : '/' + image}`
-                  }
-                  alt={`Afbeelding ${index + 1}`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback for broken images
-                    (e.target as HTMLImageElement).src = 'https://placehold.co/400x400/666/fff?text=Fout';
-                  }}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-muted">
-                  <ImageIcon className="h-12 w-12 text-muted-foreground" />
-                </div>
-              )}
-              <Button
-                type="button"
-                variant="destructive"
-                size="icon"
-                className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
-                onClick={() => handleRemove(index)}
-                disabled={isUploading}
+          {value.filter(img => img && img.trim() !== '').map((image, index) => {
+            // ✅ Na 4e upload: volledig plaatje zichtbaar (object-contain), anders object-cover
+            const isAfterFourth = index >= 4;
+            const objectFit = isAfterFourth ? 'object-contain' : 'object-cover';
+            const bgColor = isAfterFourth ? 'bg-gray-900' : 'bg-muted';
+            
+            return (
+              <div
+                key={index}
+                className={`relative aspect-square rounded-lg border overflow-hidden group ${bgColor}`}
               >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          ))}
+                {image && image.trim() ? (
+                  <img
+                    src={
+                      // Support absolute URLs (http/https), data URIs, and relative paths
+                      image.startsWith('http') || image.startsWith('data:') 
+                        ? image 
+                        : `${typeof window !== 'undefined' ? window.location.origin : ''}${image.startsWith('/') ? image : '/' + image}`
+                    }
+                    alt={`Afbeelding ${index + 1}`}
+                    className={`w-full h-full ${objectFit}`}
+                    onError={(e) => {
+                      // Fallback for broken images
+                      (e.target as HTMLImageElement).src = 'https://placehold.co/400x400/666/fff?text=Fout';
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-muted">
+                    <ImageIcon className="h-12 w-12 text-muted-foreground" />
+                  </div>
+                )}
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="icon"
+                  className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={() => handleRemove(index)}
+                  disabled={isUploading}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            );
+          })}
         </div>
       )}
 

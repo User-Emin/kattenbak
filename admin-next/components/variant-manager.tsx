@@ -236,7 +236,7 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
                 onChange={(images) =>
                   setNewVariant({ ...newVariant, images })
                 }
-                maxImages={5}
+                maxImages={10}
               />
               <p className="text-xs text-muted-foreground mt-2">
                 💡 Upload aparte foto's voor deze kleurvariant. Deze worden getoond wanneer klant deze kleur selecteert.
@@ -351,7 +351,7 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
                     onChange={(images) =>
                       handleUpdate(variant.id, { images })
                     }
-                    maxImages={5}
+                    maxImages={10}
                   />
                   <p className="text-xs text-muted-foreground mt-2">
                     💡 Deze foto's worden getoond wanneer klant deze kleur selecteert
