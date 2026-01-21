@@ -249,7 +249,7 @@ export default function HomePage() {
         </div>
         
         {/* USP Features Component - ✅ EDGE-TO-EDGE: Minder witruimte, identiek aan product detail */}
-        <ProductUspFeatures />
+        <ProductUspFeatures product={product} />
       </section>
 
       {/* ✅ VIDEO SECTIE VERWIJDERD: Geen redundantie */}

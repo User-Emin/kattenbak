@@ -146,8 +146,8 @@ export function Header() {
             </Link>
           </div>
 
-          {/* RIGHT: CART - MOBIEL: Absolute rechts, DESKTOP: Grid */}
-          <div className="absolute right-3 sm:right-4 md:relative md:right-auto flex justify-end">
+          {/* RIGHT: CART - MOBIEL: Absolute rechts met meer padding, DESKTOP: Grid */}
+          <div className="absolute right-4 sm:right-5 md:relative md:right-auto flex justify-end">
             <button
               onClick={handleCartToggle}
               className={`relative transition-opacity ${

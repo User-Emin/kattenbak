@@ -223,8 +223,9 @@ export const PRODUCT_CONTENT = {
     },
     {
       title: 'Gratis meegeleverd: Geurblokje, Kwast, Afvalzak en Inloopmat',
-      description: 'Bij aankoop krijg je gratis: geurblokje voor langdurige geurneutralisatie, kwast voor eenvoudige reiniging, afvalzak (1 rol) voor hygiënische afvalverwerking, en inloopmat voor schone poten. Alles wat je nodig hebt voor direct gebruik.',
+      description: 'Bij aankoop krijg je gratis: geurblokje, kwast, afvalzak (1 rol) en inloopmat. Alles wat je nodig hebt voor direct gebruik.',
       // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
+      // ✅ KORTER: Beschrijving ingekort voor betere leesbaarheid
     },
   ],
 

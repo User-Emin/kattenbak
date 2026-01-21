@@ -4,32 +4,49 @@ import Image from "next/image";
 import { PRODUCT_PAGE_CONFIG } from "@/lib/product-page-config";
 import { PRODUCT_CONTENT } from "@/lib/content.config";
 import { cn } from "@/lib/utils";
+import type { Product } from "@/types/product";
 
 /**
  * Product USP Features Component - 100% IDENTIEK AAN PRODUCTDETAIL
  * 
  * ✅ EXACT ZELFDE: Gebruikt PRODUCT_CONTENT.features (geen hardcode)
- * ✅ EXACT ZELFDE: Images met identieke fallback logica als productdetail
+ * ✅ EXACT ZELFDE: Images dynamisch via product.images (index 3 en 4) zoals productdetail
  * ✅ EXACT ZELFDE: Layout, styling, en structuur als productdetail
  * ✅ GEEN REDUNDANTIE: Shared data en logica
  */
-export function ProductUspFeatures() {
+interface ProductUspFeaturesProps {
+  product?: Product | null; // ✅ DYNAMISCH: Optionele product data voor images
+}
+
+export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps = {}) {
   const CONFIG = PRODUCT_PAGE_CONFIG; // ✅ DRY: Gebruik zelfde config als productdetail
   
   // ✅ EXACT ZELFDE: Gebruik PRODUCT_CONTENT.features zoals productdetail
-  // ✅ EXACT ZELFDE: Image fallback logica identiek aan productdetail
+  // ✅ EXACT ZELFDE: Image logica identiek aan productdetail - dynamisch via product.images
+  const originalImages = product?.images && Array.isArray(product.images) ? product.images : [];
+  const fourthImage = originalImages[3]; // ✅ 4E FOTO: 10.5L Afvalbak (index 3)
+  const fifthImage = originalImages[4];  // ✅ 5E FOTO: Geurblokje, Kwast & Afvalzak (index 4)
+  
   const features = PRODUCT_CONTENT.features.map((feature, index) => {
     let imageUrl: string;
     
     if (index === 0) {
-      // ✅ EXACT ZELFDE: 10.5L Afvalbak - zelfde fallback als productdetail
-      imageUrl = '/images/capacity-10.5l-optimized.jpg';
+      // ✅ EXACT ZELFDE: 4E FOTO (index 3) - DIRECT uit product.images zoals productdetail
+      if (fourthImage && typeof fourthImage === 'string' && !fourthImage.startsWith('data:') && !fourthImage.includes('placeholder')) {
+        imageUrl = fourthImage;
+      } else {
+        imageUrl = '/images/capacity-10.5l-optimized.jpg';
+      }
     } else if (index === 1) {
       // ✅ EXACT ZELFDE: Statische feature-2.jpg zoals productdetail
       imageUrl = '/images/feature-2.jpg';
     } else {
-      // ✅ EXACT ZELFDE: Geurblokje, Kwast & Afvalzak - zelfde fallback als productdetail
-      imageUrl = '/images/feature-2.jpg';
+      // ✅ EXACT ZELFDE: 5E FOTO (index 4) - DIRECT uit product.images zoals productdetail
+      if (fifthImage && typeof fifthImage === 'string' && !fifthImage.startsWith('data:') && !fifthImage.includes('placeholder')) {
+        imageUrl = fifthImage;
+      } else {
+        imageUrl = '/images/feature-2.jpg';
+      }
     }
     
     return {
