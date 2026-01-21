@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -819,8 +819,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
                     // ✅ DIKGEDRUKTE WOORDEN: Bepaalde woorden dikgedrukt zoals bij "Gratis verzending • Bezorgtijd: 1-2 werkdagen"
                     const renderUSPText = (text: string) => {
-                      // ✅ DIKGEDRUKTE WOORDEN: "Volledig automatisch", "App bediening", "Altijd schoon", "Binnen 30 dagen", "1 jaar garantie", "Zelfreinigend systeem", "Hygiënisch"
-                      const boldWords = [
+                      // ✅ DIKGEDRUKTE WOORDEN: Exacte woorden die dikgedrukt moeten worden
+                      const boldPhrases = [
                         'Volledig automatisch',
                         'App bediening',
                         'Altijd schoon',
@@ -831,17 +831,82 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                         'gratis retour',
                       ];
                       
-                      // Split op bullet points
+                      // Split op bullet points en verwerk elk deel
                       const parts = text.split(' • ');
                       return parts.map((part, partIndex) => {
-                        const shouldBold = boldWords.some(word => part.includes(word));
+                        // Check welke phrases in dit deel voorkomen en maak ze dikgedrukt
+                        let processedPart: React.ReactNode[] = [];
+                        let remainingText = part;
+                        let lastIndex = 0;
+                        
+                        // Sorteer phrases op lengte (langste eerst) om exacte matches te krijgen
+                        const sortedPhrases = [...boldPhrases].sort((a, b) => b.length - a.length);
+                        
+                        // Vind alle matches en sorteer op positie
+                        const matches: Array<{ phrase: string; index: number }> = [];
+                        sortedPhrases.forEach(phrase => {
+                          let searchIndex = 0;
+                          while (true) {
+                            const foundIndex = remainingText.toLowerCase().indexOf(phrase.toLowerCase(), searchIndex);
+                            if (foundIndex === -1) break;
+                            matches.push({ phrase, index: foundIndex });
+                            searchIndex = foundIndex + 1;
+                          }
+                        });
+                        
+                        // Sorteer matches op positie
+                        matches.sort((a, b) => a.index - b.index);
+                        
+                        // Verwijder overlappende matches (behoud langste)
+                        const filteredMatches: Array<{ phrase: string; index: number; endIndex: number }> = [];
+                        matches.forEach(match => {
+                          const endIndex = match.index + match.phrase.length;
+                          const overlaps = filteredMatches.some(fm => 
+                            (match.index >= fm.index && match.index < fm.endIndex) ||
+                            (endIndex > fm.index && endIndex <= fm.endIndex) ||
+                            (match.index <= fm.index && endIndex >= fm.endIndex)
+                          );
+                          if (!overlaps) {
+                            filteredMatches.push({ ...match, endIndex });
+                          }
+                        });
+                        
+                        // Bouw de tekst op met dikgedrukte delen
+                        filteredMatches.forEach((match, matchIndex) => {
+                          // Voeg tekst voor match toe
+                          if (match.index > lastIndex) {
+                            processedPart.push(
+                              <span key={`text-${matchIndex}`}>
+                                {remainingText.substring(lastIndex, match.index)}
+                              </span>
+                            );
+                          }
+                          // Voeg dikgedrukte match toe
+                          processedPart.push(
+                            <span key={`bold-${matchIndex}`} style={{ fontWeight: 600 }}>
+                              {remainingText.substring(match.index, match.endIndex)}
+                            </span>
+                          );
+                          lastIndex = match.endIndex;
+                        });
+                        
+                        // Voeg resterende tekst toe
+                        if (lastIndex < remainingText.length) {
+                          processedPart.push(
+                            <span key="text-end">
+                              {remainingText.substring(lastIndex)}
+                            </span>
+                          );
+                        }
+                        
+                        // Als er geen matches zijn, toon gewoon de tekst
+                        if (processedPart.length === 0) {
+                          processedPart = [<span key="no-match">{part}</span>];
+                        }
+                        
                         return (
                           <span key={partIndex}>
-                            {shouldBold ? (
-                              <span style={{ fontWeight: 600 }}>{part}</span>
-                            ) : (
-                              <span>{part}</span>
-                            )}
+                            {processedPart}
                             {partIndex < parts.length - 1 && ' • '}
                           </span>
                         );
