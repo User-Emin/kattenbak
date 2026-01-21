@@ -222,8 +222,8 @@ export const PRODUCT_CONTENT = {
       // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
     {
-      title: 'Gratis meegeleverd: Geurblokje, Kwast & Afvalzak',
-      description: 'Bij aankoop krijg je gratis: geurblokje voor langdurige geurneutralisatie, kwast voor eenvoudige reiniging, en afvalzak (1 rol) voor hygiënische afvalverwerking. Alles wat je nodig hebt voor direct gebruik.',
+      title: 'Gratis meegeleverd: Geurblokje, Kwast, Afvalzak en Inloopmat',
+      description: 'Bij aankoop krijg je gratis: geurblokje voor langdurige geurneutralisatie, kwast voor eenvoudige reiniging, afvalzak (1 rol) voor hygiënische afvalverwerking, en inloopmat voor schone poten. Alles wat je nodig hebt voor direct gebruik.',
       // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
   ],

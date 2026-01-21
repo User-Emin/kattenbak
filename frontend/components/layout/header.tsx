@@ -55,7 +55,7 @@ export function Header() {
         }}
       >
         <div 
-          className="w-full mx-auto flex items-center justify-between md:grid md:grid-cols-3 px-3 sm:px-4 md:px-6 lg:px-12 h-20"
+          className="w-full mx-auto relative flex items-center justify-center md:grid md:grid-cols-3 px-3 sm:px-4 md:px-6 lg:px-12 h-20"
           style={{
             maxWidth: DESIGN_SYSTEM.layout.navbar.maxWidth,
           }}
@@ -146,8 +146,8 @@ export function Header() {
             </Link>
           </div>
 
-          {/* RIGHT: CART */}
-          <div className="flex justify-end">
+          {/* RIGHT: CART - MOBIEL: Absolute rechts, DESKTOP: Grid */}
+          <div className="absolute right-3 sm:right-4 md:relative md:right-auto flex justify-end">
             <button
               onClick={handleCartToggle}
               className={`relative transition-opacity ${
