@@ -72,6 +72,7 @@ export function ProductUspFeatures() {
             <div 
               key={index} 
               className={cn(
+                'max-w-4xl mx-auto', // ✅ EXACT ZELFDE: Max-width en centrering zoals varianten
                 isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout // ✅ EXACT ZELFDE: Layout zoals productdetail
               )}
             >
