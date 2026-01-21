@@ -234,6 +234,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     );
   }
 
+  // ✅ SECURITY: Early return if product is null (should not happen after check above, but TypeScript safety)
+  if (!product) {
+    return null;
+  }
+
   // ✅ VARIANT SYSTEM: Get selected variant or default to first variant
   const variants = product.variants || [];
   const activeVariant = selectedVariant 
@@ -299,9 +304,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     setIsAdding(true);
     try {
       // ✅ VARIANT SYSTEM: Get variant image via shared utility (modulair, geen hardcode)
-      const variantImage = getVariantImage(activeVariant, product.images as string[]);
+      const variantImage = getVariantImage(activeVariant, product?.images as string[] || []);
       
       // ✅ VARIANT SYSTEM: Create product with variant-adjusted price
+      if (!product) return; // ✅ SECURITY: Early return if product is null
+      
       const productToAdd = activeVariant ? {
         ...product,
         price: displayPrice, // Use variant-adjusted price
