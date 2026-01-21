@@ -6,6 +6,8 @@ import Link from "next/link";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { productsApi } from "@/lib/api/products";
 import type { Product, ProductVariant } from "@/types/product";
+import { getProductImage } from "@/lib/image-config";
+import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 
 /**
  * ✅ VARIANTEN SECTIE - DYNAMISCH & SMOOTH
