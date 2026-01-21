@@ -202,6 +202,37 @@ export function Footer() {
               >
                 Ma-Vr: 9:00 - 17:00
               </li>
+              {/* ✅ SEO: Externe links voor link building */}
+              <li className="pt-2">
+                <a 
+                  href="https://www.facebook.com/catsupply" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="transition-opacity hover:opacity-80"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse,
+                  }}
+                >
+                  Facebook
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://www.instagram.com/catsupply" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="transition-opacity hover:opacity-80"
+                  style={{
+                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                    color: DESIGN_SYSTEM.colors.text.inverse,
+                  }}
+                >
+                  Instagram
+                </a>
+              </li>
             </ul>
           </div>
         </div>
