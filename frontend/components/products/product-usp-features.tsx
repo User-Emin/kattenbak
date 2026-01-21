@@ -51,7 +51,7 @@ export function ProductUspFeatures() {
       icon: Box,
       title: "Gratis meegeleverd: Geurblokje, Kwast, Afvalzak en Inloopmat",
       description: "Bij aankoop krijg je gratis: geurblokje voor langdurige geurneutralisatie, kwast voor eenvoudige reiniging, afvalzak (1 rol) voor hygiënische afvalverwerking, en inloopmat voor schone poten. Alles wat je nodig hebt voor direct gebruik.",
-      items: [], // ✅ VERWIJDERD: Geen bullet points zoals product detail
+      items: undefined, // ✅ VERWIJDERD: Geen bullet points zoals product detail
       image: "/images/feature-3.jpg", // ✅ FALLBACK: Placeholder tot echte foto beschikbaar
       imageAlt: "Gratis meegeleverd: geurblokje, kwast, afvalzak en inloopmat"
     }
@@ -129,8 +129,8 @@ export function ProductUspFeatures() {
               )}>
                 {feature.description}
               </p>
-              {/* ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving zoals product detail */}
-              {feature.items && feature.items.length > 0 && (
+              {/* ✅ BULLET POINTS: Alleen tonen als items aanwezig zijn (niet voor gratis meegeleverd) */}
+              {feature.items && Array.isArray(feature.items) && feature.items.length > 0 && (
                 <ul className={CONFIG.featureSection.text.list.spacing}>
                   {feature.items.map((item, i) => (
                     <li key={i} className={CONFIG.featureSection.text.list.item.gap}>
