@@ -76,7 +76,7 @@ export function ProductVariantsSection() {
       }}
     >
       <div
-        className="mx-auto px-0 sm:px-4 md:px-6 lg:px-8"
+        className="mx-auto px-4 sm:px-6 md:px-8 lg:px-8"
         style={{
           maxWidth: DESIGN_SYSTEM.layout.maxWidth['2xl'],
         }}
@@ -127,7 +127,7 @@ export function ProductVariantsSection() {
                   aspectRatio: '1/1', // ✅ VIERKANT: Perfect vierkant voor varianten
                 }}
               >
-                {/* ✅ AFBEELDING: Eerste afbeelding van variant - EXACT PASSEND: Past exact aan veld zoals productafbeeldingen */}
+                {/* ✅ AFBEELDING: Eerste afbeelding van variant - EXACT PASSEND: Past exact aan veld zoals productafbeeldingen (object-cover, w-full) */}
                 <div className="relative w-full h-full overflow-hidden">
                   <Image
                     src={variantImage}

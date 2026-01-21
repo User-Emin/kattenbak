@@ -1323,11 +1323,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
       {/* ✅ PREMIUM KWALITEIT SECTIE VERWIJDERD - Focus op 10.5L afvalbak */}
 
-      {/* Feature Sections - ZIGZAG PATTERN (Pergolux style) - ✅ EDGE-TO-EDGE: Minder witruimte, identiek aan productafbeeldingen */}
+      {/* Feature Sections - ZIGZAG PATTERN - ✅ EXACT ZELFDE: Identiek aan productafbeeldingen container */}
       <div className={cn(
         CONFIG.layout.maxWidth, 
         'mx-auto', 
-        'px-0 sm:px-4 md:px-6 lg:px-8', // ✅ EDGE-TO-EDGE: Minder margin tot einde beeldscherm zoals productafbeeldingen
+        CONFIG.layout.containerPadding, // ✅ EXACT ZELFDE: Container padding zoals productafbeeldingen (px-4 sm:px-6 md:px-8 lg:px-8)
         'py-8 sm:py-10 md:py-12 lg:py-12' // ✅ SYMMETRISCH: Gelijk boven/onder
       )}>
         <div className={CONFIG.featureSection.containerSpacing}>
