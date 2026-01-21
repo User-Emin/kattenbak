@@ -952,8 +952,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               {/* Specificaties Accordion - ONDER USPs */}
               <div className={cn(CONFIG.features.accordion.container, 'mt-6')}>
-              {/* ✅ SPECIFICATIES TITEL: Boven de specificaties balken */}
-              <h3 className="text-xl md:text-2xl font-semibold mb-4" style={{ color: DESIGN_SYSTEM.colors.text.primary }}>
+              {/* ✅ SPECIFICATIES TITEL: Compacter, minder direct */}
+              <h3 className="text-lg md:text-xl font-medium mb-3 text-gray-700">
                 Specificaties
               </h3>
               {/* Eerste features altijd zichtbaar */}
@@ -1168,8 +1168,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           )}
           {activeTab === 'specificaties' && (
             <div className={cn(CONFIG.tabs.content.spacing, CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor)}>
-              {/* ✅ SPECIFICATIES TITEL: Boven de specificaties balken */}
-              <h3 className="text-xl md:text-2xl font-semibold mb-6" style={{ color: DESIGN_SYSTEM.colors.text.primary }}>
+              {/* ✅ SPECIFICATIES TITEL: Compacter, minder direct */}
+              <h3 className="text-lg md:text-xl font-medium mb-4 text-gray-700">
                 Specificaties
               </h3>
               

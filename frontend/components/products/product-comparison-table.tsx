@@ -138,10 +138,9 @@ export function ProductComparisonTable() {
               <tr
                 key={index}
                 className={cn(
-                  'transition-colors',
                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50', // ✅ ZEBRA STRIPES: Alternerend wit/grijs
-                  row.highlight && 'bg-black text-white', // ✅ HIGHLIGHT: Zwarte achtergrond voor onze voordelen
-                  'hover:bg-gray-100'
+                  row.highlight && 'bg-black text-white' // ✅ HIGHLIGHT: Zwarte achtergrond voor onze voordelen
+                  // ✅ GEEN HOVER: Geen hover effect (geen wit worden)
                 )}
               >
                 <td className={cn(

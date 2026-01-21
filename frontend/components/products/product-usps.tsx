@@ -50,9 +50,11 @@ const gradientTextStyle = {
 export function ProductUsps({ usps }: ProductUspsProps) {
   return (
     <div className="max-w-5xl mx-auto mb-16 relative">
-      <SectionHeading className="mb-12">
-        Waarom deze kattenbak?
-      </SectionHeading>
+      <div className="mb-12" style={{ backgroundColor: '#000000', padding: '1.5rem 2rem', borderRadius: '0.5rem' }}>
+        <SectionHeading className="mb-0" style={{ color: '#ffffff' }}>
+          Waarom deze kattenbak?
+        </SectionHeading>
+      </div>
       
       <div className="space-y-12">
         {usps.map((usp, index) => {
