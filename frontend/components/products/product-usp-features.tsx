@@ -63,7 +63,10 @@ export function ProductUspFeatures() {
       'mx-auto',
       CONFIG.layout.containerPadding, // ✅ EXACT ZELFDE: Container padding zoals varianten (px-4 sm:px-6 md:px-8 lg:px-8) - GEEN verticale padding
     )}>
-      <div className={CONFIG.featureSection.containerSpacing}> {/* ✅ EXACT ZELFDE: Container spacing zoals productdetail */}
+      <div className={cn(
+        CONFIG.featureSection.containerSpacing, // ✅ EXACT ZELFDE: Container spacing zoals productdetail
+        'max-w-4xl mx-auto' // ✅ EXACT ZELFDE: Max-width en centrering zoals varianten (op container niveau)
+      )}>
         {features.map((feature, index) => {
           const isEven = index % 2 === 0;
           const IconComponent = feature.icon;
@@ -72,7 +75,6 @@ export function ProductUspFeatures() {
             <div 
               key={index} 
               className={cn(
-                'max-w-4xl mx-auto', // ✅ EXACT ZELFDE: Max-width en centrering zoals varianten
                 isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout // ✅ EXACT ZELFDE: Layout zoals productdetail
               )}
             >
