@@ -103,6 +103,20 @@ export function HomepageJsonLd({ product }: HomepageJsonLdProps) {
     };
   }
 
+  // ✅ SEO: BreadcrumbList structured data voor homepage
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: SEO_CONFIG.site.url,
+      },
+    ],
+  };
+
   return (
     <>
       <script
@@ -112,6 +126,10 @@ export function HomepageJsonLd({ product }: HomepageJsonLdProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd, null, 2) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd, null, 2) }}
       />
       {productJsonLd && (
         <script

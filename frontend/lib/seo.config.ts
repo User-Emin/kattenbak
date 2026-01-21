@@ -34,8 +34,8 @@ export const SEO_CONFIG = {
   },
   
   defaults: {
-    title: 'CatSupply - Premium Automatische Kattenbak | Zelfreinigend & App-Bediening',
-    description: 'Premium automatische kattenbak met zelfreinigende functie. 10.5L capaciteit, dubbele veiligheidssensoren, app-bediening. Perfect voor katten tot 7kg. Gratis verzending in Nederland.',
+    title: 'CatSupply - Premium Automatische Kattenbak',
+    description: 'Premium automatische kattenbak met zelfreinigende functie. 10.5L capaciteit, dubbele veiligheidssensoren, app-bediening. Perfect voor katten tot 7kg.',
     image: 'https://catsupply.nl/logos/logo.webp',
     type: 'website',
   },

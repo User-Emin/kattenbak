@@ -111,9 +111,12 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <meta name="twitter:title" content={SEO_CONFIG.defaults.title} />
         <meta name="twitter:description" content={SEO_CONFIG.defaults.description} />
         <meta name="twitter:image" content={SEO_CONFIG.defaults.image} />
+        <meta name="twitter:image:width" content="1200" />
+        <meta name="twitter:image:height" content="630" />
         <meta name="twitter:image:alt" content="CatSupply - Premium Automatische Kattenbak" />
         <meta name="twitter:site" content="@CatSupply" />
         <meta name="twitter:creator" content="@CatSupply" />
+        <meta name="twitter:domain" content="catsupply.nl" />
         
         {/* ✅ SEO 10/10: Additional Meta Tags */}
         <meta name="format-detection" content="telephone=yes" />
