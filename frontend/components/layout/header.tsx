@@ -92,9 +92,9 @@ export function Header() {
             </a>
           </div>
 
-          {/* CENTER: LOGO - MOBIEL: LINKS, DESKTOP: CENTER - ✅ DRY: Via DESIGN_SYSTEM */}
+          {/* CENTER: LOGO - MOBIEL: CENTER, DESKTOP: CENTER - ✅ DRY: Via DESIGN_SYSTEM */}
           <div 
-            className="flex items-center justify-start md:justify-center" 
+            className="flex items-center justify-center" 
             style={{ 
               height: '100%', 
               margin: 0, 
