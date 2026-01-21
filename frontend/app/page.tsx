@@ -229,19 +229,27 @@ export default function HomePage() {
       >
         {/* ✅ PADDING MOBIEL: Heading heeft padding op mobiel voor leesbaarheid */}
         <div className="text-center mb-12 px-4 md:px-0"> {/* ✅ PADDING MOBIEL: Padding op mobiel */}
+          {/* ✅ MOBIEL: Titel en subtekst op 1 rij, subtekst verborgen */}
           <h2 
-            className="mb-4"
+            className="mb-0 md:mb-4"
             style={{
               fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-              fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'],
+              fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'], // ✅ MOBIEL: 4xl
               fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
               color: DESIGN_SYSTEM.colors.text.primary,
               letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
             }}
+            className="text-4xl md:text-5xl" // ✅ DESKTOP: 5xl (even groot als productdetail)
           >
-            Waarom deze kattenbak?
+            <span className="block md:inline">Waarom deze kattenbak?</span>
+            <span className="hidden md:inline"> </span>
+            <span className="block md:inline text-base md:text-lg font-normal md:font-normal" style={{ color: DESIGN_SYSTEM.colors.text.secondary }}>
+              De belangrijkste features die het verschil maken
+            </span>
           </h2>
+          {/* ✅ DESKTOP: Subtekst apart onder titel */}
           <p 
+            className="hidden md:block mt-4"
             style={{
               fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
               fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
@@ -270,6 +278,10 @@ export default function HomePage() {
           backgroundColor: DESIGN_SYSTEM.colors.secondary,
         }}
       >
+        {/* ✅ MOBIEL: EDGE-TO-EDGE BANNER tussen FAQ en zigzag - Dynamisch - DRY & ZONDER HARDCODE */}
+        <div className="block md:hidden mb-12">
+          <ProductEdgeImageSection />
+        </div>
         <div 
           className="mx-auto md:max-w-4xl" // ✅ EDGE-TO-EDGE MOBIEL: Geen max-width op mobiel, wel op desktop
           style={{
