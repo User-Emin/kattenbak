@@ -243,17 +243,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   // ✅ VARIANT SYSTEM: Get variant images via shared utility (modulair, geen hardcode)
   const variantImageUrl = getVariantImage(activeVariant, product.images as string[]);
   let variantImages: string[] | null = null;
-  if (activeVariant && variantImageUrl) {
+  if (activeVariant) {
     // First, check if variant has images array
     if (activeVariant.images && Array.isArray(activeVariant.images) && activeVariant.images.length > 0) {
       variantImages = activeVariant.images;
     } 
-    // If no images array, check for previewImage or colorImageUrl
-    else if (activeVariant.previewImage || activeVariant.colorImageUrl) {
-      const previewImg = activeVariant.previewImage || activeVariant.colorImageUrl;
-      if (previewImg && typeof previewImg === 'string' && previewImg.length > 0) {
-        variantImages = [previewImg];
-      }
+    // If no images array, use the variant image URL from utility
+    else if (variantImageUrl) {
+      variantImages = [variantImageUrl];
     }
   }
   
