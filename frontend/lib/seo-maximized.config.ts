@@ -22,9 +22,15 @@ export function getAllKeywords(): string {
     ...KEYWORDS_BY_AUDIENCE.common.secondary,
     ...KEYWORDS_BY_AUDIENCE.common.longTail,
     ...KEYWORDS_BY_AUDIENCE.primary.transactional.slice(0, 5),
-    ...KEYWORDS_BY_AUDIENCE.secondary.transactional.slice(0, 3),
+    ...KEYWORDS_BY_AUDIENCE.secondary.transactional.slice(0, 5), // ✅ Verhoogd voor jonge stellen
     ...KEYWORDS_BY_AUDIENCE.tertiary.transactional.slice(0, 3),
     ...LOCAL_SEO.localKeywords,
+    // ✅ JONGE STELLEN: Specifieke keywords voor net getrouwde stellen
+    'kattenbak voor starters',
+    'automatische kattenbak eerste kat',
+    'kattenbak voor jonge stellen',
+    'makkelijk kattenbak drukke baan',
+    'starter kattenbak automatisch',
   ];
   
   // Remove duplicates and limit to 30 keywords (Google best practice)
@@ -37,9 +43,9 @@ export function getAllKeywords(): string {
 export const OPTIMIZED_DESCRIPTIONS = {
   homepage: {
     primary: 'Premium automatische kattenbak met zelfreinigende functie. 10.5L capaciteit, dubbele veiligheidssensoren, app-bediening. Perfect voor katten tot 7kg. Gratis verzending in Nederland.',
-    secondary: 'Smart kattenbak met app-bediening en WiFi-connectiviteit. Volledig automatisch, modern design, realtime monitoring. De meest geavanceerde kattenbak van 2026.',
+    secondary: 'Smart kattenbak met app-bediening en WiFi-connectiviteit. Volledig automatisch, modern design, realtime monitoring. Perfect voor jonge stellen, starters en drukke professionals. De meest geavanceerde kattenbak van 2026.',
     tertiary: 'Eenvoudig te gebruiken automatische kattenbak. Minder onderhoud, meer gemak. Perfect voor senior katten. Betrouwbaar en onderhoudsvriendelijk.',
-    default: 'Premium automatische kattenbak met zelfreinigende functie. Automatisch, hygiënisch, en stijlvol. 10.5L capaciteit, app-bediening, dubbele veiligheidssensoren. Gratis verzending in Nederland.',
+    default: 'Premium automatische kattenbak met zelfreinigende functie. Automatisch, hygiënisch, en stijlvol. 10.5L capaciteit, app-bediening, dubbele veiligheidssensoren. Perfect voor starters, jonge stellen en drukke professionals. Gratis verzending in Nederland.',
   },
   product: {
     primary: (productName: string, price: number) => 
@@ -97,6 +103,22 @@ export const RICH_SNIPPETS = {
         acceptedAnswer: {
           '@type': 'Answer',
           text: 'De motor werkt onder 40 decibel, wat vergelijkbaar is met een rustige bibliotheek. Zo stil dat je het nauwelijks hoort, maar het doet zijn werk perfect.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Is deze kattenbak geschikt voor starters of eerste kat?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Ja, perfect voor starters! De automatische kattenbak is ideaal voor jonge stellen, net getrouwde stellen en drukke professionals met weinig tijd. Volledig automatisch, app-bediening en minimale onderhoud. Perfect voor je eerste kat.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Is de kattenbak geschikt voor drukke werkweken?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Absoluut! Met de 10.5L capaciteit hoef je bij één kat slechts 1x per week te legen. De app stuurt meldingen wanneer het nodig is. Ideaal voor jonge stellen en professionals met drukke carrières.',
         },
       },
     ],

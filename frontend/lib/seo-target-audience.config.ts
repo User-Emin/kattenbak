@@ -44,18 +44,28 @@ export const TARGET_AUDIENCE = {
       'Vaak jonge tot volwassen katten',
       'Waardeert slimme features',
       'Design en stijl belangrijk',
+      'Jonge stellen en net getrouwde stellen',
+      'Starter met eerste kat',
+      'Werkend stel met drukke carrière',
+      'Moderne levensstijl',
     ],
     painPoints: [
       'Drukke levensstijl',
       'Wil moderne oplossingen',
       'App-connectiviteit belangrijk',
       'Design moet passen bij interieur',
+      'Eerste kat en weinig tijd',
+      'Wil gemak in drukke werkweek',
+      'Zoekt starter-friendly oplossing',
     ],
     searchBehavior: [
       'Zoekt naar "smart kattenbak"',
       'Interesseert zich voor app features',
       'Zoekt naar moderne design',
       'Vergelijkt tech specificaties',
+      'Zoekt "kattenbak voor starters"',
+      'Zoekt "makkelijk kattenbak eerste kat"',
+      'Zoekt "automatische kattenbak drukke baan"',
     ],
   },
   tertiary: {
@@ -116,7 +126,7 @@ export const KEYWORDS_BY_AUDIENCE = {
     ],
   },
   secondary: {
-    // 25-40 jaar: Tech-minded, early adopters
+    // 25-40 jaar: Tech-minded, early adopters, jonge stellen
     transactional: [
       'smart kattenbak met app kopen',
       'automatische kattenbak app bediening',
@@ -124,6 +134,11 @@ export const KEYWORDS_BY_AUDIENCE = {
       'slimme kattenbak WiFi',
       'automatische kattenbak 2026',
       'tech kattenbak kopen',
+      'kattenbak voor starters',
+      'automatische kattenbak eerste kat',
+      'kattenbak voor jonge stellen',
+      'makkelijk kattenbak drukke baan',
+      'starter kattenbak automatisch',
     ],
     informational: [
       'hoe werkt app kattenbak',
@@ -131,11 +146,17 @@ export const KEYWORDS_BY_AUDIENCE = {
       'automatische kattenbak reviews',
       'beste smart kattenbak 2026',
       'kattenbak met monitoring',
+      'kattenbak voor net getrouwde stellen',
+      'beste kattenbak voor starters',
+      'automatische kattenbak weinig tijd',
     ],
     conversational: [
       'ik wil een slimme kattenbak',
       'kattenbak met app bediening',
       'moderne automatische kattenbak',
+      'ik heb weinig tijd voor kattenbak',
+      'kattenbak voor drukke werkweek',
+      'starter zoekt automatische kattenbak',
     ],
   },
   tertiary: {
