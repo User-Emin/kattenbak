@@ -118,9 +118,9 @@ export function ProductComparisonTable() {
               <th className="px-6 py-4 text-center text-sm font-bold text-white bg-black w-1/3">
                 Onze Kattenbak
               </th>
-              <th className="px-6 py-4 text-center text-sm font-bold text-gray-900 bg-gray-100 w-1/3">
+              <th className="px-6 py-4 text-center text-sm font-bold text-white bg-gray-800 w-1/3">
                 <div className="flex flex-col items-center gap-2">
-                  <div className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-gray-300 bg-white">
+                  <div className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-gray-400 bg-white">
                     <Image
                       src="/images/traditional-litter-box-optimized.jpg"
                       alt="Traditionele kattenbak"
@@ -128,7 +128,7 @@ export function ProductComparisonTable() {
                       className="object-contain"
                     />
                   </div>
-                  <span className="text-center">Traditionele Kattenbak</span>
+                  <span className="text-center text-white">Traditionele Kattenbak</span>
                 </div>
               </th>
             </tr>
@@ -160,7 +160,7 @@ export function ProductComparisonTable() {
                 </td>
                 <td className={cn(
                   'px-6 py-4 text-center',
-                  row.highlight ? 'bg-gray-900' : 'bg-white'
+                  row.highlight ? 'bg-gray-800 text-white' : index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200'
                 )}>
                   <div className="flex items-center justify-center">
                     {renderValue(row.competitor, false)}
@@ -203,11 +203,11 @@ export function ProductComparisonTable() {
               </div>
               <div className={cn(
                 'flex flex-col items-center p-3 rounded-lg border-2',
-                row.highlight ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-300'
+                row.highlight ? 'bg-gray-800 border-gray-600 text-white' : 'bg-gray-100 border-gray-400 text-gray-900'
               )}>
                 <div className={cn(
                   'text-xs sm:text-sm font-bold mb-3 text-center',
-                  row.highlight ? 'text-gray-200' : 'text-gray-900'
+                  row.highlight ? 'text-white' : 'text-gray-900'
                 )}>Traditionele</div>
                 <div className="flex items-center justify-center">
                   {renderValue(row.competitor, false)}
