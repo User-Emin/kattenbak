@@ -175,7 +175,7 @@ export default function HomePage() {
             </p>
 
             {/* CTA Button - ✅ RESPONSIVE: Mobile margin-bottom, Desktop normale spacing */}
-            <div className="pt-4 pb-4 md:pb-4"> {/* ✅ RESPONSIVE: Mobile minder bottom padding (was pb-8) zodat varianten direct eronder komen */}
+            <div className="pt-4 pb-2 md:pb-4"> {/* ✅ MOBIEL: Minder bottom padding (pb-2) zodat varianten dichterbij komen */}
               <Link href={`/product/${productSlug}`}>
                 <button 
                   className="inline-flex items-center gap-2 md:gap-3 transition-all hover:opacity-90 text-sm md:text-base" // ✅ RESPONSIVE: Mobile kleinere gap en tekst
@@ -201,11 +201,15 @@ export default function HomePage() {
       {/* ✅ VARIANTEN SECTIE: Direct na hero - Dynamisch, smooth effect, tekst in afbeelding - DRY & ZONDER HARDCODE */}
       <ProductVariantsSection />
 
-      {/* ✅ EDGE-TO-EDGE IMAGE SECTIE: Na varianten, met tekst overlay - 3e foto, dynamisch, secure - DRY & ZONDER HARDCODE */}
-      <ProductEdgeImageSection />
+      {/* ✅ EDGE-TO-EDGE IMAGE SECTIE: Desktop na varianten, Mobiel na zigzag - 3e foto, dynamisch, secure - DRY & ZONDER HARDCODE */}
+      <div className="hidden md:block">
+        <ProductEdgeImageSection />
+      </div>
 
       {/* ✅ PRODUCT BESCHRIJVING SECTIE: Na edge-to-edge - Dynamisch - DRY & ZONDER HARDCODE */}
-      <ProductDescriptionSection />
+      <div className="hidden md:block">
+        <ProductDescriptionSection />
+      </div>
 
       {/* SEPARATOR */}
       <div 
@@ -251,6 +255,11 @@ export default function HomePage() {
         {/* USP Features Component - ✅ EDGE-TO-EDGE: Minder witruimte, identiek aan product detail */}
         <ProductUspFeatures product={product} />
       </section>
+
+      {/* ✅ MOBIEL: EDGE-TO-EDGE IMAGE SECTIE na zigzag, boven FAQ - 3e foto, dynamisch, secure - DRY & ZONDER HARDCODE */}
+      <div className="block md:hidden">
+        <ProductEdgeImageSection />
+      </div>
 
       {/* ✅ VIDEO SECTIE VERWIJDERD: Geen redundantie */}
 
