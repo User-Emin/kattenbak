@@ -1233,7 +1233,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           )}
           {activeTab === 'vragen' && (
             <div className={cn(CONFIG.tabs.content.spacing, CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor)}>
-              <h3 className="text-lg font-semibold mb-4">Veelgestelde Vragen</h3>
+              <h3 className="text-lg font-semibold mb-4">Vragen over ALP1071</h3>
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold mb-1">Hoe vaak moet ik de afvalbak legen?</h4>

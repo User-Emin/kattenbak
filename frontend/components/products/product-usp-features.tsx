@@ -49,8 +49,8 @@ export function ProductUspFeatures() {
     },
     {
       icon: Box,
-      title: "Alles inbegrepen",
-      description: "Geurblokje, Kwast, Afvalzak en Inloopmat - alles inbegrepen voor direct gebruik.",
+      title: "Gratis meegeleverd: Alles inbegrepen",
+      description: "Bij aankoop krijg je gratis: geurblokje voor langdurige geurneutralisatie, kwast voor eenvoudige reiniging, afvalzak (1 rol) voor hygiënische afvalverwerking, en inloopmat voor schone poten. Alles wat je nodig hebt voor direct gebruik.",
       items: [
         "Geurblokje voor langdurige geurneutralisatie",
         "Kwast voor eenvoudige reiniging",
@@ -58,7 +58,7 @@ export function ProductUspFeatures() {
         "Inloopmat voor schone poten"
       ],
       image: "/images/feature-3.jpg", // ✅ FALLBACK: Placeholder tot echte foto beschikbaar
-      imageAlt: "Geleverd met geurblokje, kwast, afvalzak en inloopmat"
+      imageAlt: "Gratis meegeleverd: geurblokje, kwast, afvalzak en inloopmat"
     }
   ];
 

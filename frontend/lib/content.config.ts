@@ -39,7 +39,7 @@ export const HOME_CONTENT = {
   },
   
   faqSection: {
-    title: 'Veelgestelde Vragen',
+    title: 'Vragen over ALP1071',
     subtitle: 'Alles wat je moet weten',
   },
   
@@ -222,8 +222,8 @@ export const PRODUCT_CONTENT = {
       // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
     {
-      title: 'Geurblokje, Kwast & Afvalzak',
-      description: 'Geen geurblokje nodig dankzij luchtdichte afvalzak. Geen kwast op de vloer. Eenvoudig afvalzak vervangen.',
+      title: 'Gratis meegeleverd: Geurblokje, Kwast & Afvalzak',
+      description: 'Bij aankoop krijg je gratis: geurblokje voor langdurige geurneutralisatie, kwast voor eenvoudige reiniging, en afvalzak (1 rol) voor hygiënische afvalverwerking. Alles wat je nodig hebt voor direct gebruik.',
       // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
   ],

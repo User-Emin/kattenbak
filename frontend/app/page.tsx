@@ -279,7 +279,7 @@ export default function HomePage() {
                 letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
               }}
             >
-              Veelgestelde Vragen
+              Vragen over ALP1071
             </h2>
             <p 
               style={{
