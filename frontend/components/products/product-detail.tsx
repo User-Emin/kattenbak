@@ -819,7 +819,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
                     // ✅ DIKGEDRUKTE WOORDEN: Bepaalde woorden dikgedrukt zoals bij "Gratis verzending • Bezorgtijd: 1-2 werkdagen"
                     const renderUSPText = (text: string) => {
-                      // ✅ DIKGEDRUKTE WOORDEN: Exacte woorden die dikgedrukt moeten worden
+                      // ✅ DIKGEDRUKTE WOORDEN: Exacte phrases die dikgedrukt moeten worden
                       const boldPhrases = [
                         'Volledig automatisch',
                         'App bediening',
@@ -831,82 +831,40 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                         'gratis retour',
                       ];
                       
-                      // Split op bullet points en verwerk elk deel
+                      // Split op bullet points
                       const parts = text.split(' • ');
                       return parts.map((part, partIndex) => {
-                        // Check welke phrases in dit deel voorkomen en maak ze dikgedrukt
-                        let processedPart: React.ReactNode[] = [];
-                        let remainingText = part;
-                        let lastIndex = 0;
+                        // Check of dit deel een bold phrase bevat
+                        const matchedPhrase = boldPhrases.find(phrase => 
+                          part.toLowerCase().includes(phrase.toLowerCase())
+                        );
                         
-                        // Sorteer phrases op lengte (langste eerst) om exacte matches te krijgen
-                        const sortedPhrases = [...boldPhrases].sort((a, b) => b.length - a.length);
-                        
-                        // Vind alle matches en sorteer op positie
-                        const matches: Array<{ phrase: string; index: number }> = [];
-                        sortedPhrases.forEach(phrase => {
-                          let searchIndex = 0;
-                          while (true) {
-                            const foundIndex = remainingText.toLowerCase().indexOf(phrase.toLowerCase(), searchIndex);
-                            if (foundIndex === -1) break;
-                            matches.push({ phrase, index: foundIndex });
-                            searchIndex = foundIndex + 1;
-                          }
-                        });
-                        
-                        // Sorteer matches op positie
-                        matches.sort((a, b) => a.index - b.index);
-                        
-                        // Verwijder overlappende matches (behoud langste)
-                        const filteredMatches: Array<{ phrase: string; index: number; endIndex: number }> = [];
-                        matches.forEach(match => {
-                          const endIndex = match.index + match.phrase.length;
-                          const overlaps = filteredMatches.some(fm => 
-                            (match.index >= fm.index && match.index < fm.endIndex) ||
-                            (endIndex > fm.index && endIndex <= fm.endIndex) ||
-                            (match.index <= fm.index && endIndex >= fm.endIndex)
-                          );
-                          if (!overlaps) {
-                            filteredMatches.push({ ...match, endIndex });
-                          }
-                        });
-                        
-                        // Bouw de tekst op met dikgedrukte delen
-                        filteredMatches.forEach((match, matchIndex) => {
-                          // Voeg tekst voor match toe
-                          if (match.index > lastIndex) {
-                            processedPart.push(
-                              <span key={`text-${matchIndex}`}>
-                                {remainingText.substring(lastIndex, match.index)}
+                        if (matchedPhrase) {
+                          // Vind de exacte positie van de phrase (case-insensitive)
+                          const lowerPart = part.toLowerCase();
+                          const lowerPhrase = matchedPhrase.toLowerCase();
+                          const phraseIndex = lowerPart.indexOf(lowerPhrase);
+                          
+                          if (phraseIndex !== -1) {
+                            const beforePhrase = part.substring(0, phraseIndex);
+                            const phraseText = part.substring(phraseIndex, phraseIndex + matchedPhrase.length);
+                            const afterPhrase = part.substring(phraseIndex + matchedPhrase.length);
+                            
+                            return (
+                              <span key={partIndex}>
+                                {beforePhrase}
+                                <span style={{ fontWeight: 600 }}>{phraseText}</span>
+                                {afterPhrase}
+                                {partIndex < parts.length - 1 && ' • '}
                               </span>
                             );
                           }
-                          // Voeg dikgedrukte match toe
-                          processedPart.push(
-                            <span key={`bold-${matchIndex}`} style={{ fontWeight: 600 }}>
-                              {remainingText.substring(match.index, match.endIndex)}
-                            </span>
-                          );
-                          lastIndex = match.endIndex;
-                        });
-                        
-                        // Voeg resterende tekst toe
-                        if (lastIndex < remainingText.length) {
-                          processedPart.push(
-                            <span key="text-end">
-                              {remainingText.substring(lastIndex)}
-                            </span>
-                          );
                         }
                         
-                        // Als er geen matches zijn, toon gewoon de tekst
-                        if (processedPart.length === 0) {
-                          processedPart = [<span key="no-match">{part}</span>];
-                        }
-                        
+                        // Geen match, toon gewoon de tekst
                         return (
                           <span key={partIndex}>
-                            {processedPart}
+                            {part}
                             {partIndex < parts.length - 1 && ' • '}
                           </span>
                         );
