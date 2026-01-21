@@ -234,33 +234,6 @@ export default function HomePage() {
         }}
       />
 
-      {/* 🎨 USP FEATURES - ZIGZAG PATTERN - ✅ EXACT ZELFDE: Identiek aan varianten sectie */}
-      <section 
-        className="py-12 md:py-16"
-        style={{
-          backgroundColor: DESIGN_SYSTEM.colors.secondary,
-        }}
-      >
-        {/* ✅ PADDING MOBIEL: Heading heeft padding op mobiel voor leesbaarheid */}
-        <div className="text-center mb-12 px-4 md:px-0"> {/* ✅ PADDING MOBIEL: Padding op mobiel */}
-          {/* ✅ OPTIMAAL: Alleen titel, geen subtekst */}
-          <h2 
-            className="mb-0 md:mb-4 text-4xl md:text-5xl" // ✅ DESKTOP: 5xl (even groot als productdetail)
-            style={{
-              fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-              fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
-              color: DESIGN_SYSTEM.colors.text.primary,
-              letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
-            }}
-          >
-            Waarom deze kattenbak?
-          </h2>
-        </div>
-        
-        {/* USP Features Component - ✅ EDGE-TO-EDGE: Minder witruimte, identiek aan product detail */}
-        <ProductUspFeatures product={product} />
-      </section>
-
       {/* ✅ EDGE-TO-EDGE SECTIE: Tussen zigzag einde en FAQ begin - Dynamisch - DRY & ZONDER HARDCODE */}
       <div className="block md:hidden mb-12">
         <ProductEdgeImageSection />
