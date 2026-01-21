@@ -216,7 +216,7 @@ export default function HomePage() {
         }}
       />
 
-      {/* 🎨 USP FEATURES - ZIGZAG PATTERN - ✅ EDGE-TO-EDGE MOBIEL: Mobielvriendelijker */}
+      {/* 🎨 USP FEATURES - ZIGZAG PATTERN - ✅ EDGE-TO-EDGE: Minder witruimte, identiek aan product detail */}
       <section 
         style={{
           padding: `${DESIGN_SYSTEM.spacing.section} 0`,
@@ -248,7 +248,7 @@ export default function HomePage() {
           </p>
         </div>
         
-        {/* USP Features Component - ✅ EDGE-TO-EDGE MOBIEL: Afbeeldingen edge-to-edge */}
+        {/* USP Features Component - ✅ EDGE-TO-EDGE: Minder witruimte, identiek aan product detail */}
         <ProductUspFeatures />
       </section>
 
