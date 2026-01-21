@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { DESIGN_SYSTEM } from '@/lib/design-system';
 
 export default function CartPage() {
-  const { items, itemCount, subtotal, removeItem, updateQuantity } = useCart();
+  const { items, itemCount, subtotal, removeItem, updateQuantity, setItems } = useCart();
 
   if (itemCount === 0) {
     return (
@@ -83,8 +83,18 @@ export default function CartPage() {
                           {formatPrice(item.product.price)} per stuk
                         </p>
                       </div>
+                      {/* ✅ VARIANT SYSTEM: Remove specific variant if variantId exists (modulair, geen hardcode) */}
                       <button
-                        onClick={() => removeItem(item.product.id)}
+                        onClick={() => {
+                          // ✅ VARIANT SYSTEM: Remove specific variant if variantId exists
+                          if (item.variantId) {
+                            setItems((prev) => prev.filter((cartItem) => 
+                              !(cartItem.product.id === item.product.id && cartItem.variantId === item.variantId)
+                            ));
+                          } else {
+                            removeItem(item.product.id);
+                          }
+                        }}
                         className="text-gray-400 hover:text-gray-600 transition p-1 sm:p-2 flex-shrink-0"
                         aria-label="Verwijder"
                       >
@@ -95,8 +105,20 @@ export default function CartPage() {
                     {/* QUANTITY + PRICE - responsive */}
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
+                        {/* ✅ VARIANT SYSTEM: Update quantity for specific variant (modulair, geen hardcode) */}
                         <button
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                          onClick={() => {
+                            // ✅ VARIANT SYSTEM: Update quantity for specific variant if variantId exists
+                            if (item.variantId) {
+                              setItems((prev) => prev.map((cartItem) => 
+                                (cartItem.product.id === item.product.id && cartItem.variantId === item.variantId)
+                                  ? { ...cartItem, quantity: Math.max(0, cartItem.quantity - 1) }
+                                  : cartItem
+                              ).filter((cartItem) => cartItem.quantity > 0));
+                            } else {
+                              updateQuantity(item.product.id, item.quantity - 1);
+                            }
+                          }}
                           className={`w-9 h-9 sm:w-10 sm:h-10 ${DESIGN_SYSTEM.button.borderRadius} border-2 border-gray-300 hover:border-accent flex items-center justify-center hover:bg-gray-50 transition active:scale-95`}
                         >
                           <Minus className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -107,7 +129,18 @@ export default function CartPage() {
                         </span>
 
                         <button
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          onClick={() => {
+                            // ✅ VARIANT SYSTEM: Update quantity for specific variant if variantId exists
+                            if (item.variantId) {
+                              setItems((prev) => prev.map((cartItem) => 
+                                (cartItem.product.id === item.product.id && cartItem.variantId === item.variantId)
+                                  ? { ...cartItem, quantity: cartItem.quantity + 1 }
+                                  : cartItem
+                              ));
+                            } else {
+                              updateQuantity(item.product.id, item.quantity + 1);
+                            }
+                          }}
                           className={`w-9 h-9 sm:w-10 sm:h-10 ${DESIGN_SYSTEM.button.borderRadius} border-2 border-gray-300 hover:border-accent flex items-center justify-center hover:bg-gray-50 transition active:scale-95`}
                           disabled={item.quantity >= item.product.stock}
                         >

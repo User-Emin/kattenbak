@@ -14,6 +14,20 @@ const formatCurrency = (price: any): string => {
 interface StickyCartBarProps {
   product: Product;
   addToCartButtonRef: React.RefObject<HTMLDivElement | null>;
+  // ✅ VARIANT SYSTEM: Dynamische variant informatie (modulair, geen hardcode)
+  selectedVariantId?: string | null;
+  variants?: Array<{
+    id: string;
+    name: string;
+    colorCode?: string;
+    colorName?: string;
+    images?: string[];
+    previewImage?: string;
+    colorImageUrl?: string;
+    priceAdjustment?: number | string;
+    stock?: number;
+  }>;
+  displayPrice?: number; // Variant-adjusted price
 }
 
 /**
@@ -22,10 +36,39 @@ interface StickyCartBarProps {
  * DRY: Hergebruikt cart context, niet overweldigend, smooth
  * Design: Clean banner met prijs + CTA
  */
-export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProps) {
+export function StickyCartBar({ 
+  product, 
+  addToCartButtonRef,
+  selectedVariantId,
+  variants = [],
+  displayPrice
+}: StickyCartBarProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
+  
+  // ✅ VARIANT SYSTEM: Dynamisch actieve variant herkennen (modulair, geen hardcode)
+  const activeVariant = selectedVariantId 
+    ? variants.find((v) => v.id === selectedVariantId)
+    : variants.length > 0 ? variants[0] : null;
+  
+  // ✅ VARIANT SYSTEM: Dynamisch variant afbeelding ophalen (modulair, geen hardcode)
+  // Priority: variant.images[0] > previewImage > colorImageUrl > product.images[0]
+  const getVariantImage = (): string | undefined => {
+    if (activeVariant) {
+      if (activeVariant.images && Array.isArray(activeVariant.images) && activeVariant.images.length > 0) {
+        return activeVariant.images[0];
+      } else if (activeVariant.previewImage) {
+        return activeVariant.previewImage;
+      } else if (activeVariant.colorImageUrl) {
+        return activeVariant.colorImageUrl;
+      }
+    }
+    return product.images?.[0];
+  };
+  
+  const variantImage = getVariantImage();
+  const finalPrice = displayPrice !== undefined ? displayPrice : (typeof product.price === 'number' ? product.price : parseFloat(String(product.price || 0)));
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,8 +87,39 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
     return () => window.removeEventListener('scroll', handleScroll);
   }, [addToCartButtonRef]);
 
+  // ✅ VARIANT SYSTEM: Dynamische variant herkenning bij winkelwagen klikken (modulair, geen hardcode)
   const handleAddToCart = () => {
-    addItem(product, quantity);
+    // ✅ VARIANT SYSTEM: Get variant image (priority: variant.images[0] > previewImage > colorImageUrl > product.images[0])
+    let variantImageToUse: string | undefined;
+    if (activeVariant) {
+      if (activeVariant.images && Array.isArray(activeVariant.images) && activeVariant.images.length > 0) {
+        variantImageToUse = activeVariant.images[0];
+      } else if (activeVariant.previewImage) {
+        variantImageToUse = activeVariant.previewImage;
+      } else if (activeVariant.colorImageUrl) {
+        variantImageToUse = activeVariant.colorImageUrl;
+      } else if (product.images && product.images.length > 0) {
+        variantImageToUse = product.images[0];
+      }
+    }
+    
+    // ✅ VARIANT SYSTEM: Create product with variant-adjusted price
+    const productToAdd = activeVariant ? {
+      ...product,
+      price: finalPrice, // Use variant-adjusted price
+    } : product;
+    
+    // ✅ VARIANT SYSTEM: Pass variant info as separate parameter (modulair, geen hardcode)
+    addItem(
+      productToAdd, 
+      quantity,
+      activeVariant ? {
+        id: activeVariant.id,
+        name: activeVariant.name,
+        color: activeVariant.colorCode || activeVariant.colorName || undefined,
+        image: variantImageToUse,
+      } : undefined
+    );
     // Direct naar winkelwagen zoals de hoofdbutton
     window.location.href = '/cart';
   };
@@ -66,8 +140,9 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
             {/* Product info - RUSTIGER */}
             <div className="flex items-center gap-3 min-w-0 flex-1">
               <div className="w-12 h-12 bg-gray-50 flex-shrink-0 overflow-hidden">
+                {/* ✅ VARIANT SYSTEM: Always use variant image as maatstaf if available, fallback to product image (modulair, geen hardcode) */}
                 <img
-                  src={product.images?.[0] || '/images/placeholder.jpg'}
+                  src={variantImage || product.images?.[0] || '/images/placeholder.jpg'}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
@@ -75,9 +150,13 @@ export function StickyCartBar({ product, addToCartButtonRef }: StickyCartBarProp
               <div className="min-w-0 flex-1">
                 <h3 className="font-medium text-gray-700 text-sm truncate">
                   {product.name}
+                  {/* ✅ VARIANT SYSTEM: Show variant name if selected (modulair, geen hardcode) */}
+                  {activeVariant?.name && (
+                    <span className="ml-1 text-xs text-gray-500">({activeVariant.name})</span>
+                  )}
                 </h3>
                 <p className="text-base font-semibold text-gray-900">
-                  {formatCurrency(product.price)}
+                  {formatCurrency(finalPrice)}
                 </p>
               </div>
             </div>

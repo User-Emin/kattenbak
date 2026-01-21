@@ -134,16 +134,33 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setItems((prev) => prev.filter((item) => item.product.id !== productId));
   }, []);
 
-  const updateQuantity = useCallback((productId: string, quantity: number) => {
+  // ✅ VARIANT SYSTEM: Update quantity with variant awareness (modulair, geen hardcode)
+  const updateQuantity = useCallback((productId: string, quantity: number, variantId?: string) => {
     if (quantity <= 0) {
-      removeItem(productId);
+      // ✅ VARIANT SYSTEM: Remove specific variant if variantId provided, otherwise remove all variants of product
+      if (variantId) {
+        setItems((prev) => prev.filter((item) => 
+          !(item.product.id === productId && item.variantId === variantId)
+        ));
+      } else {
+        removeItem(productId);
+      }
       return;
     }
     
+    // ✅ VARIANT SYSTEM: Update quantity for specific variant if variantId provided
     setItems((prev) =>
-      prev.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
-      )
+      prev.map((item) => {
+        if (variantId) {
+          // Update specific variant
+          return (item.product.id === productId && item.variantId === variantId) 
+            ? { ...item, quantity } 
+            : item;
+        } else {
+          // Update first matching product (backward compatibility)
+          return item.product.id === productId ? { ...item, quantity } : item;
+        }
+      })
     );
   }, [removeItem]);
 
@@ -189,6 +206,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         addItem,
         removeItem,
         updateQuantity,
+        setItems, // ✅ VARIANT SYSTEM: Expose setItems for variant-aware operations (modulair, geen hardcode)
         clearCart,
         customerData,
         saveCustomerData,
