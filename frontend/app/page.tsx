@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 // Chat popup is nu in layout.tsx voor alle pagina's
 import { Separator } from "@/components/ui/separator";
 // ✅ VIDEO PLAYER IMPORT VERWIJDERD: Geen redundantie
-import { ProductUspFeatures } from "@/components/products/product-usp-features";
 import { ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import type { Product } from "@/types/product";
 import { API_CONFIG, SITE_CONFIG, apiFetch } from "@/lib/config";
