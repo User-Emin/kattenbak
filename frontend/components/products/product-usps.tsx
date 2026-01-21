@@ -50,10 +50,10 @@ const gradientTextStyle = {
 export function ProductUsps({ usps }: ProductUspsProps) {
   return (
     <div className="max-w-5xl mx-auto mb-16 relative">
-      <div className="mb-12" style={{ backgroundColor: '#000000', padding: '1.5rem 2rem', borderRadius: '0.5rem' }}>
-        <SectionHeading className="mb-0" style={{ color: '#ffffff' }}>
+      <div className="mb-12 bg-black text-white px-6 py-4 rounded-lg">
+        <h2 className="text-2xl md:text-3xl font-light text-center text-white">
           Waarom deze kattenbak?
-        </SectionHeading>
+        </h2>
       </div>
       
       <div className="space-y-12">
