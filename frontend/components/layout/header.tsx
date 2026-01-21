@@ -55,12 +55,9 @@ export function Header() {
         }}
       >
         <div 
-          className="w-full mx-auto flex items-center justify-between md:grid md:grid-cols-3 px-3 sm:px-4 md:px-6 lg:px-12"
+          className="w-full mx-auto flex items-center justify-between md:grid md:grid-cols-3 px-3 sm:px-4 md:px-6 lg:px-12 h-20"
           style={{
             maxWidth: DESIGN_SYSTEM.layout.navbar.maxWidth,
-            height: '80px', // ✅ SMALLER: Navbar smaller (was 100px+)
-            minHeight: '80px',
-            maxHeight: '80px',
           }}
         >
           {/* LEFT: EMAIL + SUPPORT - MOBIEL: LEEG, DESKTOP: EMAIL + SUPPORT */}
