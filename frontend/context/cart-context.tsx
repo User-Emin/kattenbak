@@ -39,7 +39,8 @@ interface CartContextValue {
   subtotal: number;
   addItem: (product: Product, quantity?: number, variant?: { id?: string; name?: string; color?: string; image?: string }) => void;
   removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  updateQuantity: (productId: string, quantity: number, variantId?: string) => void; // ✅ VARIANT SYSTEM: Variant-aware quantity update (modulair)
+  setItems: React.Dispatch<React.SetStateAction<CartItem[]>>; // ✅ VARIANT SYSTEM: Expose setItems for variant-aware operations (modulair, geen hardcode)
   clearCart: () => void;
   customerData: CustomerData | null;
   saveCustomerData: (data: CustomerData) => void;
