@@ -813,11 +813,41 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs met GRIJZE tekst (niet blauw) - GROTER EN GRIJZER */}
+              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs met DIKgedrukte woorden zoals "Gratis verzending" */}
               {PRODUCT_CONTENT.serviceUsps.length > 0 && (
                 <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
-                    // ✅ GRIJZE TEKST: Groter en grijzer voor meer opvallendheid
+                    // ✅ DIKGEDRUKTE WOORDEN: Bepaalde woorden dikgedrukt zoals bij "Gratis verzending • Bezorgtijd: 1-2 werkdagen"
+                    const renderUSPText = (text: string) => {
+                      // ✅ DIKGEDRUKTE WOORDEN: "Volledig automatisch", "App bediening", "Altijd schoon", "Binnen 30 dagen", "1 jaar garantie", "Zelfreinigend systeem", "Hygiënisch"
+                      const boldWords = [
+                        'Volledig automatisch',
+                        'App bediening',
+                        'Altijd schoon',
+                        'Binnen 30 dagen',
+                        '1 jaar garantie',
+                        'Zelfreinigend systeem',
+                        'Hygiënisch',
+                        'gratis retour',
+                      ];
+                      
+                      // Split op bullet points
+                      const parts = text.split(' • ');
+                      return parts.map((part, partIndex) => {
+                        const shouldBold = boldWords.some(word => part.includes(word));
+                        return (
+                          <span key={partIndex}>
+                            {shouldBold ? (
+                              <span style={{ fontWeight: 600 }}>{part}</span>
+                            ) : (
+                              <span>{part}</span>
+                            )}
+                            {partIndex < parts.length - 1 && ' • '}
+                          </span>
+                        );
+                      });
+                    };
+                    
                     return (
                       <div key={index} className="flex items-center gap-2 text-sm sm:text-base">
                         {/* ✅ BLAUW VIJKJE: Exact logo blauw (#005980) - alleen vinkje is blauw */}
@@ -826,8 +856,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                           strokeWidth={3}
                           style={{ color: '#005980' }}
                         />
-                        {/* ✅ DONKERE TEKST: Donkerder zoals "Let op" balk voor meer opvallendheid */}
-                        <span style={{ color: DESIGN_SYSTEM.colors.text.primary }} className="font-medium">{usp.text}</span>
+                        {/* ✅ DIKGEDRUKTE TEKST: Bepaalde woorden dikgedrukt zoals "Gratis verzending" */}
+                        <span style={{ color: DESIGN_SYSTEM.colors.text.primary }} className="font-medium">
+                          {renderUSPText(usp.text)}
+                        </span>
                       </div>
                     );
                   })}

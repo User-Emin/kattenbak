@@ -254,6 +254,11 @@ export default function HomePage() {
         <ProductUspFeatures product={product} />
       </section>
 
+      {/* ✅ EDGE-TO-EDGE SECTIE: Tussen zigzag einde en FAQ begin - Dynamisch - DRY & ZONDER HARDCODE */}
+      <div className="block md:hidden mb-12">
+        <ProductEdgeImageSection />
+      </div>
+
       {/* ✅ MOBIEL: PRODUCT BESCHRIJVING SECTIE (ALP1017 + Premium zelfreinigende) na zigzag, boven FAQ - Dynamisch - DRY & ZONDER HARDCODE */}
       <div className="block md:hidden">
         <ProductDescriptionSection />
@@ -268,10 +273,6 @@ export default function HomePage() {
           backgroundColor: DESIGN_SYSTEM.colors.secondary,
         }}
       >
-        {/* ✅ MOBIEL: EDGE-TO-EDGE BANNER tussen FAQ en zigzag - Dynamisch - DRY & ZONDER HARDCODE */}
-        <div className="block md:hidden mb-12">
-          <ProductEdgeImageSection />
-        </div>
         <div 
           className="mx-auto md:max-w-4xl" // ✅ EDGE-TO-EDGE MOBIEL: Geen max-width op mobiel, wel op desktop
           style={{
