@@ -53,6 +53,14 @@ const faqs = [
     q: "Is de kattenbak geschikt voor meerdere katten?",
     a: "Ja, geschikt voor huishoudens met meerdere katten dankzij de XL 10.5L capaciteit. Het compacte ontwerp met grote binnenruimte biedt comfort voor katten tot 7kg. Je kunt alle soorten kattenbakvulling gebruiken dankzij het high-efficiency filter."
   },
+  {
+    q: "Is deze kattenbak geschikt voor starters of eerste kat?",
+    a: "Ja, perfect voor starters! Ideaal voor jonge stellen, net getrouwde stellen en drukke professionals met weinig tijd. Volledig automatisch, minimale onderhoud en app-bediening. Perfect voor je eerste kat zonder dagelijks schoonmaken."
+  },
+  {
+    q: "Is de kattenbak geschikt voor drukke werkweken?",
+    a: "Absoluut! Met de 10.5L capaciteit hoef je bij één kat slechts 1x per week te legen. De app stuurt meldingen wanneer het nodig is. Ideaal voor jonge stellen en professionals met drukke carrières - geen dagelijks onderhoud nodig."
+  },
 ];
 
 export default function HomePage() {
