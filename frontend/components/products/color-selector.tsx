@@ -35,7 +35,8 @@ export function ColorSelector({ variants, selectedVariant, onSelect }: ColorSele
         {variants.map((variant) => {
           // ✅ PERGOLUX STYLE: Ronde kleur buttons
           const hasImage = variant.images && variant.images.length > 0;
-          const variantImage = hasImage ? variant.images[0] : null;
+          // ✅ VARIANT SYSTEM: Get variant image via shared utility (modulair, geen hardcode)
+          const variantImage = getVariantImage(variant, product.images as string[]) || null;
           
           return (
             <button

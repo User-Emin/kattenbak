@@ -53,7 +53,7 @@ export function ProductVariantsSection() {
           .filter((v) => v.isActive !== false)
           .map((variant) => ({
             ...variant,
-            displayImage: variant.previewImage || variant.colorImageUrl || (variant.images && variant.images.length > 0 ? variant.images[0] : null) || (product.images && product.images.length > 0 ? product.images[0] : '/placeholder-image.jpg'),
+            displayImage: getVariantImage(variant, product.images as string[]) || getProductImage(product.images as string[]),
             displayName: variant.name || variant.colorName || 'Variant',
           }))
       : [];
