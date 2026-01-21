@@ -123,24 +123,29 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           console.error('Product load error:', error?.message || 'Unknown error');
         }
         
-        // ✅ RETRY: Probeer opnieuw bij network errors, 502, 503, 504
+        // ✅ RETRY: Probeer opnieuw bij network errors, 502, 503, 504, 429 (rate limit)
         if (retryCount < MAX_RETRIES && (
           error?.isNetworkError || 
           error?.isGatewayError || 
+          error?.status === 429 || // ✅ FIX: Retry bij rate limiting
           error?.status === 502 ||
           error?.status === 503 ||
           error?.status === 504 ||
           error?.message?.includes('verbinding') ||
           error?.message?.includes('tijdelijk niet beschikbaar') ||
           error?.message?.includes('Bad Gateway') ||
-          error?.message?.includes('Service Unavailable')
+          error?.message?.includes('Service Unavailable') ||
+          error?.message?.includes('Too many requests') ||
+          error?.message?.includes('rate limit')
         )) {
           retryCount++;
+          // ✅ FIX: Langere delay bij rate limiting (429)
+          const delay = error?.status === 429 ? RETRY_DELAY * retryCount * 2 : RETRY_DELAY * retryCount;
           setTimeout(() => {
             if (isMounted) {
               loadProduct();
             }
-          }, RETRY_DELAY * retryCount); // Exponential backoff
+          }, delay); // Exponential backoff, langer bij rate limiting
           return;
         }
         
