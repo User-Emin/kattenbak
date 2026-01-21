@@ -206,7 +206,7 @@ export default function HomePage() {
         <ProductEdgeImageSection />
       </div>
 
-      {/* ✅ PRODUCT BESCHRIJVING SECTIE: Desktop na edge-to-edge - Dynamisch - DRY & ZONDER HARDCODE */}
+      {/* ✅ PRODUCT BESCHRIJVING SECTIE: Desktop na edge-to-edge, Mobiel na zigzag - Dynamisch - DRY & ZONDER HARDCODE */}
       <div className="hidden md:block">
         <ProductDescriptionSection />
       </div>
@@ -256,9 +256,9 @@ export default function HomePage() {
         <ProductUspFeatures product={product} />
       </section>
 
-      {/* ✅ MOBIEL: EDGE-TO-EDGE IMAGE SECTIE na zigzag, boven FAQ - 3e foto, dynamisch, secure - DRY & ZONDER HARDCODE */}
+      {/* ✅ MOBIEL: PRODUCT BESCHRIJVING SECTIE (ALP1017 + Premium zelfreinigende) na zigzag, boven FAQ - Dynamisch - DRY & ZONDER HARDCODE */}
       <div className="block md:hidden">
-        <ProductEdgeImageSection />
+        <ProductDescriptionSection />
       </div>
 
       {/* ✅ VIDEO SECTIE VERWIJDERD: Geen redundantie */}
