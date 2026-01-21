@@ -53,7 +53,6 @@ export function StickyCartBar({
     : variants.length > 0 ? variants[0] : null;
   
   // ✅ VARIANT SYSTEM: Dynamisch variant afbeelding ophalen via shared utility (modulair, geen hardcode)
-  const { getVariantImage } = require('@/lib/variant-utils');
   const variantImage = getVariantImage(activeVariant, product.images as string[]);
   const finalPrice = displayPrice !== undefined ? displayPrice : (typeof product.price === 'number' ? product.price : parseFloat(String(product.price || 0)));
 
@@ -77,7 +76,6 @@ export function StickyCartBar({
   // ✅ VARIANT SYSTEM: Dynamische variant herkenning bij winkelwagen klikken (modulair, geen hardcode)
   const handleAddToCart = () => {
     // ✅ VARIANT SYSTEM: Get variant image via shared utility (modulair, geen hardcode)
-    const { getVariantImage } = require('@/lib/variant-utils');
     const variantImageToUse = getVariantImage(activeVariant, product.images as string[]);
     
     // ✅ VARIANT SYSTEM: Create product with variant-adjusted price

@@ -446,7 +446,6 @@ router.get('/:id', async (req, res) => {
                   
                   if (variant) {
                     // ✅ VARIANT SYSTEM: Get variant image via shared utility (modulair, geen hardcode)
-                    const { getVariantImage, getDisplayImage } = require('../../utils/variant.util');
                     variantImage = getVariantImage(variant);
                   }
                 } catch (variantError: any) {
@@ -455,7 +454,6 @@ router.get('/:id', async (req, res) => {
               }
               
               // ✅ VARIANT SYSTEM: Display image via shared utility (modulair, geen hardcode)
-              const { getDisplayImage } = require('../../utils/variant.util');
               const displayImage = getDisplayImage(variantImage, productImages);
               
               items.push({

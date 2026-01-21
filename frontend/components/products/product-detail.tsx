@@ -301,7 +301,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     setIsAdding(true);
     try {
       // ✅ VARIANT SYSTEM: Get variant image via shared utility (modulair, geen hardcode)
-      const { getVariantImage } = await import('@/lib/variant-utils');
       const variantImage = getVariantImage(activeVariant, product.images as string[]);
       
       // ✅ VARIANT SYSTEM: Create product with variant-adjusted price
