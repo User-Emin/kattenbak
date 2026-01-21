@@ -813,21 +813,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs met GRIJZE tekst (niet blauw) */}
+              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs met GRIJZE tekst (niet blauw) - GROTER EN GRIJZER */}
               {PRODUCT_CONTENT.serviceUsps.length > 0 && (
                 <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
-                    // ✅ GRIJZE TEKST: Volledig grijs, geen blauwe highlights
+                    // ✅ GRIJZE TEKST: Groter en grijzer voor meer opvallendheid
                     return (
-                      <div key={index} className="flex items-center gap-2 text-xs sm:text-sm">
+                      <div key={index} className="flex items-center gap-2 text-sm sm:text-base">
                         {/* ✅ BLAUW VIJKJE: Exact logo blauw (#005980) - alleen vinkje is blauw */}
                         <Check
                           className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
                           strokeWidth={3}
                           style={{ color: '#005980' }}
                         />
-                        {/* ✅ GRIJZE TEKST: Explicit style override om blauwe kleur te voorkomen */}
-                        <span style={{ color: '#374151' }} className="text-gray-700">{usp.text}</span>
+                        {/* ✅ GRIJZE TEKST: Groter (text-sm sm:text-base) en donkerder grijs (#4B5563) voor meer opvallendheid */}
+                        <span style={{ color: '#4B5563' }} className="font-medium">{usp.text}</span>
                       </div>
                     );
                   })}
@@ -850,7 +850,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   CONFIG.info.button.borderRadius,
                   CONFIG.info.button.transition,
                   'flex items-center justify-center gap-2',
-                  'mb-6 sm:mb-8 md:mb-8 lg:mb-8', // ✅ SYMMETRISCH: Gelijk margin onder
+                  'mb-1 sm:mb-1.5', // ✅ MINIMALE MARGIN: Minder padding tot bezorgtijd tekst
                   'touch-manipulation', // ✅ MOBILE: Betere touch response
                   isAdding && 'bg-green-600 hover:bg-green-600'
                 )}
