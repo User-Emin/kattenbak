@@ -71,7 +71,7 @@ export class ChatPopupErrorBoundary extends Component<Props, State> {
                 </p>
                 <button
                   onClick={this.handleReset}
-                  className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+                  className="text-xs font-medium text-[#3071aa] hover:text-[#256394]"
                 >
                   Opnieuw proberen
                 </button>

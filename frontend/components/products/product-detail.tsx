@@ -16,6 +16,7 @@ import { ProductComparisonTable } from "@/components/products/product-comparison
 import { ProductJsonLd } from "@/components/seo/product-json-ld";
 import type { Product } from "@/types/product";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
+import { BRAND_COLORS_HEX } from "@/lib/color-config"; // ✅ BLAUW: Voor vinkjes
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -230,7 +231,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </p>
         <Link 
           href="/" 
-          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 text-white rounded-lg transition-colors"
+          style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary}
         >
           <Home className="w-5 h-5" />
           Terug naar Home
@@ -886,11 +890,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     
                     return (
                       <div key={index} className="flex items-center gap-2 text-sm sm:text-base">
-                        {/* ✅ BLAUW VIJKJE: Exact logo blauw (#005980) - alleen vinkje is blauw */}
+                        {/* ✅ BLAUW VIJKJE: Exact blauw #3071aa - alleen vinkje is blauw */}
                         <Check
                           className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
                           strokeWidth={3}
-                          style={{ color: '#005980' }}
+                          style={{ color: BRAND_COLORS_HEX.primary }}
                         />
                         {/* ✅ DIKGEDRUKTE TEKST: Bepaalde woorden dikgedrukt zoals "Gratis verzending" */}
                         <span style={{ color: DESIGN_SYSTEM.colors.text.primary }} className="font-medium">

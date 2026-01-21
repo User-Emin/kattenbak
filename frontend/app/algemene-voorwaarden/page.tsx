@@ -77,7 +77,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">9. Contact</h2>
           <p className="text-gray-700 leading-relaxed">
-            Voor vragen over deze voorwaarden kunt u contact opnemen via: <a href="mailto:info@catsupply.nl" className="text-blue-600 hover:underline">info@catsupply.nl</a>
+            Voor vragen over deze voorwaarden kunt u contact opnemen via: <a href="mailto:info@catsupply.nl" className="text-[#3071aa] hover:text-[#256394] hover:underline">info@catsupply.nl</a>
           </p>
         </section>
 

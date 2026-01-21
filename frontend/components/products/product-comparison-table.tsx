@@ -84,8 +84,8 @@ export function ProductComparisonTable() {
   const renderValue = (value: string | boolean, isOurProduct: boolean = false) => {
     if (typeof value === 'boolean') {
       return value ? (
-        // ✅ ZWART-WIT VINKJE: Zwarte achtergrond, witte vink
-        <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center">
+        // ✅ BLAUW VINKJE: #3071aa achtergrond, witte vink
+        <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#3071aa' }}>
           <Check className="w-5 h-5 text-white" />
         </div>
       ) : (
@@ -115,7 +115,7 @@ export function ProductComparisonTable() {
               <th className="px-6 py-4 text-left text-sm font-bold text-gray-900 w-1/3">
                 Feature
               </th>
-              <th className="px-6 py-4 text-center text-sm font-bold text-white bg-black w-1/3">
+              <th className="px-6 py-4 text-center text-sm font-bold text-white w-1/3" style={{ backgroundColor: '#3071aa' }}>
                 Onze Kattenbak
               </th>
               <th className="px-6 py-4 text-center text-sm font-bold text-white bg-gray-800 w-1/3">
@@ -152,8 +152,8 @@ export function ProductComparisonTable() {
                 </td>
                 <td className={cn(
                   'px-6 py-4 text-center',
-                  row.highlight && 'bg-black'
-                )}>
+                  row.highlight && 'text-white'
+                )} style={row.highlight ? { backgroundColor: '#3071aa' } : undefined}>
                   <div className="flex items-center justify-center">
                     {renderValue(row.ourProduct, true)}
                   </div>
@@ -191,8 +191,8 @@ export function ProductComparisonTable() {
             <div className="grid grid-cols-2 gap-4">
               <div className={cn(
                 'flex flex-col items-center p-3 rounded-lg',
-                row.highlight ? 'bg-gray-900' : 'bg-black'
-              )}>
+                'text-white'
+              )} style={{ backgroundColor: '#3071aa' }}>
                 <div className={cn(
                   'text-xs sm:text-sm font-bold mb-3 text-center',
                   'text-white'

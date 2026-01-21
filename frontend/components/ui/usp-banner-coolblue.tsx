@@ -14,7 +14,7 @@ export function UspBannerCoolblue() {
         <div className="flex items-center justify-center gap-6 md:gap-10 text-sm flex-wrap">
           {/* USP 1: Gratis verzending */}
           <div className="flex items-center gap-2">
-            <Truck className="h-5 w-5 text-[#0071ce] flex-shrink-0" />
+            <Truck className="h-5 w-5 flex-shrink-0" style={{ color: '#3071aa' }} />
             <span className="text-gray-800">
               <strong className="font-bold">Gratis verzending</strong> vanaf €50
             </span>
@@ -22,7 +22,7 @@ export function UspBannerCoolblue() {
           
           {/* USP 2: 14 dagen bedenktijd */}
           <div className="flex items-center gap-2">
-            <RotateCcw className="h-5 w-5 text-[#0071ce] flex-shrink-0" />
+            <RotateCcw className="h-5 w-5 flex-shrink-0" style={{ color: '#3071aa' }} />
             <span className="text-gray-800">
               <strong className="font-bold">14 dagen</strong> bedenktijd
             </span>
@@ -30,7 +30,7 @@ export function UspBannerCoolblue() {
           
           {/* USP 3: 1 jaar garantie */}
           <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-[#0071ce] flex-shrink-0" />
+            <Shield className="h-5 w-5 flex-shrink-0" style={{ color: '#3071aa' }} />
             <span className="text-gray-800">
               <strong className="font-bold">1 jaar</strong> garantie
             </span>

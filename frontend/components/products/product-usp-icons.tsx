@@ -21,7 +21,7 @@ export function HygieneIcon({ className = 'w-12 h-12' }: IconProps) {
       <path
         d="M24 8C24 8 18 14 18 20C18 24.4183 20.5817 27 25 27C29.4183 27 32 24.4183 32 20C32 14 26 8 24 8Z"
         fill="currentColor"
-        className="text-blue-500"
+        style={{ color: '#3071aa' }}
       />
       {/* Sparkle lines */}
       <path
@@ -29,7 +29,7 @@ export function HygieneIcon({ className = 'w-12 h-12' }: IconProps) {
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
-        className="text-blue-400"
+        style={{ color: '#3d82c0' }}
       />
     </svg>
   );

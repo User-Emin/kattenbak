@@ -60,7 +60,7 @@ export const DESIGN_SYSTEM = {
       success: '#22c55e',     // Groen - success messages
       error: '#ef4444',       // Rood - errors
       warning: '#f59e0b',     // Geel - warnings
-      info: '#3b82f6',        // Blauw - info
+      info: '#3071aa',        // Blauw - info #3071aa
     }
   },
 

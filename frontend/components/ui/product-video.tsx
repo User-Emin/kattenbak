@@ -134,7 +134,10 @@ export function ProductVideo({ videoUrl, productName, className = '' }: ProductV
             <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
               <button
                 onClick={() => setIsPlaying(true)}
-                className="w-20 h-20 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform shadow-2xl"
+                className="w-20 h-20 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform shadow-2xl"
+                style={{ backgroundColor: '#3071aa' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#256394'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3071aa'}
                 aria-label={`Speel ${productName} demo video af`}
               >
                 <Play className="w-10 h-10 text-white ml-1" fill="white" />

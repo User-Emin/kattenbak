@@ -87,17 +87,17 @@ const config: Config = {
           light: '#ffffff',
           dark: '#f5f5f5',
         },
-        // BRAND - Serieuze blue-gray (#415b6b) voor navbar en structurele elementen
+        // BRAND - BLAUW #3071aa voor navbar en structurele elementen
         brand: {
-          DEFAULT: '#415b6b',      // Main brand color
-          light: '#567080',
-          dark: '#314552',
+          DEFAULT: '#3071aa',      // Main brand color #3071aa
+          light: '#3d82c0',
+          dark: '#256394',
         },
-        // ACCENT - BLAUW voor buttons, ZWART voor rest
+        // ACCENT - BLAUW #3071aa voor buttons, ZWART voor rest
         accent: {
-          DEFAULT: '#2563eb',      // BLAUW (blue-600) voor buttons
-          light: '#3b82f6',        // BLAUW (blue-500)
-          dark: '#1d4ed8',         // BLAUW (blue-700)
+          DEFAULT: '#3071aa',      // BLAUW #3071aa voor buttons
+          light: '#3d82c0',        // BLAUW LIGHT
+          dark: '#256394',         // BLAUW DARK
         },
         // Verwijder custom cyan - gebruik default Tailwind
         // cyan removed - primary is now BLACK/GRAY

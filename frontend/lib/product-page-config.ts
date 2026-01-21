@@ -396,7 +396,7 @@ export const PRODUCT_PAGE_CONFIG = {
         fontSize: 'text-base',
         fontWeight: 'font-normal', // ✅ DUNNER (was medium)
         textColor: 'text-gray-900',
-        hover: 'group-hover:text-blue-600',
+        hover: 'group-hover:text-[#3071aa]',
         transition: 'transition-colors',
       },
     },

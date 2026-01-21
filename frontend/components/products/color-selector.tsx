@@ -87,7 +87,7 @@ export function ColorSelector({ variants, selectedVariant, onSelect }: ColorSele
       </div>
       
       {selectedVariant && selectedVariant.stock < 5 && selectedVariant.stock > 0 && (
-        <p className="text-sm font-semibold text-blue-600">
+        <p className="text-sm font-semibold text-[#3071aa]">
           Nog maar {selectedVariant.stock} op voorraad!
         </p>
       )}

@@ -305,9 +305,9 @@ export function ChatPopup() {
           button: {
             padding: 'p-3',
             borderRadius: 'rounded-lg',
-            backgroundColor: 'bg-blue-600',
+            backgroundColor: 'bg-[#3071aa]',
             textColor: 'text-white',
-            hoverBackgroundColor: 'hover:bg-blue-700',
+            hoverBackgroundColor: 'hover:bg-[#256394]',
             fontSize: 'text-sm',
             fontWeight: 'font-medium',
             transition: 'transition-colors',

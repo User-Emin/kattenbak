@@ -17,9 +17,9 @@ interface ReturnStatusBadgeProps {
 
 // DRY: Status → Color mapping
 const STATUS_COLORS: Record<ReturnStatus, string> = {
-  [ReturnStatus.REQUESTED]: 'bg-blue-100 text-blue-800 border-blue-200',
-  [ReturnStatus.LABEL_CREATED]: 'bg-blue-100 text-blue-800 border-blue-200',
-  [ReturnStatus.LABEL_SENT]: 'bg-blue-100 text-blue-800 border-blue-200',
+  [ReturnStatus.REQUESTED]: 'bg-[#3071aa]/10 text-[#3071aa] border-[#3071aa]/20',
+  [ReturnStatus.LABEL_CREATED]: 'bg-[#3071aa]/10 text-[#3071aa] border-[#3071aa]/20',
+  [ReturnStatus.LABEL_SENT]: 'bg-[#3071aa]/10 text-[#3071aa] border-[#3071aa]/20',
   [ReturnStatus.IN_TRANSIT]: 'bg-purple-100 text-purple-800 border-purple-200',
   [ReturnStatus.RECEIVED]: 'bg-indigo-100 text-indigo-800 border-indigo-200',
   [ReturnStatus.INSPECTED]: 'bg-indigo-100 text-indigo-800 border-indigo-200',
