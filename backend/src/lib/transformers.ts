@@ -6,6 +6,7 @@
 
 import { Product, ProductVariant, Prisma, PrismaClient } from '@prisma/client';
 import { decimalToNumber } from '../utils/price.util'; // ✅ DRY: Use shared utility
+import { getVariantImage, getDisplayImage } from '../utils/variant.util'; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 
 // ✅ VARIANT SYSTEM: Shared Prisma client instance for variant image fetching (modulair)
 const prisma = new PrismaClient();
@@ -133,12 +134,8 @@ export const transformOrder = async (order: any): Promise<any> => {
               });
               
               if (variant) {
-                // ✅ VARIANT SYSTEM: Priority: variant.images[0] > colorImageUrl (modulair, geen hardcode)
-                if (variant.images && Array.isArray(variant.images) && variant.images.length > 0) {
-                  variantImage = variant.images[0] as string;
-                } else if (variant.colorImageUrl) {
-                  variantImage = variant.colorImageUrl;
-                }
+                // ✅ VARIANT SYSTEM: Get variant image via shared utility (modulair, geen hardcode)
+                variantImage = getVariantImage(variant);
               }
             } catch (variantError: any) {
               // Silent fail - variant image is optional (geen dataverlies)
@@ -146,17 +143,12 @@ export const transformOrder = async (order: any): Promise<any> => {
             }
           } else if (item.variant) {
             // Variant is already included in query
-            const variant = item.variant;
-            if (variant.images && Array.isArray(variant.images) && variant.images.length > 0) {
-              variantImage = variant.images[0];
-            } else if (variant.colorImageUrl) {
-              variantImage = variant.colorImageUrl;
-            }
+            variantImage = getVariantImage(item.variant);
           }
           
-          // ✅ VARIANT SYSTEM: Display image - variant image als maatstaf, fallback naar product image
+          // ✅ VARIANT SYSTEM: Display image via shared utility (modulair, geen hardcode)
           const productImages = item.product?.images && Array.isArray(item.product.images) ? item.product.images : [];
-          const displayImage = variantImage || (productImages.length > 0 ? productImages[0] : null);
+          const displayImage = getDisplayImage(variantImage, productImages);
           
           return {
             id: item.id || 'unknown',

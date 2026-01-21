@@ -300,19 +300,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const handleAddToCart = async () => {
     setIsAdding(true);
     try {
-      // ✅ VARIANT SYSTEM: Get variant image (priority: variant.images[0] > previewImage > colorImageUrl > product.images[0])
-      let variantImage: string | undefined;
-      if (activeVariant) {
-        if (activeVariant.images && Array.isArray(activeVariant.images) && activeVariant.images.length > 0) {
-          variantImage = activeVariant.images[0];
-        } else if (activeVariant.previewImage) {
-          variantImage = activeVariant.previewImage;
-        } else if (activeVariant.colorImageUrl) {
-          variantImage = activeVariant.colorImageUrl;
-        } else if (product.images && product.images.length > 0) {
-          variantImage = product.images[0];
-        }
-      }
+      // ✅ VARIANT SYSTEM: Get variant image via shared utility (modulair, geen hardcode)
+      const { getVariantImage } = await import('@/lib/variant-utils');
+      const variantImage = getVariantImage(activeVariant, product.images as string[]);
       
       // ✅ VARIANT SYSTEM: Create product with variant-adjusted price
       const productToAdd = activeVariant ? {

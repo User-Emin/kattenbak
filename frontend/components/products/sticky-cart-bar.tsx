@@ -52,22 +52,9 @@ export function StickyCartBar({
     ? variants.find((v) => v.id === selectedVariantId)
     : variants.length > 0 ? variants[0] : null;
   
-  // ✅ VARIANT SYSTEM: Dynamisch variant afbeelding ophalen (modulair, geen hardcode)
-  // Priority: variant.images[0] > previewImage > colorImageUrl > product.images[0]
-  const getVariantImage = (): string | undefined => {
-    if (activeVariant) {
-      if (activeVariant.images && Array.isArray(activeVariant.images) && activeVariant.images.length > 0) {
-        return activeVariant.images[0];
-      } else if (activeVariant.previewImage) {
-        return activeVariant.previewImage;
-      } else if (activeVariant.colorImageUrl) {
-        return activeVariant.colorImageUrl;
-      }
-    }
-    return product.images?.[0];
-  };
-  
-  const variantImage = getVariantImage();
+  // ✅ VARIANT SYSTEM: Dynamisch variant afbeelding ophalen via shared utility (modulair, geen hardcode)
+  const { getVariantImage } = require('@/lib/variant-utils');
+  const variantImage = getVariantImage(activeVariant, product.images as string[]);
   const finalPrice = displayPrice !== undefined ? displayPrice : (typeof product.price === 'number' ? product.price : parseFloat(String(product.price || 0)));
 
   useEffect(() => {
@@ -89,19 +76,9 @@ export function StickyCartBar({
 
   // ✅ VARIANT SYSTEM: Dynamische variant herkenning bij winkelwagen klikken (modulair, geen hardcode)
   const handleAddToCart = () => {
-    // ✅ VARIANT SYSTEM: Get variant image (priority: variant.images[0] > previewImage > colorImageUrl > product.images[0])
-    let variantImageToUse: string | undefined;
-    if (activeVariant) {
-      if (activeVariant.images && Array.isArray(activeVariant.images) && activeVariant.images.length > 0) {
-        variantImageToUse = activeVariant.images[0];
-      } else if (activeVariant.previewImage) {
-        variantImageToUse = activeVariant.previewImage;
-      } else if (activeVariant.colorImageUrl) {
-        variantImageToUse = activeVariant.colorImageUrl;
-      } else if (product.images && product.images.length > 0) {
-        variantImageToUse = product.images[0];
-      }
-    }
+    // ✅ VARIANT SYSTEM: Get variant image via shared utility (modulair, geen hardcode)
+    const { getVariantImage } = require('@/lib/variant-utils');
+    const variantImageToUse = getVariantImage(activeVariant, product.images as string[]);
     
     // ✅ VARIANT SYSTEM: Create product with variant-adjusted price
     const productToAdd = activeVariant ? {

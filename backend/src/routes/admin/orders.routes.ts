@@ -445,20 +445,18 @@ router.get('/:id', async (req, res) => {
                   });
                   
                   if (variant) {
-                    // ✅ VARIANT SYSTEM: Priority: variant.images[0] > colorImageUrl (modulair)
-                    if (variant.images && Array.isArray(variant.images) && variant.images.length > 0) {
-                      variantImage = variant.images[0] as string;
-                    } else if (variant.colorImageUrl) {
-                      variantImage = variant.colorImageUrl;
-                    }
+                    // ✅ VARIANT SYSTEM: Get variant image via shared utility (modulair, geen hardcode)
+                    const { getVariantImage, getDisplayImage } = require('../../utils/variant.util');
+                    variantImage = getVariantImage(variant);
                   }
                 } catch (variantError: any) {
                   logger.warn('⚠️ Could not fetch variant image:', variantError.message);
                 }
               }
               
-              // ✅ VARIANT SYSTEM: Display image - altijd variant image als maatstaf indien beschikbaar
-              const displayImage = variantImage || (productImages.length > 0 ? productImages[0] : null);
+              // ✅ VARIANT SYSTEM: Display image via shared utility (modulair, geen hardcode)
+              const { getDisplayImage } = require('../../utils/variant.util');
+              const displayImage = getDisplayImage(variantImage, productImages);
               
               items.push({
                 id: item.id,
