@@ -112,24 +112,9 @@ export const transformOrder = async (order: any): Promise<any> => {
       };
     }
 
-    return {
-      ...order,
-      // ✅ SECURITY: Preserve orderNumber (critical for admin)
-      orderNumber: order.orderNumber || `ORDER-${order.id?.substring(0, 8) || 'UNKNOWN'}`,
-      customerEmail: order.customerEmail || '',
-      customerPhone: order.customerPhone || null,
-      customerName: order.customerName || (order.shippingAddress 
-        ? `${order.shippingAddress.firstName || ''} ${order.shippingAddress.lastName || ''}`.trim()
-        : null),
-      subtotal: decimalToNumber(order.subtotal),
-      shippingCost: decimalToNumber(order.shippingCost),
-      tax: decimalToNumber(order.tax),
-      discount: decimalToNumber(order.discount),
-      total: decimalToNumber(order.total),
-      status: order.status || 'PENDING',
-      paymentStatus: order.payment?.status || order.paymentStatus || 'PENDING',
-      // ✅ VARIANT SYSTEM: Transform order items to include variant info and variant image
-      items: order.items && Array.isArray(order.items) ? await Promise.all(order.items.map(async (item: any) => {
+    // ✅ VARIANT SYSTEM: Transform order items to include variant info and variant image (modulair, geen hardcode)
+    const transformedItems = order.items && Array.isArray(order.items) 
+      ? (await Promise.all(order.items.map(async (item: any) => {
         try {
           // ✅ VARIANT SYSTEM: Get variant image if variantId is available (modulair, geen hardcode)
           // Priority: variant.images[0] > variant.colorImageUrl > product.images[0]
@@ -207,7 +192,27 @@ export const transformOrder = async (order: any): Promise<any> => {
             subtotal: 0,
           };
         }
-      }) : [],
+      })))
+      : [];
+    
+    return {
+      ...order,
+      // ✅ SECURITY: Preserve orderNumber (critical for admin)
+      orderNumber: order.orderNumber || `ORDER-${order.id?.substring(0, 8) || 'UNKNOWN'}`,
+      customerEmail: order.customerEmail || '',
+      customerPhone: order.customerPhone || null,
+      customerName: order.customerName || (order.shippingAddress 
+        ? `${order.shippingAddress.firstName || ''} ${order.shippingAddress.lastName || ''}`.trim()
+        : null),
+      subtotal: decimalToNumber(order.subtotal),
+      shippingCost: decimalToNumber(order.shippingCost),
+      tax: decimalToNumber(order.tax),
+      discount: decimalToNumber(order.discount),
+      total: decimalToNumber(order.total),
+      status: order.status || 'PENDING',
+      paymentStatus: order.payment?.status || order.paymentStatus || 'PENDING',
+      // ✅ VARIANT SYSTEM: Use transformed items with variant images
+      items: transformedItems,
       // ✅ FIX: Ensure shippingAddress and billingAddress are included
       shippingAddress: order.shippingAddress ? {
         firstName: order.shippingAddress.firstName || '',
