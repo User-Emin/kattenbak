@@ -5,6 +5,7 @@ import { ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/context/cart-context';
 import type { Product } from '@/types/product';
+import { getVariantImage } from '@/lib/variant-utils'; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 // Defensive price formatting
 const formatCurrency = (price: any): string => {
   const num = typeof price === 'number' ? price : parseFloat(String(price));

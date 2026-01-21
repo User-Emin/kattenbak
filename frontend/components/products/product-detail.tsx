@@ -15,6 +15,7 @@ import { PremiumQualitySection } from "@/components/shared/premium-quality-secti
 import { ProductComparisonTable } from "@/components/products/product-comparison-table";
 import { ProductJsonLd } from "@/components/seo/product-json-ld";
 import type { Product } from "@/types/product";
+import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 import { 
   ChevronLeft, 
   ChevronRight, 

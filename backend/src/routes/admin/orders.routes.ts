@@ -4,6 +4,7 @@ import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../midd
 import { transformOrder, transformOrders } from '../../lib/transformers';
 import { logger } from '../../config/logger.config';
 import { extractStringParam } from '../../utils/params.util';
+import { getVariantImage, getDisplayImage } from '../../utils/variant.util'; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 
 const router = Router();
 const prisma = new PrismaClient();
