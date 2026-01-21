@@ -296,20 +296,41 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   };
   
   // Handle add to cart - ✅ DIRECTE VERWIJZING: Naar winkelwagenpagina
-  // ✅ VARIANT SYSTEM: Include variant in cart item
+  // ✅ VARIANT SYSTEM: Include variant in cart item with variant image
   const handleAddToCart = async () => {
     setIsAdding(true);
     try {
-      // ✅ VARIANT SYSTEM: Create product with variant info
+      // ✅ VARIANT SYSTEM: Get variant image (priority: variant.images[0] > previewImage > colorImageUrl > product.images[0])
+      let variantImage: string | undefined;
+      if (activeVariant) {
+        if (activeVariant.images && Array.isArray(activeVariant.images) && activeVariant.images.length > 0) {
+          variantImage = activeVariant.images[0];
+        } else if (activeVariant.previewImage) {
+          variantImage = activeVariant.previewImage;
+        } else if (activeVariant.colorImageUrl) {
+          variantImage = activeVariant.colorImageUrl;
+        } else if (product.images && product.images.length > 0) {
+          variantImage = product.images[0];
+        }
+      }
+      
+      // ✅ VARIANT SYSTEM: Create product with variant-adjusted price
       const productToAdd = activeVariant ? {
         ...product,
-        variantId: activeVariant.id,
-        variantName: activeVariant.name,
-        variantSku: activeVariant.sku,
         price: displayPrice, // Use variant-adjusted price
       } : product;
       
-      addItem(productToAdd, quantity);
+      // ✅ VARIANT SYSTEM: Pass variant info as separate parameter
+      addItem(
+        productToAdd, 
+        quantity,
+        activeVariant ? {
+          id: activeVariant.id,
+          name: activeVariant.name,
+          color: activeVariant.colorCode || activeVariant.colorName || undefined,
+          image: variantImage,
+        } : undefined
+      );
       // ✅ DIRECT: Navigeer direct naar winkelwagenpagina
       window.location.href = '/cart';
     } catch (error) {

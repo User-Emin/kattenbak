@@ -501,7 +501,7 @@ function CheckoutContent() {
                 <div className="flex gap-4 my-6">
                   <div className="relative w-24 h-24 bg-white rounded overflow-hidden flex-shrink-0 shadow-sm">
                     <ProductImage 
-                      src={getProductImage(product.images)} 
+                      src={items[0]?.variantImage || getProductImage(product.images)} 
                       alt={product.name} 
                       fill 
                       className="object-cover" 
@@ -510,6 +510,15 @@ function CheckoutContent() {
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold mb-1 text-gray-900">{product.name}</h3>
+                    {/* ✅ VARIANT SYSTEM: Show variant name if available */}
+                    {items[0]?.variantName && (
+                      <p className="text-xs text-gray-500 mb-1">
+                        🎨 {items[0].variantName}
+                        {items[0].variantColor && items[0].variantColor !== items[0].variantName && (
+                          <span className="ml-1">({items[0].variantColor})</span>
+                        )}
+                      </p>
+                    )}
                     <p className="text-sm text-gray-600 mb-2">Aantal: {quantity}</p>
                     <p className="font-semibold text-gray-900">{formatPrice(productPrice)}</p>
                   </div>

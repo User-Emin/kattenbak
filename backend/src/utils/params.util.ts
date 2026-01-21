@@ -4,16 +4,19 @@
  * ✅ DRY: Reusable across all routes
  */
 
+import { ValidationError } from './errors.util';
+
 /**
  * Extract string parameter from req.params safely
  * @param param - Parameter value from req.params (can be string | string[])
+ * @param paramName - Name of the parameter (for error messages)
  * @returns string - First value if array, or the string value
  */
-export function extractStringParam(param: string | string[] | undefined): string {
-  if (!param) {
-    throw new Error('Parameter is required');
+export function extractStringParam(param: string | string[] | undefined, paramName: string = 'parameter'): string {
+  if (typeof param === 'string' && param.length > 0) {
+    return param;
   }
-  return Array.isArray(param) ? param[0] : param;
+  throw new ValidationError(`Invalid or missing ${paramName}. Expected a single string.`);
 }
 
 /**

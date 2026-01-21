@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { OrderService } from '../services/order.service';
 import { MollieService } from '../services/mollie.service';
 import { successResponse } from '../utils/response.util';
+import { extractStringParam } from '../utils/params.util';
 import { env } from '../config/env.config';
 
 /**
@@ -60,7 +61,7 @@ export class OrderController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = extractStringParam(req.params.id, 'id');
       const order = await OrderService.getOrderById(id);
 
       successResponse(res, order);

@@ -13,6 +13,11 @@ import { Product } from '@/types/product';
 export interface CartItem {
   product: Product;
   quantity: number;
+  // ✅ VARIANT SYSTEM: Store selected variant info
+  variantId?: string;
+  variantName?: string;
+  variantColor?: string;
+  variantImage?: string; // Variant-specific image URL
 }
 
 export interface CustomerData {
@@ -32,7 +37,7 @@ interface CartContextValue {
   items: CartItem[];
   itemCount: number;
   subtotal: number;
-  addItem: (product: Product, quantity?: number) => void;
+  addItem: (product: Product, quantity?: number, variant?: { id?: string; name?: string; color?: string; image?: string }) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -100,9 +105,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
-  const addItem = useCallback((product: Product, quantity: number = 1) => {
+  const addItem = useCallback((product: Product, quantity: number = 1, variant?: { id?: string; name?: string; color?: string; image?: string }) => {
     setItems((prev) => {
-      const existingIndex = prev.findIndex((item) => item.product.id === product.id);
+      // ✅ VARIANT SYSTEM: Check for same product AND variant
+      const existingIndex = prev.findIndex((item) => 
+        item.product.id === product.id && 
+        item.variantId === variant?.id
+      );
       
       if (existingIndex >= 0) {
         const updated = [...prev];
@@ -110,7 +119,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return updated;
       }
       
-      return [...prev, { product, quantity }];
+      return [...prev, { 
+        product, 
+        quantity,
+        variantId: variant?.id,
+        variantName: variant?.name,
+        variantColor: variant?.color,
+        variantImage: variant?.image,
+      }];
     });
   }, []);
 

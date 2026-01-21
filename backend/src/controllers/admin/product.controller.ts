@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { ProductService } from '../../services/product.service';
 import { successResponse } from '../../utils/response.util';
+import { extractStringParam } from '../../utils/params.util';
 
 /**
  * Admin Product Controller
@@ -70,7 +71,7 @@ export class AdminProductController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = extractStringParam(req.params.id, 'id');
       const product = await ProductService.getProductById(id);
 
       successResponse(res, product);
@@ -119,7 +120,7 @@ export class AdminProductController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = extractStringParam(req.params.id, 'id');
       const updateData = req.body;
 
       // Handle category update
@@ -148,7 +149,7 @@ export class AdminProductController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = extractStringParam(req.params.id, 'id');
       await ProductService.deleteProduct(id);
 
       successResponse(res, null, 'Product deleted successfully');

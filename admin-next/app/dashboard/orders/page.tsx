@@ -166,23 +166,35 @@ export default function OrdersPage() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {/* ✅ VARIANT SYSTEM: Display order items with variant info */}
+                      {/* ✅ VARIANT SYSTEM: Display order items with variant info and images */}
                       {order.items && order.items.length > 0 ? (
-                        <div className="space-y-1">
+                        <div className="space-y-2">
                           {order.items.map((item: any, idx: number) => (
-                            <div key={item.id || idx} className="text-sm">
-                              <p className="font-medium">{item.productName || 'Onbekend product'}</p>
-                              {(item.variantName || item.variantColor) && (
-                                <p className="text-xs text-muted-foreground">
-                                  🎨 {item.variantName || item.variantColor || 'Onbekend'}
-                                  {item.variantColor && item.variantColor !== item.variantName && (
-                                    <span className="ml-1">({item.variantColor})</span>
-                                  )}
-                                </p>
+                            <div key={item.id || idx} className="flex items-start gap-2">
+                              {/* ✅ VARIANT SYSTEM: Show product/variant image */}
+                              {item.product?.images && item.product.images.length > 0 && (
+                                <div className="relative w-12 h-12 bg-gray-50 rounded overflow-hidden flex-shrink-0">
+                                  <img
+                                    src={item.product.images[0]}
+                                    alt={item.productName || 'Product'}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
                               )}
-                              <p className="text-xs text-muted-foreground">
-                                {item.quantity}x €{item.price?.toFixed(2) || '0.00'}
-                              </p>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-sm">{item.productName || 'Onbekend product'}</p>
+                                {(item.variantName || item.variantColor) && (
+                                  <p className="text-xs text-muted-foreground mt-0.5">
+                                    🎨 <span className="font-medium">{item.variantName || item.variantColor || 'Onbekend'}</span>
+                                    {item.variantColor && item.variantColor !== item.variantName && (
+                                      <span className="ml-1">({item.variantColor})</span>
+                                    )}
+                                  </p>
+                                )}
+                                <p className="text-xs text-muted-foreground mt-0.5">
+                                  {item.quantity}x €{item.price?.toFixed(2) || '0.00'}
+                                </p>
+                              </div>
                             </div>
                           ))}
                         </div>

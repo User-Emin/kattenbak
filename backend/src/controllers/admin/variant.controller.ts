@@ -6,6 +6,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { VariantService, CreateVariantData } from '../../services/variant.service';
 import { successResponse } from '../../utils/response.util';
+import { extractStringParam } from '../../utils/params.util';
 import { z } from 'zod';
 
 // DRY: Validation schemas
@@ -60,7 +61,7 @@ export class VariantController {
    */
   static async getVariantById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = extractStringParam(req.params.id, 'id');
       const variant = await VariantService.getVariantById(id);
 
       successResponse(res, variant);
@@ -95,7 +96,7 @@ export class VariantController {
    */
   static async updateVariant(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = extractStringParam(req.params.id, 'id');
       const data = updateVariantSchema.parse(req.body);
       const variant = await VariantService.updateVariant(id, data);
 
@@ -111,7 +112,7 @@ export class VariantController {
    */
   static async deleteVariant(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = extractStringParam(req.params.id, 'id');
       await VariantService.deleteVariant(id);
 
       successResponse(res, { success: true }, 'Variant deleted successfully');

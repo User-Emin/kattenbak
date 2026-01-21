@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { ProductService } from '../services/product.service';
 import { successResponse } from '../utils/response.util';
+import { extractStringParam } from '../utils/params.util';
 import { ProductFilters, PaginationParams } from '../types';
 
 /**
@@ -76,7 +77,7 @@ export class ProductController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = extractStringParam(req.params.id, 'id');
       const product = await ProductService.getProductById(id);
 
       successResponse(res, product);

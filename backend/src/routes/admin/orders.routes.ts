@@ -194,12 +194,14 @@ router.get('/:id', async (req, res) => {
     logger.info('📋 Fetching order detail:', { orderId: id });
     
     // ✅ SECURITY: Defensive error handling with detailed logging
+    // ✅ FUNDAMENTAL FIX: Multi-layer fallback approach
     let order: any;
+    let hasVariantColumns = false;
+    
     try {
-      // ✅ CRITICAL FIX: Check if variant_color column exists (same as list query)
-      let columnCheck: any[] = [];
+      // ✅ STEP 1: Check if variant_color column exists
       try {
-        columnCheck = await prisma.$queryRawUnsafe<Array<{exists: boolean}>>(`
+        const columnCheck = await prisma.$queryRawUnsafe<Array<{exists: boolean}>>(`
           SELECT EXISTS (
             SELECT 1 
             FROM information_schema.columns 
@@ -207,14 +209,13 @@ router.get('/:id', async (req, res) => {
             AND column_name = 'variant_color'
           ) as exists;
         `);
+        hasVariantColumns = columnCheck[0]?.exists === true;
       } catch (checkError: any) {
         logger.warn('⚠️ Column check failed, assuming variant columns don\'t exist:', checkError.message);
       }
       
-      const hasVariantColumns = columnCheck[0]?.exists === true;
-      
-      if (hasVariantColumns) {
-        // ✅ Variant columns exist - use include (Prisma will get all fields including variant fields)
+      // ✅ STEP 2: Try Prisma query with all relations
+      try {
         order = await prisma.order.findUnique({
           where: { id },
           include: {
@@ -230,59 +231,85 @@ router.get('/:id', async (req, res) => {
                 },
               },
             },
-            payment: true,
-            shipment: true,
             shippingAddress: true,
             billingAddress: true,
-            returns: {
-              orderBy: { createdAt: 'desc' },
-            },
+            payment: true,
+            shipment: true,
           },
         });
-      } else {
-        // ✅ Variant columns don't exist - use explicit select
-        order = await prisma.order.findUnique({
-          where: { id },
-          select: {
-            id: true,
-            orderNumber: true,
-            customerEmail: true,
-            customerPhone: true,
-            total: true,
-            subtotal: true,
-            tax: true,
-            shippingCost: true,
-            discount: true,
-            status: true,
-            customerNotes: true,
-            adminNotes: true,
-            createdAt: true,
-            updatedAt: true,
-            completedAt: true,
-            items: {
-              select: {
-                id: true,
-                productId: true,
-                productName: true,
-                productSku: true,
-                price: true,
-                quantity: true,
-                subtotal: true,
-                product: {
-                  select: {
-                    id: true,
-                    name: true,
-                    sku: true,
-                    images: true,
+      } catch (prismaError: any) {
+        logger.warn('⚠️ Prisma query with all relations failed, trying without payment/shipment:', prismaError.message);
+        
+        // ✅ STEP 3: Fallback without payment/shipment
+        try {
+          order = await prisma.order.findUnique({
+            where: { id },
+            include: {
+              items: {
+                include: {
+                  product: {
+                    select: {
+                      id: true,
+                      name: true,
+                      sku: true,
+                      images: true,
+                    },
                   },
                 },
               },
+              shippingAddress: true,
+              billingAddress: true,
             },
-            shippingAddress: true,
-            billingAddress: true,
-            payment: true,
-            shipment: true,
-          },
+          });
+          
+          // Manually fetch payment and shipment if order exists
+          if (order) {
+            try {
+              order.payment = await prisma.payment.findFirst({
+                where: { orderId: order.id },
+              }) || null;
+            } catch (e: any) {
+              logger.warn('⚠️ Could not fetch payment:', e.message);
+              order.payment = null;
+            }
+            
+            try {
+              order.shipment = await prisma.shipment.findFirst({
+                where: { orderId: order.id },
+              }) || null;
+            } catch (e: any) {
+              logger.warn('⚠️ Could not fetch shipment:', e.message);
+              order.shipment = null;
+            }
+          }
+        } catch (fallbackError: any) {
+          logger.error('❌ Fallback Prisma query also failed:', fallbackError.message);
+          throw fallbackError; // Will trigger raw SQL fallback
+        }
+      }
+      
+      // ✅ POST-PROCESS: Filter out variant columns if they don't exist in database
+      if (order && order.items) {
+        order.items = order.items.map((item: any) => {
+          const filteredItem: any = {
+            id: item.id,
+            productId: item.productId,
+            productName: item.productName,
+            productSku: item.productSku,
+            price: item.price,
+            quantity: item.quantity,
+            subtotal: item.subtotal,
+            product: item.product,
+          };
+          
+          // Only include variant fields if column exists
+          if (hasVariantColumns) {
+            filteredItem.variantId = item.variantId || null;
+            filteredItem.variantName = item.variantName || null;
+            filteredItem.variantColor = item.variantColor || null;
+          }
+          
+          return filteredItem;
         });
       }
     } catch (dbError: any) {
@@ -293,6 +320,169 @@ router.get('/:id', async (req, res) => {
         name: dbError.name,
         stack: dbError.stack,
       });
+      
+      // ✅ FALLBACK: Try to get order data using raw SQL queries
+      try {
+        logger.info('🔄 Attempting raw SQL fallback query for order:', { orderId: id });
+        
+        // Get order basic data - ✅ FIX: Use $queryRaw with template literal for safe parameterized queries
+        const rawOrder = await prisma.$queryRaw<any[]>`
+          SELECT 
+            id, order_number, customer_email, customer_phone,
+            subtotal, shipping_cost, tax, discount, total, status,
+            customer_notes, admin_notes, created_at, updated_at, completed_at,
+            shipping_address_id, billing_address_id
+          FROM orders
+          WHERE id = ${id}
+        `;
+        
+        if (rawOrder && rawOrder.length > 0) {
+          const minimalOrder = rawOrder[0];
+          
+          // Fetch addresses separately
+          let shippingAddress = null;
+          let billingAddress = null;
+          
+          try {
+            if (minimalOrder.shipping_address_id) {
+              const addr = await prisma.$queryRaw<any[]>`
+                SELECT * FROM addresses WHERE id = ${minimalOrder.shipping_address_id}
+              `;
+              if (addr && addr.length > 0) {
+                shippingAddress = {
+                  id: addr[0].id,
+                  firstName: addr[0].first_name,
+                  lastName: addr[0].last_name,
+                  street: addr[0].street,
+                  houseNumber: addr[0].house_number,
+                  addition: addr[0].addition || null,
+                  postalCode: addr[0].postal_code,
+                  city: addr[0].city,
+                  country: addr[0].country,
+                  phone: addr[0].phone || null,
+                };
+              }
+            }
+          } catch (e: any) {
+            logger.warn('⚠️ Could not fetch shipping address:', e.message);
+          }
+          
+          try {
+            if (minimalOrder.billing_address_id) {
+              const addr = await prisma.$queryRaw<any[]>`
+                SELECT * FROM addresses WHERE id = ${minimalOrder.billing_address_id}
+              `;
+              if (addr && addr.length > 0) {
+                billingAddress = {
+                  id: addr[0].id,
+                  firstName: addr[0].first_name,
+                  lastName: addr[0].last_name,
+                  street: addr[0].street,
+                  houseNumber: addr[0].house_number,
+                  addition: addr[0].addition || null,
+                  postalCode: addr[0].postal_code,
+                  city: addr[0].city,
+                  country: addr[0].country,
+                  phone: addr[0].phone || null,
+                };
+              }
+            }
+          } catch (e: any) {
+            logger.warn('⚠️ Could not fetch billing address:', e.message);
+          }
+          
+          // Fetch order items with variant info
+          let items: any[] = [];
+          try {
+            // ✅ FIX: Build query dynamically based on variant columns using $queryRaw template literal
+            let orderItems: any[] = [];
+            if (hasVariantColumns) {
+              orderItems = await prisma.$queryRaw<any[]>`
+                SELECT 
+                  oi.id, oi.product_id, oi.product_name, oi.product_sku,
+                  oi.price, oi.quantity, oi.subtotal,
+                  oi.variant_id, oi.variant_name, oi.variant_color
+                FROM order_items oi
+                WHERE oi.order_id = ${id}
+              `;
+            } else {
+              orderItems = await prisma.$queryRaw<any[]>`
+                SELECT 
+                  oi.id, oi.product_id, oi.product_name, oi.product_sku,
+                  oi.price, oi.quantity, oi.subtotal
+                FROM order_items oi
+                WHERE oi.order_id = ${id}
+              `;
+            }
+            
+            // Fetch product images for each item
+            for (const item of orderItems || []) {
+              let productImages: string[] = [];
+              try {
+                const product = await prisma.product.findUnique({
+                  where: { id: item.product_id },
+                  select: { images: true },
+                });
+                productImages = (product?.images as string[]) || [];
+              } catch (e: any) {
+                logger.warn('⚠️ Could not fetch product images for item:', e.message);
+              }
+              
+              items.push({
+                id: item.id,
+                productId: item.product_id,
+                productName: item.product_name,
+                productSku: item.product_sku,
+                price: parseFloat(String(item.price || '0')),
+                quantity: item.quantity || 0,
+                subtotal: parseFloat(String(item.subtotal || '0')),
+                product: {
+                  id: item.product_id,
+                  name: item.product_name,
+                  images: productImages,
+                },
+                ...(hasVariantColumns && {
+                  variantId: item.variant_id || null,
+                  variantName: item.variant_name || null,
+                  variantColor: item.variant_color || null,
+                }),
+              });
+            }
+          } catch (e: any) {
+            logger.warn('⚠️ Could not fetch order items:', e.message);
+          }
+          
+          return res.json({
+            success: true,
+            data: {
+              id: minimalOrder.id,
+              orderNumber: minimalOrder.order_number,
+              customerEmail: minimalOrder.customer_email,
+              customerPhone: minimalOrder.customer_phone,
+              subtotal: parseFloat(String(minimalOrder.subtotal || '0')),
+              shippingCost: parseFloat(String(minimalOrder.shipping_cost || '0')),
+              tax: parseFloat(String(minimalOrder.tax || '0')),
+              discount: parseFloat(String(minimalOrder.discount || '0')),
+              total: parseFloat(String(minimalOrder.total || '0')),
+              status: minimalOrder.status,
+              customerNotes: minimalOrder.customer_notes,
+              adminNotes: minimalOrder.admin_notes,
+              createdAt: minimalOrder.created_at,
+              updatedAt: minimalOrder.updated_at,
+              completedAt: minimalOrder.completed_at,
+              items,
+              shippingAddress,
+              billingAddress,
+              payment: null,
+              shipment: null,
+              _warning: 'Data retrieved via raw SQL fallback',
+            },
+          });
+        }
+      } catch (fallbackError: any) {
+        logger.error('❌ Fallback query also failed:', fallbackError.message);
+      }
+      
       return res.status(500).json({
         success: false,
         error: 'Database fout bij ophalen bestelling',

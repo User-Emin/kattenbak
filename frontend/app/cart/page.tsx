@@ -53,10 +53,10 @@ export default function CartPage() {
             {items.map((item, index) => (
               <div key={item.product.id}>
                 <div className="flex gap-3 sm:gap-6">
-                  {/* COMPACT IMAGE */}
+                  {/* COMPACT IMAGE - ✅ VARIANT SYSTEM: Use variant image if available */}
                   <div className="relative w-20 h-20 sm:w-32 sm:h-32 bg-gray-50 rounded overflow-hidden flex-shrink-0">
                     <ProductImage
-                      src={getProductImage(item.product.images)}
+                      src={item.variantImage || getProductImage(item.product.images)}
                       alt={item.product.name}
                       fill
                       className="object-cover"
@@ -70,6 +70,15 @@ export default function CartPage() {
                         <h2 className="text-base sm:text-xl font-semibold mb-1 truncate">
                           {item.product.name}
                         </h2>
+                        {/* ✅ VARIANT SYSTEM: Show variant name if available */}
+                        {item.variantName && (
+                          <p className="text-xs sm:text-sm text-gray-500 mb-1">
+                            🎨 {item.variantName}
+                            {item.variantColor && item.variantColor !== item.variantName && (
+                              <span className="ml-1">({item.variantColor})</span>
+                            )}
+                          </p>
+                        )}
                         <p className="text-sm sm:text-base text-gray-600">
                           {formatPrice(item.product.price)} per stuk
                         </p>
