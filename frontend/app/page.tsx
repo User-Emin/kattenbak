@@ -229,7 +229,7 @@ export default function HomePage() {
       >
         {/* ✅ PADDING MOBIEL: Heading heeft padding op mobiel voor leesbaarheid */}
         <div className="text-center mb-12 px-4 md:px-0"> {/* ✅ PADDING MOBIEL: Padding op mobiel */}
-          {/* ✅ MOBIEL: Titel en subtekst op 1 rij, subtekst verborgen */}
+          {/* ✅ OPTIMAAL: Titel en subtekst op 1 rij, subtekst weg */}
           <h2 
             className="mb-0 md:mb-4 text-4xl md:text-5xl" // ✅ DESKTOP: 5xl (even groot als productdetail)
             style={{
@@ -239,23 +239,8 @@ export default function HomePage() {
               letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
             }}
           >
-            <span className="inline md:inline">Waarom deze kattenbak?</span>
-            <span className="inline md:inline"> </span>
-            <span className="inline md:inline text-base md:text-lg font-normal md:font-normal" style={{ color: DESIGN_SYSTEM.colors.text.secondary }}>
-              De belangrijkste features die het verschil maken
-            </span>
+            Waarom deze kattenbak? De belangrijkste features die het verschil maken
           </h2>
-          {/* ✅ DESKTOP: Subtekst apart onder titel */}
-          <p 
-            className="hidden md:block mt-4"
-            style={{
-              fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
-              fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-              color: DESIGN_SYSTEM.colors.text.secondary,
-            }}
-          >
-            De belangrijkste features die het verschil maken
-          </p>
         </div>
         
         {/* USP Features Component - ✅ EDGE-TO-EDGE: Minder witruimte, identiek aan product detail */}

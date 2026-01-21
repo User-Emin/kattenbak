@@ -326,8 +326,8 @@ export const PRODUCT_PAGE_CONFIG = {
         },
         title: {
           fontSize: 'text-sm',
-          fontWeight: 'font-normal',
-          textColor: 'text-gray-900',
+          fontWeight: 'font-medium', // ✅ DONKERDER: font-medium voor meer opvallendheid
+          textColor: 'text-black', // ✅ DONKERDER: Volledig zwart zoals "Let op" balk
         },
         arrow: {
           size: 'w-5 h-5',

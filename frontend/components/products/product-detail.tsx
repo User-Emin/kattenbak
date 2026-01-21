@@ -826,8 +826,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                           strokeWidth={3}
                           style={{ color: '#005980' }}
                         />
-                        {/* ✅ GRIJZE TEKST: Groter (text-sm sm:text-base) en donkerder grijs (#4B5563) voor meer opvallendheid */}
-                        <span style={{ color: '#4B5563' }} className="font-medium !text-gray-600">{usp.text}</span>
+                        {/* ✅ DONKERE TEKST: Donkerder zoals "Let op" balk voor meer opvallendheid */}
+                        <span style={{ color: DESIGN_SYSTEM.colors.text.primary }} className="font-medium">{usp.text}</span>
                       </div>
                     );
                   })}
@@ -868,13 +868,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ BEZORGTIJD & GRATIS VERZENDING - Direct onder winkelwagen button (iets meer padding) */}
+              {/* ✅ BEZORGTIJD & GRATIS VERZENDING - Direct onder winkelwagen button (iets meer padding) - DONKERDER */}
               <div className="flex items-center justify-center mt-2 sm:mt-2.5 mb-0 -mx-2 sm:mx-0">
-                <Truck className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5" style={{ color: '#005980' }} />
-                <span className="text-sm sm:text-base text-gray-700">
-                  <span style={{ color: '#005980', fontWeight: 600 }}>Gratis verzending</span>
+                <Truck className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5" style={{ color: DESIGN_SYSTEM.colors.text.primary }} />
+                <span className="text-sm sm:text-base" style={{ color: DESIGN_SYSTEM.colors.text.primary, fontWeight: 500 }}>
+                  <span style={{ fontWeight: 600 }}>Gratis verzending</span>
                   {' • '}
-                  <span>Bezorgtijd: <span style={{ color: '#005980', fontWeight: 600 }}>1-2 werkdagen</span></span>
+                  <span>Bezorgtijd: <span style={{ fontWeight: 600 }}>1-2 werkdagen</span></span>
                 </span>
               </div>
 
