@@ -99,16 +99,50 @@ export default function HomePage() {
           minHeight: DESIGN_SYSTEM.layout.hero.minHeightMobile, // ✅ MOBILE: Kleinere hoogte
         }}
       >
-        {/* Container voor flexbox - ✅ RESPONSIVE: Mobile column, Desktop row */}
+        {/* Container voor flexbox - ✅ RESPONSIVE: Mobile column (afbeelding eerst, dan tekst), Desktop row */}
         <div 
           className="w-full flex flex-col md:flex-row items-center" 
           style={{ 
             minHeight: `clamp(${DESIGN_SYSTEM.layout.hero.minHeightMobile}, 100vh, ${DESIGN_SYSTEM.layout.hero.minHeight})`, // ✅ RESPONSIVE: Clamp tussen mobile en desktop
           }}
         >
-          {/* LINKS: TEKST & CTA - ✅ RESPONSIVE: Mobile full width, Desktop 35% */}
+          {/* MOBIEL: AFBEELDING EERST - ✅ RESPONSIVE: Mobile order-1 (eerst), Desktop order-2 (rechts) */}
           <div 
-            className="space-y-4 md:space-y-6 z-10 w-full md:w-[35%] px-4 md:px-12 pt-6 md:pt-0" // ✅ RESPONSIVE: Mobile extra top padding voor witruimte tussen navbar
+            className="relative md:absolute top-0 right-0 w-full md:w-[65%] h-64 md:h-full overflow-hidden order-1 md:order-2" // ✅ MOBIEL: order-1 = eerst, Desktop: order-2 = rechts
+          >
+            {/* 🚀 PERFORMANCE: Show fallback immediately, upgrade to product image if available */}
+            {optimizedHeroImage !== heroImage ? (
+              <Image
+                key="optimized-hero"
+                src={optimizedHeroImage}
+                alt="Premium automatische kattenbak"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 65vw" // 🚀 PERFORMANCE: Responsive sizes voor hero
+                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
+                quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
+                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
+                unoptimized={optimizedHeroImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+              />
+            ) : (
+              <Image
+                key="fallback-hero"
+                src={heroImage}
+                alt="Premium automatische kattenbak"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 65vw" // 🚀 PERFORMANCE: Responsive sizes voor hero
+                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
+                quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
+                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
+                unoptimized={heroImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+              />
+            )}
+          </div>
+
+          {/* MOBIEL: TEKST & CTA ONDER AFBEELDING - ✅ RESPONSIVE: Mobile order-2 (na afbeelding), Desktop order-1 (links) */}
+          <div 
+            className="space-y-4 md:space-y-6 z-10 w-full md:w-[35%] px-4 md:px-12 pt-4 md:pt-0 order-2 md:order-1" // ✅ MOBIEL: order-2 = na afbeelding, Desktop: order-1 = links
             style={{
               backgroundColor: DESIGN_SYSTEM.colors.secondary, // ✅ WIT: Was gray[50], nu wit
             }}
@@ -141,7 +175,7 @@ export default function HomePage() {
             </p>
 
             {/* CTA Button - ✅ RESPONSIVE: Mobile margin-bottom, Desktop normale spacing */}
-            <div className="pt-4 pb-8 md:pb-4"> {/* ✅ RESPONSIVE: Mobile extra bottom padding zodat button niet aan afbeelding plakt */}
+            <div className="pt-4 pb-4 md:pb-4"> {/* ✅ RESPONSIVE: Mobile minder bottom padding (was pb-8) zodat varianten direct eronder komen */}
               <Link href={`/product/${productSlug}`}>
                 <button 
                   className="inline-flex items-center gap-2 md:gap-3 transition-all hover:opacity-90 text-sm md:text-base" // ✅ RESPONSIVE: Mobile kleinere gap en tekst
@@ -158,40 +192,6 @@ export default function HomePage() {
                 </button>
               </Link>
             </div>
-          </div>
-
-          {/* RECHTS: AFBEELDING - ✅ RESPONSIVE: Mobile full width/height, Desktop 65% */}
-          <div 
-            className="relative md:absolute top-0 right-0 w-full md:w-[65%] h-64 md:h-full overflow-hidden" // ✅ RESPONSIVE: Mobile relative met height, Desktop absolute 65%
-          >
-            {/* 🚀 PERFORMANCE: Show fallback immediately, upgrade to product image if available */}
-            {optimizedHeroImage !== heroImage ? (
-              <Image
-                key="optimized-hero"
-                src={optimizedHeroImage}
-                alt="Premium automatische kattenbak"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 65vw" // 🚀 PERFORMANCE: Responsive sizes voor hero
-                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
-                quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
-                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
-                unoptimized={optimizedHeroImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
-              />
-            ) : (
-              <Image
-                key="fallback-hero"
-                src={heroImage}
-                alt="Premium automatische kattenbak"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 65vw" // 🚀 PERFORMANCE: Responsive sizes voor hero
-                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
-                quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
-                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
-                unoptimized={heroImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
-              />
-            )}
           </div>
         </div>
       </section>

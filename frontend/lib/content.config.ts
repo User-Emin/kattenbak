@@ -222,10 +222,10 @@ export const PRODUCT_CONTENT = {
       // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
     },
     {
-      title: 'Gratis meegeleverd: Geurblokje, Kwast, Afvalzak en Inloopmat',
+      title: 'Gratis meegeleverd',
       description: 'Bij aankoop krijg je gratis: geurblokje, kwast, afvalzak (1 rol) en inloopmat. Alles wat je nodig hebt voor direct gebruik.',
       // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
-      // ✅ KORTER: Beschrijving ingekort voor betere leesbaarheid
+      // ✅ KORTER: Titel alleen "Gratis meegeleverd", beschrijving ingekort voor betere leesbaarheid
     },
   ],
 

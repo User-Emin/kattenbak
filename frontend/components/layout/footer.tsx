@@ -24,18 +24,7 @@ export function Footer() {
           padding: `${DESIGN_SYSTEM.spacing[16]} ${DESIGN_SYSTEM.spacing.containerPadding}`,
         }}
       >
-        {/* Logo */}
-        <div className="flex justify-center lg:justify-start mb-12">
-          <div 
-            style={{
-              fontSize: DESIGN_SYSTEM.typography.fontSize['3xl'],
-              fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-              color: DESIGN_SYSTEM.colors.text.inverse,
-            }}
-          >
-            CatSupply
-          </div>
-        </div>
+        {/* ✅ LOGO VERWIJDERD: CatSupply naam weggehaald uit footer */}
 
         {/* Footer Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
@@ -231,7 +220,7 @@ export function Footer() {
               color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
             }}
           >
-            © {new Date().getFullYear()} CatSupply. Alle rechten voorbehouden.
+            © {new Date().getFullYear()}. Alle rechten voorbehouden.
           </p>
           <div className="flex gap-6">
             <Link 

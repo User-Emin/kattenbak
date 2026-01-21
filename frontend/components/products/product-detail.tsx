@@ -868,8 +868,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ BEZORGTIJD & GRATIS VERZENDING - Direct onder winkelwagen button (minimale witruimte) */}
-              <div className="flex items-center justify-center mt-0 mb-0 -mx-2 sm:mx-0">
+              {/* ✅ BEZORGTIJD & GRATIS VERZENDING - Direct onder winkelwagen button (iets meer padding) */}
+              <div className="flex items-center justify-center mt-2 sm:mt-2.5 mb-0 -mx-2 sm:mx-0">
                 <Truck className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5" style={{ color: '#005980' }} />
                 <span className="text-sm sm:text-base text-gray-700">
                   <span style={{ color: '#005980', fontWeight: 600 }}>Gratis verzending</span>
