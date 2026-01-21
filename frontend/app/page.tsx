@@ -216,10 +216,10 @@ export default function HomePage() {
         }}
       />
 
-      {/* 🎨 USP FEATURES - ZIGZAG PATTERN - ✅ EDGE-TO-EDGE: Minder witruimte, identiek aan product detail */}
+      {/* 🎨 USP FEATURES - ZIGZAG PATTERN - ✅ EXACT ZELFDE: Identiek aan varianten sectie */}
       <section 
+        className="py-12 md:py-16"
         style={{
-          padding: `${DESIGN_SYSTEM.spacing.section} 0`,
           backgroundColor: DESIGN_SYSTEM.colors.secondary,
         }}
       >
