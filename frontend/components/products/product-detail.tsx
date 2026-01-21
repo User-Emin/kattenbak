@@ -355,66 +355,67 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   ];
 
   // Specifications data - GEBASEERD OP ECHTE PRODUCT INFO (screenshots)
+  // ✅ DUidelijker: In bullet point stijl zoals "Volledig automatisch • App bediening • Altijd schoon"
   const specifications = [
     {
       icon: Sparkles,
       title: 'Zelfreinigende Functie',
-      description: 'Automatische reiniging na elk gebruik. Dubbele veiligheidssensoren zorgen voor 100% veiligheid.',
+      description: 'Volledig automatisch • Reinigt na elk gebruik • Dubbele veiligheidssensoren voor 100% veiligheid',
     },
     {
       icon: Box,
       title: 'Open-Top Design',
-      description: 'Low-stress design voor katten. Geen claustrofobisch gevoel. Ventilatie voor frisse lucht.',
+      description: 'Low-stress design • Geen claustrofobisch gevoel • Ventilatie voor frisse lucht',
     },
     {
       icon: Shield,
       title: 'Dubbele Veiligheidssensoren',
-      description: 'IR + gewichtssensor. Pauzeert automatisch als kat terug gaat. Getest op meer dan 10.000 cycli.',
+      description: 'IR + gewichtssensor • Pauzeert automatisch bij beweging • Getest op meer dan 10.000 cycli',
     },
     {
       icon: Smartphone,
       title: 'App Bediening & Monitoring',
-      description: 'iOS & Android app. Real-time notifications. Gezondheidsmonitoring & statistieken. Cloud-sync.',
+      description: 'iOS & Android app • Real-time notifications • Gezondheidsmonitoring & statistieken • Cloud-sync',
     },
     {
       icon: Filter,
       title: 'Geurfilter & Hygiëne',
-      description: 'Hygiënisch zowel voor je kat als voor je huis. Dempt vieze geuren effectief.',
+      description: 'Hygiënisch voor kat en huis • Dempt vieze geuren effectief • Altijd schoon',
     },
     {
       icon: Package,
       title: 'Afvalbak Capaciteit',
-      description: '10.5L XL capaciteit (17% meer dan concurrentie). Voor 1 kat: 7-10 dagen. Meerdere katten: 3-5 dagen.',
+      description: '10.5L XL capaciteit • 17% meer dan concurrentie • Voor 1 kat: 7-10 dagen • Meerdere katten: 3-5 dagen',
     },
     {
       icon: Droplet,
       title: 'Los te maken voor schoonmaak',
-      description: 'Makkelijk te demonteren voor grondig schoonmaken. Alle onderdelen zijn goed bereikbaar.',
+      description: 'Makkelijk te demonteren • Alle onderdelen goed bereikbaar • Grondig schoonmaken',
     },
     {
       icon: Layers,
       title: 'Makkelijk Te Demonteren',
-      description: 'Modulair ontwerp zonder tools. Alle onderdelen makkelijk te bereiken. Schoonmaken in 5 minuten.',
+      description: 'Modulair ontwerp • Geen tools nodig • Schoonmaken in 5 minuten',
     },
     {
       icon: Check,
       title: 'Ondersteunde Vulling Types',
-      description: 'Klonterende klei vulling, plantaardige vulling, en gemixte vulling. Kies wat jij het beste vindt.',
+      description: 'Klonterende klei vulling • Plantaardige vulling • Gemixte vulling • Kies wat jij het beste vindt',
     },
     {
       icon: Maximize,
       title: 'Compact Footprint, Groot Interieur',
-      description: 'Buitenmaat: 65×53×65cm. Binnenmaat: groot genoeg voor katten tot 7kg. Past onder meeste kasten.',
+      description: 'Buitenmaat: 65×53×65cm • Groot genoeg voor katten tot 7kg • Past onder meeste kasten',
     },
     {
       icon: Volume2,
       title: 'Ultra-Stil Motor (<40 dB)',
-      description: 'Stiller dan conversatie. Verstoort niet tijdens slaap. Premium Japanse motor technologie.',
+      description: 'Stiller dan conversatie • Verstoort niet tijdens slaap • Premium Japanse motor technologie',
     },
     {
       icon: Settings,
       title: 'Modulair Ontwerp (OEM-Friendly)',
-      description: 'Professioneel modulair ontwerp. Makkelijk te upgraden en onderdelen te vervangen. Duurzaam & toekomstbestendig.',
+      description: 'Professioneel modulair ontwerp • Makkelijk te upgraden • Duurzaam & toekomstbestendig',
     },
   ];
 
@@ -947,6 +948,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               {/* Specificaties Accordion - ONDER USPs */}
               <div className={cn(CONFIG.features.accordion.container, 'mt-6')}>
+              {/* ✅ SPECIFICATIES TITEL: Boven de specificaties balken */}
+              <h3 className="text-xl md:text-2xl font-semibold mb-4" style={{ color: DESIGN_SYSTEM.colors.text.primary }}>
+                Specificaties
+              </h3>
               {/* Eerste features altijd zichtbaar */}
               {specifications.slice(0, CONFIG.features.showMore.initialVisible).map((spec, index) => {
                 const Icon = spec.icon;
@@ -1159,7 +1164,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           )}
           {activeTab === 'specificaties' && (
             <div className={cn(CONFIG.tabs.content.spacing, CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor)}>
-              <h3 className="text-lg font-semibold mb-3">Technische Specificaties</h3>
+              {/* ✅ SPECIFICATIES TITEL: Boven de specificaties balken */}
+              <h3 className="text-xl md:text-2xl font-semibold mb-6" style={{ color: DESIGN_SYSTEM.colors.text.primary }}>
+                Specificaties
+              </h3>
               
               {/* ✅ DYNAMISCHE specificaties met Toon meer */}
               <div className={CONFIG.specifications.container}>

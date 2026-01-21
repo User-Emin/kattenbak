@@ -313,7 +313,7 @@ export const PRODUCT_CONTENT = {
   // Safety Notice - ✅ VERKORT: Behoud doel, korter voor betere UX
   safetyNotice: {
     title: 'Let op',
-    text: 'Niet geschikt voor kittens onder 6 maanden. Geschikt voor katten van 1,5KG tot 12,5KG.',
+    text: 'Niet geschikt voor kittens onder 6 maanden • Geschikt voor katten van 1,5KG tot 12,5KG • Perfect voor volwassen en senior katten',
   },
 
   // Edge-to-edge image section (tussen tabs en zigzag)

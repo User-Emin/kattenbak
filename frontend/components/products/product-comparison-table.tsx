@@ -84,37 +84,43 @@ export function ProductComparisonTable() {
   const renderValue = (value: string | boolean, isOurProduct: boolean = false) => {
     if (typeof value === 'boolean') {
       return value ? (
-        <Check className="w-6 h-6 text-green-600" /> // ✅ DUidelijker: Grotere vinkjes
+        // ✅ ZWART-WIT VINKJE: Zwarte achtergrond, witte vink
+        <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center">
+          <Check className="w-5 h-5 text-white" />
+        </div>
       ) : (
-        <X className="w-6 h-6 text-red-500" /> // ✅ DUidelijker: Rode kruisjes (was grijs)
+        // ✅ ZWART-WIT KRUISJE: Witte achtergrond, zwart kruis
+        <div className="w-8 h-8 rounded-full bg-white border-2 border-gray-300 flex items-center justify-center">
+          <X className="w-5 h-5 text-gray-400" />
+        </div>
       );
     }
     return <span className="text-sm sm:text-base font-medium text-gray-900">{value}</span>;
   };
 
   return (
-    <div className="w-full bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      {/* Header - ✅ MOBIEL: Centraal */}
-      <div className="bg-gray-50 border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4">
-        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 text-center sm:text-left">Vergelijking</h3>
-        <p className="text-xs sm:text-sm text-gray-600 mt-1 text-center sm:text-left">Onze automatische kattenbak vs. traditionele kattenbak</p>
+    <div className="w-full bg-white rounded-xl border-2 border-gray-200 shadow-lg overflow-hidden">
+      {/* Header - ✅ ZWART-WIT: Speelser met contrast */}
+      <div className="bg-black text-white px-4 sm:px-6 py-4 sm:py-5">
+        <h3 className="text-xl sm:text-2xl font-bold text-center sm:text-left">Vergelijking</h3>
+        <p className="text-sm sm:text-base text-gray-200 mt-2 text-center sm:text-left">Onze automatische kattenbak vs. traditionele kattenbak</p>
       </div>
 
-      {/* ✅ RESPONSIVE TABLE: Desktop tabel, mobiel cards */}
+      {/* ✅ RESPONSIVE TABLE: Desktop tabel, mobiel cards - ZWART-WIT CONTRAST */}
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-white border-b-2 border-gray-300">
             <tr>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 w-1/3">
+              <th className="px-6 py-4 text-left text-sm font-bold text-gray-900 w-1/3">
                 Feature
               </th>
-              <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 w-1/3">
+              <th className="px-6 py-4 text-center text-sm font-bold text-white bg-black w-1/3">
                 Onze Kattenbak
               </th>
-              <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600 w-1/3">
+              <th className="px-6 py-4 text-center text-sm font-bold text-gray-900 bg-gray-100 w-1/3">
                 <div className="flex flex-col items-center gap-2">
-                  <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200 bg-white">
+                  <div className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-gray-300 bg-white">
                     <Image
                       src="/images/traditional-litter-box-optimized.jpg"
                       alt="Traditionele kattenbak"
@@ -127,24 +133,35 @@ export function ProductComparisonTable() {
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-gray-200">
             {comparisonData.map((row, index) => (
               <tr
                 key={index}
                 className={cn(
-                  'transition-colors hover:bg-gray-50',
-                  row.highlight && 'bg-green-50/50'
+                  'transition-colors',
+                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50', // ✅ ZEBRA STRIPES: Alternerend wit/grijs
+                  row.highlight && 'bg-black text-white', // ✅ HIGHLIGHT: Zwarte achtergrond voor onze voordelen
+                  'hover:bg-gray-100'
                 )}
               >
-                <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                <td className={cn(
+                  'px-6 py-4 text-sm font-semibold',
+                  row.highlight ? 'text-white' : 'text-gray-900'
+                )}>
                   {row.feature}
                 </td>
-                <td className="px-6 py-4 text-center">
+                <td className={cn(
+                  'px-6 py-4 text-center',
+                  row.highlight && 'bg-black'
+                )}>
                   <div className="flex items-center justify-center">
                     {renderValue(row.ourProduct, true)}
                   </div>
                 </td>
-                <td className="px-6 py-4 text-center">
+                <td className={cn(
+                  'px-6 py-4 text-center',
+                  row.highlight ? 'bg-gray-900' : 'bg-white'
+                )}>
                   <div className="flex items-center justify-center">
                     {renderValue(row.competitor, false)}
                   </div>
@@ -155,26 +172,43 @@ export function ProductComparisonTable() {
         </table>
       </div>
 
-      {/* ✅ MOBIEL: Cards layout voor betere leesbaarheid - CENTRAAL */}
-      <div className="md:hidden divide-y divide-gray-200">
+      {/* ✅ MOBIEL: Cards layout - ZWART-WIT CONTRAST, SPEELSER */}
+      <div className="md:hidden divide-y-2 divide-gray-300">
         {comparisonData.map((row, index) => (
           <div
             key={index}
             className={cn(
               'p-4 transition-colors',
-              row.highlight && 'bg-green-50/50'
+              row.highlight ? 'bg-black text-white' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50' // ✅ ZEBRA STRIPES + HIGHLIGHT
             )}
           >
-            <div className="text-sm font-semibold text-gray-900 mb-3 text-center">{row.feature}</div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex flex-col items-center">
-                <div className="text-xs sm:text-sm font-medium text-gray-700 mb-2 text-center">Onze Kattenbak</div>
+            <div className={cn(
+              'text-sm font-bold mb-4 text-center',
+              row.highlight ? 'text-white' : 'text-gray-900'
+            )}>
+              {row.feature}
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className={cn(
+                'flex flex-col items-center p-3 rounded-lg',
+                row.highlight ? 'bg-gray-900' : 'bg-black'
+              )}>
+                <div className={cn(
+                  'text-xs sm:text-sm font-bold mb-3 text-center',
+                  'text-white'
+                )}>Onze Kattenbak</div>
                 <div className="flex items-center justify-center">
                   {renderValue(row.ourProduct, true)}
                 </div>
               </div>
-              <div className="flex flex-col items-center">
-                <div className="text-xs sm:text-sm font-medium text-gray-700 mb-2 text-center">Traditionele</div>
+              <div className={cn(
+                'flex flex-col items-center p-3 rounded-lg border-2',
+                row.highlight ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-300'
+              )}>
+                <div className={cn(
+                  'text-xs sm:text-sm font-bold mb-3 text-center',
+                  row.highlight ? 'text-gray-200' : 'text-gray-900'
+                )}>Traditionele</div>
                 <div className="flex items-center justify-center">
                   {renderValue(row.competitor, false)}
                 </div>
@@ -184,9 +218,9 @@ export function ProductComparisonTable() {
         ))}
       </div>
 
-      {/* Footer Note */}
-      <div className="bg-gray-50 border-t border-gray-200 px-4 sm:px-6 py-2.5 sm:py-3">
-        <p className="text-xs text-gray-500 text-center">
+      {/* Footer Note - ✅ ZWART-WIT: Consistent met header */}
+      <div className="bg-gray-100 border-t-2 border-gray-300 px-4 sm:px-6 py-3 sm:py-4">
+        <p className="text-xs sm:text-sm text-gray-600 text-center font-medium">
           * Vergelijking met traditionele niet-automatische kattenbak. Specificaties kunnen variëren.
         </p>
       </div>
