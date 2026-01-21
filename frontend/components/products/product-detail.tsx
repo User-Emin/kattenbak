@@ -827,7 +827,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                           style={{ color: '#005980' }}
                         />
                         {/* ✅ GRIJZE TEKST: Groter (text-sm sm:text-base) en donkerder grijs (#4B5563) voor meer opvallendheid */}
-                        <span style={{ color: '#4B5563' }} className="font-medium">{usp.text}</span>
+                        <span style={{ color: '#4B5563' }} className="font-medium !text-gray-600">{usp.text}</span>
                       </div>
                     );
                   })}
