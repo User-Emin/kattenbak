@@ -62,8 +62,7 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
       CONFIG.layout.containerPadding, // ✅ EXACT ZELFDE: Container padding zoals varianten (px-4 sm:px-6 md:px-8 lg:px-8) - GEEN verticale padding
     )}>
       <div className={cn(
-        CONFIG.featureSection.containerSpacing, // ✅ EXACT ZELFDE: Container spacing zoals productdetail
-        'max-w-4xl mx-auto' // ✅ EXACT ZELFDE: Max-width en centrering zoals varianten (op container niveau)
+        CONFIG.featureSection.containerSpacing // ✅ EXACT ZELFDE: Container spacing zoals productdetail - GEEN max-w-4xl op desktop voor grotere afbeeldingen
       )}>
         {features.map((feature, index) => {
           const isEven = index % 2 === 0;

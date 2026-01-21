@@ -80,25 +80,87 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         {/* ✅ SEO 10/10: Title & Meta Description */}
         <title>{SEO_CONFIG.defaults.title}</title>
         <meta name="description" content={SEO_CONFIG.defaults.description} />
+        <meta name="keywords" content="automatische kattenbak, zelfreinigende kattenbak, premium kattenbak, kattenbak met app, automatische kattenbak Nederland, beste automatische kattenbak, kattenbak kopen, ALP1017, ALP1071" />
+        <meta name="author" content="CatSupply" />
+        <meta name="publisher" content="CatSupply" />
+        <meta name="language" content="nl" />
+        <meta name="geo.region" content="NL" />
+        <meta name="geo.placename" content="Haarlem" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         
         {/* ✅ SEO 10/10: Canonical URL - Dynamic via useEffect */}
         <link rel="canonical" href={typeof window !== 'undefined' ? window.location.href.split('?')[0] : SEO_CONFIG.site.url} />
         
-        {/* ✅ SEO 10/10: Open Graph Tags */}
+        {/* ✅ SEO 10/10: Open Graph Tags - Enhanced */}
         <meta property="og:title" content={SEO_CONFIG.defaults.title} />
         <meta property="og:description" content={SEO_CONFIG.defaults.description} />
         <meta property="og:image" content={SEO_CONFIG.defaults.image} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="CatSupply - Premium Automatische Kattenbak" />
         <meta property="og:url" content={typeof window !== 'undefined' ? window.location.href.split('?')[0] : SEO_CONFIG.site.url} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content={SEO_CONFIG.site.name} />
         <meta property="og:locale" content={SEO_CONFIG.site.locale} />
+        <meta property="og:locale:alternate" content="en_US" />
         
-        {/* ✅ SEO 10/10: Twitter Card Tags */}
+        {/* ✅ SEO 10/10: Twitter Card Tags - Enhanced */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={SEO_CONFIG.defaults.title} />
         <meta name="twitter:description" content={SEO_CONFIG.defaults.description} />
         <meta name="twitter:image" content={SEO_CONFIG.defaults.image} />
+        <meta name="twitter:image:alt" content="CatSupply - Premium Automatische Kattenbak" />
         <meta name="twitter:site" content="@CatSupply" />
+        <meta name="twitter:creator" content="@CatSupply" />
+        
+        {/* ✅ SEO 10/10: Additional Meta Tags */}
+        <meta name="format-detection" content="telephone=yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="CatSupply" />
+        
+        {/* ✅ SEO 10/10: Structured Data - Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: SEO_CONFIG.site.name,
+              url: SEO_CONFIG.site.url,
+              logo: SEO_CONFIG.defaults.image,
+              contactPoint: {
+                '@type': 'ContactPoint',
+                telephone: SEO_CONFIG.contact.phone.replace(/\s/g, '-'),
+                contactType: 'customer service',
+                areaServed: 'NL',
+                availableLanguage: ['nl', 'en'],
+              },
+            }),
+          }}
+        />
+        
+        {/* ✅ SEO 10/10: Structured Data - Website */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: SEO_CONFIG.site.name,
+              url: SEO_CONFIG.site.url,
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: `${SEO_CONFIG.site.url}/producten?q={search_term_string}`,
+                },
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
       </head>
       <body 
         className="antialiased bg-white" // ✅ ECHT WIT: bg-white class + style

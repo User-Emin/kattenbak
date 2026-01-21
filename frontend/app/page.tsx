@@ -91,7 +91,10 @@ export default function HomePage() {
   const optimizedHeroImage = product?.images?.[0] || heroImage;
 
   return (
-    <div>
+    <>
+      {/* ✅ SEO 10/10: Homepage Structured Data */}
+      <HomepageJsonLd product={product} />
+      <div>
       {/* 🎨 HERO SECTION - RESPONSIVE: Mobile stacked, Desktop split (35/65) */}
       <section 
         className="relative flex flex-col md:flex-row items-center"
@@ -229,7 +232,7 @@ export default function HomePage() {
       >
         {/* ✅ PADDING MOBIEL: Heading heeft padding op mobiel voor leesbaarheid */}
         <div className="text-center mb-12 px-4 md:px-0"> {/* ✅ PADDING MOBIEL: Padding op mobiel */}
-          {/* ✅ OPTIMAAL: Titel en subtekst op 1 rij, subtekst weg */}
+          {/* ✅ OPTIMAAL: Alleen titel, geen subtekst */}
           <h2 
             className="mb-0 md:mb-4 text-4xl md:text-5xl" // ✅ DESKTOP: 5xl (even groot als productdetail)
             style={{
@@ -239,7 +242,7 @@ export default function HomePage() {
               letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
             }}
           >
-            Waarom deze kattenbak? De belangrijkste features die het verschil maken
+            Waarom deze kattenbak?
           </h2>
         </div>
         
@@ -360,5 +363,6 @@ export default function HomePage() {
 
       {/* Chat popup is nu in layout.tsx voor alle pagina's */}
     </div>
+    </>
   );
 }
