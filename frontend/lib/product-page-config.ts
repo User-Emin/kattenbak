@@ -307,7 +307,7 @@ export const PRODUCT_PAGE_CONFIG = {
       },
       buttonStyle: {
         base: 'mt-4 text-sm font-medium transition-colors',
-        color: 'text-gray-600 hover:text-gray-700', // ✅ GRIJS: Geen blauw (was text-blue-600)
+        color: 'text-black hover:text-gray-800', // ✅ DONKERDER: Volledig zwart zoals "Let op" balk
         icon: 'w-4 h-4 ml-1 inline-block transition-transform',
       },
     },
