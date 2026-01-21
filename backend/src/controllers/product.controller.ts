@@ -96,7 +96,7 @@ export class ProductController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { slug } = req.params;
+      const slug = extractStringParam(req.params.slug, 'slug');
       const product = await ProductService.getProductBySlug(slug);
 
       successResponse(res, product);
