@@ -123,11 +123,10 @@ export function ProductEdgeImageSection() {
             )}>
               {product.name}
             </h2>
-            {/* ✅ MOBIEL: Alleen productnaam, geen beschrijving op mobiel */}
+            {/* ✅ MOBIEL: Beschrijving ook zichtbaar op mobiel (voor gebruik in mobielweergave na zigzag) */}
             <p className={cn(
               'text-sm sm:text-base md:text-lg', // ✅ MOBIEL: Responsive tekst
-              CONFIG.edgeSection.description.textColor,
-              'hidden sm:block' // ✅ MOBIEL: Verberg beschrijving op mobiel
+              CONFIG.edgeSection.description.textColor
             )}>
               {product.description || product.shortDescription || PRODUCT_CONTENT.mainDescription}
             </p>
