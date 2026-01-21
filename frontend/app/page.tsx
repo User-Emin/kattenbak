@@ -20,6 +20,7 @@ import { BRAND_COLORS_HEX } from "@/lib/color-config";
 import { ProductVariantsSection } from "@/components/shared/product-variants-section";
 import { ProductDescriptionSection } from "@/components/shared/product-description-section";
 import { ProductEdgeImageSection } from "@/components/shared/product-edge-image-section";
+import { HomepageJsonLd } from "@/components/seo/homepage-json-ld";
 
 /**
  * 🎨 HOMEPAGE - MINIMALISTISCH ZWART-WIT DESIGN
