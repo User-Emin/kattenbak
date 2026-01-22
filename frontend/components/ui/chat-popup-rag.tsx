@@ -545,14 +545,18 @@ export function ChatPopup() {
   }, [handleSendMessage]);
 
   // ✅ DRY: Calculate button position via CHAT_CONFIG (with safe access)
-  // ✅ MOBILE BOTTOM NAV: Op productpagina's moet chat button boven bottom nav (80px hoogte + 10px margin = 90px)
+  // ✅ MOBILE BOTTOM NAV: Dynamisch berekenen via DESIGN_SYSTEM (geen hardcode)
   const buttonBottomClass = useMemo(() => {
     if (!safeChatConfig?.button?.position) {
       return 'bottom-8';
     }
-    // ✅ MOBILE BOTTOM NAV: Op productpagina's mobiel: boven bottom nav (112px = 7rem voor ruimte)
+    // ✅ MOBILE BOTTOM NAV: Op productpagina's mobiel: boven bottom nav (dynamisch via DESIGN_SYSTEM)
     if (isProductPage && typeof window !== 'undefined' && window.innerWidth < 768) {
-      return 'bottom-28'; // ✅ BOVEN BOTTOM NAV: 112px (7rem) boven bottom om overlap te voorkomen
+      // ✅ DYNAMISCH: Gebruik DESIGN_SYSTEM.layout.mobileBottomNav.chatButtonOffsetPx (geen hardcode)
+      const offsetPx = DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonOffsetPx || 120;
+      const offsetRem = offsetPx / 16; // Convert px to rem (16px = 1rem)
+      // ✅ DYNAMISCH: Gebruik inline style voor exacte pixel waarde (geen hardcode Tailwind class)
+      return `bottom-[${offsetPx}px]`; // ✅ DYNAMISCH: Exacte pixel waarde via DESIGN_SYSTEM
     }
     return stickyCartVisible 
       ? safeChatConfig.button.position.bottomWithCart

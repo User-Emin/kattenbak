@@ -217,6 +217,15 @@ export const DESIGN_SYSTEM = {
       sidebarBackdrop: 'z-[160]', // ✅ ONDER sidebar maar BOVEN header (z-[165])
     },
     
+    // ✅ MOBILE BOTTOM NAV: Centrale configuratie (geen hardcode)
+    mobileBottomNav: {
+      height: '80px', // ✅ Totaal: py-3 (12px) + button height + padding = ~80px
+      heightPx: 80,
+      zIndex: 'z-[200]',
+      chatButtonOffset: '120px', // ✅ CHAT BUTTON OFFSET: 80px nav + 40px margin = 120px (3rem = 48px, maar we gebruiken 120px voor veiligheid)
+      chatButtonOffsetPx: 120,
+    },
+    
     // Feature section (edge-to-edge afbeelding) - ✅ SMOOTH PASSEND: Legale foto onder hero
     featureSection: {
       minHeight: '400px',

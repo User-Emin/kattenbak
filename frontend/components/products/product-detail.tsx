@@ -539,13 +539,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </>
       )}
       
-      {/* ✅ SEO PHASE 1: Breadcrumb Navigation */}
-      {!loading && product && (
-        <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'pt-4 pb-2')}>
-          <BreadcrumbNavigation />
-        </div>
-      )}
-      
       {/* Main Product Section - ✅ DESKTOP SPACING: Ruimte onder navbar op desktop, mobiel edge-to-edge */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'px-0 md:px-6 lg:px-8', CONFIG.layout.sectionSpacing, 'pt-0 md:pt-6 lg:pt-8')} style={{ marginTop: 0 }}>
         {/* Product Grid - ✅ DESKTOP SPACING: Ruimte op desktop, mobiel direct onder navbar */}
@@ -557,6 +550,20 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
         )}> {/* ✅ DESKTOP SPACING: Ruimte via container padding-top op desktop */}
           {/* Left: Image Gallery - ✅ GEEN PADDING MOBIEL: Voor echte edge-to-edge */}
+          {/* ✅ SEO PHASE 1: Breadcrumb Navigation - DICHTBIJ PRODUCTAFBEELDING (Desktop) */}
+          {!loading && product && (
+            <div className="hidden lg:block absolute top-0 left-0 right-0" style={{ top: 'calc(40px + 72px + 24px)' }}>
+              <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'px-6 lg:px-8')}>
+                <BreadcrumbNavigation />
+              </div>
+            </div>
+          )}
+          {/* ✅ MOBIEL: Breadcrumb boven productafbeelding */}
+          {!loading && product && (
+            <div className="lg:hidden w-full px-4 pt-4 pb-2">
+              <BreadcrumbNavigation />
+            </div>
+          )}
           <div className={cn(
             'flex flex-col', 
             'w-full lg:w-[58%]', // ✅ RESPONSIVE: Full width op mobile, 58% op desktop
