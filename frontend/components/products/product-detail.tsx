@@ -951,7 +951,32 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </span>
               </div>
 
-              {/* Specificaties - ✅ BUTTON STIJL: Passend, modern */}
+              {/* ✅ LET OP: Dikker tekst zoals USPs - BOVEN specificaties */}
+              <div className={cn(CONFIG.safetyNotice.container, 'mt-6')}>
+                <div className={CONFIG.safetyNotice.header.container}>
+                  <AlertTriangle className={cn(
+                    CONFIG.safetyNotice.header.icon.size,
+                    CONFIG.safetyNotice.header.icon.color
+                  )} />
+                  <h4 className={cn(
+                    CONFIG.safetyNotice.header.title.fontSize,
+                    'font-semibold', // ✅ DIKKER: font-semibold zoals USPs
+                    CONFIG.safetyNotice.header.title.textColor
+                  )}>
+                    {PRODUCT_CONTENT.safetyNotice.title}
+                  </h4>
+                </div>
+                <p className={cn(
+                  CONFIG.safetyNotice.content.fontSize,
+                  'font-medium', // ✅ DIKKER: font-medium zoals USPs
+                  CONFIG.safetyNotice.content.textColor,
+                  CONFIG.safetyNotice.content.lineHeight
+                )}>
+                  {PRODUCT_CONTENT.safetyNotice.text}
+                </p>
+              </div>
+
+              {/* Specificaties - ✅ BUTTON STIJL: Passend, modern - ONDER Let op */}
               <div className="mt-6">
                 {/* ✅ SPECIFICATIES BUTTON: Modern button stijl */}
                 <button
@@ -1008,31 +1033,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     })}
                   </div>
                 )}
-              </div>
-
-              {/* ✅ LET OP: Dikker tekst zoals USPs */}
-              <div className={cn(CONFIG.safetyNotice.container, 'mt-6')}>
-                <div className={CONFIG.safetyNotice.header.container}>
-                  <AlertTriangle className={cn(
-                    CONFIG.safetyNotice.header.icon.size,
-                    CONFIG.safetyNotice.header.icon.color
-                  )} />
-                  <h4 className={cn(
-                    CONFIG.safetyNotice.header.title.fontSize,
-                    'font-semibold', // ✅ DIKKER: font-semibold zoals USPs
-                    CONFIG.safetyNotice.header.title.textColor
-                  )}>
-                    {PRODUCT_CONTENT.safetyNotice.title}
-                  </h4>
-                </div>
-                <p className={cn(
-                  CONFIG.safetyNotice.content.fontSize,
-                  'font-medium', // ✅ DIKKER: font-medium zoals USPs
-                  CONFIG.safetyNotice.content.textColor,
-                  CONFIG.safetyNotice.content.lineHeight
-                )}>
-                  {PRODUCT_CONTENT.safetyNotice.text}
-                </p>
               </div>
             </div>
           </div>
@@ -1100,13 +1100,65 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           )}
           {activeTab === 'specificaties' && (
             <div className={cn(CONFIG.tabs.content.spacing, CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor)}>
-              {/* ✅ SPECIFICATIES TITEL: Compacter, minder direct */}
-              <h3 className="text-lg md:text-xl font-medium mb-4 text-gray-700">
-                Specificaties
-              </h3>
+              {/* ✅ SPECIFICATIES BUTTON: Modern button stijl */}
+              <button
+                onClick={() => setShowAllFeatures(!showAllFeatures)}
+                className="w-full px-6 py-4 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 flex items-center justify-between group mb-4"
+              >
+                <span className="text-base md:text-lg font-semibold text-gray-900">
+                  Specificaties
+                </span>
+                <ChevronDown 
+                  className={cn(
+                    'w-5 h-5 text-gray-600 transition-transform duration-200',
+                    showAllFeatures && 'rotate-180'
+                  )}
+                />
+              </button>
               
-              {/* ✅ DYNAMISCHE specificaties met Toon meer */}
-              <div className={CONFIG.specifications.container}>
+              {/* ✅ DYNAMISCHE specificaties met accordion binnen button */}
+              {showAllFeatures && (
+                <div className="space-y-2">
+                  {specifications.map((spec, index) => {
+                    const Icon = spec.icon;
+                    const isOpen = openSpecs.has(index);
+
+                    return (
+                      <div 
+                        key={index}
+                        className="border border-gray-200 rounded-lg overflow-hidden"
+                      >
+                        <button
+                          onClick={() => toggleSpec(index)}
+                          className="w-full px-4 py-3 text-left bg-white hover:bg-gray-50 transition-colors flex items-center justify-between"
+                        >
+                          <span className="text-sm md:text-base font-medium text-gray-900">
+                            {spec.title}
+                          </span>
+                          <ChevronDown 
+                            className={cn(
+                              'w-4 h-4 text-gray-600 transition-transform duration-200',
+                              isOpen && 'rotate-180'
+                            )}
+                          />
+                        </button>
+
+                        {isOpen && (
+                          <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
+                            <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                              {spec.description}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              
+              {/* ✅ STATISCHE specificaties (Buitenmaat, etc.) - alleen als button open is */}
+              {showAllFeatures && (
+                <div className={CONFIG.specifications.container} style={{ marginTop: '1rem' }}>
                 {/* Eerste groep - altijd zichtbaar */}
                 <div className="space-y-0">
                   <div className={CONFIG.specifications.item.layout}>
