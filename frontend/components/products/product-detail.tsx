@@ -550,20 +550,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
         )}> {/* ✅ DESKTOP SPACING: Ruimte via container padding-top op desktop */}
           {/* Left: Image Gallery - ✅ GEEN PADDING MOBIEL: Voor echte edge-to-edge */}
-          {/* ✅ SEO PHASE 1: Breadcrumb Navigation - DICHTBIJ PRODUCTAFBEELDING (Desktop) */}
-          {!loading && product && (
-            <div className="hidden lg:block absolute top-0 left-0 right-0" style={{ top: 'calc(40px + 72px + 24px)' }}>
-              <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'px-6 lg:px-8')}>
-                <BreadcrumbNavigation />
-              </div>
-            </div>
-          )}
-          {/* ✅ MOBIEL: Breadcrumb boven productafbeelding */}
-          {!loading && product && (
-            <div className="lg:hidden w-full px-4 pt-4 pb-2">
-              <BreadcrumbNavigation />
-            </div>
-          )}
           <div className={cn(
             'flex flex-col', 
             'w-full lg:w-[58%]', // ✅ RESPONSIVE: Full width op mobile, 58% op desktop
@@ -573,6 +559,18 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'gap-3 sm:gap-4 md:gap-4 lg:gap-4',
             'px-4 md:px-0' // ✅ PADDING: Alleen thumbnails hebben padding, image niet
           )}> {/* ✅ GEEN PADDING MOBIEL: Image gallery heeft geen padding voor edge-to-edge */}
+            {/* ✅ SEO PHASE 1: Breadcrumb Navigation - DICHTBIJ PRODUCTAFBEELDING (Desktop) */}
+            {!loading && product && (
+              <div className="hidden lg:block mb-4">
+                <BreadcrumbNavigation />
+              </div>
+            )}
+            {/* ✅ MOBIEL: Breadcrumb boven productafbeelding */}
+            {!loading && product && (
+              <div className="lg:hidden mb-4">
+                <BreadcrumbNavigation />
+              </div>
+            )}
             {/* Main Image - ✅ ECHT EDGE-TO-EDGE: Geen negatieve margin nodig, parent heeft al px-0 */}
             <div className={cn(
               'relative', 
