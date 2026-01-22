@@ -571,6 +571,26 @@ export function ChatPopup() {
     // ✅ DEFAULT: Normale z-index voor andere pagina's
     return safeChatConfig?.button?.zIndex || 'z-[50]';
   }, [isProductPage, safeChatConfig]);
+  
+  // ✅ MOBILE BOTTOM NAV: Dynamische inline style (overschrijft classes)
+  const buttonStyle = useMemo(() => {
+    const baseStyle: React.CSSProperties = {
+      display: 'flex',
+      visibility: 'visible',
+      opacity: 1,
+    };
+    
+    // ✅ MOBILE BOTTOM NAV: Op productpagina's mobiel: boven bottom nav
+    if (isProductPage && typeof window !== 'undefined' && window.innerWidth < 768) {
+      return {
+        ...baseStyle,
+        zIndex: DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonZIndexValue || 201,
+        bottom: `${DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonOffsetPx || 140}px`,
+      };
+    }
+    
+    return baseStyle;
+  }, [isProductPage]);
 
   // ✅ SECURITY: Additional safety check - ensure safeChatConfig is valid before render
   // This check happens AFTER safeChatConfig is defined
@@ -691,13 +711,7 @@ export function ChatPopup() {
           safeChatConfig.utilities?.fontFamily || 'font-sans',
           !isExpanded && safeChatConfig.button.pulse // ✅ MODERN: Pulse animation when closed
         )}
-        style={{
-          // ✅ MOBILE BOTTOM NAV: Inline style voor absolute zekerheid (overschrijft alle classes)
-          ...(isProductPage && typeof window !== 'undefined' && window.innerWidth < 768 ? {
-            zIndex: DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonZIndexValue || 201,
-            bottom: `${DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonOffsetPx || 140}px`,
-          } : {})
-        }}
+        style={buttonStyle}
         aria-label="Open chat"
       >
         {isExpanded ? (

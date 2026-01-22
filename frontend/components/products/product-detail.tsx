@@ -690,24 +690,26 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
           </div>
 
-          {/* Right: Product Info - GEEN EXTRA KAART - ✅ ALIGN TOP: Begint opzelfde hoogte als afbeelding */}
+          {/* Right: Product Info - GEEN EXTRA KAART - ✅ DESKTOP: Opzelfde hoogte als afbeelding */}
           <div className={cn(
             'flex flex-col', 
             'w-full lg:w-[42%]', // ✅ RESPONSIVE: Full width op mobile, 42% op desktop
             'self-start',
             'mt-6 sm:mt-8 md:mt-0 lg:mt-0', // ✅ SYMMETRISCH: Gelijk spacing op mobile, geen margin op desktop
             'mx-auto lg:mx-0', // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
-            'px-4 md:px-0' // ✅ PADDING: Product info heeft padding op mobiel
+            'px-4 md:px-0', // ✅ PADDING: Product info heeft padding op mobiel
+            'lg:pt-0' // ✅ DESKTOP: Geen padding-top op desktop (opzelfde hoogte als afbeelding)
           )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
-              {/* Productnaam - ✅ BOVENAAN: Gelijk met afbeelding */}
+              {/* Productnaam - ✅ DESKTOP: Opzelfde hoogte als afbeelding (geen margin-top) */}
               <h1 className={cn(
                 'text-2xl sm:text-3xl lg:text-4xl', // ✅ RESPONSIVE: Kleinere tekst op mobile
                 CONFIG.info.title.fontWeight,
                 CONFIG.info.title.textColor,
-                CONFIG.info.title.marginBottom,
-                'leading-tight' // ✅ RESPONSIVE: Tighter line height op mobile
+                'mb-2 lg:mb-3', // ✅ COMPACT: Minder margin-bottom op desktop
+                'leading-tight', // ✅ RESPONSIVE: Tighter line height op mobile
+                'lg:mt-0' // ✅ DESKTOP: Geen margin-top op desktop (opzelfde hoogte als afbeelding)
               )}>
                 {product.name}
               </h1>
