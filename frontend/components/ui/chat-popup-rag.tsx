@@ -553,8 +553,7 @@ export function ChatPopup() {
     // ✅ MOBILE BOTTOM NAV: Op productpagina's mobiel: boven bottom nav (dynamisch via DESIGN_SYSTEM)
     if (isProductPage && typeof window !== 'undefined' && window.innerWidth < 768) {
       // ✅ DYNAMISCH: Gebruik DESIGN_SYSTEM.layout.mobileBottomNav.chatButtonOffsetPx (geen hardcode)
-      const offsetPx = DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonOffsetPx || 120;
-      const offsetRem = offsetPx / 16; // Convert px to rem (16px = 1rem)
+      const offsetPx = DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonOffsetPx || 140;
       // ✅ DYNAMISCH: Gebruik inline style voor exacte pixel waarde (geen hardcode Tailwind class)
       return `bottom-[${offsetPx}px]`; // ✅ DYNAMISCH: Exacte pixel waarde via DESIGN_SYSTEM
     }
@@ -562,6 +561,16 @@ export function ChatPopup() {
       ? safeChatConfig.button.position.bottomWithCart
       : safeChatConfig.button.position.bottom;
   }, [stickyCartVisible, safeChatConfig, isProductPage]);
+  
+  // ✅ MOBILE BOTTOM NAV: Dynamische z-index via DESIGN_SYSTEM (geen hardcode)
+  const buttonZIndexClass = useMemo(() => {
+    // ✅ MOBILE BOTTOM NAV: Op productpagina's mobiel: boven bottom nav (z-[201] > z-[200])
+    if (isProductPage && typeof window !== 'undefined' && window.innerWidth < 768) {
+      return DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonZIndex || 'z-[201]';
+    }
+    // ✅ DEFAULT: Normale z-index voor andere pagina's
+    return safeChatConfig?.button?.zIndex || 'z-[50]';
+  }, [isProductPage, safeChatConfig]);
 
   // ✅ SECURITY: Additional safety check - ensure safeChatConfig is valid before render
   // This check happens AFTER safeChatConfig is defined
@@ -660,7 +669,7 @@ export function ChatPopup() {
         className={cn(
           safeChatConfig.button.position.type,
           safeChatConfig.button.position.right,
-          safeChatConfig.button.zIndex,
+          buttonZIndexClass, // ✅ DYNAMISCH: Gebruik berekende z-index (boven bottom nav op productpagina's)
           buttonBottomClass,
           safeChatConfig.button.size,
           safeChatConfig.button.borderRadius,

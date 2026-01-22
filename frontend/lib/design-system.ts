@@ -222,8 +222,11 @@ export const DESIGN_SYSTEM = {
       height: '80px', // ✅ Totaal: py-3 (12px) + button height + padding = ~80px
       heightPx: 80,
       zIndex: 'z-[200]',
-      chatButtonOffset: '120px', // ✅ CHAT BUTTON OFFSET: 80px nav + 40px margin = 120px (3rem = 48px, maar we gebruiken 120px voor veiligheid)
-      chatButtonOffsetPx: 120,
+      zIndexValue: 200, // ✅ Z-INDEX WAARDE: Voor vergelijking
+      chatButtonOffset: '140px', // ✅ CHAT BUTTON OFFSET: 80px nav + 60px margin = 140px (veilige ruimte)
+      chatButtonOffsetPx: 140,
+      chatButtonZIndex: 'z-[201]', // ✅ CHAT BUTTON Z-INDEX: Boven bottom nav (z-[200])
+      chatButtonZIndexValue: 201, // ✅ CHAT BUTTON Z-INDEX WAARDE: Voor vergelijking
     },
     
     // Feature section (edge-to-edge afbeelding) - ✅ SMOOTH PASSEND: Legale foto onder hero
