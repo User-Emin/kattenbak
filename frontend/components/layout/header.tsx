@@ -184,14 +184,14 @@ export function Header() {
       {isCartOpen && (
         <>
           <div
-            className={cn('fixed inset-0 backdrop-blur-sm', (DESIGN_SYSTEM.layout as any).zIndex?.sidebarBackdrop || 'z-[160]')}
+            className={cn('fixed inset-0 backdrop-blur-sm', DESIGN_SYSTEM.layout.sidebarZIndex.sidebarBackdrop)}
             style={{
               background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.2) 0%, rgba(122, 122, 125, 0.2) 100%)', // ✅ GRADIENT met opacity (was bg-black/20)
             }}
             onClick={closeCart}
           />
           <div 
-            className={cn('fixed right-0 w-full max-w-md bg-white shadow-2xl animate-slide-in-right flex flex-col', (DESIGN_SYSTEM.layout as any).zIndex?.sidebar || 'z-[170]')}
+            className={cn('fixed right-0 w-full max-w-md bg-white shadow-2xl animate-slide-in-right flex flex-col', DESIGN_SYSTEM.layout.sidebarZIndex.sidebar)}
             style={{
               top: DESIGN_SYSTEM.layout.header.totalHeight, // ✅ DRY: Start onder banner + navbar (geen overlap)
               height: `calc(100vh - ${DESIGN_SYSTEM.layout.header.totalHeight})`, // ✅ DRY: Volledige hoogte minus banner + navbar
