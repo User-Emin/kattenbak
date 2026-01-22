@@ -67,12 +67,26 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState<'omschrijving' | 'specificaties' | 'vragen'>('omschrijving');
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [showAllSpecs, setShowAllSpecs] = useState(false); // ✅ Toon meer specs state
   const [showAllFeatures, setShowAllFeatures] = useState(false); // ✅ Toon meer features state
   const [openSpecs, setOpenSpecs] = useState<Set<number>>(new Set());
+  // ✅ ACCORDION TABS: State voor accordion secties (Omschrijving, Specificaties, Vragen)
+  const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
+  
+  // ✅ ACCORDION TABS: Toggle functie voor accordion secties
+  const toggleAccordion = (id: string) => {
+    setOpenAccordions((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
   // ✅ VARIANT SYSTEM: Selected variant state
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null); // Variant ID
 
@@ -351,12 +365,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     setSelectedImageIndex((prev) => (prev === displayImages.length - 1 ? 0 : prev + 1));
   };
 
-  // Tabs configuration (DRY - dynamic tab management)
-  const tabs = [
-    { id: 'omschrijving' as const, label: 'Omschrijving' },
-    { id: 'specificaties' as const, label: 'Specificaties' },
-    { id: 'vragen' as const, label: 'Vragen' },
-  ];
 
   // Specifications data - GEBASEERD OP ECHTE PRODUCT INFO (screenshots)
   // ✅ DUidelijker: In bullet point stijl zoals "Volledig automatisch • App bediening • Altijd schoon"
@@ -942,212 +950,160 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </p>
               </div>
 
-              {/* Specificaties - ✅ BUTTON STIJL: Passend, modern - ONDER Let op */}
-              <div className="mt-6">
-                {/* ✅ SPECIFICATIES BUTTON: Modern button stijl */}
-                <button
-                  onClick={() => setShowAllFeatures(!showAllFeatures)}
-                  className="w-full px-6 py-4 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 flex items-center justify-between group"
-                >
-                  <span className="text-base md:text-lg font-semibold text-gray-900">
-                    Specificaties
-                  </span>
-                  <ChevronDown 
-                    className={cn(
-                      'w-5 h-5 text-gray-600 transition-transform duration-200',
-                      showAllFeatures && 'rotate-180'
-                    )}
-                  />
-                </button>
-                
-                {/* Specificaties content - ✅ ACCORDION: Binnen button */}
-                {showAllFeatures && (
-                  <div className="mt-4 space-y-2">
-                    {specifications.map((spec, index) => {
-                      const Icon = spec.icon;
-                      const isOpen = openSpecs.has(index);
-
-                      return (
-                        <div 
-                          key={index}
-                          className="border border-gray-200 rounded-lg overflow-hidden"
-                        >
-                          <button
-                            onClick={() => toggleSpec(index)}
-                            className="w-full px-4 py-3 text-left bg-white hover:bg-gray-50 transition-colors flex items-center justify-between"
-                          >
-                            <span className="text-sm md:text-base font-medium text-gray-900">
-                              {spec.title}
-                            </span>
-                            <ChevronDown 
-                              className={cn(
-                                'w-4 h-4 text-gray-600 transition-transform duration-200',
-                                isOpen && 'rotate-180'
-                              )}
-                            />
-                          </button>
-
-                          {isOpen && (
-                            <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
-                              <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                                {spec.description}
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs Section - ✅ SYMMETRISCH: Gelijk padding */}
-      <div className={cn(
-        CONFIG.layout.maxWidth, 
-        'mx-auto', 
-        CONFIG.layout.containerPadding, 
-        'py-8 sm:py-10 md:py-12 lg:py-12' // ✅ SYMMETRISCH: Gelijk boven/onder
-      )}>
-        {/* Tab Buttons */}
-        <div className={CONFIG.tabs.container.borderBottom}>
-          <div className={CONFIG.tabs.container.spacing}>
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  CONFIG.tabs.button.fontSize,
-                  CONFIG.tabs.button.fontWeight,
-                  CONFIG.tabs.button.padding,
-                  CONFIG.tabs.button.transition,
-                  activeTab === tab.id
-                    ? cn(CONFIG.tabs.button.activeTextColor, CONFIG.tabs.button.activeBorder)
-                    : cn(CONFIG.tabs.button.textColor, CONFIG.tabs.button.hoverTextColor)
-                )}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Tab Content - DYNAMISCH MET LOGISCHE INFO */}
-        <div className={CONFIG.tabs.content.padding}>
-          {activeTab === 'omschrijving' && (
-            <div className={cn(CONFIG.tabs.content.spacing, CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor, CONFIG.tabs.content.lineHeight)}>
-              <h3 className="text-base sm:text-lg font-semibold mb-2">Product Omschrijving</h3>
-              {/* ✅ MOBIEL: Volledige beschrijving zichtbaar op alle schermen */}
-              <p className="text-sm sm:text-base mb-3">
-                {product.description || 'De beste automatische kattenbak met zelfreinigende functie. Perfect voor katten tot 7kg. Volledig automatisch met app-bediening.'}
-              </p>
-              {/* ✅ DYNAMISCH: Standaard meegeleverd - alleen tonen als product data beschikbaar is */}
-              {product.description && (
-                <>
-                  <h4 className="text-sm sm:text-base font-semibold mb-1.5">Standaard meegeleverd:</h4>
-                  <ul className="space-y-1 ml-4 text-sm sm:text-base">
-                    <li>• 1x {product.name}</li>
-                    <li>• 1x Stroomadapter</li>
-                    <li>• 1x Afvalzak (starter)</li>
-                    <li>• 1x Borstel (voor onderhoud)</li>
-                    <li>• 1x Geurfilter</li>
-                    <li>• 1x Inloopmat</li>
-                    <li>• 1x Handleiding (NL/EN)</li>
-                  </ul>
-                </>
-              )}
-              <p className="mt-3 text-xs sm:text-sm text-gray-600 italic">
-                * Kattenbakvulling niet inbegrepen. Geschikt voor klonterende klei, plantaardige en gemixte vulling.
-              </p>
-            </div>
-          )}
-          {activeTab === 'specificaties' && (
-            <div className={cn(CONFIG.tabs.content.spacing, CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor)}>
-              {/* ✅ SPECIFICATIES BUTTON: Modern button stijl */}
-              <button
-                onClick={() => setShowAllFeatures(!showAllFeatures)}
-                className="w-full px-6 py-4 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 flex items-center justify-between group mb-4"
-              >
-                <span className="text-base md:text-lg font-semibold text-gray-900">
-                  Specificaties
-                </span>
-                <ChevronDown 
-                  className={cn(
-                    'w-5 h-5 text-gray-600 transition-transform duration-200',
-                    showAllFeatures && 'rotate-180'
-                  )}
-                />
-              </button>
-              
-              {/* ✅ DYNAMISCHE specificaties met accordion binnen button */}
-              {showAllFeatures && (
-                <div className="space-y-2">
-                  {specifications.map((spec, index) => {
-                    const Icon = spec.icon;
-                    const isOpen = openSpecs.has(index);
-
-                    return (
-                      <div 
-                        key={index}
-                        className="border border-gray-200 rounded-lg overflow-hidden"
-                      >
-                        <button
-                          onClick={() => toggleSpec(index)}
-                          className="w-full px-4 py-3 text-left bg-white hover:bg-gray-50 transition-colors flex items-center justify-between"
-                        >
-                          <span className="text-sm md:text-base font-medium text-gray-900">
-                            {spec.title}
-                          </span>
-                          <ChevronDown 
-                            className={cn(
-                              'w-4 h-4 text-gray-600 transition-transform duration-200',
-                              isOpen && 'rotate-180'
-                            )}
-                          />
-                        </button>
-
-                        {isOpen && (
-                          <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
-                            <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                              {spec.description}
-                            </p>
-                          </div>
+              {/* ✅ ACCORDION SECTIES: Omschrijving, Specificaties, Vragen - STICKY MET AFBEELDING */}
+              <div className="mt-6 space-y-4">
+                {/* Omschrijving Accordion */}
+                <div>
+                  <button
+                    onClick={() => toggleAccordion('omschrijving')}
+                    className="w-full px-6 py-4 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 flex items-center justify-between group"
+                  >
+                    <span className="text-base md:text-lg font-semibold text-gray-900">
+                      Omschrijving
+                    </span>
+                    <ChevronDown 
+                      className={cn(
+                        'w-5 h-5 text-gray-600 transition-transform duration-200',
+                        openAccordions.has('omschrijving') && 'rotate-180'
+                      )}
+                    />
+                  </button>
+                  
+                  {openAccordions.has('omschrijving') && (
+                    <div className="mt-4 px-6 py-4 bg-white border border-gray-200 rounded-lg border-t-0">
+                      <div className={cn(CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor, CONFIG.tabs.content.lineHeight)}>
+                        <h3 className="text-base sm:text-lg font-semibold mb-2">Product Omschrijving</h3>
+                        <p className="text-sm sm:text-base mb-3">
+                          {product.description || 'De beste automatische kattenbak met zelfreinigende functie. Perfect voor katten tot 7kg. Volledig automatisch met app-bediening.'}
+                        </p>
+                        {product.description && (
+                          <>
+                            <h4 className="text-sm sm:text-base font-semibold mb-1.5">Standaard meegeleverd:</h4>
+                            <ul className="space-y-1 ml-4 text-sm sm:text-base">
+                              <li>• 1x {product.name}</li>
+                              <li>• 1x Stroomadapter</li>
+                              <li>• 1x Afvalzak (starter)</li>
+                              <li>• 1x Borstel (voor onderhoud)</li>
+                              <li>• 1x Geurfilter</li>
+                              <li>• 1x Inloopmat</li>
+                              <li>• 1x Handleiding (NL/EN)</li>
+                            </ul>
+                          </>
                         )}
+                        <p className="mt-3 text-xs sm:text-sm text-gray-600 italic">
+                          * Kattenbakvulling niet inbegrepen. Geschikt voor klonterende klei, plantaardige en gemixte vulling.
+                        </p>
                       </div>
-                    );
-                  })}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          )}
-          {activeTab === 'vragen' && (
-            <div className={cn(CONFIG.tabs.content.spacing, CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor)}>
-              <h3 className="text-lg font-semibold mb-4">Vragen over ALP1071</h3>
-              <div className="space-y-4">
+
+                {/* Specificaties Accordion */}
                 <div>
-                  <h4 className="font-semibold mb-1">Hoe vaak moet ik de afvalbak legen?</h4>
-                  <p className="text-sm">Bij één kat ongeveer 1x per week. Bij meerdere katten 2-3x per week.</p>
+                  <button
+                    onClick={() => toggleAccordion('specificaties')}
+                    className="w-full px-6 py-4 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 flex items-center justify-between group"
+                  >
+                    <span className="text-base md:text-lg font-semibold text-gray-900">
+                      Specificaties
+                    </span>
+                    <ChevronDown 
+                      className={cn(
+                        'w-5 h-5 text-gray-600 transition-transform duration-200',
+                        openAccordions.has('specificaties') && 'rotate-180'
+                      )}
+                    />
+                  </button>
+                  
+                  {openAccordions.has('specificaties') && (
+                    <div className="mt-4 space-y-2">
+                      {specifications.map((spec, index) => {
+                        const Icon = spec.icon;
+                        const isOpen = openSpecs.has(index);
+
+                        return (
+                          <div 
+                            key={index}
+                            className="border border-gray-200 rounded-lg overflow-hidden"
+                          >
+                            <button
+                              onClick={() => toggleSpec(index)}
+                              className="w-full px-4 py-3 text-left bg-white hover:bg-gray-50 transition-colors flex items-center justify-between"
+                            >
+                              <span className="text-sm md:text-base font-medium text-gray-900">
+                                {spec.title}
+                              </span>
+                              <ChevronDown 
+                                className={cn(
+                                  'w-4 h-4 text-gray-600 transition-transform duration-200',
+                                  isOpen && 'rotate-180'
+                                )}
+                              />
+                            </button>
+
+                            {isOpen && (
+                              <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
+                                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                                  {spec.description}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
+
+                {/* Vragen Accordion */}
                 <div>
-                  <h4 className="font-semibold mb-1">Welke kattenbakvulling moet ik gebruiken?</h4>
-                  <p className="text-sm">Je kunt klonterende klei vulling, plantaardige vulling, of gemixte vulling gebruiken. Kies wat het beste werkt voor jouw kat.</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Is de app gratis?</h4>
-                  <p className="text-sm">Ja! De app is volledig gratis te downloaden voor iOS en Android. Er zijn geen verborgen kosten of abonnementen.</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Hoe werkt de garantie?</h4>
-                  <p className="text-sm">Je krijgt 1 jaar volledige garantie. Bij problemen kun je contact opnemen met onze klantenservice voor een snelle oplossing of vervanging.</p>
+                  <button
+                    onClick={() => toggleAccordion('vragen')}
+                    className="w-full px-6 py-4 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 flex items-center justify-between group"
+                  >
+                    <span className="text-base md:text-lg font-semibold text-gray-900">
+                      Vragen
+                    </span>
+                    <ChevronDown 
+                      className={cn(
+                        'w-5 h-5 text-gray-600 transition-transform duration-200',
+                        openAccordions.has('vragen') && 'rotate-180'
+                      )}
+                    />
+                  </button>
+                  
+                  {openAccordions.has('vragen') && (
+                    <div className="mt-4 px-6 py-4 bg-white border border-gray-200 rounded-lg border-t-0">
+                      <div className={cn(CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor)}>
+                        <h3 className="text-lg font-semibold mb-4">Vragen over {product.name}</h3>
+                        <div className="space-y-4">
+                          <div>
+                            <h4 className="font-semibold mb-1">Hoe vaak moet ik de afvalbak legen?</h4>
+                            <p className="text-sm">Bij één kat ongeveer 1x per week. Bij meerdere katten 2-3x per week.</p>
+                          </div>
+                          <div>
+                            <h4 className="font-semibold mb-1">Welke kattenbakvulling moet ik gebruiken?</h4>
+                            <p className="text-sm">Je kunt klonterende klei vulling, plantaardige vulling, of gemixte vulling gebruiken. Kies wat het beste werkt voor jouw kat.</p>
+                          </div>
+                          <div>
+                            <h4 className="font-semibold mb-1">Is de app gratis?</h4>
+                            <p className="text-sm">Ja! De app is volledig gratis te downloaden voor iOS en Android. Er zijn geen verborgen kosten of abonnementen.</p>
+                          </div>
+                          <div>
+                            <h4 className="font-semibold mb-1">Hoe werkt de garantie?</h4>
+                            <p className="text-sm">Je krijgt 1 jaar volledige garantie. Bij problemen kun je contact opnemen met onze klantenservice voor een snelle oplossing of vervanging.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
+
 
       {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en edge-to-edge - IETS GRIJZER */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
