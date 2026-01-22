@@ -378,6 +378,50 @@ Perfect voor katten van 1,5KG tot 12,5KG en geschikt vanaf 6 maanden leeftijd. N
 
   // Product-specifieke USPs - ✅ VERWIJDERD: Geen foto's meer, alleen service USPs met vinkjes
   productUsps: [],
+  
+  // ✅ SEO PHASE 2: FAQ voor product pagina (8+ vragen)
+  faqs: [
+    {
+      q: 'Hoe werkt de zelfreinigende functie?',
+      a: 'De kattenbak detecteert automatisch wanneer je kat klaar is en start een reinigingscyclus. Alle afval wordt verzameld in een afgesloten compartiment van 10.5L. Dubbele veiligheidssensoren (IR- en gewichtssensoren) zorgen ervoor dat het systeem automatisch stopt als je kat de bak in gaat.',
+    },
+    {
+      q: 'Voor welke katten is dit geschikt?',
+      a: 'Geschikt voor katten van 1,5KG tot 12,5KG. Perfect voor volwassen en senior katten. Niet geschikt voor kittens onder 6 maanden. Het open-top design zonder deur vermindert stress en is geschikt voor katten die niet van gesloten ruimtes houden.',
+    },
+    {
+      q: 'Hoe vaak moet ik de afvalbak legen?',
+      a: 'Bij één kat: 1x per 4-6 dagen. Bij 2 katten: 1x per 3-5 dagen. Bij 3 katten: 1x per 2-3 dagen. De 10.5L capaciteit betekent minder onderhoud en meer vrijheid voor jou.',
+    },
+    {
+      q: 'Is de app-bediening inbegrepen?',
+      a: 'Ja! De app is gratis te downloaden voor iOS en Android. Er zijn geen verborgen kosten of abonnementen. De app biedt realtime monitoring, reinigingsschema\'s, gezondheidsrapporten en volledige controle over je kattenbak, waar je ook bent.',
+    },
+    {
+      q: 'Welke kattenbakvulling moet ik gebruiken?',
+      a: 'Je kunt klonterende klei vulling, plantaardige vulling, of gemixte vulling gebruiken. Het high-efficiency filter systeem werkt optimaal met alle klonterende vullingen. Kies wat het beste werkt voor jouw kat.',
+    },
+    {
+      q: 'Hoe werkt de garantie?',
+      a: 'Je krijgt 1 jaar volledige garantie op alle onderdelen. Bij problemen kun je contact opnemen met onze klantenservice voor een snelle oplossing of vervanging. De garantie dekt productdefecten en fabrieksfouten.',
+    },
+    {
+      q: 'Is de kattenbak veilig voor mijn kat?',
+      a: 'Ja, absoluut veilig. Dubbele veiligheidssensoren (IR- en gewichtssensoren) stoppen automatisch bij beweging. Getest op meer dan 10.000 cycli. Het systeem pauzeert onmiddellijk als je kat de bak in gaat tijdens een reinigingscyclus.',
+    },
+    {
+      q: 'Hoe luid is de kattenbak?',
+      a: 'De motor werkt onder 40 decibel - stiller dan een normaal gesprek. Het ultra-stille geluidsniveau zorgt ervoor dat je kat niet wordt verstoord tijdens het gebruik. Perfect voor gebruik in woonkamers en slaapkamers.',
+    },
+    {
+      q: 'Wat zit er in de doos?',
+      a: 'Bij aankoop krijg je: 1x automatische kattenbak, 1x stroomadapter, 1x afvalzak (starter), 1x borstel voor onderhoud, 1x geurfilter, 1x inloopmat en 1x handleiding (NL/EN). Alles wat je nodig hebt voor direct gebruik.',
+    },
+    {
+      q: 'Hoe installeer ik de kattenbak?',
+      a: 'De installatie is eenvoudig: plaats de kattenbak op een vlakke ondergrond, sluit de stroomadapter aan, download de app en volg de setup instructies. De hele installatie duurt minder dan 10 minuten. Geen gereedschap nodig.',
+    },
+  ],
 } as const;
 
 // ============================================

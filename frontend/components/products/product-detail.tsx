@@ -507,7 +507,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <>
           <ProductJsonLd product={product} />
           <BreadcrumbJsonLd />
-          <FAQJsonLd faqs={PRODUCT_CONTENT.faqs} productSlug={product.slug} />
+          <FAQJsonLd faqs={PRODUCT_CONTENT.faqs as Array<{ q: string; a: string }>} productSlug={product.slug} />
           <HowToJsonLd
             name="Automatische kattenbak installeren"
             description="Stap-voor-stap instructies voor het installeren en gebruiken van de automatische kattenbak"
@@ -1120,7 +1120,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                         <h3 className="text-lg font-semibold mb-4">Vragen over {product.name}</h3>
                         <div className="space-y-4">
                           {/* ✅ SEO PHASE 2: FAQ uitbreiden - gebruik PRODUCT_CONTENT.faqs */}
-                          {PRODUCT_CONTENT.faqs.map((faq, index) => (
+                          {PRODUCT_CONTENT.faqs?.map((faq: { q: string; a: string }, index: number) => (
                             <div key={index}>
                               <h4 className="font-semibold mb-1">{faq.q}</h4>
                               <p className="text-sm">{faq.a}</p>
