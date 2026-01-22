@@ -107,11 +107,13 @@ export default function HomePage() {
       {/* ✅ SEO 10/10: Rich Snippets (FAQ, HowTo) */}
       <RichSnippets />
       <div>
-      {/* 🎨 HERO SECTION - RESPONSIVE: Mobile stacked, Desktop split (35/65) */}
+      {/* 🎨 HERO SECTION - EDGE-TO-EDGE: Tot boven, geen margin */}
       <section 
         className="relative flex flex-col md:flex-row items-center"
         style={{
-          minHeight: DESIGN_SYSTEM.layout.hero.minHeightMobile, // ✅ MOBILE: Kleinere hoogte
+          minHeight: DESIGN_SYSTEM.layout.hero.minHeightMobile,
+          marginTop: 0, // ✅ EDGE-TO-EDGE: Geen margin boven
+          paddingTop: 0, // ✅ EDGE-TO-EDGE: Geen padding boven
         }}
       >
         {/* Container voor flexbox - ✅ RESPONSIVE: Mobile column (afbeelding eerst, dan tekst), Desktop row */}
@@ -121,9 +123,12 @@ export default function HomePage() {
             minHeight: `clamp(${DESIGN_SYSTEM.layout.hero.minHeightMobile}, 100vh, ${DESIGN_SYSTEM.layout.hero.minHeight})`, // ✅ RESPONSIVE: Clamp tussen mobile en desktop
           }}
         >
-          {/* MOBIEL: AFBEELDING EERST - ✅ RESPONSIVE: Mobile order-1 (eerst), Desktop order-2 (rechts) */}
+          {/* MOBIEL: AFBEELDING EERST - ✅ EDGE-TO-EDGE: Tot boven, geen padding */}
           <div 
             className="relative md:absolute top-0 right-0 w-full md:w-[65%] h-64 md:h-full overflow-hidden order-1 md:order-2" // ✅ MOBIEL: order-1 = eerst, Desktop: order-2 = rechts
+            style={{
+              marginTop: 0, // ✅ EDGE-TO-EDGE: Geen margin boven
+            }}
           >
             {/* 🚀 PERFORMANCE: Show fallback immediately, upgrade to product image if available */}
             {optimizedHeroImage !== heroImage ? (

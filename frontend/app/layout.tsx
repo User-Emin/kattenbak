@@ -6,6 +6,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { UspBanner } from "@/components/layout/usp-banner";
 import { Footer } from "@/components/layout/footer";
+import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import { CartProvider } from "@/context/cart-context";
 import { UIProvider } from "@/context/ui-context";
 import { Toaster } from "sonner";
@@ -205,6 +206,9 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
               {/* FOOTER */}
               <Footer />
             </div>
+            
+            {/* MOBILE BOTTOM NAV - Alleen mobiel */}
+            <MobileBottomNav />
             
             {/* COOKIE CONSENT */}
             <CookieConsentManager />

@@ -159,7 +159,7 @@ export function Header() {
               <ShoppingCart 
                 className="h-6 w-6" 
                 strokeWidth={2}
-                style={{ color: DESIGN_SYSTEM.colors.text.primary }}
+                style={{ color: '#000000' }} // ✅ ZWART: Winkelwagenbutton zwart
               />
               {itemCount > 0 && (
                 <span 

@@ -325,7 +325,7 @@ export const PRODUCT_CONTENT = {
   // Service USPs - ✅ BOVEN WINKELWAGEN BUTTON: 3 USPs met GRIJZE tekst (niet blauw)
   serviceUsps: [
     {
-      text: 'Volledig automatisch • App bediening • Altijd schoon',
+      text: 'Volledig automatisch • App bediening',
       // ✅ GEEN HIGHLIGHT: Tekst is volledig grijs, alleen vinkje is blauw
     },
     {

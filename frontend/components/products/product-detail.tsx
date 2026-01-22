@@ -384,7 +384,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     {
       icon: Filter,
       title: 'Geurfilter & Hygiëne',
-      description: 'Hygiënisch voor kat en huis • Dempt vieze geuren effectief • Altijd schoon',
+      description: 'Hygiënisch voor kat en huis • Dempt vieze geuren effectief',
     },
     {
       icon: Package,
@@ -840,7 +840,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       const boldPhrases = [
                         'Volledig automatisch',
                         'App bediening',
-                        'Altijd schoon',
                         'Binnen 30 dagen',
                         '1 jaar garantie',
                         'Zelfreinigend systeem',

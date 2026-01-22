@@ -30,8 +30,8 @@ const USPS = [
     showCheckmarks: true,
   },
   {
-    text: "Nooit meer scheppen • Altijd schoon",
-    highlightWords: ["Nooit meer scheppen", "Altijd schoon"],
+    text: "Nooit meer scheppen",
+    highlightWords: ["Nooit meer scheppen"],
     showCheckmarks: true,
   },
 ] as const;

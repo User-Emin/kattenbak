@@ -1,13 +1,15 @@
 /**
- * ✅ SEO 10/10 STRATEGIE - RADICALE VERBETERINGEN
+ * ✅ SEO 10/10 STRATEGIE - ONE-PRODUCT WEBSHOP OPTIMALISATIE
  * 
- * Team sparring sessie voor echte 10/10 SEO:
- * - Content clustering
- * - Internal linking strategie
- * - Content marketing
+ * Realistische SEO strategie voor one-product webshop:
+ * - Focus op product pagina optimalisatie (niet blog)
+ * - Internal linking tussen gerelateerde content
  * - Technical SEO optimalisaties
+ * - Content clustering met FAQ/vergelijking (geen blog)
  * 
- * Doel: Van 6.5/10 naar 9.5/10
+ * Doel: Van 6.5/10 naar 9.0/10 (realistisch voor one-product)
+ * 
+ * ⚠️ BLOG IS OVERKILL voor one-product webshop - focus op product content
  */
 
 export const SEO_10_10_STRATEGY = {
@@ -126,57 +128,29 @@ export const SEO_10_10_STRATEGY = {
   },
 
   /**
-   * 📝 CONTENT MARKETING STRATEGIE
+   * 📝 CONTENT STRATEGIE (GEEN BLOG - ONE-PRODUCT WEBSHOP)
    * 
-   * Blog structuur voor content freshness:
-   * - Weekly blog posts
-   * - Thema-gebaseerde artikelen
-   * - Long-tail keyword targeting
+   * Voor one-product webshop: Focus op product content, niet blog:
+   * - Uitgebreide product pagina met FAQ
+   * - Vergelijkingstabel (al geïmplementeerd)
+   * - Product-specifieke gidsen (geen blog posts)
+   * - Content freshness via FAQ updates
    */
-  contentMarketing: {
-    blogStructure: {
-      categories: [
-        {
-          name: 'Gidsen & Tips',
-          slug: '/blog/gidsen',
-          description: 'Praktische gidsen en tips voor kattenbak gebruik',
-        },
-        {
-          name: 'Vergelijkingen',
-          slug: '/blog/vergelijkingen',
-          description: 'Uitgebreide vergelijkingen tussen verschillende kattenbakken',
-        },
-        {
-          name: 'Onderhoud & Zorg',
-          slug: '/blog/onderhoud',
-          description: 'Tips voor onderhoud en verzorging van je kattenbak',
-        },
-        {
-          name: 'Nieuws & Updates',
-          slug: '/blog/nieuws',
-          description: 'Laatste nieuws en updates over automatische kattenbakken',
-        },
+  contentStrategy: {
+    productContent: {
+      focus: 'Product pagina optimalisatie (niet blog)',
+      elements: [
+        'Uitgebreide product beschrijving',
+        'FAQ sectie met structured data',
+        'Vergelijkingstabel (al geïmplementeerd)',
+        'Product-specificaties met accordion',
+        'Video content (demo video)',
       ],
-      suggestedPosts: [
-        {
-          title: 'Hoe werkt een automatische kattenbak? Complete uitleg',
-          slug: '/blog/hoe-werkt-automatische-kattenbak',
-          keywords: ['hoe werkt automatische kattenbak', 'automatische kattenbak uitleg'],
-          category: 'Gidsen & Tips',
-        },
-        {
-          title: 'Automatische vs Handmatige Kattenbak: Wat is beter?',
-          slug: '/blog/automatisch-vs-handmatig',
-          keywords: ['automatisch vs handmatig', 'beste kattenbak'],
-          category: 'Vergelijkingen',
-        },
-        {
-          title: 'Onderhoud Gids: Zo houd je je automatische kattenbak schoon',
-          slug: '/blog/onderhoud-gids',
-          keywords: ['onderhoud kattenbak', 'kattenbak schoonmaken'],
-          category: 'Onderhoud & Zorg',
-        },
-      ],
+    },
+    contentFreshness: {
+      method: 'FAQ updates en product content updates (niet blog)',
+      frequency: 'Maandelijks FAQ uitbreiden',
+      impact: 'Medium (voldoende voor one-product)',
     },
   },
 
@@ -278,16 +252,16 @@ export const SEO_10_10_STRATEGY = {
     ],
     phase2: [
       {
-        task: 'Content clustering: Pillar pages',
-        impact: 'high',
-        effort: 'high',
-        time: '1 week',
-      },
-      {
-        task: 'Blog structure setup',
+        task: 'Product pagina content uitbreiden',
         impact: 'high',
         effort: 'medium',
         time: '3 days',
+      },
+      {
+        task: 'FAQ uitbreiden met meer vragen',
+        impact: 'high',
+        effort: 'low',
+        time: '2 hours',
       },
       {
         task: 'Enhanced schema markup',
@@ -298,16 +272,16 @@ export const SEO_10_10_STRATEGY = {
     ],
     phase3: [
       {
-        task: 'Content marketing: Blog posts',
-        impact: 'high',
-        effort: 'high',
-        time: 'ongoing',
-      },
-      {
         task: 'Monitoring setup (GSC, GA4)',
         impact: 'medium',
         effort: 'low',
         time: '2 hours',
+      },
+      {
+        task: 'Product content updates (maandelijks)',
+        impact: 'medium',
+        effort: 'low',
+        time: 'ongoing (1 hour/month)',
       },
     ],
   },
@@ -319,47 +293,45 @@ export const SEO_10_10_STRATEGY = {
    */
   expectedResults: {
     currentScore: 6.5,
-    targetScore: 9.5,
+    targetScore: 9.0, // Realistisch voor one-product (niet 9.5)
     improvements: {
-      content: '6.5 → 8.5 (+2.0)',
-      linking: '5.0 → 8.0 (+3.0)',
-      structure: '7.0 → 9.0 (+2.0)',
+      content: '6.5 → 8.0 (+1.5)',
+      linking: '5.0 → 7.5 (+2.5)',
+      structure: '7.0 → 8.5 (+1.5)',
       technical: '8.5 → 9.5 (+1.0)',
     },
     timeline: {
       phase1: '1 week (quick wins)',
-      phase2: '2-3 weeks (content structure)',
-      phase3: 'ongoing (content marketing)',
+      phase2: '1 week (product content)',
+      phase3: 'ongoing (monthly updates)',
     },
   },
 } as const;
 
 /**
- * ✅ RADICALE SEO VERBETERINGEN - TEAM SPARRING
+ * ✅ REALISTISCHE SEO VERBETERINGEN - ONE-PRODUCT WEBSHOP
  * 
- * Van 6.5/10 naar 9.5/10 door:
+ * Van 6.5/10 naar 9.0/10 door:
  * 
- * 1. CONTENT CLUSTERING (Impact: +2.0)
- *    - Pillar pages: "Automatische Kattenbak Gids"
- *    - Supporting content: Thema-gebaseerde artikelen
- *    - Internal linking tussen gerelateerde content
+ * 1. PRODUCT CONTENT OPTIMALISATIE (Impact: +1.5)
+ *    - Uitgebreide product beschrijving
+ *    - FAQ uitbreiden (geen blog nodig)
+ *    - Product-specificaties met accordion
  * 
- * 2. INTERNAL LINKING (Impact: +3.0)
- *    - Product → Gerelateerde gidsen
+ * 2. INTERNAL LINKING (Impact: +2.5)
+ *    - Product → Vergelijkingstabel
  *    - Contextuele links in content
- *    - Related products section
+ *    - Footer links optimaliseren
  * 
- * 3. CONTENT MARKETING (Impact: +2.0)
- *    - Blog structuur met categorieën
- *    - Weekly content updates
- *    - Long-tail keyword targeting
- * 
- * 4. TECHNICAL SEO (Impact: +1.0)
+ * 3. TECHNICAL SEO (Impact: +1.0)
  *    - Breadcrumb navigation
  *    - Enhanced schema markup
  *    - Performance optimalisaties
  * 
- * TOTAAL: 6.5 → 9.5/10
+ * ⚠️ GEEN BLOG: Blog is overkill voor one-product webshop
+ * ✅ FOCUS: Product pagina + FAQ + Vergelijkingstabel
  * 
- * Timeline: 3-4 weken voor volledige implementatie
+ * TOTAAL: 6.5 → 9.0/10 (realistisch voor one-product)
+ * 
+ * Timeline: 2 weken voor volledige implementatie
  */

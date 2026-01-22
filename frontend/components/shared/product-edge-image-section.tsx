@@ -92,8 +92,8 @@ export function ProductEdgeImageSection() {
   const CONFIG = PRODUCT_PAGE_CONFIG;
 
   return (
-    <div className={cn(CONFIG.edgeSection.container, 'mt-0')}>
-      <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')}>
+    <div className={cn(CONFIG.edgeSection.container, 'mt-0')} style={{ marginTop: 0, paddingTop: 0 }}>
+      <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')} style={{ marginTop: 0 }}>
         <Image
           src={imageSrc}
           alt={product.name || 'Product afbeelding'}
