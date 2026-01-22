@@ -83,42 +83,42 @@ export function ProductComparisonTable() {
   const renderValue = (value: string | boolean, isOurProduct: boolean = false) => {
     if (typeof value === 'boolean') {
       return value ? (
-        // ✅ BLAUW VINKJE: #3071aa achtergrond, witte vink
-        <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#3071aa' }}>
-          <Check className="w-5 h-5 text-white" />
+        // ✅ COMPACT VINKJE: Kleinere, subtielere vinkjes
+        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#3071aa' }}>
+          <Check className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" strokeWidth={2.5} />
         </div>
       ) : (
-        // ✅ ZWART-WIT KRUISJE: Witte achtergrond, zwart kruis
-        <div className="w-8 h-8 rounded-full bg-white border-2 border-gray-300 flex items-center justify-center">
-          <X className="w-5 h-5 text-gray-400" />
+        // ✅ COMPACT KRUISJE: Subtieler kruisje
+        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white border border-gray-300 flex items-center justify-center flex-shrink-0">
+          <X className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-gray-400" strokeWidth={2.5} />
         </div>
       );
     }
-    return <span className="text-sm sm:text-base font-medium text-gray-900">{value}</span>;
+    return <span className="text-xs sm:text-sm font-medium text-gray-900">{value}</span>;
   };
 
   return (
-    <div className="w-full bg-white rounded-xl border-2 border-gray-200 shadow-lg overflow-hidden">
-      {/* Header - ✅ ZWART-WIT: Speelser met contrast */}
-      <div className="bg-black text-white px-4 sm:px-6 py-4 sm:py-5">
-        <h3 className="text-xl sm:text-2xl font-bold text-center sm:text-left">Vergelijking</h3>
-        <p className="text-sm sm:text-base text-gray-200 mt-2 text-center sm:text-left">Automatische kattenbak vs. handmatige kattenbak</p>
+    <div className="w-full bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
+      {/* Header - ✅ SUBTIELE ACCENT: Minder overweldigend maar opvallend */}
+      <div className="bg-gradient-to-r from-[#3071aa] to-[#256394] text-white px-4 sm:px-6 py-3 sm:py-4">
+        <h3 className="text-lg sm:text-xl font-bold text-center">Vergelijking</h3>
+        <p className="text-xs sm:text-sm text-blue-100 mt-1 text-center">Automatische vs. handmatige kattenbak</p>
       </div>
 
-      {/* ✅ RESPONSIVE TABLE: Desktop tabel, mobiel cards - MINDER OVERWELDIGEND */}
-      {/* Desktop Table */}
+      {/* ✅ RESPONSIVE TABLE: Desktop compact, mobiel swipe-vriendelijk */}
+      {/* Desktop Table - ✅ COMPACT: Minder padding, subtielere highlights */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-white border-b border-gray-200">
+          <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 w-1/3">
+              <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-700 w-2/5">
                 Feature
               </th>
-              <th className="px-4 py-3 text-center text-xs font-semibold text-white w-1/3" style={{ backgroundColor: '#3071aa' }}>
-                Automatische kattenbak
+              <th className="px-3 py-2.5 text-center text-xs font-semibold text-white w-[30%]" style={{ backgroundColor: '#3071aa' }}>
+                Automatisch
               </th>
-              <th className="px-4 py-3 text-center text-xs font-semibold text-white bg-gray-800 w-1/3">
-                <span className="text-center text-white">Handmatig</span>
+              <th className="px-3 py-2.5 text-center text-xs font-semibold text-gray-700 bg-gray-100 w-[30%]">
+                Handmatig
               </th>
             </tr>
           </thead>
@@ -127,27 +127,28 @@ export function ProductComparisonTable() {
               <tr
                 key={index}
                 className={cn(
-                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50',
-                  row.highlight && 'bg-black text-white'
+                  'transition-colors',
+                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50',
+                  row.highlight && 'bg-blue-50'
                 )}
               >
                 <td className={cn(
-                  'px-4 py-3 text-xs font-medium',
-                  row.highlight ? 'text-white' : 'text-gray-900'
+                  'px-3 py-2.5 text-xs font-medium',
+                  row.highlight ? 'text-[#3071aa]' : 'text-gray-900'
                 )}>
                   {row.feature}
                 </td>
                 <td className={cn(
-                  'px-4 py-3 text-center',
-                  row.highlight && 'text-white'
-                )} style={row.highlight ? { backgroundColor: '#3071aa' } : undefined}>
+                  'px-3 py-2.5 text-center',
+                  row.highlight && 'bg-blue-50'
+                )}>
                   <div className="flex items-center justify-center">
                     {renderValue(row.ourProduct, true)}
                   </div>
                 </td>
                 <td className={cn(
-                  'px-4 py-3 text-center',
-                  row.highlight ? 'bg-gray-800 text-white' : index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200'
+                  'px-3 py-2.5 text-center',
+                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
                 )}>
                   <div className="flex items-center justify-center">
                     {renderValue(row.competitor, false)}
@@ -159,56 +160,58 @@ export function ProductComparisonTable() {
         </table>
       </div>
 
-      {/* ✅ MOBIEL: Cards layout - MINDER OVERWELDIGEND */}
-      <div className="md:hidden divide-y divide-gray-200">
-        {comparisonData.map((row, index) => (
-          <div
-            key={index}
-            className={cn(
-              'p-3 transition-colors',
-              row.highlight ? 'bg-black text-white' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-            )}
-          >
-            <div className={cn(
-              'text-xs font-semibold mb-3 text-center',
-              row.highlight ? 'text-white' : 'text-gray-900'
-            )}>
-              {row.feature}
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className={cn(
-                'flex flex-col items-center p-2 rounded-lg',
-                'text-white'
-              )} style={{ backgroundColor: '#3071aa' }}>
+      {/* ✅ MOBIEL: Compacte swipe-vriendelijke cards */}
+      <div className="md:hidden">
+        <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
+          <div className="flex gap-3 pb-4" style={{ width: 'max-content' }}>
+            {comparisonData.map((row, index) => (
+              <div
+                key={index}
+                className={cn(
+                  'flex-shrink-0 w-[280px] p-4 rounded-lg border transition-all',
+                  row.highlight 
+                    ? 'bg-blue-50 border-[#3071aa]/30 shadow-sm' 
+                    : 'bg-white border-gray-200'
+                )}
+              >
                 <div className={cn(
-                  'text-xs font-semibold mb-2 text-center',
-                  'text-white'
-                )}>Automatische kattenbak</div>
-                <div className="flex items-center justify-center">
-                  {renderValue(row.ourProduct, true)}
+                  'text-xs font-semibold mb-3 text-center leading-tight',
+                  row.highlight ? 'text-[#3071aa]' : 'text-gray-900'
+                )}>
+                  {row.feature}
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-2.5 rounded-md bg-[#3071aa]/10 border border-[#3071aa]/20">
+                    <span className="text-xs font-medium text-[#3071aa]">Automatisch</span>
+                    <div className="flex items-center justify-center">
+                      {renderValue(row.ourProduct, true)}
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between p-2.5 rounded-md bg-gray-100 border border-gray-200">
+                    <span className="text-xs font-medium text-gray-700">Handmatig</span>
+                    <div className="flex items-center justify-center">
+                      {renderValue(row.competitor, false)}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className={cn(
-                'flex flex-col items-center p-2 rounded-lg border',
-                row.highlight ? 'bg-gray-800 border-gray-600 text-white' : 'bg-gray-100 border-gray-300 text-gray-900'
-              )}>
-                <div className={cn(
-                  'text-xs font-semibold mb-2 text-center',
-                  row.highlight ? 'text-white' : 'text-gray-900'
-                )}>Handmatig</div>
-                <div className="flex items-center justify-center">
-                  {renderValue(row.competitor, false)}
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
-        ))}
+        </div>
+        {/* ✅ MOBIEL: Scroll indicator */}
+        <div className="flex justify-center mt-2 mb-3">
+          <div className="flex gap-1.5">
+            {comparisonData.slice(0, 5).map((_, i) => (
+              <div key={i} className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Footer Note - ✅ ZWART-WIT: Consistent met header */}
-      <div className="bg-gray-100 border-t-2 border-gray-300 px-4 sm:px-6 py-3 sm:py-4">
-        <p className="text-xs sm:text-sm text-gray-600 text-center font-medium">
-          * Vergelijking met handmatige kattenbak. Specificaties kunnen variëren.
+      {/* Footer Note - ✅ SUBTIELE: Minder opvallend */}
+      <div className="bg-gray-50 border-t border-gray-200 px-4 sm:px-6 py-2.5 sm:py-3">
+        <p className="text-xs text-gray-500 text-center">
+          * Vergelijking met handmatige kattenbak
         </p>
       </div>
     </div>
