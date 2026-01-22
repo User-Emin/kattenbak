@@ -507,7 +507,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <>
           <ProductJsonLd product={product} />
           <BreadcrumbJsonLd />
-          <FAQJsonLd faqs={PRODUCT_CONTENT.faqs as Array<{ q: string; a: string }>} productSlug={product.slug} />
+          <FAQJsonLd 
+            faqs={PRODUCT_CONTENT.faqs ? [...PRODUCT_CONTENT.faqs] : undefined} 
+            productSlug={product.slug} 
+          />
           <HowToJsonLd
             name="Automatische kattenbak installeren"
             description="Stap-voor-stap instructies voor het installeren en gebruiken van de automatische kattenbak"
