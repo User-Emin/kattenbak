@@ -8,6 +8,7 @@ import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { MiniCart } from "@/components/ui/mini-cart";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { cn } from "@/lib/utils";
 
 /**
  * 🎨 NAVBAR - MINIMALISTISCH & CENTERED LOGO
@@ -183,16 +184,15 @@ export function Header() {
       {isCartOpen && (
         <>
           <div
-            className="fixed inset-0 z-[150] backdrop-blur-sm"
+            className={cn('fixed inset-0 backdrop-blur-sm', DESIGN_SYSTEM.layout.zIndex.sidebarBackdrop)}
             style={{
               background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.2) 0%, rgba(122, 122, 125, 0.2) 100%)', // ✅ GRADIENT met opacity (was bg-black/20)
             }}
             onClick={closeCart}
           />
           <div 
-            className="fixed right-0 w-full max-w-md bg-white shadow-2xl animate-slide-in-right flex flex-col"
+            className={cn('fixed right-0 w-full max-w-md bg-white shadow-2xl animate-slide-in-right flex flex-col', DESIGN_SYSTEM.layout.zIndex.sidebar)}
             style={{
-              zIndex: 130, // ✅ ONDER banner (z-[160]) en navbar (z-[165]) - geen overlap
               top: DESIGN_SYSTEM.layout.header.totalHeight, // ✅ DRY: Start onder banner + navbar (geen overlap)
               height: `calc(100vh - ${DESIGN_SYSTEM.layout.header.totalHeight})`, // ✅ DRY: Volledige hoogte minus banner + navbar
             }}

@@ -374,6 +374,8 @@ export const DESIGN_SYSTEM = {
       modal: 'z-[120]',
       dropdown: 'z-[50]',
       sticky: 'z-[10]',
+      sidebar: 'z-[170]', // ✅ BOVEN header (z-[165]) en mobile bottom nav (z-[200]) - sidebar moet boven header
+      sidebarBackdrop: 'z-[160]', // ✅ ONDER sidebar maar BOVEN header (z-[165])
       base: 'z-0',
     },
     // Transitions (utility classes)
