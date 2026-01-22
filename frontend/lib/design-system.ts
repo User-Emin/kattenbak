@@ -211,6 +211,12 @@ export const DESIGN_SYSTEM = {
       totalHeight: 'calc(40px + 72px)', // ✅ DRY: uspBanner.height + navbar.height (geen hardcode)
     },
     
+    // ✅ Z-INDEX MANAGEMENT: Centrale z-index configuratie (geen hardcode)
+    zIndex: {
+      sidebar: 'z-[170]', // ✅ BOVEN header (z-[165]) en mobile bottom nav (z-[200]) - sidebar moet boven header
+      sidebarBackdrop: 'z-[160]', // ✅ ONDER sidebar maar BOVEN header (z-[165])
+    },
+    
     // Feature section (edge-to-edge afbeelding) - ✅ SMOOTH PASSEND: Legale foto onder hero
     featureSection: {
       minHeight: '400px',
