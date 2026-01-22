@@ -21,19 +21,7 @@ export default function OverOnsPage() {
             </svg>
             <h2 className="text-3xl font-light mb-4 text-gray-900">Onze Missie</h2>
             <p className="text-lg text-gray-600 leading-relaxed">
-              Wij geloven dat huisdierverzorging eenvoudig, hygiënisch en modern moet zijn. 
-              Daarom ontwikkelen we innovatieve oplossingen die het leven van huisdiereneigenaren 
-              makkelijker maken.
-            </p>
-          </div>
-
-
-          {/* Waarom Wij */}
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-light mb-4 text-gray-900">Waarom Wij?</h2>
-            <p className="text-lg text-gray-600 leading-relaxed">
-              We combineren technologie met diervriendelijkheid. Onze producten zijn ontworpen 
-              met aandacht voor detail en getest door experts.
+              Wij geloven dat huisdierverzorging eenvoudig, hygiënisch en modern moet zijn.
             </p>
           </div>
 
