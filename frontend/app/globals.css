@@ -120,6 +120,15 @@
   [class*="container"]:not(.rounded-none) {
     border-radius: 0.25rem !important; /* 4px */
   }
+  
+  /* ✅ SCROLLBAR HIDE: Voor horizontale scroll op mobiel */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
 }
 
 /* Verberg hCaptcha badge */
