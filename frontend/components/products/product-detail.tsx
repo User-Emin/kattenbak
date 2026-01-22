@@ -951,60 +951,64 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </span>
               </div>
 
-              {/* Specificaties Accordion - ONDER USPs */}
-              <div className={cn(CONFIG.features.accordion.container, 'mt-6')}>
-              {/* ✅ SPECIFICATIES TITEL: Compacter, minder direct */}
-              <h3 className="text-lg md:text-xl font-medium mb-3 text-gray-700">
-                Specificaties
-              </h3>
-              {/* Eerste features altijd zichtbaar */}
-              {specifications.slice(0, CONFIG.features.showMore.initialVisible).map((spec, index) => {
-                const Icon = spec.icon;
-                const isOpen = openSpecs.has(index);
-
-                return (
-                  <div 
-                    key={index}
-                    className={cn(CONFIG.features.accordion.item.border, CONFIG.features.accordion.item.hover)}
-                  >
-                    <button
-                      onClick={() => toggleSpec(index)}
-                      className={CONFIG.features.accordion.button.container}
-                    >
-                      <div className="flex items-center flex-1">
-                        {/* ✅ ICONS WEGGEHAALD: Geen icon container meer */}
-                        <span className={cn(
-                          CONFIG.features.accordion.button.title.fontSize,
-                          CONFIG.features.accordion.button.title.fontWeight,
-                          CONFIG.features.accordion.button.title.textColor
-                        )}>
-                          {spec.title}
-                        </span>
-                      </div>
-                      <ChevronDown 
-                        className={cn(
-                          CONFIG.features.accordion.button.arrow.size,
-                          CONFIG.features.accordion.button.arrow.color,
-                          CONFIG.features.accordion.button.arrow.transition,
-                          isOpen && 'rotate-180'
-                        )}
-                      />
-                    </button>
-
-                    {isOpen && (
-                      <div className={CONFIG.features.accordion.content.container}>
-                        <p className={cn(
-                          CONFIG.features.accordion.content.text.fontSize,
-                          CONFIG.features.accordion.content.text.textColor,
-                          CONFIG.features.accordion.content.text.lineHeight
-                        )}>
-                          {spec.description}
-                        </p>
-                      </div>
+              {/* Specificaties - ✅ BUTTON STIJL: Passend, modern */}
+              <div className="mt-6">
+                {/* ✅ SPECIFICATIES BUTTON: Modern button stijl */}
+                <button
+                  onClick={() => setShowAllFeatures(!showAllFeatures)}
+                  className="w-full px-6 py-4 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 flex items-center justify-between group"
+                >
+                  <span className="text-base md:text-lg font-semibold text-gray-900">
+                    Specificaties
+                  </span>
+                  <ChevronDown 
+                    className={cn(
+                      'w-5 h-5 text-gray-600 transition-transform duration-200',
+                      showAllFeatures && 'rotate-180'
                     )}
+                  />
+                </button>
+                
+                {/* Specificaties content - ✅ ACCORDION: Binnen button */}
+                {showAllFeatures && (
+                  <div className="mt-4 space-y-2">
+                    {specifications.map((spec, index) => {
+                      const Icon = spec.icon;
+                      const isOpen = openSpecs.has(index);
+
+                      return (
+                        <div 
+                          key={index}
+                          className="border border-gray-200 rounded-lg overflow-hidden"
+                        >
+                          <button
+                            onClick={() => toggleSpec(index)}
+                            className="w-full px-4 py-3 text-left bg-white hover:bg-gray-50 transition-colors flex items-center justify-between"
+                          >
+                            <span className="text-sm md:text-base font-medium text-gray-900">
+                              {spec.title}
+                            </span>
+                            <ChevronDown 
+                              className={cn(
+                                'w-4 h-4 text-gray-600 transition-transform duration-200',
+                                isOpen && 'rotate-180'
+                              )}
+                            />
+                          </button>
+
+                          {isOpen && (
+                            <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
+                              <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                                {spec.description}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
-                );
-              })}
+                )}
+              </div>
 
               {/* Extra features na "Toon meer" klik */}
               {showAllFeatures && specifications.slice(CONFIG.features.showMore.initialVisible).map((spec, index) => {

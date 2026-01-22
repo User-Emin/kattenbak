@@ -162,9 +162,9 @@ export default function HomePage() {
               backgroundColor: DESIGN_SYSTEM.colors.secondary, // ✅ WIT: Was gray[50], nu wit
             }}
           >
-            {/* Heading - ✅ PREMIUM: Modern typography met premium spacing */}
+            {/* Heading - ✅ KLEINER: Compacter voor betere balans */}
             <h1 
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight leading-[1.1]" // ✅ PREMIUM: Groter, lichter, moderner
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1]" // ✅ KLEINER: text-3xl ipv text-4xl
               style={{
                 fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
                 color: DESIGN_SYSTEM.colors.text.primary,
