@@ -1010,81 +1010,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </div>
 
-              {/* Extra features na "Toon meer" klik */}
-              {showAllFeatures && specifications.slice(CONFIG.features.showMore.initialVisible).map((spec, index) => {
-                const actualIndex = index + CONFIG.features.showMore.initialVisible;
-                const Icon = spec.icon;
-                const isOpen = openSpecs.has(actualIndex);
-
-                return (
-                  <div 
-                    key={actualIndex}
-                    className={cn(CONFIG.features.accordion.item.border, CONFIG.features.accordion.item.hover)}
-                  >
-                    <button
-                      onClick={() => toggleSpec(actualIndex)}
-                      className={CONFIG.features.accordion.button.container}
-                    >
-                      <div className="flex items-center flex-1">
-                        {/* ✅ ICONS WEGGEHAALD: Geen icon container meer */}
-                        <span className={cn(
-                          CONFIG.features.accordion.button.title.fontSize,
-                          CONFIG.features.accordion.button.title.fontWeight,
-                          CONFIG.features.accordion.button.title.textColor
-                        )}>
-                          {spec.title}
-                        </span>
-                      </div>
-                      <ChevronDown 
-                        className={cn(
-                          CONFIG.features.accordion.button.arrow.size,
-                          CONFIG.features.accordion.button.arrow.color,
-                          CONFIG.features.accordion.button.arrow.transition,
-                          isOpen && 'rotate-180'
-                        )}
-                      />
-                    </button>
-
-                    {isOpen && (
-                      <div className={CONFIG.features.accordion.content.container}>
-                        <p className={cn(
-                          CONFIG.features.accordion.content.text.fontSize,
-                          CONFIG.features.accordion.content.text.textColor,
-                          CONFIG.features.accordion.content.text.lineHeight
-                        )}>
-                          {spec.description}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-
-              {/* Toon meer/minder button */}
-              {specifications.length > CONFIG.features.showMore.initialVisible && (
-                <button
-                  onClick={() => setShowAllFeatures(!showAllFeatures)}
-                  className={cn(
-                    CONFIG.features.showMore.buttonStyle.base,
-                    CONFIG.features.showMore.buttonStyle.color,
-                    'flex items-center justify-center w-full'
-                  )}
-                >
-                  <span>
-                    {showAllFeatures 
-                      ? CONFIG.features.showMore.buttonText.less 
-                      : CONFIG.features.showMore.buttonText.more}
-                  </span>
-                  {showAllFeatures ? (
-                    <ChevronUp className={CONFIG.features.showMore.buttonStyle.icon} />
-                  ) : (
-                    <ChevronDown className={CONFIG.features.showMore.buttonStyle.icon} />
-                  )}
-                </button>
-              )}
-              </div>
-
-              {/* ✅ ROOD: Let op bericht terug naar rood */}
+              {/* ✅ LET OP: Dikker tekst zoals USPs */}
               <div className={cn(CONFIG.safetyNotice.container, 'mt-6')}>
                 <div className={CONFIG.safetyNotice.header.container}>
                   <AlertTriangle className={cn(
@@ -1093,7 +1019,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   )} />
                   <h4 className={cn(
                     CONFIG.safetyNotice.header.title.fontSize,
-                    CONFIG.safetyNotice.header.title.fontWeight,
+                    'font-semibold', // ✅ DIKKER: font-semibold zoals USPs
                     CONFIG.safetyNotice.header.title.textColor
                   )}>
                     {PRODUCT_CONTENT.safetyNotice.title}
@@ -1101,6 +1027,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
                 <p className={cn(
                   CONFIG.safetyNotice.content.fontSize,
+                  'font-medium', // ✅ DIKKER: font-medium zoals USPs
                   CONFIG.safetyNotice.content.textColor,
                   CONFIG.safetyNotice.content.lineHeight
                 )}>
