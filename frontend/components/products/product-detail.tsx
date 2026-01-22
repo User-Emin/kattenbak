@@ -589,11 +589,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             </div>
 
-            {/* ✅ THUMBNAILS ONDER: Met ruimte tussen afbeelding en thumbnails */}
+            {/* ✅ THUMBNAILS ONDER: Met padding voor scrollbaarheid */}
             {displayImages.length > 1 && (
               <div className={cn(
                 'flex flex-row gap-2 overflow-x-auto', // ✅ RUIMTE: gap-2 tussen thumbnails
-                'w-full px-4 md:px-0', // ✅ EDGE-TO-EDGE MOBIEL: Padding alleen voor thumbnails op mobiel
+                'w-full px-4 md:px-0', // ✅ PADDING: Padding voor thumbnails op mobiel voor scrollbaarheid
                 'smooth-scroll',
                 'pb-2' // ✅ MOBILE: Extra padding voor scroll indicator
               )}>
