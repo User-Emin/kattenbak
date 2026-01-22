@@ -550,9 +550,9 @@ export function ChatPopup() {
     if (!safeChatConfig?.button?.position) {
       return 'bottom-8';
     }
-    // ✅ MOBILE BOTTOM NAV: Op productpagina's mobiel: boven bottom nav (96px = 6rem)
+    // ✅ MOBILE BOTTOM NAV: Op productpagina's mobiel: boven bottom nav (112px = 7rem voor ruimte)
     if (isProductPage && typeof window !== 'undefined' && window.innerWidth < 768) {
-      return 'bottom-24'; // ✅ BOVEN BOTTOM NAV: 96px (6rem) boven bottom voor ruimte
+      return 'bottom-28'; // ✅ BOVEN BOTTOM NAV: 112px (7rem) boven bottom om overlap te voorkomen
     }
     return stickyCartVisible 
       ? safeChatConfig.button.position.bottomWithCart
