@@ -1155,7 +1155,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   })}
                 </div>
               )}
-              
+            </div>
+          )}
           {activeTab === 'vragen' && (
             <div className={cn(CONFIG.tabs.content.spacing, CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor)}>
               <h3 className="text-lg font-semibold mb-4">Vragen over ALP1071</h3>
