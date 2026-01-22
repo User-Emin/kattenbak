@@ -545,14 +545,19 @@ export function ChatPopup() {
   }, [handleSendMessage]);
 
   // ✅ DRY: Calculate button position via CHAT_CONFIG (with safe access)
+  // ✅ MOBILE BOTTOM NAV: Op productpagina's moet chat button boven bottom nav (80px hoogte + 10px margin = 90px)
   const buttonBottomClass = useMemo(() => {
     if (!safeChatConfig?.button?.position) {
       return 'bottom-8';
     }
+    // ✅ MOBILE BOTTOM NAV: Op productpagina's mobiel: boven bottom nav (96px = 6rem)
+    if (isProductPage && typeof window !== 'undefined' && window.innerWidth < 768) {
+      return 'bottom-24'; // ✅ BOVEN BOTTOM NAV: 96px (6rem) boven bottom voor ruimte
+    }
     return stickyCartVisible 
       ? safeChatConfig.button.position.bottomWithCart
       : safeChatConfig.button.position.bottom;
-  }, [stickyCartVisible, safeChatConfig]);
+  }, [stickyCartVisible, safeChatConfig, isProductPage]);
 
   // ✅ SECURITY: Additional safety check - ensure safeChatConfig is valid before render
   // This check happens AFTER safeChatConfig is defined
