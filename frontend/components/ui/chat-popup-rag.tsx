@@ -669,8 +669,9 @@ export function ChatPopup() {
         className={cn(
           safeChatConfig.button.position.type,
           safeChatConfig.button.position.right,
-          buttonZIndexClass, // ✅ DYNAMISCH: Gebruik berekende z-index (boven bottom nav op productpagina's)
-          buttonBottomClass,
+          // ✅ MOBILE BOTTOM NAV: Z-index en bottom MOETEN als laatste komen om overschrijven te voorkomen
+          buttonZIndexClass, // ✅ DYNAMISCH: Gebruik berekende z-index (boven bottom nav op productpagina's) - LAATSTE voor z-index
+          buttonBottomClass, // ✅ DYNAMISCH: Gebruik berekende bottom (boven bottom nav op productpagina's) - LAATSTE voor bottom
           safeChatConfig.button.size,
           safeChatConfig.button.borderRadius,
           safeChatConfig.button.backgroundColor,
@@ -690,6 +691,13 @@ export function ChatPopup() {
           safeChatConfig.utilities?.fontFamily || 'font-sans',
           !isExpanded && safeChatConfig.button.pulse // ✅ MODERN: Pulse animation when closed
         )}
+        style={{
+          // ✅ MOBILE BOTTOM NAV: Inline style voor absolute zekerheid (overschrijft alle classes)
+          ...(isProductPage && typeof window !== 'undefined' && window.innerWidth < 768 ? {
+            zIndex: DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonZIndexValue || 201,
+            bottom: `${DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonOffsetPx || 140}px`,
+          } : {})
+        }}
         aria-label="Open chat"
       >
         {isExpanded ? (
