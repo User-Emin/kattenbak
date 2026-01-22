@@ -12,6 +12,7 @@
  */
 
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { usePathname } from "next/navigation";
 import { Button } from "./button";
 import { X, Send, MessageCircle, Loader2 } from "lucide-react";
 import { CHAT_CONFIG } from "@/lib/chat-config";
@@ -53,6 +54,8 @@ interface Message {
 
 export function ChatPopup() {
   // ✅ SECURITY: Initialize state safely
+  const pathname = usePathname();
+  const isProductPage = pathname?.startsWith('/product/') || false;
   const [isExpanded, setIsExpanded] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");

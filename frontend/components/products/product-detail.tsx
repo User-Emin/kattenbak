@@ -493,48 +493,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* ✅ EXPERT: Render JSON-LD alleen client-side na mount om SSR errors te voorkomen */}
       {typeof window !== 'undefined' && !loading && product && <ProductJsonLd product={product} />}
       
-      {/* Main Product Section - Breadcrumb binnen grid - ✅ MOBIEL EDGE-TO-EDGE: Geen padding op mobiel */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'md:px-6 lg:px-8', CONFIG.layout.topMargin, CONFIG.layout.sectionSpacing)}>
-        {/* Breadcrumb - Bovenaan grid container - ✅ MOBIEL EDGE-TO-EDGE: Padding alleen op desktop */}
-        <nav className="px-4 md:px-6 lg:px-8">
-          <ol className={CONFIG.breadcrumb.spacing}>
-            <li>
-              <Link 
-                href="/" 
-                className={cn(CONFIG.breadcrumb.textColor, CONFIG.breadcrumb.hoverColor, 'flex items-center gap-1')}
-              >
-                <Home className={CONFIG.breadcrumb.iconSize} />
-                Home
-              </Link>
-            </li>
-            <li className={CONFIG.breadcrumb.textColor}>
-              <BreadcrumbChevron className={CONFIG.breadcrumb.iconSize} />
-            </li>
-            <li>
-              <Link 
-                href="/producten" 
-                className={cn(CONFIG.breadcrumb.textColor, CONFIG.breadcrumb.hoverColor)}
-              >
-                Producten
-              </Link>
-            </li>
-            <li className={CONFIG.breadcrumb.textColor}>
-              <BreadcrumbChevron className={CONFIG.breadcrumb.iconSize} />
-            </li>
-            <li className={cn(CONFIG.breadcrumb.fontSize, 'font-medium text-gray-900')}>
-              {product.name}
-            </li>
-          </ol>
-        </nav>
-        
+      {/* Main Product Section - ✅ MOBIEL EDGE-TO-EDGE: Geen padding op mobiel, direct onder navbar */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'md:px-6 lg:px-8', CONFIG.layout.sectionSpacing)} style={{ paddingTop: 0, marginTop: 0 }}>
+        {/* Product Grid - ✅ DIRECT ONDER NAVBAR: Geen breadcrumb tussenin */}
         <div className={cn(
           'flex flex-col lg:flex-row', 
           'items-start', 
-          'mt-2 sm:mt-3 md:mt-4 lg:mt-4', // ✅ COMPACT: Dichter bij breadcrumb zonder redundantie
+          'mt-0', // ✅ DIRECT: Geen margin boven, direct onder navbar
           'gap-6 sm:gap-8 md:gap-10 lg:gap-10', // ✅ SYMMETRISCH: Gelijk tussen image en info
           'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
-        )}> {/* ✅ COMPACT: Afbeeldingveld dichter bij breadcrumb */}
-          {/* Left: Image Gallery - ✅ EDGE-TO-EDGE MOBIEL: Negatieve margin voor edge-to-edge */}
+        )}> {/* ✅ DIRECT: Direct onder navbar, geen breadcrumb */}
+          {/* Left: Image Gallery - ✅ EDGE-TO-EDGE MOBIEL: Negatieve margin links EN rechts */}
           <div className={cn(
             'flex flex-col', 
             'w-full lg:w-[58%]', // ✅ RESPONSIVE: Full width op mobile, 58% op desktop
@@ -542,8 +511,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             CONFIG.gallery.container.height, 
             'self-start', 
             'gap-3 sm:gap-4 md:gap-4 lg:gap-4', // ✅ SYMMETRISCH: Gelijk tussen image en thumbnails
-            '-mx-4 md:mx-0' // ✅ EDGE-TO-EDGE MOBIEL: Negatieve margin op mobiel voor edge-to-edge
-          )}> {/* ✅ EDGE-TO-EDGE: Productafbeeldingen tot randen op mobiel */}
+            '-mx-4 md:mx-0' // ✅ EDGE-TO-EDGE MOBIEL: Negatieve margin links EN rechts op mobiel
+          )}> {/* ✅ EDGE-TO-EDGE: Productafbeeldingen tot randen links EN rechts op mobiel */}
             {/* Main Image - ✅ EDGE-TO-EDGE MOBIEL: Geen border radius op mobiel */}
             <div className={cn(
               'relative', 
