@@ -906,26 +906,27 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* Add to Cart Button - ✅ ONDER SERVICE USPs */}
+              {/* Add to Cart Button - ✅ PREMIUM: Modern button met shadow en transform */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
                 className={cn(
-                  'w-full',
-                  'py-5 sm:py-6 md:py-6 lg:py-6', // ✅ SYMMETRISCH: Gelijk padding boven/onder
-                  'px-4 sm:px-6 md:px-6 lg:px-6', // ✅ SYMMETRISCH: Gelijk padding links/rechts
-                  'text-lg sm:text-xl md:text-2xl lg:text-2xl', // ✅ SYMMETRISCH: Gelijk tekst scaling
-                  CONFIG.info.button.fontWeight,
-                  CONFIG.info.button.bgColor,
-                  CONFIG.info.button.hoverBgColor,
-                  CONFIG.info.button.textColor,
-                  CONFIG.info.button.borderRadius,
-                  CONFIG.info.button.transition,
-                  'flex items-center justify-center gap-2',
-                  'mb-1 sm:mb-1.5', // ✅ MINIMALE MARGIN: Minder padding tot bezorgtijd tekst
-                  'touch-manipulation', // ✅ MOBILE: Betere touch response
+                  'relative overflow-hidden group w-full py-5 sm:py-6 text-lg sm:text-xl font-semibold rounded-lg text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 mb-1 sm:mb-1.5',
                   isAdding && 'bg-green-600 hover:bg-green-600'
                 )}
+                style={{
+                  backgroundColor: isAdding ? '#16a34a' : BRAND_COLORS_HEX.primary,
+                }}
+                onMouseEnter={(e) => {
+                  if (!isAdding) {
+                    e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isAdding) {
+                    e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary;
+                  }
+                }}
               >
                 {isAdding ? (
                   <>
