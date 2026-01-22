@@ -14,6 +14,11 @@ import { PRODUCT_USP_ICONS } from "@/components/products/product-usp-icons";
 import { PremiumQualitySection } from "@/components/shared/premium-quality-section";
 import { ProductComparisonTable } from "@/components/products/product-comparison-table";
 import { ProductJsonLd } from "@/components/seo/product-json-ld";
+import { BreadcrumbNavigation } from "@/components/seo/breadcrumb-navigation";
+import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
+import { FAQJsonLd } from "@/components/seo/faq-json-ld";
+import { HowToJsonLd } from "@/components/seo/howto-json-ld";
+import { RelatedProducts } from "@/components/products/related-products";
 import type { Product } from "@/types/product";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 import { BRAND_COLORS_HEX } from "@/lib/color-config"; // ✅ BLAUW: Voor vinkjes
@@ -497,9 +502,46 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
   return (
     <div className="min-h-screen bg-white"> {/* ✅ WIT: Volledig witte achtergrond */}
-      {/* ✅ SEO 10/10: JSON-LD Structured Data voor Google Rich Results - alleen als product geladen is */}
-      {/* ✅ EXPERT: Render JSON-LD alleen client-side na mount om SSR errors te voorkomen */}
-      {typeof window !== 'undefined' && !loading && product && <ProductJsonLd product={product} />}
+      {/* ✅ SEO PHASE 1-3: JSON-LD Structured Data voor Google Rich Results */}
+      {typeof window !== 'undefined' && !loading && product && (
+        <>
+          <ProductJsonLd product={product} />
+          <BreadcrumbJsonLd />
+          <FAQJsonLd faqs={PRODUCT_CONTENT.faqs} productSlug={product.slug} />
+          <HowToJsonLd
+            name="Automatische kattenbak installeren"
+            description="Stap-voor-stap instructies voor het installeren en gebruiken van de automatische kattenbak"
+            steps={[
+              {
+                name: "Plaats de kattenbak",
+                text: "Plaats de kattenbak op een vlakke ondergrond, bij voorkeur in een rustige ruimte waar je kat zich comfortabel voelt.",
+              },
+              {
+                name: "Sluit stroomadapter aan",
+                text: "Sluit de meegeleverde stroomadapter aan op de kattenbak en op het stopcontact. Controleer of de LED-indicator brandt.",
+              },
+              {
+                name: "Download de app",
+                text: "Download de gratis app voor iOS of Android. Scan de QR-code in de handleiding of zoek naar 'CatSupply' in de app store.",
+              },
+              {
+                name: "Volg setup instructies",
+                text: "Volg de setup instructies in de app. De app leidt je door het verbindingsproces en helpt je bij het instellen van je eerste reinigingsschema.",
+              },
+            ]}
+            totalTime="10"
+            tool={[{ name: "Stroomadapter" }]}
+            supply={[{ name: "Kattenbakvulling" }]}
+          />
+        </>
+      )}
+      
+      {/* ✅ SEO PHASE 1: Breadcrumb Navigation */}
+      {!loading && product && (
+        <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'pt-4 pb-2')}>
+          <BreadcrumbNavigation />
+        </div>
+      )}
       
       {/* Main Product Section - ✅ DESKTOP SPACING: Ruimte onder navbar op desktop, mobiel edge-to-edge */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.sectionSpacing, 'pt-0 md:pt-6 lg:pt-8')} style={{ marginTop: 0 }}>
@@ -1077,22 +1119,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       <div className={cn(CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor)}>
                         <h3 className="text-lg font-semibold mb-4">Vragen over {product.name}</h3>
                         <div className="space-y-4">
-                          <div>
-                            <h4 className="font-semibold mb-1">Hoe vaak moet ik de afvalbak legen?</h4>
-                            <p className="text-sm">Bij één kat ongeveer 1x per week. Bij meerdere katten 2-3x per week.</p>
-                          </div>
-                          <div>
-                            <h4 className="font-semibold mb-1">Welke kattenbakvulling moet ik gebruiken?</h4>
-                            <p className="text-sm">Je kunt klonterende klei vulling, plantaardige vulling, of gemixte vulling gebruiken. Kies wat het beste werkt voor jouw kat.</p>
-                          </div>
-                          <div>
-                            <h4 className="font-semibold mb-1">Is de app gratis?</h4>
-                            <p className="text-sm">Ja! De app is volledig gratis te downloaden voor iOS en Android. Er zijn geen verborgen kosten of abonnementen.</p>
-                          </div>
-                          <div>
-                            <h4 className="font-semibold mb-1">Hoe werkt de garantie?</h4>
-                            <p className="text-sm">Je krijgt 1 jaar volledige garantie. Bij problemen kun je contact opnemen met onze klantenservice voor een snelle oplossing of vervanging.</p>
-                          </div>
+                          {/* ✅ SEO PHASE 2: FAQ uitbreiden - gebruik PRODUCT_CONTENT.faqs */}
+                          {PRODUCT_CONTENT.faqs.map((faq, index) => (
+                            <div key={index}>
+                              <h4 className="font-semibold mb-1">{faq.q}</h4>
+                              <p className="text-sm">{faq.a}</p>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
