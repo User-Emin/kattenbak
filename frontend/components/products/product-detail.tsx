@@ -493,16 +493,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* ✅ EXPERT: Render JSON-LD alleen client-side na mount om SSR errors te voorkomen */}
       {typeof window !== 'undefined' && !loading && product && <ProductJsonLd product={product} />}
       
-      {/* Main Product Section - ✅ DIRECT ONDER NAVBAR: Normale padding voor content */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.sectionSpacing)} style={{ paddingTop: 0, marginTop: 0 }}>
-        {/* Product Grid - ✅ DIRECT ONDER NAVBAR: Geen breadcrumb tussenin */}
+      {/* Main Product Section - ✅ DESKTOP SPACING: Ruimte onder navbar op desktop, mobiel edge-to-edge */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.sectionSpacing, 'pt-0 md:pt-6 lg:pt-8')} style={{ marginTop: 0 }}>
+        {/* Product Grid - ✅ DESKTOP SPACING: Ruimte op desktop, mobiel direct onder navbar */}
         <div className={cn(
           'flex flex-col lg:flex-row', 
           'items-start', 
-          'mt-0', // ✅ DIRECT: Geen margin boven, direct onder navbar
+          'mt-0 md:mt-0', // ✅ MOBIEL: Direct onder navbar, DESKTOP: Container padding-top zorgt voor ruimte
           'gap-6 sm:gap-8 md:gap-10 lg:gap-10', // ✅ SYMMETRISCH: Gelijk tussen image en info
           'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
-        )}> {/* ✅ DIRECT: Direct onder navbar, geen breadcrumb */}
+        )}> {/* ✅ DESKTOP SPACING: Ruimte via container padding-top op desktop */}
           {/* Left: Image Gallery - ✅ NORMALE PADDING: Container heeft padding */}
           <div className={cn(
             'flex flex-col', 
