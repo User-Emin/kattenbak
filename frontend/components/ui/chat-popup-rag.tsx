@@ -572,6 +572,23 @@ export function ChatPopup() {
     return safeChatConfig?.button?.zIndex || 'z-[50]';
   }, [isProductPage, safeChatConfig]);
   
+  // ✅ MOBILE BOTTOM NAV: State voor window width (voor responsive updates)
+  const [windowWidth, setWindowWidth] = useState<number | null>(null);
+  
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    // Initial width
+    setWindowWidth(window.innerWidth);
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
   // ✅ MOBILE BOTTOM NAV: Dynamische inline style (overschrijft classes)
   const buttonStyle = useMemo(() => {
     const baseStyle: React.CSSProperties = {
@@ -581,7 +598,7 @@ export function ChatPopup() {
     };
     
     // ✅ MOBILE BOTTOM NAV: Op productpagina's mobiel: boven bottom nav
-    if (isProductPage && typeof window !== 'undefined' && window.innerWidth < 768) {
+    if (isProductPage && windowWidth !== null && windowWidth < 768) {
       return {
         ...baseStyle,
         zIndex: DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonZIndexValue || 201,
@@ -590,7 +607,7 @@ export function ChatPopup() {
     }
     
     return baseStyle;
-  }, [isProductPage]);
+  }, [isProductPage, windowWidth]);
 
   // ✅ SECURITY: Additional safety check - ensure safeChatConfig is valid before render
   // This check happens AFTER safeChatConfig is defined

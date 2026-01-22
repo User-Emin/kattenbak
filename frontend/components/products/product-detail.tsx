@@ -697,19 +697,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'self-start',
             'mt-6 sm:mt-8 md:mt-0 lg:mt-0', // ✅ SYMMETRISCH: Gelijk spacing op mobile, geen margin op desktop
             'mx-auto lg:mx-0', // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
-            'px-4 md:px-0', // ✅ PADDING: Product info heeft padding op mobiel
-            'lg:pt-0' // ✅ DESKTOP: Geen padding-top op desktop (opzelfde hoogte als afbeelding)
+            'px-4 md:px-0' // ✅ PADDING: Product info heeft padding op mobiel
           )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
-              {/* Productnaam - ✅ DESKTOP: Opzelfde hoogte als afbeelding (geen margin-top) */}
+              {/* Productnaam - ✅ DESKTOP: Opzelfde hoogte als afbeelding (align-top via flex) */}
               <h1 className={cn(
                 'text-2xl sm:text-3xl lg:text-4xl', // ✅ RESPONSIVE: Kleinere tekst op mobile
                 CONFIG.info.title.fontWeight,
                 CONFIG.info.title.textColor,
                 'mb-2 lg:mb-3', // ✅ COMPACT: Minder margin-bottom op desktop
-                'leading-tight', // ✅ RESPONSIVE: Tighter line height op mobile
-                'lg:mt-0' // ✅ DESKTOP: Geen margin-top op desktop (opzelfde hoogte als afbeelding)
+                'leading-tight' // ✅ RESPONSIVE: Tighter line height op mobile
               )}>
                 {product.name}
               </h1>
