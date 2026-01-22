@@ -494,7 +494,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {typeof window !== 'undefined' && !loading && product && <ProductJsonLd product={product} />}
       
       {/* Main Product Section - ✅ MOBIEL EDGE-TO-EDGE: Geen padding op mobiel, direct onder navbar */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'md:px-6 lg:px-8', CONFIG.layout.sectionSpacing)} style={{ paddingTop: 0, marginTop: 0 }}>
+      <div className={cn('w-full', 'md:max-w-7xl md:mx-auto', 'md:px-6 lg:px-8', CONFIG.layout.sectionSpacing)} style={{ paddingTop: 0, marginTop: 0, paddingLeft: 0, paddingRight: 0 }}>
         {/* Product Grid - ✅ DIRECT ONDER NAVBAR: Geen breadcrumb tussenin */}
         <div className={cn(
           'flex flex-col lg:flex-row', 
