@@ -493,8 +493,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* ✅ EXPERT: Render JSON-LD alleen client-side na mount om SSR errors te voorkomen */}
       {typeof window !== 'undefined' && !loading && product && <ProductJsonLd product={product} />}
       
-      {/* Main Product Section - ✅ MOBIEL EDGE-TO-EDGE: Geen padding op mobiel, direct onder navbar */}
-      <div className={cn('w-full', 'md:max-w-7xl md:mx-auto', 'md:px-6 lg:px-8', CONFIG.layout.sectionSpacing)} style={{ paddingTop: 0, marginTop: 0, paddingLeft: 0, paddingRight: 0 }}>
+      {/* Main Product Section - ✅ DIRECT ONDER NAVBAR: Normale padding voor content */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.sectionSpacing)} style={{ paddingTop: 0, marginTop: 0 }}>
         {/* Product Grid - ✅ DIRECT ONDER NAVBAR: Geen breadcrumb tussenin */}
         <div className={cn(
           'flex flex-col lg:flex-row', 
@@ -503,17 +503,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           'gap-6 sm:gap-8 md:gap-10 lg:gap-10', // ✅ SYMMETRISCH: Gelijk tussen image en info
           'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
         )}> {/* ✅ DIRECT: Direct onder navbar, geen breadcrumb */}
-          {/* Left: Image Gallery - ✅ EDGE-TO-EDGE MOBIEL: Negatieve margin links EN rechts */}
+          {/* Left: Image Gallery - ✅ NORMALE PADDING: Container heeft padding */}
           <div className={cn(
             'flex flex-col', 
             'w-full lg:w-[58%]', // ✅ RESPONSIVE: Full width op mobile, 58% op desktop
             CONFIG.gallery.container.sticky, 
             CONFIG.gallery.container.height, 
             'self-start', 
-            'gap-3 sm:gap-4 md:gap-4 lg:gap-4', // ✅ SYMMETRISCH: Gelijk tussen image en thumbnails
-            '-mx-4 md:mx-0' // ✅ EDGE-TO-EDGE MOBIEL: Negatieve margin links EN rechts op mobiel
-          )}> {/* ✅ EDGE-TO-EDGE: Productafbeeldingen tot randen links EN rechts op mobiel */}
-            {/* Main Image - ✅ EDGE-TO-EDGE MOBIEL: Geen border radius op mobiel */}
+            'gap-3 sm:gap-4 md:gap-4 lg:gap-4' // ✅ SYMMETRISCH: Gelijk tussen image en thumbnails
+          )}> {/* ✅ NORMALE PADDING: Container heeft padding, alleen image edge-to-edge */}
+            {/* Main Image - ✅ ALLEEN AFBEELDING EDGE-TO-EDGE: Isolatie met negatieve margin */}
             <div className={cn(
               'relative', 
               'aspect-[3/2] sm:aspect-[3/2]', // ✅ RESPONSIVE: Consistent aspect ratio
@@ -521,8 +520,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               CONFIG.gallery.mainImage.bgColor, 
               'overflow-hidden', 
               'w-full',
-              'min-h-[200px] sm:min-h-[300px]' // ✅ RESPONSIVE: Minimum hoogte voor mobile
-            )}> {/* ✅ EDGE-TO-EDGE: Geen border radius op mobiel */}
+              'min-h-[200px] sm:min-h-[300px]', // ✅ RESPONSIVE: Minimum hoogte voor mobile
+              '-mx-4 md:mx-0' // ✅ EDGE-TO-EDGE: Alleen deze div edge-to-edge op mobiel
+            )}> {/* ✅ ISOLATIE: Alleen afbeelding edge-to-edge, rest heeft padding */}
               <Image
                 src={currentImage}
                 alt={product.name}
@@ -589,11 +589,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             </div>
 
-            {/* ✅ THUMBNAILS ONDER: Met padding voor scrollbaarheid */}
+            {/* ✅ THUMBNAILS ONDER: Met normale padding */}
             {displayImages.length > 1 && (
               <div className={cn(
                 'flex flex-row gap-2 overflow-x-auto', // ✅ RUIMTE: gap-2 tussen thumbnails
-                'w-full px-4 md:px-0', // ✅ PADDING: Padding voor thumbnails op mobiel voor scrollbaarheid
+                'w-full', // ✅ NORMALE PADDING: Thumbnails hebben normale container padding
                 'smooth-scroll',
                 'pb-2' // ✅ MOBILE: Extra padding voor scroll indicator
               )}>
