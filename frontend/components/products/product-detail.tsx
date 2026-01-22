@@ -625,7 +625,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             {displayImages.length > 1 && (
               <div className={cn(
                 'flex flex-row gap-2 overflow-x-auto', // ✅ RUIMTE: gap-2 tussen thumbnails
-                'w-full',
+                'w-full px-4 md:px-0', // ✅ EDGE-TO-EDGE MOBIEL: Padding alleen voor thumbnails op mobiel
                 'smooth-scroll',
                 'pb-2' // ✅ MOBILE: Extra padding voor scroll indicator
               )}>
