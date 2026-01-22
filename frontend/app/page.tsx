@@ -16,6 +16,7 @@ import { useUI } from "@/context/ui-context";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { SHARED_CONTENT } from "@/lib/content.config";
 import { BRAND_COLORS_HEX } from "@/lib/color-config";
+import { MODERN_DESIGN } from "@/lib/modern-design-enhancements";
 import { ProductVariantsSection } from "@/components/shared/product-variants-section";
 import { ProductDescriptionSection } from "@/components/shared/product-description-section";
 import { ProductEdgeImageSection } from "@/components/shared/product-edge-image-section";
@@ -161,42 +162,40 @@ export default function HomePage() {
               backgroundColor: DESIGN_SYSTEM.colors.secondary, // ✅ WIT: Was gray[50], nu wit
             }}
           >
-            {/* Heading - ✅ RESPONSIVE: Mobile smaller, Laptop smaller, Desktop smaller */}
+            {/* Heading - ✅ PREMIUM: Modern typography met premium spacing */}
             <h1 
-              className="leading-tight text-3xl md:text-3xl lg:text-5xl" // ✅ RESPONSIVE: Desktop kleiner (lg:text-5xl ipv lg:text-6xl)
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight leading-[1.1]" // ✅ PREMIUM: Groter, lichter, moderner
               style={{
                 fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
                 color: DESIGN_SYSTEM.colors.text.primary,
-                letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
               }}
             >
-              Automatische<br className="hidden md:block" /> {/* ✅ RESPONSIVE: Line break alleen op desktop */}
-              <span className="md:hidden"> </span> {/* ✅ MOBILE: Space in plaats van break */}
+              Automatische<br className="hidden md:block" />
+              <span className="md:hidden"> </span>
               Kattenbak
             </h1>
 
-            {/* Subtitle - ✅ RESPONSIVE: Mobile smaller */}
+            {/* Subtitle - ✅ PREMIUM: Moderner styling */}
             <p 
-              className="text-base md:text-xl" // ✅ RESPONSIVE: Tailwind breakpoints
-              style={{
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-                color: DESIGN_SYSTEM.colors.text.secondary,
-                lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
-              }}
+              className="text-lg sm:text-xl md:text-2xl font-light leading-relaxed text-gray-600" // ✅ PREMIUM: Groter, lichter
             >
               Zelfreinigende • Hygiënisch • Stil
             </p>
 
-            {/* CTA Button - ✅ RESPONSIVE: Mobile margin-bottom, Desktop normale spacing */}
-            <div className="pt-4 pb-2 md:pb-4"> {/* ✅ MOBIEL: Minder bottom padding (pb-2) zodat varianten dichterbij komen */}
+            {/* CTA Button - ✅ PREMIUM: Modern button met shadow en transform */}
+            <div className="pt-6 pb-2 md:pb-4">
               <Link href={`/product/${productSlug}`}>
                 <button 
-                  className="inline-flex items-center gap-2 md:gap-3 transition-all hover:opacity-90 text-sm md:text-base" // ✅ RESPONSIVE: Mobile kleinere gap en tekst
+                  className="relative overflow-hidden group inline-flex items-center gap-3 px-8 py-5 sm:px-10 sm:py-6 text-base sm:text-lg font-semibold rounded-lg text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]" // ✅ PREMIUM: Modern button styling
                   style={{
-                    background: DESIGN_SYSTEM.colors.text.primary, // ✅ ZWART: Volledig zwart via design system (was buttonCta/blue)
-                    color: DESIGN_SYSTEM.colors.text.inverse,
-                    padding: `${DESIGN_SYSTEM.spacing[3]} ${DESIGN_SYSTEM.spacing[6]}`, // ✅ RESPONSIVE: Mobile kleinere padding (was spacing[4] spacing[8])
+                    backgroundColor: BRAND_COLORS_HEX.primary,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary;
+                  }}
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
                     borderRadius: DESIGN_SYSTEM.effects.borderRadius.xl, // ✅ RONDER: xl (12px) voor buttons
                   }}

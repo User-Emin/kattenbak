@@ -42,15 +42,15 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
   };
 
   return (
-    <Card hover className="group overflow-hidden h-full flex flex-col">
+    <Card hover className="group relative overflow-hidden h-full flex flex-col rounded-xl bg-white shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-500 transform hover:-translate-y-2">
       <Link href={`/product/${product.slug}`} className="flex-1 flex flex-col">
-        {/* Image Container */}
-        <div className="relative aspect-square overflow-hidden bg-secondary">
+        {/* Image Container - ✅ PREMIUM: Modern card styling */}
+        <div className="relative aspect-square overflow-hidden bg-gray-50">
           <ProductImage
             src={getProductImage(product.images)}
             alt={product.name}
             fill
-            className="transition-transform duration-500 group-hover:scale-110"
+            className="transition-transform duration-700 group-hover:scale-110"
           />
           
           {/* Badges */}
@@ -83,53 +83,74 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           )}
         </div>
 
-        {/* Content */}
-        <CardContent className="p-5 flex-1 flex flex-col">
+        {/* Content - ✅ PREMIUM: Modern spacing en typography */}
+        <CardContent className="p-6 sm:p-8 flex-1 flex flex-col">
           {/* Category */}
           {product.category && (
-            <p className="text-xs text-accent uppercase tracking-wider font-semibold mb-2">
+            <p className="text-xs text-[#3071aa] uppercase tracking-wider font-semibold mb-3">
               {product.category.name}
             </p>
           )}
 
-          {/* Product name */}
-          <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-accent transition-colors leading-tight">
+          {/* Product name - ✅ PREMIUM: Moderner typography */}
+          <h3 className="font-light text-xl sm:text-2xl mb-3 line-clamp-2 group-hover:text-[#3071aa] transition-colors duration-300 leading-tight">
             {product.name}
           </h3>
 
-          {/* Short description */}
+          {/* Short description - ✅ PREMIUM: Groter, leesbaarder */}
           {product.shortDescription && (
-            <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-1">
+            <p className="text-sm sm:text-base text-gray-600 mb-6 line-clamp-2 flex-1 leading-relaxed">
               {product.shortDescription}
             </p>
           )}
 
-          {/* Price */}
-          <div className="flex items-baseline gap-2 mt-auto">
-            <span className="text-2xl font-bold text-foreground">
+          {/* Price - ✅ PREMIUM: Moderner styling */}
+          <div className="flex items-baseline gap-3 mt-auto">
+            <span className="text-2xl sm:text-3xl font-light text-gray-900">
               {formatPrice(product.price)}
             </span>
             {hasDiscount && (
-              <span className="text-base text-muted-foreground line-through">
+              <span className="text-lg text-gray-400 line-through">
                 {formatPrice(product.compareAtPrice!)}
               </span>
             )}
           </div>
         </CardContent>
 
-        {/* Footer with CTA */}
-        <CardFooter className="p-5 pt-0">
-          <Button
-            variant="primary"
-            size="md"
-            fullWidth
+        {/* Footer with CTA - ✅ PREMIUM: Modern button */}
+        <CardFooter className="p-6 sm:p-8 pt-0">
+          <button
             onClick={handleAddToCart}
             disabled={product.stock === 0 || isAdding}
-            loading={isAdding}
-            leftIcon={!isAdding && product.stock > 0 ? <ShoppingCart className="w-4 h-4" /> : undefined}
+            className="relative overflow-hidden group w-full px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-semibold rounded-lg text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            style={{
+              backgroundColor: product.stock === 0 ? '#9ca3af' : '#3071aa',
+            }}
+            onMouseEnter={(e) => {
+              if (product.stock > 0 && !isAdding) {
+                e.currentTarget.style.backgroundColor = '#256394';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (product.stock > 0 && !isAdding) {
+                e.currentTarget.style.backgroundColor = '#3071aa';
+              }
+            }}
           >
-            {product.stock === 0 ? "Uitverkocht" : "Winkelwagen"} {/* ✅ 1 WOORD: "Winkelwagen" ipv "In Winkelwagen" */}
-          </Button>
+            {isAdding ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Toevoegen...
+              </span>
+            ) : product.stock === 0 ? (
+              "Uitverkocht"
+            ) : (
+              <span className="flex items-center justify-center gap-2">
+                <ShoppingCart className="w-5 h-5" />
+                Winkelwagen
+              </span>
+            )}
+          </button>
         </CardFooter>
       </Link>
     </Card>
