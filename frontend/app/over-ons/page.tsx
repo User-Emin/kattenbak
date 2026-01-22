@@ -27,21 +27,6 @@ export default function OverOnsPage() {
             </p>
           </div>
 
-          {/* Stats - Direct op achtergrond */}
-          <div className="grid md:grid-cols-3 gap-12 my-16 text-center">
-            <div>
-              <div className="text-5xl font-light text-brand mb-2">10+</div>
-              <p className="text-sm font-medium text-gray-600">Jaar Ervaring</p>
-            </div>
-            <div>
-              <div className="text-5xl font-light text-brand mb-2">50K+</div>
-              <p className="text-sm font-medium text-gray-600">Tevreden Klanten</p>
-            </div>
-            <div>
-              <div className="text-5xl font-light text-brand mb-2">4.9</div>
-              <p className="text-sm font-medium text-gray-600">Gemiddelde Score</p>
-            </div>
-          </div>
 
           {/* Waarom Wij */}
           <div className="text-center mb-16">

@@ -1,7 +1,6 @@
 "use client";
 
 import { Check, X } from "lucide-react";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
@@ -103,54 +102,43 @@ export function ProductComparisonTable() {
       {/* Header - ✅ ZWART-WIT: Speelser met contrast */}
       <div className="bg-black text-white px-4 sm:px-6 py-4 sm:py-5">
         <h3 className="text-xl sm:text-2xl font-bold text-center sm:text-left">Vergelijking</h3>
-        <p className="text-sm sm:text-base text-gray-200 mt-2 text-center sm:text-left">Onze automatische kattenbak vs. traditionele kattenbak</p>
+        <p className="text-sm sm:text-base text-gray-200 mt-2 text-center sm:text-left">Automatische kattenbak vs. handmatige kattenbak</p>
       </div>
 
-      {/* ✅ RESPONSIVE TABLE: Desktop tabel, mobiel cards - ZWART-WIT CONTRAST */}
+      {/* ✅ RESPONSIVE TABLE: Desktop tabel, mobiel cards - MINDER OVERWELDIGEND */}
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-white border-b-2 border-gray-300">
+          <thead className="bg-white border-b border-gray-200">
             <tr>
-              <th className="px-6 py-4 text-left text-sm font-bold text-gray-900 w-1/3">
+              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 w-1/3">
                 Feature
               </th>
-              <th className="px-6 py-4 text-center text-sm font-bold text-white w-1/3" style={{ backgroundColor: '#3071aa' }}>
-                Onze Kattenbak
+              <th className="px-4 py-3 text-center text-xs font-semibold text-white w-1/3" style={{ backgroundColor: '#3071aa' }}>
+                Automatische kattenbak
               </th>
-              <th className="px-6 py-4 text-center text-sm font-bold text-white bg-gray-800 w-1/3">
-                <div className="flex flex-col items-center gap-2">
-                  <div className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-gray-400 bg-white">
-                    <Image
-                      src="/images/traditional-litter-box-optimized.jpg"
-                      alt="Traditionele kattenbak"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <span className="text-center text-white">Traditionele Kattenbak</span>
-                </div>
+              <th className="px-4 py-3 text-center text-xs font-semibold text-white bg-gray-800 w-1/3">
+                <span className="text-center text-white">Handmatig</span>
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-100">
             {comparisonData.map((row, index) => (
               <tr
                 key={index}
                 className={cn(
-                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50', // ✅ ZEBRA STRIPES: Alternerend wit/grijs
-                  row.highlight && 'bg-black text-white' // ✅ HIGHLIGHT: Zwarte achtergrond voor onze voordelen
-                  // ✅ GEEN HOVER: Geen hover effect (geen wit worden)
+                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50',
+                  row.highlight && 'bg-black text-white'
                 )}
               >
                 <td className={cn(
-                  'px-6 py-4 text-sm font-semibold',
+                  'px-4 py-3 text-xs font-medium',
                   row.highlight ? 'text-white' : 'text-gray-900'
                 )}>
                   {row.feature}
                 </td>
                 <td className={cn(
-                  'px-6 py-4 text-center',
+                  'px-4 py-3 text-center',
                   row.highlight && 'text-white'
                 )} style={row.highlight ? { backgroundColor: '#3071aa' } : undefined}>
                   <div className="flex items-center justify-center">
@@ -158,7 +146,7 @@ export function ProductComparisonTable() {
                   </div>
                 </td>
                 <td className={cn(
-                  'px-6 py-4 text-center',
+                  'px-4 py-3 text-center',
                   row.highlight ? 'bg-gray-800 text-white' : index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200'
                 )}>
                   <div className="flex items-center justify-center">
@@ -171,43 +159,43 @@ export function ProductComparisonTable() {
         </table>
       </div>
 
-      {/* ✅ MOBIEL: Cards layout - ZWART-WIT CONTRAST, SPEELSER */}
-      <div className="md:hidden divide-y-2 divide-gray-300">
+      {/* ✅ MOBIEL: Cards layout - MINDER OVERWELDIGEND */}
+      <div className="md:hidden divide-y divide-gray-200">
         {comparisonData.map((row, index) => (
           <div
             key={index}
             className={cn(
-              'p-4 transition-colors',
-              row.highlight ? 'bg-black text-white' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50' // ✅ ZEBRA STRIPES + HIGHLIGHT
+              'p-3 transition-colors',
+              row.highlight ? 'bg-black text-white' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
             )}
           >
             <div className={cn(
-              'text-sm font-bold mb-4 text-center',
+              'text-xs font-semibold mb-3 text-center',
               row.highlight ? 'text-white' : 'text-gray-900'
             )}>
               {row.feature}
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               <div className={cn(
-                'flex flex-col items-center p-3 rounded-lg',
+                'flex flex-col items-center p-2 rounded-lg',
                 'text-white'
               )} style={{ backgroundColor: '#3071aa' }}>
                 <div className={cn(
-                  'text-xs sm:text-sm font-bold mb-3 text-center',
+                  'text-xs font-semibold mb-2 text-center',
                   'text-white'
-                )}>Onze Kattenbak</div>
+                )}>Automatische kattenbak</div>
                 <div className="flex items-center justify-center">
                   {renderValue(row.ourProduct, true)}
                 </div>
               </div>
               <div className={cn(
-                'flex flex-col items-center p-3 rounded-lg border-2',
-                row.highlight ? 'bg-gray-800 border-gray-600 text-white' : 'bg-gray-100 border-gray-400 text-gray-900'
+                'flex flex-col items-center p-2 rounded-lg border',
+                row.highlight ? 'bg-gray-800 border-gray-600 text-white' : 'bg-gray-100 border-gray-300 text-gray-900'
               )}>
                 <div className={cn(
-                  'text-xs sm:text-sm font-bold mb-3 text-center',
+                  'text-xs font-semibold mb-2 text-center',
                   row.highlight ? 'text-white' : 'text-gray-900'
-                )}>Traditionele</div>
+                )}>Handmatig</div>
                 <div className="flex items-center justify-center">
                   {renderValue(row.competitor, false)}
                 </div>
@@ -220,7 +208,7 @@ export function ProductComparisonTable() {
       {/* Footer Note - ✅ ZWART-WIT: Consistent met header */}
       <div className="bg-gray-100 border-t-2 border-gray-300 px-4 sm:px-6 py-3 sm:py-4">
         <p className="text-xs sm:text-sm text-gray-600 text-center font-medium">
-          * Vergelijking met traditionele niet-automatische kattenbak. Specificaties kunnen variëren.
+          * Vergelijking met handmatige kattenbak. Specificaties kunnen variëren.
         </p>
       </div>
     </div>

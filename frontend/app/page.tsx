@@ -188,13 +188,13 @@ export default function HomePage() {
                 <button 
                   className="relative overflow-hidden group inline-flex items-center gap-3 px-8 py-5 sm:px-10 sm:py-6 text-base sm:text-lg font-semibold rounded-lg text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]" // ✅ PREMIUM: Modern button styling
                   style={{
-                    backgroundColor: BRAND_COLORS_HEX.primary,
+                    backgroundColor: '#000000',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark;
+                    e.currentTarget.style.backgroundColor = '#1a1a1a';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary;
+                    e.currentTarget.style.backgroundColor = '#000000';
                   }}
                 >
                   <span>Bekijk Product</span>
