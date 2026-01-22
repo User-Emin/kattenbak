@@ -4,12 +4,12 @@ import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 
 /**
  * ✅ MOBILE BOTTOM NAV - Smooth winkelwagenbutton
  * 
- * Alleen zichtbaar op mobiel (< 768px)
+ * Alleen zichtbaar op mobiel (< 768px) EN alleen op productpagina's
+ * Slim: Checkt pathname pattern /product/ zonder hardcode
  * Smooth animatie, altijd zichtbaar onderaan
  */
 export function MobileBottomNav() {
@@ -17,6 +17,14 @@ export function MobileBottomNav() {
   const { openCart, closeCart, isCartOpen } = useUI();
   const pathname = usePathname();
   const isOnCartPage = pathname === '/cart';
+  
+  // ✅ SLIM: Alleen tonen op productpagina's (pattern: /product/...)
+  const isProductPage = pathname?.startsWith('/product/') || false;
+  
+  // ✅ NIET TONEN: Als niet op productpagina
+  if (!isProductPage) {
+    return null;
+  }
 
   const handleCartClick = () => {
     if (isOnCartPage) {

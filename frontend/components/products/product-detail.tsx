@@ -493,10 +493,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* ✅ EXPERT: Render JSON-LD alleen client-side na mount om SSR errors te voorkomen */}
       {typeof window !== 'undefined' && !loading && product && <ProductJsonLd product={product} />}
       
-      {/* Main Product Section - Breadcrumb binnen grid */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, CONFIG.layout.topMargin, CONFIG.layout.sectionSpacing)}>
-        {/* Breadcrumb - Bovenaan grid container */}
-        <nav className={CONFIG.breadcrumb.containerPadding}>
+      {/* Main Product Section - Breadcrumb binnen grid - ✅ MOBIEL EDGE-TO-EDGE: Geen padding op mobiel */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'md:px-6 lg:px-8', CONFIG.layout.topMargin, CONFIG.layout.sectionSpacing)}>
+        {/* Breadcrumb - Bovenaan grid container - ✅ MOBIEL EDGE-TO-EDGE: Padding alleen op desktop */}
+        <nav className="px-4 md:px-6 lg:px-8">
           <ol className={CONFIG.breadcrumb.spacing}>
             <li>
               <Link 
@@ -544,10 +544,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'gap-3 sm:gap-4 md:gap-4 lg:gap-4', // ✅ SYMMETRISCH: Gelijk tussen image en thumbnails
             'mx-auto lg:mx-0' // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
           )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
-            {/* Main Image - ✅ EXACT PASSEND: Productafbeelding past exact aan veld */}
+            {/* Main Image - ✅ EDGE-TO-EDGE MOBIEL: Geen padding op mobiel */}
             <div className={cn(
               'relative', 
               'aspect-[3/2] sm:aspect-[3/2]', // ✅ RESPONSIVE: Consistent aspect ratio
+              'mx-0 md:mx-0', // ✅ EDGE-TO-EDGE: Geen margin op mobiel
               CONFIG.gallery.mainImage.borderRadius, 
               CONFIG.gallery.mainImage.bgColor, 
               'overflow-hidden', 
@@ -940,12 +941,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ BEZORGTIJD & GRATIS VERZENDING - Direct onder winkelwagen button (iets meer padding) - BLAUW */}
+              {/* ✅ BEZORGTIJD - Direct onder winkelwagen button (iets meer padding) - BLAUW */}
               <div className="flex items-center justify-center mt-2 sm:mt-2.5 mb-0 -mx-2 sm:mx-0">
                 <Truck className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5 text-brand" />
                 <span className="text-sm sm:text-base" style={{ color: DESIGN_SYSTEM.colors.text.primary, fontWeight: 500 }}>
-                  <span style={{ fontWeight: 600 }}>Gratis verzending</span>
-                  {' • '}
                   <span>Bezorgtijd: <span style={{ fontWeight: 600 }}>1-2 werkdagen</span></span>
                 </span>
               </div>
