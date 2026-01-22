@@ -534,7 +534,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           'gap-6 sm:gap-8 md:gap-10 lg:gap-10', // ✅ SYMMETRISCH: Gelijk tussen image en info
           'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
         )}> {/* ✅ COMPACT: Afbeeldingveld dichter bij breadcrumb */}
-          {/* Left: Image Gallery - ✅ VERTICAAL BREDER, THUMBNAILS ONDER MET RUIMTE */}
+          {/* Left: Image Gallery - ✅ EDGE-TO-EDGE MOBIEL: Negatieve margin voor edge-to-edge */}
           <div className={cn(
             'flex flex-col', 
             'w-full lg:w-[58%]', // ✅ RESPONSIVE: Full width op mobile, 58% op desktop
@@ -542,19 +542,18 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             CONFIG.gallery.container.height, 
             'self-start', 
             'gap-3 sm:gap-4 md:gap-4 lg:gap-4', // ✅ SYMMETRISCH: Gelijk tussen image en thumbnails
-            'mx-auto lg:mx-0' // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
-          )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
-            {/* Main Image - ✅ EDGE-TO-EDGE MOBIEL: Geen padding op mobiel */}
+            '-mx-4 md:mx-0' // ✅ EDGE-TO-EDGE MOBIEL: Negatieve margin op mobiel voor edge-to-edge
+          )}> {/* ✅ EDGE-TO-EDGE: Productafbeeldingen tot randen op mobiel */}
+            {/* Main Image - ✅ EDGE-TO-EDGE MOBIEL: Geen border radius op mobiel */}
             <div className={cn(
               'relative', 
               'aspect-[3/2] sm:aspect-[3/2]', // ✅ RESPONSIVE: Consistent aspect ratio
-              'mx-0 md:mx-0', // ✅ EDGE-TO-EDGE: Geen margin op mobiel
-              CONFIG.gallery.mainImage.borderRadius, 
+              'md:rounded-lg', // ✅ DESKTOP: Border radius alleen op desktop
               CONFIG.gallery.mainImage.bgColor, 
               'overflow-hidden', 
               'w-full',
               'min-h-[200px] sm:min-h-[300px]' // ✅ RESPONSIVE: Minimum hoogte voor mobile
-            )}> {/* ✅ HORIZONTAAL: aspect-[3/2] - horizontaal langer, verticaal korter */}
+            )}> {/* ✅ EDGE-TO-EDGE: Geen border radius op mobiel */}
               <Image
                 src={currentImage}
                 alt={product.name}
