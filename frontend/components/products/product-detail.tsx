@@ -1218,7 +1218,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
       {/* ✅ VERGELIJKINGSTABEL: Modern, smooth, gebaseerd op echte info */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}>
-        <ProductComparisonTable />
+        <ProductComparisonTable productImages={productImages} />
       </div>
 
     </div>
