@@ -170,10 +170,26 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 className="px-4 py-4 text-center text-sm font-semibold text-white w-[30%]" 
                 style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
               >
-                Automatische kattenbak
+                <div className="flex flex-col items-center justify-center gap-2">
+                  {/* ✅ DESKTOP: Afbeelding in header voor Automatische kattenbak */}
+                  {firstImage && (
+                    <div className="hidden md:block">
+                      <ComparisonImage src={firstImage} alt="Automatische kattenbak" />
+                    </div>
+                  )}
+                  <span>Automatische kattenbak</span>
+                </div>
               </th>
               <th className="px-4 py-4 text-center text-sm font-semibold text-gray-700 bg-gray-100 w-[30%]">
-                Handmatige kattenbak
+                <div className="flex flex-col items-center justify-center gap-2">
+                  {/* ✅ DESKTOP: Afbeelding in header voor Handmatige kattenbak */}
+                  {sixthImage && (
+                    <div className="hidden md:block">
+                      <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" />
+                    </div>
+                  )}
+                  <span>Handmatige kattenbak</span>
+                </div>
               </th>
             </tr>
           </thead>
@@ -197,29 +213,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   'px-4 py-4 text-center',
                   row.highlight && 'bg-blue-50'
                 )}>
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    {/* ✅ DESKTOP: Afbeelding boven vinkje/kruisje voor Automatische kattenbak */}
-                    {firstImage && (
-                      <div className="hidden md:block">
-                        <ComparisonImage src={firstImage} alt="Automatische kattenbak" />
-                      </div>
-                    )}
-                    {renderValue(row.ourProduct, true)}
-                  </div>
+                  {renderValue(row.ourProduct, true)}
                 </td>
                 <td className={cn(
                   'px-4 py-4 text-center',
                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
                 )}>
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    {/* ✅ DESKTOP: Afbeelding boven vinkje/kruisje voor Handmatige kattenbak */}
-                    {sixthImage && (
-                      <div className="hidden md:block">
-                        <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" />
-                      </div>
-                    )}
-                    {renderValue(row.competitor, false)}
-                  </div>
+                  {renderValue(row.competitor, false)}
                 </td>
               </tr>
             ))}
