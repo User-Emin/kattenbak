@@ -22,7 +22,7 @@ export function CookieConsentBanner({
   onClose 
 }: CookieConsentBannerProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[100] animate-in slide-in-from-bottom duration-300">
+    <div className="fixed bottom-0 left-0 right-0 z-[300] animate-in slide-in-from-bottom duration-300">
       {/* VIERKANT ZAKELIJK DESIGN */}
       <div className="bg-white border-t-2 border-gray-200 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">

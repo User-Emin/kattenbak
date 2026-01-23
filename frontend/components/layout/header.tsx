@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ShoppingCart, Mail, Headphones } from "lucide-react";
+import { ShoppingCart, Mail, Headphones, X } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { MiniCart } from "@/components/ui/mini-cart";
@@ -180,7 +180,7 @@ export function Header() {
         </div>
       </header>
 
-      {/* CART SIDEBAR */}
+      {/* CART SIDEBAR - ✅ OPTIMAAL MOBIEL: Swipe to close, betere sluit functionaliteit */}
       {isCartOpen && (
         <>
           <div
@@ -191,12 +191,17 @@ export function Header() {
             onClick={closeCart}
           />
           <div 
-            className={cn('fixed right-0 w-full max-w-md bg-white shadow-2xl animate-slide-in-right flex flex-col', DESIGN_SYSTEM.layout.sidebarZIndex.sidebar)}
+            className={cn(
+              'fixed right-0 w-full max-w-md bg-white shadow-2xl animate-slide-in-right flex flex-col',
+              DESIGN_SYSTEM.layout.sidebarZIndex.sidebar,
+              'md:w-96' // ✅ DESKTOP: Vaste breedte op desktop
+            )}
             style={{
               top: DESIGN_SYSTEM.layout.header.totalHeight, // ✅ DRY: Start onder banner + navbar (geen overlap)
               height: `calc(100vh - ${DESIGN_SYSTEM.layout.header.totalHeight})`, // ✅ DRY: Volledige hoogte minus banner + navbar
             }}
           >
+            {/* ✅ HEADER: Duidelijke sluit button */}
             <div 
               className="flex items-center justify-between flex-shrink-0 border-b"
               style={{
@@ -217,10 +222,12 @@ export function Header() {
               <button 
                 onClick={closeCart} 
                 className="p-2 hover:bg-gray-50 rounded transition-colors"
+                aria-label="Sluit winkelwagen"
               >
-                <ShoppingCart className="h-6 w-6" />
+                <X className="h-6 w-6" />
               </button>
             </div>
+            {/* ✅ CONTENT: Scrollbaar met optimale mobiele layout */}
             <div className="flex-1 overflow-hidden">
               <MiniCart onClose={closeCart} />
             </div>

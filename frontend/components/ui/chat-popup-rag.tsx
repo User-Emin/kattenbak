@@ -17,6 +17,7 @@ import { Button } from "./button";
 import { X, Send, MessageCircle, Loader2 } from "lucide-react";
 import { CHAT_CONFIG } from "@/lib/chat-config";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { useUI } from "@/context/ui-context";
 import { cn } from "@/lib/utils";
 
 // ✅ SECURITY: Safe DESIGN_SYSTEM access with fallback (outside component, executed once)
@@ -55,6 +56,7 @@ interface Message {
 export function ChatPopup() {
   // ✅ SECURITY: Initialize state safely
   const pathname = usePathname();
+  const { isCartOpen } = useUI(); // ✅ SIDEBAR: Check of cart sidebar open is
   const isProductPage = pathname?.startsWith('/product/') || false;
   const [isExpanded, setIsExpanded] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -698,12 +700,14 @@ export function ChatPopup() {
       )}
 
       {/* ✅ ULTRA MODERN: Floating Chat Button - 100% Dynamisch via DESIGN_SYSTEM - SMOOTH */}
-      <button
-        onClick={() => {
-          setIsExpanded(!isExpanded);
-          setShowChatBubble(false); // ✅ HIDE: Verberg bubble bij klik
-        }}
-        className={cn(
+      {/* ✅ SIDEBAR: Verberg chat button wanneer cart sidebar open is */}
+      {!isCartOpen && (
+        <button
+          onClick={() => {
+            setIsExpanded(!isExpanded);
+            setShowChatBubble(false); // ✅ HIDE: Verberg bubble bij klik
+          }}
+          className={cn(
           safeChatConfig.button.position.type,
           safeChatConfig.button.position.right,
           // ✅ MOBILE BOTTOM NAV: Z-index en bottom MOETEN als laatste komen om overschrijven te voorkomen
@@ -732,12 +736,13 @@ export function ChatPopup() {
         style={buttonStyle}
         aria-label="Open chat"
       >
-        {isExpanded ? (
-          <X className={safeChatConfig.button.iconSize} />
-        ) : (
-          <MessageCircle className={safeChatConfig.button.iconSize} />
-        )}
-      </button>
+          {isExpanded ? (
+            <X className={safeChatConfig.button.iconSize} />
+          ) : (
+            <MessageCircle className={safeChatConfig.button.iconSize} />
+          )}
+        </button>
+      )}
 
       {/* Chat Popup */}
       {isExpanded && (
