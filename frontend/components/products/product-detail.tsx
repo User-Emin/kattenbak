@@ -570,17 +570,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
             {/* ✅ MOBIEL: Breadcrumb VERWIJDERD voor edge-to-edge - Geen padding tussen navbar en afbeelding */}
             {/* Breadcrumb op mobiel weggelaten voor echte edge-to-edge afbeelding */}
-            {/* Main Image - ✅ ECHT EDGE-TO-EDGE: Met ZOOM functionaliteit - ORIGINEEL FORMAAT */}
+            {/* Main Image - ✅ ECHT EDGE-TO-EDGE: Met ZOOM functionaliteit - 1200×1200 VIERKANT FORMAAT */}
             <div className={cn(
               'relative', 
               'w-full',
-              'aspect-[3/2] sm:aspect-[3/2]', // ✅ ASPECT RATIO: Container heeft aspect ratio voor hoogte
+              CONFIG.gallery.mainImage.aspectRatio, // ✅ VIERKANT: aspect-square (1:1) voor 1200×1200 formaat - perfect verticaal langer
               'md:rounded-lg', // ✅ DESKTOP: Border radius alleen op desktop
               CONFIG.gallery.mainImage.bgColor, 
               'overflow-hidden', 
               'flex items-center justify-center', // ✅ CENTREREN: Afbeelding gecentreerd
-              'min-h-[200px] sm:min-h-[300px]' // ✅ RESPONSIVE: Minimum hoogte voor mobile
-            )}> {/* ✅ ECHT EDGE-TO-EDGE: Geen padding, geen negatieve margin nodig - ORIGINEEL FORMAAT */}
+              'min-h-[300px] sm:min-h-[400px]' // ✅ RESPONSIVE: Minimum hoogte voor mobile (verticaal langer)
+            )}> {/* ✅ ECHT EDGE-TO-EDGE: Geen padding, geen negatieve margin nodig - 1200×1200 VIERKANT FORMAAT */}
               <ProductImage
                 src={currentImage}
                 alt={product.name}

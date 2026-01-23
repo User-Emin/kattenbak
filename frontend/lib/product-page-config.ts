@@ -49,7 +49,7 @@ export const PRODUCT_PAGE_CONFIG = {
       height: 'lg:h-fit',
     },
     mainImage: {
-      aspectRatio: 'aspect-[3/2]', // ✅ HORIZONTAAL: Horizontale rechthoek (3/2) - horizontaal langer, verticaal korter
+      aspectRatio: 'aspect-square', // ✅ VIERKANT: 1200×1200 formaat (aspect-square = 1:1) - perfect voor vierkante foto's
       borderRadius: 'rounded-lg',
       bgColor: 'bg-white', // ✅ WIT: Witte achtergrond (geen grijs)
     },
