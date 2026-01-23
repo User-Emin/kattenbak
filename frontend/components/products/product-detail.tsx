@@ -701,13 +701,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
-              {/* Productnaam - ✅ DESKTOP: Opzelfde hoogte als afbeelding (align-top via flex) */}
+              {/* Productnaam - ✅ DESKTOP: Opzelfde hoogte als afbeelding - SMOOTH */}
               <h1 className={cn(
                 'text-2xl sm:text-3xl lg:text-4xl', // ✅ RESPONSIVE: Kleinere tekst op mobile
                 CONFIG.info.title.fontWeight,
                 CONFIG.info.title.textColor,
                 'mb-2 lg:mb-3', // ✅ COMPACT: Minder margin-bottom op desktop
-                'leading-tight' // ✅ RESPONSIVE: Tighter line height op mobile
+                'leading-tight', // ✅ RESPONSIVE: Tighter line height op mobile
+                'lg:mt-0', // ✅ DESKTOP: Geen margin-top op desktop (opzelfde hoogte als afbeelding)
+                'transition-all duration-300 ease-out' // ✅ SMOOTH: Smooth transitions
               )}>
                 {product.name}
               </h1>
