@@ -21,6 +21,7 @@ import { HowToJsonLd } from "@/components/seo/howto-json-ld";
 import { RelatedProducts } from "@/components/products/related-products";
 import { ProductImage } from "@/components/ui/product-image"; // ✅ ZOOM: ProductImage component met zoom functionaliteit
 import { ProductHowItWorks } from "@/components/products/product-how-it-works"; // ✅ HOE WERKT HET: Nieuwe sectie
+import { ProductAppBanner } from "@/components/products/product-app-banner"; // ✅ APP BANNER: Edge-to-edge banner met app bediening
 import type { Product } from "@/types/product";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 import { BRAND_COLORS_HEX } from "@/lib/color-config"; // ✅ BLAUW: Voor vinkjes
@@ -1156,7 +1157,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       </div>
 
 
-      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en hoe-werkt-het - IETS GRIJZER */}
+      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en app banner - IETS GRIJZER */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
+        <div className="border-t border-gray-300 my-6 sm:my-8"></div>
+      </div>
+
+      {/* ✅ APP BANNER: Edge-to-edge banner met app bediening (links tekst, rechts telefoon) */}
+      <ProductAppBanner />
+
+      {/* ✅ SCHEIDINGSTREEP: Tussen app banner en hoe-werkt-het */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
         <div className="border-t border-gray-300 my-6 sm:my-8"></div>
       </div>
