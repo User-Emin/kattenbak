@@ -580,17 +580,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         )}> {/* ✅ EDGE-TO-EDGE: Geen padding op zijkanten */}
           {/* Left: Image Gallery - ✅ DESKTOP: Thumbnails links verticaal, MOBIEL: Thumbnails onder horizontaal */}
           <div className={cn(
-            'flex flex-col lg:flex-row', // ✅ DESKTOP: Horizontale layout (thumbnails links, main rechts)
+            'flex flex-col', // ✅ BASE: Verticale layout
             'w-full lg:w-[45%]', // ✅ DESKTOP: Kleiner (45% ipv 58%) voor directer zichtbaar
             CONFIG.gallery.container.sticky, 
             CONFIG.gallery.container.height, 
             'self-start', 
-            'gap-3 sm:gap-4 md:gap-4 lg:gap-4', // ✅ DESKTOP: Gap tussen thumbnails en main image
             'px-0' // ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten
           )}> {/* ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten */}
             {/* ✅ SEO PHASE 1: Breadcrumb Navigation - EDGE-TO-EDGE: 0 padding tot navbar (legaal voor SEO) */}
             {!loading && product && (
-              <div className="hidden lg:block mb-4 px-0 lg:col-span-2">
+              <div className="hidden lg:block mb-4 px-0 w-full">
                 <div className="px-6 lg:px-8">
                   <BreadcrumbNavigation />
                 </div>
@@ -599,17 +598,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             {/* ✅ MOBIEL: Breadcrumb VERWIJDERD voor edge-to-edge - Geen padding tussen navbar en afbeelding */}
             {/* Breadcrumb op mobiel weggelaten voor echte edge-to-edge afbeelding */}
             
-            {/* ✅ THUMBNAILS LINKS VERTICAAL: Desktop links, mobiel onder horizontaal */}
-            {displayImages.length > 1 && (
-              <div className={cn(
-                'hidden lg:flex lg:flex-col', // ✅ DESKTOP: Verticaal links
-                'gap-2', // ✅ RUIMTE: gap-2 tussen thumbnails
-                'flex-shrink-0',
-                'overflow-y-auto', // ✅ VERTICAAL SCROLL: Scrollbaar als er veel thumbnails zijn
-                'max-h-[600px]', // ✅ MAX HOOGTE: Max hoogte voor scroll
-                'smooth-scroll',
-                'pr-2' // ✅ PADDING: Ruimte rechts van thumbnails
-              )}>
+            {/* ✅ DESKTOP: Thumbnails + Main Image Container - Horizontale layout */}
+            <div className={cn(
+              'flex flex-col lg:flex-row', // ✅ DESKTOP: Horizontale layout (thumbnails links, main rechts)
+              'gap-3 sm:gap-4 md:gap-4 lg:gap-4', // ✅ DESKTOP: Gap tussen thumbnails en main image
+              'w-full' // ✅ VOLLEDIGE BREEDTE: Neem volledige breedte
+            )}>
+              {/* ✅ THUMBNAILS LINKS VERTICAAL: Desktop links, mobiel onder horizontaal */}
+              {displayImages.length > 1 && (
+                <div className={cn(
+                  'hidden lg:flex lg:flex-col', // ✅ DESKTOP: Verticaal links
+                  'gap-2', // ✅ RUIMTE: gap-2 tussen thumbnails
+                  'flex-shrink-0', // ✅ GEEN SHRINK: Behoud vaste breedte
+                  'overflow-y-auto', // ✅ VERTICAAL SCROLL: Scrollbaar als er veel thumbnails zijn
+                  'max-h-[600px]', // ✅ MAX HOOGTE: Max hoogte voor scroll
+                  'smooth-scroll',
+                  'pr-2' // ✅ PADDING: Ruimte rechts van thumbnails
+                )}>
                 {displayImages.map((image, index) => (
                   <button
                     key={index}
@@ -643,8 +648,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             )}
 
-            {/* Main Image Container - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
-            <div className="flex-1 flex flex-col gap-3">
+              {/* Main Image Container - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
+              <div className={cn(
+                'flex-1', // ✅ FLEX: Neem resterende ruimte
+                'flex flex-col', 
+                'gap-3',
+                'min-w-0' // ✅ OVERLAP FIX: Voorkom overflow
+              )}>
               {/* Main Image - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
               <div 
                 className={cn(
@@ -768,6 +778,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   ))}
                 </div>
               )}
+              </div>
             </div>
           </div>
 
