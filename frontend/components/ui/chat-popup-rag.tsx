@@ -697,7 +697,7 @@ export function ChatPopup() {
         </div>
       )}
 
-      {/* ✅ ULTRA MODERN: Floating Chat Button - 100% Dynamisch via DESIGN_SYSTEM */}
+      {/* ✅ ULTRA MODERN: Floating Chat Button - 100% Dynamisch via DESIGN_SYSTEM - SMOOTH */}
       <button
         onClick={() => {
           setIsExpanded(!isExpanded);
@@ -715,7 +715,7 @@ export function ChatPopup() {
           safeChatConfig.button.textColor,
           safeChatConfig.button.shadow,
           safeChatConfig.button.hoverBackgroundColor,
-          safeChatConfig.button.transitionClasses,
+          'transition-all duration-300 ease-out', // ✅ SMOOTH: Smooth transitions voor alle properties
           safeChatConfig.button.hoverScale,
           safeChatConfig.button.activeScale,
           safeChatConfig.button.border,
