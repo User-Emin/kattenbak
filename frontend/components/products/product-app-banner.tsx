@@ -9,6 +9,7 @@
 'use client';
 
 import { Smartphone, Download, Settings, BarChart3 } from 'lucide-react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { BRAND_COLORS_HEX } from '@/lib/color-config';
 
@@ -118,9 +119,9 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           </div>
         </div>
 
-        {/* ✅ RECHTS: Telefoon met apps achtergrondkleur */}
+        {/* ✅ RECHTS: Telefoon met echte screenshot in optimale grootte */}
         <div className="relative flex items-center justify-center">
-          {/* ✅ TELEFOON: Mockup met apps design */}
+          {/* ✅ TELEFOON: Mockup met echte screenshot */}
           <div className="relative w-full max-w-sm">
             {/* Telefoon frame */}
             <div className={cn(
@@ -131,42 +132,29 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
               'shadow-2xl',
               'border-8 border-gray-800'
             )}>
-              {/* Screen */}
+              {/* Screen met echte screenshot */}
               <div className={cn(
                 'relative',
                 'bg-white',
                 'rounded-[2.5rem]',
                 'overflow-hidden',
                 'aspect-[9/19.5]',
-                'min-h-[400px] sm:min-h-[500px]'
-              )}
-              style={{
-                background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight} 0%, ${BRAND_COLORS_HEX.primary} 50%, ${BRAND_COLORS_HEX.primaryDark} 100%)`, // ✅ BLAUW: Apps achtergrondkleur
-              }}>
-                {/* ✅ APPS: App iconen grid op telefoon scherm */}
-                <div className="absolute inset-0 p-6 sm:p-8">
-                  <div className="grid grid-cols-4 gap-4 h-full">
-                    {appIcons.map((app, index) => {
-                      const IconComponent = app.icon;
-                      return (
-                        <div
-                          key={index}
-                          className="flex flex-col items-center justify-center gap-2"
-                        >
-                          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg">
-                            <IconComponent className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                          </div>
-                          {index === 0 && (
-                            <div className="w-8 h-1 rounded-full bg-white/30"></div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+                'min-h-[400px] sm:min-h-[500px] md:min-h-[600px]' // ✅ OPTIMAAL: Grotere hoogte voor screenshot
+              )}>
+                {/* ✅ ECHTE SCREENSHOT: App bediening screenshot in optimale grootte */}
+                <Image
+                  src="/images/app-bediening-smart.webp"
+                  alt="App bediening kattenbak"
+                  fill
+                  className="object-contain" // ✅ OPTIMAAL: Behoud aspect ratio, volledig zichtbaar
+                  sizes="(max-width: 768px) 280px, (max-width: 1024px) 320px, 384px" // ✅ OPTIMAAL: Responsive sizes
+                  quality={90} // ✅ OPTIMAAL: Hoge kwaliteit voor screenshot
+                  priority={false}
+                  loading="lazy"
+                />
 
                 {/* ✅ NOTCH: Telefoon notch */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-2xl"></div>
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-2xl z-10"></div>
               </div>
             </div>
 
