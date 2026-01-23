@@ -48,6 +48,12 @@ const PowerIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const TimerIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
 const CheckIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -68,7 +74,7 @@ interface ProductHowItWorksProps {
 export function ProductHowItWorks({ className }: ProductHowItWorksProps) {
   const CONFIG = PRODUCT_PAGE_CONFIG;
   
-  // ✅ REALISTISCH: Stappen gebaseerd op echte product info met custom symbolen
+  // ✅ ECHTE INFO: Stappen gebaseerd op echte product functionaliteit
   const steps: HowItWorksStep[] = [
     {
       icon: PlugIcon,
@@ -95,10 +101,16 @@ export function ProductHowItWorks({ className }: ProductHowItWorksProps) {
       number: 4,
     },
     {
+      icon: TimerIcon,
+      title: 'Timer instellen',
+      description: 'Bepaal wanneer na de wcsessie de kattenbak automatisch moet schoonmaken. Stel de timer in via de app of op de kattenbak zelf.',
+      number: 5,
+    },
+    {
       icon: CheckIcon,
       title: 'Klaar voor gebruik',
-      description: 'De kattenbak reinigt automatisch na elk gebruik. De afvalzak hoeft slechts 1x per week geleegd te worden.',
-      number: 5,
+      description: 'De kattenbak reinigt automatisch na elk gebruik volgens je instellingen. De afvalzak hoeft slechts 1x per week geleegd te worden.',
+      number: 6,
     },
   ];
 
@@ -133,10 +145,10 @@ export function ProductHowItWorks({ className }: ProductHowItWorksProps) {
         <p className={cn(
           'text-sm sm:text-base md:text-lg', // ✅ COMPACT: Kleinere lettergrootte op desktop
           'max-w-2xl mx-auto',
-          'font-light'
+          'font-medium' // ✅ LEVENDIG: Medium weight voor duidelijkheid
         )}
         style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ BLAUW: Donkerder blauw */}
-          In 5 eenvoudige stappen klaar voor gebruik
+          In 6 eenvoudige stappen klaar voor gebruik
         </p>
       </div>
 

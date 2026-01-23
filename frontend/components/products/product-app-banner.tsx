@@ -8,7 +8,7 @@
 
 'use client';
 
-import { Smartphone, Download, Settings, Bell, BarChart3 } from 'lucide-react';
+import { Smartphone, Download, Settings, BarChart3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { BRAND_COLORS_HEX } from '@/lib/color-config';
 
@@ -17,11 +17,11 @@ interface ProductAppBannerProps {
 }
 
 export function ProductAppBanner({ className }: ProductAppBannerProps) {
-  // ✅ APPS: App iconen voor grafisch design
+  // ✅ APPS: App iconen voor grafisch design - alleen echte features
   const appIcons = [
     { icon: Settings, color: BRAND_COLORS_HEX.primary },
-    { icon: Bell, color: BRAND_COLORS_HEX.primaryLight },
-    { icon: BarChart3, color: BRAND_COLORS_HEX.primaryDark },
+    { icon: BarChart3, color: BRAND_COLORS_HEX.primaryLight },
+    { icon: Smartphone, color: BRAND_COLORS_HEX.primaryDark },
     { icon: Download, color: BRAND_COLORS_HEX.primary },
   ];
 
@@ -94,10 +94,10 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           )}
           style={{ color: '#4b5563' }}>
             Volledige controle over je kattenbak via de smartphone app. 
-            Monitor gebruik, pas instellingen aan en ontvang meldingen wanneer de afvalbak vol is.
+            Monitor gebruik, pas instellingen aan en bepaal wanneer de kattenbak automatisch moet schoonmaken.
           </p>
 
-          {/* ✅ FEATURES: App features lijst */}
+          {/* ✅ FEATURES: App features lijst - alleen echte features */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 pt-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/20 backdrop-blur-sm">
@@ -109,10 +109,10 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
             </div>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/20 backdrop-blur-sm">
-                <Bell className="w-5 h-5" style={{ color: BRAND_COLORS_HEX.primary }} />
+                <BarChart3 className="w-5 h-5" style={{ color: BRAND_COLORS_HEX.primary }} />
               </div>
               <span className="text-sm sm:text-base font-medium" style={{ color: BRAND_COLORS_HEX.primaryDark }}>
-                Meldingen ontvangen
+                Gebruik monitoren
               </span>
             </div>
           </div>
