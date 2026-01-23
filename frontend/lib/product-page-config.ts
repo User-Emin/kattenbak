@@ -218,10 +218,10 @@ export const PRODUCT_PAGE_CONFIG = {
   featureSection: {
     containerSpacing: 'space-y-8 md:space-y-12 lg:space-y-16', // ✅ COMPACTER: Minder ruimte tussen zigzag secties (was space-y-20 lg:space-y-32)
     zigzag: {
-      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - MINDER PADDING
-      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: Minder gap (gap-4 ipv gap-8)
-      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - MINDER PADDING
-      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: Minder gap (gap-4 ipv gap-8)
+      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - TEKST DICHTBIJ AFBEELDING
+      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-2 md:gap-4 lg:gap-6 items-center justify-center text-center md:text-left', // ✅ COMPACT: Tekst dichtbij afbeelding (gap-2 mobiel, gap-4 tablet, gap-6 desktop)
+      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - TEKST DICHTBIJ AFBEELDING
+      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-2 md:gap-4 lg:gap-6 items-center justify-center text-center md:text-left', // ✅ COMPACT: Tekst dichtbij afbeelding (gap-2 mobiel, gap-4 tablet, gap-6 desktop)
       imageOrder: {
         left: 'order-1 md:order-1', // ✅ MOBIEL: Altijd eerste (boven)
         right: 'order-1 md:order-2', // ✅ MOBIEL: Altijd eerste (boven), desktop rechts

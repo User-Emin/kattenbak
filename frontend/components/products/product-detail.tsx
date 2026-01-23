@@ -540,8 +540,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </>
       )}
       
-      {/* Main Product Section - ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten - MOBIEL: Geen padding-top */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'px-0', 'pb-8 sm:pb-10 md:pb-12 lg:pb-12', 'pt-0 md:pt-6 lg:pt-8')} style={{ marginTop: 0 }}>
+      {/* Main Product Section - ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten - MOBIEL: Geen padding-top, 0 padding zijkanten */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'px-0', 'pb-8 sm:pb-10 md:pb-12 lg:pb-12', 'pt-0 md:pt-6 lg:pt-8')} style={{ marginTop: 0, paddingLeft: 0, paddingRight: 0 }}>
         {/* Product Grid - ✅ EDGE-TO-EDGE: Geen padding op zijkanten */}
         <div className={cn(
           'flex flex-col lg:flex-row', 
@@ -693,7 +693,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'self-start',
             'mt-6 sm:mt-8 md:mt-0 lg:mt-0', // ✅ SYMMETRISCH: Gelijk spacing op mobile, geen margin op desktop
             'mx-auto lg:mx-0', // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
-            'px-4 md:px-6 lg:px-8' // ✅ PADDING: Product info heeft padding (niet edge-to-edge)
+            'px-4 md:px-6 lg:px-8' // ✅ PADDING: Product info heeft padding (niet edge-to-edge, alleen productafbeelding is edge-to-edge)
           )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
