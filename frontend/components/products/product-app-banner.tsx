@@ -61,7 +61,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
         'relative z-10',
         'max-w-7xl mx-auto',
         'grid grid-cols-1 lg:grid-cols-2',
-        'items-center',
+        'items-start', // ✅ FIX: items-start ipv items-center (geen onnodige verticale centrering)
         'gap-4 sm:gap-6 md:gap-12 lg:gap-16', // ✅ COMPACT: Minder gap op mobiel
         'px-4 sm:px-6 md:px-8 lg:px-12',
         'py-2 sm:py-3 md:py-4 lg:py-5' // ✅ ECHT KORTER: Net meer dan waar tekst stopt (py-2/3/4/5)
@@ -121,7 +121,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
         </div>
 
         {/* ✅ RECHTS: Screenshot direct in achtergrond, geen extra kaart, echt groter */}
-        <div className="relative flex items-center justify-center w-full">
+        <div className="relative flex items-start justify-center w-full"> {/* ✅ FIX: items-start ipv items-center (geen onnodige verticale centrering) */}
           {/* ✅ SCREENSHOT: Direct in achtergrond, geen kaart styling, echt groter */}
           <div className={cn(
             'relative',
