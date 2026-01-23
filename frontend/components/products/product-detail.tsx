@@ -722,9 +722,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
           {/* Right: Product Info - ✅ DESKTOP: Meer ruimte (55% ipv 42%) voor directer zichtbaar */}
           <div className={cn(
-            'w-full lg:w-[55%]', // ✅ DESKTOP: Meer ruimte (55% ipv 42%) voor directer zichtbaar
             'flex flex-col', 
-            'w-full lg:w-[42%]', // ✅ RESPONSIVE: Full width op mobile, 42% op desktop
+            'w-full lg:w-[55%]', // ✅ DESKTOP: Meer ruimte (55% ipv 42%) voor directer zichtbaar, MOBIEL: Full width
             'self-start',
             'mt-6 sm:mt-8 md:mt-0 lg:mt-0', // ✅ SYMMETRISCH: Gelijk spacing op mobile, geen margin op desktop
             'mx-auto lg:mx-0', // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
