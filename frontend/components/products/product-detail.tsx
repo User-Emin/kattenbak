@@ -578,19 +578,19 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           'gap-6 sm:gap-8 md:gap-10 lg:gap-10', // ✅ SYMMETRISCH: Gelijk tussen image en info
           'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
         )}> {/* ✅ EDGE-TO-EDGE: Geen padding op zijkanten */}
-          {/* Left: Image Gallery - ✅ DESKTOP: Kleiner en directer zichtbaar, MOBIEL: Blijft zoals het nu is */}
+          {/* Left: Image Gallery - ✅ DESKTOP: Thumbnails links verticaal, MOBIEL: Thumbnails onder horizontaal */}
           <div className={cn(
-            'flex flex-col', 
+            'flex flex-col lg:flex-row', // ✅ DESKTOP: Horizontale layout (thumbnails links, main rechts)
             'w-full lg:w-[45%]', // ✅ DESKTOP: Kleiner (45% ipv 58%) voor directer zichtbaar
             CONFIG.gallery.container.sticky, 
             CONFIG.gallery.container.height, 
             'self-start', 
-            'gap-3 sm:gap-4 md:gap-4 lg:gap-3', // ✅ DESKTOP: Kleinere gap (gap-3 ipv gap-4)
+            'gap-3 sm:gap-4 md:gap-4 lg:gap-4', // ✅ DESKTOP: Gap tussen thumbnails en main image
             'px-0' // ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten
           )}> {/* ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten */}
             {/* ✅ SEO PHASE 1: Breadcrumb Navigation - EDGE-TO-EDGE: 0 padding tot navbar (legaal voor SEO) */}
             {!loading && product && (
-              <div className="hidden lg:block mb-4 px-0">
+              <div className="hidden lg:block mb-4 px-0 lg:col-span-2">
                 <div className="px-6 lg:px-8">
                   <BreadcrumbNavigation />
                 </div>
@@ -598,92 +598,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
             {/* ✅ MOBIEL: Breadcrumb VERWIJDERD voor edge-to-edge - Geen padding tussen navbar en afbeelding */}
             {/* Breadcrumb op mobiel weggelaten voor echte edge-to-edge afbeelding */}
-            {/* Main Image - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
-            <div 
-              className={cn(
-                'relative', 
-                'w-full',
-                'aspect-square', // ✅ 1200x1200: Perfect vierkant (1:1) voor optimale weergave
-                'md:rounded-lg', // ✅ DESKTOP: Border radius alleen op desktop
-                CONFIG.gallery.mainImage.bgColor, 
-                'overflow-hidden', 
-                'flex items-center justify-center', // ✅ CENTREREN: Afbeelding gecentreerd
-                'min-h-[300px] sm:min-h-[400px] lg:min-h-[600px]', // ✅ 1200x1200: Voldoende ruimte voor optimale weergave
-                isSwiping && 'transition-transform duration-300 ease-out' // ✅ SMOOTH: Smooth swipe animatie
-              )}
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-            > {/* ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
-              <ProductImage
-                src={currentImage}
-                alt={product.name}
-                fill
-                enableZoom={true} // ✅ ZOOM: Hover zoom en click lightbox functionaliteit
-                zoomScale={2.5}
-                priority
-                className="object-contain" // ✅ 1200x1200: Behoud originele vierkante aspect ratio optimaal
-              />
-              
-              {/* Navigation Arrows */}
-              {displayImages.length > 1 && (
-                <>
-                  <button
-                    onClick={goToPreviousImage}
-                    className={cn(
-                      CONFIG.gallery.navigation.buttonSize,
-                      CONFIG.gallery.navigation.buttonBg,
-                      CONFIG.gallery.navigation.buttonHover,
-                      CONFIG.gallery.navigation.borderRadius || 'rounded-full',
-                      'absolute left-4',
-                      CONFIG.gallery.navigation.position,
-                      'flex items-center justify-center',
-                      'transition-all'
-                    )}
-                    aria-label="Vorige afbeelding"
-                  >
-                    <ChevronLeft className={CONFIG.gallery.navigation.iconSize} />
-                  </button>
-                  <button
-                    onClick={goToNextImage}
-                    className={cn(
-                      CONFIG.gallery.navigation.buttonSize,
-                      CONFIG.gallery.navigation.buttonBg,
-                      CONFIG.gallery.navigation.buttonHover,
-                      CONFIG.gallery.navigation.borderRadius || 'rounded-full',
-                      'absolute right-4',
-                      CONFIG.gallery.navigation.position,
-                      'flex items-center justify-center',
-                      'transition-all'
-                    )}
-                    aria-label="Volgende afbeelding"
-                  >
-                    <ChevronRight className={CONFIG.gallery.navigation.iconSize} />
-                  </button>
-                </>
-              )}
-
-              {/* Image Counter */}
-              <div className={cn(
-                CONFIG.gallery.counter.position,
-                CONFIG.gallery.counter.bg,
-                CONFIG.gallery.counter.textColor,
-                CONFIG.gallery.counter.padding,
-                CONFIG.gallery.counter.fontSize,
-                CONFIG.gallery.counter.borderRadius
-              )}>
-                {selectedImageIndex + 1} / {displayImages.length}
-              </div>
-            </div>
-
-            {/* ✅ THUMBNAILS ONDER: Met padding voor thumbnails alleen */}
+            
+            {/* ✅ THUMBNAILS LINKS VERTICAAL: Desktop links, mobiel onder horizontaal */}
             {displayImages.length > 1 && (
               <div className={cn(
-                'flex flex-row gap-2 overflow-x-auto', // ✅ RUIMTE: gap-2 tussen thumbnails
-                'w-full',
-                'px-4 md:px-6 lg:px-8', // ✅ PADDING: Alleen thumbnails hebben padding (niet de main image)
+                'hidden lg:flex lg:flex-col', // ✅ DESKTOP: Verticaal links
+                'gap-2', // ✅ RUIMTE: gap-2 tussen thumbnails
+                'flex-shrink-0',
+                'overflow-y-auto', // ✅ VERTICAAL SCROLL: Scrollbaar als er veel thumbnails zijn
+                'max-h-[600px]', // ✅ MAX HOOGTE: Max hoogte voor scroll
                 'smooth-scroll',
-                'pb-2' // ✅ MOBILE: Extra padding voor scroll indicator
+                'pr-2' // ✅ PADDING: Ruimte rechts van thumbnails
               )}>
                 {displayImages.map((image, index) => (
                   <button
@@ -699,7 +624,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       index === selectedImageIndex 
                         ? 'border-black z-10' // ✅ FIX: Zwarte border met z-index voor geselecteerde thumbnail
                         : 'border-transparent', // ✅ FIX: Transparante border voor niet-geselecteerde
-                      index > 0 && 'ml-0' // ✅ GEEN MARGIN: Direct naast elkaar
                     )}
                   >
                     <Image
@@ -718,6 +642,133 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 ))}
               </div>
             )}
+
+            {/* Main Image Container - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
+            <div className="flex-1 flex flex-col gap-3">
+              {/* Main Image - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
+              <div 
+                className={cn(
+                  'relative', 
+                  'w-full',
+                  'aspect-square', // ✅ 1200x1200: Perfect vierkant (1:1) voor optimale weergave
+                  'md:rounded-lg', // ✅ DESKTOP: Border radius alleen op desktop
+                  CONFIG.gallery.mainImage.bgColor, 
+                  'overflow-hidden', 
+                  'flex items-center justify-center', // ✅ CENTREREN: Afbeelding gecentreerd
+                  'min-h-[300px] sm:min-h-[400px] lg:min-h-[600px]', // ✅ 1200x1200: Voldoende ruimte voor optimale weergave
+                  isSwiping && 'transition-transform duration-300 ease-out' // ✅ SMOOTH: Smooth swipe animatie
+                )}
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              > {/* ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
+                <ProductImage
+                  src={currentImage}
+                  alt={product.name}
+                  fill
+                  enableZoom={true} // ✅ ZOOM: Hover zoom en click lightbox functionaliteit
+                  zoomScale={2.5}
+                  priority
+                  className="object-contain" // ✅ 1200x1200: Behoud originele vierkante aspect ratio optimaal
+                />
+                
+                {/* Navigation Arrows */}
+                {displayImages.length > 1 && (
+                  <>
+                    <button
+                      onClick={goToPreviousImage}
+                      className={cn(
+                        CONFIG.gallery.navigation.buttonSize,
+                        CONFIG.gallery.navigation.buttonBg,
+                        CONFIG.gallery.navigation.buttonHover,
+                        CONFIG.gallery.navigation.borderRadius || 'rounded-full',
+                        'absolute left-4',
+                        CONFIG.gallery.navigation.position,
+                        'flex items-center justify-center',
+                        'transition-all',
+                        'lg:hidden' // ✅ DESKTOP: Verberg arrows op desktop (thumbnails zichtbaar)
+                      )}
+                      aria-label="Vorige afbeelding"
+                    >
+                      <ChevronLeft className={CONFIG.gallery.navigation.iconSize} />
+                    </button>
+                    <button
+                      onClick={goToNextImage}
+                      className={cn(
+                        CONFIG.gallery.navigation.buttonSize,
+                        CONFIG.gallery.navigation.buttonBg,
+                        CONFIG.gallery.navigation.buttonHover,
+                        CONFIG.gallery.navigation.borderRadius || 'rounded-full',
+                        'absolute right-4',
+                        CONFIG.gallery.navigation.position,
+                        'flex items-center justify-center',
+                        'transition-all',
+                        'lg:hidden' // ✅ DESKTOP: Verberg arrows op desktop (thumbnails zichtbaar)
+                      )}
+                      aria-label="Volgende afbeelding"
+                    >
+                      <ChevronRight className={CONFIG.gallery.navigation.iconSize} />
+                    </button>
+                  </>
+                )}
+
+                {/* Image Counter */}
+                <div className={cn(
+                  CONFIG.gallery.counter.position,
+                  CONFIG.gallery.counter.bg,
+                  CONFIG.gallery.counter.textColor,
+                  CONFIG.gallery.counter.padding,
+                  CONFIG.gallery.counter.fontSize,
+                  CONFIG.gallery.counter.borderRadius,
+                  'lg:hidden' // ✅ DESKTOP: Verberg counter op desktop (thumbnails zichtbaar)
+                )}>
+                  {selectedImageIndex + 1} / {displayImages.length}
+                </div>
+              </div>
+
+              {/* ✅ THUMBNAILS ONDER: Mobiel horizontaal scrollbaar */}
+              {displayImages.length > 1 && (
+                <div className={cn(
+                  'flex flex-row gap-2 overflow-x-auto', // ✅ RUIMTE: gap-2 tussen thumbnails
+                  'w-full',
+                  'px-4 md:px-6 lg:hidden', // ✅ MOBIEL: Alleen op mobiel zichtbaar
+                  'smooth-scroll',
+                  'pb-2' // ✅ MOBILE: Extra padding voor scroll indicator
+                )}>
+                  {displayImages.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImageIndex(index)}
+                      className={cn(
+                        'w-20 h-20 flex-shrink-0', // ✅ COMPACT: Kleinere thumbnails
+                        CONFIG.gallery.thumbnails.borderRadius,
+                        CONFIG.gallery.thumbnails.hoverOpacity,
+                        'relative overflow-hidden bg-gray-100',
+                        'transition-all',
+                        'border-2', // ✅ FIX: Base border voor alle thumbnails
+                        index === selectedImageIndex 
+                          ? 'border-black z-10' // ✅ FIX: Zwarte border met z-index voor geselecteerde thumbnail
+                          : 'border-transparent', // ✅ FIX: Transparante border voor niet-geselecteerde
+                        index > 0 && 'ml-0' // ✅ GEEN MARGIN: Direct naast elkaar
+                      )}
+                    >
+                      <Image
+                        src={image}
+                        alt={`${product.name} ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="80px" // 🚀 PERFORMANCE: Thumbnail size (80x80px) - exact size for fastest loading
+                        quality={70} // 🚀 PERFORMANCE: Lower quality voor thumbnails (faster loading, still good quality)
+                        loading="lazy" // 🚀 PERFORMANCE: Lazy load thumbnails (load only when visible)
+                        unoptimized={image.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+                        placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Right: Product Info - ✅ DESKTOP: Meer ruimte (55% ipv 42%) voor directer zichtbaar */}
