@@ -119,19 +119,19 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           </div>
         </div>
 
-        {/* ✅ RECHTS: Screenshot direct zonder telefoon frame */}
+        {/* ✅ RECHTS: Screenshot direct in banner zonder witte achtergrond */}
         <div className="relative flex items-center justify-center">
-          {/* ✅ SCREENSHOT: Direct zonder telefoon mockup - vervangt telefoon überhaupt */}
+          {/* ✅ SCREENSHOT: Direct in banner, transparant, geen witte achtergrond */}
           <div className="relative w-full max-w-md">
-            {/* ✅ ECHTE SCREENSHOT: Direct zichtbaar, geen telefoon frame */}
+            {/* ✅ ECHTE SCREENSHOT: Direct zichtbaar, transparant, in banner */}
             <div className={cn(
               'relative',
               'w-full',
               'aspect-[9/19.5]', // ✅ OPTIMAAL: Telefoon aspect ratio
               'rounded-2xl sm:rounded-3xl', // ✅ OPTIMAAL: Afgeronde hoeken
               'overflow-hidden',
-              'shadow-2xl',
-              'bg-white'
+              'shadow-2xl'
+              // ✅ GEEN bg-white: Transparant achtergrond
             )}>
               <Image
                 src="/images/app-screenshot-optimized.webp" // ✅ ECHT: Screenshot uit bijlage (geoptimaliseerd)
