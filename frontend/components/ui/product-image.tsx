@@ -99,12 +99,12 @@ export function ProductImage({
   const transformOrigin = `${mousePosition.x}% ${mousePosition.y}%`;
   const baseClassName = className || 'object-cover';
 
-  // 🚀 PERFORMANCE: Optimized image sizes for fastest loading
+  // 🚀 PERFORMANCE: Optimized image sizes for 1200x1200 images
   const sizes = fill 
-    ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px"
+    ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 1200px" // ✅ 1200x1200: Desktop tot 1200px voor optimale kwaliteit
     : width 
     ? `(max-width: 640px) 100vw, (max-width: 1024px) ${width}px, ${width}px`
-    : "(max-width: 640px) 100vw, (max-width: 1024px) 600px, 800px";
+    : "(max-width: 640px) 100vw, (max-width: 1024px) 1200px, 1200px"; // ✅ 1200x1200: Desktop tot 1200px voor optimale kwaliteit
 
   // Main image with hover zoom
   const imageElement = (
@@ -122,7 +122,7 @@ export function ProductImage({
           alt={alt}
           fill
           sizes={sizes}
-          quality={85}
+          quality={90} // ✅ 1200x1200: Hogere kwaliteit (90 ipv 85) voor optimale weergave
           unoptimized={isUploadPath}
           className={`${baseClassName} transition-transform duration-200 ease-out ${
             enableZoom ? 'cursor-zoom-in' : ''
@@ -142,7 +142,7 @@ export function ProductImage({
           width={width || 800}
           height={height || 800}
           sizes={sizes}
-          quality={85}
+          quality={90} // ✅ 1200x1200: Hogere kwaliteit (90 ipv 85) voor optimale weergave
           unoptimized={isUploadPath}
           className={`${baseClassName} transition-transform duration-200 ease-out ${
             enableZoom ? 'cursor-zoom-in' : ''

@@ -598,23 +598,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
             {/* ✅ MOBIEL: Breadcrumb VERWIJDERD voor edge-to-edge - Geen padding tussen navbar en afbeelding */}
             {/* Breadcrumb op mobiel weggelaten voor echte edge-to-edge afbeelding */}
-            {/* Main Image - ✅ DESKTOP: Kleiner en directer zichtbaar, MOBIEL: Blijft zoals het nu is */}
+            {/* Main Image - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
             <div 
               className={cn(
                 'relative', 
                 'w-full',
-                'aspect-square lg:aspect-[4/5]', // ✅ DESKTOP: Iets kleiner (4:5 ipv 1:1) voor directer zichtbaar, MOBIEL: Blijft vierkant
+                'aspect-square', // ✅ 1200x1200: Perfect vierkant (1:1) voor optimale weergave
                 'md:rounded-lg', // ✅ DESKTOP: Border radius alleen op desktop
                 CONFIG.gallery.mainImage.bgColor, 
                 'overflow-hidden', 
                 'flex items-center justify-center', // ✅ CENTREREN: Afbeelding gecentreerd
-                'min-h-[300px] sm:min-h-[400px] lg:min-h-[500px]', // ✅ DESKTOP: Kleinere minimum hoogte (500px ipv 600px)
+                'min-h-[300px] sm:min-h-[400px] lg:min-h-[600px]', // ✅ 1200x1200: Voldoende ruimte voor optimale weergave
                 isSwiping && 'transition-transform duration-300 ease-out' // ✅ SMOOTH: Smooth swipe animatie
               )}
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
-            > {/* ✅ DESKTOP: Kleiner en directer zichtbaar, MOBIEL: Blijft zoals het nu is */}
+            > {/* ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
               <ProductImage
                 src={currentImage}
                 alt={product.name}
@@ -622,7 +622,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 enableZoom={true} // ✅ ZOOM: Hover zoom en click lightbox functionaliteit
                 zoomScale={2.5}
                 priority
-                className="object-contain" // ✅ ORIGINEEL FORMAAT: Behoud originele aspect ratio (niet object-cover)
+                className="object-contain" // ✅ 1200x1200: Behoud originele vierkante aspect ratio optimaal
               />
               
               {/* Navigation Arrows */}
