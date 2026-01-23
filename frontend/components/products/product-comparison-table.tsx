@@ -295,9 +295,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 index === visibleIndex 
                   ? 'w-6' 
                   : 'bg-gray-300 hover:bg-gray-400'
-              }
-              style={index === visibleIndex ? { backgroundColor: BRAND_COLORS_HEX.primary } : {}}
               )}
+              style={index === visibleIndex ? { backgroundColor: BRAND_COLORS_HEX.primary } : {}}
               aria-label={`Ga naar slide ${index + 1}`}
             />
           ))}
