@@ -131,17 +131,11 @@ export function ProductHowItWorks({ className, productImages = [] }: ProductHowI
       'py-8 sm:py-12 md:py-14 lg:py-16', // ✅ COMPACT: Minder padding op desktop
       className
     )}>
-      {/* ✅ MOOI DESIGN: Titel met webshop blauw achtergrond */}
+      {/* ✅ TITEL: Direct in achtergrond, geen extra balk */}
       <div className={cn(
         'text-center mb-8 sm:mb-10 md:mb-12', // ✅ COMPACT: Minder margin op desktop
-        'rounded-xl sm:rounded-2xl',
-        'px-4 sm:px-6 md:px-8 lg:px-10', // ✅ COMPACT: Minder padding op desktop
-        'py-6 sm:py-8 md:py-10' // ✅ COMPACT: Minder padding op desktop
-      )}
-      style={{
-        background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}15 0%, ${BRAND_COLORS_HEX.primary}20 100%)`, // ✅ BLAUW: Webshop blauw met transparantie
-        border: `1px solid ${BRAND_COLORS_HEX.primary}30`, // ✅ BLAUW: Subtiele border
-      }}>
+        'px-4 sm:px-6 md:px-8 lg:px-10' // ✅ COMPACT: Minder padding op desktop
+      )}>
         <h2 className={cn(
           'text-2xl sm:text-3xl md:text-4xl lg:text-5xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
           'font-semibold', // ✅ LEVENDIG: Semibold voor levendige titel

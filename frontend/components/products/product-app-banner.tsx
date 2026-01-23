@@ -119,55 +119,42 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           </div>
         </div>
 
-        {/* ✅ RECHTS: Telefoon met echte screenshot in optimale grootte */}
+        {/* ✅ RECHTS: Screenshot direct zonder telefoon frame */}
         <div className="relative flex items-center justify-center">
-          {/* ✅ TELEFOON: Mockup met echte screenshot */}
-          <div className="relative w-full max-w-sm">
-            {/* Telefoon frame */}
+          {/* ✅ SCREENSHOT: Direct zonder telefoon mockup - vervangt telefoon überhaupt */}
+          <div className="relative w-full max-w-md">
+            {/* ✅ ECHTE SCREENSHOT: Direct zichtbaar, geen telefoon frame */}
             <div className={cn(
               'relative',
-              'bg-gray-900',
-              'rounded-[3rem]',
-              'p-3 sm:p-4',
+              'w-full',
+              'aspect-[9/19.5]', // ✅ OPTIMAAL: Telefoon aspect ratio
+              'rounded-2xl sm:rounded-3xl', // ✅ OPTIMAAL: Afgeronde hoeken
+              'overflow-hidden',
               'shadow-2xl',
-              'border-8 border-gray-800'
+              'bg-white'
             )}>
-              {/* Screen met echte screenshot */}
-              <div className={cn(
-                'relative',
-                'bg-white',
-                'rounded-[2.5rem]',
-                'overflow-hidden',
-                'aspect-[9/19.5]',
-                'min-h-[400px] sm:min-h-[500px] md:min-h-[600px]' // ✅ OPTIMAAL: Grotere hoogte voor screenshot
-              )}>
-                {/* ✅ ECHTE SCREENSHOT: App bediening screenshot uit bijlage (geoptimaliseerd) */}
-                <Image
-                  src="/images/app-screenshot-optimized.webp" // ✅ ECHT: Screenshot uit bijlage (geoptimaliseerd)
-                  alt="App bediening kattenbak"
-                  fill
-                  className="object-contain" // ✅ OPTIMAAL: Behoud aspect ratio, volledig zichtbaar
-                  sizes="(max-width: 768px) 280px, (max-width: 1024px) 320px, 384px" // ✅ OPTIMAAL: Responsive sizes
-                  quality={90} // ✅ OPTIMAAL: Hoge kwaliteit voor screenshot
-                  priority={false}
-                  loading="lazy"
-                  onError={(e) => {
-                    // ✅ FALLBACK: Als geoptimaliseerde screenshot niet bestaat, gebruik bestaande
-                    const target = e.target as HTMLImageElement;
-                    if (target && !target.src.includes('app-bediening-smart')) {
-                      target.src = '/images/app-bediening-smart.webp';
-                    }
-                  }}
-                />
-
-                {/* ✅ NOTCH: Telefoon notch */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-2xl z-10"></div>
-              </div>
+              <Image
+                src="/images/app-screenshot-optimized.webp" // ✅ ECHT: Screenshot uit bijlage (geoptimaliseerd)
+                alt="App bediening kattenbak"
+                fill
+                className="object-contain" // ✅ OPTIMAAL: Behoud aspect ratio, volledig zichtbaar
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px" // ✅ OPTIMAAL: Responsive sizes
+                quality={90} // ✅ OPTIMAAL: Hoge kwaliteit voor screenshot
+                priority={false}
+                loading="lazy"
+                onError={(e) => {
+                  // ✅ FALLBACK: Als geoptimaliseerde screenshot niet bestaat, gebruik bestaande
+                  const target = e.target as HTMLImageElement;
+                  if (target && !target.src.includes('app-bediening-smart')) {
+                    target.src = '/images/app-bediening-smart.webp';
+                  }
+                }}
+              />
             </div>
 
             {/* ✅ DECORATIE: Glow effect */}
             <div 
-              className="absolute -inset-4 rounded-[3rem] opacity-20 blur-3xl -z-10"
+              className="absolute -inset-4 rounded-3xl opacity-20 blur-3xl -z-10"
               style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
             ></div>
           </div>
