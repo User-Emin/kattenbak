@@ -216,7 +216,7 @@ export const PRODUCT_PAGE_CONFIG = {
 
   // Feature section (ZIGZAG met afbeeldingen - Pergolux style)
   featureSection: {
-    containerSpacing: 'space-y-20 lg:space-y-32', // ✅ GROTER: Meer ruimte tussen zigzag secties (was space-y-16 lg:space-y-24)
+    containerSpacing: 'space-y-8 md:space-y-12 lg:space-y-16', // ✅ COMPACTER: Minder ruimte tussen zigzag secties (was space-y-20 lg:space-y-32)
     zigzag: {
       // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - MINDER PADDING
       leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: Minder gap (gap-4 ipv gap-8)

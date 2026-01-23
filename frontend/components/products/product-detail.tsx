@@ -574,6 +574,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             <div className={cn(
               'relative', 
               'w-full',
+              'aspect-[3/2] sm:aspect-[3/2]', // ✅ ASPECT RATIO: Container heeft aspect ratio voor hoogte
               'md:rounded-lg', // ✅ DESKTOP: Border radius alleen op desktop
               CONFIG.gallery.mainImage.bgColor, 
               'overflow-hidden', 
