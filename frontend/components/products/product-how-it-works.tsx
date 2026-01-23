@@ -16,22 +16,35 @@ import { cn } from '@/lib/utils';
 import { PRODUCT_PAGE_CONFIG } from '@/lib/product-page-config';
 import { BRAND_COLORS_HEX } from '@/lib/color-config';
 
-// ✅ CUSTOM SYMBOLEN: Custom SVG icons voor grit, stekker, etc.
+// ✅ OPTIMALE SYMBOLEN: Realistische en duidelijke SVG icons voor stekker en grit
 const PlugIcon = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2v4m0 12v4" />
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    {/* ✅ STEEKER: Realistische stekker met pinnen en body */}
+    <rect x="8" y="12" width="8" height="6" rx="1" strokeLinecap="round" strokeLinejoin="round" />
+    <rect x="9" y="14" width="2" height="4" rx="0.5" fill="currentColor" />
+    <rect x="13" y="14" width="2" height="4" rx="0.5" fill="currentColor" />
+    <path d="M10 12V8a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v4" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M12 6V4" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="12" cy="3" r="1" fill="currentColor" />
   </svg>
 );
 
 const GritIcon = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-    <circle cx="12" cy="12" r="2" fill="currentColor" />
-    <circle cx="8" cy="8" r="1.5" fill="currentColor" />
-    <circle cx="16" cy="8" r="1.5" fill="currentColor" />
-    <circle cx="8" cy="16" r="1.5" fill="currentColor" />
-    <circle cx="16" cy="16" r="1.5" fill="currentColor" />
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    {/* ✅ GRIT: Realistische grit korrels in bak */}
+    <rect x="4" y="8" width="16" height="12" rx="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M4 12h16" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} opacity={0.5} />
+    {/* Grit korrels */}
+    <circle cx="7" cy="10" r="1.5" fill="currentColor" opacity={0.8} />
+    <circle cx="12" cy="10" r="1.5" fill="currentColor" opacity={0.8} />
+    <circle cx="17" cy="10" r="1.5" fill="currentColor" opacity={0.8} />
+    <circle cx="9" cy="14" r="1.2" fill="currentColor" opacity={0.7} />
+    <circle cx="15" cy="14" r="1.2" fill="currentColor" opacity={0.7} />
+    <circle cx="7" cy="16" r="1" fill="currentColor" opacity={0.6} />
+    <circle cx="12" cy="16" r="1" fill="currentColor" opacity={0.6} />
+    <circle cx="17" cy="16" r="1" fill="currentColor" opacity={0.6} />
+    {/* MAX lijn indicator */}
+    <path d="M5 12h14" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} strokeDasharray="2 2" />
   </svg>
 );
 

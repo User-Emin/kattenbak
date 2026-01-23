@@ -21,7 +21,6 @@ import { HowToJsonLd } from "@/components/seo/howto-json-ld";
 import { RelatedProducts } from "@/components/products/related-products";
 import { ProductImage } from "@/components/ui/product-image"; // ✅ ZOOM: ProductImage component met zoom functionaliteit
 import { ProductHowItWorks } from "@/components/products/product-how-it-works"; // ✅ HOE WERKT HET: Nieuwe sectie
-import { ProductAppBanner } from "@/components/products/product-app-banner"; // ✅ APP BANNER: Edge-to-edge banner met app bediening
 import { ProductFeatureSlider } from "@/components/products/product-feature-slider"; // ✅ SLIDER: Smooth slide animaties voor mobiel
 import type { Product } from "@/types/product";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
@@ -1191,14 +1190,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
 
       {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en app banner - IETS GRIJZER */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
-        <div className="border-t border-gray-300 my-6 sm:my-8"></div>
-      </div>
-
-      {/* ✅ APP BANNER: Edge-to-edge banner met app bediening (links tekst, rechts telefoon) */}
-      <ProductAppBanner productImages={originalImages} />
-
-      {/* ✅ SCHEIDINGSTREEP: Tussen app banner en hoe-werkt-het */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
         <div className="border-t border-gray-300 my-6 sm:my-8"></div>
       </div>
