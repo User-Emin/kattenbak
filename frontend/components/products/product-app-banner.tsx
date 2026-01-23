@@ -64,7 +64,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
         'items-center',
         'gap-4 sm:gap-6 md:gap-12 lg:gap-16', // ✅ COMPACT: Minder gap op mobiel
         'px-4 sm:px-6 md:px-8 lg:px-12',
-        'py-6 sm:py-8 md:py-12 lg:py-16' // ✅ COMPACT: Minder padding op mobiel
+        'py-4 sm:py-6 md:py-8 lg:py-10' // ✅ KORTER: Verticaal veel korter (py-4/6/8/10 ipv py-6/8/12/16)
       )}>
         {/* ✅ LINKS: Tekst over app bediening */}
         <div className="space-y-3 sm:space-y-4 lg:space-y-6 text-center lg:text-left">
@@ -126,7 +126,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           <div className={cn(
             'relative',
             'w-full',
-            'max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl', // ✅ ECHT GROTER: Veel groter op alle breakpoints
+            'max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl 2xl:max-w-4xl', // ✅ ECHT GROTER: Veel groter op alle breakpoints (max-w-md → max-w-4xl)
             'aspect-[9/19.5]' // ✅ OPTIMAAL: Telefoon aspect ratio
           )}>
             {/* ✅ ECHTE SCREENSHOT: Direct in achtergrond, geen rounded/shadow/container */}
@@ -135,7 +135,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
               alt="App bediening kattenbak"
               fill
               className="object-contain" // ✅ OPTIMAAL: Behoud aspect ratio, volledig zichtbaar
-              sizes="(max-width: 640px) 90vw, (max-width: 768px) 85vw, (max-width: 1024px) 50vw, 800px" // ✅ ECHT GROTER: Veel groter op alle breakpoints
+              sizes="(max-width: 640px) 95vw, (max-width: 768px) 90vw, (max-width: 1024px) 50vw, 1000px" // ✅ ECHT GROTER: Veel groter op alle breakpoints (1000px ipv 800px)
               quality={90} // ✅ OPTIMAAL: Hoge kwaliteit voor screenshot
               priority={false}
               loading="lazy"

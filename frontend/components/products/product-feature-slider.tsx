@@ -116,35 +116,36 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
               <div
                 className={cn(
                   'flex flex-col items-center text-center',
+                  'gap-2', // ✅ DICHTBIJ: Gap tussen afbeelding en tekst (gap-2 = 8px)
                   'opacity-0 translate-y-8',
                   'transition-all duration-700 ease-out',
                   index === visibleIndex && 'opacity-100 translate-y-0'
                 )}
               >
-                {/* Image */}
+                {/* Image - ✅ VOLLEDIG ZICHTBAAR: object-contain met volledige container */}
                 <div
                   className={cn(
-                    'relative w-full mb-4',
+                    'relative w-full mb-2', // ✅ DICHTBIJ: mb-2 ipv mb-4 (tekst dichterbij afbeelding)
                     CONFIG.featureSection.image.aspectRatio,
                     CONFIG.featureSection.image.borderRadius,
                     CONFIG.featureSection.image.bgColor,
-                    'overflow-hidden'
+                    'overflow-visible' // ✅ VOLLEDIG ZICHTBAAR: overflow-visible zodat afbeelding volledig zichtbaar is
                   )}
                 >
                   <div
                     className={cn(
                       'absolute inset-0',
                       CONFIG.featureSection.image.borderRadius,
-                      'overflow-hidden'
+                      'overflow-hidden' // ✅ OVERFLOW: Alleen inner wrapper heeft overflow-hidden voor ronde hoeken
                     )}
                   >
                     <Image
                       src={feature.image || '/images/placeholder.jpg'}
                       alt={feature.title}
                       fill
-                      className="object-contain"
+                      className="object-contain" // ✅ VOLLEDIG ZICHTBAAR: object-contain behoudt volledige afbeelding
                       sizes="(max-width: 768px) 100vw, 50vw"
-                      quality={80}
+                      quality={85} // ✅ KWALITEIT: Iets hoger voor betere zichtbaarheid
                       loading="lazy"
                       placeholder="blur"
                       blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
@@ -164,8 +165,8 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   </div>
                 </div>
 
-                {/* Text Content */}
-                <div className={cn(CONFIG.featureSection.text.container, 'w-full')}>
+                {/* Text Content - ✅ DICHTBIJ: Minder spacing, direct onder afbeelding */}
+                <div className={cn(CONFIG.featureSection.text.container, 'w-full', 'space-y-1 sm:space-y-2')}> {/* ✅ DICHTBIJ: space-y-1/2 ipv space-y-2/6 */}
                   <h3
                     className={cn(
                       CONFIG.featureSection.text.title.fontSize,
