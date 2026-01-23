@@ -727,7 +727,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
             </div>
-            </div>
           </div>
 
           {/* Right: Product Info - ✅ DESKTOP: Meer ruimte (55% ipv 42%) voor directer zichtbaar */}
