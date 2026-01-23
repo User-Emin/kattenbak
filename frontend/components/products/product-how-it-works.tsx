@@ -11,6 +11,7 @@
 import { 
   ArrowRight
 } from 'lucide-react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { PRODUCT_PAGE_CONFIG } from '@/lib/product-page-config';
 import { BRAND_COLORS_HEX } from '@/lib/color-config';
@@ -65,52 +66,60 @@ interface HowItWorksStep {
   title: string;
   description: string;
   number: number;
+  image?: string; // ✅ ECHTE AFBEELDING: Optionele product afbeelding per stap
 }
 
 interface ProductHowItWorksProps {
   className?: string;
+  productImages?: string[]; // ✅ ECHTE AFBEELDINGEN: Product images voor stappen
 }
 
-export function ProductHowItWorks({ className }: ProductHowItWorksProps) {
+export function ProductHowItWorks({ className, productImages = [] }: ProductHowItWorksProps) {
   const CONFIG = PRODUCT_PAGE_CONFIG;
   
-  // ✅ ECHTE INFO: Stappen gebaseerd op echte product functionaliteit
+  // ✅ ECHTE INFO: Stappen gebaseerd op echte product functionaliteit met levendige titels
   const steps: HowItWorksStep[] = [
     {
       icon: PlugIcon,
-      title: 'Stekker erin',
+      title: 'Stekker erin en klaarzetten',
       description: 'Plaats de kattenbak op een vlakke, stevige ondergrond. Sluit de stekker aan op een stopcontact.',
       number: 1,
+      image: productImages[0] || '/images/product-main-optimized.webp', // ✅ ECHTE AFBEELDING: Eerste product foto
     },
     {
       icon: GritIcon,
-      title: 'Grit toevoegen',
+      title: 'Grit toevoegen tot MAX lijn',
       description: 'Vul de kattenbak met klonterend grit tot net onder de MAX lijn (ongeveer 8-10 kg).',
       number: 2,
+      image: productImages[1] || '/images/capacity-10.5l.webp', // ✅ ECHTE AFBEELDING: Capaciteit foto
     },
     {
       icon: TrashBagIcon,
-      title: 'Afvalzak plaatsen',
+      title: 'Afvalzak plaatsen over bak',
       description: 'Plaats de afvalzak over de afvalbak heen voor optimale werking. De zak moet goed aansluiten.',
       number: 3,
+      image: productImages[2] || '/images/usp-automatic.webp', // ✅ ECHTE AFBEELDING: Automatisch foto
     },
     {
       icon: PowerIcon,
-      title: 'Aanzetten',
+      title: 'Aanzetten en klaar',
       description: 'Druk op de Power knop. Een blauw licht geeft aan dat de kattenbak klaar is voor gebruik.',
       number: 4,
+      image: productImages[3] || '/images/app-bediening-smart.webp', // ✅ ECHTE AFBEELDING: App bediening
     },
     {
       icon: TimerIcon,
-      title: 'Timer instellen',
+      title: 'Timer instellen via app',
       description: 'Bepaal wanneer na de wcsessie de kattenbak automatisch moet schoonmaken. Stel de timer in via de app of op de kattenbak zelf.',
       number: 5,
+      image: productImages[4] || '/images/usp-app.webp', // ✅ ECHTE AFBEELDING: App foto
     },
     {
       icon: CheckIcon,
-      title: 'Klaar voor gebruik',
+      title: 'Klaar! Automatisch schoon',
       description: 'De kattenbak reinigt automatisch na elk gebruik volgens je instellingen. De afvalzak hoeft slechts 1x per week geleegd te worden.',
       number: 6,
+      image: productImages[5] || '/images/feature-2.webp', // ✅ ECHTE AFBEELDING: Feature foto
     },
   ];
 
@@ -135,7 +144,7 @@ export function ProductHowItWorks({ className }: ProductHowItWorksProps) {
       }}>
         <h2 className={cn(
           'text-2xl sm:text-3xl md:text-4xl lg:text-5xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
-          'font-light',
+          'font-semibold', // ✅ LEVENDIG: Semibold voor levendige titel
           'mb-3 sm:mb-4 md:mb-5', // ✅ COMPACT: Minder margin
           'tracking-tight'
         )}
@@ -145,7 +154,7 @@ export function ProductHowItWorks({ className }: ProductHowItWorksProps) {
         <p className={cn(
           'text-sm sm:text-base md:text-lg', // ✅ COMPACT: Kleinere lettergrootte op desktop
           'max-w-2xl mx-auto',
-          'font-medium' // ✅ LEVENDIG: Medium weight voor duidelijkheid
+          'font-semibold' // ✅ LEVENDIG: Semibold voor levendige beschrijving
         )}
         style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ BLAUW: Donkerder blauw */}
           In 6 eenvoudige stappen klaar voor gebruik
@@ -160,7 +169,7 @@ export function ProductHowItWorks({ className }: ProductHowItWorksProps) {
           
           return (
             <div key={step.number} className="relative">
-              {/* ✅ STAP: Compacte card design met webshop blauw */}
+              {/* ✅ STAP: Compacte card design met webshop blauw en echte afbeelding */}
               <div className={cn(
                 'flex flex-col sm:flex-row',
                 'items-start sm:items-center',
@@ -173,43 +182,82 @@ export function ProductHowItWorks({ className }: ProductHowItWorksProps) {
                 'border',
               )}
               style={{ borderColor: `${BRAND_COLORS_HEX.primary}20` }}> {/* ✅ BLAUW: Subtiele border */}
-                {/* ✅ SYMBOOL: Icon met webshop blauw */}
-                <div className={cn(
-                  'flex-shrink-0',
-                  'relative',
-                  'w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16', // ✅ COMPACT: Kleinere icons op desktop
-                  'flex items-center justify-center',
-                  'rounded-full',
-                  'border-2'
-                )}
-                style={{
-                  background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}20 0%, ${BRAND_COLORS_HEX.primary}30 100%)`, // ✅ BLAUW: Webshop blauw gradient
-                  borderColor: `${BRAND_COLORS_HEX.primary}40`, // ✅ BLAUW: Border
-                }}>
-                  <IconComponent className={cn(
-                    'w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8' // ✅ COMPACT: Kleinere icon size
-                  )}
-                  style={{ color: BRAND_COLORS_HEX.primary }} /> {/* ✅ BLAUW: Webshop blauw */}
-                  {/* ✅ NUMMER: Badge met webshop blauw */}
+                {/* ✅ ECHTE AFBEELDING: Product foto die het regelt */}
+                {step.image && (
                   <div className={cn(
-                    'absolute -top-1.5 -right-1.5',
-                    'w-6 h-6 sm:w-7 sm:h-7',
-                    'flex items-center justify-center',
-                    'text-white',
-                    'rounded-full',
-                    'text-xs sm:text-sm font-semibold', // ✅ COMPACT: Kleinere tekst
-                    'shadow-lg'
+                    'flex-shrink-0',
+                    'relative',
+                    'w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32', // ✅ COMPACT: Responsive grootte
+                    'rounded-lg sm:rounded-xl',
+                    'overflow-hidden',
+                    'bg-gray-100',
+                    'border-2'
                   )}
-                  style={{ backgroundColor: BRAND_COLORS_HEX.primary }}> {/* ✅ BLAUW: Webshop blauw */}
-                    {step.number}
+                  style={{ borderColor: `${BRAND_COLORS_HEX.primary}30` }}>
+                    <Image
+                      src={step.image}
+                      alt={step.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 96px, (max-width: 1024px) 112px, 128px"
+                      quality={85}
+                      loading="lazy"
+                    />
+                    {/* ✅ NUMMER: Badge op afbeelding */}
+                    <div className={cn(
+                      'absolute top-2 right-2',
+                      'w-6 h-6 sm:w-7 sm:h-7',
+                      'flex items-center justify-center',
+                      'text-white',
+                      'rounded-full',
+                      'text-xs sm:text-sm font-semibold',
+                      'shadow-lg'
+                    )}
+                    style={{ backgroundColor: BRAND_COLORS_HEX.primary }}>
+                      {step.number}
+                    </div>
                   </div>
-                </div>
+                )}
+                
+                {/* ✅ SYMBOOL: Icon als fallback (alleen als geen afbeelding) */}
+                {!step.image && (
+                  <div className={cn(
+                    'flex-shrink-0',
+                    'relative',
+                    'w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16', // ✅ COMPACT: Kleinere icons op desktop
+                    'flex items-center justify-center',
+                    'rounded-full',
+                    'border-2'
+                  )}
+                  style={{
+                    background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}20 0%, ${BRAND_COLORS_HEX.primary}30 100%)`, // ✅ BLAUW: Webshop blauw gradient
+                    borderColor: `${BRAND_COLORS_HEX.primary}40`, // ✅ BLAUW: Border
+                  }}>
+                    <IconComponent className={cn(
+                      'w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8' // ✅ COMPACT: Kleinere icon size
+                    )}
+                    style={{ color: BRAND_COLORS_HEX.primary }} /> {/* ✅ BLAUW: Webshop blauw */}
+                    {/* ✅ NUMMER: Badge met webshop blauw */}
+                    <div className={cn(
+                      'absolute -top-1.5 -right-1.5',
+                      'w-6 h-6 sm:w-7 sm:h-7',
+                      'flex items-center justify-center',
+                      'text-white',
+                      'rounded-full',
+                      'text-xs sm:text-sm font-semibold', // ✅ COMPACT: Kleinere tekst
+                      'shadow-lg'
+                    )}
+                    style={{ backgroundColor: BRAND_COLORS_HEX.primary }}> {/* ✅ BLAUW: Webshop blauw */}
+                      {step.number}
+                    </div>
+                  </div>
+                )}
 
-                {/* ✅ TEKST: Compacte titel en beschrijving */}
+                {/* ✅ TEKST: Levendige titel en beschrijving */}
                 <div className="flex-1 space-y-1.5 sm:space-y-2"> {/* ✅ COMPACT: Minder spacing */}
                   <h3 className={cn(
                     'text-lg sm:text-xl md:text-2xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
-                    'font-medium',
+                    'font-semibold', // ✅ LEVENDIG: Semibold voor levendige titel
                     'tracking-tight'
                   )}
                   style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ BLAUW: Donkerder blauw */}

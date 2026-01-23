@@ -1170,8 +1170,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className="border-t border-gray-300 my-6 sm:my-8"></div>
       </div>
 
-      {/* ✅ HOE WERKT HET: Nieuwe sectie met stappen en symbolen */}
-      <ProductHowItWorks />
+      {/* ✅ HOE WERKT HET: Nieuwe sectie met stappen, levendige titels en echte afbeeldingen */}
+      <ProductHowItWorks productImages={displayImages} />
 
       {/* ✅ SCHEIDINGSTREEP: Tussen hoe-werkt-het en zigzag begin */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
