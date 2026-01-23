@@ -78,40 +78,38 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
                 'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
                 isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right,
                 CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Meer verticale lengte (aspect-[3/4] mobiel, aspect-[4/5] desktop)
-                CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Container heeft ronde hoeken
+                CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Container heeft ronde hoeken (rounded-xl md:rounded-2xl lg:rounded-3xl)
                 CONFIG.featureSection.image.bgColor,
                 'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding binnen container blijft met ronde hoeken
-              )}
-              style={{
-                borderRadius: typeof window !== 'undefined' && window.innerWidth >= 1024 
-                  ? CONFIG.featureSection.image.borderRadiusValue.desktop
-                  : typeof window !== 'undefined' && window.innerWidth >= 768
-                  ? CONFIG.featureSection.image.borderRadiusValue.tablet
-                  : CONFIG.featureSection.image.borderRadiusValue.mobile
-              }}>
-                <Image
-                  src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
-                  alt={feature.title}
-                  fill // ✅ FILL: Vult container exact op
-                  className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
-                  style={{
-                    borderRadius: 'inherit' // ✅ RONDE HOEKEN: Erft borderRadius van parent container
-                  }}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag (fastest loading)
-                  quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster)
-                  loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)
-                  placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
-                  unoptimized={feature.image?.startsWith('/uploads/') || feature.image?.startsWith('/images/') || feature.image?.startsWith('https://') || feature.image?.startsWith('http://')} // ✅ FIX: Disable Next.js optimization for /uploads/, /images/, and https:// paths
-                  onError={(e) => {
-                    // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
-                    const target = e.target as HTMLImageElement;
-                    if (target && !target.src.includes('placeholder')) {
-                      target.src = '/images/placeholder.jpg';
-                    }
-                  }}
-                />
-              </div>
+              )}>
+                <div className={cn(
+                  'absolute inset-0',
+                  CONFIG.featureSection.image.borderRadius // ✅ RONDE HOEKEN: Wrapper div heeft ook ronde hoeken
+                )}>
+                  <Image
+                    src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
+                    alt={feature.title}
+                    fill // ✅ FILL: Vult container exact op
+                    className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
+                    style={{
+                      borderRadius: 'inherit' // ✅ RONDE HOEKEN: Erft borderRadius van parent wrapper
+                    }}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag (fastest loading)
+                      quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster)
+                      loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)
+                      placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
+                      unoptimized={feature.image?.startsWith('/uploads/') || feature.image?.startsWith('/images/') || feature.image?.startsWith('https://') || feature.image?.startsWith('http://')} // ✅ FIX: Disable Next.js optimization for /uploads/, /images/, and https:// paths
+                      onError={(e) => {
+                        // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
+                        const target = e.target as HTMLImageElement;
+                        if (target && !target.src.includes('placeholder')) {
+                          target.src = '/images/placeholder.jpg';
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
 
               {/* Text Content - ✅ EXACT ZELFDE: Identiek aan product detail */}
               <div className={cn(
