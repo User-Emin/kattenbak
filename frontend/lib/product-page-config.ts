@@ -203,12 +203,12 @@ export const PRODUCT_PAGE_CONFIG = {
     title: {
       fontSize: 'text-2xl sm:text-3xl md:text-4xl', // ✅ MOBIEL: Kleinere tekst op mobiel
       fontWeight: 'font-light', // ✅ DUNNER (was semibold)
-      textColor: 'text-white',
+      textColor: 'text-black', // ✅ ZWART: Tekst in edge-to-edge sectie is zwart
       marginBottom: 'mb-2 sm:mb-4', // ✅ MOBIEL: Kleinere margin op mobiel
     },
     description: {
       fontSize: 'text-sm sm:text-base md:text-lg', // ✅ MOBIEL: Kleinere tekst op mobiel
-      textColor: 'text-white/90',
+      textColor: 'text-black', // ✅ ZWART: Beschrijving in edge-to-edge sectie is zwart
       lineClamp: 'line-clamp-3 sm:line-clamp-none', // ✅ MOBIEL: Max 3 regels op mobiel, volledig op desktop
     },
     // Button verwijderd - geen accessoires beschikbaar
@@ -218,10 +218,10 @@ export const PRODUCT_PAGE_CONFIG = {
   featureSection: {
     containerSpacing: 'space-y-8 md:space-y-12 lg:space-y-16', // ✅ COMPACTER: Minder ruimte tussen zigzag secties (was space-y-20 lg:space-y-32)
     zigzag: {
-      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - DESKTOP: Meer padding tot afbeelding
-      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: gap-1 (4px), DESKTOP: gap-8 (32px) tablet, gap-12 (48px) desktop
-      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - DESKTOP: Meer padding tot afbeelding
-      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: gap-1 (4px), DESKTOP: gap-8 (32px) tablet, gap-12 (48px) desktop
+      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - MOBIEL: ECHT MINDER PADDING
+      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-0 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: gap-0 (0px) - echt dichtbij, DESKTOP: gap-8 (32px) tablet, gap-12 (48px) desktop
+      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - MOBIEL: ECHT MINDER PADDING
+      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-0 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: gap-0 (0px) - echt dichtbij, DESKTOP: gap-8 (32px) tablet, gap-12 (48px) desktop
       imageOrder: {
         left: 'order-1 md:order-1', // ✅ MOBIEL: Altijd eerste (boven)
         right: 'order-1 md:order-2', // ✅ MOBIEL: Altijd eerste (boven), desktop rechts
@@ -244,7 +244,7 @@ export const PRODUCT_PAGE_CONFIG = {
       gap: 'gap-0', // ✅ GEEN GAP: Geen grijze tussenruimtes tussen afbeeldingen
     },
     text: {
-      container: 'space-y-3 md:space-y-6 w-full md:w-auto', // ✅ MOBIEL: Minder spacing tussen titel en beschrijving (space-y-3 ipv space-y-6)
+      container: 'space-y-2 md:space-y-6 w-full md:w-auto', // ✅ MOBIEL: ECHT MINDER spacing tussen titel en beschrijving (space-y-2 = 8px ipv space-y-3)
       title: {
         fontSize: 'text-3xl lg:text-4xl', // ✅ GROTER: Grotere titels voor duidelijkheid (was text-2xl lg:text-3xl)
         fontWeight: 'font-medium', // ✅ DUNNER: Exact zoals productnaam (font-medium ipv font-semibold)
