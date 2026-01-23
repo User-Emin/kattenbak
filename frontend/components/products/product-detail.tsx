@@ -20,6 +20,7 @@ import { FAQJsonLd } from "@/components/seo/faq-json-ld";
 import { HowToJsonLd } from "@/components/seo/howto-json-ld";
 import { RelatedProducts } from "@/components/products/related-products";
 import { ProductImage } from "@/components/ui/product-image"; // ✅ ZOOM: ProductImage component met zoom functionaliteit
+import { ProductHowItWorks } from "@/components/products/product-how-it-works"; // ✅ HOE WERKT HET: Nieuwe sectie
 import type { Product } from "@/types/product";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 import { BRAND_COLORS_HEX } from "@/lib/color-config"; // ✅ BLAUW: Voor vinkjes
@@ -1155,66 +1156,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       </div>
 
 
-      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en edge-to-edge - IETS GRIJZER */}
+      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en hoe-werkt-het - IETS GRIJZER */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
         <div className="border-t border-gray-300 my-6 sm:my-8"></div>
       </div>
 
-      {/* ✅ EDGE-TO-EDGE IMAGE SECTION: Tussen tabs en zigzag - DRY & DYNAMISCH - OPTIMAAL MOBIEL - EDGE-TO-EDGE */}
-      <div className={cn(CONFIG.edgeSection.container, 'my-4 sm:my-6 md:my-8 lg:my-10')}>
-        <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')}>
-          <Image
-            src={
-              // ✅ DYNAMISCH: Gebruik EERSTE geüploade product image (index 0) - dynamisch met eerste foto upload
-              images && images.length > 0 && !images[0].startsWith('data:')
-                ? images[0] // ✅ EERSTE FOTO: Dynamisch met eerste foto upload
-                : (productImages && productImages.length > 0 && !productImages[0].startsWith('data:')
-                  ? productImages[0] // ✅ FALLBACK: productImages als images leeg is
-                  : (PRODUCT_CONTENT.edgeImageSection.image || '/images/feature-2.jpg'))
-            }
-            alt={product.name}
-            fill
-            className={cn(CONFIG.edgeSection.image.objectFit, CONFIG.edgeSection.image.brightness)}
-            sizes="100vw" // 🚀 PERFORMANCE: Full viewport width (edge-to-edge)
-            priority={false} // 🚀 PERFORMANCE: Below-the-fold, lazy load
-            quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster loading)
-            loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when scrolled)
-            placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth perceived loading
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-            unoptimized={(images && images.length > 0 && (images[0].startsWith('/uploads/') || images[0].startsWith('https://'))) || (productImages && productImages.length > 0 && (productImages[0].startsWith('/uploads/') || productImages[0].startsWith('https://')))} // ✅ FIX: Disable Next.js optimization for /uploads/ and https:// paths
-            onError={(e) => {
-              // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
-              const target = e.target as HTMLImageElement;
-              if (target && !target.src.includes('placeholder')) {
-                target.src = '/images/feature-2.jpg';
-              }
-            }}
-          />
-          {/* Overlay met tekst - ✅ DYNAMISCH & MOBIEL OPTIMAAL: Gebruik product.description of fallback */}
-          <div className={CONFIG.edgeSection.overlay.position}>
-            <div className={cn(CONFIG.edgeSection.overlay.content, CONFIG.edgeSection.overlay.textAlign, 'px-4 sm:px-8 lg:px-16')}>
-              <h2 className={cn(
-                'text-xl sm:text-2xl md:text-3xl lg:text-4xl', // ✅ MOBIEL: Kleinere tekst op mobiel
-                CONFIG.edgeSection.title.fontWeight,
-                CONFIG.edgeSection.title.textColor,
-                CONFIG.edgeSection.title.marginBottom
-              )}>
-                {product.name}
-              </h2>
-              {/* ✅ DYNAMISCH: Product beschrijving - gaat dynamisch mee met eerste foto upload */}
-              <p className={cn(
-                'text-sm sm:text-base md:text-lg', // ✅ MOBIEL: Responsive tekst
-                CONFIG.edgeSection.description.textColor,
-                'hidden sm:block' // ✅ MOBIEL: Verberg beschrijving op mobiel
-              )}>
-                {product.description || product.shortDescription || `${product.name} - Premium zelfreinigende kattenbak met app-bediening`}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* ✅ HOE WERKT HET: Nieuwe sectie met stappen en symbolen */}
+      <ProductHowItWorks />
 
-      {/* ✅ SCHEIDINGSTREEP: Tussen edge-to-edge en zigzag begin */}
+      {/* ✅ SCHEIDINGSTREEP: Tussen hoe-werkt-het en zigzag begin */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
         <div className="border-t border-gray-300 my-6 sm:my-8"></div>
       </div>
