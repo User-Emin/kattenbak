@@ -77,49 +77,50 @@ interface ProductHowItWorksProps {
 export function ProductHowItWorks({ className, productImages = [] }: ProductHowItWorksProps) {
   const CONFIG = PRODUCT_PAGE_CONFIG;
   
-  // ✅ ECHTE INFO: Stappen gebaseerd op echte product functionaliteit met levendige titels
+  // ✅ DYNAMISCH: Stappen gebaseerd op echte product functionaliteit - perfect aansluitend op codebase
+  // ✅ AFBEELDINGEN: Dynamisch uit admin via productImages prop (geen hardcode)
   const steps: HowItWorksStep[] = [
     {
       icon: PlugIcon,
       title: 'Stekker erin en klaarzetten',
       description: 'Plaats de kattenbak op een vlakke, stevige ondergrond. Sluit de stekker aan op een stopcontact.',
       number: 1,
-      image: productImages[0] || '/images/product-main-optimized.webp', // ✅ ECHTE AFBEELDING: Eerste product foto
+      image: productImages[0] || undefined, // ✅ DYNAMISCH: Eerste product afbeelding uit admin
     },
     {
       icon: GritIcon,
       title: 'Grit toevoegen tot MAX lijn',
       description: 'Vul de kattenbak met klonterend grit tot net onder de MAX lijn (ongeveer 8-10 kg).',
       number: 2,
-      image: productImages[1] || '/images/capacity-10.5l.webp', // ✅ ECHTE AFBEELDING: Capaciteit foto
+      image: productImages[1] || undefined, // ✅ DYNAMISCH: Tweede product afbeelding uit admin
     },
     {
       icon: TrashBagIcon,
       title: 'Afvalzak plaatsen over bak',
       description: 'Plaats de afvalzak over de afvalbak heen voor optimale werking. De zak moet goed aansluiten.',
       number: 3,
-      image: productImages[2] || '/images/usp-automatic.webp', // ✅ ECHTE AFBEELDING: Automatisch foto
+      image: productImages[2] || undefined, // ✅ DYNAMISCH: Derde product afbeelding uit admin
     },
     {
       icon: PowerIcon,
       title: 'Aanzetten en klaar',
       description: 'Druk op de Power knop. Een blauw licht geeft aan dat de kattenbak klaar is voor gebruik.',
       number: 4,
-      image: productImages[3] || '/images/app-bediening-smart.webp', // ✅ ECHTE AFBEELDING: App bediening
+      image: productImages[3] || undefined, // ✅ DYNAMISCH: Vierde product afbeelding uit admin
     },
     {
       icon: TimerIcon,
       title: 'Timer instellen via app',
       description: 'Bepaal wanneer na de wcsessie de kattenbak automatisch moet schoonmaken. Stel de timer in via de app of op de kattenbak zelf.',
       number: 5,
-      image: productImages[4] || '/images/usp-app.webp', // ✅ ECHTE AFBEELDING: App foto
+      image: productImages[4] || undefined, // ✅ DYNAMISCH: Vijfde product afbeelding uit admin
     },
     {
       icon: CheckIcon,
       title: 'Klaar! Automatisch schoon',
       description: 'De kattenbak reinigt automatisch na elk gebruik volgens je instellingen. De afvalzak hoeft slechts 1x per week geleegd te worden.',
       number: 6,
-      image: productImages[5] || '/images/feature-2.webp', // ✅ ECHTE AFBEELDING: Feature foto
+      image: productImages[5] || undefined, // ✅ DYNAMISCH: Zesde product afbeelding uit admin
     },
   ];
 
@@ -176,7 +177,7 @@ export function ProductHowItWorks({ className, productImages = [] }: ProductHowI
                 'border',
               )}
               style={{ borderColor: `${BRAND_COLORS_HEX.primary}20` }}> {/* ✅ BLAUW: Subtiele border */}
-                {/* ✅ ECHTE AFBEELDING: Product foto die het regelt */}
+                {/* ✅ DYNAMISCH: Product foto uit admin (via productImages prop) */}
                 {step.image && (
                   <div className={cn(
                     'flex-shrink-0',
@@ -196,6 +197,9 @@ export function ProductHowItWorks({ className, productImages = [] }: ProductHowI
                       sizes="(max-width: 768px) 96px, (max-width: 1024px) 112px, 128px"
                       quality={85}
                       loading="lazy"
+                      unoptimized={step.image.startsWith('/uploads/')}
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                     />
                     {/* ✅ NUMMER: Badge op afbeelding */}
                     <div className={cn(
