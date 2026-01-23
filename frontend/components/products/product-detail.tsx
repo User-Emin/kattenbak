@@ -709,7 +709,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 'mb-2 lg:mb-3', // ✅ COMPACT: Minder margin-bottom op desktop
                 'leading-tight', // ✅ RESPONSIVE: Tighter line height op mobile
                 'lg:mt-0', // ✅ DESKTOP: Geen margin-top op desktop (opzelfde hoogte als afbeelding)
-                'transition-all duration-300 ease-out' // ✅ SMOOTH: Smooth transitions
+                'transition-all duration-300 ease-out', // ✅ SMOOTH: Smooth transitions
+                'animate-in fade-in slide-in-from-right-4 duration-500' // ✅ SMOOTH: Fade-in en slide-in animatie bij laden
               )}>
                 {product.name}
               </h1>

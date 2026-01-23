@@ -716,6 +716,7 @@ export function ChatPopup() {
           safeChatConfig.button.shadow,
           safeChatConfig.button.hoverBackgroundColor,
           'transition-all duration-300 ease-out', // ✅ SMOOTH: Smooth transitions voor alle properties
+          'animate-in fade-in slide-in-from-bottom-4 duration-500', // ✅ SMOOTH: Fade-in en slide-up animatie bij laden
           safeChatConfig.button.hoverScale,
           safeChatConfig.button.activeScale,
           safeChatConfig.button.border,
