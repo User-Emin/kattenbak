@@ -218,10 +218,10 @@ export const PRODUCT_PAGE_CONFIG = {
   featureSection: {
     containerSpacing: 'space-y-8 md:space-y-12 lg:space-y-16', // ✅ COMPACTER: Minder ruimte tussen zigzag secties (was space-y-20 lg:space-y-32)
     zigzag: {
-      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - TEKST DICHTBIJ AFBEELDING
-      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-2 md:gap-4 lg:gap-6 items-center justify-center text-center md:text-left', // ✅ COMPACT: Tekst dichtbij afbeelding (gap-2 mobiel, gap-4 tablet, gap-6 desktop)
-      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - TEKST DICHTBIJ AFBEELDING
-      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-2 md:gap-4 lg:gap-6 items-center justify-center text-center md:text-left', // ✅ COMPACT: Tekst dichtbij afbeelding (gap-2 mobiel, gap-4 tablet, gap-6 desktop)
+      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - TEKST EXTRA DICHTBIJ AFBEELDING
+      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-4 lg:gap-6 items-center justify-center text-center md:text-left', // ✅ EXTRA COMPACT: Tekst extra dichtbij afbeelding op mobiel (gap-1 = 4px)
+      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - TEKST EXTRA DICHTBIJ AFBEELDING
+      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-4 lg:gap-6 items-center justify-center text-center md:text-left', // ✅ EXTRA COMPACT: Tekst extra dichtbij afbeelding op mobiel (gap-1 = 4px)
       imageOrder: {
         left: 'order-1 md:order-1', // ✅ MOBIEL: Altijd eerste (boven)
         right: 'order-1 md:order-2', // ✅ MOBIEL: Altijd eerste (boven), desktop rechts
@@ -244,7 +244,7 @@ export const PRODUCT_PAGE_CONFIG = {
       gap: 'gap-0', // ✅ GEEN GAP: Geen grijze tussenruimtes tussen afbeeldingen
     },
     text: {
-      container: 'space-y-6 w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto width
+      container: 'space-y-3 md:space-y-6 w-full md:w-auto', // ✅ MOBIEL: Minder spacing tussen titel en beschrijving (space-y-3 ipv space-y-6)
       title: {
         fontSize: 'text-3xl lg:text-4xl', // ✅ GROTER: Grotere titels voor duidelijkheid (was text-2xl lg:text-3xl)
         fontWeight: 'font-medium', // ✅ DUNNER: Exact zoals productnaam (font-medium ipv font-semibold)
