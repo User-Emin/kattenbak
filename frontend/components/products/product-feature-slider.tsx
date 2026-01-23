@@ -276,7 +276,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   </div>
                 </div>
 
-                {/* Text Content */}
+                {/* Text Content - ✅ DESKTOP: Behoud originele styling */}
                 <div
                   className={cn(
                     CONFIG.featureSection.text.container,
