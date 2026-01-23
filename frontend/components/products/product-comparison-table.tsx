@@ -142,13 +142,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
         <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-700 w-2/5">
+              <th className="px-4 py-4 text-left text-sm font-semibold text-gray-700 w-2/5">
                 Feature
               </th>
-              <th className="px-3 py-2.5 text-center text-xs font-semibold text-white w-[30%]" style={{ backgroundColor: '#3071aa' }}>
+              <th className="px-4 py-4 text-center text-sm font-semibold text-white w-[30%]" style={{ backgroundColor: '#3071aa' }}>
                 Automatische kattenbak
               </th>
-              <th className="px-3 py-2.5 text-center text-xs font-semibold text-gray-700 bg-gray-100 w-[30%]">
+              <th className="px-4 py-4 text-center text-sm font-semibold text-gray-700 bg-gray-100 w-[30%]">
                 Handmatige kattenbak
               </th>
             </tr>
@@ -164,26 +164,26 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 )}
               >
                 <td className={cn(
-                  'px-3 py-2.5 text-xs font-medium',
+                  'px-4 py-4 text-sm font-medium',
                   row.highlight ? 'text-[#3071aa]' : 'text-gray-900'
                 )}>
                   {row.feature}
                 </td>
                 <td className={cn(
-                  'px-3 py-2.5 text-center',
+                  'px-4 py-4 text-center',
                   row.highlight && 'bg-blue-50'
                 )}>
-                  <div className="flex items-center justify-center gap-2">
-                    {/* ✅ DYNAMISCH: Eerste afbeelding voor Automatische kattenbak */}
+                  <div className="flex items-center justify-center gap-3">
+                    {/* ✅ DYNAMISCH: Eerste afbeelding voor Automatische kattenbak - GROTER */}
                     {firstImage && (
-                      <div className="relative w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 rounded overflow-hidden border border-gray-200">
+                      <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 rounded overflow-hidden border border-gray-200 shadow-sm">
                         <Image
                           src={firstImage}
                           alt="Automatische kattenbak"
                           fill
                           className="object-cover"
-                          sizes="40px"
-                          quality={85}
+                          sizes="(max-width: 640px) 48px, 64px"
+                          quality={90}
                           loading="lazy"
                           unoptimized={firstImage.startsWith('/uploads/')}
                           placeholder="blur"
@@ -195,20 +195,20 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   </div>
                 </td>
                 <td className={cn(
-                  'px-3 py-2.5 text-center',
+                  'px-4 py-4 text-center',
                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
                 )}>
-                  <div className="flex items-center justify-center gap-2">
-                    {/* ✅ DYNAMISCH: 6e afbeelding voor Handmatige kattenbak */}
+                  <div className="flex items-center justify-center gap-3">
+                    {/* ✅ DYNAMISCH: 6e afbeelding voor Handmatige kattenbak - GROTER */}
                     {sixthImage && (
-                      <div className="relative w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 rounded overflow-hidden border border-gray-200">
+                      <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 rounded overflow-hidden border border-gray-200 shadow-sm">
                         <Image
                           src={sixthImage}
                           alt="Handmatige kattenbak"
                           fill
                           className="object-cover"
-                          sizes="40px"
-                          quality={85}
+                          sizes="(max-width: 640px) 48px, 64px"
+                          quality={90}
                           loading="lazy"
                           unoptimized={sixthImage.startsWith('/uploads/')}
                           placeholder="blur"
@@ -253,19 +253,19 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   )}>
                     {row.feature}
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between p-2.5 rounded-md bg-[#3071aa]/10 border border-[#3071aa]/20">
-                      <div className="flex items-center gap-2">
-                        {/* ✅ DYNAMISCH: Eerste afbeelding voor Automatische kattenbak */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 rounded-md bg-[#3071aa]/10 border border-[#3071aa]/20">
+                      <div className="flex items-center gap-3">
+                        {/* ✅ DYNAMISCH: Eerste afbeelding voor Automatische kattenbak - GROTER */}
                         {firstImage && (
-                          <div className="relative w-8 h-8 flex-shrink-0 rounded overflow-hidden border border-gray-200">
+                          <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 rounded overflow-hidden border border-gray-200 shadow-sm">
                             <Image
                               src={firstImage}
                               alt="Automatische kattenbak"
                               fill
                               className="object-cover"
-                              sizes="32px"
-                              quality={85}
+                              sizes="(max-width: 640px) 48px, 64px"
+                              quality={90}
                               loading="lazy"
                               unoptimized={firstImage.startsWith('/uploads/')}
                               placeholder="blur"
@@ -273,24 +273,24 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                             />
                           </div>
                         )}
-                        <span className="text-xs font-medium text-[#3071aa]">Automatische kattenbak</span>
+                        <span className="text-sm font-medium text-[#3071aa]">Automatische kattenbak</span>
                       </div>
                       <div className="flex items-center justify-center">
                         {renderValue(row.ourProduct, true)}
                       </div>
                     </div>
-                    <div className="flex items-center justify-between p-2.5 rounded-md bg-gray-100 border border-gray-200">
-                      <div className="flex items-center gap-2">
-                        {/* ✅ DYNAMISCH: 6e afbeelding voor Handmatige kattenbak */}
+                    <div className="flex items-center justify-between p-4 rounded-md bg-gray-100 border border-gray-200">
+                      <div className="flex items-center gap-3">
+                        {/* ✅ DYNAMISCH: 6e afbeelding voor Handmatige kattenbak - GROTER */}
                         {sixthImage && (
-                          <div className="relative w-8 h-8 flex-shrink-0 rounded overflow-hidden border border-gray-200">
+                          <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 rounded overflow-hidden border border-gray-200 shadow-sm">
                             <Image
                               src={sixthImage}
                               alt="Handmatige kattenbak"
                               fill
                               className="object-cover"
-                              sizes="32px"
-                              quality={85}
+                              sizes="(max-width: 640px) 48px, 64px"
+                              quality={90}
                               loading="lazy"
                               unoptimized={sixthImage.startsWith('/uploads/')}
                               placeholder="blur"
@@ -298,7 +298,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                             />
                           </div>
                         )}
-                        <span className="text-xs font-medium text-gray-700">Handmatige kattenbak</span>
+                        <span className="text-sm font-medium text-gray-700">Handmatige kattenbak</span>
                       </div>
                       <div className="flex items-center justify-center">
                         {renderValue(row.competitor, false)}
