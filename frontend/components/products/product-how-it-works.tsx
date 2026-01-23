@@ -146,58 +146,106 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
 
   return (
     <div className={cn(
-      CONFIG.layout.maxWidth,
-      'mx-auto',
-      CONFIG.layout.containerPadding,
+      'w-full', // ✅ EDGE-TO-EDGE: Volledige breedte
+      'relative', // ✅ GRAFISCH: Voor decoratieve elementen
+      'overflow-hidden', // ✅ GRAFISCH: Voorkom overflow van decoratieve elementen
       'py-8 sm:py-12 md:py-14 lg:py-16', // ✅ COMPACT: Minder padding op desktop
-      'bg-gray-50', // ✅ ACHTERGROND: Lichte grijze achtergrond voor "Hoe werkt het?" sectie
       className
-    )}>
-      {/* ✅ TITEL: Direct in achtergrond, geen extra balk */}
-      <div className={cn(
-        'text-center mb-8 sm:mb-10 md:mb-12', // ✅ COMPACT: Minder margin op desktop
-        'px-4 sm:px-6 md:px-8 lg:px-10' // ✅ COMPACT: Minder padding op desktop
-      )}>
-        <h2 className={cn(
-          'text-2xl sm:text-3xl md:text-4xl lg:text-5xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
-          'font-semibold', // ✅ LEVENDIG: Semibold voor levendige titel
-          'mb-3 sm:mb-4 md:mb-5', // ✅ COMPACT: Minder margin
-          'tracking-tight'
-        )}
-        style={{ color: BRAND_COLORS_HEX.primary }}> {/* ✅ BLAUW: Webshop blauw */}
-          Hoe werkt het?
-        </h2>
-        <p className={cn(
-          'text-sm sm:text-base md:text-lg', // ✅ COMPACT: Kleinere lettergrootte op desktop
-          'max-w-2xl mx-auto',
-          'font-semibold' // ✅ LEVENDIG: Semibold voor levendige beschrijving
-        )}
-        style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ BLAUW: Donkerder blauw */}
-          In 6 eenvoudige stappen klaar voor gebruik
-        </p>
+    )}
+    style={{
+      background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}08 0%, ${BRAND_COLORS_HEX.primary}12 50%, ${BRAND_COLORS_HEX.primaryDark}08 100%)`, // ✅ BLAUWERIG: Subtiele blauwe gradient achtergrond
+    }}>
+      {/* ✅ GRAFISCH: Decoratieve elementen */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* ✅ GRAFISCH: Subtiele cirkels voor diepte */}
+        <div 
+          className="absolute -top-20 -right-20 w-64 h-64 rounded-full opacity-5"
+          style={{
+            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primary} 0%, transparent 70%)`,
+            animation: 'pulse 8s ease-in-out infinite',
+          }}
+        />
+        <div 
+          className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-5"
+          style={{
+            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primaryDark} 0%, transparent 70%)`,
+            animation: 'pulse 10s ease-in-out infinite',
+            animationDelay: '2s',
+          }}
+        />
       </div>
+      
+      {/* ✅ CONTENT: Container met padding */}
+      <div className={cn(
+        CONFIG.layout.maxWidth,
+        'mx-auto',
+        CONFIG.layout.containerPadding,
+        'relative z-10' // ✅ GRAFISCH: Boven decoratieve elementen
+      )}>
+        {/* ✅ TITEL: Direct in achtergrond met smooth animatie */}
+        <div className={cn(
+          'text-center mb-8 sm:mb-10 md:mb-12', // ✅ COMPACT: Minder margin op desktop
+          'px-4 sm:px-6 md:px-8 lg:px-10' // ✅ COMPACT: Minder padding op desktop
+        )}
+        style={{
+          animation: 'fadeInUp 0.8s ease-out', // ✅ SMOOTH: Fade-in animatie voor titel
+        }}>
+          <h2 className={cn(
+            'text-2xl sm:text-3xl md:text-4xl lg:text-5xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
+            'font-semibold', // ✅ LEVENDIG: Semibold voor levendige titel
+            'mb-3 sm:mb-4 md:mb-5', // ✅ COMPACT: Minder margin
+            'tracking-tight',
+            'transition-all duration-500' // ✅ SMOOTH: Smooth transitions
+          )}
+          style={{ 
+            color: BRAND_COLORS_HEX.primary,
+            textShadow: `0 2px 8px ${BRAND_COLORS_HEX.primary}15`, // ✅ GRAFISCH: Subtiele text shadow
+          }}> {/* ✅ BLAUW: Webshop blauw */}
+            Hoe werkt het?
+          </h2>
+          <p className={cn(
+            'text-sm sm:text-base md:text-lg', // ✅ COMPACT: Kleinere lettergrootte op desktop
+            'max-w-2xl mx-auto',
+            'font-semibold', // ✅ LEVENDIG: Semibold voor levendige beschrijving
+            'transition-all duration-500' // ✅ SMOOTH: Smooth transitions
+          )}
+          style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ BLAUW: Donkerder blauw */}
+            In 6 eenvoudige stappen klaar voor gebruik
+          </p>
+        </div>
 
-      {/* ✅ STAPPEN: Compacte desktop layout met webshop blauw */}
-      <div className="space-y-4 sm:space-y-5 md:space-y-6"> {/* ✅ COMPACT: Minder spacing op desktop */}
-        {steps.map((step, index) => {
-          const IconComponent = step.icon;
-          const isLast = index === steps.length - 1;
-          
-          return (
-            <div key={step.number} className="relative">
-              {/* ✅ STAP: Compacte card design met webshop blauw en echte afbeelding */}
-              <div className={cn(
-                'flex flex-col sm:flex-row',
-                'items-start sm:items-center',
-                'gap-3 sm:gap-4 md:gap-5 lg:gap-6', // ✅ COMPACT: Minder gap op desktop
-                'bg-white',
-                'rounded-lg sm:rounded-xl', // ✅ COMPACT: Kleinere border radius
-                'p-4 sm:p-5 md:p-6 lg:p-7', // ✅ COMPACT: Minder padding op desktop
-                'shadow-sm hover:shadow-md',
-                'transition-all duration-300',
-                'border',
-              )}
-              style={{ borderColor: `${BRAND_COLORS_HEX.primary}20` }}> {/* ✅ BLAUW: Subtiele border */}
+        {/* ✅ STAPPEN: Compacte desktop layout met webshop blauw en smooth animaties */}
+        <div className="space-y-4 sm:space-y-5 md:space-y-6"> {/* ✅ COMPACT: Minder spacing op desktop */}
+          {steps.map((step, index) => {
+            const IconComponent = step.icon;
+            const isLast = index === steps.length - 1;
+            
+            return (
+              <div 
+                key={step.number} 
+                className="relative"
+                style={{
+                  animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`, // ✅ SMOOTH: Staggered fade-in animatie
+                }}
+              >
+                {/* ✅ STAP: Compacte card design met webshop blauw, gradiënten en smooth animaties */}
+                <div className={cn(
+                  'flex flex-col sm:flex-row',
+                  'items-start sm:items-center',
+                  'gap-3 sm:gap-4 md:gap-5 lg:gap-6', // ✅ COMPACT: Minder gap op desktop
+                  'bg-white',
+                  'rounded-lg sm:rounded-xl', // ✅ COMPACT: Kleinere border radius
+                  'p-4 sm:p-5 md:p-6 lg:p-7', // ✅ COMPACT: Minder padding op desktop
+                  'shadow-sm hover:shadow-lg', // ✅ SMOOTH: Meer shadow bij hover
+                  'transition-all duration-500 ease-out', // ✅ SMOOTH: Langere transition voor vloeiendere animatie
+                  'border',
+                  'hover:scale-[1.02]', // ✅ SMOOTH: Subtiele scale bij hover
+                  'hover:-translate-y-1', // ✅ SMOOTH: Subtiele lift bij hover
+                )}
+                style={{ 
+                  borderColor: `${BRAND_COLORS_HEX.primary}30`, // ✅ BLAUWERIG: Iets meer zichtbare border
+                  background: `linear-gradient(135deg, #ffffff 0%, ${BRAND_COLORS_HEX.primaryLight}02 100%)`, // ✅ BLAUWERIG: Zeer subtiele blauwe gradient in card
+                }}>
                 {/* ✅ DYNAMISCH: Product foto uit admin (via productImages prop) */}
                 {step.image && (
                   <div className={cn(
@@ -293,33 +341,42 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                   </p>
                 </div>
 
-                {/* ✅ PIJL: Webshop blauw pijl tussen stappen */}
+                {/* ✅ PIJL: Webshop blauw pijl tussen stappen met smooth animatie */}
                 {!isLast && (
                   <div className={cn(
                     'hidden sm:flex',
                     'flex-col items-center',
                     'justify-center',
                     'flex-shrink-0',
-                    'w-6 h-6' // ✅ COMPACT: Kleinere pijl
+                    'w-6 h-6', // ✅ COMPACT: Kleinere pijl
+                    'transition-transform duration-500 ease-out' // ✅ SMOOTH: Smooth pijl animatie
                   )}>
-                    <ArrowRight className="w-5 h-5 rotate-90 sm:rotate-0" style={{ color: BRAND_COLORS_HEX.primary }} /> {/* ✅ BLAUW: Webshop blauw */}
+                    <ArrowRight 
+                      className="w-5 h-5 rotate-90 sm:rotate-0 transition-all duration-500 hover:scale-110" 
+                      style={{ 
+                        color: BRAND_COLORS_HEX.primary,
+                        filter: `drop-shadow(0 2px 4px ${BRAND_COLORS_HEX.primary}30)`, // ✅ GRAFISCH: Subtiele glow
+                      }} 
+                    /> {/* ✅ BLAUW: Webshop blauw */}
                   </div>
                 )}
               </div>
 
-              {/* ✅ MOBIEL PIJL: Verticale pijl met webshop blauw */}
-              {!isLast && (
-                <div className={cn(
-                  'flex sm:hidden',
-                  'justify-center',
-                  'my-3' // ✅ COMPACT: Minder margin
-                )}>
-                  <ArrowRight className="w-5 h-5 rotate-90" style={{ color: BRAND_COLORS_HEX.primary }} /> {/* ✅ BLAUW: Webshop blauw */}
-                </div>
-              )}
-            </div>
-          );
-        })}
+                {/* ✅ MOBIEL PIJL: Verticale pijl met webshop blauw en smooth animatie */}
+                {!isLast && (
+                  <div className={cn(
+                    'flex sm:hidden',
+                    'justify-center',
+                    'my-3', // ✅ COMPACT: Minder margin
+                    'animate-bounce' // ✅ SMOOTH: Bounce animatie voor pijl
+                  )}>
+                    <ArrowRight className="w-5 h-5 rotate-90 transition-transform duration-300" style={{ color: BRAND_COLORS_HEX.primary }} /> {/* ✅ BLAUW: Webshop blauw */}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
