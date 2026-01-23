@@ -686,7 +686,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
           </div>
 
-          {/* Right: Product Info - GEEN EXTRA KAART - ✅ DESKTOP: Opzelfde hoogte als afbeelding */}
+          {/* Right: Product Info - GEEN EXTRA KAART - ✅ DESKTOP: Opzelfde hoogte als afbeelding (na breadcrumb) */}
           <div className={cn(
             'flex flex-col', 
             'w-full lg:w-[42%]', // ✅ RESPONSIVE: Full width op mobile, 42% op desktop
@@ -694,8 +694,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'mt-6 sm:mt-8 md:mt-0 lg:mt-0', // ✅ SYMMETRISCH: Gelijk spacing op mobile, geen margin op desktop
             'mx-auto lg:mx-0', // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
             'px-4 md:px-6 lg:px-8', // ✅ PADDING: Product info heeft padding (niet edge-to-edge, alleen productafbeelding is edge-to-edge)
-            'lg:pt-0' // ✅ DESKTOP: Geen padding-top op desktop (opzelfde hoogte als afbeelding)
+            'lg:pt-0' // ✅ DESKTOP: Geen padding-top op desktop
           )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
+            {/* ✅ DESKTOP: Spacer voor breadcrumb hoogte - Productnaam begint opzelfde hoogte als afbeelding */}
+            {!loading && product && (
+              <div className="hidden lg:block mb-4 h-0 invisible">
+                <div className="px-6 lg:px-8">
+                  <div className="h-6" /> {/* ✅ SPACER: Zelfde hoogte als breadcrumb (mb-4 + breadcrumb hoogte) */}
+                </div>
+              </div>
+            )}
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
               {/* Productnaam - ✅ DESKTOP: Opzelfde hoogte als afbeelding - SMOOTH */}
