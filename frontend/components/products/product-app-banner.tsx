@@ -60,16 +60,16 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
       <div className={cn(
         'relative z-10',
         'max-w-7xl mx-auto',
-        'flex flex-row items-center', // ✅ MOBIEL: Flex-row voor horizontale layout
-        'lg:grid lg:grid-cols-2', // ✅ DESKTOP: Grid layout
-        'gap-2 sm:gap-3 md:gap-6 lg:gap-12', // ✅ COMPACT: Minder gap (gap-2 op mobiel)
-        'px-2 sm:px-4 md:px-6 lg:px-12', // ✅ COMPACT: Minder padding (px-2 op mobiel)
-        'py-1 sm:py-2 md:py-3 lg:py-4' // ✅ COMPACT: Minimale padding (py-1 op mobiel)
+        'flex flex-row items-center', // ✅ MOBIEL: Flex-row voor horizontale layout, items-center voor zelfde lijn
+        'lg:grid lg:grid-cols-2 lg:items-start', // ✅ DESKTOP: Grid layout
+        'gap-2 sm:gap-3 md:gap-4 lg:gap-12', // ✅ COMPACT: Minimale gap (gap-2 op mobiel)
+        'px-2 sm:px-3 md:px-4 lg:px-12', // ✅ COMPACT: Minimale padding (px-2 op mobiel)
+        'py-1 sm:py-1.5 md:py-2 lg:py-4' // ✅ COMPACT: Minimale padding (py-1 op mobiel)
       )}>
         {/* ✅ LINKS: Tekst over app bediening - ✅ MOBIEL: Compact, zelfde lijn als telefoon */}
-        <div className="flex-1 min-w-0 space-y-1 sm:space-y-2 lg:space-y-4 text-left"> {/* ✅ MOBIEL: text-left, compact spacing */}
+        <div className="flex-1 min-w-0 text-left"> {/* ✅ MOBIEL: Geen space-y, direct compact */}
           {/* ✅ MOBIEL: Verborgen badge, alleen op desktop */}
-          <div className="hidden lg:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
+          <div className="hidden lg:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 mb-2 lg:mb-0">
             <Smartphone className="w-5 h-5" style={{ color: BRAND_COLORS_HEX.primary }} />
             <span className="text-sm font-semibold" style={{ color: BRAND_COLORS_HEX.primaryDark }}>
               App Bediening
@@ -77,11 +77,11 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           </div>
 
           <h2 className={cn(
-            'text-base sm:text-lg md:text-xl lg:text-4xl xl:text-5xl', // ✅ COMPACT: Kleinere fonts op mobiel (text-base = 16px)
+            'text-sm sm:text-base md:text-lg lg:text-4xl xl:text-5xl', // ✅ COMPACT: text-sm op mobiel (14px)
             'font-semibold',
             'tracking-tight',
             'leading-tight',
-            'lg:max-w-xl' // ✅ DESKTOP: Max width alleen op desktop
+            'lg:max-w-xl lg:mb-2' // ✅ DESKTOP: Max width en margin
           )}
           style={{ color: BRAND_COLORS_HEX.primaryDark }}>
             <span className="lg:hidden">App</span> {/* ✅ MOBIEL: Korte versie */}
@@ -127,11 +127,11 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
         </div>
 
         {/* ✅ RECHTS: Screenshot direct in achtergrond - ✅ MOBIEL: Zelfde lijn als tekst */}
-        <div className="relative flex items-center justify-center flex-shrink-0"> {/* ✅ MOBIEL: items-center voor zelfde lijn */}
-          {/* ✅ SCREENSHOT: Direct in achtergrond, geen kaart styling, echt groter */}
+        <div className="relative flex items-center justify-center flex-shrink-0"> {/* ✅ MOBIEL: items-center voor zelfde baseline */}
+          {/* ✅ SCREENSHOT: Direct in achtergrond, geen kaart styling */}
           <div className={cn(
             'relative',
-            'w-24 h-auto sm:w-32 md:w-40 lg:w-full', // ✅ MOBIEL: Compact (w-24 = 96px), desktop volledig
+            'w-20 h-auto sm:w-28 md:w-36 lg:w-full', // ✅ MOBIEL: Compact (w-20 = 80px), desktop volledig
             'lg:max-w-md xl:max-w-lg 2xl:max-w-xl', // ✅ DESKTOP: Groter op desktop
             'aspect-[9/19.5]' // ✅ OPTIMAAL: Telefoon aspect ratio
           )}>
