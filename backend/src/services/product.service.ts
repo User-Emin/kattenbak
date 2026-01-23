@@ -64,6 +64,7 @@ export class ProductService {
           weight: true,
           dimensions: true,
           images: true,
+          howItWorksImages: true, // ✅ HOW IT WORKS: Specifieke afbeeldingen voor "Hoe werkt het?" sectie
           // videoUrl: false, // ✅ FIX: Exclude video_url - column doesn't exist in DB
           // heroVideoUrl: false, // ✅ FIX: Exclude hero_video_url - column doesn't exist in DB
           metaTitle: true,
