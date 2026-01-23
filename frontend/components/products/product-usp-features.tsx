@@ -72,13 +72,13 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
               key={index} 
               className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
             >
-              {/* Image - ✅ EXACT ZELFDE: Identiek aan product detail */}
+              {/* Image - ✅ EXACT ZELFDE: Identiek aan product detail - RONDE HOEKEN */}
               <div className={cn(
                 'relative',
                 'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
                 isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right,
                 CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Container heeft juiste ratio
-                CONFIG.featureSection.image.borderRadius,
+                CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Container heeft ronde hoeken
                 CONFIG.featureSection.image.bgColor,
                 'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding binnen container blijft
               )}>
@@ -86,7 +86,10 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
                   src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
                   alt={feature.title}
                   fill // ✅ FILL: Vult container exact op
-                  className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
+                  className={cn(
+                    "object-contain", // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
+                    CONFIG.featureSection.image.borderRadius // ✅ RONDE HOEKEN: Image heeft ook ronde hoeken
+                  )}
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag (fastest loading)
                   quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster)
                   loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)

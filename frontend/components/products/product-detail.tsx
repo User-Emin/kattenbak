@@ -539,8 +539,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </>
       )}
       
-      {/* Main Product Section - ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'px-0', CONFIG.layout.sectionSpacing, 'pt-0 md:pt-6 lg:pt-8')} style={{ marginTop: 0 }}>
+      {/* Main Product Section - ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten - MOBIEL: Geen padding-top */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'px-0', 'pb-8 sm:pb-10 md:pb-12 lg:pb-12', 'pt-0 md:pt-6 lg:pt-8')} style={{ marginTop: 0 }}>
         {/* Product Grid - ✅ EDGE-TO-EDGE: Geen padding op zijkanten */}
         <div className={cn(
           'flex flex-col lg:flex-row', 
@@ -567,14 +567,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               </div>
             )}
-            {/* ✅ MOBIEL: Breadcrumb boven productafbeelding - EDGE-TO-EDGE: 0 padding tot navbar */}
-            {!loading && product && (
-              <div className="lg:hidden mb-4 px-0">
-                <div className="px-4">
-                  <BreadcrumbNavigation />
-                </div>
-              </div>
-            )}
+            {/* ✅ MOBIEL: Breadcrumb VERWIJDERD voor edge-to-edge - Geen padding tussen navbar en afbeelding */}
+            {/* Breadcrumb op mobiel weggelaten voor echte edge-to-edge afbeelding */}
             {/* Main Image - ✅ ECHT EDGE-TO-EDGE: Geen negatieve margin nodig, parent heeft al px-0 */}
             <div className={cn(
               'relative', 
@@ -1236,13 +1230,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 key={index} 
                 className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
               >
-                {/* Image - ✅ MOBIEL: Centraal, desktop zigzag */}
+                {/* Image - ✅ MOBIEL: Centraal, desktop zigzag - RONDE HOEKEN */}
                 <div className={cn(
                   'relative',
                   'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
                   isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right,
                   CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Container heeft juiste ratio
-                  CONFIG.featureSection.image.borderRadius,
+                  CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Container heeft ronde hoeken
                   CONFIG.featureSection.image.bgColor,
                   'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding binnen container blijft
                 )}>
@@ -1250,7 +1244,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
                     alt={feature.title}
                     fill // ✅ FILL: Vult container exact op
-                    className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
+                    className={cn(
+                      "object-contain", // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
+                      CONFIG.featureSection.image.borderRadius // ✅ RONDE HOEKEN: Image heeft ook ronde hoeken
+                    )}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag (fastest loading)
                     quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster)
                     loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)
