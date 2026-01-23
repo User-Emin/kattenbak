@@ -203,12 +203,12 @@ export const PRODUCT_PAGE_CONFIG = {
     title: {
       fontSize: 'text-2xl sm:text-3xl md:text-4xl', // ✅ MOBIEL: Kleinere tekst op mobiel
       fontWeight: 'font-light', // ✅ DUNNER (was semibold)
-      textColor: 'text-black', // ✅ ZWART: Tekst in edge-to-edge sectie is zwart
+      textColor: 'text-white', // ✅ WIT: Tekst in edge-to-edge sectie is wit
       marginBottom: 'mb-2 sm:mb-4', // ✅ MOBIEL: Kleinere margin op mobiel
     },
     description: {
       fontSize: 'text-sm sm:text-base md:text-lg', // ✅ MOBIEL: Kleinere tekst op mobiel
-      textColor: 'text-black', // ✅ ZWART: Beschrijving in edge-to-edge sectie is zwart
+      textColor: 'text-white/90', // ✅ WIT: Beschrijving in edge-to-edge sectie is wit met transparantie
       lineClamp: 'line-clamp-3 sm:line-clamp-none', // ✅ MOBIEL: Max 3 regels op mobiel, volledig op desktop
     },
     // Button verwijderd - geen accessoires beschikbaar
@@ -246,14 +246,14 @@ export const PRODUCT_PAGE_CONFIG = {
     text: {
       container: 'space-y-2 md:space-y-6 w-full md:w-auto', // ✅ MOBIEL: ECHT MINDER spacing tussen titel en beschrijving (space-y-2 = 8px ipv space-y-3)
       title: {
-        fontSize: 'text-3xl lg:text-4xl', // ✅ GROTER: Grotere titels voor duidelijkheid (was text-2xl lg:text-3xl)
+        fontSize: 'text-xl sm:text-2xl lg:text-3xl', // ✅ MOBIEL: Kleiner op mobiel zodat titel op 1 regel past (text-xl = 20px ipv text-3xl = 30px)
         fontWeight: 'font-medium', // ✅ DUNNER: Exact zoals productnaam (font-medium ipv font-semibold)
         textColor: 'text-black', // ✅ ZWARTER: Volledig zwart voor zigzag titles
         letterSpacing: 'tracking-tight', // ✅ EXACT ZELFDE: Zoals productnaam
         textAlign: 'text-center md:text-left', // ✅ MOBIEL: Centraal, desktop links
       },
       description: {
-        fontSize: 'text-lg lg:text-xl', // ✅ GROTER: Grotere beschrijving (was text-base)
+        fontSize: 'text-sm sm:text-base lg:text-lg', // ✅ MOBIEL: Kleiner op mobiel (text-sm = 14px ipv text-lg = 18px)
         textColor: 'text-gray-800', // ✅ DONKERDER: text-gray-800 voor beter contrast (was text-gray-700)
         lineHeight: 'leading-relaxed',
         textAlign: 'text-center md:text-left', // ✅ MOBIEL: Centraal, desktop links
