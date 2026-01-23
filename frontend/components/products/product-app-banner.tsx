@@ -77,7 +77,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           </div>
 
           <h2 className={cn(
-            'text-lg sm:text-xl md:text-2xl lg:text-4xl xl:text-5xl', // ✅ COMPACT: Kleinere fonts op mobiel (text-lg ipv text-2xl)
+            'text-base sm:text-lg md:text-xl lg:text-4xl xl:text-5xl', // ✅ COMPACT: Kleinere fonts op mobiel (text-base = 16px)
             'font-semibold',
             'tracking-tight',
             'leading-tight',
