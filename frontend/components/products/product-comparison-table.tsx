@@ -197,9 +197,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   'px-4 py-4 text-center',
                   row.highlight && 'bg-blue-50'
                 )}>
-                  <div className="flex items-center justify-center gap-3">
-                    {/* ✅ DRY: Gebruik ComparisonImage helper */}
-                    {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" />}
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    {/* ✅ DESKTOP: Afbeelding boven vinkje/kruisje voor Automatische kattenbak */}
+                    {firstImage && (
+                      <div className="hidden md:block">
+                        <ComparisonImage src={firstImage} alt="Automatische kattenbak" />
+                      </div>
+                    )}
                     {renderValue(row.ourProduct, true)}
                   </div>
                 </td>
@@ -207,9 +211,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   'px-4 py-4 text-center',
                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
                 )}>
-                  <div className="flex items-center justify-center gap-3">
-                    {/* ✅ DRY: Gebruik ComparisonImage helper */}
-                    {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" />}
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    {/* ✅ DESKTOP: Afbeelding boven vinkje/kruisje voor Handmatige kattenbak */}
+                    {sixthImage && (
+                      <div className="hidden md:block">
+                        <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" />
+                      </div>
+                    )}
                     {renderValue(row.competitor, false)}
                   </div>
                 </td>
