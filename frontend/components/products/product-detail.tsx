@@ -1196,7 +1196,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       </div>
 
       {/* ✅ APP BANNER: Edge-to-edge banner met app bediening (links tekst, rechts telefoon) */}
-      <ProductAppBanner />
+      <ProductAppBanner productImages={originalImages} />
 
       {/* ✅ SCHEIDINGSTREEP: Tussen app banner en hoe-werkt-het */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
