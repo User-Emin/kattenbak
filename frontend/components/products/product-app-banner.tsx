@@ -119,44 +119,33 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           </div>
         </div>
 
-        {/* ✅ RECHTS: Screenshot direct in achtergrond, echt groter */}
-        <div className="relative flex items-center justify-center">
-          {/* ✅ SCREENSHOT: Direct in achtergrond, echt groter, transparant */}
-          <div className="relative w-full max-w-lg lg:max-w-xl xl:max-w-2xl"> {/* ✅ GROTER: max-w-lg → max-w-xl → max-w-2xl */}
-            {/* ✅ ECHTE SCREENSHOT: Direct in achtergrond, echt groter */}
-            <div className={cn(
-              'relative',
-              'w-full',
-              'aspect-[9/19.5]', // ✅ OPTIMAAL: Telefoon aspect ratio
-              'rounded-2xl sm:rounded-3xl', // ✅ OPTIMAAL: Afgeronde hoeken
-              'overflow-hidden',
-              'shadow-2xl'
-              // ✅ GEEN bg-white: Transparant achtergrond, direct in banner
-            )}>
-              <Image
-                src="/images/app-screenshot-optimized.webp" // ✅ ECHT: Screenshot uit bijlage (geoptimaliseerd)
-                alt="App bediening kattenbak"
-                fill
-                className="object-contain" // ✅ OPTIMAAL: Behoud aspect ratio, volledig zichtbaar
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px" // ✅ GROTER: Responsive sizes verhoogd
-                quality={90} // ✅ OPTIMAAL: Hoge kwaliteit voor screenshot
-                priority={false}
-                loading="lazy"
-                onError={(e) => {
-                  // ✅ FALLBACK: Als geoptimaliseerde screenshot niet bestaat, gebruik bestaande
-                  const target = e.target as HTMLImageElement;
-                  if (target && !target.src.includes('app-bediening-smart')) {
-                    target.src = '/images/app-bediening-smart.webp';
-                  }
-                }}
-              />
-            </div>
-
-            {/* ✅ DECORATIE: Glow effect */}
-            <div 
-              className="absolute -inset-4 rounded-3xl opacity-20 blur-3xl -z-10"
-              style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
-            ></div>
+        {/* ✅ RECHTS: Screenshot direct in achtergrond, geen extra kaart, echt groter */}
+        <div className="relative flex items-center justify-center w-full">
+          {/* ✅ SCREENSHOT: Direct in achtergrond, geen kaart styling, echt groter */}
+          <div className={cn(
+            'relative',
+            'w-full',
+            'max-w-lg lg:max-w-xl xl:max-w-2xl', // ✅ GROTER: max-w-lg → max-w-xl → max-w-2xl
+            'aspect-[9/19.5]' // ✅ OPTIMAAL: Telefoon aspect ratio
+          )}>
+            {/* ✅ ECHTE SCREENSHOT: Direct in achtergrond, geen rounded/shadow/container */}
+            <Image
+              src="/images/app-screenshot-optimized.webp" // ✅ ECHT: Screenshot uit bijlage (geoptimaliseerd)
+              alt="App bediening kattenbak"
+              fill
+              className="object-contain" // ✅ OPTIMAAL: Behoud aspect ratio, volledig zichtbaar
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px" // ✅ GROTER: Responsive sizes verhoogd
+              quality={90} // ✅ OPTIMAAL: Hoge kwaliteit voor screenshot
+              priority={false}
+              loading="lazy"
+              onError={(e) => {
+                // ✅ FALLBACK: Als geoptimaliseerde screenshot niet bestaat, gebruik bestaande
+                const target = e.target as HTMLImageElement;
+                if (target && !target.src.includes('app-bediening-smart')) {
+                  target.src = '/images/app-bediening-smart.webp';
+                }
+              }}
+            />
           </div>
         </div>
       </div>
