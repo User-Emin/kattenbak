@@ -578,14 +578,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           'gap-6 sm:gap-8 md:gap-10 lg:gap-10', // ✅ SYMMETRISCH: Gelijk tussen image en info
           'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
         )}> {/* ✅ EDGE-TO-EDGE: Geen padding op zijkanten */}
-          {/* Left: Image Gallery - ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten */}
+          {/* Left: Image Gallery - ✅ DESKTOP: Kleiner en directer zichtbaar, MOBIEL: Blijft zoals het nu is */}
           <div className={cn(
             'flex flex-col', 
-            'w-full lg:w-[58%]', // ✅ RESPONSIVE: Full width op mobile, 58% op desktop
+            'w-full lg:w-[45%]', // ✅ DESKTOP: Kleiner (45% ipv 58%) voor directer zichtbaar
             CONFIG.gallery.container.sticky, 
             CONFIG.gallery.container.height, 
             'self-start', 
-            'gap-3 sm:gap-4 md:gap-4 lg:gap-4',
+            'gap-3 sm:gap-4 md:gap-4 lg:gap-3', // ✅ DESKTOP: Kleinere gap (gap-3 ipv gap-4)
             'px-0' // ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten
           )}> {/* ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten */}
             {/* ✅ SEO PHASE 1: Breadcrumb Navigation - EDGE-TO-EDGE: 0 padding tot navbar (legaal voor SEO) */}
@@ -598,23 +598,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
             {/* ✅ MOBIEL: Breadcrumb VERWIJDERD voor edge-to-edge - Geen padding tussen navbar en afbeelding */}
             {/* Breadcrumb op mobiel weggelaten voor echte edge-to-edge afbeelding */}
-            {/* Main Image - ✅ ECHT EDGE-TO-EDGE: Met ZOOM functionaliteit + SWIPE - 1200×1200 VIERKANT FORMAAT */}
+            {/* Main Image - ✅ DESKTOP: Kleiner en directer zichtbaar, MOBIEL: Blijft zoals het nu is */}
             <div 
               className={cn(
                 'relative', 
                 'w-full',
-                CONFIG.gallery.mainImage.aspectRatio, // ✅ VIERKANT: aspect-square (1:1) voor 1200×1200 formaat - perfect verticaal langer
+                'aspect-square lg:aspect-[4/5]', // ✅ DESKTOP: Iets kleiner (4:5 ipv 1:1) voor directer zichtbaar, MOBIEL: Blijft vierkant
                 'md:rounded-lg', // ✅ DESKTOP: Border radius alleen op desktop
                 CONFIG.gallery.mainImage.bgColor, 
                 'overflow-hidden', 
                 'flex items-center justify-center', // ✅ CENTREREN: Afbeelding gecentreerd
-                'min-h-[300px] sm:min-h-[400px]', // ✅ RESPONSIVE: Minimum hoogte voor mobile (verticaal langer)
+                'min-h-[300px] sm:min-h-[400px] lg:min-h-[500px]', // ✅ DESKTOP: Kleinere minimum hoogte (500px ipv 600px)
                 isSwiping && 'transition-transform duration-300 ease-out' // ✅ SMOOTH: Smooth swipe animatie
               )}
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
-            > {/* ✅ ECHT EDGE-TO-EDGE: Geen padding, geen negatieve margin nodig - 1200×1200 VIERKANT FORMAAT */}
+            > {/* ✅ DESKTOP: Kleiner en directer zichtbaar, MOBIEL: Blijft zoals het nu is */}
               <ProductImage
                 src={currentImage}
                 alt={product.name}
@@ -720,8 +720,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
           </div>
 
-          {/* Right: Product Info - GEEN EXTRA KAART - ✅ DESKTOP: Opzelfde hoogte als afbeelding (na breadcrumb) */}
+          {/* Right: Product Info - ✅ DESKTOP: Meer ruimte (55% ipv 42%) voor directer zichtbaar */}
           <div className={cn(
+            'w-full lg:w-[55%]', // ✅ DESKTOP: Meer ruimte (55% ipv 42%) voor directer zichtbaar
             'flex flex-col', 
             'w-full lg:w-[42%]', // ✅ RESPONSIVE: Full width op mobile, 42% op desktop
             'self-start',
