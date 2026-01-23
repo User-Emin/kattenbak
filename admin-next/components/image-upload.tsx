@@ -38,11 +38,47 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
     setIsDragging(false);
     
     const files = Array.from(e.dataTransfer.files);
+    // ✅ OVERSCHRIJVING BEVESTIGING: Check of er bestaande afbeeldingen zijn die overschreven worden
+    if (value.length > 0 && files.length > 0) {
+      const willOverwrite = value.length + files.length > maxImages;
+      if (willOverwrite) {
+        const overwriteCount = (value.length + files.length) - maxImages;
+        const confirmed = window.confirm(
+          `⚠️ OVERSCHRIJVING BEVESTIGING\n\n` +
+          `Je uploadt ${files.length} nieuwe afbeelding(en), maar er is ruimte voor ${maxImages - value.length}.\n\n` +
+          `${overwriteCount} bestaande afbeelding(en) zullen worden overschreven.\n\n` +
+          `Weet je zeker dat je door wilt gaan?`
+        );
+        if (!confirmed) {
+          return;
+        }
+      }
+    }
     handleFiles(files);
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files ? Array.from(e.target.files) : [];
+    // ✅ OVERSCHRIJVING BEVESTIGING: Check of er bestaande afbeeldingen zijn die overschreven worden
+    if (value.length > 0 && files.length > 0) {
+      const willOverwrite = value.length + files.length > maxImages;
+      if (willOverwrite) {
+        const overwriteCount = (value.length + files.length) - maxImages;
+        const confirmed = window.confirm(
+          `⚠️ OVERSCHRIJVING BEVESTIGING\n\n` +
+          `Je uploadt ${files.length} nieuwe afbeelding(en), maar er is ruimte voor ${maxImages - value.length}.\n\n` +
+          `${overwriteCount} bestaande afbeelding(en) zullen worden overschreven.\n\n` +
+          `Weet je zeker dat je door wilt gaan?`
+        );
+        if (!confirmed) {
+          // Reset file input
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+          }
+          return;
+        }
+      }
+    }
     handleFiles(files);
   };
 
@@ -67,10 +103,17 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
       return;
     }
 
-    // Check max limit
+    // ✅ OVERSCHRIJVING: Als max overschreden, trim tot max (eerste afbeeldingen blijven)
+    let finalImages = [...value];
     if (value.length + imageFiles.length > maxImages) {
-      toast.error(`Maximaal ${maxImages} afbeeldingen toegestaan`);
-      return;
+      // Trim bestaande afbeeldingen tot er ruimte is voor nieuwe
+      const spaceAvailable = maxImages - imageFiles.length;
+      finalImages = value.slice(0, Math.max(0, spaceAvailable));
+      
+      const removedCount = value.length - finalImages.length;
+      if (removedCount > 0) {
+        toast.info(`${removedCount} bestaande afbeelding(en) verwijderd om ruimte te maken voor nieuwe uploads.`);
+      }
     }
 
     // ✅ STABLE: Lock state to prevent concurrent uploads
@@ -86,15 +129,17 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
       // ✅ STABLE: Upload files sequentially to prevent haperen
       const uploadedUrls = await uploadImages(imageFiles);
       
-      // ✅ STABLE: Update state atomically - preserve existing images
-      const currentImages = value || [];
-      const updatedImages = [...currentImages, ...uploadedUrls];
+      // ✅ OVERSCHRIJVING: Combineer getrimde bestaande afbeeldingen met nieuwe uploads
+      const updatedImages = [...finalImages, ...uploadedUrls];
       
       // ✅ STABLE: Call onChange immediately to persist state
       onChange(updatedImages);
 
-      // ✅ SUCCESS: Show success message with count
-      toast.success(`${uploadedUrls.length} afbeelding(en) succesvol geüpload!`);
+      // ✅ SUCCESS: Show success message with count en overschrijving info
+      const overwriteInfo = finalImages.length < value.length 
+        ? ` (${value.length - finalImages.length} oude afbeelding(en) overschreven)`
+        : '';
+      toast.success(`${uploadedUrls.length} afbeelding(en) succesvol geüpload!${overwriteInfo}`);
     } catch (error: any) {
       console.error('Upload error:', error);
       // ✅ BETTER ERROR HANDLING: Show detailed error message
