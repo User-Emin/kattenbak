@@ -116,57 +116,54 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
               <div
                 className={cn(
                   'flex flex-col items-center text-center',
-                  'gap-2', // ✅ DICHTBIJ: Gap tussen afbeelding en tekst (gap-2 = 8px)
+                  'gap-0', // ✅ ECHT DICHTBIJ: Geen gap tussen afbeelding en tekst
                   'opacity-0 translate-y-8',
                   'transition-all duration-700 ease-out',
                   index === visibleIndex && 'opacity-100 translate-y-0'
                 )}
               >
-                {/* Image - ✅ VOLLEDIG ZICHTBAAR: object-contain met volledige container */}
+                {/* Image - ✅ WARE GROOTTE: Geen geforceerde aspect ratio, natuurlijke grootte */}
                 <div
                   className={cn(
-                    'relative w-full mb-2', // ✅ DICHTBIJ: mb-2 ipv mb-4 (tekst dichterbij afbeelding)
-                    CONFIG.featureSection.image.aspectRatio,
+                    'relative w-full max-w-sm mx-auto', // ✅ WARE GROOTTE: max-w-sm voor kleinere, natuurlijke grootte
                     CONFIG.featureSection.image.borderRadius,
                     CONFIG.featureSection.image.bgColor,
-                    'overflow-visible' // ✅ VOLLEDIG ZICHTBAAR: overflow-visible zodat afbeelding volledig zichtbaar is
+                    'mb-0' // ✅ ECHT DICHTBIJ: Geen margin onder afbeelding
                   )}
+                  style={{ aspectRatio: 'auto' }} // ✅ WARE GROOTTE: Auto aspect ratio voor natuurlijke grootte
                 >
-                  <div
+                  <Image
+                    src={feature.image || '/images/placeholder.jpg'}
+                    alt={feature.title}
+                    width={400} // ✅ WARE GROOTTE: Vaste width voor natuurlijke grootte
+                    height={533} // ✅ WARE GROOTTE: Vaste height (3:4 ratio) maar niet geforceerd
                     className={cn(
-                      'absolute inset-0',
+                      'w-full h-auto', // ✅ WARE GROOTTE: Auto height voor natuurlijke verhouding
                       CONFIG.featureSection.image.borderRadius,
-                      'overflow-hidden' // ✅ OVERFLOW: Alleen inner wrapper heeft overflow-hidden voor ronde hoeken
+                      'object-contain'
                     )}
-                  >
-                    <Image
-                      src={feature.image || '/images/placeholder.jpg'}
-                      alt={feature.title}
-                      fill
-                      className="object-contain" // ✅ VOLLEDIG ZICHTBAAR: object-contain behoudt volledige afbeelding
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      quality={85} // ✅ KWALITEIT: Iets hoger voor betere zichtbaarheid
-                      loading="lazy"
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                      unoptimized={
-                        feature.image?.startsWith('/uploads/') ||
-                        feature.image?.startsWith('/images/') ||
-                        feature.image?.startsWith('https://') ||
-                        feature.image?.startsWith('http://')
+                    sizes="(max-width: 768px) 90vw, 400px"
+                    quality={85}
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                    unoptimized={
+                      feature.image?.startsWith('/uploads/') ||
+                      feature.image?.startsWith('/images/') ||
+                      feature.image?.startsWith('https://') ||
+                      feature.image?.startsWith('http://')
+                    }
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      if (target && !target.src.includes('placeholder')) {
+                        target.src = '/images/placeholder.jpg';
                       }
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        if (target && !target.src.includes('placeholder')) {
-                          target.src = '/images/placeholder.jpg';
-                        }
-                      }}
-                    />
-                  </div>
+                    }}
+                  />
                 </div>
 
-                {/* Text Content - ✅ DICHTBIJ: Minder spacing, direct onder afbeelding */}
-                <div className={cn(CONFIG.featureSection.text.container, 'w-full', 'space-y-1 sm:space-y-2')}> {/* ✅ DICHTBIJ: space-y-1/2 ipv space-y-2/6 */}
+                {/* Text Content - ✅ ECHT DICHTBIJ: Direct onder afbeelding, minimale spacing */}
+                <div className={cn('w-full', 'mt-1', 'space-y-0.5')}> {/* ✅ ECHT DICHTBIJ: mt-1 en space-y-0.5 (minimaal) */}
                   <h3
                     className={cn(
                       CONFIG.featureSection.text.title.fontSize,
