@@ -126,13 +126,13 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           </div>
         </div>
 
-        {/* ✅ RECHTS: Screenshot direct in achtergrond - ✅ MOBIEL: Zelfde lijn als tekst */}
+        {/* ✅ RECHTS: Screenshot direct in achtergrond - ✅ ECHT GROOT: Veel groter op alle breakpoints */}
         <div className="relative flex items-center justify-center flex-shrink-0"> {/* ✅ MOBIEL: items-center voor zelfde baseline */}
-          {/* ✅ SCREENSHOT: Direct in achtergrond, geen kaart styling */}
+          {/* ✅ SCREENSHOT: Direct in achtergrond, geen kaart styling, echt groot */}
           <div className={cn(
             'relative',
-            'w-20 h-auto sm:w-28 md:w-36 lg:w-full', // ✅ MOBIEL: Compact (w-20 = 80px), desktop volledig
-            'lg:max-w-md xl:max-w-lg 2xl:max-w-xl', // ✅ DESKTOP: Groter op desktop
+            'w-32 h-auto sm:w-40 md:w-48 lg:w-full', // ✅ ECHT GROOT: w-32 (128px) op mobiel, veel groter
+            'lg:max-w-2xl xl:max-w-3xl 2xl:max-w-4xl', // ✅ ECHT GROOT: Veel groter op desktop (max-w-2xl → max-w-4xl)
             'aspect-[9/19.5]' // ✅ OPTIMAAL: Telefoon aspect ratio
           )}>
             {/* ✅ ECHTE SCREENSHOT: Direct in achtergrond, geen rounded/shadow/container */}
@@ -141,7 +141,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
               alt="App bediening kattenbak"
               fill
               className="object-contain" // ✅ OPTIMAAL: Behoud aspect ratio, volledig zichtbaar
-              sizes="(max-width: 640px) 95vw, (max-width: 768px) 90vw, (max-width: 1024px) 50vw, 1000px" // ✅ ECHT GROTER: Veel groter op alle breakpoints (1000px ipv 800px)
+              sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, (max-width: 1024px) 50vw, 1200px" // ✅ ECHT GROOT: Veel groter (1200px ipv 1000px)
               quality={90} // ✅ OPTIMAAL: Hoge kwaliteit voor screenshot
               priority={false}
               loading="lazy"

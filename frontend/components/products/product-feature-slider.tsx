@@ -115,62 +115,75 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
             >
               <div
                 className={cn(
-                  'flex flex-col items-center text-center',
-                  'gap-0', // ✅ ECHT DICHTBIJ: Geen gap tussen afbeelding en tekst
+                  'flex flex-col items-center justify-center', // ✅ SYMMETRISCH: items-center + justify-center
+                  'w-full',
                   'opacity-0 translate-y-8',
                   'transition-all duration-700 ease-out',
                   index === visibleIndex && 'opacity-100 translate-y-0'
                 )}
               >
-                {/* Image - ✅ WARE GROOTTE: Geen geforceerde aspect ratio, natuurlijke grootte */}
+                {/* Image - ✅ SYMMETRISCH: Gecentreerd met symmetrische spacing */}
                 <div
                   className={cn(
-                    'relative w-full max-w-sm mx-auto', // ✅ WARE GROOTTE: max-w-sm voor kleinere, natuurlijke grootte
+                    'relative w-full',
+                    'max-w-xs sm:max-w-sm', // ✅ SYMMETRISCH: max-w-xs (320px) voor symmetrische grootte
+                    'mx-auto', // ✅ SYMMETRISCH: mx-auto voor perfecte centrering
                     CONFIG.featureSection.image.borderRadius,
                     CONFIG.featureSection.image.bgColor,
-                    'mb-0' // ✅ ECHT DICHTBIJ: Geen margin onder afbeelding
+                    'mb-2' // ✅ SYMMETRISCH: mb-2 voor symmetrische spacing
                   )}
-                  style={{ aspectRatio: 'auto' }} // ✅ WARE GROOTTE: Auto aspect ratio voor natuurlijke grootte
                 >
-                  <Image
-                    src={feature.image || '/images/placeholder.jpg'}
-                    alt={feature.title}
-                    width={400} // ✅ WARE GROOTTE: Vaste width voor natuurlijke grootte
-                    height={533} // ✅ WARE GROOTTE: Vaste height (3:4 ratio) maar niet geforceerd
-                    className={cn(
-                      'w-full h-auto', // ✅ WARE GROOTTE: Auto height voor natuurlijke verhouding
-                      CONFIG.featureSection.image.borderRadius,
-                      'object-contain'
-                    )}
-                    sizes="(max-width: 768px) 90vw, 400px"
-                    quality={85}
-                    loading="lazy"
-                    placeholder="blur"
-                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                    unoptimized={
-                      feature.image?.startsWith('/uploads/') ||
-                      feature.image?.startsWith('/images/') ||
-                      feature.image?.startsWith('https://') ||
-                      feature.image?.startsWith('http://')
-                    }
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      if (target && !target.src.includes('placeholder')) {
-                        target.src = '/images/placeholder.jpg';
+                  <div className={cn(
+                    'relative w-full',
+                    CONFIG.featureSection.image.aspectRatio, // ✅ SYMMETRISCH: Gebruik CONFIG aspect ratio
+                    'overflow-hidden',
+                    CONFIG.featureSection.image.borderRadius
+                  )}>
+                    <Image
+                      src={feature.image || '/images/placeholder.jpg'}
+                      alt={feature.title}
+                      fill
+                      className={cn(
+                        'object-contain', // ✅ SYMMETRISCH: object-contain voor volledige zichtbaarheid
+                        CONFIG.featureSection.image.borderRadius
+                      )}
+                      sizes="(max-width: 768px) 320px, 400px"
+                      quality={85}
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                      unoptimized={
+                        feature.image?.startsWith('/uploads/') ||
+                        feature.image?.startsWith('/images/') ||
+                        feature.image?.startsWith('https://') ||
+                        feature.image?.startsWith('http://')
                       }
-                    }}
-                  />
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (target && !target.src.includes('placeholder')) {
+                          target.src = '/images/placeholder.jpg';
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
 
-                {/* Text Content - ✅ ECHT DICHTBIJ: Direct onder afbeelding, minimale spacing */}
-                <div className={cn('w-full', 'mt-1', 'space-y-0.5')}> {/* ✅ ECHT DICHTBIJ: mt-1 en space-y-0.5 (minimaal) */}
+                {/* Text Content - ✅ SYMMETRISCH: Gecentreerd met symmetrische spacing */}
+                <div className={cn(
+                  'w-full',
+                  'max-w-xs sm:max-w-sm', // ✅ SYMMETRISCH: Zelfde max-width als afbeelding
+                  'mx-auto', // ✅ SYMMETRISCH: mx-auto voor perfecte centrering
+                  'text-center', // ✅ SYMMETRISCH: text-center voor symmetrische tekst
+                  CONFIG.featureSection.text.container,
+                  'space-y-1 sm:space-y-2' // ✅ SYMMETRISCH: Symmetrische spacing
+                )}>
                   <h3
                     className={cn(
                       CONFIG.featureSection.text.title.fontSize,
                       CONFIG.featureSection.text.title.fontWeight,
                       CONFIG.featureSection.text.title.textColor,
                       CONFIG.featureSection.text.title.letterSpacing,
-                      CONFIG.featureSection.text.title.textAlign
+                      'text-center' // ✅ SYMMETRISCH: text-center
                     )}
                   >
                     {feature.title}
@@ -180,7 +193,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                       CONFIG.featureSection.text.description.fontSize,
                       CONFIG.featureSection.text.description.textColor,
                       CONFIG.featureSection.text.description.lineHeight,
-                      CONFIG.featureSection.text.description.textAlign
+                      'text-center' // ✅ SYMMETRISCH: text-center
                     )}
                   >
                     {feature.description}
