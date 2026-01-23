@@ -19,6 +19,7 @@ import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { FAQJsonLd } from "@/components/seo/faq-json-ld";
 import { HowToJsonLd } from "@/components/seo/howto-json-ld";
 import { RelatedProducts } from "@/components/products/related-products";
+import { ProductImage } from "@/components/ui/product-image"; // ✅ ZOOM: ProductImage component met zoom functionaliteit
 import type { Product } from "@/types/product";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 import { BRAND_COLORS_HEX } from "@/lib/color-config"; // ✅ BLAUW: Voor vinkjes
@@ -569,7 +570,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
             {/* ✅ MOBIEL: Breadcrumb VERWIJDERD voor edge-to-edge - Geen padding tussen navbar en afbeelding */}
             {/* Breadcrumb op mobiel weggelaten voor echte edge-to-edge afbeelding */}
-            {/* Main Image - ✅ ECHT EDGE-TO-EDGE: Geen negatieve margin nodig, parent heeft al px-0 */}
+            {/* Main Image - ✅ ECHT EDGE-TO-EDGE: Met ZOOM functionaliteit */}
             <div className={cn(
               'relative', 
               'aspect-[3/2] sm:aspect-[3/2]', // ✅ RESPONSIVE: Consistent aspect ratio
@@ -579,19 +580,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               'w-full',
               'min-h-[200px] sm:min-h-[300px]' // ✅ RESPONSIVE: Minimum hoogte voor mobile
             )}> {/* ✅ ECHT EDGE-TO-EDGE: Geen padding, geen negatieve margin nodig */}
-              <Image
+              <ProductImage
                 src={currentImage}
                 alt={product.name}
                 fill
+                enableZoom={true} // ✅ ZOOM: Hover zoom en click lightbox functionaliteit
+                zoomScale={2.5}
+                priority
                 className="object-cover" // ✅ COVER: Productafbeelding past exact aan veld (geen ruimte)
-                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px" // 🚀 PERFORMANCE: Optimized responsive sizes (fastest loading)
-                quality={85} // 🚀 PERFORMANCE: High quality WebP/AVIF (optimal balance)
-                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
-                placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for instant perceived loading
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Tiny 1x1 pixel blur (instant display)
-                unoptimized={currentImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (served by backend)
-                fetchPriority="high" // 🚀 PERFORMANCE: High fetch priority (fastest loading)
               />
               
               {/* Navigation Arrows */}
@@ -1230,7 +1226,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 key={index} 
                 className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
               >
-                {/* Image - ✅ MOBIEL: Centraal, desktop zigzag - RONDE HOEKEN ECHT TOEGEPAST */}
+                {/* Image - ✅ MOBIEL: Centraal, desktop zigzag - RONDE HOEKEN ECHT TOEGEPAST VIA CSS */}
                 <div className={cn(
                   'relative',
                   'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
@@ -1240,33 +1236,28 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   CONFIG.featureSection.image.bgColor,
                   'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding binnen container blijft met ronde hoeken
                 )}>
-                  <div className={cn(
-                    'absolute inset-0',
-                    CONFIG.featureSection.image.borderRadius // ✅ RONDE HOEKEN: Wrapper div heeft ook ronde hoeken
-                  )}>
-                    <Image
-                      src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
-                      alt={feature.title}
-                      fill // ✅ FILL: Vult container exact op
-                      className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
-                      style={{
-                        borderRadius: 'inherit' // ✅ RONDE HOEKEN: Erft borderRadius van parent wrapper
-                      }}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag (fastest loading)
-                      quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster)
-                      loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)
-                      placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
-                      unoptimized={feature.image?.startsWith('/uploads/') || feature.image?.startsWith('/images/') || feature.image?.startsWith('https://') || feature.image?.startsWith('http://')} // ✅ FIX: Disable Next.js optimization for /uploads/, /images/, and https:// paths
-                      onError={(e) => {
-                        // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
-                        const target = e.target as HTMLImageElement;
-                        if (target && !target.src.includes('placeholder')) {
-                          target.src = '/images/placeholder.jpg';
-                        }
-                      }}
-                    />
-                  </div>
+                  <Image
+                    src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
+                    alt={feature.title}
+                    fill // ✅ FILL: Vult container exact op
+                    className={cn(
+                      "object-contain", // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
+                      CONFIG.featureSection.image.borderRadius // ✅ RONDE HOEKEN: Image heeft ronde hoeken via className
+                    )}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag (fastest loading)
+                    quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster)
+                    loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)
+                    placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
+                    unoptimized={feature.image?.startsWith('/uploads/') || feature.image?.startsWith('/images/') || feature.image?.startsWith('https://') || feature.image?.startsWith('http://')} // ✅ FIX: Disable Next.js optimization for /uploads/, /images/, and https:// paths
+                    onError={(e) => {
+                      // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
+                      const target = e.target as HTMLImageElement;
+                      if (target && !target.src.includes('placeholder')) {
+                        target.src = '/images/placeholder.jpg';
+                      }
+                    }}
+                  />
                 </div>
 
                 {/* Text Content */}
