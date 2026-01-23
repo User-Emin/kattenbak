@@ -22,6 +22,7 @@ import { RelatedProducts } from "@/components/products/related-products";
 import { ProductImage } from "@/components/ui/product-image"; // ✅ ZOOM: ProductImage component met zoom functionaliteit
 import { ProductHowItWorks } from "@/components/products/product-how-it-works"; // ✅ HOE WERKT HET: Nieuwe sectie
 import { ProductAppBanner } from "@/components/products/product-app-banner"; // ✅ APP BANNER: Edge-to-edge banner met app bediening
+import { ProductFeatureSlider } from "@/components/products/product-feature-slider"; // ✅ SLIDER: Smooth slide animaties voor mobiel
 import type { Product } from "@/types/product";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 import { BRAND_COLORS_HEX } from "@/lib/color-config"; // ✅ BLAUW: Voor vinkjes
@@ -456,17 +457,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   // ✅ FIX: Gebruik product.images DIRECT - deze bevat alle originele images zonder filtering
   // productImages is al gefilterd, maar we hebben de originele indices nodig (3 en 4)
   
-  // ✅ DEBUG: Log voor verificatie (altijd, ook in production voor troubleshooting)
+  // ✅ DYNAMISCH: Features met 4e en 5e foto - GEBRUIK ORIGINELE product.images indices
   const originalImages = product.images && Array.isArray(product.images) ? product.images : [];
   const fourthImage = originalImages[3]; // ✅ 4E FOTO: 10.5L Afvalbak
   const fifthImage = originalImages[4];  // ✅ 5E FOTO: Geurblokje, Kwast & Afvalzak
-  
-  console.log('📸 Original Product Images Count:', originalImages.length);
-  console.log('📸 Original Product Images:', originalImages);
-  console.log('📸 4e foto (index 3):', fourthImage);
-  console.log('📸 5e foto (index 4):', fifthImage);
-  console.log('📸 4e foto valid:', fourthImage && typeof fourthImage === 'string' && !fourthImage.startsWith('data:') && !fourthImage.includes('placeholder'));
-  console.log('📸 5e foto valid:', fifthImage && typeof fifthImage === 'string' && !fifthImage.startsWith('data:') && !fifthImage.includes('placeholder'));
   
   // ✅ DYNAMISCH: Features met 4e en 5e foto - GEBRUIK ORIGINELE product.images indices
   const features = PRODUCT_CONTENT.features.map((feature, index) => {
@@ -477,10 +471,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       // ✅ VALIDATIE: Check of image geldig is (geen placeholder, geen data URL)
       if (fourthImage && typeof fourthImage === 'string' && !fourthImage.startsWith('data:') && !fourthImage.includes('placeholder')) {
         imageUrl = fourthImage;
-        console.log(`✅ Feature ${index} (${feature.title}): Using originalImages[3] = ${fourthImage}`);
       } else {
         imageUrl = '/images/capacity-10.5l-optimized.jpg';
-        console.log(`⚠️ Feature ${index} (${feature.title}): FALLBACK - originalImages[3] invalid: ${fourthImage}`);
       }
     } else if (index === 1) {
       // ✅ MIDDELSTE: Statische feature-2.jpg
@@ -490,10 +482,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       // ✅ VALIDATIE: Check of image geldig is (geen placeholder, geen data URL)
       if (fifthImage && typeof fifthImage === 'string' && !fifthImage.startsWith('data:') && !fifthImage.includes('placeholder')) {
         imageUrl = fifthImage;
-        console.log(`✅ Feature ${index} (${feature.title}): Using originalImages[4] = ${fifthImage}`);
       } else {
         imageUrl = '/images/feature-2.jpg';
-        console.log(`⚠️ Feature ${index} (${feature.title}): FALLBACK - originalImages[4] invalid: ${fifthImage}`);
       }
     }
     
@@ -1180,87 +1170,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
       {/* ✅ PREMIUM KWALITEIT SECTIE VERWIJDERD - Focus op 10.5L afvalbak */}
 
-      {/* Feature Sections - ZIGZAG PATTERN - ✅ MOBIEL: Minder padding op mobiel */}
-      <div className={cn(
-        CONFIG.layout.maxWidth, 
-        'mx-auto', 
-        CONFIG.layout.containerPaddingMobile, // ✅ MOBIEL: Minder padding op mobiel (px-2 sm:px-4)
-        'py-8 sm:py-10 md:py-12 lg:py-12' // ✅ SYMMETRISCH: Gelijk boven/onder
-      )}>
-        <div className={CONFIG.featureSection.containerSpacing}>
-          {features.map((feature, index) => {
-            const isEven = index % 2 === 0;
-            return (
-              <div 
-                key={index} 
-                className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
-              >
-                {/* Image - ✅ MOBIEL: Centraal, desktop zigzag - RONDE HOEKEN ECHT TOEGEPAST VIA WRAPPER */}
-                <div className={cn(
-                  'relative',
-                  'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
-                  isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right,
-                  CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Meer verticale lengte (aspect-[3/4] mobiel, aspect-[4/5] desktop)
-                  CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Container heeft ronde hoeken (rounded-xl md:rounded-2xl lg:rounded-3xl)
-                  CONFIG.featureSection.image.bgColor,
-                  'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding binnen container blijft met ronde hoeken
-                )}>
-                  <div className={cn(
-                    'absolute inset-0',
-                    CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Wrapper heeft ronde hoeken
-                    'overflow-hidden' // ✅ OVERFLOW: Zorgt dat Image binnen ronde hoeken blijft
-                  )}>
-                    <Image
-                      src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
-                      alt={feature.title}
-                      fill // ✅ FILL: Vult container exact op
-                      className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag (fastest loading)
-                      quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster)
-                      loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)
-                      placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
-                      unoptimized={feature.image?.startsWith('/uploads/') || feature.image?.startsWith('/images/') || feature.image?.startsWith('https://') || feature.image?.startsWith('http://')} // ✅ FIX: Disable Next.js optimization for /uploads/, /images/, and https:// paths
-                      onError={(e) => {
-                        // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
-                        const target = e.target as HTMLImageElement;
-                        if (target && !target.src.includes('placeholder')) {
-                          target.src = '/images/placeholder.jpg';
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* Text Content */}
-                <div className={cn(
-                  CONFIG.featureSection.text.container,
-                  isEven ? CONFIG.featureSection.zigzag.textOrder.left : CONFIG.featureSection.zigzag.textOrder.right
-                )}>
-                  <h3 className={cn(
-                    CONFIG.featureSection.text.title.fontSize,
-                    CONFIG.featureSection.text.title.fontWeight,
-                    CONFIG.featureSection.text.title.textColor,
-                    CONFIG.featureSection.text.title.letterSpacing, // ✅ EXACT ZELFDE: Letter spacing zoals productnaam
-                    CONFIG.featureSection.text.title.textAlign // ✅ MOBIEL: Centraal, desktop links
-                  )}>
-                    {feature.title}
-                  </h3>
-                  <p className={cn(
-                    CONFIG.featureSection.text.description.fontSize,
-                    CONFIG.featureSection.text.description.textColor,
-                    CONFIG.featureSection.text.description.lineHeight,
-                    CONFIG.featureSection.text.description.textAlign // ✅ MOBIEL: Centraal, desktop links
-                  )}>
-                    {feature.description}
-                  </p>
-                  {/* ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving */}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      {/* ✅ FEATURE SLIDER: Smooth slide animaties voor mobiel, zigzag voor desktop */}
+      <ProductFeatureSlider features={features} />
 
       {/* ✅ VERGELIJKINGSTABEL: Modern, smooth, gebaseerd op echte info */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}>
