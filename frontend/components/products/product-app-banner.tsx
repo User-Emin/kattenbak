@@ -62,12 +62,12 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
         'max-w-7xl mx-auto',
         'grid grid-cols-1 lg:grid-cols-2',
         'items-center',
-        'gap-8 sm:gap-12 md:gap-16 lg:gap-20',
+        'gap-4 sm:gap-6 md:gap-12 lg:gap-16', // ✅ COMPACT: Minder gap op mobiel
         'px-4 sm:px-6 md:px-8 lg:px-12',
-        'py-12 sm:py-16 md:py-20 lg:py-24'
+        'py-6 sm:py-8 md:py-12 lg:py-16' // ✅ COMPACT: Minder padding op mobiel
       )}>
         {/* ✅ LINKS: Tekst over app bediening */}
-        <div className="space-y-4 sm:space-y-6 text-center lg:text-left">
+        <div className="space-y-3 sm:space-y-4 lg:space-y-6 text-center lg:text-left">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
             <Smartphone className="w-5 h-5" style={{ color: BRAND_COLORS_HEX.primary }} />
             <span className="text-sm font-semibold" style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ DIK: Semibold zoals stap titels */}
@@ -76,10 +76,11 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           </div>
 
           <h2 className={cn(
-            'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
+            'text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl', // ✅ 2 REGELS: Kleinere font zodat het op 2 regels past
             'font-semibold', // ✅ DIK: Semibold zoals stap titels
             'tracking-tight',
-            'leading-tight'
+            'leading-tight',
+            'max-w-xl mx-auto lg:mx-0' // ✅ 2 REGELS: Max width zodat het netjes op 2 regels past
           )}
           style={{ color: BRAND_COLORS_HEX.primaryDark }}>
             Bedien je kattenbak
@@ -125,7 +126,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           <div className={cn(
             'relative',
             'w-full',
-            'max-w-lg lg:max-w-xl xl:max-w-2xl', // ✅ GROTER: max-w-lg → max-w-xl → max-w-2xl
+            'max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl', // ✅ ECHT GROTER: Veel groter op alle breakpoints
             'aspect-[9/19.5]' // ✅ OPTIMAAL: Telefoon aspect ratio
           )}>
             {/* ✅ ECHTE SCREENSHOT: Direct in achtergrond, geen rounded/shadow/container */}
@@ -134,7 +135,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
               alt="App bediening kattenbak"
               fill
               className="object-contain" // ✅ OPTIMAAL: Behoud aspect ratio, volledig zichtbaar
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px" // ✅ GROTER: Responsive sizes verhoogd
+              sizes="(max-width: 640px) 90vw, (max-width: 768px) 85vw, (max-width: 1024px) 50vw, 800px" // ✅ ECHT GROTER: Veel groter op alle breakpoints
               quality={90} // ✅ OPTIMAAL: Hoge kwaliteit voor screenshot
               priority={false}
               loading="lazy"
