@@ -2,21 +2,57 @@
  * PRODUCT HOW IT WORKS SECTION
  * ✅ DRY: Perfect aansluitend op systeem
  * ✅ Realistische stappen gebaseerd op echte product info
- * ✅ Mooi design met symbolen en achtergrondkleur
+ * ✅ Custom symbolen voor grit etc. met webshop blauw
+ * ✅ Compacte desktop layout met passende lettergrootte
  */
 
 'use client';
 
 import { 
-  Plug, 
-  Package, 
-  Trash2, 
-  Power, 
-  CheckCircle2,
   ArrowRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PRODUCT_PAGE_CONFIG } from '@/lib/product-page-config';
+import { BRAND_COLORS_HEX } from '@/lib/color-config';
+
+// ✅ CUSTOM SYMBOLEN: Custom SVG icons voor grit, stekker, etc.
+const PlugIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2v4m0 12v4" />
+  </svg>
+);
+
+const GritIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+    <circle cx="12" cy="12" r="2" fill="currentColor" />
+    <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+    <circle cx="16" cy="8" r="1.5" fill="currentColor" />
+    <circle cx="8" cy="16" r="1.5" fill="currentColor" />
+    <circle cx="16" cy="16" r="1.5" fill="currentColor" />
+  </svg>
+);
+
+const TrashBagIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 11h8" />
+  </svg>
+);
+
+const PowerIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+    <circle cx="12" cy="12" r="3" strokeWidth={2} />
+  </svg>
+);
+
+const CheckIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
 
 interface HowItWorksStep {
   icon: React.ComponentType<{ className?: string }>;
@@ -32,34 +68,34 @@ interface ProductHowItWorksProps {
 export function ProductHowItWorks({ className }: ProductHowItWorksProps) {
   const CONFIG = PRODUCT_PAGE_CONFIG;
   
-  // ✅ REALISTISCH: Stappen gebaseerd op echte product info
+  // ✅ REALISTISCH: Stappen gebaseerd op echte product info met custom symbolen
   const steps: HowItWorksStep[] = [
     {
-      icon: Plug,
+      icon: PlugIcon,
       title: 'Stekker erin',
       description: 'Plaats de kattenbak op een vlakke, stevige ondergrond. Sluit de stekker aan op een stopcontact.',
       number: 1,
     },
     {
-      icon: Package,
+      icon: GritIcon,
       title: 'Grit toevoegen',
       description: 'Vul de kattenbak met klonterend grit tot net onder de MAX lijn (ongeveer 8-10 kg).',
       number: 2,
     },
     {
-      icon: Trash2,
+      icon: TrashBagIcon,
       title: 'Afvalzak plaatsen',
       description: 'Plaats de afvalzak over de afvalbak heen voor optimale werking. De zak moet goed aansluiten.',
       number: 3,
     },
     {
-      icon: Power,
+      icon: PowerIcon,
       title: 'Aanzetten',
       description: 'Druk op de Power knop. Een blauw licht geeft aan dat de kattenbak klaar is voor gebruik.',
       number: 4,
     },
     {
-      icon: CheckCircle2,
+      icon: CheckIcon,
       title: 'Klaar voor gebruik',
       description: 'De kattenbak reinigt automatisch na elk gebruik. De afvalzak hoeft slechts 1x per week geleegd te worden.',
       number: 5,
@@ -71,129 +107,135 @@ export function ProductHowItWorks({ className }: ProductHowItWorksProps) {
       CONFIG.layout.maxWidth,
       'mx-auto',
       CONFIG.layout.containerPadding,
-      'py-12 sm:py-16 md:py-20 lg:py-24',
+      'py-8 sm:py-12 md:py-14 lg:py-16', // ✅ COMPACT: Minder padding op desktop
       className
     )}>
-      {/* ✅ MOOI DESIGN: Titel met achtergrondkleur */}
+      {/* ✅ MOOI DESIGN: Titel met webshop blauw achtergrond */}
       <div className={cn(
-        'text-center mb-12 sm:mb-16',
-        'bg-gradient-to-br from-gray-50 to-gray-100', // ✅ ACHTERGRONDKLEUR: Subtiele gradient
-        'rounded-2xl',
-        'px-6 sm:px-8 md:px-12',
-        'py-8 sm:py-10 md:py-12'
-      )}>
+        'text-center mb-8 sm:mb-10 md:mb-12', // ✅ COMPACT: Minder margin op desktop
+        'rounded-xl sm:rounded-2xl',
+        'px-4 sm:px-6 md:px-8 lg:px-10', // ✅ COMPACT: Minder padding op desktop
+        'py-6 sm:py-8 md:py-10' // ✅ COMPACT: Minder padding op desktop
+      )}
+      style={{
+        background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}15 0%, ${BRAND_COLORS_HEX.primary}20 100%)`, // ✅ BLAUW: Webshop blauw met transparantie
+        border: `1px solid ${BRAND_COLORS_HEX.primary}30`, // ✅ BLAUW: Subtiele border
+      }}>
         <h2 className={cn(
-          'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
-          'font-light', // ✅ FONT: Lichtere font weight
-          'text-gray-900',
-          'mb-4 sm:mb-6',
+          'text-2xl sm:text-3xl md:text-4xl lg:text-5xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
+          'font-light',
+          'mb-3 sm:mb-4 md:mb-5', // ✅ COMPACT: Minder margin
           'tracking-tight'
-        )}>
+        )}
+        style={{ color: BRAND_COLORS_HEX.primary }}> {/* ✅ BLAUW: Webshop blauw */}
           Hoe werkt het?
         </h2>
         <p className={cn(
-          'text-base sm:text-lg md:text-xl',
-          'text-gray-600',
+          'text-sm sm:text-base md:text-lg', // ✅ COMPACT: Kleinere lettergrootte op desktop
           'max-w-2xl mx-auto',
           'font-light'
-        )}>
+        )}
+        style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ BLAUW: Donkerder blauw */}
           In 5 eenvoudige stappen klaar voor gebruik
         </p>
       </div>
 
-      {/* ✅ STAPPEN: Mooi design met symbolen */}
-      <div className="space-y-6 sm:space-y-8 md:space-y-10">
+      {/* ✅ STAPPEN: Compacte desktop layout met webshop blauw */}
+      <div className="space-y-4 sm:space-y-5 md:space-y-6"> {/* ✅ COMPACT: Minder spacing op desktop */}
         {steps.map((step, index) => {
           const IconComponent = step.icon;
           const isLast = index === steps.length - 1;
           
           return (
             <div key={step.number} className="relative">
-              {/* ✅ STAP: Card design met icon en nummer */}
+              {/* ✅ STAP: Compacte card design met webshop blauw */}
               <div className={cn(
                 'flex flex-col sm:flex-row',
                 'items-start sm:items-center',
-                'gap-4 sm:gap-6 md:gap-8',
+                'gap-3 sm:gap-4 md:gap-5 lg:gap-6', // ✅ COMPACT: Minder gap op desktop
                 'bg-white',
-                'rounded-xl sm:rounded-2xl',
-                'p-6 sm:p-8 md:p-10',
+                'rounded-lg sm:rounded-xl', // ✅ COMPACT: Kleinere border radius
+                'p-4 sm:p-5 md:p-6 lg:p-7', // ✅ COMPACT: Minder padding op desktop
                 'shadow-sm hover:shadow-md',
                 'transition-all duration-300',
-                'border border-gray-100'
-              )}>
-                {/* ✅ SYMBOOL: Icon met nummer */}
+                'border',
+              )}
+              style={{ borderColor: `${BRAND_COLORS_HEX.primary}20` }}> {/* ✅ BLAUW: Subtiele border */}
+                {/* ✅ SYMBOOL: Icon met webshop blauw */}
                 <div className={cn(
                   'flex-shrink-0',
                   'relative',
-                  'w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24',
+                  'w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16', // ✅ COMPACT: Kleinere icons op desktop
                   'flex items-center justify-center',
-                  'bg-gradient-to-br from-gray-50 to-gray-100',
                   'rounded-full',
-                  'border-2 border-gray-200'
-                )}>
+                  'border-2'
+                )}
+                style={{
+                  background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}20 0%, ${BRAND_COLORS_HEX.primary}30 100%)`, // ✅ BLAUW: Webshop blauw gradient
+                  borderColor: `${BRAND_COLORS_HEX.primary}40`, // ✅ BLAUW: Border
+                }}>
                   <IconComponent className={cn(
-                    'w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12',
-                    'text-gray-700'
-                  )} />
-                  {/* ✅ NUMMER: Badge rechtsboven */}
+                    'w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8' // ✅ COMPACT: Kleinere icon size
+                  )}
+                  style={{ color: BRAND_COLORS_HEX.primary }} /> {/* ✅ BLAUW: Webshop blauw */}
+                  {/* ✅ NUMMER: Badge met webshop blauw */}
                   <div className={cn(
-                    'absolute -top-2 -right-2',
-                    'w-8 h-8 sm:w-9 sm:h-9',
+                    'absolute -top-1.5 -right-1.5',
+                    'w-6 h-6 sm:w-7 sm:h-7',
                     'flex items-center justify-center',
-                    'bg-gray-900 text-white',
+                    'text-white',
                     'rounded-full',
-                    'text-sm sm:text-base font-semibold',
+                    'text-xs sm:text-sm font-semibold', // ✅ COMPACT: Kleinere tekst
                     'shadow-lg'
-                  )}>
+                  )}
+                  style={{ backgroundColor: BRAND_COLORS_HEX.primary }}> {/* ✅ BLAUW: Webshop blauw */}
                     {step.number}
                   </div>
                 </div>
 
-                {/* ✅ TEKST: Titel en beschrijving */}
-                <div className="flex-1 space-y-2 sm:space-y-3">
+                {/* ✅ TEKST: Compacte titel en beschrijving */}
+                <div className="flex-1 space-y-1.5 sm:space-y-2"> {/* ✅ COMPACT: Minder spacing */}
                   <h3 className={cn(
-                    'text-xl sm:text-2xl md:text-3xl',
-                    'font-medium', // ✅ FONT: Medium weight voor titel
-                    'text-gray-900',
+                    'text-lg sm:text-xl md:text-2xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
+                    'font-medium',
                     'tracking-tight'
-                  )}>
+                  )}
+                  style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ BLAUW: Donkerder blauw */}
                     {step.title}
                   </h3>
                   <p className={cn(
-                    'text-sm sm:text-base md:text-lg',
-                    'text-gray-600',
-                    'font-light', // ✅ FONT: Lichte weight voor beschrijving
+                    'text-xs sm:text-sm md:text-base', // ✅ COMPACT: Kleinere lettergrootte op desktop
+                    'font-light',
                     'leading-relaxed',
                     'max-w-2xl'
-                  )}>
+                  )}
+                  style={{ color: '#4b5563' }}> {/* ✅ GRIJS: Subtiele tekst */}
                     {step.description}
                   </p>
                 </div>
 
-                {/* ✅ PIJL: Alleen tussen stappen, niet na laatste */}
+                {/* ✅ PIJL: Webshop blauw pijl tussen stappen */}
                 {!isLast && (
                   <div className={cn(
                     'hidden sm:flex',
                     'flex-col items-center',
                     'justify-center',
                     'flex-shrink-0',
-                    'w-8 h-8',
-                    'text-gray-400'
+                    'w-6 h-6' // ✅ COMPACT: Kleinere pijl
                   )}>
-                    <ArrowRight className="w-6 h-6 rotate-90 sm:rotate-0" />
+                    <ArrowRight className="w-5 h-5 rotate-90 sm:rotate-0" style={{ color: BRAND_COLORS_HEX.primary }} /> {/* ✅ BLAUW: Webshop blauw */}
                   </div>
                 )}
               </div>
 
-              {/* ✅ MOBIEL PIJL: Verticale pijl tussen stappen op mobiel */}
+              {/* ✅ MOBIEL PIJL: Verticale pijl met webshop blauw */}
               {!isLast && (
                 <div className={cn(
                   'flex sm:hidden',
                   'justify-center',
-                  'my-4',
-                  'text-gray-400'
+                  'my-3' // ✅ COMPACT: Minder margin
                 )}>
-                  <ArrowRight className="w-6 h-6 rotate-90" />
+                  <ArrowRight className="w-5 h-5 rotate-90" style={{ color: BRAND_COLORS_HEX.primary }} /> {/* ✅ BLAUW: Webshop blauw */}
                 </div>
               )}
             </div>
