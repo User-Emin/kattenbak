@@ -83,6 +83,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [openSpecs, setOpenSpecs] = useState<Set<number>>(new Set());
   // ✅ ACCORDION TABS: State voor accordion secties (Omschrijving, Specificaties, Vragen)
   const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
+  // ✅ SWIPE: Touch/swipe state voor vloeiend swipen
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isSwiping, setIsSwiping] = useState(false);
   
   // ✅ ACCORDION TABS: Toggle functie voor accordion secties
   const toggleAccordion = (id: string) => {
@@ -374,6 +378,39 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     setSelectedImageIndex((prev) => (prev === displayImages.length - 1 ? 0 : prev + 1));
   };
 
+  // ✅ SWIPE: Touch/swipe handlers voor vloeiend en snel swipen
+  const minSwipeDistance = 50; // ✅ SMOOTH: Minimale swipe afstand (50px)
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsSwiping(false);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+    setIsSwiping(true);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe && displayImages.length > 1) {
+      goToNextImage(); // ✅ SMOOTH: Swipe links = volgende afbeelding
+    }
+    if (isRightSwipe && displayImages.length > 1) {
+      goToPreviousImage(); // ✅ SMOOTH: Swipe rechts = vorige afbeelding
+    }
+
+    setTouchStart(null);
+    setTouchEnd(null);
+    setIsSwiping(false);
+  };
+
 
   // Specifications data - GEBASEERD OP ECHTE PRODUCT INFO (screenshots)
   // ✅ DUidelijker: In bullet point stijl zoals "Volledig automatisch • App bediening • Altijd schoon"
@@ -562,17 +599,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             )}
             {/* ✅ MOBIEL: Breadcrumb VERWIJDERD voor edge-to-edge - Geen padding tussen navbar en afbeelding */}
             {/* Breadcrumb op mobiel weggelaten voor echte edge-to-edge afbeelding */}
-            {/* Main Image - ✅ ECHT EDGE-TO-EDGE: Met ZOOM functionaliteit - 1200×1200 VIERKANT FORMAAT */}
-            <div className={cn(
-              'relative', 
-              'w-full',
-              CONFIG.gallery.mainImage.aspectRatio, // ✅ VIERKANT: aspect-square (1:1) voor 1200×1200 formaat - perfect verticaal langer
-              'md:rounded-lg', // ✅ DESKTOP: Border radius alleen op desktop
-              CONFIG.gallery.mainImage.bgColor, 
-              'overflow-hidden', 
-              'flex items-center justify-center', // ✅ CENTREREN: Afbeelding gecentreerd
-              'min-h-[300px] sm:min-h-[400px]' // ✅ RESPONSIVE: Minimum hoogte voor mobile (verticaal langer)
-            )}> {/* ✅ ECHT EDGE-TO-EDGE: Geen padding, geen negatieve margin nodig - 1200×1200 VIERKANT FORMAAT */}
+            {/* Main Image - ✅ ECHT EDGE-TO-EDGE: Met ZOOM functionaliteit + SWIPE - 1200×1200 VIERKANT FORMAAT */}
+            <div 
+              className={cn(
+                'relative', 
+                'w-full',
+                CONFIG.gallery.mainImage.aspectRatio, // ✅ VIERKANT: aspect-square (1:1) voor 1200×1200 formaat - perfect verticaal langer
+                'md:rounded-lg', // ✅ DESKTOP: Border radius alleen op desktop
+                CONFIG.gallery.mainImage.bgColor, 
+                'overflow-hidden', 
+                'flex items-center justify-center', // ✅ CENTREREN: Afbeelding gecentreerd
+                'min-h-[300px] sm:min-h-[400px]', // ✅ RESPONSIVE: Minimum hoogte voor mobile (verticaal langer)
+                isSwiping && 'transition-transform duration-300 ease-out' // ✅ SMOOTH: Smooth swipe animatie
+              )}
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            > {/* ✅ ECHT EDGE-TO-EDGE: Geen padding, geen negatieve margin nodig - 1200×1200 VIERKANT FORMAAT */}
               <ProductImage
                 src={currentImage}
                 alt={product.name}

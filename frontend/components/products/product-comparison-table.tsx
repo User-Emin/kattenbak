@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -7,6 +8,8 @@ import { cn } from "@/lib/utils";
  * Product Comparison Table - Modern & Smooth
  * ✅ DRY: Gebaseerd op echte info van Poopy.nl en Alibaba
  * ✅ Modern design met smooth animaties
+ * ✅ MOBIEL: Smooth om-en-om beweging (zoals slider)
+ * ✅ PERFORMANCE: Lazy loading en optimale laadtijden
  */
 
 interface ComparisonRow {
@@ -80,6 +83,36 @@ const comparisonData: ComparisonRow[] = [
 ];
 
 export function ProductComparisonTable() {
+  const [visibleIndex, setVisibleIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // ✅ AUTO-SLIDE: Smooth om-en-om beweging op mobiel (zoals slider)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    // Alleen op mobiel (max-width: 768px)
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile || comparisonData.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setVisibleIndex((prev) => {
+        const next = (prev + 1) % comparisonData.length;
+        return next;
+      });
+    }, 4000); // ✅ SMOOTH: 4 seconden tussen slides
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // ✅ MANUAL NAVIGATION: Swipe/klik navigatie
+  const goToSlide = (index: number) => {
+    if (isAnimating || index === visibleIndex) return;
+    setIsAnimating(true);
+    setVisibleIndex(index);
+    setTimeout(() => setIsAnimating(false), 600); // ✅ SMOOTH: 600ms animatie
+  };
+
   const renderValue = (value: string | boolean, isOurProduct: boolean = false) => {
     if (typeof value === 'boolean') {
       return value ? (
@@ -160,37 +193,46 @@ export function ProductComparisonTable() {
         </table>
       </div>
 
-      {/* ✅ MOBIEL: Compacte swipe-vriendelijke cards */}
-      <div className="md:hidden">
-        <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
-          <div className="flex gap-3 pb-4" style={{ width: 'max-content' }}>
+      {/* ✅ MOBIEL: Smooth om-en-om slide (zoals slider) */}
+      <div className="md:hidden" ref={containerRef}>
+        <div className="relative overflow-hidden">
+          <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${visibleIndex * 100}%)` }}>
             {comparisonData.map((row, index) => (
               <div
                 key={index}
                 className={cn(
-                  'flex-shrink-0 w-[280px] p-4 rounded-lg border transition-all',
-                  row.highlight 
-                    ? 'bg-blue-50 border-[#3071aa]/30 shadow-sm' 
-                    : 'bg-white border-gray-200'
+                  'min-w-full flex-shrink-0 px-4',
+                  'opacity-0 translate-x-4',
+                  'transition-all duration-700 ease-out',
+                  index === visibleIndex && 'opacity-100 translate-x-0'
                 )}
               >
-                <div className={cn(
-                  'text-xs font-semibold mb-3 text-center leading-tight',
-                  row.highlight ? 'text-[#3071aa]' : 'text-gray-900'
-                )}>
-                  {row.feature}
-                </div>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-2.5 rounded-md bg-[#3071aa]/10 border border-[#3071aa]/20">
-                    <span className="text-xs font-medium text-[#3071aa]">Automatisch</span>
-                    <div className="flex items-center justify-center">
-                      {renderValue(row.ourProduct, true)}
-                    </div>
+                <div
+                  className={cn(
+                    'w-full p-4 rounded-lg border transition-all',
+                    row.highlight 
+                      ? 'bg-blue-50 border-[#3071aa]/30 shadow-sm' 
+                      : 'bg-white border-gray-200'
+                  )}
+                >
+                  <div className={cn(
+                    'text-xs font-semibold mb-3 text-center leading-tight',
+                    row.highlight ? 'text-[#3071aa]' : 'text-gray-900'
+                  )}>
+                    {row.feature}
                   </div>
-                  <div className="flex items-center justify-between p-2.5 rounded-md bg-gray-100 border border-gray-200">
-                    <span className="text-xs font-medium text-gray-700">Handmatig</span>
-                    <div className="flex items-center justify-center">
-                      {renderValue(row.competitor, false)}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-2.5 rounded-md bg-[#3071aa]/10 border border-[#3071aa]/20">
+                      <span className="text-xs font-medium text-[#3071aa]">Automatisch</span>
+                      <div className="flex items-center justify-center">
+                        {renderValue(row.ourProduct, true)}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between p-2.5 rounded-md bg-gray-100 border border-gray-200">
+                      <span className="text-xs font-medium text-gray-700">Handmatig</span>
+                      <div className="flex items-center justify-center">
+                        {renderValue(row.competitor, false)}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -198,13 +240,21 @@ export function ProductComparisonTable() {
             ))}
           </div>
         </div>
-        {/* ✅ MOBIEL: Scroll indicator */}
-        <div className="flex justify-center mt-2 mb-3">
-          <div className="flex gap-1.5">
-            {comparisonData.slice(0, 5).map((_, i) => (
-              <div key={i} className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
-            ))}
-          </div>
+        {/* ✅ MOBIEL: Navigation dots */}
+        <div className="flex justify-center gap-2 mt-4 mb-3">
+          {comparisonData.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={cn(
+                'w-2 h-2 rounded-full transition-all',
+                index === visibleIndex 
+                  ? 'bg-[#3071aa] w-6' 
+                  : 'bg-gray-300 hover:bg-gray-400'
+              )}
+              aria-label={`Ga naar slide ${index + 1}`}
+            />
+          ))}
         </div>
       </div>
 
