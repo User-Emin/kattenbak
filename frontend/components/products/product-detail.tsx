@@ -693,7 +693,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'self-start',
             'mt-6 sm:mt-8 md:mt-0 lg:mt-0', // ✅ SYMMETRISCH: Gelijk spacing op mobile, geen margin op desktop
             'mx-auto lg:mx-0', // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
-            'px-4 md:px-6 lg:px-8' // ✅ PADDING: Product info heeft padding (niet edge-to-edge, alleen productafbeelding is edge-to-edge)
+            'px-4 md:px-6 lg:px-8', // ✅ PADDING: Product info heeft padding (niet edge-to-edge, alleen productafbeelding is edge-to-edge)
+            'lg:pt-0' // ✅ DESKTOP: Geen padding-top op desktop (opzelfde hoogte als afbeelding)
           )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
@@ -704,7 +705,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 CONFIG.info.title.textColor,
                 'mb-2 lg:mb-3', // ✅ COMPACT: Minder margin-bottom op desktop
                 'leading-tight', // ✅ RESPONSIVE: Tighter line height op mobile
-                'lg:mt-0', // ✅ DESKTOP: Geen margin-top op desktop (opzelfde hoogte als afbeelding)
+                'mt-0 lg:mt-0', // ✅ DESKTOP: Geen margin-top op desktop (opzelfde hoogte als afbeelding)
                 'transition-all duration-300 ease-out', // ✅ SMOOTH: Smooth transitions
                 'animate-in fade-in slide-in-from-right-4 duration-500' // ✅ SMOOTH: Fade-in en slide-in animatie bij laden
               )}>
