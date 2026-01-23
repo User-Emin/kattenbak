@@ -598,65 +598,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             {/* ✅ MOBIEL: Breadcrumb VERWIJDERD voor edge-to-edge - Geen padding tussen navbar en afbeelding */}
             {/* Breadcrumb op mobiel weggelaten voor echte edge-to-edge afbeelding */}
             
-            {/* ✅ DESKTOP: Thumbnails + Main Image Container - Horizontale layout */}
+            {/* Main Image Container - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
             <div className={cn(
-              'flex flex-col lg:flex-row', // ✅ DESKTOP: Horizontale layout (thumbnails links, main rechts)
-              'gap-3 sm:gap-4 md:gap-4 lg:gap-4', // ✅ DESKTOP: Gap tussen thumbnails en main image
+              'flex flex-col', 
+              'gap-3',
               'w-full' // ✅ VOLLEDIGE BREEDTE: Neem volledige breedte
             )}>
-              {/* ✅ THUMBNAILS LINKS VERTICAAL: Desktop links, mobiel onder horizontaal */}
-              {displayImages.length > 1 && (
-                <div className={cn(
-                  'hidden lg:flex lg:flex-col', // ✅ DESKTOP: Verticaal links
-                  'gap-3', // ✅ RUIMTE: Meer gap tussen thumbnails (gap-3 ipv gap-2)
-                  'flex-shrink-0', // ✅ GEEN SHRINK: Behoud vaste breedte
-                  'overflow-y-auto', // ✅ VERTICAAL SCROLL: Scrollbaar als er veel thumbnails zijn
-                  'max-h-[600px]', // ✅ MAX HOOGTE: Max hoogte voor scroll (stopt na ~7 thumbnails)
-                  'smooth-scroll',
-                  'p-3', // ✅ PADDING: Meer padding rond thumbnails container (p-3 = 12px)
-                  'py-4' // ✅ PADDING: Extra verticale padding (py-4 = 16px)
-                )}>
-                {displayImages.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImageIndex(index)}
-                    className={cn(
-                      'w-20 h-20 flex-shrink-0', // ✅ COMPACT: Kleinere thumbnails
-                      CONFIG.gallery.thumbnails.borderRadius,
-                      CONFIG.gallery.thumbnails.hoverOpacity,
-                      'relative overflow-hidden bg-gray-100',
-                      'transition-all',
-                      'border-2', // ✅ FIX: Base border voor alle thumbnails
-                      'p-1', // ✅ PADDING: Padding binnen thumbnail button (p-1 = 4px)
-                      index === selectedImageIndex 
-                        ? 'border-black z-10' // ✅ FIX: Zwarte border met z-index voor geselecteerde thumbnail
-                        : 'border-transparent', // ✅ FIX: Transparante border voor niet-geselecteerde
-                    )}
-                  >
-                    <Image
-                      src={image}
-                      alt={`${product.name} ${index + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="80px" // 🚀 PERFORMANCE: Thumbnail size (80x80px) - exact size for fastest loading
-                      quality={70} // 🚀 PERFORMANCE: Lower quality voor thumbnails (faster loading, still good quality)
-                      loading="lazy" // 🚀 PERFORMANCE: Lazy load thumbnails (load only when visible)
-                      unoptimized={image.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
-                      placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-
-              {/* Main Image Container - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
-              <div className={cn(
-                'flex-1', // ✅ FLEX: Neem resterende ruimte
-                'flex flex-col', 
-                'gap-3',
-                'min-w-0' // ✅ OVERLAP FIX: Voorkom overflow
-              )}>
               {/* Main Image - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
               <div 
                 className={cn(
@@ -697,8 +644,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                         'absolute left-4',
                         CONFIG.gallery.navigation.position,
                         'flex items-center justify-center',
-                        'transition-all',
-                        'lg:hidden' // ✅ DESKTOP: Verberg arrows op desktop (thumbnails zichtbaar)
+                        'transition-all'
                       )}
                       aria-label="Vorige afbeelding"
                     >
@@ -714,8 +660,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                         'absolute right-4',
                         CONFIG.gallery.navigation.position,
                         'flex items-center justify-center',
-                        'transition-all',
-                        'lg:hidden' // ✅ DESKTOP: Verberg arrows op desktop (thumbnails zichtbaar)
+                        'transition-all'
                       )}
                       aria-label="Volgende afbeelding"
                     >
@@ -731,21 +676,20 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   CONFIG.gallery.counter.textColor,
                   CONFIG.gallery.counter.padding,
                   CONFIG.gallery.counter.fontSize,
-                  CONFIG.gallery.counter.borderRadius,
-                  'lg:hidden' // ✅ DESKTOP: Verberg counter op desktop (thumbnails zichtbaar)
+                  CONFIG.gallery.counter.borderRadius
                 )}>
                   {selectedImageIndex + 1} / {displayImages.length}
                 </div>
               </div>
 
-              {/* ✅ THUMBNAILS ONDER: Mobiel horizontaal scrollbaar */}
+              {/* ✅ THUMBNAILS ONDER: Horizontaal scrollbaar (zowel desktop als mobiel) */}
               {displayImages.length > 1 && (
                 <div className={cn(
-                  'flex flex-row gap-3 overflow-x-auto', // ✅ RUIMTE: Meer gap tussen thumbnails (gap-3 ipv gap-2)
+                  'flex flex-row gap-3 overflow-x-auto', // ✅ RUIMTE: Meer gap tussen thumbnails (gap-3)
                   'w-full',
-                  'px-4 md:px-6 lg:hidden', // ✅ MOBIEL: Alleen op mobiel zichtbaar
+                  'px-4 md:px-6', // ✅ PADDING: Padding op alle schermen
                   'smooth-scroll',
-                  'py-3', // ✅ MOBILE: Meer verticale padding (py-3 = 12px)
+                  'py-3', // ✅ PADDING: Meer verticale padding (py-3 = 12px)
                   'max-w-full' // ✅ SCROLL STOP: Voorkom oneindig scrollen
                 )}>
                   {displayImages.map((image, index) => (
@@ -782,7 +726,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   ))}
                 </div>
               )}
-              </div>
+            </div>
             </div>
           </div>
 
@@ -1041,27 +985,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* Add to Cart Button - ✅ PREMIUM: Modern button met shadow en transform */}
+              {/* Add to Cart Button - ✅ ZWART: Zwarte button in plaats van blauw */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
                 className={cn(
                   'relative overflow-hidden group w-full py-5 sm:py-6 text-lg sm:text-xl font-semibold rounded-lg text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 mb-1 sm:mb-1.5',
-                  isAdding && 'bg-green-600 hover:bg-green-600'
+                  isAdding ? 'bg-green-600 hover:bg-green-600' : 'bg-black hover:bg-gray-900' // ✅ ZWART: Zwarte button (bg-black) in plaats van blauw
                 )}
-                style={{
-                  backgroundColor: isAdding ? '#16a34a' : BRAND_COLORS_HEX.primary,
-                }}
-                onMouseEnter={(e) => {
-                  if (!isAdding) {
-                    e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark;
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isAdding) {
-                    e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary;
-                  }
-                }}
               >
                 {isAdding ? (
                   <>

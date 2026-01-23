@@ -150,6 +150,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
       'mx-auto',
       CONFIG.layout.containerPadding,
       'py-8 sm:py-12 md:py-14 lg:py-16', // ✅ COMPACT: Minder padding op desktop
+      'bg-gray-50', // ✅ ACHTERGROND: Lichte grijze achtergrond voor "Hoe werkt het?" sectie
       className
     )}>
       {/* ✅ TITEL: Direct in achtergrond, geen extra balk */}
