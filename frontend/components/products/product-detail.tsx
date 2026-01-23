@@ -608,12 +608,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               {displayImages.length > 1 && (
                 <div className={cn(
                   'hidden lg:flex lg:flex-col', // ✅ DESKTOP: Verticaal links
-                  'gap-2', // ✅ RUIMTE: gap-2 tussen thumbnails
+                  'gap-3', // ✅ RUIMTE: Meer gap tussen thumbnails (gap-3 ipv gap-2)
                   'flex-shrink-0', // ✅ GEEN SHRINK: Behoud vaste breedte
                   'overflow-y-auto', // ✅ VERTICAAL SCROLL: Scrollbaar als er veel thumbnails zijn
-                  'max-h-[600px]', // ✅ MAX HOOGTE: Max hoogte voor scroll
+                  'max-h-[600px]', // ✅ MAX HOOGTE: Max hoogte voor scroll (stopt na ~7 thumbnails)
                   'smooth-scroll',
-                  'pr-2' // ✅ PADDING: Ruimte rechts van thumbnails
+                  'p-3', // ✅ PADDING: Meer padding rond thumbnails container (p-3 = 12px)
+                  'py-4' // ✅ PADDING: Extra verticale padding (py-4 = 16px)
                 )}>
                 {displayImages.map((image, index) => (
                   <button
@@ -626,6 +627,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       'relative overflow-hidden bg-gray-100',
                       'transition-all',
                       'border-2', // ✅ FIX: Base border voor alle thumbnails
+                      'p-1', // ✅ PADDING: Padding binnen thumbnail button (p-1 = 4px)
                       index === selectedImageIndex 
                         ? 'border-black z-10' // ✅ FIX: Zwarte border met z-index voor geselecteerde thumbnail
                         : 'border-transparent', // ✅ FIX: Transparante border voor niet-geselecteerde
@@ -739,11 +741,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               {/* ✅ THUMBNAILS ONDER: Mobiel horizontaal scrollbaar */}
               {displayImages.length > 1 && (
                 <div className={cn(
-                  'flex flex-row gap-2 overflow-x-auto', // ✅ RUIMTE: gap-2 tussen thumbnails
+                  'flex flex-row gap-3 overflow-x-auto', // ✅ RUIMTE: Meer gap tussen thumbnails (gap-3 ipv gap-2)
                   'w-full',
                   'px-4 md:px-6 lg:hidden', // ✅ MOBIEL: Alleen op mobiel zichtbaar
                   'smooth-scroll',
-                  'pb-2' // ✅ MOBILE: Extra padding voor scroll indicator
+                  'py-3', // ✅ MOBILE: Meer verticale padding (py-3 = 12px)
+                  'max-w-full' // ✅ SCROLL STOP: Voorkom oneindig scrollen
                 )}>
                   {displayImages.map((image, index) => (
                     <button
@@ -756,6 +759,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                         'relative overflow-hidden bg-gray-100',
                         'transition-all',
                         'border-2', // ✅ FIX: Base border voor alle thumbnails
+                        'p-1', // ✅ PADDING: Padding binnen thumbnail button (p-1 = 4px)
                         index === selectedImageIndex 
                           ? 'border-black z-10' // ✅ FIX: Zwarte border met z-index voor geselecteerde thumbnail
                           : 'border-transparent', // ✅ FIX: Transparante border voor niet-geselecteerde
