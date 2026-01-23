@@ -218,10 +218,10 @@ export const PRODUCT_PAGE_CONFIG = {
   featureSection: {
     containerSpacing: 'space-y-8 md:space-y-12 lg:space-y-16', // ✅ COMPACTER: Minder ruimte tussen zigzag secties (was space-y-20 lg:space-y-32)
     zigzag: {
-      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - TEKST EXTRA DICHTBIJ AFBEELDING
-      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-4 lg:gap-6 items-center justify-center text-center md:text-left', // ✅ EXTRA COMPACT: Tekst extra dichtbij afbeelding op mobiel (gap-1 = 4px)
-      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - TEKST EXTRA DICHTBIJ AFBEELDING
-      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-4 lg:gap-6 items-center justify-center text-center md:text-left', // ✅ EXTRA COMPACT: Tekst extra dichtbij afbeelding op mobiel (gap-1 = 4px)
+      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - DESKTOP: Meer padding tot afbeelding
+      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: gap-1 (4px), DESKTOP: gap-8 (32px) tablet, gap-12 (48px) desktop
+      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - DESKTOP: Meer padding tot afbeelding
+      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: gap-1 (4px), DESKTOP: gap-8 (32px) tablet, gap-12 (48px) desktop
       imageOrder: {
         left: 'order-1 md:order-1', // ✅ MOBIEL: Altijd eerste (boven)
         right: 'order-1 md:order-2', // ✅ MOBIEL: Altijd eerste (boven), desktop rechts
