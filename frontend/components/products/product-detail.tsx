@@ -583,13 +583,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               <ProductImage
                 src={currentImage}
                 alt={product.name}
-                fill={false} // ✅ ORIGINEEL FORMAAT: Geen fill, gebruik width/height
-                width={800}
-                height={600}
+                fill
                 enableZoom={true} // ✅ ZOOM: Hover zoom en click lightbox functionaliteit
                 zoomScale={2.5}
                 priority
-                className="object-contain w-full h-auto max-w-full max-h-[600px]" // ✅ ORIGINEEL FORMAAT: Behoud originele aspect ratio
+                className="object-contain" // ✅ ORIGINEEL FORMAAT: Behoud originele aspect ratio (niet object-cover)
               />
               
               {/* Navigation Arrows */}
