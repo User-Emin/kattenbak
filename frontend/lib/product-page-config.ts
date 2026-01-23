@@ -10,12 +10,13 @@ import { DESIGN_SYSTEM } from './design-system';
 
 export const PRODUCT_PAGE_CONFIG = {
   // Layout configuratie - ✅ SYMMETRISCH: Perfecte balans op alle schermformaten
-  layout: {
-    maxWidth: 'max-w-7xl',
-    containerPadding: 'px-4 sm:px-6 md:px-8 lg:px-8', // ✅ SYMMETRISCH: Gelijk links/rechts op alle breakpoints
-    sectionSpacing: 'py-8 sm:py-10 md:py-12 lg:py-12', // ✅ SYMMETRISCH: Gelijk boven/onder
-    gridGap: 'gap-6 sm:gap-8 md:gap-10 lg:gap-10',      // ✅ SYMMETRISCH: Gelijk tussen elementen
-    topMargin: 'mt-0',                // ✅ ULTRA COMPACT - breadcrumb direct tegen navbar
+    layout: {
+      maxWidth: 'max-w-7xl',
+      containerPadding: 'px-4 sm:px-6 md:px-8 lg:px-8', // ✅ SYMMETRISCH: Gelijk links/rechts op alle breakpoints
+      containerPaddingMobile: 'px-2 sm:px-4 md:px-8 lg:px-8', // ✅ MOBIEL: Minder padding op mobiel (px-2 ipv px-4)
+      sectionSpacing: 'py-8 sm:py-10 md:py-12 lg:py-12', // ✅ SYMMETRISCH: Gelijk boven/onder
+      gridGap: 'gap-6 sm:gap-8 md:gap-10 lg:gap-10',      // ✅ SYMMETRISCH: Gelijk tussen elementen
+      topMargin: 'mt-0',                // ✅ ULTRA COMPACT - breadcrumb direct tegen navbar
     // Product Grid Ratio: Image vs Info (zoals Pergolux)
     productGrid: {
       imageWidth: 'lg:w-[58%]', // Image neemt meer ruimte
@@ -217,10 +218,10 @@ export const PRODUCT_PAGE_CONFIG = {
   featureSection: {
     containerSpacing: 'space-y-20 lg:space-y-32', // ✅ GROTER: Meer ruimte tussen zigzag secties (was space-y-16 lg:space-y-24)
     zigzag: {
-      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder
-      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: Flex column centraal, desktop grid
-      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder
-      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: Flex column centraal, desktop grid
+      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - MINDER PADDING
+      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: Minder gap (gap-4 ipv gap-8)
+      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - MINDER PADDING
+      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: Minder gap (gap-4 ipv gap-8)
       imageOrder: {
         left: 'order-1 md:order-1', // ✅ MOBIEL: Altijd eerste (boven)
         right: 'order-1 md:order-2', // ✅ MOBIEL: Altijd eerste (boven), desktop rechts
@@ -232,7 +233,7 @@ export const PRODUCT_PAGE_CONFIG = {
     },
     image: {
       aspectRatio: 'aspect-[5/3]', // ✅ GROTER: Bredere afbeeldingen voor duidelijkheid (was aspect-[6/3])
-      borderRadius: 'rounded-2xl sm:rounded-3xl', // ✅ RONDER: Rondere hoeken (rounded-2xl op mobiel, rounded-3xl op desktop)
+      borderRadius: 'rounded-xl md:rounded-2xl lg:rounded-3xl', // ✅ RONDER: Ronde hoeken (rounded-xl op mobiel, rounded-2xl op tablet, rounded-3xl op desktop)
       objectFit: 'object-contain', // ✅ VOLLEDIG ZICHTBAAR: Zigzag foto's volledig zichtbaar (niet object-cover)
       bgColor: 'bg-white', // ✅ WIT: Witte achtergrond voor afbeeldingen
       gap: 'gap-0', // ✅ GEEN GAP: Geen grijze tussenruimtes tussen afbeeldingen

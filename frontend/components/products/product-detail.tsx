@@ -559,16 +559,20 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'gap-3 sm:gap-4 md:gap-4 lg:gap-4',
             'px-0' // ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten
           )}> {/* ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten */}
-            {/* ✅ SEO PHASE 1: Breadcrumb Navigation - DICHTBIJ PRODUCTAFBEELDING (Desktop) - MET PADDING */}
+            {/* ✅ SEO PHASE 1: Breadcrumb Navigation - EDGE-TO-EDGE: 0 padding tot navbar (legaal voor SEO) */}
             {!loading && product && (
-              <div className="hidden lg:block mb-4 px-6 lg:px-8">
-                <BreadcrumbNavigation />
+              <div className="hidden lg:block mb-4 px-0">
+                <div className="px-6 lg:px-8">
+                  <BreadcrumbNavigation />
+                </div>
               </div>
             )}
-            {/* ✅ MOBIEL: Breadcrumb boven productafbeelding - MET PADDING */}
+            {/* ✅ MOBIEL: Breadcrumb boven productafbeelding - EDGE-TO-EDGE: 0 padding tot navbar */}
             {!loading && product && (
-              <div className="lg:hidden mb-4 px-4">
-                <BreadcrumbNavigation />
+              <div className="lg:hidden mb-4 px-0">
+                <div className="px-4">
+                  <BreadcrumbNavigation />
+                </div>
               </div>
             )}
             {/* Main Image - ✅ ECHT EDGE-TO-EDGE: Geen negatieve margin nodig, parent heeft al px-0 */}
@@ -1217,11 +1221,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
       {/* ✅ PREMIUM KWALITEIT SECTIE VERWIJDERD - Focus op 10.5L afvalbak */}
 
-      {/* Feature Sections - ZIGZAG PATTERN - ✅ EXACT ZELFDE: Identiek aan productafbeeldingen container */}
+      {/* Feature Sections - ZIGZAG PATTERN - ✅ MOBIEL: Minder padding op mobiel */}
       <div className={cn(
         CONFIG.layout.maxWidth, 
         'mx-auto', 
-        CONFIG.layout.containerPadding, // ✅ EXACT ZELFDE: Container padding zoals productafbeeldingen (px-4 sm:px-6 md:px-8 lg:px-8)
+        CONFIG.layout.containerPaddingMobile, // ✅ MOBIEL: Minder padding op mobiel (px-2 sm:px-4)
         'py-8 sm:py-10 md:py-12 lg:py-12' // ✅ SYMMETRISCH: Gelijk boven/onder
       )}>
         <div className={CONFIG.featureSection.containerSpacing}>

@@ -59,7 +59,7 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
     <div className={cn(
       CONFIG.layout.maxWidth, // ✅ EXACT ZELFDE: Max-width zoals productdetail (max-w-7xl)
       'mx-auto',
-      CONFIG.layout.containerPadding, // ✅ EXACT ZELFDE: Container padding zoals varianten (px-4 sm:px-6 md:px-8 lg:px-8) - GEEN verticale padding
+      CONFIG.layout.containerPaddingMobile, // ✅ MOBIEL: Minder padding op mobiel (px-2 sm:px-4)
     )}>
       <div className={cn(
         CONFIG.featureSection.containerSpacing // ✅ EXACT ZELFDE: Container spacing zoals productdetail - GEEN max-w-4xl op desktop voor grotere afbeeldingen
