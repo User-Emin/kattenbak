@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Check, X } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { BRAND_COLORS_HEX } from "@/lib/color-config";
 
 /**
  * Product Comparison Table - Modern & Smooth
@@ -25,17 +26,32 @@ interface ProductComparisonTableProps {
   productImages?: string[]; // ✅ DYNAMISCH: Product afbeeldingen voor vergelijking
 }
 
+// ✅ DRY: Shared constants
+const BLUR_PLACEHOLDER = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==";
+
+// ✅ DRY: Image component helper
+const ComparisonImage = ({ src, alt }: { src: string; alt: string }) => (
+  <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 rounded overflow-hidden border border-gray-200 shadow-sm">
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className="object-cover"
+      sizes="(max-width: 640px) 48px, 64px"
+      quality={90}
+      loading="lazy"
+      unoptimized={src.startsWith('/uploads/')}
+      placeholder="blur"
+      blurDataURL={BLUR_PLACEHOLDER}
+    />
+  </div>
+);
+
 const comparisonData: ComparisonRow[] = [
   {
     feature: 'Automatische reiniging',
     ourProduct: true, // ✅ VINKJE: Onze kattenbak reinigt automatisch
     competitor: false, // ❌ KRUISJE: Traditionele kattenbak reinigt niet automatisch
-    highlight: true,
-  },
-  {
-    feature: '10.5L afvalbak capaciteit',
-    ourProduct: true, // ✅ VINKJE: Onze kattenbak heeft 10.5L afvalbak
-    competitor: false, // ❌ KRUISJE: Traditionele kattenbak heeft geen afvalbak
     highlight: true,
   },
   {
@@ -114,8 +130,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
   const renderValue = (value: string | boolean, isOurProduct: boolean = false) => {
     if (typeof value === 'boolean') {
       return value ? (
-        // ✅ COMPACT VINKJE: Kleinere, subtielere vinkjes
-        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#3071aa' }}>
+        // ✅ DRY: Gebruik BRAND_COLORS_HEX
+        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: BRAND_COLORS_HEX.primary }}>
           <Check className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" strokeWidth={2.5} />
         </div>
       ) : (
@@ -130,8 +146,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
 
   return (
     <div className="w-full bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
-      {/* Header - ✅ SUBTIELE ACCENT: Minder overweldigend maar opvallend */}
-      <div className="bg-gradient-to-r from-[#3071aa] to-[#256394] text-white px-4 sm:px-6 py-3 sm:py-4">
+      {/* Header - ✅ DRY: Gebruik BRAND_COLORS_HEX */}
+      <div 
+        className="text-white px-4 sm:px-6 py-3 sm:py-4"
+        style={{ 
+          background: `linear-gradient(to right, ${BRAND_COLORS_HEX.primary}, ${BRAND_COLORS_HEX.primaryDark})` 
+        }}
+      >
         <h3 className="text-lg sm:text-xl font-bold text-center">Vergelijking</h3>
         <p className="text-xs sm:text-sm text-blue-100 mt-1 text-center">Automatische kattenbak vs. Handmatige kattenbak</p>
       </div>
@@ -145,7 +166,10 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               <th className="px-4 py-4 text-left text-sm font-semibold text-gray-700 w-2/5">
                 Feature
               </th>
-              <th className="px-4 py-4 text-center text-sm font-semibold text-white w-[30%]" style={{ backgroundColor: '#3071aa' }}>
+              <th 
+                className="px-4 py-4 text-center text-sm font-semibold text-white w-[30%]" 
+                style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+              >
                 Automatische kattenbak
               </th>
               <th className="px-4 py-4 text-center text-sm font-semibold text-gray-700 bg-gray-100 w-[30%]">
@@ -165,8 +189,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               >
                 <td className={cn(
                   'px-4 py-4 text-sm font-medium',
-                  row.highlight ? 'text-[#3071aa]' : 'text-gray-900'
-                )}>
+                  row.highlight ? 'text-gray-900' : 'text-gray-900'
+                )} style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : {}}>
                   {row.feature}
                 </td>
                 <td className={cn(
@@ -174,23 +198,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   row.highlight && 'bg-blue-50'
                 )}>
                   <div className="flex items-center justify-center gap-3">
-                    {/* ✅ DYNAMISCH: Eerste afbeelding voor Automatische kattenbak - GROTER */}
-                    {firstImage && (
-                      <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 rounded overflow-hidden border border-gray-200 shadow-sm">
-                        <Image
-                          src={firstImage}
-                          alt="Automatische kattenbak"
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 640px) 48px, 64px"
-                          quality={90}
-                          loading="lazy"
-                          unoptimized={firstImage.startsWith('/uploads/')}
-                          placeholder="blur"
-                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                        />
-                      </div>
-                    )}
+                    {/* ✅ DRY: Gebruik ComparisonImage helper */}
+                    {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" />}
                     {renderValue(row.ourProduct, true)}
                   </div>
                 </td>
@@ -199,23 +208,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
                 )}>
                   <div className="flex items-center justify-center gap-3">
-                    {/* ✅ DYNAMISCH: 6e afbeelding voor Handmatige kattenbak - GROTER */}
-                    {sixthImage && (
-                      <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 rounded overflow-hidden border border-gray-200 shadow-sm">
-                        <Image
-                          src={sixthImage}
-                          alt="Handmatige kattenbak"
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 640px) 48px, 64px"
-                          quality={90}
-                          loading="lazy"
-                          unoptimized={sixthImage.startsWith('/uploads/')}
-                          placeholder="blur"
-                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                        />
-                      </div>
-                    )}
+                    {/* ✅ DRY: Gebruik ComparisonImage helper */}
+                    {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" />}
                     {renderValue(row.competitor, false)}
                   </div>
                 </td>
@@ -243,37 +237,32 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   className={cn(
                     'w-full p-4 rounded-lg border transition-all',
                     row.highlight 
-                      ? 'bg-blue-50 border-[#3071aa]/30 shadow-sm' 
+                      ? 'bg-blue-50 shadow-sm' 
                       : 'bg-white border-gray-200'
                   )}
+                  style={row.highlight ? { borderColor: `${BRAND_COLORS_HEX.primary}4D` } : {}}
                 >
-                  <div className={cn(
-                    'text-xs font-semibold mb-3 text-center leading-tight',
-                    row.highlight ? 'text-[#3071aa]' : 'text-gray-900'
-                  )}>
+                  <div 
+                    className={cn(
+                      'text-xs font-semibold mb-3 text-center leading-tight',
+                      row.highlight ? '' : 'text-gray-900'
+                    )}
+                    style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : {}}
+                  >
                     {row.feature}
                   </div>
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 rounded-md bg-[#3071aa]/10 border border-[#3071aa]/20">
+                    <div 
+                      className="flex items-center justify-between p-4 rounded-md border"
+                      style={{ 
+                        backgroundColor: `${BRAND_COLORS_HEX.primary}1A`,
+                        borderColor: `${BRAND_COLORS_HEX.primary}33`
+                      }}
+                    >
                       <div className="flex items-center gap-3">
-                        {/* ✅ DYNAMISCH: Eerste afbeelding voor Automatische kattenbak - GROTER */}
-                        {firstImage && (
-                          <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 rounded overflow-hidden border border-gray-200 shadow-sm">
-                            <Image
-                              src={firstImage}
-                              alt="Automatische kattenbak"
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 640px) 48px, 64px"
-                              quality={90}
-                              loading="lazy"
-                              unoptimized={firstImage.startsWith('/uploads/')}
-                              placeholder="blur"
-                              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                            />
-                          </div>
-                        )}
-                        <span className="text-sm font-medium text-[#3071aa]">Automatische kattenbak</span>
+                        {/* ✅ DRY: Gebruik ComparisonImage helper */}
+                        {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" />}
+                        <span className="text-sm font-medium" style={{ color: BRAND_COLORS_HEX.primary }}>Automatische kattenbak</span>
                       </div>
                       <div className="flex items-center justify-center">
                         {renderValue(row.ourProduct, true)}
@@ -281,23 +270,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     </div>
                     <div className="flex items-center justify-between p-4 rounded-md bg-gray-100 border border-gray-200">
                       <div className="flex items-center gap-3">
-                        {/* ✅ DYNAMISCH: 6e afbeelding voor Handmatige kattenbak - GROTER */}
-                        {sixthImage && (
-                          <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 rounded overflow-hidden border border-gray-200 shadow-sm">
-                            <Image
-                              src={sixthImage}
-                              alt="Handmatige kattenbak"
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 640px) 48px, 64px"
-                              quality={90}
-                              loading="lazy"
-                              unoptimized={sixthImage.startsWith('/uploads/')}
-                              placeholder="blur"
-                              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                            />
-                          </div>
-                        )}
+                        {/* ✅ DRY: Gebruik ComparisonImage helper */}
+                        {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" />}
                         <span className="text-sm font-medium text-gray-700">Handmatige kattenbak</span>
                       </div>
                       <div className="flex items-center justify-center">
@@ -319,8 +293,10 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               className={cn(
                 'w-2 h-2 rounded-full transition-all',
                 index === visibleIndex 
-                  ? 'bg-[#3071aa] w-6' 
+                  ? 'w-6' 
                   : 'bg-gray-300 hover:bg-gray-400'
+              }
+              style={index === visibleIndex ? { backgroundColor: BRAND_COLORS_HEX.primary } : {}}
               )}
               aria-label={`Ga naar slide ${index + 1}`}
             />
