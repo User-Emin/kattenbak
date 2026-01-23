@@ -223,8 +223,8 @@ export const DESIGN_SYSTEM = {
       heightPx: 80,
       zIndex: 'z-[200]',
       zIndexValue: 200, // ✅ Z-INDEX WAARDE: Voor vergelijking
-      chatButtonOffset: '140px', // ✅ CHAT BUTTON OFFSET: 80px nav + 60px margin = 140px (veilige ruimte)
-      chatButtonOffsetPx: 140,
+      chatButtonOffset: '100px', // ✅ CHAT BUTTON OFFSET: 80px nav + 20px margin = 100px (dichterbij bottom nav)
+      chatButtonOffsetPx: 100,
       chatButtonZIndex: 'z-[201]', // ✅ CHAT BUTTON Z-INDEX: Boven bottom nav (z-[200])
       chatButtonZIndexValue: 201, // ✅ CHAT BUTTON Z-INDEX WAARDE: Voor vergelijking
     },

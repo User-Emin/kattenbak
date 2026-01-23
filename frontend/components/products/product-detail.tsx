@@ -539,17 +539,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </>
       )}
       
-      {/* Main Product Section - ✅ DESKTOP SPACING: Ruimte onder navbar op desktop, mobiel edge-to-edge */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'px-0 md:px-6 lg:px-8', CONFIG.layout.sectionSpacing, 'pt-0 md:pt-6 lg:pt-8')} style={{ marginTop: 0 }}>
-        {/* Product Grid - ✅ DESKTOP SPACING: Ruimte op desktop, mobiel direct onder navbar */}
+      {/* Main Product Section - ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', 'px-0', CONFIG.layout.sectionSpacing, 'pt-0 md:pt-6 lg:pt-8')} style={{ marginTop: 0 }}>
+        {/* Product Grid - ✅ EDGE-TO-EDGE: Geen padding op zijkanten */}
         <div className={cn(
           'flex flex-col lg:flex-row', 
           'items-start', 
           'mt-0 md:mt-0', // ✅ MOBIEL: Direct onder navbar, DESKTOP: Container padding-top zorgt voor ruimte
           'gap-6 sm:gap-8 md:gap-10 lg:gap-10', // ✅ SYMMETRISCH: Gelijk tussen image en info
           'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
-        )}> {/* ✅ DESKTOP SPACING: Ruimte via container padding-top op desktop */}
-          {/* Left: Image Gallery - ✅ GEEN PADDING MOBIEL: Voor echte edge-to-edge */}
+        )}> {/* ✅ EDGE-TO-EDGE: Geen padding op zijkanten */}
+          {/* Left: Image Gallery - ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten */}
           <div className={cn(
             'flex flex-col', 
             'w-full lg:w-[58%]', // ✅ RESPONSIVE: Full width op mobile, 58% op desktop
@@ -557,17 +557,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             CONFIG.gallery.container.height, 
             'self-start', 
             'gap-3 sm:gap-4 md:gap-4 lg:gap-4',
-            'px-4 md:px-0' // ✅ PADDING: Alleen thumbnails hebben padding, image niet
-          )}> {/* ✅ GEEN PADDING MOBIEL: Image gallery heeft geen padding voor edge-to-edge */}
-            {/* ✅ SEO PHASE 1: Breadcrumb Navigation - DICHTBIJ PRODUCTAFBEELDING (Desktop) */}
+            'px-0' // ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten
+          )}> {/* ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten */}
+            {/* ✅ SEO PHASE 1: Breadcrumb Navigation - DICHTBIJ PRODUCTAFBEELDING (Desktop) - MET PADDING */}
             {!loading && product && (
-              <div className="hidden lg:block mb-4">
+              <div className="hidden lg:block mb-4 px-6 lg:px-8">
                 <BreadcrumbNavigation />
               </div>
             )}
-            {/* ✅ MOBIEL: Breadcrumb boven productafbeelding */}
+            {/* ✅ MOBIEL: Breadcrumb boven productafbeelding - MET PADDING */}
             {!loading && product && (
-              <div className="lg:hidden mb-4">
+              <div className="lg:hidden mb-4 px-4">
                 <BreadcrumbNavigation />
               </div>
             )}
@@ -647,11 +647,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </div>
             </div>
 
-            {/* ✅ THUMBNAILS ONDER: Met padding (px-4 al in parent) */}
+            {/* ✅ THUMBNAILS ONDER: Met padding voor thumbnails alleen */}
             {displayImages.length > 1 && (
               <div className={cn(
                 'flex flex-row gap-2 overflow-x-auto', // ✅ RUIMTE: gap-2 tussen thumbnails
-                'w-full', // ✅ PADDING: Parent heeft al px-4 md:px-0
+                'w-full',
+                'px-4 md:px-6 lg:px-8', // ✅ PADDING: Alleen thumbnails hebben padding (niet de main image)
                 'smooth-scroll',
                 'pb-2' // ✅ MOBILE: Extra padding voor scroll indicator
               )}>
@@ -697,7 +698,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'self-start',
             'mt-6 sm:mt-8 md:mt-0 lg:mt-0', // ✅ SYMMETRISCH: Gelijk spacing op mobile, geen margin op desktop
             'mx-auto lg:mx-0', // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
-            'px-4 md:px-0' // ✅ PADDING: Product info heeft padding op mobiel
+            'px-4 md:px-6 lg:px-8' // ✅ PADDING: Product info heeft padding (niet edge-to-edge)
           )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
             {/* ✅ GEEN EXTRA KAART: Direct op witte achtergrond */}
             <div>
