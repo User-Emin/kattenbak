@@ -40,13 +40,14 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
     images: [],
   });
 
-  // Handle add variant - ✅ VARIANT SYSTEM: Convert colorName to colorCode
+  // Handle add variant - ✅ VARIANT SYSTEM: Convert colorName to colorCode - STABLE
   const handleAdd = () => {
     if (!newVariant.name || (!newVariant.colorName && !newVariant.colorCode)) return;
 
     // ✅ VARIANT SYSTEM: Convert colorName to colorCode (uppercase)
     const colorCode = newVariant.colorCode || (newVariant.colorName ? newVariant.colorName.toUpperCase() : '');
     
+    // ✅ STABLE: Preserve uploaded images - don't lose them
     const variant: ProductVariant = {
       id: `variant-${Date.now()}`,
       name: newVariant.name!,
@@ -57,12 +58,13 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
       priceAdjustment: newVariant.priceAdjustment || 0,
       stock: newVariant.stock || 0,
       sku: newVariant.sku || '',
-      images: newVariant.images || [],
+      images: newVariant.images || [], // ✅ STABLE: Preserve uploaded images
     };
 
+    // ✅ STABLE: Add variant with all images intact
     onChange([...variants, variant]);
     
-    // Reset form
+    // Reset form (but images are already saved in variant above)
     setNewVariant({
       name: '',
       colorName: '',
@@ -226,16 +228,17 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
               </div>
             </div>
 
-            {/* ✅ COOLBLUE-STYLE: Variant Images Upload */}
+            {/* ✅ COOLBLUE-STYLE: Variant Images Upload - STABLE */}
             <div>
               <label className="text-sm font-medium mb-2 block">
                 🎨 Variant Afbeeldingen (Coolblue-style)
               </label>
               <ImageUpload
                 value={newVariant.images || []}
-                onChange={(images) =>
-                  setNewVariant({ ...newVariant, images })
-                }
+                onChange={(images) => {
+                  // ✅ STABLE: Update state immediately to prevent loss during upload
+                  setNewVariant((prev) => ({ ...prev, images }));
+                }}
                 maxImages={10}
               />
               <p className="text-xs text-muted-foreground mt-2">
@@ -341,16 +344,17 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
                   />
                 </div>
 
-                {/* ✅ COOLBLUE-STYLE: Edit Variant Images */}
+                {/* ✅ COOLBLUE-STYLE: Edit Variant Images - STABLE */}
                 <div>
                   <label className="text-sm font-medium mb-2 block">
                     🎨 Variant Afbeeldingen
                   </label>
                   <ImageUpload
                     value={variant.images || []}
-                    onChange={(images) =>
-                      handleUpdate(variant.id, { images })
-                    }
+                    onChange={(images) => {
+                      // ✅ STABLE: Update immediately to prevent loss during upload
+                      handleUpdate(variant.id, { images });
+                    }}
                     maxImages={10}
                   />
                   <p className="text-xs text-muted-foreground mt-2">

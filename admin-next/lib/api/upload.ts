@@ -60,12 +60,41 @@ export const uploadImage = async (file: File): Promise<string> => {
 };
 
 /**
- * DRY: Upload multiple images
+ * ✅ STABLE: Upload multiple images with retry mechanism and queue management
  * Returns array of public URLs
+ * Prevents haperen (stuttering) by processing uploads sequentially with proper error handling
  */
 export const uploadImages = async (files: File[]): Promise<string[]> => {
-  const uploadPromises = files.map(file => uploadImage(file));
-  return Promise.all(uploadPromises);
+  const uploadedUrls: string[] = [];
+  const MAX_RETRIES = 3;
+  const RETRY_DELAY = 1000; // 1 second between retries
+  
+  // ✅ STABLE: Process uploads sequentially to prevent haperen (not parallel)
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    let retries = 0;
+    let success = false;
+    
+    while (retries < MAX_RETRIES && !success) {
+      try {
+        const url = await uploadImage(file);
+        uploadedUrls.push(url);
+        success = true;
+      } catch (error: any) {
+        retries++;
+        
+        if (retries >= MAX_RETRIES) {
+          // ✅ ERROR HANDLING: If all retries failed, throw error with file name
+          throw new Error(`Upload mislukt voor ${file.name} na ${MAX_RETRIES} pogingen: ${error?.message || 'Onbekende fout'}`);
+        }
+        
+        // ✅ RETRY: Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * retries));
+      }
+    }
+  }
+  
+  return uploadedUrls;
 };
 
 

@@ -46,7 +46,7 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
     handleFiles(files);
   };
 
-  // DRY: Real file upload handler
+  // ✅ STABLE: Real file upload handler with better state management
   const handleFiles = async (files: File[]) => {
     // ✅ SECURITY: Pre-validate file sizes before upload (client-side check)
     const MAX_FILE_SIZE_MB = 20;
@@ -73,24 +73,39 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
       return;
     }
 
+    // ✅ STABLE: Lock state to prevent concurrent uploads
+    if (isUploading) {
+      toast.warning('Upload al bezig, even geduld...');
+      return;
+    }
+
     try {
       setIsUploading(true);
       setUploadProgress(`Uploaden ${imageFiles.length} afbeelding(en)...`);
 
-      // Upload files to backend
+      // ✅ STABLE: Upload files sequentially to prevent haperen
       const uploadedUrls = await uploadImages(imageFiles);
       
-      // Add uploaded URLs to existing images
-      const updatedImages = [...value, ...uploadedUrls];
+      // ✅ STABLE: Update state atomically - preserve existing images
+      const currentImages = value || [];
+      const updatedImages = [...currentImages, ...uploadedUrls];
+      
+      // ✅ STABLE: Call onChange immediately to persist state
       onChange(updatedImages);
 
-      toast.success(`${imageFiles.length} afbeelding(en) geüpload!`);
+      // ✅ SUCCESS: Show success message with count
+      toast.success(`${uploadedUrls.length} afbeelding(en) succesvol geüpload!`);
     } catch (error: any) {
       console.error('Upload error:', error);
       // ✅ BETTER ERROR HANDLING: Show detailed error message
       const errorMessage = error?.message || error?.details?.error || error?.details?.message || 'Onbekende fout';
-      const networkError = error?.status === 0 ? 'Netwerkfout: Kan geen verbinding maken met de server' : null;
+      const networkError = error?.status === 0 || error?.code === 'ERR_NETWORK' 
+        ? 'Netwerkfout: Kan geen verbinding maken met de server. Controleer je internetverbinding.' 
+        : null;
       toast.error(networkError || `Upload mislukt: ${errorMessage}`);
+      
+      // ✅ STABLE: Don't clear state on error - keep existing images
+      // State remains unchanged, user can retry
     } finally {
       setIsUploading(false);
       setUploadProgress('');
