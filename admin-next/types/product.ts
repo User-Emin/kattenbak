@@ -23,6 +23,7 @@ export interface Product {
     height: number;
   };
   images: string[];
+  howItWorksImages?: string[]; // ✅ HOW IT WORKS: Specifieke afbeeldingen voor "Hoe werkt het?" sectie (los van variant afbeeldingen)
   videoUrl?: string; // DRY: YouTube/Vimeo URL
   metaTitle?: string;
   metaDescription?: string;
@@ -77,6 +78,7 @@ export interface ProductFormData {
     height: number;
   };
   images: string[];
+  howItWorksImages?: string[]; // ✅ HOW IT WORKS: Specifieke afbeeldingen voor "Hoe werkt het?" sectie (max 6)
   videoUrl?: string; // DRY: Video URL
   metaTitle?: string;
   metaDescription?: string;

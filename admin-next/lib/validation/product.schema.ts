@@ -84,6 +84,19 @@ export const productValidationSchema = z.object({
     .min(1, 'Minimaal 1 afbeelding is verplicht')
     .max(20, 'Maximaal 20 afbeeldingen toegestaan'),
   
+  // ✅ HOW IT WORKS: Specifieke afbeeldingen voor "Hoe werkt het?" sectie (los van variant afbeeldingen)
+  howItWorksImages: z.array(
+    z.string()
+      .min(1, 'Afbeelding pad mag niet leeg zijn')
+      .refine(
+        (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://') || val.startsWith('data:'),
+        'Afbeelding moet een geldige URL of pad zijn (begin met /, http(s)://, of data:)'
+      )
+  )
+    .max(6, 'Maximaal 6 afbeeldingen voor "Hoe werkt het?" sectie')
+    .optional()
+    .default([]),
+  
   // DRY: Optional video URL (YouTube/Vimeo) - truly optional
   videoUrl: z.string()
     .optional()

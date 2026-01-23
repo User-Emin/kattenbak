@@ -117,6 +117,16 @@ export const ProductCreateSchema = z.object({
       )
   ).max(10, 'Maximaal 10 afbeeldingen toegestaan').default([]),
   
+  // ✅ HOW IT WORKS: Specifieke afbeeldingen voor "Hoe werkt het?" sectie (los van variant afbeeldingen)
+  howItWorksImages: z.array(
+    z.string()
+      .min(1, 'Afbeelding pad mag niet leeg zijn')
+      .refine(
+        (val) => val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),
+        'Afbeelding moet een geldige URL of pad zijn (moet beginnen met / of http(s)://)'
+      )
+  ).max(6, 'Maximaal 6 afbeeldingen voor "Hoe werkt het?" sectie').default([]).optional(),
+  
   heroVideoUrl: z.string()
     .refine(
       (val) => !val || val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://'),

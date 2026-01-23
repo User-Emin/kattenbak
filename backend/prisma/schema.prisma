@@ -189,6 +189,9 @@ model Product {
   // Images (array of URLs)
   images Json @default("[]")
 
+  // ✅ HOW IT WORKS: Specifieke afbeeldingen voor "Hoe werkt het?" sectie (los van variant afbeeldingen)
+  howItWorksImages Json @default("[]") @map("how_it_works_images") // Array van 6 afbeeldingen voor stappen
+
   // Video URLs (supports up to 50MB) - ✅ OPTIONAL: Only if columns exist in database
   // heroVideoUrl String? @map("hero_video_url") // 10-20MB, homepage hero background
   // videoUrl     String? @map("video_url") // 20-50MB, product demo + "Zie Het in Actie"

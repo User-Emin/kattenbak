@@ -63,6 +63,7 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
       weight: initialData.weight || 0,
       dimensions: initialData.dimensions || { length: 0, width: 0, height: 0 },
       images: initialData.images,
+      howItWorksImages: initialData.howItWorksImages || [], // ✅ HOW IT WORKS: Specifieke afbeeldingen
       videoUrl: initialData.videoUrl || '', // DRY: Video URL
       variants: initialData.variants || [], // DRY: Variants
       metaTitle: initialData.metaTitle || '',
@@ -85,6 +86,7 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
       weight: 0,
       dimensions: { length: 0, width: 0, height: 0 },
       images: [],
+      howItWorksImages: [], // ✅ HOW IT WORKS: Default empty
       videoUrl: '', // DRY: Default empty
       variants: [], // DRY: Default empty
       metaTitle: '',
@@ -254,6 +256,44 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
                   <FormDescription>
                     Upload een video bestand (MP4, WebM, OGG) of voeg een YouTube/Vimeo link toe.
                     Video verschijnt op product pagina en homepage (als featured product).
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+        </Card>
+
+        {/* ✅ HOW IT WORKS: Specifieke afbeeldingen voor "Hoe werkt het?" sectie */}
+        <Card>
+          <CardContent className="pt-6 space-y-4">
+            <h2 className="text-lg font-semibold">Hoe werkt het? Afbeeldingen</h2>
+            <p className="text-sm text-muted-foreground">
+              Upload specifieke afbeeldingen voor de "Hoe werkt het?" sectie (maximaal 6). 
+              Deze afbeeldingen zijn los van de product/variant afbeeldingen en worden gebruikt voor de 6 stappen.
+            </p>
+            
+            <FormField
+              control={form.control}
+              name="howItWorksImages"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Stap Afbeeldingen (optioneel)</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      value={field.value || []}
+                      onChange={field.onChange}
+                      maxImages={6}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Upload afbeeldingen voor de 6 stappen in "Hoe werkt het?" sectie:
+                    <br />• Stap 1: Stekker erin en klaarzetten
+                    <br />• Stap 2: Grit toevoegen tot MAX lijn
+                    <br />• Stap 3: Afvalzak plaatsen over bak
+                    <br />• Stap 4: Aanzetten en klaar
+                    <br />• Stap 5: Timer instellen via app
+                    <br />• Stap 6: Klaar! Automatisch schoon
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

@@ -18,6 +18,7 @@ export interface Product {
     height?: number;
   } | null;
   images: string[];
+  howItWorksImages?: string[] | null; // ✅ HOW IT WORKS: Specifieke afbeeldingen voor "Hoe werkt het?" sectie (los van variant afbeeldingen)
   heroVideoUrl?: string | null; // 10-20MB MP4 for homepage hero background
   videoUrl?: string | null; // 20-50MB MP4 for product demo + "Zie Het in Actie" (DRY)
   metaTitle: string | null;
