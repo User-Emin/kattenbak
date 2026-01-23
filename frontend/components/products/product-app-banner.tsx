@@ -56,51 +56,57 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
         </div>
       </div>
 
-      {/* ✅ CONTENT: Grid layout met tekst links en screenshot rechts direct in achtergrond */}
+      {/* ✅ CONTENT: Flex layout op mobiel (horizontaal), grid op desktop */}
       <div className={cn(
         'relative z-10',
         'max-w-7xl mx-auto',
-        'grid grid-cols-1 lg:grid-cols-2',
-        'items-start', // ✅ FIX: items-start ipv items-center (geen onnodige verticale centrering)
-        'gap-4 sm:gap-6 md:gap-12 lg:gap-16', // ✅ COMPACT: Minder gap op mobiel
-        'px-4 sm:px-6 md:px-8 lg:px-12',
-        'py-2 sm:py-3 md:py-4 lg:py-5' // ✅ ECHT KORTER: Net meer dan waar tekst stopt (py-2/3/4/5)
+        'flex flex-row items-center', // ✅ MOBIEL: Flex-row voor horizontale layout
+        'lg:grid lg:grid-cols-2', // ✅ DESKTOP: Grid layout
+        'gap-2 sm:gap-3 md:gap-6 lg:gap-12', // ✅ COMPACT: Minder gap (gap-2 op mobiel)
+        'px-2 sm:px-4 md:px-6 lg:px-12', // ✅ COMPACT: Minder padding (px-2 op mobiel)
+        'py-1 sm:py-2 md:py-3 lg:py-4' // ✅ COMPACT: Minimale padding (py-1 op mobiel)
       )}>
-        {/* ✅ LINKS: Tekst over app bediening */}
-        <div className="space-y-2 sm:space-y-3 lg:space-y-4 text-center lg:text-left"> {/* ✅ COMPACT: Minder spacing tussen elementen */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
+        {/* ✅ LINKS: Tekst over app bediening - ✅ MOBIEL: Compact, zelfde lijn als telefoon */}
+        <div className="flex-1 min-w-0 space-y-1 sm:space-y-2 lg:space-y-4 text-left"> {/* ✅ MOBIEL: text-left, compact spacing */}
+          {/* ✅ MOBIEL: Verborgen badge, alleen op desktop */}
+          <div className="hidden lg:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
             <Smartphone className="w-5 h-5" style={{ color: BRAND_COLORS_HEX.primary }} />
-            <span className="text-sm font-semibold" style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ DIK: Semibold zoals stap titels */}
+            <span className="text-sm font-semibold" style={{ color: BRAND_COLORS_HEX.primaryDark }}>
               App Bediening
             </span>
           </div>
 
           <h2 className={cn(
-            'text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl', // ✅ 2 REGELS: Kleinere font zodat het op 2 regels past
-            'font-semibold', // ✅ DIK: Semibold zoals stap titels
+            'text-lg sm:text-xl md:text-2xl lg:text-4xl xl:text-5xl', // ✅ COMPACT: Kleinere fonts op mobiel (text-lg ipv text-2xl)
+            'font-semibold',
             'tracking-tight',
             'leading-tight',
-            'max-w-xl mx-auto lg:mx-0' // ✅ 2 REGELS: Max width zodat het netjes op 2 regels past
+            'lg:max-w-xl' // ✅ DESKTOP: Max width alleen op desktop
           )}
           style={{ color: BRAND_COLORS_HEX.primaryDark }}>
-            Bedien je kattenbak
-            <br />
-            <span style={{ color: BRAND_COLORS_HEX.primary }}>via de app</span>
+            <span className="lg:hidden">App</span> {/* ✅ MOBIEL: Korte versie */}
+            <span className="hidden lg:inline">
+              Bedien je kattenbak
+              <br />
+              <span style={{ color: BRAND_COLORS_HEX.primary }}>via de app</span>
+            </span>
           </h2>
 
+          {/* ✅ MOBIEL: Verborgen beschrijving, alleen op desktop */}
           <p className={cn(
+            'hidden lg:block',
             'text-base sm:text-lg md:text-xl',
             'font-light',
             'leading-relaxed',
-            'max-w-xl mx-auto lg:mx-0'
+            'max-w-xl'
           )}
           style={{ color: '#4b5563' }}>
             Volledige controle over je kattenbak via de smartphone app. 
             Monitor gebruik, pas instellingen aan en bepaal wanneer de kattenbak automatisch moet schoonmaken.
           </p>
 
-          {/* ✅ FEATURES: App features lijst - alleen echte features */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-3"> {/* ✅ COMPACT: Minder gap en padding */}
+          {/* ✅ MOBIEL: Verborgen features, alleen op desktop */}
+          <div className="hidden lg:flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/20 backdrop-blur-sm">
                 <Settings className="w-5 h-5" style={{ color: BRAND_COLORS_HEX.primary }} />
@@ -120,13 +126,13 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           </div>
         </div>
 
-        {/* ✅ RECHTS: Screenshot direct in achtergrond, geen extra kaart, echt groter */}
-        <div className="relative flex items-start justify-center w-full"> {/* ✅ FIX: items-start ipv items-center (geen onnodige verticale centrering) */}
+        {/* ✅ RECHTS: Screenshot direct in achtergrond - ✅ MOBIEL: Zelfde lijn als tekst */}
+        <div className="relative flex items-center justify-center flex-shrink-0"> {/* ✅ MOBIEL: items-center voor zelfde lijn */}
           {/* ✅ SCREENSHOT: Direct in achtergrond, geen kaart styling, echt groter */}
           <div className={cn(
             'relative',
-            'w-full',
-            'max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl 2xl:max-w-4xl', // ✅ ECHT GROTER: Veel groter op alle breakpoints (max-w-md → max-w-4xl)
+            'w-24 h-auto sm:w-32 md:w-40 lg:w-full', // ✅ MOBIEL: Compact (w-24 = 96px), desktop volledig
+            'lg:max-w-md xl:max-w-lg 2xl:max-w-xl', // ✅ DESKTOP: Groter op desktop
             'aspect-[9/19.5]' // ✅ OPTIMAAL: Telefoon aspect ratio
           )}>
             {/* ✅ ECHTE SCREENSHOT: Direct in achtergrond, geen rounded/shadow/container */}
