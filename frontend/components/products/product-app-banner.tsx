@@ -70,14 +70,14 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
         <div className="space-y-4 sm:space-y-6 text-center lg:text-left">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
             <Smartphone className="w-5 h-5" style={{ color: BRAND_COLORS_HEX.primary }} />
-            <span className="text-sm font-medium" style={{ color: BRAND_COLORS_HEX.primaryDark }}>
+            <span className="text-sm font-semibold" style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ DIK: Semibold zoals stap titels */}
               App Bediening
             </span>
           </div>
 
           <h2 className={cn(
             'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
-            'font-light',
+            'font-semibold', // ✅ DIK: Semibold zoals stap titels
             'tracking-tight',
             'leading-tight'
           )}
@@ -141,9 +141,9 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
                 'aspect-[9/19.5]',
                 'min-h-[400px] sm:min-h-[500px] md:min-h-[600px]' // ✅ OPTIMAAL: Grotere hoogte voor screenshot
               )}>
-                {/* ✅ ECHTE SCREENSHOT: App bediening screenshot in optimale grootte */}
+                {/* ✅ ECHTE SCREENSHOT: App bediening screenshot uit bijlage (geoptimaliseerd) */}
                 <Image
-                  src="/images/app-bediening-smart.webp"
+                  src="/images/app-screenshot-optimized.webp" // ✅ ECHT: Screenshot uit bijlage (geoptimaliseerd)
                   alt="App bediening kattenbak"
                   fill
                   className="object-contain" // ✅ OPTIMAAL: Behoud aspect ratio, volledig zichtbaar
@@ -151,6 +151,13 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
                   quality={90} // ✅ OPTIMAAL: Hoge kwaliteit voor screenshot
                   priority={false}
                   loading="lazy"
+                  onError={(e) => {
+                    // ✅ FALLBACK: Als geoptimaliseerde screenshot niet bestaat, gebruik bestaande
+                    const target = e.target as HTMLImageElement;
+                    if (target && !target.src.includes('app-bediening-smart')) {
+                      target.src = '/images/app-bediening-smart.webp';
+                    }
+                  }}
                 />
 
                 {/* ✅ NOTCH: Telefoon notch */}
