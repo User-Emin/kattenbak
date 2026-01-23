@@ -30,7 +30,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
     <div className={cn(
       'relative w-full',
       'overflow-hidden',
-      'my-8 sm:my-10 md:my-12 lg:my-16',
+      'my-4 sm:my-6 md:my-8 lg:my-10', // ✅ COMPACT: Minder margin voor compacte banner
       className
     )}
     style={{
@@ -64,10 +64,10 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
         'items-center',
         'gap-4 sm:gap-6 md:gap-12 lg:gap-16', // ✅ COMPACT: Minder gap op mobiel
         'px-4 sm:px-6 md:px-8 lg:px-12',
-        'py-4 sm:py-6 md:py-8 lg:py-10' // ✅ KORTER: Verticaal veel korter (py-4/6/8/10 ipv py-6/8/12/16)
+        'py-2 sm:py-3 md:py-4 lg:py-5' // ✅ ECHT KORTER: Net meer dan waar tekst stopt (py-2/3/4/5)
       )}>
         {/* ✅ LINKS: Tekst over app bediening */}
-        <div className="space-y-3 sm:space-y-4 lg:space-y-6 text-center lg:text-left">
+        <div className="space-y-2 sm:space-y-3 lg:space-y-4 text-center lg:text-left"> {/* ✅ COMPACT: Minder spacing tussen elementen */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
             <Smartphone className="w-5 h-5" style={{ color: BRAND_COLORS_HEX.primary }} />
             <span className="text-sm font-semibold" style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ DIK: Semibold zoals stap titels */}
@@ -100,7 +100,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           </p>
 
           {/* ✅ FEATURES: App features lijst - alleen echte features */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-3"> {/* ✅ COMPACT: Minder gap en padding */}
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/20 backdrop-blur-sm">
                 <Settings className="w-5 h-5" style={{ color: BRAND_COLORS_HEX.primary }} />
