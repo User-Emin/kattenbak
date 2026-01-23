@@ -232,8 +232,13 @@ export const PRODUCT_PAGE_CONFIG = {
       },
     },
     image: {
-      aspectRatio: 'aspect-[5/3]', // ✅ GROTER: Bredere afbeeldingen voor duidelijkheid (was aspect-[6/3])
+      aspectRatio: 'aspect-[3/4] md:aspect-[4/5]', // ✅ VERTICAAL: Meer verticale lengte voor acceptabelere groottes (was aspect-[5/3])
       borderRadius: 'rounded-xl md:rounded-2xl lg:rounded-3xl', // ✅ RONDER: Ronde hoeken (rounded-xl op mobiel, rounded-2xl op tablet, rounded-3xl op desktop)
+      borderRadiusValue: {
+        mobile: '0.75rem', // 12px - rounded-xl
+        tablet: '1rem', // 16px - rounded-2xl
+        desktop: '1.5rem', // 24px - rounded-3xl
+      },
       objectFit: 'object-contain', // ✅ VOLLEDIG ZICHTBAAR: Zigzag foto's volledig zichtbaar (niet object-cover)
       bgColor: 'bg-white', // ✅ WIT: Witte achtergrond voor afbeeldingen
       gap: 'gap-0', // ✅ GEEN GAP: Geen grijze tussenruimtes tussen afbeeldingen

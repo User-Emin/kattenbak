@@ -72,24 +72,31 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
               key={index} 
               className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
             >
-              {/* Image - ✅ EXACT ZELFDE: Identiek aan product detail - RONDE HOEKEN */}
+              {/* Image - ✅ EXACT ZELFDE: Identiek aan product detail - RONDE HOEKEN ECHT TOEGEPAST */}
               <div className={cn(
                 'relative',
                 'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
                 isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right,
-                CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Container heeft juiste ratio
+                CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Meer verticale lengte (aspect-[3/4] mobiel, aspect-[4/5] desktop)
                 CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Container heeft ronde hoeken
                 CONFIG.featureSection.image.bgColor,
-                'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding binnen container blijft
-              )}>
+                'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding binnen container blijft met ronde hoeken
+              )}
+              style={{
+                borderRadius: typeof window !== 'undefined' && window.innerWidth >= 1024 
+                  ? CONFIG.featureSection.image.borderRadiusValue.desktop
+                  : typeof window !== 'undefined' && window.innerWidth >= 768
+                  ? CONFIG.featureSection.image.borderRadiusValue.tablet
+                  : CONFIG.featureSection.image.borderRadiusValue.mobile
+              }}>
                 <Image
                   src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
                   alt={feature.title}
                   fill // ✅ FILL: Vult container exact op
-                  className={cn(
-                    "object-contain", // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
-                    CONFIG.featureSection.image.borderRadius // ✅ RONDE HOEKEN: Image heeft ook ronde hoeken
-                  )}
+                  className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
+                  style={{
+                    borderRadius: 'inherit' // ✅ RONDE HOEKEN: Erft borderRadius van parent container
+                  }}
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag (fastest loading)
                   quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster)
                   loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)
