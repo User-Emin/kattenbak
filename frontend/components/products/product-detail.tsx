@@ -696,11 +696,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'px-4 md:px-6 lg:px-8', // ✅ PADDING: Product info heeft padding (niet edge-to-edge, alleen productafbeelding is edge-to-edge)
             'lg:pt-0' // ✅ DESKTOP: Geen padding-top op desktop
           )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
-            {/* ✅ DESKTOP: Spacer voor breadcrumb hoogte - Productnaam begint opzelfde hoogte als afbeelding */}
+            {/* ✅ DESKTOP: Spacer voor breadcrumb hoogte - Productnaam begint opzelfde hoogte als afbeelding top */}
             {!loading && product && (
-              <div className="hidden lg:block mb-4 h-0 invisible">
+              <div className="hidden lg:block mb-4 invisible">
                 <div className="px-6 lg:px-8">
-                  <div className="h-6" /> {/* ✅ SPACER: Zelfde hoogte als breadcrumb (mb-4 + breadcrumb hoogte) */}
+                  <div className="h-6 flex items-center text-sm" /> {/* ✅ SPACER: Exact zelfde hoogte als breadcrumb (mb-4 + h-6 met items-center = ~40px totaal) */}
                 </div>
               </div>
             )}
