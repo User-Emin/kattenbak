@@ -56,7 +56,7 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
         </div>
       </div>
 
-      {/* ✅ CONTENT: Grid layout met tekst links en telefoon rechts */}
+      {/* ✅ CONTENT: Grid layout met tekst links en screenshot rechts direct in achtergrond */}
       <div className={cn(
         'relative z-10',
         'max-w-7xl mx-auto',
@@ -119,11 +119,11 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
           </div>
         </div>
 
-        {/* ✅ RECHTS: Screenshot direct in banner zonder witte achtergrond */}
+        {/* ✅ RECHTS: Screenshot direct in achtergrond, echt groter */}
         <div className="relative flex items-center justify-center">
-          {/* ✅ SCREENSHOT: Direct in banner, transparant, geen witte achtergrond */}
-          <div className="relative w-full max-w-md">
-            {/* ✅ ECHTE SCREENSHOT: Direct zichtbaar, transparant, in banner */}
+          {/* ✅ SCREENSHOT: Direct in achtergrond, echt groter, transparant */}
+          <div className="relative w-full max-w-lg lg:max-w-xl xl:max-w-2xl"> {/* ✅ GROTER: max-w-lg → max-w-xl → max-w-2xl */}
+            {/* ✅ ECHTE SCREENSHOT: Direct in achtergrond, echt groter */}
             <div className={cn(
               'relative',
               'w-full',
@@ -131,14 +131,14 @@ export function ProductAppBanner({ className }: ProductAppBannerProps) {
               'rounded-2xl sm:rounded-3xl', // ✅ OPTIMAAL: Afgeronde hoeken
               'overflow-hidden',
               'shadow-2xl'
-              // ✅ GEEN bg-white: Transparant achtergrond
+              // ✅ GEEN bg-white: Transparant achtergrond, direct in banner
             )}>
               <Image
                 src="/images/app-screenshot-optimized.webp" // ✅ ECHT: Screenshot uit bijlage (geoptimaliseerd)
                 alt="App bediening kattenbak"
                 fill
                 className="object-contain" // ✅ OPTIMAAL: Behoud aspect ratio, volledig zichtbaar
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px" // ✅ OPTIMAAL: Responsive sizes
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px" // ✅ GROTER: Responsive sizes verhoogd
                 quality={90} // ✅ OPTIMAAL: Hoge kwaliteit voor screenshot
                 priority={false}
                 loading="lazy"
