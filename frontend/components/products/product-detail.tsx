@@ -578,15 +578,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           'gap-6 sm:gap-8 md:gap-10 lg:gap-10', // ✅ SYMMETRISCH: Gelijk tussen image en info
           'mb-6 sm:mb-8 md:mb-10 lg:mb-10' // ✅ SYMMETRISCH: Gelijk onder
         )}> {/* ✅ EDGE-TO-EDGE: Geen padding op zijkanten */}
-          {/* Left: Image Gallery - ✅ DESKTOP: Thumbnails links verticaal, MOBIEL: Thumbnails onder horizontaal */}
+          {/* Left: Image Gallery - ✅ STICKY: Blijft in beeld terwijl pagina scrollt */}
           <div className={cn(
             'flex flex-col', // ✅ BASE: Verticale layout
             'w-full lg:w-[45%]', // ✅ DESKTOP: Kleiner (45% ipv 58%) voor directer zichtbaar
-            CONFIG.gallery.container.sticky, 
-            CONFIG.gallery.container.height, 
+            'lg:sticky lg:top-28', // ✅ STICKY: Afbeelding blijft in beeld op desktop (top-28 = onder navbar)
+            'lg:h-fit', // ✅ HEIGHT: Fit content
             'self-start', 
             'px-0' // ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten
-          )}> {/* ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten */}
+          )}> {/* ✅ STICKY: Afbeelding blijft zichtbaar terwijl je scrollt */}
             {/* ✅ SEO PHASE 1: Breadcrumb Navigation - EDGE-TO-EDGE: 0 padding tot navbar (legaal voor SEO) */}
             {!loading && product && (
               <div className="hidden lg:block mb-4 px-0 w-full">
@@ -729,7 +729,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             </div>
           </div>
 
-          {/* Right: Product Info - ✅ DESKTOP: Onafhankelijk scrollbaar, afbeelding blijft stabiel */}
+          {/* Right: Product Info - ✅ DESKTOP: Normaal scrollbaar, afbeelding is sticky */}
           <div className={cn(
             'flex flex-col', 
             'w-full lg:w-[55%]', // ✅ DESKTOP: Meer ruimte (55% ipv 42%) voor directer zichtbaar, MOBIEL: Full width
@@ -737,11 +737,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'mt-6 sm:mt-8 md:mt-0 lg:mt-0', // ✅ SYMMETRISCH: Gelijk spacing op mobile, geen margin op desktop
             'mx-auto lg:mx-0', // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
             'px-4 md:px-6 lg:px-8', // ✅ PADDING: Product info heeft padding (niet edge-to-edge, alleen productafbeelding is edge-to-edge)
-            'lg:pt-0', // ✅ DESKTOP: Geen padding-top op desktop
-            'lg:max-h-[calc(100vh-6rem)]', // ✅ STICKY: Max hoogte voor onafhankelijk scrollen op desktop
-            'lg:overflow-y-auto', // ✅ STICKY: Scroll binnen info sectie, afbeelding blijft stabiel
-            'lg:scrollbar-thin lg:scrollbar-thumb-gray-300 lg:scrollbar-track-transparent' // ✅ SMOOTH: Subtiele scrollbar
-          )}> {/* ✅ ONAFHANKELIJK SCROLL: Info scrollt, afbeelding stabiel */}
+            'lg:pt-0' // ✅ DESKTOP: Geen padding-top op desktop
+          )}> {/* ✅ NORMAAL SCROLL: Pagina scrollt, afbeelding blijft sticky in beeld */}
             {/* ✅ DESKTOP: Spacer voor breadcrumb hoogte - Productnaam begint opzelfde hoogte als afbeelding top */}
             {!loading && product && (
               <div className="hidden lg:block mb-4 invisible">

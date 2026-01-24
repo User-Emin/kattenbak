@@ -141,24 +141,6 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;  /* Chrome, Safari and Opera */
   }
-
-  /* ✅ SCROLLBAR THIN: Subtiele scrollbar voor product info sectie */
-  .lg\:scrollbar-thin {
-    scrollbar-width: thin;  /* Firefox */
-  }
-  .lg\:scrollbar-thin::-webkit-scrollbar {
-    width: 6px;  /* Chrome, Safari and Opera */
-  }
-  .lg\:scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
-    background-color: #d1d5db;
-    border-radius: 3px;
-  }
-  .lg\:scrollbar-thumb-gray-300::-webkit-scrollbar-thumb:hover {
-    background-color: #9ca3af;
-  }
-  .lg\:scrollbar-track-transparent::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
 }
 
 /* Verberg hCaptcha badge */
