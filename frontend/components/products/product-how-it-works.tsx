@@ -147,40 +147,14 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
   return (
     <div className={cn(
       'w-full', // ✅ EDGE-TO-EDGE: Volledige breedte
-      'relative', // ✅ GRAFISCH: Voor decoratieve elementen
-      'overflow-hidden', // ✅ GRAFISCH: Voorkom overflow van decoratieve elementen
       'py-8 sm:py-12 md:py-14 lg:py-16', // ✅ COMPACT: Minder padding op desktop
       className
-    )}
-    style={{
-      background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}08 0%, ${BRAND_COLORS_HEX.primary}12 50%, ${BRAND_COLORS_HEX.primaryDark}08 100%)`, // ✅ BLAUWERIG: Subtiele blauwe gradient achtergrond
-    }}>
-      {/* ✅ GRAFISCH: Decoratieve elementen */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* ✅ GRAFISCH: Subtiele cirkels voor diepte */}
-        <div 
-          className="absolute -top-20 -right-20 w-64 h-64 rounded-full opacity-5"
-          style={{
-            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primary} 0%, transparent 70%)`,
-            animation: 'pulse 8s ease-in-out infinite',
-          }}
-        />
-        <div 
-          className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-5"
-          style={{
-            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primaryDark} 0%, transparent 70%)`,
-            animation: 'pulse 10s ease-in-out infinite',
-            animationDelay: '2s',
-          }}
-        />
-      </div>
-      
+    )}>
       {/* ✅ CONTENT: Container met padding */}
       <div className={cn(
         CONFIG.layout.maxWidth,
         'mx-auto',
-        CONFIG.layout.containerPadding,
-        'relative z-10' // ✅ GRAFISCH: Boven decoratieve elementen
+        CONFIG.layout.containerPadding
       )}>
         {/* ✅ TITEL: Direct in achtergrond met smooth animatie */}
         <div className={cn(
