@@ -247,7 +247,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                 )}
                 style={{ 
                   borderColor: `${BRAND_COLORS_HEX.primary}30`, // ✅ BLAUWERIG: Iets meer zichtbare border
-                  background: `linear-gradient(135deg, #ffffff 0%, ${BRAND_COLORS_HEX.primaryLight}02 100%)`, // ✅ BLAUWERIG: Zeer subtiele blauwe gradient in card
+                  background: '#ffffff', // ✅ WIT: Puur witte achtergrond (geen gradient)
                 }}>
                 {/* ✅ DYNAMISCH: Product foto uit admin (via productImages prop) */}
                 {step.image && (
@@ -327,10 +327,10 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                 <div className="flex-1 space-y-1.5 sm:space-y-2"> {/* ✅ COMPACT: Minder spacing */}
                   <h3 className={cn(
                     'text-lg sm:text-xl md:text-2xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
-                    'font-semibold', // ✅ LEVENDIG: Semibold voor levendige titel
+                    'font-bold', // ✅ BOLD: Voor betere gradient zichtbaarheid
                     'tracking-tight'
                   )}
-                  style={{ color: BRAND_COLORS_HEX.primaryDark }}> {/* ✅ BLAUW: Donkerder blauw */}
+                  style={CONFIG.featureSection.text.title.gradient}> {/* ✅ GRADIENT: Via CONFIG (consistent met feature sectie) */}
                     {step.title}
                   </h3>
                   <p className={cn(
