@@ -22,6 +22,8 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<string>('');
+  const [replaceIndex, setReplaceIndex] = useState<number | null>(null); // ✅ DRY: Track which image to replace
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null); // ✅ UX: Visual feedback for replace
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -162,6 +164,77 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
     onChange(newImages);
   };
 
+  // ✅ DRY: Replace specific image at index (drag-to-replace functionality)
+  const handleReplaceImage = async (index: number, file: File) => {
+    // ✅ SECURITY: Validate file size
+    const MAX_FILE_SIZE_MB = 20;
+    const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+    
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+      toast.error(`Bestand te groot: ${file.name} (${fileSizeMB}MB). Maximum ${MAX_FILE_SIZE_MB}MB.`);
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Alleen afbeeldingen zijn toegestaan');
+      return;
+    }
+
+    if (isUploading) {
+      toast.warning('Upload al bezig, even geduld...');
+      return;
+    }
+
+    try {
+      setIsUploading(true);
+      setUploadProgress(`Vervangen afbeelding ${index + 1}...`);
+
+      // ✅ Upload single replacement image
+      const uploadedUrls = await uploadImages([file]);
+      
+      if (uploadedUrls.length > 0) {
+        // ✅ DRY: Replace at specific index
+        const newImages = [...value];
+        newImages[index] = uploadedUrls[0];
+        onChange(newImages);
+        toast.success(`Afbeelding ${index + 1} succesvol vervangen!`);
+      }
+    } catch (error: any) {
+      console.error('Replace error:', error);
+      const errorMessage = error?.message || 'Onbekende fout';
+      toast.error(`Vervangen mislukt: ${errorMessage}`);
+    } finally {
+      setIsUploading(false);
+      setUploadProgress('');
+      setReplaceIndex(null);
+    }
+  };
+
+  // ✅ DRY: Handle drop on specific image for replacement
+  const handleImageDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOverIndex(index);
+  };
+
+  const handleImageDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOverIndex(null);
+  };
+
+  const handleImageDrop = async (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOverIndex(null);
+    
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length > 0 && files[0].type.startsWith('image/')) {
+      await handleReplaceImage(index, files[0]);
+    }
+  };
+
   const handleAddUrl = () => {
     const url = prompt('Voer een image URL in:');
     if (url && url.trim()) {
@@ -220,7 +293,7 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
         )}
       </div>
 
-      {/* Image previews */}
+      {/* Image previews - ✅ DRY: Met drag-to-replace functionaliteit */}
       {value.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {value.filter(img => img && img.trim() !== '').map((image, index) => {
@@ -228,11 +301,22 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
             const isAfterFourth = index >= 4;
             const objectFit = isAfterFourth ? 'object-contain' : 'object-cover';
             const bgColor = isAfterFourth ? 'bg-gray-900' : 'bg-muted';
+            const isDragOver = dragOverIndex === index;
             
             return (
               <div
                 key={index}
-                className={`relative aspect-square rounded-lg border overflow-hidden group ${bgColor}`}
+                className={cn(
+                  'relative aspect-square rounded-lg border-2 overflow-hidden group transition-all',
+                  bgColor,
+                  isDragOver 
+                    ? 'border-primary border-dashed scale-105 ring-2 ring-primary/50' 
+                    : 'border-transparent hover:border-primary/30'
+                )}
+                // ✅ DRY: Drag handlers voor vervangen
+                onDragOver={(e) => handleImageDragOver(e, index)}
+                onDragLeave={handleImageDragLeave}
+                onDrop={(e) => handleImageDrop(e, index)}
               >
                 {image && image.trim() ? (
                   <img
@@ -243,7 +327,7 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
                         : `${typeof window !== 'undefined' ? window.location.origin : ''}${image.startsWith('/') ? image : '/' + image}`
                     }
                     alt={`Afbeelding ${index + 1}`}
-                    className={`w-full h-full ${objectFit}`}
+                    className={`w-full h-full ${objectFit} pointer-events-none`}
                     onError={(e) => {
                       // Fallback for broken images
                       (e.target as HTMLImageElement).src = 'https://placehold.co/400x400/666/fff?text=Fout';
@@ -254,6 +338,17 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
                     <ImageIcon className="h-12 w-12 text-muted-foreground" />
                   </div>
                 )}
+                
+                {/* ✅ DRY: Visual feedback bij drag-over voor vervangen */}
+                {isDragOver && (
+                  <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
+                    <div className="bg-primary text-white px-3 py-2 rounded-lg text-sm font-medium shadow-lg">
+                      🔄 Vervangen
+                    </div>
+                  </div>
+                )}
+                
+                {/* ✅ Remove button */}
                 <Button
                   type="button"
                   variant="destructive"
@@ -264,6 +359,11 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
                 >
                   <X className="h-4 w-4" />
                 </Button>
+                
+                {/* ✅ Index indicator */}
+                <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                  {index + 1}
+                </div>
               </div>
             );
           })}
@@ -284,7 +384,7 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
 
       {/* Help text */}
       <p className="text-xs text-muted-foreground">
-        💡 Tip: Upload files worden naar de server gestuurd en krijgen een permanente URL
+        💡 Tip: Sleep een afbeelding op een bestaande foto om deze direct te vervangen
       </p>
     </div>
   );
