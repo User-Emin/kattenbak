@@ -318,36 +318,19 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                   </p>
                 </div>
 
-                {/* ✅ PIJL: Webshop blauw pijl tussen stappen met smooth animatie */}
-                {!isLast && (
-                  <div className={cn(
-                    'hidden sm:flex',
-                    'flex-col items-center',
-                    'justify-center',
-                    'flex-shrink-0',
-                    'w-6 h-6', // ✅ COMPACT: Kleinere pijl
-                    'transition-transform duration-500 ease-out' // ✅ SMOOTH: Smooth pijl animatie
-                  )}>
-                    <ArrowRight 
-                      className="w-5 h-5 rotate-90 sm:rotate-0 transition-all duration-500 hover:scale-110" 
-                      style={{ 
-                        color: BRAND_COLORS_HEX.primary,
-                        filter: `drop-shadow(0 2px 4px ${BRAND_COLORS_HEX.primary}30)`, // ✅ GRAFISCH: Subtiele glow
-                      }} 
-                    /> {/* ✅ BLAUW: Webshop blauw */}
-                  </div>
-                )}
               </div>
 
-                {/* ✅ MOBIEL PIJL: Verticale pijl met webshop blauw en smooth animatie */}
+                {/* ✅ PIJL: Onder de kaart op zowel mobiel als desktop */}
                 {!isLast && (
                   <div className={cn(
-                    'flex sm:hidden',
+                    'flex',
                     'justify-center',
-                    'my-3', // ✅ COMPACT: Minder margin
-                    'animate-bounce' // ✅ SMOOTH: Bounce animatie voor pijl
+                    'my-3 md:my-4', // ✅ SPACING: Margin boven en onder pijl
                   )}>
-                    <ArrowRight className="w-5 h-5 rotate-90 transition-transform duration-300" style={{ color: BRAND_COLORS_HEX.primary }} /> {/* ✅ BLAUW: Webshop blauw */}
+                    <ArrowRight 
+                      className="w-5 h-5 md:w-6 md:h-6 rotate-90 transition-transform duration-300" 
+                      style={{ color: BRAND_COLORS_HEX.primary }} 
+                    /> {/* ✅ BLAUW: Webshop blauw, naar beneden gericht */}
                   </div>
                 )}
               </div>
