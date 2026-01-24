@@ -909,78 +909,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs met DIKgedrukte woorden zoals "Gratis verzending" */}
+              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs grijs en iets groter (niet dikgedrukt) */}
               {PRODUCT_CONTENT.serviceUsps.length > 0 && (
-                <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
-                  {PRODUCT_CONTENT.serviceUsps.map((usp, index) => {
-                    // ✅ DIKGEDRUKTE WOORDEN: Bepaalde woorden dikgedrukt zoals bij "Gratis verzending • Bezorgtijd: 1-2 werkdagen"
-                    const renderUSPText = (text: string) => {
-                      // ✅ DIKGEDRUKTE WOORDEN: Exacte phrases die dikgedrukt moeten worden
-                      const boldPhrases = [
-                        'Volledig automatisch',
-                        'App bediening',
-                        'Binnen 30 dagen',
-                        '1 jaar garantie',
-                        'Zelfreinigend systeem',
-                        'Hygiënisch',
-                        'gratis retour',
-                      ];
-                      
-                      // Split op bullet points
-                      const parts = text.split(' • ');
-                      return parts.map((part, partIndex) => {
-                        // Check of dit deel een bold phrase bevat
-                        const matchedPhrase = boldPhrases.find(phrase => 
-                          part.toLowerCase().includes(phrase.toLowerCase())
-                        );
-                        
-                        if (matchedPhrase) {
-                          // Vind de exacte positie van de phrase (case-insensitive)
-                          const lowerPart = part.toLowerCase();
-                          const lowerPhrase = matchedPhrase.toLowerCase();
-                          const phraseIndex = lowerPart.indexOf(lowerPhrase);
-                          
-                          if (phraseIndex !== -1) {
-                            const beforePhrase = part.substring(0, phraseIndex);
-                            const phraseText = part.substring(phraseIndex, phraseIndex + matchedPhrase.length);
-                            const afterPhrase = part.substring(phraseIndex + matchedPhrase.length);
-                            
-                            return (
-                              <span key={partIndex}>
-                                {beforePhrase}
-                                <span style={{ fontWeight: 600 }}>{phraseText}</span>
-                                {afterPhrase}
-                                {partIndex < parts.length - 1 && ' • '}
-                              </span>
-                            );
-                          }
-                        }
-                        
-                        // Geen match, toon gewoon de tekst
-                        return (
-                          <span key={partIndex}>
-                            {part}
-                            {partIndex < parts.length - 1 && ' • '}
-                          </span>
-                        );
-                      });
-                    };
-                    
-                    return (
-                      <div key={index} className="flex items-center gap-2 text-sm sm:text-base">
-                        {/* ✅ BLAUW VIJKJE: Exact blauw #3071aa - alleen vinkje is blauw */}
-                        <Check
-                          className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
-                          strokeWidth={3}
-                          style={{ color: BRAND_COLORS_HEX.primary }}
-                        />
-                        {/* ✅ DIKGEDRUKTE TEKST: Bepaalde woorden dikgedrukt zoals "Gratis verzending" */}
-                        <span style={{ color: DESIGN_SYSTEM.colors.text.primary }} className="font-medium">
-                          {renderUSPText(usp.text)}
-                        </span>
-                      </div>
-                    );
-                  })}
+                <div className="flex flex-col gap-2.5 sm:gap-3 mb-4 sm:mb-5">
+                  {PRODUCT_CONTENT.serviceUsps.map((usp, index) => (
+                    <div key={index} className="flex items-center gap-2.5 text-base sm:text-lg">
+                      {/* ✅ BLAUW VIJKJE: Exact blauw #3071aa - alleen vinkje is blauw */}
+                      <Check
+                        className="w-5 h-5 sm:w-5 sm:h-5 flex-shrink-0"
+                        strokeWidth={2.5}
+                        style={{ color: BRAND_COLORS_HEX.primary }}
+                      />
+                      {/* ✅ GRIJZE TEKST: Niet dikgedrukt, grijs, iets groter */}
+                      <span className="text-gray-600 font-normal">
+                        {usp.text}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               )}
 
