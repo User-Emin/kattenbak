@@ -166,14 +166,14 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
       {/* ✅ RESPONSIVE TABLE: Desktop compact, mobiel swipe-vriendelijk */}
       {/* Desktop Table - ✅ SMOOTH: Vinkjes symmetrisch gecentreerd, duidelijke scheiding */}
       <div className="hidden md:block overflow-x-auto">
-        <table className="w-full border-collapse">
-          <thead className="bg-gray-50 border-b-2 border-gray-200">
+        <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
+          <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 w-2/5 border-r border-gray-200">
+              <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 w-2/5 border-b-2 border-r border-gray-300">
                 Feature
               </th>
               <th 
-                className="px-6 py-5 text-center text-sm font-semibold text-white w-[30%] border-r border-gray-200" 
+                className="px-6 py-5 text-center text-sm font-semibold text-white w-[30%] border-b-2 border-r border-gray-300" 
                 style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
               >
                 <div className="flex flex-col items-center justify-center gap-3">
@@ -186,7 +186,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   <span>Automatische kattenbak</span>
                 </div>
               </th>
-              <th className="px-6 py-5 text-center text-sm font-semibold text-gray-700 bg-gray-100 w-[30%]">
+              <th className="px-6 py-5 text-center text-sm font-semibold text-gray-700 bg-gray-100 w-[30%] border-b-2 border-gray-300">
                 <div className="flex flex-col items-center justify-center gap-3">
                   {/* ✅ DESKTOP: Afbeelding in header voor Handmatige kattenbak */}
                   {sixthImage && (
@@ -199,27 +199,27 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody>
             {comparisonData.map((row, index) => (
               <tr
                 key={index}
                 className={cn(
                   'transition-all duration-200',
-                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30',
+                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50',
                   row.highlight && index === 0 && 'bg-blue-50/70 border-l-4',
                   row.highlight && index !== 0 && 'bg-blue-50/50'
                 )}
                 style={row.highlight && index === 0 ? { borderLeftColor: BRAND_COLORS_HEX.primary } : {}}
               >
                 <td className={cn(
-                  'px-6 py-4 text-sm font-medium border-r border-gray-100',
+                  'px-6 py-4 text-sm font-medium border-b border-r border-gray-200',
                   row.highlight ? 'text-gray-900' : 'text-gray-900'
                 )} style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : {}}>
                   {row.feature}
                 </td>
                 {/* ✅ SYMMETRISCH: Vinkjes perfect gecentreerd onder kolomnamen */}
                 <td className={cn(
-                  'px-6 py-4 border-r border-gray-100',
+                  'px-6 py-4 border-b border-r border-gray-200',
                   row.highlight && index === 0 && 'bg-blue-50/70',
                   row.highlight && index !== 0 && 'bg-blue-50/50'
                 )}>
@@ -228,8 +228,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   </div>
                 </td>
                 <td className={cn(
-                  'px-6 py-4',
-                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'
+                  'px-6 py-4 border-b border-gray-200',
+                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
                 )}>
                   <div className="flex items-center justify-center">
                     {renderValue(row.competitor, false)}
