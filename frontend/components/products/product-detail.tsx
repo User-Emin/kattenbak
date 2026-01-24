@@ -729,7 +729,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             </div>
           </div>
 
-          {/* Right: Product Info - ✅ DESKTOP: Meer ruimte (55% ipv 42%) voor directer zichtbaar */}
+          {/* Right: Product Info - ✅ DESKTOP: Onafhankelijk scrollbaar, afbeelding blijft stabiel */}
           <div className={cn(
             'flex flex-col', 
             'w-full lg:w-[55%]', // ✅ DESKTOP: Meer ruimte (55% ipv 42%) voor directer zichtbaar, MOBIEL: Full width
@@ -737,8 +737,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'mt-6 sm:mt-8 md:mt-0 lg:mt-0', // ✅ SYMMETRISCH: Gelijk spacing op mobile, geen margin op desktop
             'mx-auto lg:mx-0', // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop
             'px-4 md:px-6 lg:px-8', // ✅ PADDING: Product info heeft padding (niet edge-to-edge, alleen productafbeelding is edge-to-edge)
-            'lg:pt-0' // ✅ DESKTOP: Geen padding-top op desktop
-          )}> {/* ✅ SYMMETRISCH: Perfecte balans */}
+            'lg:pt-0', // ✅ DESKTOP: Geen padding-top op desktop
+            'lg:max-h-[calc(100vh-6rem)]', // ✅ STICKY: Max hoogte voor onafhankelijk scrollen op desktop
+            'lg:overflow-y-auto', // ✅ STICKY: Scroll binnen info sectie, afbeelding blijft stabiel
+            'lg:scrollbar-thin lg:scrollbar-thumb-gray-300 lg:scrollbar-track-transparent' // ✅ SMOOTH: Subtiele scrollbar
+          )}> {/* ✅ ONAFHANKELIJK SCROLL: Info scrollt, afbeelding stabiel */}
             {/* ✅ DESKTOP: Spacer voor breadcrumb hoogte - Productnaam begint opzelfde hoogte als afbeelding top */}
             {!loading && product && (
               <div className="hidden lg:block mb-4 invisible">
