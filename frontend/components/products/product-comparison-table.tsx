@@ -145,7 +145,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
   };
 
   return (
-    <div className="w-full bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
+    <div 
+      className="w-full bg-white rounded-xl border-2 shadow-lg overflow-hidden"
+      style={{ 
+        borderColor: BRAND_COLORS_HEX.primary,
+        boxShadow: `0 4px 20px ${BRAND_COLORS_HEX.primary}20`,
+      }}
+    >
       {/* Header - ✅ DRY: Gebruik BRAND_COLORS_HEX */}
       <div 
         className="text-white px-4 sm:px-6 py-3 sm:py-4"
