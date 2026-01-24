@@ -247,10 +247,17 @@ export const PRODUCT_PAGE_CONFIG = {
       container: 'space-y-2 md:space-y-6 w-full md:w-auto', // ✅ MOBIEL: ECHT MINDER spacing tussen titel en beschrijving (space-y-2 = 8px ipv space-y-3)
       title: {
         fontSize: 'text-xl sm:text-2xl lg:text-3xl', // ✅ MOBIEL: Kleiner op mobiel zodat titel op 1 regel past (text-xl = 20px ipv text-3xl = 30px)
-        fontWeight: 'font-medium', // ✅ DUNNER: Exact zoals productnaam (font-medium ipv font-semibold)
-        textColor: 'text-black', // ✅ ZWARTER: Volledig zwart voor zigzag titles
+        fontWeight: 'font-bold', // ✅ BOLD: Voor betere gradient zichtbaarheid
+        textColor: 'text-black', // ✅ FALLBACK: Zwart als gradient niet werkt
         letterSpacing: 'tracking-tight', // ✅ EXACT ZELFDE: Zoals productnaam
         textAlign: 'text-center md:text-left', // ✅ MOBIEL: Centraal, desktop links
+        // ✅ GRADIENT: Blauw gradient voor feature titels - CONSISTENT mobiel & desktop
+        gradient: {
+          background: 'linear-gradient(135deg, #3071aa 0%, #256394 50%, #3d82c0 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+        },
       },
       description: {
         fontSize: 'text-sm sm:text-base lg:text-lg', // ✅ MOBIEL: Kleiner op mobiel (text-sm = 14px ipv text-lg = 18px)

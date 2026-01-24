@@ -181,10 +181,10 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                     className={cn(
                       CONFIG.featureSection.text.title.fontSize,
                       CONFIG.featureSection.text.title.fontWeight,
-                      CONFIG.featureSection.text.title.textColor,
                       CONFIG.featureSection.text.title.letterSpacing,
                       'text-center' // ✅ SYMMETRISCH: text-center
                     )}
+                    style={CONFIG.featureSection.text.title.gradient} // ✅ BLAUW GRADIENT: Via CONFIG (mobiel & desktop consistent)
                   >
                     {feature.title}
                   </h3>
@@ -301,16 +301,11 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   <h3
                     className={cn(
                       CONFIG.featureSection.text.title.fontSize,
-                      'font-bold', // ✅ GRADIENT: Bold voor betere gradient zichtbaarheid
+                      CONFIG.featureSection.text.title.fontWeight, // ✅ VIA CONFIG: font-bold
                       CONFIG.featureSection.text.title.letterSpacing,
                       CONFIG.featureSection.text.title.textAlign
                     )}
-                    style={{
-                      background: 'linear-gradient(135deg, #3071aa 0%, #256394 50%, #3d82c0 100%)', // ✅ GRADIENT: Smooth gradient
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                    }}
+                    style={CONFIG.featureSection.text.title.gradient} // ✅ BLAUW GRADIENT: Via CONFIG (geen hardcode)
                   >
                     {feature.title}
                   </h3>

@@ -114,13 +114,15 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
                 CONFIG.featureSection.text.container,
                 isEven ? CONFIG.featureSection.zigzag.textOrder.left : CONFIG.featureSection.zigzag.textOrder.right
               )}>
-                <h3 className={cn(
-                  CONFIG.featureSection.text.title.fontSize,
-                  CONFIG.featureSection.text.title.fontWeight,
-                  CONFIG.featureSection.text.title.textColor,
-                  CONFIG.featureSection.text.title.letterSpacing, // ✅ EXACT ZELFDE: Letter spacing zoals productnaam
-                  CONFIG.featureSection.text.title.textAlign // ✅ MOBIEL: Centraal, desktop links
-                )}>
+                <h3 
+                  className={cn(
+                    CONFIG.featureSection.text.title.fontSize,
+                    CONFIG.featureSection.text.title.fontWeight,
+                    CONFIG.featureSection.text.title.letterSpacing, // ✅ EXACT ZELFDE: Letter spacing zoals productnaam
+                    CONFIG.featureSection.text.title.textAlign // ✅ MOBIEL: Centraal, desktop links
+                  )}
+                  style={CONFIG.featureSection.text.title.gradient} // ✅ BLAUW GRADIENT: Via CONFIG (mobiel & desktop consistent)
+                >
                   {feature.title}
                 </h3>
                 <p className={cn(
