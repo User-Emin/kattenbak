@@ -192,15 +192,18 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
         }}>
           <h2 className={cn(
             'text-2xl sm:text-3xl md:text-4xl lg:text-5xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
-            'font-semibold', // ✅ LEVENDIG: Semibold voor levendige titel
+            'font-bold', // ✅ GRADIENT: Bold voor betere gradient zichtbaarheid
             'mb-3 sm:mb-4 md:mb-5', // ✅ COMPACT: Minder margin
             'tracking-tight',
             'transition-all duration-500' // ✅ SMOOTH: Smooth transitions
           )}
           style={{ 
-            color: BRAND_COLORS_HEX.primary,
-            textShadow: `0 2px 8px ${BRAND_COLORS_HEX.primary}15`, // ✅ GRAFISCH: Subtiele text shadow
-          }}> {/* ✅ BLAUW: Webshop blauw */}
+            background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primary} 0%, ${BRAND_COLORS_HEX.primaryDark} 50%, ${BRAND_COLORS_HEX.primaryLight} 100%)`, // ✅ GRADIENT: Smooth gradient
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            textShadow: 'none', // ✅ SMOOTH: Geen shadow bij gradient text
+          }}> {/* ✅ GRADIENT: Smooth gradient titel */}
             Hoe werkt het?
           </h2>
           <p className={cn(

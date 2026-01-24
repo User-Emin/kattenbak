@@ -984,20 +984,20 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </p>
               </div>
 
-              {/* ✅ ACCORDION SECTIES: Omschrijving, Specificaties, Vragen - STICKY MET AFBEELDING */}
-              <div className="mt-6 space-y-4">
+              {/* ✅ ACCORDION SECTIES: Omschrijving, Specificaties, Vragen - COMPACT & SMOOTH */}
+              <div className="mt-6 space-y-2">
                 {/* Omschrijving Accordion */}
                 <div>
                   <button
                     onClick={() => toggleAccordion('omschrijving')}
-                    className="w-full px-6 py-4 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 flex items-center justify-between group"
+                    className="w-full px-4 py-2.5 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md transition-all duration-200 flex items-center justify-between group"
                   >
-                    <span className="text-base md:text-lg font-semibold text-gray-900">
+                    <span className="text-sm md:text-base font-medium text-gray-900">
                       Omschrijving
                     </span>
                     <ChevronDown 
                       className={cn(
-                        'w-5 h-5 text-gray-600 transition-transform duration-200',
+                        'w-4 h-4 text-gray-500 transition-transform duration-200',
                         openAccordions.has('omschrijving') && 'rotate-180'
                       )}
                     />
@@ -1036,14 +1036,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <div>
                   <button
                     onClick={() => toggleAccordion('specificaties')}
-                    className="w-full px-6 py-4 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 flex items-center justify-between group"
+                    className="w-full px-4 py-2.5 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md transition-all duration-200 flex items-center justify-between group"
                   >
-                    <span className="text-base md:text-lg font-semibold text-gray-900">
+                    <span className="text-sm md:text-base font-medium text-gray-900">
                       Specificaties
                     </span>
                     <ChevronDown 
                       className={cn(
-                        'w-5 h-5 text-gray-600 transition-transform duration-200',
+                        'w-4 h-4 text-gray-500 transition-transform duration-200',
                         openAccordions.has('specificaties') && 'rotate-180'
                       )}
                     />
@@ -1093,14 +1093,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <div>
                   <button
                     onClick={() => toggleAccordion('vragen')}
-                    className="w-full px-6 py-4 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 flex items-center justify-between group"
+                    className="w-full px-4 py-2.5 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md transition-all duration-200 flex items-center justify-between group"
                   >
-                    <span className="text-base md:text-lg font-semibold text-gray-900">
+                    <span className="text-sm md:text-base font-medium text-gray-900">
                       Vragen
                     </span>
                     <ChevronDown 
                       className={cn(
-                        'w-5 h-5 text-gray-600 transition-transform duration-200',
+                        'w-4 h-4 text-gray-500 transition-transform duration-200',
                         openAccordions.has('vragen') && 'rotate-180'
                       )}
                     />

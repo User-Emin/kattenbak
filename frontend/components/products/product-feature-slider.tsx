@@ -289,7 +289,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   </div>
                 </div>
 
-                {/* Text Content - ✅ DESKTOP: Behoud originele styling */}
+                {/* Text Content - ✅ DESKTOP: Behoud originele styling met gradient titels */}
                 <div
                   className={cn(
                     CONFIG.featureSection.text.container,
@@ -301,11 +301,16 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   <h3
                     className={cn(
                       CONFIG.featureSection.text.title.fontSize,
-                      CONFIG.featureSection.text.title.fontWeight,
-                      CONFIG.featureSection.text.title.textColor,
+                      'font-bold', // ✅ GRADIENT: Bold voor betere gradient zichtbaarheid
                       CONFIG.featureSection.text.title.letterSpacing,
                       CONFIG.featureSection.text.title.textAlign
                     )}
+                    style={{
+                      background: 'linear-gradient(135deg, #3071aa 0%, #256394 50%, #3d82c0 100%)', // ✅ GRADIENT: Smooth gradient
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
                   >
                     {feature.title}
                   </h3>
