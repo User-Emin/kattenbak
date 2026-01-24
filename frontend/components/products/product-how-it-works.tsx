@@ -152,43 +152,43 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
       className
     )}
     style={{
-      background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}15 0%, ${BRAND_COLORS_HEX.primary}12 25%, ${BRAND_COLORS_HEX.primaryDark}08 50%, ${BRAND_COLORS_HEX.primary}10 75%, ${BRAND_COLORS_HEX.primaryLight}18 100%)`, // ✅ LEVENDIG: Subtiele blauwe gradient
+      background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}28 0%, ${BRAND_COLORS_HEX.primary}22 25%, ${BRAND_COLORS_HEX.primaryDark}18 50%, ${BRAND_COLORS_HEX.primary}20 75%, ${BRAND_COLORS_HEX.primaryLight}30 100%)`, // ✅ LEVENDIG: Donkerdere blauwe gradient
     }}>
       {/* ✅ DECORATIEVE ELEMENTEN: Grafische cirkels voor levendig design */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Grote cirkel linksboven */}
         <div 
-          className="absolute -top-20 -left-20 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full opacity-30"
+          className="absolute -top-20 -left-20 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full opacity-50"
           style={{ 
-            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primaryLight}40 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primaryLight}50 0%, transparent 70%)`,
           }}
         />
         {/* Grote cirkel rechtsonder */}
         <div 
-          className="absolute -bottom-32 -right-32 w-72 h-72 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] rounded-full opacity-25"
+          className="absolute -bottom-32 -right-32 w-72 h-72 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] rounded-full opacity-40"
           style={{ 
-            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primary}35 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primary}45 0%, transparent 70%)`,
           }}
         />
         {/* Middelgrote cirkel rechtsboven */}
         <div 
-          className="absolute top-10 right-10 sm:top-16 sm:right-16 w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full opacity-20"
+          className="absolute top-10 right-10 sm:top-16 sm:right-16 w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full opacity-35"
           style={{ 
-            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primaryDark}50 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primaryDark}60 0%, transparent 70%)`,
           }}
         />
         {/* Kleine cirkel linksonder */}
         <div 
-          className="absolute bottom-20 left-10 sm:bottom-32 sm:left-20 w-24 h-24 sm:w-32 sm:h-32 rounded-full opacity-25"
+          className="absolute bottom-20 left-10 sm:bottom-32 sm:left-20 w-24 h-24 sm:w-32 sm:h-32 rounded-full opacity-40"
           style={{ 
-            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primaryLight}45 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primaryLight}55 0%, transparent 70%)`,
           }}
         />
         {/* Extra kleine accent cirkel */}
         <div 
-          className="absolute top-1/2 left-1/4 w-16 h-16 sm:w-20 sm:h-20 rounded-full opacity-15"
+          className="absolute top-1/2 left-1/4 w-16 h-16 sm:w-20 sm:h-20 rounded-full opacity-30"
           style={{ 
-            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primary}60 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${BRAND_COLORS_HEX.primary}70 0%, transparent 70%)`,
           }}
         />
       </div>
