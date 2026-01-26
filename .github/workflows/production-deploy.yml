@@ -25,7 +25,7 @@ jobs:
     
     steps:
       - name: 📥 Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Full history for security scanning
       
@@ -93,7 +93,7 @@ jobs:
     
     steps:
       - name: 📥 Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
@@ -153,7 +153,7 @@ jobs:
     
     steps:
       - name: 📥 Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
@@ -232,7 +232,7 @@ jobs:
     
     steps:
       - name: 📥 Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
@@ -279,7 +279,7 @@ jobs:
     
     steps:
       - name: 📥 Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       
       - name: 📦 Download Build Artifacts
         uses: actions/download-artifact@v4
@@ -715,7 +715,7 @@ jobs:
           ADMIN_PASSWORD: admin123
       
       - name: 📦 Checkout (for verification scripts)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       
       - name: ✅ Verify Product Data Stability
         continue-on-error: true
