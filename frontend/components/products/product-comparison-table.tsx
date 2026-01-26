@@ -151,13 +151,27 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
           <Check className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" strokeWidth={2.5} />
         </div>
       ) : (
-        // ✅ COMPACT KRUISJE: Subtieler kruisje
-        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white border border-gray-300 flex items-center justify-center flex-shrink-0">
-          <X className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-gray-400" strokeWidth={2.5} />
+        // ✅ COMPACT KRUISJE: Subtieler kruisje - DRY via BRAND_COLORS_HEX
+        <div 
+          className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white border flex items-center justify-center flex-shrink-0"
+          style={{ borderColor: BRAND_COLORS_HEX.gray[300] }}
+        >
+          <X 
+            className="w-4 h-4 sm:w-4.5 sm:h-4.5" 
+            strokeWidth={2.5}
+            style={{ color: BRAND_COLORS_HEX.gray[400] }}
+          />
         </div>
       );
     }
-    return <span className="text-xs sm:text-sm font-medium text-gray-900">{value}</span>;
+    return (
+      <span 
+        className="text-xs sm:text-sm font-medium"
+        style={{ color: BRAND_COLORS_HEX.gray[900] }}
+      >
+        {value}
+      </span>
+    );
   };
 
   return (
@@ -169,9 +183,12 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
       {/* Desktop Table - ✅ SMOOTH: Vinkjes symmetrisch gecentreerd, duidelijke scheiding */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
-          <thead className="bg-gray-50">
+          <thead style={{ backgroundColor: BRAND_COLORS_HEX.gray[50] }}>
             <tr>
-              <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 w-2/5">
+              <th 
+                className="px-6 py-5 text-left text-sm font-semibold w-2/5"
+                style={{ color: BRAND_COLORS_HEX.gray[700] }}
+              >
                 Feature
               </th>
               <th 
@@ -188,7 +205,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   <span className="font-bold">Automatische kattenbak</span>
                 </div>
               </th>
-              <th className="px-6 py-5 text-center text-sm font-semibold text-gray-700 bg-gray-100 w-[30%]">
+              <th 
+                className="px-6 py-5 text-center text-sm font-semibold w-[30%]"
+                style={{ 
+                  color: BRAND_COLORS_HEX.gray[700],
+                  backgroundColor: BRAND_COLORS_HEX.gray[100]
+                }}
+              >
                 <div className="flex flex-col items-center justify-center gap-3">
                   {/* ✅ DESKTOP: Grotere afbeelding in header voor Handmatige kattenbak */}
                   {sixthImage && (
@@ -205,13 +228,15 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
             {comparisonData.map((row, index) => (
               <tr
                 key={index}
-                className={cn(
-                  'transition-all duration-200',
-                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50',
-                  row.highlight && index === 0 && 'bg-blue-50/70 border-l-4',
-                  row.highlight && index !== 0 && 'bg-blue-50/50'
-                )}
-                style={row.highlight && index === 0 ? { borderLeftColor: BRAND_COLORS_HEX.primary } : {}}
+                className="transition-all duration-200"
+                style={{
+                  backgroundColor: row.highlight 
+                    ? (index === 0 ? `${BRAND_COLORS_HEX.primary}0B` : `${BRAND_COLORS_HEX.primary}0D`)
+                    : (index % 2 === 0 ? BRAND_COLORS_HEX.white : `${BRAND_COLORS_HEX.gray[50]}80`),
+                  ...(row.highlight && index === 0 ? { 
+                    borderLeft: `4px solid ${BRAND_COLORS_HEX.primary}` 
+                  } : {})
+                }}
               >
                 <td className={cn(
                   'px-6 py-5'
@@ -222,7 +247,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                       <div className="flex-shrink-0 mt-0.5">
                         <row.icon 
                           className="w-6 h-6" 
-                          style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : '#6b7280' }} 
+                          style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500] }} 
                         />
                       </div>
                     )}
@@ -232,13 +257,16 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                           'text-base font-bold mb-2',
                           row.highlight ? '' : 'text-gray-900'
                         )}
-                        style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : {}}
+                        style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : { color: BRAND_COLORS_HEX.gray[900] }}
                       >
                         {row.feature}
                       </div>
                       {/* ✅ BESCHRIJVING: Extra uitleg (zoals in screenshot) */}
                       {row.description && (
-                        <p className="text-sm text-gray-600 leading-relaxed">
+                        <p 
+                          className="text-sm leading-relaxed"
+                          style={{ color: BRAND_COLORS_HEX.gray[600] }}
+                        >
                           {row.description}
                         </p>
                       )}
@@ -254,10 +282,14 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     {renderValue(row.ourProduct, true)}
                   </div>
                 </td>
-                <td className={cn(
-                  'px-6 py-5',
-                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
-                )}>
+                <td 
+                  className="px-6 py-5"
+                  style={{
+                    backgroundColor: index % 2 === 0 
+                      ? BRAND_COLORS_HEX.white 
+                      : `${BRAND_COLORS_HEX.gray[50]}80`
+                  }}
+                >
                   <div className="flex items-center justify-center">
                     {renderValue(row.competitor, false)}
                   </div>
@@ -268,15 +300,15 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
         </table>
       </div>
 
-      {/* ✅ MOBIEL: Smooth om-en-om slide (zoals slider) - RESPONSIEF SYMMETRISCH CENTRAAL */}
+      {/* ✅ MOBIEL: Smooth om-en-om slide (zoals slider) - RESPONSIEF SYMMETRISCH CENTRAAL ZONDER OVERLAP */}
       <div className="md:hidden" ref={containerRef}>
-        <div className="relative overflow-hidden mx-auto max-w-sm">
+        <div className="relative overflow-hidden mx-auto max-w-sm px-4">
           <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${visibleIndex * 100}%)` }}>
             {comparisonData.map((row, index) => (
               <div
                 key={index}
                 className={cn(
-                  'min-w-full flex-shrink-0 px-4',
+                  'min-w-full flex-shrink-0',
                   'opacity-0 translate-x-4',
                   'transition-all duration-700 ease-out',
                   index === visibleIndex && 'opacity-100 translate-x-0'
@@ -284,12 +316,21 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               >
                 <div
                   className={cn(
-                    'w-full p-5 rounded-xl border transition-all mx-auto',
+                    'w-full p-5 rounded-xl border transition-all',
                     row.highlight 
-                      ? 'bg-blue-50 shadow-md' 
-                      : 'bg-white border-gray-200 shadow-sm'
+                      ? 'shadow-md' 
+                      : 'shadow-sm'
                   )}
-                  style={row.highlight ? { borderColor: `${BRAND_COLORS_HEX.primary}4D` } : {}}
+                  style={row.highlight 
+                    ? { 
+                        backgroundColor: `${BRAND_COLORS_HEX.primary}0D`,
+                        borderColor: `${BRAND_COLORS_HEX.primary}4D` 
+                      } 
+                    : { 
+                        backgroundColor: BRAND_COLORS_HEX.white,
+                        borderColor: BRAND_COLORS_HEX.gray[200]
+                      }
+                  }
                 >
                   <div className="mb-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-2">
@@ -297,7 +338,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                       {row.icon && (
                         <row.icon 
                           className="w-6 h-6" 
-                          style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : '#6b7280' }} 
+                          style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500] }} 
                         />
                       )}
                       <div 
@@ -312,34 +353,58 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     </div>
                     {/* ✅ BESCHRIJVING: Extra uitleg */}
                     {row.description && (
-                      <p className="text-xs text-gray-600 text-center leading-relaxed px-3">
+                      <p 
+                        className="text-xs text-center leading-relaxed px-3"
+                        style={{ color: BRAND_COLORS_HEX.gray[600] }}
+                      >
                         {row.description}
                       </p>
                     )}
                   </div>
                   <div className="space-y-3">
                     <div 
-                      className="flex items-center justify-between p-4 rounded-lg border mx-auto"
+                      className="flex items-center justify-between p-4 rounded-lg mx-auto"
                       style={{ 
                         backgroundColor: `${BRAND_COLORS_HEX.primary}1A`,
                         borderColor: `${BRAND_COLORS_HEX.primary}33`,
+                        borderWidth: '1px',
+                        borderStyle: 'solid',
                         maxWidth: '100%'
                       }}
                     >
-                      <div className="flex items-center gap-2.5 flex-1">
+                      <div className="flex items-center gap-2.5 flex-1 min-w-0">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="sm" />}
-                        <span className="text-xs font-semibold" style={{ color: BRAND_COLORS_HEX.primary }}>Automatische</span>
+                        <span 
+                          className="text-xs font-semibold truncate"
+                          style={{ color: BRAND_COLORS_HEX.primary }}
+                        >
+                          Automatische
+                        </span>
                       </div>
                       <div className="flex items-center justify-center flex-shrink-0 ml-2">
                         {renderValue(row.ourProduct, true)}
                       </div>
                     </div>
-                    <div className="flex items-center justify-between p-4 rounded-lg bg-gray-100 border border-gray-200 mx-auto" style={{ maxWidth: '100%' }}>
-                      <div className="flex items-center gap-2.5 flex-1">
+                    <div 
+                      className="flex items-center justify-between p-4 rounded-lg mx-auto" 
+                      style={{ 
+                        maxWidth: '100%',
+                        backgroundColor: BRAND_COLORS_HEX.gray[100],
+                        borderColor: BRAND_COLORS_HEX.gray[200],
+                        borderWidth: '1px',
+                        borderStyle: 'solid'
+                      }}
+                    >
+                      <div className="flex items-center gap-2.5 flex-1 min-w-0">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="sm" />}
-                        <span className="text-xs font-semibold text-gray-700">Handmatige</span>
+                        <span 
+                          className="text-xs font-semibold truncate"
+                          style={{ color: BRAND_COLORS_HEX.gray[700] }}
+                        >
+                          Handmatige
+                        </span>
                       </div>
                       <div className="flex items-center justify-center flex-shrink-0 ml-2">
                         {renderValue(row.competitor, false)}
@@ -359,11 +424,22 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               onClick={() => goToSlide(index)}
               className={cn(
                 'w-2 h-2 rounded-full transition-all',
-                index === visibleIndex 
-                  ? 'w-6' 
-                  : 'bg-gray-300 hover:bg-gray-400'
+                index === visibleIndex && 'w-6'
               )}
-              style={index === visibleIndex ? { backgroundColor: BRAND_COLORS_HEX.primary } : {}}
+              style={index === visibleIndex 
+                ? { backgroundColor: BRAND_COLORS_HEX.primary } 
+                : { backgroundColor: BRAND_COLORS_HEX.gray[300] }
+              }
+              onMouseEnter={(e) => {
+                if (index !== visibleIndex) {
+                  e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.gray[400];
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (index !== visibleIndex) {
+                  e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.gray[300];
+                }
+              }}
               aria-label={`Ga naar slide ${index + 1}`}
             />
           ))}
