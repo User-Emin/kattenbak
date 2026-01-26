@@ -1,6 +1,6 @@
 "use client";
 
-// ✅ MOBIEL: Geen slide meer, onder elkaar - useState/useEffect/useRef niet meer nodig
+import { useState, useEffect, useRef } from "react";
 import { Check, X, Sparkles, Wind, Shovel, Clock, Smartphone, Coins } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -109,13 +109,39 @@ const comparisonData: ComparisonRow[] = [
 ];
 
 export function ProductComparisonTable({ productImages = [] }: ProductComparisonTableProps) {
-  // ✅ MOBIEL: Geen slide meer, onder elkaar - state niet meer nodig
+  const [visibleIndex, setVisibleIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // ✅ DYNAMISCH: Haal eerste en 6e afbeelding op (index 0 en 5)
   const firstImage = productImages && productImages.length > 0 ? productImages[0] : null;
   const sixthImage = productImages && productImages.length > 5 ? productImages[5] : null;
 
-  // ✅ MOBIEL: Geen slide meer, onder elkaar - geen auto-slide nodig
+  // ✅ AUTO-SLIDE: Smooth om-en-om beweging op mobiel (zoals slider)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    // Alleen op mobiel (max-width: 768px)
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile || comparisonData.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setVisibleIndex((prev) => {
+        const next = (prev + 1) % comparisonData.length;
+        return next;
+      });
+    }, 4000); // ✅ SMOOTH: 4 seconden tussen slides
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // ✅ MANUAL NAVIGATION: Swipe/klik navigatie
+  const goToSlide = (index: number) => {
+    if (isAnimating || index === visibleIndex) return;
+    setIsAnimating(true);
+    setVisibleIndex(index);
+    setTimeout(() => setIsAnimating(false), 600); // ✅ SMOOTH: 600ms animatie
+  };
 
   const renderValue = (value: string | boolean, isOurProduct: boolean = false, isDesktop: boolean = false) => {
     if (typeof value === 'boolean') {
@@ -295,107 +321,156 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
         </table>
       </div>
 
-      {/* ✅ MOBIEL: Onder elkaar (zigzag) - GEEN SLIDE, OPTIMAAL */}
-      <div className="md:hidden space-y-4 px-4">
-        {comparisonData.map((row, index) => (
-          <div
-            key={index}
-            className={cn(
-              'w-full p-5 rounded-xl border transition-all',
-              row.highlight 
-                ? 'shadow-md' 
-                : 'shadow-sm'
-            )}
-            style={row.highlight 
-              ? { 
-                  backgroundColor: `${BRAND_COLORS_HEX.primary}0D`,
-                  borderColor: `${BRAND_COLORS_HEX.primary}4D` 
-                } 
-              : { 
-                  backgroundColor: BRAND_COLORS_HEX.white,
-                  borderColor: BRAND_COLORS_HEX.gray[200]
-                }
-            }
-          >
-            <div className="mb-4">
-              <div className="flex items-center gap-2 mb-2">
-                {/* ✅ ICON: Feature icoon */}
-                {row.icon && (
-                  <row.icon 
-                    className="w-6 h-6" 
-                    style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500] }} 
-                  />
+      {/* ✅ MOBIEL: Smooth om-en-om slide (zoals slider) - RESPONSIEF SYMMETRISCH CENTRAAL ZONDER OVERLAP */}
+      <div className="md:hidden" ref={containerRef}>
+        <div className="relative overflow-hidden mx-auto max-w-sm w-full px-4" style={{ boxSizing: 'border-box' }}>
+          <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${visibleIndex * 100}%)`, width: `${comparisonData.length * 100}%` }}>
+            {comparisonData.map((row, index) => (
+              <div
+                key={index}
+                className={cn(
+                  'flex-shrink-0',
+                  'opacity-0 translate-x-4',
+                  'transition-all duration-700 ease-out',
+                  index === visibleIndex && 'opacity-100 translate-x-0'
                 )}
-                <div 
+                style={{ 
+                  width: `${100 / comparisonData.length}%`,
+                  boxSizing: 'border-box',
+                  paddingLeft: '0',
+                  paddingRight: '0'
+                }}
+              >
+                <div
                   className={cn(
-                    'text-sm font-bold leading-tight',
-                    row.highlight ? '' : 'text-gray-900'
+                    'w-full p-5 rounded-xl border transition-all',
+                    row.highlight 
+                      ? 'shadow-md' 
+                      : 'shadow-sm'
                   )}
-                  style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : { color: BRAND_COLORS_HEX.gray[900] }}
+                  style={row.highlight 
+                    ? { 
+                        backgroundColor: `${BRAND_COLORS_HEX.primary}0D`,
+                        borderColor: `${BRAND_COLORS_HEX.primary}4D` 
+                      } 
+                    : { 
+                        backgroundColor: BRAND_COLORS_HEX.white,
+                        borderColor: BRAND_COLORS_HEX.gray[200]
+                      }
+                  }
                 >
-                  {row.feature}
+                  <div className="mb-4 text-center">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      {/* ✅ ICON: Feature icoon */}
+                      {row.icon && (
+                        <row.icon 
+                          className="w-6 h-6" 
+                          style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500] }} 
+                        />
+                      )}
+                      <div 
+                        className={cn(
+                          'text-sm font-bold leading-tight',
+                          row.highlight ? '' : 'text-gray-900'
+                        )}
+                        style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : { color: BRAND_COLORS_HEX.gray[900] }}
+                      >
+                        {row.feature}
+                      </div>
+                    </div>
+                    {/* ✅ BESCHRIJVING: Extra uitleg */}
+                    {row.description && (
+                      <p 
+                        className="text-xs text-center leading-relaxed px-3"
+                        style={{ color: BRAND_COLORS_HEX.gray[600] }}
+                      >
+                        {row.description}
+                      </p>
+                    )}
+                  </div>
+                  <div className="space-y-3">
+                    <div 
+                      className="flex items-center justify-between p-4 rounded-lg mx-auto"
+                      style={{ 
+                        backgroundColor: `${BRAND_COLORS_HEX.primary}1A`,
+                        borderColor: `${BRAND_COLORS_HEX.primary}33`,
+                        borderWidth: '1px',
+                        borderStyle: 'solid',
+                        maxWidth: '100%'
+                      }}
+                    >
+                      <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                        {/* ✅ DRY: Gebruik ComparisonImage helper */}
+                        {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="sm" />}
+                        <span 
+                          className="text-xs font-semibold truncate"
+                          style={{ color: BRAND_COLORS_HEX.primary }}
+                        >
+                          Automatische
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-center flex-shrink-0 ml-2">
+                        {renderValue(row.ourProduct, true, false)}
+                      </div>
+                    </div>
+                    <div 
+                      className="flex items-center justify-between p-4 rounded-lg mx-auto" 
+                      style={{ 
+                        maxWidth: '100%',
+                        backgroundColor: BRAND_COLORS_HEX.gray[100],
+                        borderColor: BRAND_COLORS_HEX.gray[200],
+                        borderWidth: '1px',
+                        borderStyle: 'solid'
+                      }}
+                    >
+                      <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                        {/* ✅ DRY: Gebruik ComparisonImage helper */}
+                        {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="sm" />}
+                        <span 
+                          className="text-xs font-semibold truncate"
+                          style={{ color: BRAND_COLORS_HEX.gray[700] }}
+                        >
+                          Handmatige
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-center flex-shrink-0 ml-2">
+                        {renderValue(row.competitor, false, false)}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              {/* ✅ BESCHRIJVING: Extra uitleg */}
-              {row.description && (
-                <p 
-                  className="text-xs leading-relaxed"
-                  style={{ color: BRAND_COLORS_HEX.gray[600] }}
-                >
-                  {row.description}
-                </p>
-              )}
-            </div>
-            <div className="space-y-3">
-              <div 
-                className="flex items-center justify-between p-4 rounded-lg"
-                style={{ 
-                  backgroundColor: `${BRAND_COLORS_HEX.primary}1A`,
-                  borderColor: `${BRAND_COLORS_HEX.primary}33`,
-                  borderWidth: '1px',
-                  borderStyle: 'solid'
-                }}
-              >
-                <div className="flex items-center gap-2.5 flex-1 min-w-0">
-                  {/* ✅ DRY: Gebruik ComparisonImage helper */}
-                  {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="sm" />}
-                  <span 
-                    className="text-xs font-semibold truncate"
-                    style={{ color: BRAND_COLORS_HEX.primary }}
-                  >
-                    Automatische
-                  </span>
-                </div>
-                <div className="flex items-center justify-center flex-shrink-0 ml-2">
-                  {renderValue(row.ourProduct, true, false)}
-                </div>
-              </div>
-              <div 
-                className="flex items-center justify-between p-4 rounded-lg" 
-                style={{ 
-                  backgroundColor: BRAND_COLORS_HEX.gray[100],
-                  borderColor: BRAND_COLORS_HEX.gray[200],
-                  borderWidth: '1px',
-                  borderStyle: 'solid'
-                }}
-              >
-                <div className="flex items-center gap-2.5 flex-1 min-w-0">
-                  {/* ✅ DRY: Gebruik ComparisonImage helper */}
-                  {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="sm" />}
-                  <span 
-                    className="text-xs font-semibold truncate"
-                    style={{ color: BRAND_COLORS_HEX.gray[700] }}
-                  >
-                    Handmatige
-                  </span>
-                </div>
-                <div className="flex items-center justify-center flex-shrink-0 ml-2">
-                  {renderValue(row.competitor, false, false)}
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
-        ))}
+        </div>
+        {/* ✅ MOBIEL: Navigation dots - CENTRAAL */}
+        <div className="flex justify-center items-center gap-2 mt-5 mb-4 mx-auto">
+          {comparisonData.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={cn(
+                'w-2 h-2 rounded-full transition-all',
+                index === visibleIndex && 'w-6'
+              )}
+              style={index === visibleIndex 
+                ? { backgroundColor: BRAND_COLORS_HEX.primary } 
+                : { backgroundColor: BRAND_COLORS_HEX.gray[300] }
+              }
+              onMouseEnter={(e) => {
+                if (index !== visibleIndex) {
+                  e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.gray[400];
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (index !== visibleIndex) {
+                  e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.gray[300];
+                }
+              }}
+              aria-label={`Ga naar slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
 
     </div>
