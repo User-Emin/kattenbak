@@ -329,10 +329,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               <div
                 key={index}
                 className={cn(
-                  'flex-shrink-0',
-                  'opacity-0 translate-x-4',
-                  'transition-all duration-700 ease-out',
-                  index === visibleIndex && 'opacity-100 translate-x-0'
+                  'flex-shrink-0'
                 )}
                 style={{ 
                   width: `${100 / comparisonData.length}%`,
