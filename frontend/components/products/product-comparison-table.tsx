@@ -31,17 +31,17 @@ interface ProductComparisonTableProps {
 // ✅ DRY: Shared constants
 const BLUR_PLACEHOLDER = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==";
 
-// ✅ SLIMME VARIABELEN: Mobiele vergelijkingstabel configuratie - OPTIMAAL RESPONSIVE
+// ✅ SLIMME VARIABELEN: Mobiele vergelijkingstabel configuratie - OPTIMAAL RESPONSIVE & LEESBAAR
 const MOBILE_COMPARISON_CONFIG = {
   // Container configuratie
   container: {
     maxWidth: 'max-w-sm',
     padding: 'px-4',
-    slidePadding: '0.875rem', // 14px - compacter dan 1rem
+    slidePadding: '0.75rem', // 12px - optimaal voor compactheid zonder overlap
   },
   // Card configuratie
   card: {
-    padding: 'p-2.5', // 10px - compacter
+    padding: 'p-2.5', // 10px - compact maar leesbaar
     borderRadius: 'rounded-xl',
     spacing: {
       header: 'mb-2', // Spacing tussen header en stroken
@@ -56,7 +56,7 @@ const MOBILE_COMPARISON_CONFIG = {
       description: 'mt-1.5 px-1', // Margin top en padding voor beschrijving
     },
     icon: {
-      size: 'w-4 h-4', // 16px - compacter
+      size: 'w-4 h-4', // 16px - compact
     },
     title: {
       fontSize: 'text-sm', // 14px - optimaal leesbaar
@@ -64,24 +64,24 @@ const MOBILE_COMPARISON_CONFIG = {
       lineHeight: 'leading-tight',
     },
     description: {
-      fontSize: 'text-xs', // 12px - compacter
+      fontSize: 'text-xs', // 12px - compact
       lineHeight: 'leading-snug',
     },
   },
-  // Strook configuratie (Automatische/Handmatige rijen)
+  // Strook configuratie (Automatische/Handmatige rijen) - OPTIMAAL COMPACT & LEESBAAR
   strook: {
-    padding: 'p-1.5', // 6px - compacter maar nog leesbaar
+    padding: 'p-1.5', // 6px - compact maar nog leesbaar
     borderRadius: 'rounded-lg',
     spacing: {
       container: 'gap-1.5', // Gap tussen image en tekst
-      checkmark: 'ml-0.5', // Margin left voor checkmark - compacter
+      checkmark: 'ml-0.5', // Margin left voor checkmark
     },
     label: {
-      fontSize: 'text-xs', // 12px - compacter
+      fontSize: 'text-xs', // 12px - compact maar leesbaar
       fontWeight: 'font-semibold',
     },
     image: {
-      size: 'sm' as const, // ComparisonImage size
+      size: 'sm' as const, // ComparisonImage size (w-12 h-12)
     },
   },
 } as const;
@@ -89,7 +89,7 @@ const MOBILE_COMPARISON_CONFIG = {
 // ✅ DRY: Image component helper - Grotere afbeeldingen zoals in screenshot
 const ComparisonImage = ({ src, alt, size = 'md' }: { src: string; alt: string; size?: 'sm' | 'md' | 'lg' }) => {
   const sizeClasses = {
-    sm: 'w-16 h-16',
+    sm: 'w-12 h-12', // ✅ COMPACTER: 48px ipv 64px voor mobiel - optimaal voor stroken
     md: 'w-20 h-20 md:w-24 md:h-24',
     lg: 'w-24 h-24 md:w-32 md:h-32'
   };
