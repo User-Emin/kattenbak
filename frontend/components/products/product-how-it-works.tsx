@@ -8,8 +8,11 @@
 
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
 import { 
-  ArrowRight
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
@@ -96,6 +99,9 @@ interface ProductHowItWorksProps {
 
 export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductHowItWorksProps) {
   const CONFIG = PRODUCT_PAGE_CONFIG;
+  const [visibleStepIndex, setVisibleStepIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const sliderRef = useRef<HTMLDivElement>(null);
   
   // ✅ DYNAMISCH: Stappen gebaseerd op echte product functionaliteit - perfect aansluitend op codebase
   // ✅ AFBEELDINGEN: Specifieke "Hoe werkt het?" afbeeldingen uit admin (los van variant/product images)
@@ -143,6 +149,31 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
       image: howItWorksImages && howItWorksImages.length > 5 ? howItWorksImages[5] : undefined, // ✅ SPECIFIEK: Zesde "Hoe werkt het?" afbeelding
     },
   ];
+
+  // ✅ AUTO-SLIDE: Smooth om-en-om beweging op mobiel
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const isMobile = window.innerWidth < 1024; // lg breakpoint
+    if (!isMobile || steps.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setVisibleStepIndex((prev) => {
+        const next = (prev + 1) % steps.length;
+        return next;
+      });
+    }, 5000); // ✅ SMOOTH: 5 seconden tussen slides
+
+    return () => clearInterval(interval);
+  }, [steps.length]);
+
+  // ✅ MANUAL NAVIGATION: Swipe/klik navigatie
+  const goToStep = (index: number) => {
+    if (isAnimating || index === visibleStepIndex) return;
+    setIsAnimating(true);
+    setVisibleStepIndex(index);
+    setTimeout(() => setIsAnimating(false), 600);
+  };
 
   return (
     <div className={cn(
@@ -195,8 +226,8 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
           </p>
         </div>
 
-        {/* ✅ STAPPEN: Compacte desktop layout met webshop blauw en smooth animaties */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6"> {/* ✅ COMPACT: Grid layout op desktop (2 kolommen) */}
+        {/* ✅ DESKTOP: Grid layout (2 kolommen) */}
+        <div className="hidden lg:grid grid-cols-2 gap-4 sm:gap-5 md:gap-6">
           {steps.map((step, index) => {
             const IconComponent = step.icon;
             const isLast = index === steps.length - 1;
@@ -318,29 +349,172 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                     'leading-relaxed lg:leading-snug', // ✅ COMPACT: Tighter line height in desktop grid
                     'max-w-2xl lg:max-w-none' // ✅ COMPACT: Geen max-width in desktop grid
                   )}
-                  style={{ color: '#4b5563' }}> {/* ✅ GRIJS: Subtiele tekst */}
+                  style={{ color: BRAND_COLORS_HEX.gray[600] }}> {/* ✅ DRY: Via BRAND_COLORS_HEX */}
                     {step.description}
                   </p>
                 </div>
 
               </div>
 
-                {/* ✅ PIJL: Alleen op mobiel/tablet, niet in desktop grid */}
-                {!isLast && (
-                  <div className={cn(
-                    'flex lg:hidden', // ✅ COMPACT: Verberg pijlen in desktop grid
-                    'justify-center',
-                    'my-3 md:my-4', // ✅ SPACING: Margin boven en onder pijl
-                  )}>
-                    <ArrowRight 
-                      className="w-5 h-5 md:w-6 md:h-6 rotate-90 transition-transform duration-300" 
-                      style={{ color: BRAND_COLORS_HEX.primary }} 
-                    /> {/* ✅ BLAUW: Webshop blauw, naar beneden gericht */}
-                  </div>
-                )}
               </div>
             );
           })}
+        </div>
+
+        {/* ✅ MOBIEL: Slide layout met duidelijke nummering */}
+        <div className="lg:hidden" ref={sliderRef}>
+          <div className="relative overflow-hidden mx-auto max-w-sm w-full">
+            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${visibleStepIndex * 100}%)` }}>
+              {steps.map((step, index) => {
+                const IconComponent = step.icon;
+                return (
+                  <div
+                    key={step.number}
+                    className={cn(
+                      'min-w-full flex-shrink-0 px-4',
+                      'opacity-0 translate-x-4',
+                      'transition-all duration-700 ease-out',
+                      index === visibleStepIndex && 'opacity-100 translate-x-0'
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        'w-full p-6 rounded-xl border transition-all',
+                        'shadow-md'
+                      )}
+                      style={{ 
+                        backgroundColor: BRAND_COLORS_HEX.white,
+                        borderColor: `${BRAND_COLORS_HEX.primary}30`
+                      }}
+                    >
+                      {/* ✅ NUMMER: Grote duidelijke nummering bovenaan */}
+                      <div className="flex items-center justify-center mb-4">
+                        <div
+                          className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg"
+                          style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+                        >
+                          {step.number}
+                        </div>
+                      </div>
+
+                      {/* ✅ AFBEELDING: Centraal geplaatst */}
+                      {step.image && (
+                        <div className={cn(
+                          'relative mx-auto mb-4',
+                          'w-48 h-48',
+                          'rounded-xl overflow-hidden',
+                          'border-2'
+                        )}
+                        style={{ borderColor: `${BRAND_COLORS_HEX.primary}40` }}>
+                          <Image
+                            src={step.image}
+                            alt={step.title}
+                            fill
+                            className="object-cover"
+                            sizes="192px"
+                            quality={90}
+                            loading="lazy"
+                            unoptimized={step.image.startsWith('/uploads/')}
+                            placeholder="blur"
+                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                          />
+                        </div>
+                      )}
+
+                      {/* ✅ ICON: Fallback als geen afbeelding */}
+                      {!step.image && (
+                        <div className="flex justify-center mb-4">
+                          <div
+                            className={cn(
+                              'w-20 h-20 flex items-center justify-center rounded-full border-2'
+                            )}
+                            style={{
+                              background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}20 0%, ${BRAND_COLORS_HEX.primary}30 100%)`,
+                              borderColor: `${BRAND_COLORS_HEX.primary}40`
+                            }}
+                          >
+                            <IconComponent
+                              className="w-10 h-10"
+                              style={{ color: BRAND_COLORS_HEX.primary }}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* ✅ TITEL: Centraal met gradient */}
+                      <h3
+                        className={cn(
+                          'text-xl font-bold text-center mb-3 tracking-tight'
+                        )}
+                        style={CONFIG.featureSection.text.title.gradient}
+                      >
+                        {step.title}
+                      </h3>
+
+                      {/* ✅ BESCHRIJVING: Centraal */}
+                      <p
+                        className="text-sm text-center leading-relaxed"
+                        style={{ color: BRAND_COLORS_HEX.gray[600] }}
+                      >
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ✅ NAVIGATION: Dots en pijlen */}
+          <div className="flex items-center justify-center gap-4 mt-6">
+            <button
+              onClick={() => goToStep((visibleStepIndex - 1 + steps.length) % steps.length)}
+              className="p-2 rounded-full transition-all"
+              style={{ 
+                backgroundColor: BRAND_COLORS_HEX.gray[100],
+                color: BRAND_COLORS_HEX.primary
+              }}
+              aria-label="Vorige stap"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            {/* ✅ DOTS: Duidelijke nummering indicatoren */}
+            <div className="flex items-center gap-2">
+              {steps.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToStep(index)}
+                  className={cn(
+                    'rounded-full transition-all font-semibold',
+                    index === visibleStepIndex ? 'w-8 h-8' : 'w-2 h-2'
+                  )}
+                  style={index === visibleStepIndex 
+                    ? { 
+                        backgroundColor: BRAND_COLORS_HEX.primary,
+                        color: BRAND_COLORS_HEX.white
+                      } 
+                    : { backgroundColor: BRAND_COLORS_HEX.gray[300] }
+                  }
+                  aria-label={`Ga naar stap ${index + 1}`}
+                >
+                  {index === visibleStepIndex && index + 1}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => goToStep((visibleStepIndex + 1) % steps.length)}
+              className="p-2 rounded-full transition-all"
+              style={{ 
+                backgroundColor: BRAND_COLORS_HEX.gray[100],
+                color: BRAND_COLORS_HEX.primary
+              }}
+              aria-label="Volgende stap"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
