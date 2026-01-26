@@ -63,7 +63,7 @@ jobs:
           npm audit --json > audit-frontend.json || true
       
       - name: 📊 Upload Audit Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: security-audits
           path: |
@@ -149,7 +149,7 @@ jobs:
         continue-on-error: true
       
       - name: 📦 Upload Backend Build Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: backend-build
           path: |
@@ -229,7 +229,7 @@ jobs:
           echo "✅ Standalone build verified"
       
       - name: 📦 Upload Frontend Build Artifact (Including Standalone)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: frontend-build
           path: |
@@ -269,7 +269,7 @@ jobs:
           NODE_ENV: production
       
       - name: 📦 Upload Admin Build Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: admin-build
           path: |
