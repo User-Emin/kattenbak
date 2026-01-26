@@ -9,7 +9,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { PRODUCT_PAGE_CONFIG } from '@/lib/product-page-config';
@@ -25,28 +25,7 @@ interface ProductFeatureSliderProps {
 }
 
 export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
-  const [visibleIndex, setVisibleIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
   const observerRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  // ✅ AUTO-SLIDE: Automatisch wisselen op mobiel
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
-    // Alleen op mobiel (max-width: 768px)
-    const isMobile = window.innerWidth < 768;
-    if (!isMobile || features.length <= 1) return;
-
-    const interval = setInterval(() => {
-      setVisibleIndex((prev) => {
-        const next = (prev + 1) % features.length;
-        return next;
-      });
-    }, 4000); // ✅ SMOOTH: 4 seconden tussen slides
-
-    return () => clearInterval(interval);
-  }, [features.length]);
 
   // ✅ INTERSECTION OBSERVER: Lazy animaties voor performance
   useEffect(() => {
@@ -77,19 +56,10 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
     };
   }, []);
 
-  // ✅ MANUAL NAVIGATION: Swipe/klik navigatie
-  const goToSlide = (index: number) => {
-    if (isAnimating || index === visibleIndex) return;
-    setIsAnimating(true);
-    setVisibleIndex(index);
-    setTimeout(() => setIsAnimating(false), 600); // ✅ SMOOTH: 600ms animatie
-  };
-
   const CONFIG = PRODUCT_PAGE_CONFIG;
 
   return (
     <div
-      ref={containerRef}
       className={cn(
         CONFIG.layout.maxWidth,
         'mx-auto',
@@ -97,129 +67,101 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
         'py-8 sm:py-10 md:py-12 lg:py-12'
       )}
     >
-      {/* ✅ MOBIEL: Slide container */}
-      <div className="md:hidden relative overflow-hidden">
-        <div
-          className="flex transition-transform duration-600 ease-in-out"
-          style={{
-            transform: `translateX(-${visibleIndex * 100}%)`,
-          }}
-        >
-          {features.map((feature, index) => (
+      {/* ✅ MOBIEL: Onder elkaar (geen slide) - OPTIMAAL */}
+      <div className="md:hidden space-y-6">
+        {features.map((feature, index) => (
+          <div
+            key={index}
+            ref={(el) => {
+              observerRefs.current[index] = el;
+            }}
+            className={cn(
+              'flex flex-col items-center justify-center',
+              'w-full',
+              'opacity-0 translate-y-8',
+              'transition-all duration-700 ease-out',
+              'animate-in'
+            )}
+          >
+            {/* Image - ✅ SYMMETRISCH: Gecentreerd met symmetrische spacing */}
             <div
-              key={index}
-              ref={(el) => {
-                observerRefs.current[index] = el;
-              }}
-              className="min-w-full flex-shrink-0 px-2"
+              className={cn(
+                'relative w-full',
+                'max-w-xs sm:max-w-sm',
+                'mx-auto',
+                CONFIG.featureSection.image.borderRadius,
+                CONFIG.featureSection.image.bgColor,
+                'mb-4'
+              )}
             >
-              <div
-                className={cn(
-                  'flex flex-col items-center justify-center', // ✅ SYMMETRISCH: items-center + justify-center
-                  'w-full',
-                  'opacity-0 translate-y-8',
-                  'transition-all duration-700 ease-out',
-                  index === visibleIndex && 'opacity-100 translate-y-0'
-                )}
-              >
-                {/* Image - ✅ SYMMETRISCH: Gecentreerd met symmetrische spacing */}
-                <div
+              <div className={cn(
+                'relative w-full',
+                CONFIG.featureSection.image.aspectRatio,
+                'overflow-hidden',
+                CONFIG.featureSection.image.borderRadius
+              )}>
+                <Image
+                  src={feature.image || '/images/placeholder.jpg'}
+                  alt={feature.title}
+                  fill
                   className={cn(
-                    'relative w-full',
-                    'max-w-xs sm:max-w-sm', // ✅ SYMMETRISCH: max-w-xs (320px) voor symmetrische grootte
-                    'mx-auto', // ✅ SYMMETRISCH: mx-auto voor perfecte centrering
-                    CONFIG.featureSection.image.borderRadius,
-                    CONFIG.featureSection.image.bgColor,
-                    'mb-2' // ✅ SYMMETRISCH: mb-2 voor symmetrische spacing
-                  )}
-                >
-                  <div className={cn(
-                    'relative w-full',
-                    CONFIG.featureSection.image.aspectRatio, // ✅ SYMMETRISCH: Gebruik CONFIG aspect ratio
-                    'overflow-hidden',
+                    'object-contain',
                     CONFIG.featureSection.image.borderRadius
-                  )}>
-                    <Image
-                      src={feature.image || '/images/placeholder.jpg'}
-                      alt={feature.title}
-                      fill
-                      className={cn(
-                        'object-contain', // ✅ SYMMETRISCH: object-contain voor volledige zichtbaarheid
-                        CONFIG.featureSection.image.borderRadius
-                      )}
-                      sizes="(max-width: 768px) 320px, 400px"
-                      quality={85}
-                      loading="lazy"
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                      unoptimized={
-                        feature.image?.startsWith('/uploads/') ||
-                        feature.image?.startsWith('/images/') ||
-                        feature.image?.startsWith('https://') ||
-                        feature.image?.startsWith('http://')
-                      }
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        if (target && !target.src.includes('placeholder')) {
-                          target.src = '/images/placeholder.jpg';
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* Text Content - ✅ SYMMETRISCH: Gecentreerd met symmetrische spacing */}
-                <div className={cn(
-                  'w-full',
-                  'max-w-xs sm:max-w-sm', // ✅ SYMMETRISCH: Zelfde max-width als afbeelding
-                  'mx-auto', // ✅ SYMMETRISCH: mx-auto voor perfecte centrering
-                  'text-center', // ✅ SYMMETRISCH: text-center voor symmetrische tekst
-                  CONFIG.featureSection.text.container,
-                  'space-y-1 sm:space-y-2' // ✅ SYMMETRISCH: Symmetrische spacing
-                )}>
-                  <h3
-                    className={cn(
-                      CONFIG.featureSection.text.title.fontSize,
-                      CONFIG.featureSection.text.title.fontWeight,
-                      CONFIG.featureSection.text.title.letterSpacing,
-                      'text-center' // ✅ SYMMETRISCH: text-center
-                    )}
-                    style={CONFIG.featureSection.text.title.gradient} // ✅ BLAUW GRADIENT: Via CONFIG (mobiel & desktop consistent)
-                  >
-                    {feature.title}
-                  </h3>
-                  <p
-                    className={cn(
-                      CONFIG.featureSection.text.description.fontSize,
-                      CONFIG.featureSection.text.description.textColor,
-                      CONFIG.featureSection.text.description.lineHeight,
-                      'text-center' // ✅ SYMMETRISCH: text-center
-                    )}
-                  >
-                    {feature.description}
-                  </p>
-                </div>
+                  )}
+                  sizes="(max-width: 768px) 320px, 400px"
+                  quality={85}
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                  unoptimized={
+                    feature.image?.startsWith('/uploads/') ||
+                    feature.image?.startsWith('/images/') ||
+                    feature.image?.startsWith('https://') ||
+                    feature.image?.startsWith('http://')
+                  }
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    if (target && !target.src.includes('placeholder')) {
+                      target.src = '/images/placeholder.jpg';
+                    }
+                  }}
+                />
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* ✅ NAVIGATION DOTS: Indicatoren voor huidige slide */}
-        <div className="flex justify-center gap-2 mt-6">
-          {features.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={cn(
-                'w-2 h-2 rounded-full transition-all duration-300',
-                index === visibleIndex
-                  ? 'w-8 bg-black'
-                  : 'bg-gray-300 hover:bg-gray-400'
-              )}
-              aria-label={`Ga naar slide ${index + 1}`}
-            />
-          ))}
-        </div>
+            {/* Text Content - ✅ SYMMETRISCH: Gecentreerd met symmetrische spacing */}
+            <div className={cn(
+              'w-full',
+              'max-w-xs sm:max-w-sm',
+              'mx-auto',
+              'text-center',
+              CONFIG.featureSection.text.container,
+              'space-y-1 sm:space-y-2'
+            )}>
+              <h3
+                className={cn(
+                  CONFIG.featureSection.text.title.fontSize,
+                  CONFIG.featureSection.text.title.fontWeight,
+                  CONFIG.featureSection.text.title.letterSpacing,
+                  'text-center'
+                )}
+                style={CONFIG.featureSection.text.title.gradient}
+              >
+                {feature.title}
+              </h3>
+              <p
+                className={cn(
+                  CONFIG.featureSection.text.description.fontSize,
+                  CONFIG.featureSection.text.description.textColor,
+                  CONFIG.featureSection.text.description.lineHeight,
+                  'text-center'
+                )}
+              >
+                {feature.description}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* ✅ DESKTOP: Zigzag pattern (behouden) */}
