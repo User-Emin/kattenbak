@@ -268,9 +268,9 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
         </table>
       </div>
 
-      {/* ✅ MOBIEL: Smooth om-en-om slide (zoals slider) */}
+      {/* ✅ MOBIEL: Smooth om-en-om slide (zoals slider) - RESPONSIEF SYMMETRISCH CENTRAAL */}
       <div className="md:hidden" ref={containerRef}>
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden mx-auto max-w-sm">
           <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${visibleIndex * 100}%)` }}>
             {comparisonData.map((row, index) => (
               <div
@@ -284,25 +284,25 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               >
                 <div
                   className={cn(
-                    'w-full p-4 rounded-lg border transition-all',
+                    'w-full p-5 rounded-xl border transition-all mx-auto',
                     row.highlight 
-                      ? 'bg-blue-50 shadow-sm' 
-                      : 'bg-white border-gray-200'
+                      ? 'bg-blue-50 shadow-md' 
+                      : 'bg-white border-gray-200 shadow-sm'
                   )}
                   style={row.highlight ? { borderColor: `${BRAND_COLORS_HEX.primary}4D` } : {}}
                 >
-                  <div className="mb-3">
+                  <div className="mb-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-2">
                       {/* ✅ ICON: Feature icoon */}
                       {row.icon && (
                         <row.icon 
-                          className="w-5 h-5" 
+                          className="w-6 h-6" 
                           style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : '#6b7280' }} 
                         />
                       )}
                       <div 
                         className={cn(
-                          'text-xs font-semibold leading-tight',
+                          'text-sm font-bold leading-tight',
                           row.highlight ? '' : 'text-gray-900'
                         )}
                         style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : {}}
@@ -312,35 +312,36 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     </div>
                     {/* ✅ BESCHRIJVING: Extra uitleg */}
                     {row.description && (
-                      <p className="text-xs text-gray-600 text-center leading-relaxed px-2">
+                      <p className="text-xs text-gray-600 text-center leading-relaxed px-3">
                         {row.description}
                       </p>
                     )}
                   </div>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div 
-                      className="flex items-center justify-between p-4 rounded-md border"
+                      className="flex items-center justify-between p-4 rounded-lg border mx-auto"
                       style={{ 
                         backgroundColor: `${BRAND_COLORS_HEX.primary}1A`,
-                        borderColor: `${BRAND_COLORS_HEX.primary}33`
+                        borderColor: `${BRAND_COLORS_HEX.primary}33`,
+                        maxWidth: '100%'
                       }}
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2.5 flex-1">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="sm" />}
-                        <span className="text-sm font-semibold" style={{ color: BRAND_COLORS_HEX.primary }}>Automatische kattenbak</span>
+                        <span className="text-xs font-semibold" style={{ color: BRAND_COLORS_HEX.primary }}>Automatische</span>
                       </div>
-                      <div className="flex items-center justify-center">
+                      <div className="flex items-center justify-center flex-shrink-0 ml-2">
                         {renderValue(row.ourProduct, true)}
                       </div>
                     </div>
-                    <div className="flex items-center justify-between p-4 rounded-md bg-gray-100 border border-gray-200">
-                      <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-between p-4 rounded-lg bg-gray-100 border border-gray-200 mx-auto" style={{ maxWidth: '100%' }}>
+                      <div className="flex items-center gap-2.5 flex-1">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="sm" />}
-                        <span className="text-sm font-semibold text-gray-700">Handmatige kattenbak</span>
+                        <span className="text-xs font-semibold text-gray-700">Handmatige</span>
                       </div>
-                      <div className="flex items-center justify-center">
+                      <div className="flex items-center justify-center flex-shrink-0 ml-2">
                         {renderValue(row.competitor, false)}
                       </div>
                     </div>
@@ -350,8 +351,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
             ))}
           </div>
         </div>
-        {/* ✅ MOBIEL: Navigation dots */}
-        <div className="flex justify-center gap-2 mt-4 mb-3">
+        {/* ✅ MOBIEL: Navigation dots - CENTRAAL */}
+        <div className="flex justify-center items-center gap-2 mt-5 mb-4 mx-auto">
           {comparisonData.map((_, index) => (
             <button
               key={index}
