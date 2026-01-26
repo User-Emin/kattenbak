@@ -8,9 +8,11 @@
 
 'use client';
 
-// ✅ MOBIEL: Geen slide meer, onder elkaar - useState/useEffect/useRef/ChevronLeft/ChevronRight niet meer nodig
+import { useState, useEffect, useRef } from 'react';
 import { 
-  ArrowRight
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
@@ -97,7 +99,9 @@ interface ProductHowItWorksProps {
 
 export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductHowItWorksProps) {
   const CONFIG = PRODUCT_PAGE_CONFIG;
-  // ✅ MOBIEL: Geen slide meer, onder elkaar - state niet meer nodig
+  const [visibleStepIndex, setVisibleStepIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const sliderRef = useRef<HTMLDivElement>(null);
   
   // ✅ DYNAMISCH: Stappen gebaseerd op echte product functionaliteit - perfect aansluitend op codebase
   // ✅ AFBEELDINGEN: Specifieke "Hoe werkt het?" afbeeldingen uit admin (los van variant/product images)
@@ -146,7 +150,31 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
     },
   ];
 
-  // ✅ MOBIEL: Geen slide meer, onder elkaar - geen auto-slide nodig
+  // ✅ AUTO-SLIDE: Smooth om-en-om beweging op mobiel
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    // Alleen op mobiel (max-width: 1024px voor lg breakpoint)
+    const isMobile = window.innerWidth < 1024;
+    if (!isMobile || steps.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setVisibleStepIndex((prev) => {
+        const next = (prev + 1) % steps.length;
+        return next;
+      });
+    }, 4000); // ✅ SMOOTH: 4 seconden tussen slides
+
+    return () => clearInterval(interval);
+  }, [steps.length]);
+
+  // ✅ MANUAL NAVIGATION: Swipe/klik navigatie
+  const goToStep = (index: number) => {
+    if (isAnimating || index === visibleStepIndex) return;
+    setIsAnimating(true);
+    setVisibleStepIndex(index);
+    setTimeout(() => setIsAnimating(false), 600); // ✅ SMOOTH: 600ms animatie
+  };
 
   return (
     <div className={cn(
@@ -334,98 +362,143 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
           })}
         </div>
 
-        {/* ✅ MOBIEL: Onder elkaar (zigzag) - GEEN SLIDE, OPTIMAAL */}
-        <div className="lg:hidden space-y-4">
-          {steps.map((step, index) => {
-            const IconComponent = step.icon;
-            return (
-              <div
-                key={step.number}
-                className={cn(
-                  'w-full p-5 rounded-xl border transition-all',
-                  'shadow-md'
-                )}
-                style={{ 
-                  backgroundColor: BRAND_COLORS_HEX.white,
-                  borderColor: `${BRAND_COLORS_HEX.primary}30`
-                }}
-              >
-                <div className="flex items-start gap-4">
-                  {/* ✅ NUMMER: Grote duidelijke nummering */}
+        {/* ✅ MOBIEL: Smooth slide (zoals slider) - RESPONSIEF SYMMETRISCH CENTRAAL ZONDER OVERLAP */}
+        <div className="lg:hidden" ref={sliderRef}>
+          <div className="relative overflow-hidden mx-auto max-w-sm w-full px-4" style={{ boxSizing: 'border-box' }}>
+            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${visibleStepIndex * 100}%)`, width: `${steps.length * 100}%` }}>
+              {steps.map((step, index) => {
+                const IconComponent = step.icon;
+                return (
                   <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg flex-shrink-0"
-                    style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
-                  >
-                    {step.number}
-                  </div>
-
-                  <div className="flex-1">
-                    {/* ✅ AFBEELDING: Optimale grootte */}
-                    {step.image && (
-                      <div className={cn(
-                        'relative mb-3',
-                        'w-full max-w-[200px] aspect-square',
-                        'rounded-lg overflow-hidden',
-                        'border-2'
-                      )}
-                      style={{ borderColor: `${BRAND_COLORS_HEX.primary}40` }}>
-                        <Image
-                          src={step.image}
-                          alt={step.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 375px) 200px, 240px"
-                          quality={90}
-                          loading="lazy"
-                          unoptimized={step.image.startsWith('/uploads/')}
-                          placeholder="blur"
-                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                        />
-                      </div>
+                    key={step.number}
+                    className={cn(
+                      'flex-shrink-0',
+                      'opacity-0 translate-x-4',
+                      'transition-all duration-700 ease-out',
+                      index === visibleStepIndex && 'opacity-100 translate-x-0'
                     )}
+                    style={{ 
+                      width: `${100 / steps.length}%`,
+                      boxSizing: 'border-box',
+                      paddingLeft: '0',
+                      paddingRight: '0'
+                    }}
+                  >
+                    <div
+                      className={cn(
+                        'w-full p-5 rounded-xl border transition-all',
+                        'shadow-md',
+                        'text-center'
+                      )}
+                      style={{ 
+                        backgroundColor: BRAND_COLORS_HEX.white,
+                        borderColor: `${BRAND_COLORS_HEX.primary}30`
+                      }}
+                    >
+                      {/* ✅ NUMMER: Grote duidelijke nummering - CENTRAAL */}
+                      <div
+                        className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg mx-auto mb-4"
+                        style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+                      >
+                        {step.number}
+                      </div>
 
-                    {/* ✅ ICON: Fallback als geen afbeelding */}
-                    {!step.image && (
-                      <div className="mb-3">
-                        <div
-                          className={cn(
-                            'w-16 h-16 flex items-center justify-center rounded-full border-2'
-                          )}
-                          style={{
-                            background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}20 0%, ${BRAND_COLORS_HEX.primary}30 100%)`,
-                            borderColor: `${BRAND_COLORS_HEX.primary}40`
-                          }}
-                        >
-                          <IconComponent
-                            className="w-8 h-8"
-                            style={{ color: BRAND_COLORS_HEX.primary }}
+                      {/* ✅ AFBEELDING: Optimale grootte - CENTRAAL */}
+                      {step.image && (
+                        <div className={cn(
+                          'relative mb-4 mx-auto',
+                          'w-full max-w-[240px] aspect-square',
+                          'rounded-lg overflow-hidden',
+                          'border-2'
+                        )}
+                        style={{ borderColor: `${BRAND_COLORS_HEX.primary}40` }}>
+                          <Image
+                            src={step.image}
+                            alt={step.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 375px) 240px, 280px"
+                            quality={90}
+                            loading="lazy"
+                            unoptimized={step.image.startsWith('/uploads/')}
+                            placeholder="blur"
+                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                           />
                         </div>
-                      </div>
-                    )}
-
-                    {/* ✅ TITEL: Met gradient */}
-                    <h3
-                      className={cn(
-                        'text-base font-bold mb-2 tracking-tight'
                       )}
-                      style={CONFIG.featureSection.text.title.gradient}
-                    >
-                      {step.title}
-                    </h3>
 
-                    {/* ✅ BESCHRIJVING: Optimale leesbaarheid */}
-                    <p
-                      className="text-sm leading-relaxed"
-                      style={{ color: BRAND_COLORS_HEX.gray[600] }}
-                    >
-                      {step.description}
-                    </p>
+                      {/* ✅ ICON: Fallback als geen afbeelding - CENTRAAL */}
+                      {!step.image && (
+                        <div className="mb-4 mx-auto w-fit">
+                          <div
+                            className={cn(
+                              'w-20 h-20 flex items-center justify-center rounded-full border-2'
+                            )}
+                            style={{
+                              background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}20 0%, ${BRAND_COLORS_HEX.primary}30 100%)`,
+                              borderColor: `${BRAND_COLORS_HEX.primary}40`
+                            }}
+                          >
+                            <IconComponent
+                              className="w-10 h-10"
+                              style={{ color: BRAND_COLORS_HEX.primary }}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* ✅ TITEL: Met gradient - CENTRAAL */}
+                      <h3
+                        className={cn(
+                          'text-lg font-bold mb-3 tracking-tight'
+                        )}
+                        style={CONFIG.featureSection.text.title.gradient}
+                      >
+                        {step.title}
+                      </h3>
+
+                      {/* ✅ BESCHRIJVING: Optimale leesbaarheid - CENTRAAL */}
+                      <p
+                        className="text-sm leading-relaxed px-2"
+                        style={{ color: BRAND_COLORS_HEX.gray[600] }}
+                      >
+                        {step.description}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* ✅ NAVIGATION DOTS: Indicatoren voor huidige slide - CENTRAAL */}
+          <div className="flex justify-center items-center gap-2 mt-5 mb-4 mx-auto">
+            {steps.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToStep(index)}
+                className={cn(
+                  'w-2 h-2 rounded-full transition-all',
+                  index === visibleStepIndex && 'w-6'
+                )}
+                style={index === visibleStepIndex 
+                  ? { backgroundColor: BRAND_COLORS_HEX.primary } 
+                  : { backgroundColor: BRAND_COLORS_HEX.gray[300] }
+                }
+                onMouseEnter={(e) => {
+                  if (index !== visibleStepIndex) {
+                    e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.gray[400];
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (index !== visibleStepIndex) {
+                    e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.gray[300];
+                  }
+                }}
+                aria-label={`Ga naar stap ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
