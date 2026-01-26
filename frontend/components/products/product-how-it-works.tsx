@@ -371,12 +371,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                 return (
                   <div
                     key={step.number}
-                    className={cn(
-                      'flex-shrink-0',
-                      'opacity-0 translate-x-4',
-                      'transition-all duration-700 ease-out',
-                      index === visibleStepIndex && 'opacity-100 translate-x-0'
-                    )}
+                    className="flex-shrink-0"
                     style={{ 
                       width: `${100 / steps.length}%`,
                       boxSizing: 'border-box',
