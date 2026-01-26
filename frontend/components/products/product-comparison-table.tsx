@@ -344,7 +344,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               >
                 <div
                   className={cn(
-                    'w-full p-3 rounded-xl border transition-all',
+                    'w-full p-2.5 rounded-xl border transition-all',
                     row.highlight 
                       ? 'shadow-md' 
                       : 'shadow-sm'
@@ -362,18 +362,18 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     boxSizing: 'border-box'
                   }}
                 >
-                  <div className="mb-4 text-center">
-                    <div className="flex items-center justify-center gap-2 mb-2">
+                  <div className="mb-3 text-center">
+                    <div className="flex items-center justify-center gap-1.5 mb-1.5">
                       {/* ✅ ICON: Feature icoon */}
                       {row.icon && (
                         <row.icon 
-                          className="w-6 h-6 flex-shrink-0" 
+                          className="w-5 h-5 flex-shrink-0" 
                           style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500] }} 
                         />
                       )}
                       <div 
                         className={cn(
-                          'text-base font-bold leading-snug text-center',
+                          'text-sm font-bold leading-tight text-center',
                           row.highlight ? '' : 'text-gray-900'
                         )}
                         style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : { color: BRAND_COLORS_HEX.gray[900] }}
@@ -384,16 +384,16 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     {/* ✅ BESCHRIJVING: Extra uitleg */}
                     {row.description && (
                       <p 
-                        className="text-sm text-center leading-relaxed px-2 mt-2"
+                        className="text-xs text-center leading-snug px-1 mt-1.5"
                         style={{ color: BRAND_COLORS_HEX.gray[600] }}
                       >
                         {row.description}
                       </p>
                     )}
                   </div>
-                  <div className="space-y-2 w-full">
+                  <div className="space-y-1.5 w-full">
                     <div 
-                      className="flex items-center justify-between p-1.5 rounded-lg w-full"
+                      className="flex items-center justify-between p-2 rounded-lg w-full"
                       style={{ 
                         backgroundColor: `${BRAND_COLORS_HEX.primary}1A`,
                         borderColor: `${BRAND_COLORS_HEX.primary}33`,
@@ -402,7 +402,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                         boxSizing: 'border-box'
                       }}
                     >
-                      <div className="flex items-center gap-1 flex-1 min-w-0 overflow-hidden">
+                      <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-hidden">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {firstImage && (
                           <div className="flex-shrink-0">
@@ -410,18 +410,18 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                           </div>
                         )}
                         <span 
-                          className="text-xs font-semibold truncate whitespace-nowrap flex-shrink"
+                          className="text-sm font-semibold truncate whitespace-nowrap"
                           style={{ color: BRAND_COLORS_HEX.primary }}
                         >
                           Automatische
                         </span>
                       </div>
-                      <div className="flex items-center justify-center flex-shrink-0 ml-0.5">
+                      <div className="flex items-center justify-center flex-shrink-0 ml-1">
                         {renderValue(row.ourProduct, true, false)}
                       </div>
                     </div>
                     <div 
-                      className="flex items-center justify-between p-1.5 rounded-lg w-full" 
+                      className="flex items-center justify-between p-2 rounded-lg w-full" 
                       style={{ 
                         backgroundColor: BRAND_COLORS_HEX.gray[100],
                         borderColor: BRAND_COLORS_HEX.gray[200],
@@ -430,7 +430,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                         boxSizing: 'border-box'
                       }}
                     >
-                      <div className="flex items-center gap-1 flex-1 min-w-0 overflow-hidden">
+                      <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-hidden">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {sixthImage && (
                           <div className="flex-shrink-0">
@@ -438,13 +438,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                           </div>
                         )}
                         <span 
-                          className="text-xs font-semibold truncate whitespace-nowrap flex-shrink"
+                          className="text-sm font-semibold truncate whitespace-nowrap"
                           style={{ color: BRAND_COLORS_HEX.gray[700] }}
                         >
                           Handmatige
                         </span>
                       </div>
-                      <div className="flex items-center justify-center flex-shrink-0 ml-0.5">
+                      <div className="flex items-center justify-center flex-shrink-0 ml-1">
                         {renderValue(row.competitor, false, false)}
                       </div>
                     </div>
