@@ -324,15 +324,22 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
       {/* ✅ MOBIEL: Smooth om-en-om slide (zoals slider) - RESPONSIEF SYMMETRISCH CENTRAAL ZONDER OVERLAP */}
       <div className="md:hidden" ref={containerRef}>
         <div className="relative overflow-hidden mx-auto max-w-sm w-full" style={{ boxSizing: 'border-box' }}>
-          <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${visibleIndex * 100}%)` }}>
+          <div 
+            className="flex transition-transform duration-700 ease-out" 
+            style={{ 
+              transform: `translateX(-${visibleIndex * 100}%)`,
+              width: `${comparisonData.length * 100}%`
+            }}
+          >
             {comparisonData.map((row, index) => (
               <div
                 key={index}
-                className={cn(
-                  'flex-shrink-0 w-full px-4'
-                )}
+                className="flex-shrink-0"
                 style={{ 
-                  boxSizing: 'border-box'
+                  width: `${100 / comparisonData.length}%`,
+                  boxSizing: 'border-box',
+                  paddingLeft: '1rem',
+                  paddingRight: '1rem'
                 }}
               >
                 <div
@@ -358,13 +365,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                       {/* ✅ ICON: Feature icoon */}
                       {row.icon && (
                         <row.icon 
-                          className="w-6 h-6" 
+                          className="w-6 h-6 flex-shrink-0" 
                           style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500] }} 
                         />
                       )}
                       <div 
                         className={cn(
-                          'text-sm font-bold leading-tight',
+                          'text-base font-bold leading-snug text-center',
                           row.highlight ? '' : 'text-gray-900'
                         )}
                         style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : { color: BRAND_COLORS_HEX.gray[900] }}
@@ -375,7 +382,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     {/* ✅ BESCHRIJVING: Extra uitleg */}
                     {row.description && (
                       <p 
-                        className="text-xs text-center leading-relaxed px-3"
+                        className="text-sm text-center leading-relaxed px-2 mt-2"
                         style={{ color: BRAND_COLORS_HEX.gray[600] }}
                       >
                         {row.description}
@@ -397,7 +404,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="sm" />}
                         <span 
-                          className="text-xs font-semibold truncate"
+                          className="text-sm font-semibold"
                           style={{ color: BRAND_COLORS_HEX.primary }}
                         >
                           Automatische
@@ -421,7 +428,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="sm" />}
                         <span 
-                          className="text-xs font-semibold truncate"
+                          className="text-sm font-semibold"
                           style={{ color: BRAND_COLORS_HEX.gray[700] }}
                         >
                           Handmatige
