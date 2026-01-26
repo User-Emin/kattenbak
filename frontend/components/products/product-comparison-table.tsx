@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Check, X } from "lucide-react";
+import { Check, X, Sparkles, Wind, Shovel, Clock, Smartphone, Coins } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { BRAND_COLORS_HEX } from "@/lib/color-config";
@@ -17,6 +17,8 @@ import { BRAND_COLORS_HEX } from "@/lib/color-config";
 
 interface ComparisonRow {
   feature: string;
+  description?: string; // ✅ BESCHRIJVING: Extra uitleg bij feature (zoals in screenshot)
+  icon?: React.ComponentType<{ className?: string }>; // ✅ ICON: Optioneel icoon voor feature
   ourProduct: string | boolean;
   competitor: string | boolean;
   highlight?: boolean; // ✅ HIGHLIGHT: Onze voordelen
@@ -29,65 +31,79 @@ interface ProductComparisonTableProps {
 // ✅ DRY: Shared constants
 const BLUR_PLACEHOLDER = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==";
 
-// ✅ DRY: Image component helper
-const ComparisonImage = ({ src, alt }: { src: string; alt: string }) => (
-  <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 rounded overflow-hidden border border-gray-200 shadow-sm">
-    <Image
-      src={src}
-      alt={alt}
-      fill
-      className="object-cover"
-      sizes="(max-width: 640px) 48px, 64px"
-      quality={90}
-      loading="lazy"
-      unoptimized={src.startsWith('/uploads/')}
-      placeholder="blur"
-      blurDataURL={BLUR_PLACEHOLDER}
-    />
-  </div>
-);
+// ✅ DRY: Image component helper - Grotere afbeeldingen zoals in screenshot
+const ComparisonImage = ({ src, alt, size = 'md' }: { src: string; alt: string; size?: 'sm' | 'md' | 'lg' }) => {
+  const sizeClasses = {
+    sm: 'w-16 h-16',
+    md: 'w-20 h-20 md:w-24 md:h-24',
+    lg: 'w-24 h-24 md:w-32 md:h-32'
+  };
+  return (
+    <div className={cn('relative flex-shrink-0 rounded-lg overflow-hidden border-2 shadow-md', sizeClasses[size])}
+      style={{ borderColor: `${BRAND_COLORS_HEX.primary}40` }}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className="object-cover"
+        sizes="(max-width: 640px) 80px, 96px"
+        quality={90}
+        loading="lazy"
+        unoptimized={src.startsWith('/uploads/')}
+        placeholder="blur"
+        blurDataURL={BLUR_PLACEHOLDER}
+      />
+    </div>
+  );
+};
 
 const comparisonData: ComparisonRow[] = [
   {
-    feature: 'Automatische reiniging',
-    ourProduct: true, // ✅ VINKJE: Onze kattenbak reinigt automatisch
-    competitor: false, // ❌ KRUISJE: Traditionele kattenbak reinigt niet automatisch
+    feature: 'Altijd een schone kattenbak',
+    description: 'Jij gaat toch ook niet op een vieze wc zitten?',
+    icon: Sparkles,
+    ourProduct: true,
+    competitor: false,
     highlight: true,
   },
   {
-    feature: 'Geen dagelijks scheppen',
-    ourProduct: true, // ✅ VINKJE: Geen scheppen nodig
-    competitor: false, // ❌ KRUISJE: Moet dagelijks scheppen
+    feature: 'Geen nare geurtjes thuis',
+    description: 'Ontlasting direct gescheiden voor een geurvrij huis.',
+    icon: Wind,
+    ourProduct: true,
+    competitor: false,
     highlight: true,
   },
   {
-    feature: 'Minder onderhoud (1x per 4-6 dagen)',
-    ourProduct: true, // ✅ VINKJE: Minder onderhoud
-    competitor: false, // ❌ KRUISJE: Dagelijks schoonmaken
+    feature: 'Nooit meer poep scheppen',
+    description: 'Soms de zak verwisselen en geen vieze klusjes meer.',
+    icon: Shovel,
+    ourProduct: true,
+    competitor: false,
     highlight: true,
   },
   {
-    feature: 'App bediening',
-    ourProduct: true, // ✅ VINKJE: App bediening beschikbaar
-    competitor: false, // ❌ KRUISJE: Geen app bediening
+    feature: 'Tijdbesparend (1,5 uur per week)',
+    description: 'Tot wel 10 minuten per dag, meer dan 1 uur per week!',
+    icon: Clock,
+    ourProduct: true,
+    competitor: false,
     highlight: true,
   },
   {
-    feature: 'Stil geluidsniveau (<40 dB)',
-    ourProduct: true, // ✅ VINKJE: Zeer stil
-    competitor: true, // ✅ VINKJE: Ook stil (geen motor)
-    highlight: false, // Geen highlight (beide stil)
-  },
-  {
-    feature: 'Gezondheidsmonitoring',
-    ourProduct: true, // ✅ VINKJE: Gezondheidsmonitoring beschikbaar
-    competitor: false, // ❌ KRUISJE: Geen monitoring
+    feature: 'Kattengedrag inzien via APP',
+    description: 'Zie het gewicht, activiteiten en de gezondheid in de app.',
+    icon: Smartphone,
+    ourProduct: true,
+    competitor: false,
     highlight: true,
   },
   {
-    feature: 'Tijdbesparing (15 min/dag)',
-    ourProduct: true, // ✅ VINKJE: Bespaart tijd
-    competitor: false, // ❌ KRUISJE: Geen tijdbesparing
+    feature: 'Bespaar geld door minder grind',
+    description: 'Minder grind, verspilling en milieuvriendelijker.',
+    icon: Coins,
+    ourProduct: true,
+    competitor: false,
     highlight: true,
   },
 ];
@@ -177,24 +193,24 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
               >
                 <div className="flex flex-col items-center justify-center gap-3">
-                  {/* ✅ DESKTOP: Afbeelding in header voor Automatische kattenbak */}
+                  {/* ✅ DESKTOP: Grotere afbeelding in header voor Automatische kattenbak */}
                   {firstImage && (
                     <div className="hidden md:block">
-                      <ComparisonImage src={firstImage} alt="Automatische kattenbak" />
+                      <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="lg" />
                     </div>
                   )}
-                  <span>Automatische kattenbak</span>
+                  <span className="font-bold">Automatische kattenbak</span>
                 </div>
               </th>
               <th className="px-6 py-5 text-center text-sm font-semibold text-gray-700 bg-gray-100 w-[30%] border-b-2 border-gray-300">
                 <div className="flex flex-col items-center justify-center gap-3">
-                  {/* ✅ DESKTOP: Afbeelding in header voor Handmatige kattenbak */}
+                  {/* ✅ DESKTOP: Grotere afbeelding in header voor Handmatige kattenbak */}
                   {sixthImage && (
                     <div className="hidden md:block">
-                      <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" />
+                      <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="lg" />
                     </div>
                   )}
-                  <span>Handmatige kattenbak</span>
+                  <span className="font-bold">Handmatige kattenbak</span>
                 </div>
               </th>
             </tr>
@@ -212,14 +228,40 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 style={row.highlight && index === 0 ? { borderLeftColor: BRAND_COLORS_HEX.primary } : {}}
               >
                 <td className={cn(
-                  'px-6 py-4 text-sm font-medium border-b border-r border-gray-200',
-                  row.highlight ? 'text-gray-900' : 'text-gray-900'
-                )} style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : {}}>
-                  {row.feature}
+                  'px-6 py-5 border-b border-r border-gray-200'
+                )}>
+                  <div className="flex items-start gap-4">
+                    {/* ✅ ICON: Feature icoon (zoals in screenshot) */}
+                    {row.icon && (
+                      <div className="flex-shrink-0 mt-0.5">
+                        <row.icon 
+                          className="w-6 h-6" 
+                          style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : '#6b7280' }} 
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <div 
+                        className={cn(
+                          'text-base font-bold mb-2',
+                          row.highlight ? '' : 'text-gray-900'
+                        )}
+                        style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : {}}
+                      >
+                        {row.feature}
+                      </div>
+                      {/* ✅ BESCHRIJVING: Extra uitleg (zoals in screenshot) */}
+                      {row.description && (
+                        <p className="text-sm text-gray-600 leading-relaxed">
+                          {row.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </td>
                 {/* ✅ SYMMETRISCH: Vinkjes perfect gecentreerd onder kolomnamen */}
                 <td className={cn(
-                  'px-6 py-4 border-b border-r border-gray-200',
+                  'px-6 py-5 border-b border-r border-gray-200',
                   row.highlight && index === 0 && 'bg-blue-50/70',
                   row.highlight && index !== 0 && 'bg-blue-50/50'
                 )}>
@@ -228,7 +270,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   </div>
                 </td>
                 <td className={cn(
-                  'px-6 py-4 border-b border-gray-200',
+                  'px-6 py-5 border-b border-gray-200',
                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
                 )}>
                   <div className="flex items-center justify-center">
@@ -264,14 +306,31 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   )}
                   style={row.highlight ? { borderColor: `${BRAND_COLORS_HEX.primary}4D` } : {}}
                 >
-                  <div 
-                    className={cn(
-                      'text-xs font-semibold mb-3 text-center leading-tight',
-                      row.highlight ? '' : 'text-gray-900'
+                  <div className="mb-3">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      {/* ✅ ICON: Feature icoon */}
+                      {row.icon && (
+                        <row.icon 
+                          className="w-5 h-5" 
+                          style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : '#6b7280' }} 
+                        />
+                      )}
+                      <div 
+                        className={cn(
+                          'text-xs font-semibold leading-tight',
+                          row.highlight ? '' : 'text-gray-900'
+                        )}
+                        style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : {}}
+                      >
+                        {row.feature}
+                      </div>
+                    </div>
+                    {/* ✅ BESCHRIJVING: Extra uitleg */}
+                    {row.description && (
+                      <p className="text-xs text-gray-600 text-center leading-relaxed px-2">
+                        {row.description}
+                      </p>
                     )}
-                    style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : {}}
-                  >
-                    {row.feature}
                   </div>
                   <div className="space-y-4">
                     <div 
@@ -283,8 +342,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     >
                       <div className="flex items-center gap-3">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
-                        {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" />}
-                        <span className="text-sm font-medium" style={{ color: BRAND_COLORS_HEX.primary }}>Automatische kattenbak</span>
+                        {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="sm" />}
+                        <span className="text-sm font-semibold" style={{ color: BRAND_COLORS_HEX.primary }}>Automatische kattenbak</span>
                       </div>
                       <div className="flex items-center justify-center">
                         {renderValue(row.ourProduct, true)}
@@ -293,8 +352,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     <div className="flex items-center justify-between p-4 rounded-md bg-gray-100 border border-gray-200">
                       <div className="flex items-center gap-3">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
-                        {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" />}
-                        <span className="text-sm font-medium text-gray-700">Handmatige kattenbak</span>
+                        {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="sm" />}
+                        <span className="text-sm font-semibold text-gray-700">Handmatige kattenbak</span>
                       </div>
                       <div className="flex items-center justify-center">
                         {renderValue(row.competitor, false)}
