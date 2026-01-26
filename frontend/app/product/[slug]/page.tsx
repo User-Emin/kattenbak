@@ -22,11 +22,18 @@ interface ProductMetadata {
  */
 async function getProductMetadata(slug: string): Promise<ProductMetadata> {
   try {
-    // ✅ FIX: Use absolute URL for server-side fetch (required in Next.js App Router)
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://catsupply.nl/api/v1';
-    const apiProductUrl = apiUrl.startsWith('http') 
-      ? `${apiUrl}/products/slug/${slug}` 
-      : `https://catsupply.nl/api/v1/products/slug/${slug}`;
+    // ✅ FIX: Use correct API URL for local development
+    const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    let apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    
+    if (!apiUrl) {
+      // ✅ FIX: Default to local backend when running locally
+      apiUrl = isLocal ? 'http://localhost:3100/api/v1' : 'https://catsupply.nl/api/v1';
+    } else if (!apiUrl.endsWith('/api/v1')) {
+      apiUrl = `${apiUrl}/api/v1`;
+    }
+    
+    const apiProductUrl = `${apiUrl}/products/slug/${slug}`;
     
     // ✅ FIX: Add timeout to prevent hanging fetches
     const controller = new AbortController();
