@@ -391,7 +391,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   </div>
                   <div className="space-y-2">
                     <div 
-                      className="flex items-center justify-between p-2.5 rounded-lg mx-auto"
+                      className="flex items-center justify-between p-2 rounded-lg mx-auto"
                       style={{ 
                         backgroundColor: `${BRAND_COLORS_HEX.primary}1A`,
                         borderColor: `${BRAND_COLORS_HEX.primary}33`,
@@ -400,22 +400,22 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                         maxWidth: '100%'
                       }}
                     >
-                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-1 min-w-0">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="sm" />}
                         <span 
-                          className="text-xs font-semibold"
+                          className="text-xs font-semibold truncate"
                           style={{ color: BRAND_COLORS_HEX.primary }}
                         >
                           Automatische
                         </span>
                       </div>
-                      <div className="flex items-center justify-center flex-shrink-0 ml-1.5">
+                      <div className="flex items-center justify-center flex-shrink-0 ml-1">
                         {renderValue(row.ourProduct, true, false)}
                       </div>
                     </div>
                     <div 
-                      className="flex items-center justify-between p-2.5 rounded-lg mx-auto" 
+                      className="flex items-center justify-between p-2 rounded-lg mx-auto" 
                       style={{ 
                         maxWidth: '100%',
                         backgroundColor: BRAND_COLORS_HEX.gray[100],
@@ -424,17 +424,17 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                         borderStyle: 'solid'
                       }}
                     >
-                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-1 min-w-0">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="sm" />}
                         <span 
-                          className="text-xs font-semibold"
+                          className="text-xs font-semibold truncate"
                           style={{ color: BRAND_COLORS_HEX.gray[700] }}
                         >
                           Handmatige
                         </span>
                       </div>
-                      <div className="flex items-center justify-center flex-shrink-0 ml-1.5">
+                      <div className="flex items-center justify-center flex-shrink-0 ml-1">
                         {renderValue(row.competitor, false, false)}
                       </div>
                     </div>
