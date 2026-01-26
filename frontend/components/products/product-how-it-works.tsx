@@ -363,20 +363,25 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
 
         {/* ✅ MOBIEL: Slide layout met duidelijke nummering - OPTIMAAL ZONDER OVERLAP */}
         <div className="lg:hidden" ref={sliderRef}>
-          <div className="relative overflow-hidden mx-auto max-w-sm w-full px-4">
-            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${visibleStepIndex * 100}%)` }}>
+          <div className="relative overflow-hidden mx-auto max-w-sm w-full px-4" style={{ boxSizing: 'border-box' }}>
+            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${visibleStepIndex * 100}%)`, width: `${steps.length * 100}%` }}>
               {steps.map((step, index) => {
                 const IconComponent = step.icon;
                 return (
                   <div
                     key={step.number}
                     className={cn(
-                      'min-w-full flex-shrink-0',
+                      'flex-shrink-0',
                       'opacity-0 translate-x-4',
                       'transition-all duration-700 ease-out',
                       index === visibleStepIndex && 'opacity-100 translate-x-0'
                     )}
-                    style={{ width: '100%' }}
+                    style={{ 
+                      width: `${100 / steps.length}%`,
+                      boxSizing: 'border-box',
+                      paddingLeft: '0',
+                      paddingRight: '0'
+                    }}
                   >
                     <div
                       className={cn(
