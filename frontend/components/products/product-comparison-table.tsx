@@ -404,15 +404,19 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     >
                       <div className="flex items-center gap-1 flex-1 min-w-0 overflow-hidden">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
-                        {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="sm" />}
+                        {firstImage && (
+                          <div className="flex-shrink-0">
+                            <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="sm" />
+                          </div>
+                        )}
                         <span 
-                          className="text-xs font-semibold truncate whitespace-nowrap"
+                          className="text-xs font-semibold truncate whitespace-nowrap flex-shrink"
                           style={{ color: BRAND_COLORS_HEX.primary }}
                         >
                           Automatische
                         </span>
                       </div>
-                      <div className="flex items-center justify-center flex-shrink-0 ml-1">
+                      <div className="flex items-center justify-center flex-shrink-0 ml-0.5">
                         {renderValue(row.ourProduct, true, false)}
                       </div>
                     </div>
@@ -428,15 +432,19 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     >
                       <div className="flex items-center gap-1 flex-1 min-w-0 overflow-hidden">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
-                        {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="sm" />}
+                        {sixthImage && (
+                          <div className="flex-shrink-0">
+                            <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="sm" />
+                          </div>
+                        )}
                         <span 
-                          className="text-xs font-semibold truncate whitespace-nowrap"
+                          className="text-xs font-semibold truncate whitespace-nowrap flex-shrink"
                           style={{ color: BRAND_COLORS_HEX.gray[700] }}
                         >
                           Handmatige
                         </span>
                       </div>
-                      <div className="flex items-center justify-center flex-shrink-0 ml-1">
+                      <div className="flex items-center justify-center flex-shrink-0 ml-0.5">
                         {renderValue(row.competitor, false, false)}
                       </div>
                     </div>
