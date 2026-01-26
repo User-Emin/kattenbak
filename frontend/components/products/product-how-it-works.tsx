@@ -361,9 +361,9 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
           })}
         </div>
 
-        {/* ✅ MOBIEL: Slide layout met duidelijke nummering */}
+        {/* ✅ MOBIEL: Slide layout met duidelijke nummering - OPTIMAAL ZONDER OVERLAP */}
         <div className="lg:hidden" ref={sliderRef}>
-          <div className="relative overflow-hidden mx-auto max-w-sm w-full">
+          <div className="relative overflow-hidden mx-auto max-w-sm w-full px-4">
             <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${visibleStepIndex * 100}%)` }}>
               {steps.map((step, index) => {
                 const IconComponent = step.icon;
@@ -371,15 +371,16 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                   <div
                     key={step.number}
                     className={cn(
-                      'min-w-full flex-shrink-0 px-4',
+                      'min-w-full flex-shrink-0',
                       'opacity-0 translate-x-4',
                       'transition-all duration-700 ease-out',
                       index === visibleStepIndex && 'opacity-100 translate-x-0'
                     )}
+                    style={{ width: '100%' }}
                   >
                     <div
                       className={cn(
-                        'w-full p-6 rounded-xl border transition-all',
+                        'w-full p-5 rounded-xl border transition-all',
                         'shadow-md'
                       )}
                       style={{ 
@@ -390,18 +391,18 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                       {/* ✅ NUMMER: Grote duidelijke nummering bovenaan */}
                       <div className="flex items-center justify-center mb-4">
                         <div
-                          className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg"
+                          className="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg"
                           style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
                         >
                           {step.number}
                         </div>
                       </div>
 
-                      {/* ✅ AFBEELDING: Centraal geplaatst */}
+                      {/* ✅ AFBEELDING: Optimale grootte en centraal */}
                       {step.image && (
                         <div className={cn(
                           'relative mx-auto mb-4',
-                          'w-48 h-48',
+                          'w-full max-w-[280px] aspect-square',
                           'rounded-xl overflow-hidden',
                           'border-2'
                         )}
@@ -411,7 +412,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                             alt={step.title}
                             fill
                             className="object-cover"
-                            sizes="192px"
+                            sizes="(max-width: 375px) 280px, 320px"
                             quality={90}
                             loading="lazy"
                             unoptimized={step.image.startsWith('/uploads/')}
@@ -426,7 +427,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                         <div className="flex justify-center mb-4">
                           <div
                             className={cn(
-                              'w-20 h-20 flex items-center justify-center rounded-full border-2'
+                              'w-24 h-24 flex items-center justify-center rounded-full border-2'
                             )}
                             style={{
                               background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight}20 0%, ${BRAND_COLORS_HEX.primary}30 100%)`,
@@ -434,26 +435,26 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                             }}
                           >
                             <IconComponent
-                              className="w-10 h-10"
+                              className="w-12 h-12"
                               style={{ color: BRAND_COLORS_HEX.primary }}
                             />
                           </div>
                         </div>
                       )}
 
-                      {/* ✅ TITEL: Centraal met gradient */}
+                      {/* ✅ TITEL: Centraal met gradient - Optimale grootte */}
                       <h3
                         className={cn(
-                          'text-xl font-bold text-center mb-3 tracking-tight'
+                          'text-lg font-bold text-center mb-3 tracking-tight px-2'
                         )}
                         style={CONFIG.featureSection.text.title.gradient}
                       >
                         {step.title}
                       </h3>
 
-                      {/* ✅ BESCHRIJVING: Centraal */}
+                      {/* ✅ BESCHRIJVING: Centraal - Optimale leesbaarheid */}
                       <p
-                        className="text-sm text-center leading-relaxed"
+                        className="text-sm text-center leading-relaxed px-2"
                         style={{ color: BRAND_COLORS_HEX.gray[600] }}
                       >
                         {step.description}

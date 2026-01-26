@@ -302,17 +302,18 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
 
       {/* ✅ MOBIEL: Smooth om-en-om slide (zoals slider) - RESPONSIEF SYMMETRISCH CENTRAAL ZONDER OVERLAP */}
       <div className="md:hidden" ref={containerRef}>
-        <div className="relative overflow-hidden mx-auto max-w-sm w-full">
+        <div className="relative overflow-hidden mx-auto max-w-sm w-full px-4">
           <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${visibleIndex * 100}%)` }}>
             {comparisonData.map((row, index) => (
               <div
                 key={index}
                 className={cn(
-                  'min-w-full flex-shrink-0 px-4',
+                  'min-w-full flex-shrink-0',
                   'opacity-0 translate-x-4',
                   'transition-all duration-700 ease-out',
                   index === visibleIndex && 'opacity-100 translate-x-0'
                 )}
+                style={{ width: '100%' }}
               >
                 <div
                   className={cn(
