@@ -31,6 +31,61 @@ interface ProductComparisonTableProps {
 // ✅ DRY: Shared constants
 const BLUR_PLACEHOLDER = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==";
 
+// ✅ SLIMME VARIABELEN: Mobiele vergelijkingstabel configuratie
+const MOBILE_COMPARISON_CONFIG = {
+  // Container configuratie
+  container: {
+    maxWidth: 'max-w-sm',
+    padding: 'px-4',
+    slidePadding: '1rem', // paddingLeft/Right voor slides
+  },
+  // Card configuratie
+  card: {
+    padding: 'p-3',
+    borderRadius: 'rounded-xl',
+    spacing: {
+      header: 'mb-2.5', // Spacing tussen header en stroken
+      stroken: 'space-y-1.5', // Spacing tussen stroken
+    },
+  },
+  // Header configuratie (feature titel + beschrijving)
+  header: {
+    spacing: {
+      container: 'mb-2.5',
+      iconTitle: 'gap-1.5 mb-1.5', // Gap tussen icon en titel, margin bottom
+      description: 'mt-1.5 px-1', // Margin top en padding voor beschrijving
+    },
+    icon: {
+      size: 'w-5 h-5',
+    },
+    title: {
+      fontSize: 'text-sm',
+      fontWeight: 'font-bold',
+      lineHeight: 'leading-tight',
+    },
+    description: {
+      fontSize: 'text-xs',
+      lineHeight: 'leading-snug',
+    },
+  },
+  // Strook configuratie (Automatische/Handmatige rijen)
+  strook: {
+    padding: 'p-2',
+    borderRadius: 'rounded-lg',
+    spacing: {
+      container: 'gap-1.5', // Gap tussen image en tekst
+      checkmark: 'ml-1', // Margin left voor checkmark
+    },
+    label: {
+      fontSize: 'text-sm',
+      fontWeight: 'font-semibold',
+    },
+    image: {
+      size: 'sm' as const, // ComparisonImage size
+    },
+  },
+} as const;
+
 // ✅ DRY: Image component helper - Grotere afbeeldingen zoals in screenshot
 const ComparisonImage = ({ src, alt, size = 'md' }: { src: string; alt: string; size?: 'sm' | 'md' | 'lg' }) => {
   const sizeClasses = {
@@ -321,9 +376,15 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
         </table>
       </div>
 
-      {/* ✅ MOBIEL: Smooth om-en-om slide (zoals slider) - RESPONSIEF SYMMETRISCH CENTRAAL ZONDER OVERLAP */}
+      {/* ✅ MOBIEL: Smooth om-en-om slide - SLIMME VARIABELEN SYSTEEM */}
       <div className="md:hidden" ref={containerRef}>
-        <div className="relative overflow-hidden mx-auto max-w-sm w-full" style={{ boxSizing: 'border-box' }}>
+        <div 
+          className={cn(
+            'relative overflow-hidden mx-auto w-full',
+            MOBILE_COMPARISON_CONFIG.container.maxWidth
+          )} 
+          style={{ boxSizing: 'border-box' }}
+        >
           <div 
             className="flex transition-transform duration-700 ease-out" 
             style={{ 
@@ -338,13 +399,15 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 style={{ 
                   width: `${100 / comparisonData.length}%`,
                   boxSizing: 'border-box',
-                  paddingLeft: '1rem',
-                  paddingRight: '1rem'
+                  paddingLeft: MOBILE_COMPARISON_CONFIG.container.slidePadding,
+                  paddingRight: MOBILE_COMPARISON_CONFIG.container.slidePadding
                 }}
               >
                 <div
                   className={cn(
-                    'w-full p-2.5 rounded-xl border transition-all',
+                    'w-full border transition-all',
+                    MOBILE_COMPARISON_CONFIG.card.padding,
+                    MOBILE_COMPARISON_CONFIG.card.borderRadius,
                     row.highlight 
                       ? 'shadow-md' 
                       : 'shadow-sm'
@@ -362,38 +425,54 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     boxSizing: 'border-box'
                   }}
                 >
-                  <div className="mb-3 text-center">
-                    <div className="flex items-center justify-center gap-1.5 mb-1.5">
-                      {/* ✅ ICON: Feature icoon */}
+                  {/* ✅ HEADER: Feature titel + beschrijving */}
+                  <div className={cn('text-center', MOBILE_COMPARISON_CONFIG.header.spacing.container)}>
+                    <div className={cn(
+                      'flex items-center justify-center',
+                      MOBILE_COMPARISON_CONFIG.header.spacing.iconTitle
+                    )}>
                       {row.icon && (
                         <row.icon 
-                          className="w-5 h-5 flex-shrink-0" 
+                          className={cn('flex-shrink-0', MOBILE_COMPARISON_CONFIG.header.icon.size)} 
                           style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500] }} 
                         />
                       )}
                       <div 
                         className={cn(
-                          'text-sm font-bold leading-tight text-center',
-                          row.highlight ? '' : 'text-gray-900'
+                          MOBILE_COMPARISON_CONFIG.header.title.fontSize,
+                          MOBILE_COMPARISON_CONFIG.header.title.fontWeight,
+                          MOBILE_COMPARISON_CONFIG.header.title.lineHeight,
+                          'text-center'
                         )}
                         style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : { color: BRAND_COLORS_HEX.gray[900] }}
                       >
                         {row.feature}
                       </div>
                     </div>
-                    {/* ✅ BESCHRIJVING: Extra uitleg */}
                     {row.description && (
                       <p 
-                        className="text-xs text-center leading-snug px-1 mt-1.5"
+                        className={cn(
+                          MOBILE_COMPARISON_CONFIG.header.description.fontSize,
+                          MOBILE_COMPARISON_CONFIG.header.description.lineHeight,
+                          'text-center',
+                          MOBILE_COMPARISON_CONFIG.header.spacing.description
+                        )}
                         style={{ color: BRAND_COLORS_HEX.gray[600] }}
                       >
                         {row.description}
                       </p>
                     )}
                   </div>
-                  <div className="space-y-1.5 w-full">
+                  
+                  {/* ✅ STROKEN: Automatische + Handmatige */}
+                  <div className={cn('w-full', MOBILE_COMPARISON_CONFIG.card.spacing.stroken)}>
+                    {/* Automatische strook */}
                     <div 
-                      className="flex items-center justify-between p-2 rounded-lg w-full"
+                      className={cn(
+                        'flex items-center justify-between w-full',
+                        MOBILE_COMPARISON_CONFIG.strook.borderRadius,
+                        MOBILE_COMPARISON_CONFIG.strook.padding
+                      )}
                       style={{ 
                         backgroundColor: `${BRAND_COLORS_HEX.primary}1A`,
                         borderColor: `${BRAND_COLORS_HEX.primary}33`,
@@ -402,26 +481,45 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                         boxSizing: 'border-box'
                       }}
                     >
-                      <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-hidden">
-                        {/* ✅ DRY: Gebruik ComparisonImage helper */}
+                      <div className={cn(
+                        'flex items-center flex-1 min-w-0 overflow-hidden',
+                        MOBILE_COMPARISON_CONFIG.strook.spacing.container
+                      )}>
                         {firstImage && (
                           <div className="flex-shrink-0">
-                            <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="sm" />
+                            <ComparisonImage 
+                              src={firstImage} 
+                              alt="Automatische kattenbak" 
+                              size={MOBILE_COMPARISON_CONFIG.strook.image.size} 
+                            />
                           </div>
                         )}
                         <span 
-                          className="text-sm font-semibold truncate whitespace-nowrap"
+                          className={cn(
+                            MOBILE_COMPARISON_CONFIG.strook.label.fontSize,
+                            MOBILE_COMPARISON_CONFIG.strook.label.fontWeight,
+                            'truncate whitespace-nowrap'
+                          )}
                           style={{ color: BRAND_COLORS_HEX.primary }}
                         >
                           Automatische
                         </span>
                       </div>
-                      <div className="flex items-center justify-center flex-shrink-0 ml-1">
+                      <div className={cn(
+                        'flex items-center justify-center flex-shrink-0',
+                        MOBILE_COMPARISON_CONFIG.strook.spacing.checkmark
+                      )}>
                         {renderValue(row.ourProduct, true, false)}
                       </div>
                     </div>
+                    
+                    {/* Handmatige strook */}
                     <div 
-                      className="flex items-center justify-between p-2 rounded-lg w-full" 
+                      className={cn(
+                        'flex items-center justify-between w-full',
+                        MOBILE_COMPARISON_CONFIG.strook.borderRadius,
+                        MOBILE_COMPARISON_CONFIG.strook.padding
+                      )} 
                       style={{ 
                         backgroundColor: BRAND_COLORS_HEX.gray[100],
                         borderColor: BRAND_COLORS_HEX.gray[200],
@@ -430,21 +528,34 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                         boxSizing: 'border-box'
                       }}
                     >
-                      <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-hidden">
-                        {/* ✅ DRY: Gebruik ComparisonImage helper */}
+                      <div className={cn(
+                        'flex items-center flex-1 min-w-0 overflow-hidden',
+                        MOBILE_COMPARISON_CONFIG.strook.spacing.container
+                      )}>
                         {sixthImage && (
                           <div className="flex-shrink-0">
-                            <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="sm" />
+                            <ComparisonImage 
+                              src={sixthImage} 
+                              alt="Handmatige kattenbak" 
+                              size={MOBILE_COMPARISON_CONFIG.strook.image.size} 
+                            />
                           </div>
                         )}
                         <span 
-                          className="text-sm font-semibold truncate whitespace-nowrap"
+                          className={cn(
+                            MOBILE_COMPARISON_CONFIG.strook.label.fontSize,
+                            MOBILE_COMPARISON_CONFIG.strook.label.fontWeight,
+                            'truncate whitespace-nowrap'
+                          )}
                           style={{ color: BRAND_COLORS_HEX.gray[700] }}
                         >
                           Handmatige
                         </span>
                       </div>
-                      <div className="flex items-center justify-center flex-shrink-0 ml-1">
+                      <div className={cn(
+                        'flex items-center justify-center flex-shrink-0',
+                        MOBILE_COMPARISON_CONFIG.strook.spacing.checkmark
+                      )}>
                         {renderValue(row.competitor, false, false)}
                       </div>
                     </div>
