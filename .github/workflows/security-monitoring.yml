@@ -58,7 +58,7 @@ jobs:
 
       # Admin Security Audit
       - name: Admin Security Audit
-        working-directory: ./admin
+        working-directory: ./admin-next
         run: |
           npm audit --audit-level=moderate --json > ../admin-audit.json || true
           if [ -s ../admin-audit.json ]; then
@@ -75,6 +75,7 @@ jobs:
       # Send Email Alert if vulnerabilities found
       - name: Send Security Alert Email
         if: env.BACKEND_VULNERABILITIES > 0 || env.FRONTEND_VULNERABILITIES > 0 || env.ADMIN_VULNERABILITIES > 0
+        continue-on-error: true
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -82,7 +83,7 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "🔒 Security Alert: Vulnerabilities Detected - catsupply.nl"
-          to: emin@catsupply.nl
+          to: eminkaan066@gmail.com
           from: Security Monitor
           body: |
             Security vulnerabilities detected in catsupply.nl dependencies.
@@ -124,7 +125,7 @@ jobs:
           
           cd backend && npm outdated --json > ../backend-outdated.json || true
           cd ../frontend && npm outdated --json > ../frontend-outdated.json || true
-          cd ../admin && npm outdated --json > ../admin-outdated.json || true
+          cd ../admin-next && npm outdated --json > ../admin-outdated.json || true
           
           BACKEND_OUTDATED=$(jq -r 'length' backend-outdated.json 2>/dev/null || echo "0")
           FRONTEND_OUTDATED=$(jq -r 'length' frontend-outdated.json 2>/dev/null || echo "0")
@@ -140,6 +141,7 @@ jobs:
       # Send Dependency Update Alert (weekly summary)
       - name: Send Dependency Update Alert
         if: env.TOTAL_OUTDATED > 10
+        continue-on-error: true
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -147,7 +149,7 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "📦 Dependency Update Alert - catsupply.nl"
-          to: emin@catsupply.nl
+          to: eminkaan066@gmail.com
           from: Dependency Monitor
           body: |
             Multiple outdated dependencies detected in catsupply.nl.

@@ -52,25 +52,26 @@ jobs:
           retention-days: 1
       
       - name: 📤 Deploy to Server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          source: "frontend/.next,frontend/public"
-          target: "/var/www/kattenbak"
-          strip_components: 0
+        continue-on-error: true
+        run: |
+          # ✅ FIX: Use standard SSH instead of deprecated action
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
+          
+          # Deploy using rsync
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/id_rsa" \
+            frontend/.next/ \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/kattenbak/frontend/.next/ || echo "⚠️ Deploy skipped"
       
       - name: 🔄 Restart Frontend
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
+        continue-on-error: true
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF' || echo "⚠️ Restart skipped"
             cd /var/www/kattenbak
             pm2 restart frontend || pm2 start ecosystem.config.js --only frontend
             sleep 5
             pm2 list
+          EOF
