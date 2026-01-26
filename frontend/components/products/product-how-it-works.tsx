@@ -147,7 +147,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
   return (
     <div className={cn(
       'w-full', // ✅ EDGE-TO-EDGE: Volledige breedte
-      'py-8 sm:py-12 md:py-14 lg:py-16', // ✅ COMPACT: Minder padding op desktop
+          'py-8 sm:py-12 md:py-14 lg:py-10', // ✅ COMPACT: Minder padding op desktop
       className
     )}
     style={{
@@ -162,16 +162,16 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
       )}>
         {/* ✅ TITEL: Direct in achtergrond met smooth animatie */}
         <div className={cn(
-          'text-center mb-8 sm:mb-10 md:mb-12', // ✅ COMPACT: Minder margin op desktop
-          'px-4 sm:px-6 md:px-8 lg:px-10' // ✅ COMPACT: Minder padding op desktop
+          'text-center mb-8 sm:mb-10 md:mb-12 lg:mb-8', // ✅ COMPACT: Minder margin op desktop
+          'px-4 sm:px-6 md:px-8 lg:px-6' // ✅ COMPACT: Minder padding op desktop
         )}
         style={{
           animation: 'fadeInUp 0.8s ease-out', // ✅ SMOOTH: Fade-in animatie voor titel
         }}>
           <h2 className={cn(
-            'text-2xl sm:text-3xl md:text-4xl lg:text-5xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
+            'text-2xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-4xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
             'font-bold', // ✅ GRADIENT: Bold voor betere gradient zichtbaarheid
-            'mb-3 sm:mb-4 md:mb-5', // ✅ COMPACT: Minder margin
+            'mb-3 sm:mb-4 md:mb-5 lg:mb-3', // ✅ COMPACT: Minder margin op desktop
             'tracking-tight',
             'transition-all duration-500' // ✅ SMOOTH: Smooth transitions
           )}
@@ -185,7 +185,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
             Hoe werkt het?
           </h2>
           <p className={cn(
-            'text-sm sm:text-base md:text-lg', // ✅ COMPACT: Kleinere lettergrootte op desktop
+            'text-sm sm:text-base md:text-lg lg:text-sm xl:text-base', // ✅ COMPACT: Kleinere lettergrootte op desktop
             'max-w-2xl mx-auto',
             'font-semibold', // ✅ LEVENDIG: Semibold voor levendige beschrijving
             'transition-all duration-500' // ✅ SMOOTH: Smooth transitions
@@ -196,7 +196,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
         </div>
 
         {/* ✅ STAPPEN: Compacte desktop layout met webshop blauw en smooth animaties */}
-        <div className="space-y-4 sm:space-y-5 md:space-y-6"> {/* ✅ COMPACT: Minder spacing op desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6"> {/* ✅ COMPACT: Grid layout op desktop (2 kolommen) */}
           {steps.map((step, index) => {
             const IconComponent = step.icon;
             const isLast = index === steps.length - 1;
@@ -213,15 +213,16 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                 <div className={cn(
                   'flex flex-col sm:flex-row',
                   'items-start sm:items-center',
-                  'gap-3 sm:gap-4 md:gap-5 lg:gap-6', // ✅ COMPACT: Minder gap op desktop
+                  'gap-3 sm:gap-4 lg:gap-3', // ✅ COMPACT: Minder gap op desktop grid
                   'bg-white',
                   'rounded-lg sm:rounded-xl', // ✅ COMPACT: Kleinere border radius
-                  'p-4 sm:p-5 md:p-6 lg:p-7', // ✅ COMPACT: Minder padding op desktop
+                  'p-4 sm:p-5 lg:p-4', // ✅ COMPACT: Minder padding op desktop grid
                   'shadow-sm hover:shadow-lg', // ✅ SMOOTH: Meer shadow bij hover
                   'transition-all duration-500 ease-out', // ✅ SMOOTH: Langere transition voor vloeiendere animatie
                   'border',
                   'hover:scale-[1.02]', // ✅ SMOOTH: Subtiele scale bij hover
                   'hover:-translate-y-1', // ✅ SMOOTH: Subtiele lift bij hover
+                  'h-full' // ✅ COMPACT: Gelijkmatige hoogte in grid
                 )}
                 style={{ 
                   borderColor: `${BRAND_COLORS_HEX.primary}30`, // ✅ BLAUWERIG: Iets meer zichtbare border
@@ -232,7 +233,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                   <div className={cn(
                     'flex-shrink-0',
                     'relative',
-                    'w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32', // ✅ COMPACT: Responsive grootte
+                    'w-24 h-24 sm:w-28 sm:h-28 lg:w-20 lg:h-20', // ✅ COMPACT: Kleinere afbeeldingen in desktop grid
                     'rounded-lg sm:rounded-xl',
                     'overflow-hidden',
                     'bg-gray-100',
@@ -272,7 +273,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                   <div className={cn(
                     'flex-shrink-0',
                     'relative',
-                    'w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16', // ✅ COMPACT: Kleinere icons op desktop
+                    'w-12 h-12 sm:w-14 sm:h-14 lg:w-12 lg:h-12', // ✅ COMPACT: Kleinere icons in desktop grid
                     'flex items-center justify-center',
                     'rounded-full',
                     'border-2'
@@ -282,7 +283,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                     borderColor: `${BRAND_COLORS_HEX.primary}40`, // ✅ BLAUW: Border
                   }}>
                     <IconComponent className={cn(
-                      'w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8' // ✅ COMPACT: Kleinere icon size
+                      'w-6 h-6 sm:w-7 sm:h-7 lg:w-6 lg:h-6' // ✅ COMPACT: Kleinere icon size in desktop grid
                     )}
                     style={{ color: BRAND_COLORS_HEX.primary }} /> {/* ✅ BLAUW: Webshop blauw */}
                     {/* ✅ NUMMER: Badge met webshop blauw */}
@@ -302,9 +303,9 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                 )}
 
                 {/* ✅ TEKST: Levendige titel en beschrijving */}
-                <div className="flex-1 space-y-1.5 sm:space-y-2"> {/* ✅ COMPACT: Minder spacing */}
+                <div className="flex-1 space-y-1 sm:space-y-1.5 lg:space-y-1"> {/* ✅ COMPACT: Minder spacing in desktop grid */}
                   <h3 className={cn(
-                    'text-lg sm:text-xl md:text-2xl', // ✅ COMPACT: Kleinere lettergrootte op desktop
+                    'text-lg sm:text-xl lg:text-base xl:text-lg', // ✅ COMPACT: Kleinere lettergrootte in desktop grid
                     'font-bold', // ✅ BOLD: Voor betere gradient zichtbaarheid
                     'tracking-tight'
                   )}
@@ -312,10 +313,10 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                     {step.title}
                   </h3>
                   <p className={cn(
-                    'text-xs sm:text-sm md:text-base', // ✅ COMPACT: Kleinere lettergrootte op desktop
+                    'text-xs sm:text-sm lg:text-xs xl:text-sm', // ✅ COMPACT: Kleinere lettergrootte in desktop grid
                     'font-light',
-                    'leading-relaxed',
-                    'max-w-2xl'
+                    'leading-relaxed lg:leading-snug', // ✅ COMPACT: Tighter line height in desktop grid
+                    'max-w-2xl lg:max-w-none' // ✅ COMPACT: Geen max-width in desktop grid
                   )}
                   style={{ color: '#4b5563' }}> {/* ✅ GRIJS: Subtiele tekst */}
                     {step.description}
@@ -324,10 +325,10 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
 
               </div>
 
-                {/* ✅ PIJL: Onder de kaart op zowel mobiel als desktop */}
+                {/* ✅ PIJL: Alleen op mobiel/tablet, niet in desktop grid */}
                 {!isLast && (
                   <div className={cn(
-                    'flex',
+                    'flex lg:hidden', // ✅ COMPACT: Verberg pijlen in desktop grid
                     'justify-center',
                     'my-3 md:my-4', // ✅ SPACING: Margin boven en onder pijl
                   )}>
