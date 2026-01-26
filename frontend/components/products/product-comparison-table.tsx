@@ -31,53 +31,53 @@ interface ProductComparisonTableProps {
 // ✅ DRY: Shared constants
 const BLUR_PLACEHOLDER = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==";
 
-// ✅ SLIMME VARIABELEN: Mobiele vergelijkingstabel configuratie
+// ✅ SLIMME VARIABELEN: Mobiele vergelijkingstabel configuratie - OPTIMAAL RESPONSIVE
 const MOBILE_COMPARISON_CONFIG = {
   // Container configuratie
   container: {
     maxWidth: 'max-w-sm',
     padding: 'px-4',
-    slidePadding: '1rem', // paddingLeft/Right voor slides
+    slidePadding: '0.875rem', // 14px - compacter dan 1rem
   },
   // Card configuratie
   card: {
-    padding: 'p-3',
+    padding: 'p-2.5', // 10px - compacter
     borderRadius: 'rounded-xl',
     spacing: {
-      header: 'mb-2.5', // Spacing tussen header en stroken
+      header: 'mb-2', // Spacing tussen header en stroken
       stroken: 'space-y-1.5', // Spacing tussen stroken
     },
   },
   // Header configuratie (feature titel + beschrijving)
   header: {
     spacing: {
-      container: 'mb-2.5',
+      container: 'mb-2',
       iconTitle: 'gap-1.5 mb-1.5', // Gap tussen icon en titel, margin bottom
       description: 'mt-1.5 px-1', // Margin top en padding voor beschrijving
     },
     icon: {
-      size: 'w-5 h-5',
+      size: 'w-4 h-4', // 16px - compacter
     },
     title: {
-      fontSize: 'text-sm',
+      fontSize: 'text-sm', // 14px - optimaal leesbaar
       fontWeight: 'font-bold',
       lineHeight: 'leading-tight',
     },
     description: {
-      fontSize: 'text-xs',
+      fontSize: 'text-xs', // 12px - compacter
       lineHeight: 'leading-snug',
     },
   },
   // Strook configuratie (Automatische/Handmatige rijen)
   strook: {
-    padding: 'p-2',
+    padding: 'p-1.5', // 6px - compacter maar nog leesbaar
     borderRadius: 'rounded-lg',
     spacing: {
       container: 'gap-1.5', // Gap tussen image en tekst
-      checkmark: 'ml-1', // Margin left voor checkmark
+      checkmark: 'ml-0.5', // Margin left voor checkmark - compacter
     },
     label: {
-      fontSize: 'text-sm',
+      fontSize: 'text-xs', // 12px - compacter
       fontWeight: 'font-semibold',
     },
     image: {
