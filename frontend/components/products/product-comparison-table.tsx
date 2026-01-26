@@ -162,22 +162,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
 
   return (
     <div 
-      className="w-full bg-white rounded-xl border-2 shadow-lg overflow-hidden"
-      style={{ 
-        borderColor: BRAND_COLORS_HEX.primary,
-        boxShadow: `0 4px 20px ${BRAND_COLORS_HEX.primary}20`,
-      }}
+      className="w-full bg-white rounded-xl overflow-hidden"
     >
-      {/* Header - ✅ DRY: Gebruik BRAND_COLORS_HEX */}
-      <div 
-        className="text-white px-4 sm:px-6 py-3 sm:py-4"
-        style={{ 
-          background: `linear-gradient(to right, ${BRAND_COLORS_HEX.primary}, ${BRAND_COLORS_HEX.primaryDark})` 
-        }}
-      >
-        <h3 className="text-lg sm:text-xl font-bold text-center">Vergelijking</h3>
-        <p className="text-xs sm:text-sm text-blue-100 mt-1 text-center">Automatische kattenbak vs. Handmatige kattenbak</p>
-      </div>
 
       {/* ✅ RESPONSIVE TABLE: Desktop compact, mobiel swipe-vriendelijk */}
       {/* Desktop Table - ✅ SMOOTH: Vinkjes symmetrisch gecentreerd, duidelijke scheiding */}
@@ -185,11 +171,11 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
         <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 w-2/5 border-b-2 border-r border-gray-300">
+              <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 w-2/5">
                 Feature
               </th>
               <th 
-                className="px-6 py-5 text-center text-sm font-semibold text-white w-[30%] border-b-2 border-r border-gray-300" 
+                className="px-6 py-5 text-center text-sm font-semibold text-white w-[30%]" 
                 style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
               >
                 <div className="flex flex-col items-center justify-center gap-3">
@@ -202,7 +188,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   <span className="font-bold">Automatische kattenbak</span>
                 </div>
               </th>
-              <th className="px-6 py-5 text-center text-sm font-semibold text-gray-700 bg-gray-100 w-[30%] border-b-2 border-gray-300">
+              <th className="px-6 py-5 text-center text-sm font-semibold text-gray-700 bg-gray-100 w-[30%]">
                 <div className="flex flex-col items-center justify-center gap-3">
                   {/* ✅ DESKTOP: Grotere afbeelding in header voor Handmatige kattenbak */}
                   {sixthImage && (
@@ -228,7 +214,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 style={row.highlight && index === 0 ? { borderLeftColor: BRAND_COLORS_HEX.primary } : {}}
               >
                 <td className={cn(
-                  'px-6 py-5 border-b border-r border-gray-200'
+                  'px-6 py-5'
                 )}>
                   <div className="flex items-start gap-4">
                     {/* ✅ ICON: Feature icoon (zoals in screenshot) */}
@@ -259,18 +245,17 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     </div>
                   </div>
                 </td>
-                {/* ✅ SYMMETRISCH: Vinkjes perfect gecentreerd onder kolomnamen */}
-                <td className={cn(
-                  'px-6 py-5 border-b border-r border-gray-200',
-                  row.highlight && index === 0 && 'bg-blue-50/70',
-                  row.highlight && index !== 0 && 'bg-blue-50/50'
-                )}>
+                {/* ✅ SYMMETRISCH: Vinkjes perfect gecentreerd onder kolomnamen - HELE KOLOM BLAUW */}
+                <td 
+                  className="px-6 py-5"
+                  style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+                >
                   <div className="flex items-center justify-center">
                     {renderValue(row.ourProduct, true)}
                   </div>
                 </td>
                 <td className={cn(
-                  'px-6 py-5 border-b border-gray-200',
+                  'px-6 py-5',
                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
                 )}>
                   <div className="flex items-center justify-center">
@@ -384,12 +369,6 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
         </div>
       </div>
 
-      {/* Footer Note - ✅ SUBTIELE: Minder opvallend */}
-      <div className="bg-gray-50 border-t border-gray-200 px-4 sm:px-6 py-2.5 sm:py-3">
-        <p className="text-xs text-gray-500 text-center">
-          * Vergelijking met handmatige kattenbak
-        </p>
-      </div>
     </div>
   );
 }
