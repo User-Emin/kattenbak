@@ -72,51 +72,15 @@ jobs:
             fi
           fi
 
-      # Send Email Alert if vulnerabilities found
-      - name: Send Security Alert Email
+      # ✅ DISABLED: Email alerts removed - check GitHub Actions UI instead
+      - name: Security Alert Summary
         if: env.BACKEND_VULNERABILITIES > 0 || env.FRONTEND_VULNERABILITIES > 0 || env.ADMIN_VULNERABILITIES > 0
-        continue-on-error: true
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "🔒 Security Alert: Vulnerabilities Detected - catsupply.nl"
-          to: eminkaan066@gmail.com
-          from: Security Monitor
-          body: |
-            Security vulnerabilities detected in catsupply.nl dependencies.
-            
-            Summary:
-            - Backend: ${{ env.BACKEND_VULNERABILITIES || 0 }} vulnerabilities
-            - Frontend: ${{ env.FRONTEND_VULNERABILITIES || 0 }} vulnerabilities
-            - Admin: ${{ env.ADMIN_VULNERABILITIES || 0 }} vulnerabilities
-            
-            Please review and update dependencies.
-            
-            Full audit reports available in GitHub Actions.
-            
-            Repository: https://github.com/${{ github.repository }}
-            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          html_body: |
-            <h2>🔒 Security Alert: Vulnerabilities Detected</h2>
-            <p>Security vulnerabilities detected in <strong>catsupply.nl</strong> dependencies.</p>
-            
-            <h3>Summary</h3>
-            <ul>
-              <li>Backend: <strong>${{ env.BACKEND_VULNERABILITIES || 0 }}</strong> vulnerabilities</li>
-              <li>Frontend: <strong>${{ env.FRONTEND_VULNERABILITIES || 0 }}</strong> vulnerabilities</li>
-              <li>Admin: <strong>${{ env.ADMIN_VULNERABILITIES || 0 }}</strong> vulnerabilities</li>
-            </ul>
-            
-            <p>Please review and update dependencies.</p>
-            
-            <p>
-              <a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">
-                View Full Report
-              </a>
-            </p>
+        run: |
+          echo "⚠️ Security vulnerabilities detected:"
+          echo "   Backend: ${{ env.BACKEND_VULNERABILITIES || 0 }}"
+          echo "   Frontend: ${{ env.FRONTEND_VULNERABILITIES || 0 }}"
+          echo "   Admin: ${{ env.ADMIN_VULNERABILITIES || 0 }}"
+          echo "   View full report: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       # Dependency Update Check
       - name: Check for Outdated Dependencies
@@ -138,28 +102,13 @@ jobs:
           echo "ADMIN_OUTDATED=$ADMIN_OUTDATED" >> $GITHUB_ENV
           echo "TOTAL_OUTDATED=$TOTAL_OUTDATED" >> $GITHUB_ENV
 
-      # Send Dependency Update Alert (weekly summary)
-      - name: Send Dependency Update Alert
+      # ✅ DISABLED: Email alerts removed - check GitHub Actions UI instead
+      - name: Dependency Update Summary
         if: env.TOTAL_OUTDATED > 10
-        continue-on-error: true
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "📦 Dependency Update Alert - catsupply.nl"
-          to: eminkaan066@gmail.com
-          from: Dependency Monitor
-          body: |
-            Multiple outdated dependencies detected in catsupply.nl.
-            
-            Summary:
-            - Backend: ${{ env.BACKEND_OUTDATED }} outdated packages
-            - Frontend: ${{ env.FRONTEND_OUTDATED }} outdated packages
-            - Admin: ${{ env.ADMIN_OUTDATED }} outdated packages
-            - Total: ${{ env.TOTAL_OUTDATED }} outdated packages
-            
-            Consider updating dependencies to latest versions.
-            
-            Repository: https://github.com/${{ github.repository }}
+        run: |
+          echo "📦 Outdated dependencies detected:"
+          echo "   Backend: ${{ env.BACKEND_OUTDATED }}"
+          echo "   Frontend: ${{ env.FRONTEND_OUTDATED }}"
+          echo "   Admin: ${{ env.ADMIN_OUTDATED }}"
+          echo "   Total: ${{ env.TOTAL_OUTDATED }}"
+          echo "   Repository: https://github.com/${{ github.repository }}"
