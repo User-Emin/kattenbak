@@ -344,21 +344,23 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               >
                 <div
                   className={cn(
-                    'w-full p-4 rounded-xl border transition-all',
+                    'w-full p-3 rounded-xl border transition-all',
                     row.highlight 
                       ? 'shadow-md' 
                       : 'shadow-sm'
                   )}
-                  style={row.highlight 
-                    ? { 
-                        backgroundColor: `${BRAND_COLORS_HEX.primary}0D`,
-                        borderColor: `${BRAND_COLORS_HEX.primary}4D` 
-                      } 
-                    : { 
-                        backgroundColor: BRAND_COLORS_HEX.white,
-                        borderColor: BRAND_COLORS_HEX.gray[200]
-                      }
-                  }
+                  style={{ 
+                    ...(row.highlight 
+                      ? { 
+                          backgroundColor: `${BRAND_COLORS_HEX.primary}0D`,
+                          borderColor: `${BRAND_COLORS_HEX.primary}4D` 
+                        } 
+                      : { 
+                          backgroundColor: BRAND_COLORS_HEX.white,
+                          borderColor: BRAND_COLORS_HEX.gray[200]
+                        }),
+                    boxSizing: 'border-box'
+                  }}
                 >
                   <div className="mb-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-2">
@@ -389,22 +391,22 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                       </p>
                     )}
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 w-full">
                     <div 
-                      className="flex items-center justify-between p-2 rounded-lg mx-auto"
+                      className="flex items-center justify-between p-1.5 rounded-lg w-full"
                       style={{ 
                         backgroundColor: `${BRAND_COLORS_HEX.primary}1A`,
                         borderColor: `${BRAND_COLORS_HEX.primary}33`,
                         borderWidth: '1px',
                         borderStyle: 'solid',
-                        maxWidth: '100%'
+                        boxSizing: 'border-box'
                       }}
                     >
-                      <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                      <div className="flex items-center gap-1 flex-1 min-w-0 overflow-hidden">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {firstImage && <ComparisonImage src={firstImage} alt="Automatische kattenbak" size="sm" />}
                         <span 
-                          className="text-xs font-semibold truncate"
+                          className="text-xs font-semibold truncate whitespace-nowrap"
                           style={{ color: BRAND_COLORS_HEX.primary }}
                         >
                           Automatische
@@ -415,20 +417,20 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                       </div>
                     </div>
                     <div 
-                      className="flex items-center justify-between p-2 rounded-lg mx-auto" 
+                      className="flex items-center justify-between p-1.5 rounded-lg w-full" 
                       style={{ 
-                        maxWidth: '100%',
                         backgroundColor: BRAND_COLORS_HEX.gray[100],
                         borderColor: BRAND_COLORS_HEX.gray[200],
                         borderWidth: '1px',
-                        borderStyle: 'solid'
+                        borderStyle: 'solid',
+                        boxSizing: 'border-box'
                       }}
                     >
-                      <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                      <div className="flex items-center gap-1 flex-1 min-w-0 overflow-hidden">
                         {/* ✅ DRY: Gebruik ComparisonImage helper */}
                         {sixthImage && <ComparisonImage src={sixthImage} alt="Handmatige kattenbak" size="sm" />}
                         <span 
-                          className="text-xs font-semibold truncate"
+                          className="text-xs font-semibold truncate whitespace-nowrap"
                           style={{ color: BRAND_COLORS_HEX.gray[700] }}
                         >
                           Handmatige
