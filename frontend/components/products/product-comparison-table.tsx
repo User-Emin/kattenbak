@@ -31,6 +31,45 @@ interface ProductComparisonTableProps {
 // ✅ DRY: Shared constants
 const BLUR_PLACEHOLDER = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==";
 
+// ✅ SLIMME VARIABELEN: Desktop vergelijkingstabel configuratie
+const DESKTOP_COMPARISON_CONFIG = {
+  table: {
+    cellPadding: 'px-6 py-5',
+    headerTextSize: 'text-sm',
+    featureColWidth: 'w-2/5',
+    productColWidth: 'w-[30%]',
+  },
+  feature: {
+    iconSize: 'w-6 h-6',
+    titleSize: 'text-base',
+    titleWeight: 'font-bold',
+    titleMargin: 'mb-2',
+    descriptionSize: 'text-sm',
+    descriptionLineHeight: 'leading-relaxed',
+    gap: 'gap-4',
+  },
+  header: {
+    imageGap: 'gap-3',
+  },
+  checkmark: {
+    desktop: {
+      size: 'w-10 h-10',
+      iconSize: 'w-6 h-6',
+    },
+    mobile: {
+      size: 'w-6 h-6 sm:w-7 sm:h-7',
+      iconSize: 'w-4 h-4 sm:w-4.5 sm:h-4.5',
+    },
+  },
+  cross: {
+    size: 'w-6 h-6 sm:w-7 sm:h-7',
+    iconSize: 'w-4 h-4 sm:w-4.5 sm:h-4.5',
+  },
+  text: {
+    small: 'text-xs sm:text-sm',
+  },
+} as const;
+
 // ✅ SLIMME VARIABELEN: Mobiele vergelijkingstabel configuratie - OPTIMAAL RESPONSIVE & LEESBAAR
 const MOBILE_COMPARISON_CONFIG = {
   // Container configuratie
@@ -82,6 +121,14 @@ const MOBILE_COMPARISON_CONFIG = {
     },
     image: {
       size: 'sm' as const, // ComparisonImage size (w-12 h-12)
+    },
+  },
+  // Navigation dots configuratie
+  navigation: {
+    container: 'flex justify-center items-center gap-2 mt-5 mb-4 mx-auto',
+    dot: {
+      base: 'w-2 h-2 rounded-full transition-all',
+      active: 'w-6',
     },
   },
 } as const;
@@ -201,11 +248,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
   const renderValue = (value: string | boolean, isOurProduct: boolean = false, isDesktop: boolean = false) => {
     if (typeof value === 'boolean') {
       return value ? (
-        // ✅ DRY: Gebruik BRAND_COLORS_HEX - RONDER EN DUIDELIJKER IN BLAUWE KOLOM (DESKTOP)
+        // ✅ DRY: Gebruik BRAND_COLORS_HEX + SLIMME VARIABELEN - RONDER EN DUIDELIJKER IN BLAUWE KOLOM (DESKTOP)
         <div 
           className={cn(
             'rounded-full flex items-center justify-center flex-shrink-0',
-            isDesktop ? 'w-10 h-10' : 'w-6 h-6 sm:w-7 sm:h-7'
+            isDesktop 
+              ? DESKTOP_COMPARISON_CONFIG.checkmark.desktop.size 
+              : DESKTOP_COMPARISON_CONFIG.checkmark.mobile.size
           )}
           style={{ 
             backgroundColor: isDesktop ? BRAND_COLORS_HEX.white : BRAND_COLORS_HEX.primary,
@@ -215,7 +264,9 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
         >
           <Check 
             className={cn(
-              isDesktop ? 'w-6 h-6' : 'w-4 h-4 sm:w-4.5 sm:h-4.5'
+              isDesktop 
+                ? DESKTOP_COMPARISON_CONFIG.checkmark.desktop.iconSize 
+                : DESKTOP_COMPARISON_CONFIG.checkmark.mobile.iconSize
             )}
             style={{ 
               color: isDesktop ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.white,
@@ -224,13 +275,16 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
           />
         </div>
       ) : (
-        // ✅ COMPACT KRUISJE: Subtieler kruisje - DRY via BRAND_COLORS_HEX
+        // ✅ COMPACT KRUISJE: Subtieler kruisje - DRY via BRAND_COLORS_HEX + SLIMME VARIABELEN
         <div 
-          className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white border flex items-center justify-center flex-shrink-0"
+          className={cn(
+            DESKTOP_COMPARISON_CONFIG.cross.size,
+            'rounded-full bg-white border flex items-center justify-center flex-shrink-0'
+          )}
           style={{ borderColor: BRAND_COLORS_HEX.gray[300] }}
         >
           <X 
-            className="w-4 h-4 sm:w-4.5 sm:h-4.5" 
+            className={DESKTOP_COMPARISON_CONFIG.cross.iconSize} 
             strokeWidth={2.5}
             style={{ color: BRAND_COLORS_HEX.gray[400] }}
           />
@@ -239,7 +293,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
     }
     return (
       <span 
-        className="text-xs sm:text-sm font-medium"
+        className={cn(DESKTOP_COMPARISON_CONFIG.text.small, 'font-medium')}
         style={{ color: BRAND_COLORS_HEX.gray[900] }}
       >
         {value}
@@ -262,16 +316,28 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
           <thead style={{ backgroundColor: BRAND_COLORS_HEX.gray[50] }}>
             <tr>
               <th 
-                className="px-6 py-5 text-left text-sm font-semibold w-2/5"
+                className={cn(
+                  DESKTOP_COMPARISON_CONFIG.table.cellPadding,
+                  'text-left',
+                  DESKTOP_COMPARISON_CONFIG.table.headerTextSize,
+                  'font-semibold',
+                  DESKTOP_COMPARISON_CONFIG.table.featureColWidth
+                )}
                 style={{ color: BRAND_COLORS_HEX.gray[700] }}
               >
                 Feature
               </th>
               <th 
-                className="px-6 py-5 text-center text-sm font-semibold text-white w-[30%]" 
+                className={cn(
+                  DESKTOP_COMPARISON_CONFIG.table.cellPadding,
+                  'text-center',
+                  DESKTOP_COMPARISON_CONFIG.table.headerTextSize,
+                  'font-semibold text-white',
+                  DESKTOP_COMPARISON_CONFIG.table.productColWidth
+                )} 
                 style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
               >
-                <div className="flex flex-col items-center justify-center gap-3">
+                <div className={cn('flex flex-col items-center justify-center', DESKTOP_COMPARISON_CONFIG.header.imageGap)}>
                   {/* ✅ DESKTOP: Grotere afbeelding in header voor Automatische kattenbak */}
                   {firstImage && (
                     <div className="hidden md:block">
@@ -282,13 +348,19 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 </div>
               </th>
               <th 
-                className="px-6 py-5 text-center text-sm font-semibold w-[30%]"
+                className={cn(
+                  DESKTOP_COMPARISON_CONFIG.table.cellPadding,
+                  'text-center',
+                  DESKTOP_COMPARISON_CONFIG.table.headerTextSize,
+                  'font-semibold',
+                  DESKTOP_COMPARISON_CONFIG.table.productColWidth
+                )}
                 style={{ 
                   color: BRAND_COLORS_HEX.gray[700],
                   backgroundColor: BRAND_COLORS_HEX.gray[100]
                 }}
               >
-                <div className="flex flex-col items-center justify-center gap-3">
+                <div className={cn('flex flex-col items-center justify-center', DESKTOP_COMPARISON_CONFIG.header.imageGap)}>
                   {/* ✅ DESKTOP: Grotere afbeelding in header voor Handmatige kattenbak */}
                   {sixthImage && (
                     <div className="hidden md:block">
@@ -314,15 +386,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   } : {})
                 }}
               >
-                <td className={cn(
-                  'px-6 py-5'
-                )}>
-                  <div className="flex items-start gap-4">
-                    {/* ✅ ICON: Feature icoon (zoals in screenshot) */}
+                <td className={DESKTOP_COMPARISON_CONFIG.table.cellPadding}>
+                  <div className={cn('flex items-start', DESKTOP_COMPARISON_CONFIG.feature.gap)}>
+                    {/* ✅ ICON: Feature icoon (zoals in screenshot) - SLIMME VARIABELEN */}
                     {row.icon && (
                       <div className="flex-shrink-0 mt-0.5">
                         <row.icon 
-                          className="w-6 h-6" 
+                          className={DESKTOP_COMPARISON_CONFIG.feature.iconSize} 
                           style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500] }} 
                         />
                       </div>
@@ -330,17 +400,22 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     <div className="flex-1">
                       <div 
                         className={cn(
-                          'text-base font-bold mb-2',
+                          DESKTOP_COMPARISON_CONFIG.feature.titleSize,
+                          DESKTOP_COMPARISON_CONFIG.feature.titleWeight,
+                          DESKTOP_COMPARISON_CONFIG.feature.titleMargin,
                           row.highlight ? '' : 'text-gray-900'
                         )}
                         style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : { color: BRAND_COLORS_HEX.gray[900] }}
                       >
                         {row.feature}
                       </div>
-                      {/* ✅ BESCHRIJVING: Extra uitleg (zoals in screenshot) */}
+                      {/* ✅ BESCHRIJVING: Extra uitleg (zoals in screenshot) - SLIMME VARIABELEN */}
                       {row.description && (
                         <p 
-                          className="text-sm leading-relaxed"
+                          className={cn(
+                            DESKTOP_COMPARISON_CONFIG.feature.descriptionSize,
+                            DESKTOP_COMPARISON_CONFIG.feature.descriptionLineHeight
+                          )}
                           style={{ color: BRAND_COLORS_HEX.gray[600] }}
                         >
                           {row.description}
@@ -349,9 +424,9 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     </div>
                   </div>
                 </td>
-                {/* ✅ SYMMETRISCH: Vinkjes perfect gecentreerd onder kolomnamen - HELE KOLOM BLAUW - RONDER EN DUIDELIJKER */}
+                {/* ✅ SYMMETRISCH: Vinkjes perfect gecentreerd onder kolomnamen - HELE KOLOM BLAUW - RONDER EN DUIDELIJKER - SLIMME VARIABELEN */}
                 <td 
-                  className="px-6 py-5"
+                  className={DESKTOP_COMPARISON_CONFIG.table.cellPadding}
                   style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
                 >
                   <div className="flex items-center justify-center">
@@ -359,7 +434,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   </div>
                 </td>
                 <td 
-                  className="px-6 py-5"
+                  className={DESKTOP_COMPARISON_CONFIG.table.cellPadding}
                   style={{
                     backgroundColor: index % 2 === 0 
                       ? BRAND_COLORS_HEX.white 
@@ -565,15 +640,15 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
             ))}
           </div>
         </div>
-        {/* ✅ MOBIEL: Navigation dots - CENTRAAL */}
-        <div className="flex justify-center items-center gap-2 mt-5 mb-4 mx-auto">
+        {/* ✅ MOBIEL: Navigation dots - CENTRAAL - SLIMME VARIABELEN */}
+        <div className={MOBILE_COMPARISON_CONFIG.navigation.container}>
           {comparisonData.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
               className={cn(
-                'w-2 h-2 rounded-full transition-all',
-                index === visibleIndex && 'w-6'
+                MOBILE_COMPARISON_CONFIG.navigation.dot.base,
+                index === visibleIndex && MOBILE_COMPARISON_CONFIG.navigation.dot.active
               )}
               style={index === visibleIndex 
                 ? { backgroundColor: BRAND_COLORS_HEX.primary } 
