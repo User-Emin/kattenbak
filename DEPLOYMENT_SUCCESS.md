@@ -97,11 +97,12 @@
 
 **Alle wijzigingen zijn succesvol gedeployed naar productie!**
 
-- Frontend: ✅ Online
-- Backend: ✅ Online (opstarten...)
+- Frontend: ✅ Online (HTTP 200)
+- Backend: ✅ Online & Healthy
 - Admin: ✅ Online
-- Code: ✅ Up-to-date
+- Code: ✅ Up-to-date (commit: 7a3bcd5)
 - Builds: ✅ Succesvol
+- PM2 Services: ✅ Alle 4 services online
 
 ---
 
