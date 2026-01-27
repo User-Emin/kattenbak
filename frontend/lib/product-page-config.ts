@@ -185,6 +185,54 @@ export const PRODUCT_PAGE_CONFIG = {
     },
   },
 
+  // Hoe werkt het accordion configuratie
+  howItWorks: {
+    accordion: {
+      button: {
+        container: 'w-full px-4 py-2.5 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md transition-all duration-200 flex items-center justify-between group',
+        text: 'text-sm md:text-base font-medium text-gray-900',
+        icon: {
+          size: 'w-4 h-4',
+          color: 'text-gray-500',
+          transition: 'transition-transform duration-200',
+        },
+      },
+      content: {
+        container: 'mt-4 space-y-4',
+        step: {
+          container: 'bg-white border border-gray-200 rounded-lg p-4 sm:p-5 transition-all duration-300 ease-out',
+          spacing: 'space-y-3',
+          image: {
+            container: 'relative w-full aspect-square rounded-lg overflow-hidden bg-gray-100 border-2',
+            numberBadge: {
+              container: 'absolute top-2 right-2 w-7 h-7 flex items-center justify-center text-white rounded-full text-sm font-semibold shadow-lg',
+            },
+          },
+          content: {
+            container: 'space-y-2',
+            header: {
+              container: 'flex items-center gap-3',
+              icon: {
+                size: 'w-6 h-6',
+                color: 'text-primary', // Via BRAND_COLORS_HEX
+              },
+              title: {
+                fontSize: 'text-base md:text-lg',
+                fontWeight: 'font-semibold',
+                textColor: 'text-gray-900',
+              },
+            },
+            description: {
+              fontSize: 'text-sm md:text-base',
+              textColor: 'text-gray-700',
+              lineHeight: 'leading-relaxed',
+            },
+          },
+        },
+      },
+    },
+  },
+
   // Edge-to-edge section configuratie - ✅ MOBIEL: Verticaal langer, tekst korter
   edgeSection: {
     container: 'relative w-full', // ✅ EDGE-TO-EDGE: Volledige breedte

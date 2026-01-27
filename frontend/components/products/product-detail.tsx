@@ -21,6 +21,15 @@ import { HowToJsonLd } from "@/components/seo/howto-json-ld";
 import { RelatedProducts } from "@/components/products/related-products";
 import { ProductImage } from "@/components/ui/product-image"; // ✅ ZOOM: ProductImage component met zoom functionaliteit
 import { ProductHowItWorks } from "@/components/products/product-how-it-works"; // ✅ HOE WERKT HET: Nieuwe sectie
+// ✅ HOE WERKT HET ACCORDION: Icons voor stappen
+import { 
+  PlugIcon,
+  GritIcon,
+  TrashBagIcon,
+  PowerIcon,
+  TimerIcon,
+  CheckIcon,
+} from "@/components/products/product-how-it-works-icons";
 import { ProductFeatureSlider } from "@/components/products/product-feature-slider"; // ✅ SLIDER: Smooth slide animaties voor mobiel
 import type { Product } from "@/types/product";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
@@ -1089,6 +1098,160 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   )}
                 </div>
 
+                {/* Hoe werkt het Accordion */}
+                <div>
+                  <button
+                    onClick={() => toggleAccordion('hoe-werkt-het')}
+                    className={cn(
+                      CONFIG.howItWorks.accordion.button.container
+                    )}
+                  >
+                    <span className={CONFIG.howItWorks.accordion.button.text}>
+                      Hoe werkt het?
+                    </span>
+                    <ChevronDown 
+                      className={cn(
+                        CONFIG.howItWorks.accordion.button.icon.size,
+                        CONFIG.howItWorks.accordion.button.icon.color,
+                        CONFIG.howItWorks.accordion.button.icon.transition,
+                        openAccordions.has('hoe-werkt-het') && 'rotate-180'
+                      )}
+                    />
+                  </button>
+                  
+                  {openAccordions.has('hoe-werkt-het') && (
+                    <div className={CONFIG.howItWorks.accordion.content.container}>
+                      {/* ✅ STAPPEN: Onder elkaar met afbeeldingen - SLIMME VARIABELEN */}
+                      {(() => {
+                        // ✅ DRY: Hergebruik stappen logica uit ProductHowItWorks
+                        const howItWorksImages = product.howItWorksImages || [];
+                        const steps = [
+                          {
+                            icon: PlugIcon,
+                            title: 'Stekker erin en klaarzetten',
+                            description: 'Plaats de kattenbak op een vlakke, stevige ondergrond. Sluit de stekker aan op een stopcontact.',
+                            number: 1,
+                            image: howItWorksImages.length > 0 ? howItWorksImages[0] : undefined,
+                          },
+                          {
+                            icon: GritIcon,
+                            title: 'Grit toevoegen tot MAX lijn',
+                            description: 'Vul de kattenbak met klonterend grit tot net onder de MAX lijn (ongeveer 8-10 kg).',
+                            number: 2,
+                            image: howItWorksImages.length > 1 ? howItWorksImages[1] : undefined,
+                          },
+                          {
+                            icon: TrashBagIcon,
+                            title: 'Afvalzak plaatsen over bak',
+                            description: 'Plaats de afvalzak over de afvalbak heen voor optimale werking. De zak moet goed aansluiten.',
+                            number: 3,
+                            image: howItWorksImages.length > 2 ? howItWorksImages[2] : undefined,
+                          },
+                          {
+                            icon: PowerIcon,
+                            title: 'Aanzetten en klaar',
+                            description: 'Druk op de Power knop. Een blauw licht geeft aan dat de kattenbak klaar is voor gebruik.',
+                            number: 4,
+                            image: howItWorksImages.length > 3 ? howItWorksImages[3] : undefined,
+                          },
+                          {
+                            icon: TimerIcon,
+                            title: 'Timer instellen via app',
+                            description: 'Bepaal wanneer na de wcsessie de kattenbak automatisch moet schoonmaken. Stel de timer in via de app of op de kattenbak zelf.',
+                            number: 5,
+                            image: howItWorksImages.length > 4 ? howItWorksImages[4] : undefined,
+                          },
+                          {
+                            icon: CheckIcon,
+                            title: 'Klaar! Automatisch schoon',
+                            description: 'De kattenbak reinigt automatisch na elk gebruik volgens je instellingen. De afvalzak hoeft slechts 1x per week geleegd te worden.',
+                            number: 6,
+                            image: howItWorksImages.length > 5 ? howItWorksImages[5] : undefined,
+                          },
+                        ];
+
+                        return steps.map((step, index) => {
+                          const IconComponent = step.icon;
+                          return (
+                            <div
+                              key={step.number}
+                              className={cn(
+                                CONFIG.howItWorks.accordion.content.step.container,
+                                'animate-in fade-in slide-in-from-bottom-4',
+                                'duration-300'
+                              )}
+                              style={{
+                                animationDelay: `${index * 50}ms`, // ✅ SMOOTH: Staggered animatie
+                              }}
+                            >
+                              <div className={CONFIG.howItWorks.accordion.content.step.spacing}>
+                                {/* ✅ AFBEELDING: Met nummer badge */}
+                                {step.image && (
+                                  <div 
+                                    className={cn(
+                                      CONFIG.howItWorks.accordion.content.step.image.container
+                                    )}
+                                    style={{ 
+                                      borderColor: `${BRAND_COLORS_HEX.primary}30` 
+                                    }}
+                                  >
+                                    <Image
+                                      src={step.image}
+                                      alt={step.title}
+                                      fill
+                                      className="object-cover"
+                                      sizes="(max-width: 768px) 100vw, 400px"
+                                      quality={90}
+                                      loading="lazy"
+                                      unoptimized={step.image.startsWith('/uploads/')}
+                                      placeholder="blur"
+                                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                                    />
+                                    {/* ✅ NUMMER BADGE */}
+                                    <div 
+                                      className={CONFIG.howItWorks.accordion.content.step.image.numberBadge.container}
+                                      style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+                                    >
+                                      {step.number}
+                                    </div>
+                                  </div>
+                                )}
+                                
+                                {/* ✅ CONTENT: Icon, titel en beschrijving */}
+                                <div className={CONFIG.howItWorks.accordion.content.step.content.container}>
+                                  <div className={CONFIG.howItWorks.accordion.content.step.content.header.container}>
+                                    <IconComponent 
+                                      className={cn(
+                                        CONFIG.howItWorks.accordion.content.step.content.header.icon.size,
+                                        CONFIG.howItWorks.accordion.content.step.content.header.icon.color
+                                      )}
+                                      style={{ color: BRAND_COLORS_HEX.primary }}
+                                    />
+                                    <h3 className={cn(
+                                      CONFIG.howItWorks.accordion.content.step.content.header.title.fontSize,
+                                      CONFIG.howItWorks.accordion.content.step.content.header.title.fontWeight,
+                                      CONFIG.howItWorks.accordion.content.step.content.header.title.textColor
+                                    )}>
+                                      {step.title}
+                                    </h3>
+                                  </div>
+                                  <p className={cn(
+                                    CONFIG.howItWorks.accordion.content.step.content.description.fontSize,
+                                    CONFIG.howItWorks.accordion.content.step.content.description.textColor,
+                                    CONFIG.howItWorks.accordion.content.step.content.description.lineHeight
+                                  )}>
+                                    {step.description}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        });
+                      })()}
+                    </div>
+                  )}
+                </div>
+
                 {/* Vragen Accordion */}
                 <div>
                   <button
@@ -1131,14 +1294,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
 
       {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en app banner - IETS GRIJZER */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
-        <div className="border-t border-gray-300 my-6 sm:my-8"></div>
-      </div>
-
-      {/* ✅ HOE WERKT HET: Nieuwe sectie met stappen, levendige titels en specifieke "Hoe werkt het?" afbeeldingen */}
-      <ProductHowItWorks howItWorksImages={product.howItWorksImages || null} />
-
-      {/* ✅ SCHEIDINGSTREEP: Tussen hoe-werkt-het en zigzag begin */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
         <div className="border-t border-gray-300 my-6 sm:my-8"></div>
       </div>
