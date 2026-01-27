@@ -289,32 +289,45 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     ? variants.find((v: any) => v.id === selectedVariant) 
     : variants.length > 0 ? variants[0] : null;
   
+  // ✅ HELPER: Filter valid images (geen placeholder, geen SVG data URLs) - DRY
+  const filterValidImages = (images: string[]): string[] => {
+    return images.filter((img: string) => {
+      // ✅ FILTER: Alleen geldige geüploade foto's (geen placeholder, geen SVG data URLs, geen oude paths)
+      if (!img || typeof img !== 'string') return false;
+      // Filter SVG data URLs (data:image/svg+xml)
+      if (img.startsWith('data:image/svg+xml') || img.startsWith('data:')) return false;
+      // Filter placeholder images
+      if (img.includes('placeholder') || img.includes('demo') || img.includes('default')) return false;
+      // Alleen geüploade foto's (van /uploads/ of /api/ of http/https)
+      return img.startsWith('/uploads/') || img.startsWith('/api/') || img.startsWith('http://') || img.startsWith('https://');
+    });
+  };
+
   // ✅ VARIANT SYSTEM: Get variant images via shared utility (modulair, geen hardcode)
   const variantImageUrl = getVariantImage(activeVariant, product.images as string[]);
   let variantImages: string[] | null = null;
   if (activeVariant) {
     // First, check if variant has images array
     if (activeVariant.images && Array.isArray(activeVariant.images) && activeVariant.images.length > 0) {
-      variantImages = activeVariant.images;
+      // ✅ FILTER: Filter variant images om placeholders te verwijderen
+      const filteredVariantImages = filterValidImages(activeVariant.images);
+      if (filteredVariantImages.length > 0) {
+        variantImages = filteredVariantImages;
+      }
     } 
     // If no images array, use the variant image URL from utility
     else if (variantImageUrl) {
-      variantImages = [variantImageUrl];
+      // ✅ FILTER: Check of variant image URL geldig is (geen placeholder)
+      const filteredUrl = filterValidImages([variantImageUrl]);
+      if (filteredUrl.length > 0) {
+        variantImages = filteredUrl;
+      }
     }
   }
   
   // Get product images - ✅ FILTER: Alleen geüploade foto's (geen oude/placeholder, geen SVG data URLs)
   const productImages = product.images && Array.isArray(product.images) && product.images.length > 0
-    ? product.images.filter((img: string) => {
-        // ✅ FILTER: Alleen geldige geüploade foto's (geen placeholder, geen SVG data URLs, geen oude paths)
-        if (!img || typeof img !== 'string') return false;
-        // Filter SVG data URLs (data:image/svg+xml)
-        if (img.startsWith('data:image/svg+xml') || img.startsWith('data:')) return false;
-        // Filter placeholder images
-        if (img.includes('placeholder') || img.includes('demo') || img.includes('default')) return false;
-        // Alleen geüploade foto's (van /uploads/ of /api/ of http/https)
-        return img.startsWith('/uploads/') || img.startsWith('/api/') || img.startsWith('http://') || img.startsWith('https://');
-      })
+    ? filterValidImages(product.images)
     : [];
   
   // ✅ VARIANT SYSTEM: Use variant images if available, otherwise fall back to product images
