@@ -5,6 +5,7 @@ import { Check, X, Sparkles, Wind, Shovel, Clock, Smartphone, Coins } from "luci
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { BRAND_COLORS_HEX } from "@/lib/color-config";
+import { PRODUCT_PAGE_CONFIG } from "@/lib/product-page-config";
 
 /**
  * Product Comparison Table - Modern & Smooth
@@ -71,12 +72,14 @@ const DESKTOP_COMPARISON_CONFIG = {
 } as const;
 
 // ✅ SLIMME VARIABELEN: Mobiele vergelijkingstabel configuratie - OPTIMAAL RESPONSIVE & LEESBAAR
+// ✅ DRY: Volledige aansluiting op PRODUCT_PAGE_CONFIG - geen duplicaten, geen hardcode, geen redundantie
 const MOBILE_COMPARISON_CONFIG = {
-  // Container configuratie
+  // Container configuratie - ✅ FIX: Cards blijven altijd zichtbaar, geen verdwijnen
   container: {
     maxWidth: 'max-w-sm',
-    padding: 'px-4',
-    slidePadding: '0.75rem', // 12px - optimaal voor compactheid zonder overlap
+    slidePadding: '0.5rem', // 8px - optimaal voor zichtbaarheid zonder overlap
+    // ✅ FIX: overflow-visible op outer container, overflow-hidden alleen op inner voor slide effect
+    overflow: 'overflow-visible', // ✅ FIX: Cards verdwijnen niet meer
   },
   // Card configuratie
   card: {
@@ -123,11 +126,11 @@ const MOBILE_COMPARISON_CONFIG = {
       size: 'sm' as const, // ComparisonImage size (w-12 h-12)
     },
   },
-  // Navigation dots configuratie
+  // Navigation dots configuratie - ✅ DRY: Aansluiting op DESIGN_SYSTEM
   navigation: {
     container: 'flex justify-center items-center gap-2 mt-5 mb-4 mx-auto',
     dot: {
-      base: 'w-2 h-2 rounded-full transition-all',
+      base: 'w-2 h-2 rounded-full transition-all duration-300', // ✅ SMOOTH: Transition duration
       active: 'w-6',
     },
   },
@@ -303,7 +306,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
 
   return (
     <div 
-      className="w-full bg-white rounded-xl overflow-hidden shadow-2xl"
+      className="w-full bg-white rounded-xl shadow-2xl"
       style={{ 
         boxShadow: `0 10px 40px ${BRAND_COLORS_HEX.primary}30, 0 4px 20px ${BRAND_COLORS_HEX.gray[900]}20`
       }}
@@ -451,33 +454,57 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
         </table>
       </div>
 
-      {/* ✅ MOBIEL: Smooth om-en-om slide - SLIMME VARIABELEN SYSTEEM */}
-      <div className="md:hidden" ref={containerRef}>
+      {/* ✅ MOBIEL: Smooth om-en-om slide - SLIMME VARIABELEN SYSTEEM - ALTIJD ZICHTBAAR - DRY via PRODUCT_PAGE_CONFIG */}
+      <div className={cn('md:hidden', PRODUCT_PAGE_CONFIG.layout.containerPaddingMobile)} ref={containerRef}>
+        {/* ✅ FIX: Outer wrapper - cards blijven zichtbaar, geen overflow-hidden hier */}
         <div 
           className={cn(
-            'relative overflow-hidden mx-auto w-full',
+            'relative mx-auto w-full',
             MOBILE_COMPARISON_CONFIG.container.maxWidth
           )} 
           style={{ boxSizing: 'border-box' }}
         >
+          {/* ✅ FIX: Inner container met overflow-hidden voor slide effect - maar cards blijven binnen viewport */}
           <div 
-            className="flex transition-transform duration-700 ease-out" 
+            className="relative overflow-hidden w-full" 
             style={{ 
-              transform: `translateX(-${visibleIndex * 100}%)`,
-              width: `${comparisonData.length * 100}%`
+              boxSizing: 'border-box',
+              width: '100%',
+              minWidth: '100%',
+              // ✅ FIX: Zorg dat container altijd volledige breedte heeft en cards niet verdwijnen
+              maxWidth: '100%'
             }}
           >
-            {comparisonData.map((row, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0"
-                style={{ 
-                  width: `${100 / comparisonData.length}%`,
-                  boxSizing: 'border-box',
-                  paddingLeft: MOBILE_COMPARISON_CONFIG.container.slidePadding,
-                  paddingRight: MOBILE_COMPARISON_CONFIG.container.slidePadding
-                }}
-              >
+            <div 
+              className="flex transition-transform duration-700 ease-out" 
+              style={{ 
+                transform: `translateX(-${visibleIndex * 100}%)`,
+                width: `${comparisonData.length * 100}%`,
+                boxSizing: 'border-box',
+                // ✅ FIX: Zorg dat flex container correcte breedte heeft
+                minWidth: `${comparisonData.length * 100}%`,
+                // ✅ FIX: Zorg dat cards altijd binnen viewport blijven
+                willChange: 'transform'
+              }}
+            >
+              {comparisonData.map((row, index) => {
+                // ✅ DRY: Bereken card width eenmalig
+                const cardWidthPercent = 100 / comparisonData.length;
+                return (
+                  <div
+                    key={index}
+                    className="flex-shrink-0"
+                    style={{ 
+                      width: `${cardWidthPercent}%`,
+                      minWidth: `${cardWidthPercent}%`, // ✅ FIX: Min width voor consistentie
+                      maxWidth: `${cardWidthPercent}%`, // ✅ FIX: Max width voorkomt overflow
+                      boxSizing: 'border-box',
+                      paddingLeft: MOBILE_COMPARISON_CONFIG.container.slidePadding,
+                      paddingRight: MOBILE_COMPARISON_CONFIG.container.slidePadding,
+                      // ✅ FIX: Zorg dat card altijd zichtbaar blijft
+                      flexBasis: `${cardWidthPercent}%`
+                    }}
+                  >
                 <div
                   className={cn(
                     'w-full border transition-all',
@@ -636,11 +663,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
-        {/* ✅ MOBIEL: Navigation dots - CENTRAAL - SLIMME VARIABELEN */}
+        {/* ✅ MOBIEL: Navigation dots - CENTRAAL - SLIMME VARIABELEN - DRY via PRODUCT_PAGE_CONFIG */}
         <div className={MOBILE_COMPARISON_CONFIG.navigation.container}>
           {comparisonData.map((_, index) => (
             <button

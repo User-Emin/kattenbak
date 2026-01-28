@@ -276,6 +276,7 @@ function CheckoutContent() {
         paymentMethod: paymentMethod, // ✅ DRY: Use selected payment method
       };
 
+      // ✅ FIX: Better error handling voor Internal Server Error
       const result = await ordersApi.create(orderData);
 
       // ✅ DRY: Handle both response formats
@@ -287,13 +288,34 @@ function CheckoutContent() {
         throw new Error("Payment URL not available");
       }
     } catch (err: any) {
-      // ✅ SECURITY: Generic error message - geen gevoelige data lekken
-      const errorMessage = err?.response?.data?.error || err?.message;
-      // ✅ SECURITY: Filter gevoelige informatie (API keys, stack traces, etc.)
-      const safeMessage = errorMessage && !errorMessage.includes('API') && !errorMessage.includes('key') && !errorMessage.includes('stack')
-        ? errorMessage
-        : "Er is iets misgegaan bij het plaatsen van je bestelling. Probeer het opnieuw of neem contact met ons op.";
-      setError(safeMessage);
+      // ✅ FIX: Better error handling - check voor 500 errors
+      console.error('Checkout error:', {
+        status: err?.response?.status,
+        statusText: err?.response?.statusText,
+        data: err?.response?.data,
+        message: err?.message,
+      });
+
+      // ✅ FIX: Specifieke error messages voor verschillende status codes
+      let errorMessage = "Er is iets misgegaan bij het plaatsen van je bestelling. Probeer het opnieuw of neem contact met ons op.";
+      
+      if (err?.response?.status === 500) {
+        errorMessage = "Interne serverfout. Probeer het later opnieuw of neem contact met ons op via info@catsupply.nl";
+      } else if (err?.response?.status === 400) {
+        errorMessage = err?.response?.data?.error || "Ongeldige gegevens. Controleer je invoer en probeer het opnieuw.";
+      } else if (err?.response?.status === 404) {
+        errorMessage = "Product niet gevonden. Controleer je winkelwagen.";
+      } else if (err?.response?.data?.error) {
+        // ✅ SECURITY: Filter gevoelige informatie
+        const rawMessage = err.response.data.error;
+        if (!rawMessage.includes('API') && !rawMessage.includes('key') && !rawMessage.includes('stack')) {
+          errorMessage = rawMessage;
+        }
+      } else if (err?.message && !err.message.includes('API') && !err.message.includes('key')) {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
       setIsProcessing(false);
     }
   };

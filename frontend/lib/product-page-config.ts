@@ -429,6 +429,45 @@ export const PRODUCT_PAGE_CONFIG = {
     },
   },
 
+  // Varianten sectie configuratie - ✅ DRY: Slimme variabelen, geen hardcode, volledige aansluiting
+  variants: {
+    container: {
+      backgroundColor: 'bg-white', // ✅ WIT: Witte achtergrond
+      padding: 'py-12 md:py-16',
+    },
+    header: {
+      container: 'text-center',
+      spacing: {
+        titleSubtitle: 'mb-2', // ✅ DICHTBIJ: Subtitel dichtbij hoofdtitel (was mb-3)
+        bottom: 'mb-8 md:mb-12',
+      },
+      title: {
+        fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+        fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
+        textColor: 'text-gray-900', // ✅ ZWART: Zwarte tekst op witte achtergrond
+        letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
+      },
+      subtitle: {
+        fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
+        fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+        textColor: 'text-gray-700', // ✅ GRIJS: Subtitel in grijs
+        lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
+      },
+    },
+    grid: {
+      container: 'flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto',
+    },
+    card: {
+      container: 'group relative overflow-hidden transition-all duration-300 hover:scale-[1.02] w-full md:w-[48%]',
+      borderRadius: 'rounded-2xl sm:rounded-3xl', // ✅ RONDE HOEKEN: Foto's met ronde hoeken
+      aspectRatio: 'aspect-square',
+      image: {
+        borderRadius: 'rounded-2xl sm:rounded-3xl', // ✅ RONDE HOEKEN: Foto's met ronde hoeken
+        objectFit: 'object-cover',
+      },
+    },
+  },
+
   // Related products configuratie
   relatedProducts: {
     title: {

@@ -32,12 +32,14 @@ export default function CartPage() {
     );
   }
 
-  // DRY: Nederlandse consumentenprijzen zijn INCLUSIEF BTW
+  // ✅ DRY: Nederlandse consumentenprijzen zijn INCLUSIEF BTW
+  // ✅ FIX: Dynamische bedrag berekening - geen hardcode, altijd correct type
   // Subtotal van cart = som van alle product.price (incl. BTW)
-  const shipping = subtotal >= 50 ? 0 : 5.95;
+  const calculatedSubtotal = typeof subtotal === 'number' && !isNaN(subtotal) ? subtotal : 0;
+  const shipping = calculatedSubtotal >= 50 ? 0 : 5.95;
   
   // BTW berekening: uit INCLUSIEF prijs halen
-  const total = subtotal + shipping; // Eindprijs
+  const total = calculatedSubtotal + shipping; // Eindprijs
   const priceExclVAT = total / 1.21; // Prijs excl. BTW
   const tax = total - priceExclVAT; // BTW bedrag
 
@@ -80,7 +82,11 @@ export default function CartPage() {
                           </p>
                         )}
                         <p className="text-sm sm:text-base text-gray-600">
-                          {formatPrice(item.product.price)} per stuk
+                          {formatPrice(
+                            typeof item.product.price === 'number' 
+                              ? item.product.price 
+                              : parseFloat(String(item.product.price || '0'))
+                          )} per stuk
                         </p>
                       </div>
                       {/* ✅ VARIANT SYSTEM: Remove specific variant if variantId exists (modulair, geen hardcode) */}
@@ -149,7 +155,11 @@ export default function CartPage() {
                       </div>
 
                       <p className="text-base sm:text-xl font-semibold">
-                        {formatPrice(item.product.price * item.quantity)}
+                        {formatPrice(
+                          (typeof item.product.price === 'number' 
+                            ? item.product.price 
+                            : parseFloat(String(item.product.price || '0'))) * item.quantity
+                        )}
                       </p>
                     </div>
                   </div>
@@ -170,7 +180,7 @@ export default function CartPage() {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotaal</span>
-                  <span className="font-medium">{formatPrice(subtotal)}</span>
+                  <span className="font-medium">{formatPrice(calculatedSubtotal)}</span>
                 </div>
 
                 <div className="flex justify-between">

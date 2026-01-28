@@ -1045,7 +1045,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       <div className={cn(CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor, CONFIG.tabs.content.lineHeight)}>
                         <h3 className="text-base sm:text-lg font-semibold mb-2">Product Omschrijving</h3>
                         <p className="text-sm sm:text-base mb-3">
-                          {product.description || 'De beste automatische kattenbak met zelfreinigende functie. Perfect voor katten tot 7kg. Volledig automatisch met app-bediening.'}
+                          {product.description || 'Premium automatische kattenbak met zelfreinigende functie. Perfect voor katten tot 7kg. Volledig automatisch met app-bediening.'}
                         </p>
                         {product.description && (
                           <>
@@ -1253,7 +1253,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                                         CONFIG.howItWorks.accordion.content.step.content.header.icon.size,
                                         CONFIG.howItWorks.accordion.content.step.content.header.icon.color
                                       )}
-                                      style={{ color: BRAND_COLORS_HEX.primary }}
                                     />
                                     <h3 className={cn(
                                       CONFIG.howItWorks.accordion.content.step.content.header.title.fontSize,
@@ -1280,40 +1279,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   )}
                 </div>
 
-                {/* Vragen Accordion */}
-                <div>
-                  <button
-                    onClick={() => toggleAccordion('vragen')}
-                    className="w-full px-4 py-2.5 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md transition-all duration-200 flex items-center justify-between group"
-                  >
-                    <span className="text-sm md:text-base font-medium text-gray-900">
-                      Vragen
-                    </span>
-                    <ChevronDown 
-                      className={cn(
-                        'w-4 h-4 text-gray-500 transition-transform duration-200',
-                        openAccordions.has('vragen') && 'rotate-180'
-                      )}
-                    />
-                  </button>
-                  
-                  {openAccordions.has('vragen') && (
-                    <div className="mt-4 px-6 py-4 bg-white border border-gray-200 rounded-lg border-t-0">
-                      <div className={cn(CONFIG.tabs.content.fontSize, CONFIG.tabs.content.textColor)}>
-                        <h3 className="text-lg font-semibold mb-4">Vragen over {product.name}</h3>
-                        <div className="space-y-4">
-                          {/* ✅ SEO PHASE 2: FAQ uitbreiden - gebruik PRODUCT_CONTENT.faqs */}
-                          {PRODUCT_CONTENT.faqs?.map((faq: { q: string; a: string }, index: number) => (
-                            <div key={index}>
-                              <h4 className="font-semibold mb-1">{faq.q}</h4>
-                              <p className="text-sm">{faq.a}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                {/* ✅ VERWIJDERD: Vragen Accordion - geen redundantie, FAQ al in JSON-LD */}
               </div>
             </div>
           </div>

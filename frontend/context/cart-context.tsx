@@ -104,7 +104,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [items]);
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  // ✅ FIX: Dynamische bedrag berekening - geen hardcode, altijd correct type
+  const subtotal = items.reduce((sum, item) => {
+    const price = typeof item.product.price === 'number' 
+      ? item.product.price 
+      : parseFloat(String(item.product.price || '0'));
+    return sum + (price * item.quantity);
+  }, 0);
 
   const addItem = useCallback((product: Product, quantity: number = 1, variant?: { id?: string; name?: string; color?: string; image?: string }) => {
     setItems((prev) => {

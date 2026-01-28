@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { PRODUCT_PAGE_CONFIG } from "@/lib/product-page-config"; // ✅ DRY: Via PRODUCT_PAGE_CONFIG
 import { productsApi } from "@/lib/api/products";
 import type { Product, ProductVariant } from "@/types/product";
 import { getProductImage } from "@/lib/image-config";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
+import { cn } from "@/lib/utils";
 
 /**
  * ✅ VARIANTEN SECTIE - DYNAMISCH & SMOOTH
@@ -68,51 +70,60 @@ export function ProductVariantsSection() {
     return null; // ✅ SMOOTH: Geen sectie als geen varianten
   }
 
+  // ✅ DRY: Config via PRODUCT_PAGE_CONFIG - geen hardcode
+  const CONFIG = PRODUCT_PAGE_CONFIG.variants;
+
   return (
     <section
-      className="relative w-full py-12 md:py-16"
-      style={{
-        backgroundColor: '#000000', // ✅ ZWART: Volledig zwart achtergrond
-      }}
+      className={cn(
+        'relative w-full',
+        CONFIG.container.backgroundColor,
+        CONFIG.container.padding
+      )}
     >
       <div
-        className="mx-auto px-4 sm:px-6 md:px-8 lg:px-8"
+        className={cn(
+          'mx-auto',
+          PRODUCT_PAGE_CONFIG.layout.containerPadding
+        )}
         style={{
           maxWidth: DESIGN_SYSTEM.layout.maxWidth['2xl'],
         }}
       >
-        {/* ✅ TITEL: "Onze varianten" - DRY via DESIGN_SYSTEM - GROTER */}
-        <div className="text-center mb-8 md:mb-12">
+        {/* ✅ TITEL: "Onze varianten" - DRY via PRODUCT_PAGE_CONFIG - WITTE ACHTERGROND */}
+        <div className={cn(
+          CONFIG.header.container,
+          CONFIG.header.spacing.bottom
+        )}>
           <h2
+            className={cn(
+              CONFIG.header.title.fontSize,
+              CONFIG.header.title.fontWeight,
+              CONFIG.header.title.textColor,
+              CONFIG.header.title.letterSpacing,
+              CONFIG.header.spacing.titleSubtitle // ✅ DICHTBIJ: Subtitel dichtbij hoofdtitel
+            )}
             style={{
               fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)', // ✅ GROTER: Responsive, groter dan 4xl
-              fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
-              color: '#FFFFFF', // ✅ WIT: Volledig wit tekst
-              letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
-              marginBottom: DESIGN_SYSTEM.spacing[3], // ✅ SPACING: Ruimte tussen titel en subtekst
             }}
           >
             Onze varianten
           </h2>
-          {/* ✅ SUBTEKST: Passende beschrijving onder titel */}
+          {/* ✅ SUBTEKST: Passende beschrijving onder titel - DICHTBIJ HOOFDTITEL */}
           <p
-            style={{
-              fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
-              fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-              color: '#FFFFFF', // ✅ WIT: Volledig wit tekst
-              opacity: 0.9, // ✅ SUBTIELE: Iets transparanter voor hiërarchie
-              lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
-            }}
+            className={cn(
+              CONFIG.header.subtitle.fontSize,
+              CONFIG.header.subtitle.fontWeight,
+              CONFIG.header.subtitle.textColor,
+              CONFIG.header.subtitle.lineHeight
+            )}
           >
             Kies jouw favoriete kleur en stijl
           </p>
         </div>
 
-        {/* ✅ GRID: 2 kaarten centraal naast elkaar desktop, onder elkaar mobiel - EDGE-TO-EDGE: Identiek aan productafbeeldingen */}
-        <div
-          className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto"
-        >
+        {/* ✅ GRID: 2 kaarten centraal naast elkaar desktop, onder elkaar mobiel - DRY via PRODUCT_PAGE_CONFIG */}
+        <div className={CONFIG.grid.container}>
           {variants.slice(0, 2).map((variant) => {
             const variantImage = variant.displayImage || (product.images && product.images.length > 0 ? product.images[0] : '/placeholder-image.jpg');
             const variantName = variant.displayName;
@@ -122,18 +133,22 @@ export function ProductVariantsSection() {
               <Link
                 key={variant.id}
                 href={`/product/${product.slug}${variant.id ? `?variant=${variant.id}` : ''}`}
-                className="group relative overflow-hidden rounded-2xl sm:rounded-3xl transition-all duration-300 hover:scale-[1.02] w-full md:w-[48%]"
-                style={{
-                  aspectRatio: '1/1', // ✅ VIERKANT: Perfect vierkant voor varianten
-                }}
+                className={cn(
+                  CONFIG.card.container,
+                  CONFIG.card.borderRadius, // ✅ RONDE HOEKEN: Foto's met ronde hoeken
+                  CONFIG.card.aspectRatio
+                )}
               >
-                {/* ✅ AFBEELDING: Eerste afbeelding van variant - EXACT PASSEND: Past exact aan veld zoals productafbeeldingen (object-cover, w-full) */}
-                <div className="relative w-full h-full overflow-hidden">
+                {/* ✅ AFBEELDING: Eerste afbeelding van variant - RONDE HOEKEN - DRY via PRODUCT_PAGE_CONFIG */}
+                <div className={cn('relative w-full h-full overflow-hidden', CONFIG.card.image.borderRadius)}>
                   <Image
                     src={variantImage}
                     alt={variantName}
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    className={cn(
+                      CONFIG.card.image.objectFit,
+                      'transition-transform duration-300 group-hover:scale-110'
+                    )}
                     sizes="(max-width: 768px) 100vw, 48vw"
                     quality={85}
                     loading="lazy"
