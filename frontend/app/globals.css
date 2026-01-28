@@ -133,6 +133,32 @@
     border-radius: 0.25rem !important; /* 4px */
   }
   
+  /* ✅ ZIGZAG AFBEELDINGEN: Echte ronde hoeken (24px) - geforceerd via CSS class */
+  .zigzag-image-container {
+    border-radius: 1.5rem !important; /* 24px - rounded-3xl */
+    overflow: hidden !important;
+  }
+  
+  /* ✅ ZIGZAG AFBEELDINGEN: Ook op Image zelf */
+  .zigzag-image-container .zigzag-image,
+  .zigzag-image-container img {
+    border-radius: 1.5rem !important; /* 24px - rounded-3xl */
+  }
+  
+  /* ✅ ZIGZAG AFBEELDINGEN: Fallback voor alle zigzag containers */
+  div[class*="aspect-"]:has(img),
+  div.relative.h-64:has(img),
+  div.relative.h-80:has(img) {
+    border-radius: 1.5rem !important; /* 24px - rounded-3xl */
+    overflow: hidden !important;
+  }
+  
+  div[class*="aspect-"]:has(img) img,
+  div.relative.h-64:has(img) img,
+  div.relative.h-80:has(img) img {
+    border-radius: 1.5rem !important; /* 24px - rounded-3xl */
+  }
+  
   /* ✅ SCROLLBAR HIDE: Voor horizontale scroll op mobiel */
   .scrollbar-hide {
     -ms-overflow-style: none;  /* IE and Edge */

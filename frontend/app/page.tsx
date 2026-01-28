@@ -129,9 +129,9 @@ export default function HomePage() {
             className="w-full md:w-[50%] flex flex-col items-center justify-center md:items-start md:justify-center px-6 md:px-12 lg:px-16 py-12 md:py-16 lg:py-20 order-2 md:order-1 bg-white" // ✅ WIT: Witte achtergrond voor tekst
           >
             <div className="space-y-5 md:space-y-6 lg:space-y-8 text-center md:text-left w-full max-w-xl">
-              {/* Heading - ✅ ZWART: Tekst in zwart */}
+              {/* Heading - ✅ RUSTIGER: Minder groot, passender */}
               <h1 
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight leading-[1.1] text-black" // ✅ ZWART: Tekst in zwart
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1] text-black" // ✅ RUSTIGER: Kleiner (text-3xl ipv text-4xl, etc.)
                 style={{
                   fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
                 }}

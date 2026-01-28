@@ -132,9 +132,10 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
                     CONFIG.featureSection.text.title.fontSize,
                     CONFIG.featureSection.text.title.fontWeight,
                     CONFIG.featureSection.text.title.letterSpacing, // ✅ EXACT ZELFDE: Letter spacing zoals productnaam
-                    CONFIG.featureSection.text.title.textAlign // ✅ MOBIEL: Centraal, desktop links
+                    CONFIG.featureSection.text.title.textAlign, // ✅ MOBIEL: Centraal, desktop links
+                    'text-black' // ✅ ZWART: Zigzag titels zwart
                   )}
-                  style={CONFIG.featureSection.text.title.gradient} // ✅ BLAUW GRADIENT: Via CONFIG (mobiel & desktop consistent)
+                  style={{ color: '#000000' }} // ✅ ZWART: Forceer zwart, geen gradient
                 >
                   {feature.title}
                 </h3>

@@ -78,8 +78,8 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                     
                     <div className="flex-1">
                       <h3 
-                        className="text-xl font-normal mb-2"
-                        style={usp.color === 'accent' ? gradientTextStyle : undefined}
+                        className="text-xl font-normal mb-2 text-black" // ✅ ZWART: Zigzag titels zwart
+                        style={usp.color === 'accent' ? undefined : { color: '#000000' }} // ✅ ZWART: Forceer zwart, geen gradient
                       >
                         {usp.title}
                       </h3>
@@ -92,16 +92,16 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                 {usp.image && usp.image.trim() !== '' && (
                   <div className={`${isEven ? 'md:order-2' : 'md:order-1'}`}>
                     <div 
-                      className={`relative h-64 md:h-80 overflow-hidden ${PRODUCT_PAGE_CONFIG.featureSection.image.borderRadius}`}
+                      className={`relative h-64 md:h-80 overflow-hidden ${PRODUCT_PAGE_CONFIG.featureSection.image.borderRadius} zigzag-image-container`}
                       style={{
-                        borderRadius: '1.5rem !important', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style met !important
-                      } as React.CSSProperties & { borderRadius: string }}
-                    > {/* ✅ RONDE HOEKEN: Via config + inline style voor zekerheid */}
+                        borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl)
+                      } as React.CSSProperties}
+                    > {/* ✅ RONDE HOEKEN: Via config + inline style + CSS class */}
                       <Image
                         src={usp.image}
                         alt={usp.title}
                         fill
-                        className="object-cover"
+                        className="object-cover zigzag-image"
                         style={{
                           borderRadius: '1.5rem', // ✅ ECHT ROND: Ook op Image zelf
                         } as React.CSSProperties}

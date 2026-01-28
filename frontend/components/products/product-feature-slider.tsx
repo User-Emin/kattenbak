@@ -86,7 +86,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
             {/* Image - ✅ SYMMETRISCH: Gecentreerd met symmetrische spacing */}
             <div
               className={cn(
-                'relative w-full',
+                'relative w-full zigzag-image-container',
                 'max-w-xs sm:max-w-sm',
                 'mx-auto',
                 CONFIG.featureSection.image.borderRadius,
@@ -99,7 +99,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
             >
               <div 
                 className={cn(
-                  'relative w-full',
+                  'relative w-full zigzag-image-container',
                   CONFIG.featureSection.image.aspectRatio,
                   'overflow-hidden',
                   CONFIG.featureSection.image.borderRadius
@@ -113,7 +113,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   alt={feature.title}
                   fill
                   className={cn(
-                    'object-contain',
+                    'object-contain zigzag-image',
                     CONFIG.featureSection.image.borderRadius
                   )}
                   style={{
@@ -154,9 +154,9 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   CONFIG.featureSection.text.title.fontSize,
                   CONFIG.featureSection.text.title.fontWeight,
                   CONFIG.featureSection.text.title.letterSpacing,
-                  'text-center'
+                  'text-center text-black' // ✅ ZWART: Zigzag titels zwart
                 )}
-                style={CONFIG.featureSection.text.title.gradient}
+                style={{ color: '#000000' }} // ✅ ZWART: Forceer zwart, geen gradient
               >
                 {feature.title}
               </h3>
@@ -198,7 +198,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                 {/* Image */}
                 <div
                   className={cn(
-                    'relative',
+                    'relative zigzag-image-container',
                     'w-full md:w-auto',
                     isEven
                       ? CONFIG.featureSection.zigzag.imageOrder.left
@@ -214,7 +214,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                 >
                   <div
                     className={cn(
-                      'absolute inset-0',
+                      'absolute inset-0 zigzag-image-container',
                       CONFIG.featureSection.image.borderRadius,
                       'overflow-hidden'
                     )}
@@ -226,7 +226,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                       src={feature.image || '/images/feature-2.jpg'}
                       alt={feature.title}
                       fill
-                      className="object-contain"
+                      className="object-contain zigzag-image"
                       style={{
                         borderRadius: '1.5rem', // ✅ ECHT ROND: Ook op Image zelf
                       } as React.CSSProperties}
@@ -267,7 +267,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                       CONFIG.featureSection.text.title.letterSpacing,
                       CONFIG.featureSection.text.title.textAlign
                     )}
-                    style={CONFIG.featureSection.text.title.gradient} // ✅ BLAUW GRADIENT: Via CONFIG (geen hardcode)
+                    style={{ color: '#000000' }} // ✅ ZWART: Forceer zwart, geen gradient
                   >
                     {feature.title}
                   </h3>
