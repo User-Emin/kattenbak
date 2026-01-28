@@ -107,30 +107,30 @@ export default function HomePage() {
       {/* ✅ SEO 10/10: Rich Snippets (FAQ, HowTo) */}
       <RichSnippets />
       <div>
-      {/* 🎨 HERO SECTION - WITTE ACHTERGROND MET ZWARTE TEKST */}
+      {/* 🎨 HERO SECTION - OPTIMAAL: Witte achtergrond met zwarte tekst, perfecte layout */}
       <section 
-        className="relative w-full bg-white" // ✅ WIT: Witte achtergrond
+        className="relative w-full bg-white overflow-hidden" // ✅ WIT: Witte achtergrond, overflow hidden voor clean edges
         style={{
           minHeight: DESIGN_SYSTEM.layout.hero.minHeightMobile,
           marginTop: 0, // ✅ EDGE-TO-EDGE: Geen margin boven
           paddingTop: 0, // ✅ EDGE-TO-EDGE: Geen padding boven
         }}
       >
-        {/* ✅ CONTAINER: Flex layout - afbeelding en tekst naast elkaar */}
+        {/* ✅ CONTAINER: Flex layout - afbeelding en tekst naast elkaar, optimale spacing */}
         <div 
-          className="relative w-full flex flex-col md:flex-row items-center" 
+          className="relative w-full max-w-7xl mx-auto flex flex-col md:flex-row items-stretch" // ✅ OPTIMAAL: items-stretch voor gelijke hoogte
           style={{
             minHeight: `clamp(${DESIGN_SYSTEM.layout.hero.minHeightMobile}, 100vh, ${DESIGN_SYSTEM.layout.hero.minHeight})`,
           }}
         >
-          {/* ✅ TEKST: Links op desktop, boven op mobiel - ZWARTE TEKST */}
+          {/* ✅ TEKST: Links op desktop, boven op mobiel - ZWARTE TEKST - OPTIMAAL SPACING */}
           <div 
-            className="w-full md:w-[50%] flex flex-col items-center justify-center md:items-start md:justify-start md:pl-12 px-4 py-8 md:py-12 order-2 md:order-1" // ✅ TEKST: Links op desktop
+            className="w-full md:w-[50%] flex flex-col items-center justify-center md:items-start md:justify-center px-6 md:px-12 lg:px-16 py-12 md:py-16 lg:py-20 order-2 md:order-1 bg-white" // ✅ OPTIMAAL: Betere padding en spacing
           >
-            <div className="space-y-4 md:space-y-6 text-center md:text-left max-w-lg">
-              {/* Heading - ✅ ZWART: Tekst in zwart */}
+            <div className="space-y-5 md:space-y-6 lg:space-y-8 text-center md:text-left w-full max-w-xl"> {/* ✅ OPTIMAAL: Max-width voor betere leesbaarheid */}
+              {/* Heading - ✅ ZWART: Tekst in zwart, optimale sizing */}
               <h1 
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1] text-black" // ✅ ZWART: Tekst in zwart
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight leading-[1.1] text-black" // ✅ OPTIMAAL: Groter en beter leesbaar
                 style={{
                   fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
                 }}
@@ -140,18 +140,18 @@ export default function HomePage() {
                 Kattenbak
               </h1>
 
-              {/* Subtitle - ✅ ZWART: Tekst in zwart */}
+              {/* Subtitle - ✅ ZWART: Tekst in zwart, optimale sizing */}
               <p 
-                className="text-lg sm:text-xl md:text-2xl font-light leading-relaxed text-gray-900" // ✅ ZWART: Tekst in zwart/grijs
+                className="text-xl sm:text-2xl md:text-3xl font-light leading-relaxed text-gray-800" // ✅ OPTIMAAL: Groter en beter leesbaar
               >
                 Zelfreinigende • Hygiënisch • Stil
               </p>
 
-              {/* CTA Button - ✅ PREMIUM: Modern button */}
-              <div className="pt-6 pb-2 md:pb-4">
+              {/* CTA Button - ✅ PREMIUM: Modern button, optimale spacing */}
+              <div className="pt-4 md:pt-6">
                 <Link href={`/product/${productSlug}`}>
                   <button 
-                    className="relative overflow-hidden group inline-flex items-center gap-3 px-8 py-5 sm:px-10 sm:py-6 text-base sm:text-lg font-semibold rounded-lg text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]" // ✅ PREMIUM: Modern button styling
+                    className="relative overflow-hidden group inline-flex items-center gap-3 px-8 py-5 sm:px-10 sm:py-6 md:px-12 md:py-7 text-base sm:text-lg md:text-xl font-semibold rounded-lg text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]" // ✅ OPTIMAAL: Groter button
                     style={{
                       backgroundColor: '#000000',
                     }}
@@ -163,16 +163,16 @@ export default function HomePage() {
                     }}
                   >
                     <span>Bekijk Product</span>
-                    <ArrowRight className="w-5 h-5" strokeWidth={2} />
+                    <ArrowRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2} />
                   </button>
                 </Link>
               </div>
             </div>
           </div>
 
-          {/* ✅ AFBEELDING: Rechts op desktop, onder op mobiel */}
+          {/* ✅ AFBEELDING: Rechts op desktop, boven op mobiel - OPTIMAAL VISUEEL */}
           <div 
-            className="relative w-full md:w-[50%] h-64 md:h-full overflow-hidden order-1 md:order-2" // ✅ AFBEELDING: Rechts op desktop
+            className="relative w-full md:w-[50%] h-80 sm:h-96 md:h-auto min-h-[400px] md:min-h-0 overflow-hidden order-1 md:order-2 bg-gray-100" // ✅ OPTIMAAL: Betere hoogte en fallback bg
             style={{
               marginTop: 0, // ✅ EDGE-TO-EDGE: Geen margin boven
             }}
@@ -184,7 +184,7 @@ export default function HomePage() {
                 src={optimizedHeroImage}
                 alt="Premium automatische kattenbak"
                 fill
-                className="object-cover"
+                className="object-cover object-center" // ✅ OPTIMAAL: object-center voor betere compositie
                 sizes="(max-width: 768px) 100vw, 50vw" // ✅ RESPONSIVE: 50% op desktop
                 priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
                 quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
@@ -197,7 +197,7 @@ export default function HomePage() {
                 src={heroImage}
                 alt="Premium automatische kattenbak"
                 fill
-                className="object-cover"
+                className="object-cover object-center" // ✅ OPTIMAAL: object-center voor betere compositie
                 sizes="(max-width: 768px) 100vw, 50vw" // ✅ RESPONSIVE: 50% op desktop
                 priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
                 quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
