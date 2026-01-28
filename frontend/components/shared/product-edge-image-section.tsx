@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { PRODUCT_PAGE_CONFIG, cn } from "@/lib/product-page-config";
 import { PRODUCT_CONTENT } from "@/lib/content.config";
@@ -112,24 +114,57 @@ export function ProductEdgeImageSection() {
             }
           }}
         />
-        {/* ✅ OVERLAY MET TEKST: Realistische product informatie - DYNAMISCH & MOBIEL OPTIMAAL */}
+        {/* ✅ OVERLAY MET TEKST EN BUTTON: Tekst en button erop - DYNAMISCH & MOBIEL OPTIMAAL */}
         <div className={CONFIG.edgeSection.overlay.position}>
-          <div className={cn(CONFIG.edgeSection.overlay.content, CONFIG.edgeSection.overlay.textAlign, 'px-4 sm:px-8 lg:px-16')}>
+          {/* ✅ GRADIENT OVERLAY: Donkere overlay voor leesbaarheid */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"
+            style={{ pointerEvents: 'none' }}
+          />
+          <div className={cn(CONFIG.edgeSection.overlay.content, CONFIG.edgeSection.overlay.textAlign, 'px-4 sm:px-8 lg:px-16 relative z-10')}>
             <h2 className={cn(
               'text-xl sm:text-2xl md:text-3xl lg:text-4xl', // ✅ MOBIEL: Kleinere tekst op mobiel
               CONFIG.edgeSection.title.fontWeight,
               CONFIG.edgeSection.title.textColor,
               CONFIG.edgeSection.title.marginBottom
-            )}>
+            )}
+            style={{
+              textShadow: '0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8)',
+            }}
+            >
               {product.name}
             </h2>
             {/* ✅ MOBIEL: Beschrijving ook zichtbaar op mobiel (voor gebruik in mobielweergave na zigzag) */}
             <p className={cn(
-              'text-sm sm:text-base md:text-lg', // ✅ MOBIEL: Responsive tekst
+              'text-sm sm:text-base md:text-lg mb-6 md:mb-8', // ✅ MOBIEL: Responsive tekst, spacing voor button
               CONFIG.edgeSection.description.textColor
-            )}>
+            )}
+            style={{
+              textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.7)',
+            }}
+            >
               {product.description || product.shortDescription || PRODUCT_CONTENT.mainDescription}
             </p>
+            {/* ✅ BUTTON: Witte button erop - DRY via DESIGN_SYSTEM */}
+            <div className="flex justify-center">
+              <Link href={`/product/${product.slug}`}>
+                <button 
+                  className="inline-flex items-center gap-3 px-8 py-5 sm:px-10 sm:py-6 text-base sm:text-lg font-semibold rounded-lg text-black bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]" // ✅ WIT: Witte button met zwarte tekst
+                  style={{
+                    backgroundColor: '#ffffff',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#f5f5f5';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#ffffff';
+                  }}
+                >
+                  <span>Bekijk Product</span>
+                  <ArrowRight className="w-5 h-5" strokeWidth={2} />
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
