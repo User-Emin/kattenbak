@@ -208,18 +208,20 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                 <Header />
               </div>
               
-              {/* MAIN CONTENT - Padding voor fixed header + mobile bottom nav */}
-              <main 
-                className="flex-1 md:pb-0" // ✅ DESKTOP: Geen extra padding op desktop
-                style={{ 
-                  paddingTop: isHomePage 
-                    ? `calc(${DESIGN_SYSTEM.layout.uspBanner.height} + ${DESIGN_SYSTEM.layout.navbar.height})`
-                    : `calc(${DESIGN_SYSTEM.layout.uspBanner.height} + ${DESIGN_SYSTEM.layout.navbar.height})`,
-                  paddingBottom: '80px', // ✅ MOBILE BOTTOM NAV: Extra padding voor bottom nav (60px nav + 20px margin)
-                }}
-              >
-                {children}
-              </main>
+              {/* MAIN CONTENT - ✅ ERROR BOUNDARY: Vangt alle errors op, toont altijd content */}
+              <ErrorBoundary>
+                <main 
+                  className="flex-1 md:pb-0" // ✅ DESKTOP: Geen extra padding op desktop
+                  style={{ 
+                    paddingTop: isHomePage 
+                      ? `calc(${DESIGN_SYSTEM.layout.uspBanner.height} + ${DESIGN_SYSTEM.layout.navbar.height})`
+                      : `calc(${DESIGN_SYSTEM.layout.uspBanner.height} + ${DESIGN_SYSTEM.layout.navbar.height})`,
+                    paddingBottom: '80px', // ✅ MOBILE BOTTOM NAV: Extra padding voor bottom nav (60px nav + 20px margin)
+                  }}
+                >
+                  {children}
+                </main>
+              </ErrorBoundary>
               
               {/* FOOTER */}
               <Footer />
