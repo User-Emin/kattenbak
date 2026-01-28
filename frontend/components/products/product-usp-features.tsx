@@ -72,21 +72,31 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
               key={index} 
               className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
             >
-              {/* Image - ✅ EXACT ZELFDE: Identiek aan product detail - RONDE HOEKEN ECHT TOEGEPAST VIA WRAPPER */}
-              <div className={cn(
-                'relative',
-                'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
-                isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right,
-                CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Meer verticale lengte (aspect-[3/4] mobiel, aspect-[4/5] desktop)
-                CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Container heeft ronde hoeken (rounded-xl md:rounded-2xl lg:rounded-3xl)
-                CONFIG.featureSection.image.bgColor,
-                'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding binnen container blijft met ronde hoeken
-              )}>
-                <div className={cn(
-                  'absolute inset-0',
-                  CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Wrapper heeft ronde hoeken
-                  'overflow-hidden' // ✅ OVERFLOW: Zorgt dat Image binnen ronde hoeken blijft
-                )}>
+              {/* Image - ✅ EXACT ZELFDE: Identiek aan product detail - RONDE HOEKEN ECHT TOEGEPAST VIA WRAPPER + INLINE STYLE */}
+              <div 
+                className={cn(
+                  'relative',
+                  'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
+                  isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right,
+                  CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Meer verticale lengte (aspect-[3/4] mobiel, aspect-[4/5] desktop)
+                  CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Container heeft ronde hoeken (rounded-xl md:rounded-2xl lg:rounded-3xl)
+                  CONFIG.featureSection.image.bgColor,
+                  'overflow-hidden' // ✅ OVERFLOW: Zorgt dat afbeelding binnen container blijft met ronde hoeken
+                )}
+                style={{
+                  borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                } as React.CSSProperties}
+              >
+                <div 
+                  className={cn(
+                    'absolute inset-0',
+                    CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Wrapper heeft ronde hoeken
+                    'overflow-hidden' // ✅ OVERFLOW: Zorgt dat Image binnen ronde hoeken blijft
+                  )}
+                  style={{
+                    borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                  } as React.CSSProperties}
+                >
                   <Image
                     src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
                     alt={feature.title}

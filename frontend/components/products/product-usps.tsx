@@ -88,10 +88,15 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                   </div>
                 </div>
 
-                {/* Image (zonder schaduw) - ✅ SECURITY: Only render if image exists - ✅ RONDE HOEKEN: Via PRODUCT_PAGE_CONFIG */}
+                {/* Image (zonder schaduw) - ✅ SECURITY: Only render if image exists - ✅ RONDE HOEKEN: Via PRODUCT_PAGE_CONFIG + inline style */}
                 {usp.image && usp.image.trim() !== '' && (
                   <div className={`${isEven ? 'md:order-2' : 'md:order-1'}`}>
-                    <div className={`relative h-64 md:h-80 overflow-hidden ${PRODUCT_PAGE_CONFIG.featureSection.image.borderRadius}`}> {/* ✅ RONDE HOEKEN: Via config (rounded-xl md:rounded-2xl lg:rounded-3xl) */}
+                    <div 
+                      className={`relative h-64 md:h-80 overflow-hidden ${PRODUCT_PAGE_CONFIG.featureSection.image.borderRadius}`}
+                      style={{
+                        borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                      } as React.CSSProperties}
+                    > {/* ✅ RONDE HOEKEN: Via config + inline style voor zekerheid */}
                       <Image
                         src={usp.image}
                         alt={usp.title}

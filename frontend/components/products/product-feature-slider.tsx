@@ -93,13 +93,21 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                 CONFIG.featureSection.image.bgColor,
                 'mb-4'
               )}
+              style={{
+                borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+              } as React.CSSProperties}
             >
-              <div className={cn(
-                'relative w-full',
-                CONFIG.featureSection.image.aspectRatio,
-                'overflow-hidden',
-                CONFIG.featureSection.image.borderRadius
-              )}>
+              <div 
+                className={cn(
+                  'relative w-full',
+                  CONFIG.featureSection.image.aspectRatio,
+                  'overflow-hidden',
+                  CONFIG.featureSection.image.borderRadius
+                )}
+                style={{
+                  borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                } as React.CSSProperties}
+              >
                 <Image
                   src={feature.image || '/images/feature-2.jpg'}
                   alt={feature.title}
@@ -197,6 +205,9 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                     CONFIG.featureSection.image.bgColor,
                     'overflow-hidden'
                   )}
+                  style={{
+                    borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                  } as React.CSSProperties}
                 >
                   <div
                     className={cn(
@@ -204,6 +215,9 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                       CONFIG.featureSection.image.borderRadius,
                       'overflow-hidden'
                     )}
+                    style={{
+                      borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                    } as React.CSSProperties}
                   >
                     <Image
                       src={feature.image || '/images/feature-2.jpg'}
