@@ -128,34 +128,37 @@
   }
   
   /* Cards en containers - iets meer rounded */
-  [class*="card"]:not(.rounded-none),
-  [class*="container"]:not(.rounded-none) {
-    border-radius: 0.25rem !important; /* 4px */
+  [class*="card"]:not(.rounded-none):not(.zigzag-image-container),
+  [class*="container"]:not(.rounded-none):not(.zigzag-image-container) {
+    border-radius: 0.25rem !important; /* 4px - maar NIET voor zigzag containers */
   }
   
-  /* ✅ ZIGZAG AFBEELDINGEN: Echte ronde hoeken (24px) - geforceerd via CSS class */
+  /* ✅ ZIGZAG AFBEELDINGEN: Echte ronde hoeken (24px) - geforceerd via CSS class met !important */
   .zigzag-image-container {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl */
     overflow: hidden !important;
   }
   
-  /* ✅ ZIGZAG AFBEELDINGEN: Ook op Image zelf */
+  /* ✅ ZIGZAG AFBEELDINGEN: Ook op Image zelf - override alle andere rules */
   .zigzag-image-container .zigzag-image,
-  .zigzag-image-container img {
+  .zigzag-image-container img,
+  .zigzag-image {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl */
   }
   
-  /* ✅ ZIGZAG AFBEELDINGEN: Fallback voor alle zigzag containers */
+  /* ✅ ZIGZAG AFBEELDINGEN: Fallback voor alle zigzag containers - override globals.css card rule */
   div[class*="aspect-"]:has(img),
   div.relative.h-64:has(img),
-  div.relative.h-80:has(img) {
-    border-radius: 1.5rem !important; /* 24px - rounded-3xl */
+  div.relative.h-80:has(img),
+  div.relative[class*="aspect-"]:has(img) {
+    border-radius: 1.5rem !important; /* 24px - rounded-3xl - override 4px card rule */
     overflow: hidden !important;
   }
   
   div[class*="aspect-"]:has(img) img,
   div.relative.h-64:has(img) img,
-  div.relative.h-80:has(img) img {
+  div.relative.h-80:has(img) img,
+  div.relative[class*="aspect-"]:has(img) img {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl */
   }
   
