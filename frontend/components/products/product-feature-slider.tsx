@@ -101,7 +101,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                 CONFIG.featureSection.image.borderRadius
               )}>
                 <Image
-                  src={feature.image || '/images/placeholder.jpg'}
+                  src={feature.image || '/images/feature-2.jpg'}
                   alt={feature.title}
                   fill
                   className={cn(
@@ -121,8 +121,8 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   }
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    if (target && !target.src.includes('placeholder')) {
-                      target.src = '/images/placeholder.jpg';
+                    if (target && !target.src.includes('feature-2.jpg')) {
+                      target.src = '/images/feature-2.jpg';
                     }
                   }}
                 />
@@ -206,7 +206,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                     )}
                   >
                     <Image
-                      src={feature.image || '/images/placeholder.jpg'}
+                      src={feature.image || '/images/feature-2.jpg'}
                       alt={feature.title}
                       fill
                       className="object-contain"
@@ -223,8 +223,8 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                       }
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
-                        if (target && !target.src.includes('placeholder')) {
-                          target.src = '/images/placeholder.jpg';
+                        if (target && !target.src.includes('feature-2.jpg')) {
+                          target.src = '/images/feature-2.jpg';
                         }
                       }}
                     />

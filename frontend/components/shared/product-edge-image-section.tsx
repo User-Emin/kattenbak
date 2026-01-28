@@ -103,7 +103,7 @@ export function ProductEdgeImageSection() {
           priority={false} // ✅ PERFORMANCE: Below-the-fold, lazy load
           quality={85} // ✅ QUALITY: Goede kwaliteit
           loading="lazy" // ✅ PERFORMANCE: Lazy load
-          unoptimized={imageSrc.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization voor /uploads/
+          unoptimized={imageSrc.startsWith('/uploads/') || imageSrc.includes('/uploads/')} // ✅ FIX: Disable Next.js optimization voor /uploads/ (both relative and absolute)
           onError={(e) => {
             // ✅ SECURE: Error handling met fallback
             const target = e.target as HTMLImageElement;

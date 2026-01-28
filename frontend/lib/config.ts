@@ -132,13 +132,32 @@ export const apiFetch = async <T>(
   if (!response.ok) {
     // ✅ SECURITY: Generic error - geen gevoelige data
     let errorMessage = 'Er is een fout opgetreden';
+    let statusCode = response.status;
+    
     try {
       const errorData = await response.json();
       errorMessage = errorData.error || errorData.message || errorMessage;
     } catch {
-      // If JSON parse fails, use generic message
+      // If JSON parse fails, use generic message based on status
+      if (statusCode === 500) {
+        errorMessage = 'Interne serverfout. Probeer het later opnieuw.';
+      } else if (statusCode === 502 || statusCode === 503 || statusCode === 504) {
+        errorMessage = 'Server tijdelijk niet beschikbaar. Probeer het later opnieuw.';
+      } else if (statusCode === 404) {
+        errorMessage = 'Niet gevonden.';
+      } else if (statusCode === 401) {
+        errorMessage = 'Niet geautoriseerd.';
+      } else if (statusCode === 403) {
+        errorMessage = 'Toegang geweigerd.';
+      }
     }
-    throw new Error(errorMessage);
+    
+    // ✅ ERROR OBJECT: Include status code for retry logic
+    const error = new Error(errorMessage) as any;
+    error.status = statusCode;
+    error.isGatewayError = statusCode === 502 || statusCode === 503 || statusCode === 504;
+    error.isNetworkError = statusCode === 0 || !response;
+    throw error;
   }
 
   return response.json();

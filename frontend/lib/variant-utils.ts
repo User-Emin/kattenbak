@@ -15,13 +15,21 @@ export function filterValidImages(images: string[]): string[] {
   return images.filter((img: string) => {
     // ✅ FILTER: Alleen geldige geüploade foto's (geen placeholder, geen SVG data URLs, geen oude paths)
     if (!img || typeof img !== 'string') return false;
+    
+    // ✅ EDGE CASE: Trim whitespace en decode URL encoding
+    const trimmed = img.trim();
+    if (trimmed.length === 0) return false;
+    
     // Filter SVG data URLs (data:image/svg+xml)
-    if (img.startsWith('data:image/svg+xml') || img.startsWith('data:')) return false;
-    // Filter placeholder images
-    if (img.includes('placeholder') || img.includes('demo') || img.includes('default')) return false;
+    if (trimmed.startsWith('data:image/svg+xml') || trimmed.startsWith('data:')) return false;
+    
+    // Filter placeholder images (case-insensitive check)
+    const lower = trimmed.toLowerCase();
+    if (lower.includes('placeholder') || lower.includes('demo') || lower.includes('default')) return false;
+    
     // Alleen geüploade foto's (van /uploads/ of /api/ of http/https)
-    return img.startsWith('/uploads/') || img.startsWith('/api/') || img.startsWith('http://') || img.startsWith('https://');
-  });
+    return trimmed.startsWith('/uploads/') || trimmed.startsWith('/api/') || trimmed.startsWith('http://') || trimmed.startsWith('https://');
+  }).map(img => img.trim()); // ✅ EDGE CASE: Return trimmed URLs
 }
 
 /**

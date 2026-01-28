@@ -151,7 +151,7 @@ const ComparisonImage = ({ src, alt, size = 'md' }: { src: string; alt: string; 
         sizes="(max-width: 640px) 80px, 96px"
         quality={90}
         loading="lazy"
-        unoptimized={src.startsWith('/uploads/')}
+        unoptimized={src.startsWith('/uploads/') || src.includes('/uploads/')}
         placeholder="blur"
         blurDataURL={BLUR_PLACEHOLDER}
       />

@@ -142,7 +142,7 @@ export default function HomePage() {
                 priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
                 quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
                 loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
-                unoptimized={optimizedHeroImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+                unoptimized={optimizedHeroImage.startsWith('/uploads/') || optimizedHeroImage.includes('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (both relative and absolute)
               />
             ) : (
               <Image
@@ -155,7 +155,7 @@ export default function HomePage() {
                 priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
                 quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
                 loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
-                unoptimized={heroImage.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+                unoptimized={heroImage.startsWith('/uploads/') || heroImage.includes('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (both relative and absolute)
               />
             )}
           </div>

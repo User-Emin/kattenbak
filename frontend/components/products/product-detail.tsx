@@ -111,19 +111,22 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   // ✅ VARIANT SYSTEM: Selected variant state
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null); // Variant ID
 
-  // 🚀 PERFORMANCE: Preload first image for fastest loading
+  // 🚀 PERFORMANCE: Preload first valid image only (no placeholder/SVG)
   useEffect(() => {
-    if (product?.images && product.images.length > 0) {
-      const firstImage = product.images[0];
-      if (firstImage && !firstImage.startsWith('/placeholder')) {
-        // Preload main product image for instant display
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = firstImage;
-        link.fetchPriority = 'high';
-        document.head.appendChild(link);
-      }
+    if (!product?.images?.length) return;
+    const valid = (product.images as string[]).filter((img: string) => {
+      if (!img || typeof img !== 'string') return false;
+      if (img.startsWith('data:') || img.includes('placeholder') || img.includes('demo') || img.includes('default')) return false;
+      return img.startsWith('/uploads/') || img.startsWith('/api/') || img.startsWith('http://') || img.startsWith('https://');
+    });
+    const firstImage = valid[0];
+    if (firstImage) {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = firstImage;
+      link.fetchPriority = 'high';
+      document.head.appendChild(link);
     }
   }, [product]);
 
@@ -289,18 +292,26 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     ? variants.find((v: any) => v.id === selectedVariant) 
     : variants.length > 0 ? variants[0] : null;
   
-  // ✅ HELPER: Filter valid images (geen placeholder, geen SVG data URLs) - DRY
+  // ✅ HELPER: Filter valid images (geen placeholder, geen SVG data URLs) - DRY + EDGE CASES
   const filterValidImages = (images: string[]): string[] => {
     return images.filter((img: string) => {
       // ✅ FILTER: Alleen geldige geüploade foto's (geen placeholder, geen SVG data URLs, geen oude paths)
       if (!img || typeof img !== 'string') return false;
+      
+      // ✅ EDGE CASE: Trim whitespace en decode URL encoding
+      const trimmed = img.trim();
+      if (trimmed.length === 0) return false;
+      
       // Filter SVG data URLs (data:image/svg+xml)
-      if (img.startsWith('data:image/svg+xml') || img.startsWith('data:')) return false;
-      // Filter placeholder images
-      if (img.includes('placeholder') || img.includes('demo') || img.includes('default')) return false;
+      if (trimmed.startsWith('data:image/svg+xml') || trimmed.startsWith('data:')) return false;
+      
+      // Filter placeholder images (case-insensitive check)
+      const lower = trimmed.toLowerCase();
+      if (lower.includes('placeholder') || lower.includes('demo') || lower.includes('default')) return false;
+      
       // Alleen geüploade foto's (van /uploads/ of /api/ of http/https)
-      return img.startsWith('/uploads/') || img.startsWith('/api/') || img.startsWith('http://') || img.startsWith('https://');
-    });
+      return trimmed.startsWith('/uploads/') || trimmed.startsWith('/api/') || trimmed.startsWith('http://') || trimmed.startsWith('https://');
+    }).map(img => img.trim()); // ✅ EDGE CASE: Return trimmed URLs
   };
 
   // ✅ VARIANT SYSTEM: Get variant images via shared utility (modulair, geen hardcode)
@@ -333,9 +344,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   // ✅ VARIANT SYSTEM: Use variant images if available, otherwise fall back to product images
   const images = variantImages && variantImages.length > 0 ? variantImages : productImages;
   
-  // ✅ FALLBACK: Als geen geüploade foto's, toon placeholder
-  const displayImages = images.length > 0 ? images : ['/placeholder-image.jpg'];
-  const currentImage = displayImages[selectedImageIndex] || displayImages[0];
+  // ✅ FALLBACK: Alleen wanneer er echt geen geldige foto's zijn – gebruik bestaande asset (geen 404)
+  const GALLERY_FALLBACK = '/images/product-main-optimized.jpg';
+  const displayImagesRaw = images.length > 0 ? images : [GALLERY_FALLBACK];
+  const displayImages = displayImagesRaw.filter((u): u is string => typeof u === 'string' && u.length > 0);
+  const displayImagesSafe = displayImages.length > 0 ? displayImages : [GALLERY_FALLBACK];
+  const currentImage = displayImagesSafe[selectedImageIndex] ?? displayImagesSafe[0];
   
   // ✅ VARIANT SYSTEM: Calculate price with variant adjustment
   // ✅ SECURITY: Type-safe conversion - prevent string concatenation (1 + 0 = "10")
@@ -390,13 +404,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     }
   };
 
-  // Image navigation - ✅ FIX: Gebruik displayImages
+  // Image navigation - ✅ FIX: Gebruik displayImagesSafe (altijd min. 1 item)
   const goToPreviousImage = () => {
-    setSelectedImageIndex((prev) => (prev === 0 ? displayImages.length - 1 : prev - 1));
+    setSelectedImageIndex((prev) => (prev === 0 ? displayImagesSafe.length - 1 : prev - 1));
   };
 
   const goToNextImage = () => {
-    setSelectedImageIndex((prev) => (prev === displayImages.length - 1 ? 0 : prev + 1));
+    setSelectedImageIndex((prev) => (prev === displayImagesSafe.length - 1 ? 0 : prev + 1));
   };
 
   // ✅ SWIPE: Touch/swipe handlers voor vloeiend en snel swipen
@@ -420,10 +434,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
 
-    if (isLeftSwipe && displayImages.length > 1) {
+    if (isLeftSwipe && displayImagesSafe.length > 1) {
       goToNextImage(); // ✅ SMOOTH: Swipe links = volgende afbeelding
     }
-    if (isRightSwipe && displayImages.length > 1) {
+    if (isRightSwipe && displayImagesSafe.length > 1) {
       goToPreviousImage(); // ✅ SMOOTH: Swipe rechts = vorige afbeelding
     }
 
@@ -651,10 +665,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   zoomScale={2.5}
                   priority
                   className="object-contain" // ✅ 1200x1200: Behoud originele vierkante aspect ratio optimaal
+                  fallbackSrc={GALLERY_FALLBACK}
                 />
                 
                 {/* Navigation Arrows */}
-                {displayImages.length > 1 && (
+                {displayImagesSafe.length > 1 && (
                   <>
                     <button
                       onClick={goToPreviousImage}
@@ -700,12 +715,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   CONFIG.gallery.counter.fontSize,
                   CONFIG.gallery.counter.borderRadius
                 )}>
-                  {selectedImageIndex + 1} / {displayImages.length}
+                  {selectedImageIndex + 1} / {displayImagesSafe.length}
                 </div>
               </div>
 
               {/* ✅ THUMBNAILS ONDER: Horizontaal scrollbaar (zowel desktop als mobiel) */}
-              {displayImages.length > 1 && (
+              {displayImagesSafe.length > 1 && (
                 <div className={cn(
                   'flex flex-row gap-3 overflow-x-auto', // ✅ RUIMTE: Meer gap tussen thumbnails (gap-3)
                   'w-full',
@@ -714,7 +729,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   'py-3', // ✅ PADDING: Meer verticale padding (py-3 = 12px)
                   'max-w-full' // ✅ SCROLL STOP: Voorkom oneindig scrollen
                 )}>
-                  {displayImages.map((image, index) => (
+                  {displayImagesSafe.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImageIndex(index)}
@@ -740,7 +755,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                         sizes="80px" // 🚀 PERFORMANCE: Thumbnail size (80x80px) - exact size for fastest loading
                         quality={70} // 🚀 PERFORMANCE: Lower quality voor thumbnails (faster loading, still good quality)
                         loading="lazy" // 🚀 PERFORMANCE: Lazy load thumbnails (load only when visible)
-                        unoptimized={image.startsWith('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths
+                        unoptimized={image.startsWith('/uploads/') || image.includes('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (both relative and absolute)
                         placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
                         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
                       />
@@ -907,7 +922,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                               sizes="80px"
                               quality={70}
                               loading="lazy"
-                              unoptimized={previewImage.startsWith('/uploads/')}
+                              unoptimized={previewImage.startsWith('/uploads/') || previewImage.includes('/uploads/')}
                             />
                           ) : variant.colorHex ? (
                             <div
@@ -1216,7 +1231,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                                       sizes="(max-width: 768px) 100vw, 400px"
                                       quality={90}
                                       loading="lazy"
-                                      unoptimized={step.image.startsWith('/uploads/')}
+                                      unoptimized={step.image.startsWith('/uploads/') || step.image.includes('/uploads/')}
                                       placeholder="blur"
                                       blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                                     />

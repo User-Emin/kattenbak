@@ -15,6 +15,8 @@ interface ProductImageProps {
   height?: number;
   enableZoom?: boolean;
   zoomScale?: number;
+  /** Gallery fallback: echte afbeelding i.p.v. SVG-placeholder wanneer src ontbreekt/fout */
+  fallbackSrc?: string | null;
 }
 
 /**
@@ -28,6 +30,25 @@ interface ProductImageProps {
  * - ESC key close
  * - Professional UX
  */
+/** Geldige productafbeelding: geen lege string, geen SVG/data-placeholder */
+function isValidProductImageUrl(url: string | null | undefined): boolean {
+  if (!url || typeof url !== 'string') return false;
+  
+  // ✅ EDGE CASE: Trim whitespace
+  const trimmed = url.trim();
+  if (trimmed.length === 0) return false;
+  
+  // Filter SVG/data URLs
+  if (trimmed.startsWith('data:image/svg+xml') || trimmed.startsWith('data:')) return false;
+  
+  // Filter placeholder (case-insensitive)
+  const lower = trimmed.toLowerCase();
+  if (lower.includes('placeholder') || lower.includes('demo') || lower.includes('default')) return false;
+  
+  // Alleen geldige paths
+  return trimmed.startsWith('/uploads/') || trimmed.startsWith('/api/') || trimmed.startsWith('/') || trimmed.startsWith('http://') || trimmed.startsWith('https://');
+}
+
 export function ProductImage({ 
   src, 
   alt, 
@@ -37,19 +58,21 @@ export function ProductImage({
   width,
   height,
   enableZoom = false,
-  zoomScale = 2.5
+  zoomScale = 2.5,
+  fallbackSrc = null
 }: ProductImageProps) {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // DRY: Use fallback from demo-images (sync met backend)
-  // MAXIMAAL DYNAMISCH: Eerst API, dan demo fallback
-  const imageSrc = src || getFallbackImage();
+  // Gallery: nooit SVG-placeholder in slider – alleen echte URL of fallbackSrc
+  const effectiveFallback = (fallbackSrc && typeof fallbackSrc === 'string' && fallbackSrc.length > 0) ? fallbackSrc : getFallbackImage();
+  const imageSrc = (src && isValidProductImageUrl(src)) ? src : effectiveFallback;
   
-  // WATERDICHT FIX: Disable Next.js optimization for /uploads/ paths (served by nginx)
-  const isUploadPath = imageSrc.startsWith('/uploads/');
+  // ✅ FIX: Disable Next.js optimization for /uploads/ paths (both relative and absolute URLs)
+  // Images from /uploads/ are served by nginx, not Next.js image optimization
+  const isUploadPath = imageSrc.startsWith('/uploads/') || imageSrc.includes('/uploads/');
 
   // Open lightbox on click
   const handleImageClick = () => {
