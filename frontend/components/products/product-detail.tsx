@@ -1325,7 +1325,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
                 }}
               >
-                {PRODUCT_CONTENT.faqSection.title}
+                Vragen over ALP1071
               </h2>
               <p 
                 style={{
@@ -1334,7 +1334,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   color: DESIGN_SYSTEM.colors.text.secondary,
                 }}
               >
-                {PRODUCT_CONTENT.faqSection.subtitle}
+                Alles wat je moet weten over de automatische kattenbak
               </p>
             </div>
 

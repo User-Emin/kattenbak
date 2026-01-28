@@ -13,6 +13,7 @@ import { Toaster } from "sonner";
 import { CookieConsentManager } from "@/components/ui/cookie-consent-manager";
 import { ChatPopup } from "@/components/ui/chat-popup-rag";
 import { ChatPopupErrorBoundary } from "@/components/ui/chat-popup-error-boundary";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { initializeCSSVerification } from "@/lib/css-verification";
 import { API_CONFIG } from "@/lib/config";
@@ -49,6 +50,22 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   // ✅ CSS VERIFICATION: Ensure CSS always loads
   if (typeof window !== 'undefined') {
     initializeCSSVerification();
+    
+    // ✅ GLOBAL ERROR HANDLER: Vangt alle unhandled errors op
+    window.addEventListener('error', (event) => {
+      // ✅ SECURITY: Log errors maar voorkom dat pagina crasht
+      event.preventDefault();
+      console.error('Global error caught:', event.error);
+      // ✅ FALLBACK: Error wordt opgevangen door ErrorBoundary
+    });
+
+    // ✅ UNHANDLED PROMISE REJECTION: Vangt async errors op
+    window.addEventListener('unhandledrejection', (event) => {
+      // ✅ SECURITY: Log errors maar voorkom dat pagina crasht
+      event.preventDefault();
+      console.error('Unhandled promise rejection:', event.reason);
+      // ✅ FALLBACK: Error wordt opgevangen door ErrorBoundary
+    });
   }
 
   return (
