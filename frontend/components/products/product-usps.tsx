@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Shield, Truck, Star, Check, Zap, Sparkles, Package } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { PRODUCT_PAGE_CONFIG } from "@/lib/product-page-config"; // ✅ DRY: Via PRODUCT_PAGE_CONFIG voor ronde hoeken
 
 interface ProductUsp {
   icon: string;
@@ -87,10 +88,10 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                   </div>
                 </div>
 
-                {/* Image (zonder schaduw) - ✅ SECURITY: Only render if image exists */}
+                {/* Image (zonder schaduw) - ✅ SECURITY: Only render if image exists - ✅ RONDE HOEKEN: Via PRODUCT_PAGE_CONFIG */}
                 {usp.image && usp.image.trim() !== '' && (
                   <div className={`${isEven ? 'md:order-2' : 'md:order-1'}`}>
-                    <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden">
+                    <div className={`relative h-64 md:h-80 overflow-hidden ${PRODUCT_PAGE_CONFIG.featureSection.image.borderRadius}`}> {/* ✅ RONDE HOEKEN: Via config (rounded-xl md:rounded-2xl lg:rounded-3xl) */}
                       <Image
                         src={usp.image}
                         alt={usp.title}

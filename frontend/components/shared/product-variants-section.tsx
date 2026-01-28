@@ -105,7 +105,7 @@ export function ProductVariantsSection() {
             )}
             style={{
               fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', // ✅ GROTER: Force clamp via inline style (geen hardcode, via config)
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)', // ✅ KLEINER: Iets kleiner (clamp(2rem, 5vw, 3.5rem) ipv clamp(2.5rem, 6vw, 4.5rem))
             }}
           >
             Onze varianten

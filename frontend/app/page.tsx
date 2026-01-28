@@ -107,69 +107,32 @@ export default function HomePage() {
       {/* ✅ SEO 10/10: Rich Snippets (FAQ, HowTo) */}
       <RichSnippets />
       <div>
-      {/* 🎨 HERO SECTION - TEKST DIRECT IN AFBEELDING: Geen wit deel */}
+      {/* 🎨 HERO SECTION - WITTE ACHTERGROND MET ZWARTE TEKST */}
       <section 
-        className="relative w-full"
+        className="relative w-full bg-white" // ✅ WIT: Witte achtergrond
         style={{
           minHeight: DESIGN_SYSTEM.layout.hero.minHeightMobile,
           marginTop: 0, // ✅ EDGE-TO-EDGE: Geen margin boven
           paddingTop: 0, // ✅ EDGE-TO-EDGE: Geen padding boven
         }}
       >
-        {/* ✅ AFBEELDING: Volledige breedte, tekst eroverheen */}
+        {/* ✅ CONTAINER: Flex layout - afbeelding en tekst naast elkaar */}
         <div 
-          className="relative w-full h-64 md:h-[600px] lg:h-[700px] overflow-hidden" // ✅ FULL WIDTH: Volledige breedte, geen split
+          className="relative w-full flex flex-col md:flex-row items-center" 
           style={{
-            marginTop: 0, // ✅ EDGE-TO-EDGE: Geen margin boven
+            minHeight: `clamp(${DESIGN_SYSTEM.layout.hero.minHeightMobile}, 100vh, ${DESIGN_SYSTEM.layout.hero.minHeight})`,
           }}
         >
-          {/* 🚀 PERFORMANCE: Show fallback immediately, upgrade to product image if available */}
-          {optimizedHeroImage !== heroImage ? (
-            <Image
-              key="optimized-hero"
-              src={optimizedHeroImage}
-              alt="Premium automatische kattenbak"
-              fill
-              className="object-cover"
-              sizes="100vw" // ✅ FULL WIDTH: Volledige breedte
-              priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
-              quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
-              loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
-              unoptimized={optimizedHeroImage.startsWith('/uploads/') || optimizedHeroImage.includes('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (both relative and absolute)
-            />
-          ) : (
-            <Image
-              key="fallback-hero"
-              src={heroImage}
-              alt="Premium automatische kattenbak"
-              fill
-              className="object-cover"
-              sizes="100vw" // ✅ FULL WIDTH: Volledige breedte
-              priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
-              quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
-              loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
-              unoptimized={heroImage.startsWith('/uploads/') || heroImage.includes('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (both relative and absolute)
-            />
-          )}
-
-          {/* ✅ TEKST DIRECT IN AFBEELDING - Geen wit deel, tekst overlay op afbeelding */}
+          {/* ✅ TEKST: Links op desktop, boven op mobiel - ZWARTE TEKST */}
           <div 
-            className="absolute inset-0 z-10 flex flex-col items-center justify-center md:items-start md:justify-center md:pl-12 px-4" // ✅ ABSOLUTE: Tekst direct over afbeelding
+            className="w-full md:w-[50%] flex flex-col items-center justify-center md:items-start md:justify-start md:pl-12 px-4 py-8 md:py-12 order-2 md:order-1" // ✅ TEKST: Links op desktop
           >
-            {/* ✅ GRADIENT OVERLAY: Donkere overlay voor leesbaarheid */}
-            <div 
-              className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent md:from-black/70 md:via-black/50 md:to-transparent"
-              style={{ pointerEvents: 'none' }}
-            />
-            
-            {/* ✅ TEKST CONTENT: Relatief gepositioneerd boven overlay */}
-            <div className="relative z-10 space-y-4 md:space-y-6 text-center md:text-left">
-              {/* Heading - ✅ KLEINER: Compacter voor betere balans */}
+            <div className="space-y-4 md:space-y-6 text-center md:text-left max-w-lg">
+              {/* Heading - ✅ ZWART: Tekst in zwart */}
               <h1 
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1] text-white" // ✅ WIT: Tekst in wit voor contrast
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1] text-black" // ✅ ZWART: Tekst in zwart
                 style={{
                   fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-                  textShadow: '0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8)',
                 }}
               >
                 Automatische<br className="hidden md:block" />
@@ -177,17 +140,14 @@ export default function HomePage() {
                 Kattenbak
               </h1>
 
-              {/* Subtitle - ✅ PREMIUM: Moderner styling */}
+              {/* Subtitle - ✅ ZWART: Tekst in zwart */}
               <p 
-                className="text-lg sm:text-xl md:text-2xl font-light leading-relaxed text-white/90" // ✅ WIT: Tekst in wit met transparantie
-                style={{
-                  textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.7)',
-                }}
+                className="text-lg sm:text-xl md:text-2xl font-light leading-relaxed text-gray-900" // ✅ ZWART: Tekst in zwart/grijs
               >
                 Zelfreinigende • Hygiënisch • Stil
               </p>
 
-              {/* CTA Button - ✅ PREMIUM: Modern button met shadow en transform */}
+              {/* CTA Button - ✅ PREMIUM: Modern button */}
               <div className="pt-6 pb-2 md:pb-4">
                 <Link href={`/product/${productSlug}`}>
                   <button 
@@ -208,6 +168,43 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
+          </div>
+
+          {/* ✅ AFBEELDING: Rechts op desktop, onder op mobiel */}
+          <div 
+            className="relative w-full md:w-[50%] h-64 md:h-full overflow-hidden order-1 md:order-2" // ✅ AFBEELDING: Rechts op desktop
+            style={{
+              marginTop: 0, // ✅ EDGE-TO-EDGE: Geen margin boven
+            }}
+          >
+            {/* 🚀 PERFORMANCE: Show fallback immediately, upgrade to product image if available */}
+            {optimizedHeroImage !== heroImage ? (
+              <Image
+                key="optimized-hero"
+                src={optimizedHeroImage}
+                alt="Premium automatische kattenbak"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw" // ✅ RESPONSIVE: 50% op desktop
+                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
+                quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
+                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
+                unoptimized={optimizedHeroImage.startsWith('/uploads/') || optimizedHeroImage.includes('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (both relative and absolute)
+              />
+            ) : (
+              <Image
+                key="fallback-hero"
+                src={heroImage}
+                alt="Premium automatische kattenbak"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw" // ✅ RESPONSIVE: 50% op desktop
+                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
+                quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
+                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
+                unoptimized={heroImage.startsWith('/uploads/') || heroImage.includes('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (both relative and absolute)
+              />
+            )}
           </div>
         </div>
       </section>
