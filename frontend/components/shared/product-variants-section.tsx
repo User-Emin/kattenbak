@@ -139,9 +139,17 @@ export function ProductVariantsSection() {
                   CONFIG.card.borderRadius, // ✅ RONDE HOEKEN: Foto's met ronde hoeken
                   CONFIG.card.aspectRatio
                 )}
+                style={{
+                  borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                } as React.CSSProperties}
               >
                 {/* ✅ AFBEELDING: Eerste afbeelding van variant - RONDE HOEKEN - DRY via PRODUCT_PAGE_CONFIG */}
-                <div className={cn('relative w-full h-full overflow-hidden', CONFIG.card.image.borderRadius)}>
+                <div 
+                  className={cn('relative w-full h-full overflow-hidden', CONFIG.card.image.borderRadius)}
+                  style={{
+                    borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                  } as React.CSSProperties}
+                >
                   <Image
                     src={variantImage}
                     alt={variantName}

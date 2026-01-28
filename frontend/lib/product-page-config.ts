@@ -432,7 +432,7 @@ export const PRODUCT_PAGE_CONFIG = {
   // Varianten sectie configuratie - ✅ DRY: Slimme variabelen, geen hardcode, volledige aansluiting
   variants: {
     container: {
-      backgroundColor: 'bg-white', // ✅ WIT: Witte achtergrond
+      backgroundColor: 'bg-black', // ✅ ZWART: Zwarte achtergrond
       padding: 'py-12 md:py-16',
     },
     header: {
@@ -444,13 +444,13 @@ export const PRODUCT_PAGE_CONFIG = {
       title: {
         fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', // ✅ GROTER: clamp(2.5rem, 6vw, 4.5rem) ipv clamp(2rem, 5vw, 3.5rem)
         fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
-        textColor: 'text-gray-900', // ✅ ZWART: Zwarte tekst op witte achtergrond
+        textColor: 'text-white', // ✅ WIT: Witte tekst op zwarte achtergrond
         letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
       },
       subtitle: {
         fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
         fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-        textColor: 'text-gray-700', // ✅ GRIJS: Subtitel in grijs
+        textColor: 'text-gray-300', // ✅ LICHT GRIJS: Subtitel in lichtgrijs op zwarte achtergrond
         lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
       },
     },
@@ -460,9 +460,17 @@ export const PRODUCT_PAGE_CONFIG = {
     card: {
       container: 'group relative overflow-hidden transition-all duration-300 hover:scale-[1.02] w-full md:w-[48%]',
       borderRadius: 'rounded-2xl sm:rounded-3xl', // ✅ RONDE HOEKEN: Foto's met ronde hoeken
+      borderRadiusValue: {
+        mobile: '1rem', // 16px - rounded-2xl
+        tablet: '1.5rem', // 24px - rounded-3xl
+      },
       aspectRatio: 'aspect-square',
       image: {
         borderRadius: 'rounded-2xl sm:rounded-3xl', // ✅ RONDE HOEKEN: Foto's met ronde hoeken
+        borderRadiusValue: {
+          mobile: '1rem', // 16px - rounded-2xl
+          tablet: '1.5rem', // 24px - rounded-3xl
+        },
         objectFit: 'object-cover',
       },
     },
