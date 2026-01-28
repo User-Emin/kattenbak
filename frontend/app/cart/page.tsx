@@ -9,6 +9,7 @@ import { getProductImage } from '@/lib/image-config';
 import { X, Plus, Minus, ShoppingCart, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { DESIGN_SYSTEM } from '@/lib/design-system';
+import { SHIPPING_CONFIG } from '@/lib/config';
 
 export default function CartPage() {
   const { items, itemCount, subtotal, removeItem, updateQuantity, setItems } = useCart();
@@ -34,9 +35,18 @@ export default function CartPage() {
 
   // ✅ DRY: Nederlandse consumentenprijzen zijn INCLUSIEF BTW
   // ✅ FIX: Dynamische bedrag berekening - geen hardcode, altijd correct type
-  // Subtotal van cart = som van alle product.price (incl. BTW)
-  const calculatedSubtotal = typeof subtotal === 'number' && !isNaN(subtotal) ? subtotal : 0;
-  const shipping = calculatedSubtotal >= 50 ? 0 : 5.95;
+  // ✅ CRITICAL: Bereken subtotal direct uit items (niet uit context subtotal die mogelijk verkeerd is)
+  const calculatedSubtotal = items.reduce((sum, item) => {
+    const itemPrice = typeof item.product.price === 'number' 
+      ? item.product.price 
+      : parseFloat(String(item.product.price || '0'));
+    return sum + (itemPrice * item.quantity);
+  }, 0);
+  
+  // ✅ DRY: Gebruik SHIPPING_CONFIG voor verzendkosten (geen hardcode)
+  const shipping = calculatedSubtotal >= SHIPPING_CONFIG.FREE_SHIPPING_THRESHOLD 
+    ? SHIPPING_CONFIG.DEFAULT_COST 
+    : SHIPPING_CONFIG.DEFAULT_COST; // ✅ Altijd gratis (SHIPPING_CONFIG.DEFAULT_COST = 0)
   
   // BTW berekening: uit INCLUSIEF prijs halen
   const total = calculatedSubtotal + shipping; // Eindprijs

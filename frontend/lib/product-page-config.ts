@@ -442,7 +442,7 @@ export const PRODUCT_PAGE_CONFIG = {
         bottom: 'mb-8 md:mb-12',
       },
       title: {
-        fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+        fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', // ✅ GROTER: clamp(2.5rem, 6vw, 4.5rem) ipv clamp(2rem, 5vw, 3.5rem)
         fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
         textColor: 'text-gray-900', // ✅ ZWART: Zwarte tekst op witte achtergrond
         letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
