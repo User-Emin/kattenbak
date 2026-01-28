@@ -133,32 +133,44 @@
     border-radius: 0.25rem !important; /* 4px - maar NIET voor zigzag containers */
   }
   
-  /* ✅ ZIGZAG AFBEELDINGEN: Echte ronde hoeken (24px) - geforceerd via CSS class met !important */
-  .zigzag-image-container {
-    border-radius: 1.5rem !important; /* 24px - rounded-3xl */
+  /* ✅ ZIGZAG AFBEELDINGEN: Echte ronde hoeken (24px) - GEFORCEERD met hoogste specificity */
+  .zigzag-image-container,
+  div.zigzag-image-container {
+    border-radius: 1.5rem !important; /* 24px - rounded-3xl - override ALLE andere rules */
     overflow: hidden !important;
   }
   
   /* ✅ ZIGZAG AFBEELDINGEN: Ook op Image zelf - override alle andere rules */
   .zigzag-image-container .zigzag-image,
   .zigzag-image-container img,
-  .zigzag-image {
+  .zigzag-image,
+  div.zigzag-image-container img {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl */
   }
   
   /* ✅ ZIGZAG AFBEELDINGEN: Fallback voor alle zigzag containers - override globals.css card rule */
-  div[class*="aspect-"]:has(img),
-  div.relative.h-64:has(img),
-  div.relative.h-80:has(img),
-  div.relative[class*="aspect-"]:has(img) {
+  div[class*="aspect-"]:has(img[alt*="Afvalbak"]),
+  div[class*="aspect-"]:has(img[alt*="Veiligheidssensoren"]),
+  div[class*="aspect-"]:has(img[alt*="meegeleverd"]),
+  div.relative.h-64:has(img[alt*="Afvalbak"]),
+  div.relative.h-64:has(img[alt*="Veiligheidssensoren"]),
+  div.relative.h-64:has(img[alt*="meegeleverd"]),
+  div.relative.h-80:has(img[alt*="Afvalbak"]),
+  div.relative.h-80:has(img[alt*="Veiligheidssensoren"]),
+  div.relative.h-80:has(img[alt*="meegeleverd"]) {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl - override 4px card rule */
     overflow: hidden !important;
   }
   
-  div[class*="aspect-"]:has(img) img,
-  div.relative.h-64:has(img) img,
-  div.relative.h-80:has(img) img,
-  div.relative[class*="aspect-"]:has(img) img {
+  div[class*="aspect-"]:has(img[alt*="Afvalbak"]) img,
+  div[class*="aspect-"]:has(img[alt*="Veiligheidssensoren"]) img,
+  div[class*="aspect-"]:has(img[alt*="meegeleverd"]) img,
+  div.relative.h-64:has(img[alt*="Afvalbak"]) img,
+  div.relative.h-64:has(img[alt*="Veiligheidssensoren"]) img,
+  div.relative.h-64:has(img[alt*="meegeleverd"]) img,
+  div.relative.h-80:has(img[alt*="Afvalbak"]) img,
+  div.relative.h-80:has(img[alt*="Veiligheidssensoren"]) img,
+  div.relative.h-80:has(img[alt*="meegeleverd"]) img {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl */
   }
   
