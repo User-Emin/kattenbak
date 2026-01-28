@@ -133,13 +133,17 @@
     border-radius: 0.25rem !important; /* 4px - maar NIET voor zigzag containers */
   }
   
-  /* ✅ ZIGZAG AFBEELDINGEN: Echte ronde hoeken (24px) - GEFORCEERD met hoogste specificity */
+  /* ✅ ZIGZAG AFBEELDINGEN: Echte ronde hoeken (24px) - ULTRA GEFORCEERD met hoogste specificity */
   .zigzag-image-container,
   div.zigzag-image-container,
   [class*="zigzag-image-container"],
-  div[class*="zigzag-image-container"] {
+  div[class*="zigzag-image-container"],
+  div.zigzag-image-container.zigzag-image-container,
+  .zigzag-image-container.zigzag-image-container {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl - override ALLE andere rules */
     overflow: hidden !important;
+    -webkit-border-radius: 1.5rem !important;
+    -moz-border-radius: 1.5rem !important;
   }
   
   /* ✅ ZIGZAG AFBEELDINGEN: Ook op Image zelf - override alle andere rules */
@@ -149,8 +153,12 @@
   div.zigzag-image-container img,
   [class*="zigzag-image-container"] img,
   [class*="zigzag-image-container"] .zigzag-image,
-  img.zigzag-image {
+  img.zigzag-image,
+  .zigzag-image-container img.zigzag-image,
+  div.zigzag-image-container img.zigzag-image {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl */
+    -webkit-border-radius: 1.5rem !important;
+    -moz-border-radius: 1.5rem !important;
   }
   
   /* ✅ ZIGZAG AFBEELDINGEN: Fallback voor alle zigzag containers - override globals.css card rule */

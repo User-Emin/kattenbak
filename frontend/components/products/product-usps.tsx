@@ -88,24 +88,43 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                   </div>
                 </div>
 
-                {/* Image (zonder schaduw) - ✅ SECURITY: Only render if image exists - ✅ RONDE HOEKEN: Via PRODUCT_PAGE_CONFIG + inline style */}
+                {/* Image (zonder schaduw) - ✅ SECURITY: Only render if image exists - ✅ RONDE HOEKEN: VOLLEDIG HERBOUWD met extra wrappers */}
                 {usp.image && usp.image.trim() !== '' && (
                   <div className={`${isEven ? 'md:order-2' : 'md:order-1'}`}>
+                    {/* ✅ EXTRA WRAPPER: Gegarandeerde ronde hoeken */}
                     <div 
-                      className={`relative h-64 md:h-80 overflow-hidden ${PRODUCT_PAGE_CONFIG.featureSection.image.borderRadius} zigzag-image-container`}
+                      className="zigzag-image-container"
                       style={{
-                        borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl)
+                        borderRadius: '1.5rem',
+                        overflow: 'hidden',
+                        display: 'block',
                       } as React.CSSProperties}
-                    > {/* ✅ RONDE HOEKEN: Via config + inline style + CSS class */}
-                      <Image
-                        src={usp.image}
-                        alt={usp.title}
-                        fill
-                        className="object-cover zigzag-image"
+                    >
+                      <div 
+                        className={`relative h-64 md:h-80 overflow-hidden zigzag-image-container`}
                         style={{
-                          borderRadius: '1.5rem', // ✅ ECHT ROND: Ook op Image zelf
+                          borderRadius: '1.5rem',
+                          overflow: 'hidden',
                         } as React.CSSProperties}
-                      />
+                      >
+                        <div 
+                          className="absolute inset-0 zigzag-image-container"
+                          style={{
+                            borderRadius: '1.5rem',
+                            overflow: 'hidden',
+                          } as React.CSSProperties}
+                        >
+                          <Image
+                            src={usp.image}
+                            alt={usp.title}
+                            fill
+                            className="object-cover zigzag-image"
+                            style={{
+                              borderRadius: '1.5rem',
+                            } as React.CSSProperties}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}

@@ -83,60 +83,76 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
               'animate-in'
             )}
           >
-            {/* Image - ✅ SYMMETRISCH: Gecentreerd met symmetrische spacing */}
+            {/* Image - ✅ VOLLEDIG HERBOUWD: Extra wrappers voor gegarandeerde ronde hoeken */}
             <div
               className={cn(
-                'relative w-full zigzag-image-container',
+                'zigzag-image-container',
                 'max-w-xs sm:max-w-sm',
                 'mx-auto',
-                CONFIG.featureSection.image.borderRadius,
-                CONFIG.featureSection.image.bgColor,
                 'mb-4'
               )}
               style={{
-                borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                borderRadius: '1.5rem',
+                overflow: 'hidden',
+                display: 'block',
               } as React.CSSProperties}
             >
-              <div 
+              <div
                 className={cn(
                   'relative w-full zigzag-image-container',
-                  CONFIG.featureSection.image.aspectRatio,
-                  'overflow-hidden',
-                  CONFIG.featureSection.image.borderRadius
+                  CONFIG.featureSection.image.bgColor
                 )}
                 style={{
-                  borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                  borderRadius: '1.5rem',
+                  overflow: 'hidden',
                 } as React.CSSProperties}
               >
-                <Image
-                  src={feature.image || '/images/feature-2.jpg'}
-                  alt={feature.title}
-                  fill
+                <div 
                   className={cn(
-                    'object-contain zigzag-image',
-                    CONFIG.featureSection.image.borderRadius
+                    'relative w-full zigzag-image-container',
+                    CONFIG.featureSection.image.aspectRatio,
+                    'overflow-hidden'
                   )}
                   style={{
-                    borderRadius: '1.5rem', // ✅ ECHT ROND: Ook op Image zelf
+                    borderRadius: '1.5rem',
+                    overflow: 'hidden',
                   } as React.CSSProperties}
-                  sizes="(max-width: 768px) 320px, 400px"
-                  quality={85}
-                  loading="lazy"
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                  unoptimized={
-                    feature.image?.startsWith('/uploads/') ||
-                    feature.image?.startsWith('/images/') ||
-                    feature.image?.startsWith('https://') ||
-                    feature.image?.startsWith('http://')
-                  }
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    if (target && !target.src.includes('feature-2.jpg')) {
-                      target.src = '/images/feature-2.jpg';
-                    }
-                  }}
-                />
+                >
+                  <div 
+                    className="absolute inset-0 zigzag-image-container overflow-hidden"
+                    style={{
+                      borderRadius: '1.5rem',
+                      overflow: 'hidden',
+                    } as React.CSSProperties}
+                  >
+                    <Image
+                      src={feature.image || '/images/feature-2.jpg'}
+                      alt={feature.title}
+                      fill
+                      className="object-contain zigzag-image"
+                      style={{
+                        borderRadius: '1.5rem',
+                      } as React.CSSProperties}
+                      sizes="(max-width: 768px) 320px, 400px"
+                      quality={85}
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                      unoptimized={
+                        feature.image?.startsWith('/uploads/') ||
+                        feature.image?.startsWith('/images/') ||
+                        feature.image?.startsWith('https://') ||
+                        feature.image?.startsWith('http://')
+                      }
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (target && !target.src.includes('feature-2.jpg')) {
+                          target.src = '/images/feature-2.jpg';
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -195,59 +211,67 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   'animate-in'
                 )}
               >
-                {/* Image */}
+                {/* Image - ✅ VOLLEDIG HERBOUWD: Extra wrappers voor gegarandeerde ronde hoeken */}
                 <div
                   className={cn(
-                    'relative zigzag-image-container',
+                    'zigzag-image-container',
                     'w-full md:w-auto',
                     isEven
                       ? CONFIG.featureSection.zigzag.imageOrder.left
-                      : CONFIG.featureSection.zigzag.imageOrder.right,
-                    CONFIG.featureSection.image.aspectRatio,
-                    CONFIG.featureSection.image.borderRadius,
-                    CONFIG.featureSection.image.bgColor,
-                    'overflow-hidden'
+                      : CONFIG.featureSection.zigzag.imageOrder.right
                   )}
                   style={{
-                    borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                    borderRadius: '1.5rem',
+                    overflow: 'hidden',
+                    display: 'block',
                   } as React.CSSProperties}
                 >
                   <div
                     className={cn(
-                      'absolute inset-0 zigzag-image-container',
-                      CONFIG.featureSection.image.borderRadius,
+                      'relative zigzag-image-container',
+                      CONFIG.featureSection.image.aspectRatio,
+                      CONFIG.featureSection.image.bgColor,
                       'overflow-hidden'
                     )}
                     style={{
-                      borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
+                      borderRadius: '1.5rem',
+                      overflow: 'hidden',
                     } as React.CSSProperties}
                   >
-                    <Image
-                      src={feature.image || '/images/feature-2.jpg'}
-                      alt={feature.title}
-                      fill
-                      className="object-contain zigzag-image"
+                    <div
+                      className="absolute inset-0 zigzag-image-container overflow-hidden"
                       style={{
-                        borderRadius: '1.5rem', // ✅ ECHT ROND: Ook op Image zelf
+                        borderRadius: '1.5rem',
+                        overflow: 'hidden',
                       } as React.CSSProperties}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      quality={80}
-                      loading="lazy"
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                      unoptimized={
-                        feature.image?.startsWith('/uploads/') ||
-                        feature.image?.startsWith('/images/') ||
-                        feature.image?.startsWith('https://') ||
-                        feature.image?.startsWith('http://')
-                      }
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        if (target && !target.src.includes('feature-2.jpg')) {
-                          target.src = '/images/feature-2.jpg';
+                    >
+                      <Image
+                        src={feature.image || '/images/feature-2.jpg'}
+                        alt={feature.title}
+                        fill
+                        className="object-contain zigzag-image"
+                        style={{
+                          borderRadius: '1.5rem',
+                        } as React.CSSProperties}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        quality={80}
+                        loading="lazy"
+                        placeholder="blur"
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                        unoptimized={
+                          feature.image?.startsWith('/uploads/') ||
+                          feature.image?.startsWith('/images/') ||
+                          feature.image?.startsWith('https://') ||
+                          feature.image?.startsWith('http://')
                         }
-                      }}
-                    />
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          if (target && !target.src.includes('feature-2.jpg')) {
+                            target.src = '/images/feature-2.jpg';
+                          }
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
 
