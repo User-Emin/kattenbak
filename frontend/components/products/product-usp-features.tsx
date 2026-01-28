@@ -102,6 +102,9 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
                     alt={feature.title}
                     fill // ✅ FILL: Vult container exact op
                     className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
+                    style={{
+                      borderRadius: '1.5rem', // ✅ ECHT ROND: Ook op Image zelf
+                    } as React.CSSProperties}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag (fastest loading)
                     quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster)
                     loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)

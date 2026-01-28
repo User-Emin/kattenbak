@@ -65,7 +65,6 @@ const faqs = [
 
 export default function HomePage() {
   const [product, setProduct] = useState<Product | null>(null);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { itemCount } = useCart();
   const { openCart, closeCart } = useUI();
 
@@ -248,106 +247,7 @@ export default function HomePage() {
       </div>
 
       {/* ✅ VIDEO SECTIE VERWIJDERD: Geen redundantie */}
-
-      {/* 🎨 FAQ SECTION - ✅ EDGE-TO-EDGE MOBIEL: Mobielvriendelijker */}
-      <section 
-        style={{
-          padding: `${DESIGN_SYSTEM.spacing.section} 0`,
-          backgroundColor: DESIGN_SYSTEM.colors.secondary,
-        }}
-      >
-        <div 
-          className="mx-auto md:max-w-4xl" // ✅ EDGE-TO-EDGE MOBIEL: Geen max-width op mobiel, wel op desktop
-          style={{
-            padding: '0', // ✅ EDGE-TO-EDGE MOBIEL: Geen padding op container
-          }}
-        >
-          {/* Section Heading - ✅ PADDING MOBIEL: Padding op mobiel voor leesbaarheid */}
-          <div className="text-center mb-12 px-4 md:px-0"> {/* ✅ PADDING MOBIEL: Padding op mobiel */}
-            <h2 
-              className="mb-4"
-              style={{
-                fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-                fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'],
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
-                color: DESIGN_SYSTEM.colors.text.primary,
-                letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
-              }}
-            >
-              Vragen over ALP1071
-            </h2>
-            <p 
-              style={{
-                fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-                color: DESIGN_SYSTEM.colors.text.secondary,
-              }}
-            >
-              Alles wat je moet weten over de automatische kattenbak
-            </p>
-          </div>
-
-          {/* FAQ Accordion - ✅ EDGE-TO-EDGE MOBIEL: Geen padding op container */}
-          <div className="space-y-4 px-4 md:px-0"> {/* ✅ PADDING MOBIEL: Padding op mobiel voor leesbaarheid */}
-            {faqs.map((faq, i) => (
-              <div 
-                key={i} 
-                className="overflow-hidden transition-all"
-                style={{
-                  backgroundColor: DESIGN_SYSTEM.colors.secondary,
-                  border: `1px solid ${DESIGN_SYSTEM.colors.border.default}`,
-                  borderRadius: DESIGN_SYSTEM.effects.borderRadius.sm,
-                }}
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between text-left transition-colors"
-                  style={{
-                    padding: DESIGN_SYSTEM.spacing[6],
-                    backgroundColor: DESIGN_SYSTEM.colors.secondary,
-                  }}
-                >
-                  <span 
-                    style={{
-                      fontSize: DESIGN_SYSTEM.typography.fontSize.base,
-                      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-                      color: DESIGN_SYSTEM.colors.text.primary,
-                    }}
-                  >
-                    {faq.q}
-                  </span>
-                  {openFaq === i ? (
-                    <ChevronUp className="h-5 w-5 flex-shrink-0 ml-4" style={{ color: DESIGN_SYSTEM.colors.text.primary }} />
-                  ) : (
-                    <ChevronDown className="h-5 w-5 flex-shrink-0 ml-4" style={{ color: DESIGN_SYSTEM.colors.text.primary }} />
-                  )}
-                </button>
-                {openFaq === i && (
-                  <div 
-                    className="border-t"
-                    style={{
-                      padding: DESIGN_SYSTEM.spacing[6],
-                      borderColor: DESIGN_SYSTEM.colors.border.default,
-                      backgroundColor: DESIGN_SYSTEM.colors.gray[50],
-                    }}
-                  >
-                    <p 
-                      style={{
-                        fontSize: DESIGN_SYSTEM.typography.fontSize.base,
-                        fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-                        color: DESIGN_SYSTEM.colors.text.secondary,
-                        lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
-                      }}
-                    >
-                      {faq.a}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ✅ FAQ SECTIE VERWIJDERD: Verplaatst naar productdetail voor betere SEO */}
 
       {/* Chat popup is nu in layout.tsx voor alle pagina's */}
     </div>

@@ -91,6 +91,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [openSpecs, setOpenSpecs] = useState<Set<number>>(new Set());
   // ✅ ACCORDION TABS: State voor accordion secties (Omschrijving, Specificaties, Vragen)
   const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
+  // ✅ FAQ: State voor FAQ accordion
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   // ✅ SWIPE: Touch/swipe state voor vloeiend swipen
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -1301,6 +1303,106 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}>
         <ProductComparisonTable productImages={originalImages} />
       </div>
+
+      {/* ✅ FAQ SECTION: Verplaatst van homepage naar productdetail voor betere SEO */}
+      {PRODUCT_CONTENT.faqs && PRODUCT_CONTENT.faqs.length > 0 && (
+        <section 
+          className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}
+          style={{
+            backgroundColor: DESIGN_SYSTEM.colors.secondary,
+          }}
+        >
+          <div className="max-w-4xl mx-auto">
+            {/* Section Heading */}
+            <div className="text-center mb-12">
+              <h2 
+                className="mb-4"
+                style={{
+                  fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
+                  fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'],
+                  fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
+                  color: DESIGN_SYSTEM.colors.text.primary,
+                  letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
+                }}
+              >
+                {PRODUCT_CONTENT.faqSection.title}
+              </h2>
+              <p 
+                style={{
+                  fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
+                  fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                  color: DESIGN_SYSTEM.colors.text.secondary,
+                }}
+              >
+                {PRODUCT_CONTENT.faqSection.subtitle}
+              </p>
+            </div>
+
+            {/* FAQ Accordion */}
+            <div className="space-y-4">
+              {PRODUCT_CONTENT.faqs.map((faq, i) => (
+                <div 
+                  key={i} 
+                  className="overflow-hidden transition-all"
+                  style={{
+                    backgroundColor: DESIGN_SYSTEM.colors.secondary,
+                    border: `1px solid ${DESIGN_SYSTEM.colors.border.default}`,
+                    borderRadius: DESIGN_SYSTEM.effects.borderRadius.sm,
+                  }}
+                >
+                  <button
+                    onClick={() => {
+                      // ✅ FAQ STATE: Toggle open/closed
+                      setOpenFaq(openFaq === i ? null : i);
+                    }}
+                    className="w-full flex items-center justify-between text-left transition-colors"
+                    style={{
+                      padding: DESIGN_SYSTEM.spacing[6],
+                      backgroundColor: DESIGN_SYSTEM.colors.secondary,
+                    }}
+                  >
+                    <span 
+                      style={{
+                        fontSize: DESIGN_SYSTEM.typography.fontSize.base,
+                        fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+                        color: DESIGN_SYSTEM.colors.text.primary,
+                      }}
+                    >
+                      {faq.q}
+                    </span>
+                    {openFaq === i ? (
+                      <ChevronUp className="h-5 w-5 flex-shrink-0 ml-4" style={{ color: DESIGN_SYSTEM.colors.text.primary }} />
+                    ) : (
+                      <ChevronDown className="h-5 w-5 flex-shrink-0 ml-4" style={{ color: DESIGN_SYSTEM.colors.text.primary }} />
+                    )}
+                  </button>
+                  {openFaq === i && (
+                    <div 
+                      className="border-t"
+                      style={{
+                        padding: DESIGN_SYSTEM.spacing[6],
+                        borderColor: DESIGN_SYSTEM.colors.border.default,
+                        backgroundColor: DESIGN_SYSTEM.colors.gray[50],
+                      }}
+                    >
+                      <p 
+                        style={{
+                          fontSize: DESIGN_SYSTEM.typography.fontSize.base,
+                          fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+                          color: DESIGN_SYSTEM.colors.text.secondary,
+                          lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
+                        }}
+                      >
+                        {faq.a}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
     </div>
   );

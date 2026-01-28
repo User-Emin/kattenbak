@@ -94,14 +94,17 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                     <div 
                       className={`relative h-64 md:h-80 overflow-hidden ${PRODUCT_PAGE_CONFIG.featureSection.image.borderRadius}`}
                       style={{
-                        borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
-                      } as React.CSSProperties}
+                        borderRadius: '1.5rem !important', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style met !important
+                      } as React.CSSProperties & { borderRadius: string }}
                     > {/* ✅ RONDE HOEKEN: Via config + inline style voor zekerheid */}
                       <Image
                         src={usp.image}
                         alt={usp.title}
                         fill
                         className="object-cover"
+                        style={{
+                          borderRadius: '1.5rem', // ✅ ECHT ROND: Ook op Image zelf
+                        } as React.CSSProperties}
                       />
                     </div>
                   </div>

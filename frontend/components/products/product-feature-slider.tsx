@@ -116,6 +116,9 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                     'object-contain',
                     CONFIG.featureSection.image.borderRadius
                   )}
+                  style={{
+                    borderRadius: '1.5rem', // ✅ ECHT ROND: Ook op Image zelf
+                  } as React.CSSProperties}
                   sizes="(max-width: 768px) 320px, 400px"
                   quality={85}
                   loading="lazy"
@@ -224,6 +227,9 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                       alt={feature.title}
                       fill
                       className="object-contain"
+                      style={{
+                        borderRadius: '1.5rem', // ✅ ECHT ROND: Ook op Image zelf
+                      } as React.CSSProperties}
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       quality={80}
                       loading="lazy"
