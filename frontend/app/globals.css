@@ -135,7 +135,9 @@
   
   /* ✅ ZIGZAG AFBEELDINGEN: Echte ronde hoeken (24px) - GEFORCEERD met hoogste specificity */
   .zigzag-image-container,
-  div.zigzag-image-container {
+  div.zigzag-image-container,
+  [class*="zigzag-image-container"],
+  div[class*="zigzag-image-container"] {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl - override ALLE andere rules */
     overflow: hidden !important;
   }
@@ -144,33 +146,52 @@
   .zigzag-image-container .zigzag-image,
   .zigzag-image-container img,
   .zigzag-image,
-  div.zigzag-image-container img {
+  div.zigzag-image-container img,
+  [class*="zigzag-image-container"] img,
+  [class*="zigzag-image-container"] .zigzag-image,
+  img.zigzag-image {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl */
   }
   
   /* ✅ ZIGZAG AFBEELDINGEN: Fallback voor alle zigzag containers - override globals.css card rule */
   div[class*="aspect-"]:has(img[alt*="Afvalbak"]),
+  div[class*="aspect-"]:has(img[alt*="10.5L"]),
   div[class*="aspect-"]:has(img[alt*="Veiligheidssensoren"]),
   div[class*="aspect-"]:has(img[alt*="meegeleverd"]),
   div.relative.h-64:has(img[alt*="Afvalbak"]),
+  div.relative.h-64:has(img[alt*="10.5L"]),
   div.relative.h-64:has(img[alt*="Veiligheidssensoren"]),
   div.relative.h-64:has(img[alt*="meegeleverd"]),
   div.relative.h-80:has(img[alt*="Afvalbak"]),
+  div.relative.h-80:has(img[alt*="10.5L"]),
   div.relative.h-80:has(img[alt*="Veiligheidssensoren"]),
-  div.relative.h-80:has(img[alt*="meegeleverd"]) {
+  div.relative.h-80:has(img[alt*="meegeleverd"]),
+  /* ✅ EXTRA FALLBACK: Direct op containers met specifieke classes */
+  div[class*="aspect-3/4"],
+  div[class*="aspect-4/5"],
+  div[class*="aspect-\[3\/4\]"],
+  div[class*="aspect-\[4\/5\]"] {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl - override 4px card rule */
     overflow: hidden !important;
   }
   
   div[class*="aspect-"]:has(img[alt*="Afvalbak"]) img,
+  div[class*="aspect-"]:has(img[alt*="10.5L"]) img,
   div[class*="aspect-"]:has(img[alt*="Veiligheidssensoren"]) img,
   div[class*="aspect-"]:has(img[alt*="meegeleverd"]) img,
   div.relative.h-64:has(img[alt*="Afvalbak"]) img,
+  div.relative.h-64:has(img[alt*="10.5L"]) img,
   div.relative.h-64:has(img[alt*="Veiligheidssensoren"]) img,
   div.relative.h-64:has(img[alt*="meegeleverd"]) img,
   div.relative.h-80:has(img[alt*="Afvalbak"]) img,
+  div.relative.h-80:has(img[alt*="10.5L"]) img,
   div.relative.h-80:has(img[alt*="Veiligheidssensoren"]) img,
-  div.relative.h-80:has(img[alt*="meegeleverd"]) img {
+  div.relative.h-80:has(img[alt*="meegeleverd"]) img,
+  /* ✅ EXTRA FALLBACK: Direct op images in aspect containers */
+  div[class*="aspect-3/4"] img,
+  div[class*="aspect-4/5"] img,
+  div[class*="aspect-\[3\/4\]"] img,
+  div[class*="aspect-\[4\/5\]"] img {
     border-radius: 1.5rem !important; /* 24px - rounded-3xl */
   }
   
