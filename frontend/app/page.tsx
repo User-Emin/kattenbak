@@ -158,62 +158,63 @@ export default function HomePage() {
                 unoptimized={heroImage.startsWith('/uploads/') || heroImage.includes('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (both relative and absolute)
               />
             )}
-          </div>
 
-          {/* ✅ TEKST DIRECT IN AFBEELDING - Geen wit deel, tekst overlay op afbeelding */}
-          <div 
-            className="absolute inset-0 z-10 flex flex-col items-center justify-center md:items-start md:justify-center md:pl-12 px-4 order-2 md:order-1" // ✅ ABSOLUTE: Tekst direct over afbeelding
-          >
-            {/* ✅ GRADIENT OVERLAY: Donkere overlay voor leesbaarheid */}
+            {/* ✅ TEKST DIRECT IN AFBEELDING - Geen wit deel, tekst overlay op afbeelding */}
             <div 
-              className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent md:from-black/70 md:via-black/50 md:to-transparent"
-              style={{ pointerEvents: 'none' }}
-            />
-            
-            {/* ✅ TEKST CONTENT: Relatief gepositioneerd boven overlay */}
-            <div className="relative z-10 space-y-4 md:space-y-6 text-center md:text-left">
-              {/* Heading - ✅ KLEINER: Compacter voor betere balans */}
-              <h1 
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1] text-white" // ✅ WIT: Tekst in wit voor contrast
-                style={{
-                  fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-                  textShadow: '0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8)',
-                }}
-              >
-                Automatische<br className="hidden md:block" />
-                <span className="md:hidden"> </span>
-                Kattenbak
-              </h1>
-
-              {/* Subtitle - ✅ PREMIUM: Moderner styling */}
-              <p 
-                className="text-lg sm:text-xl md:text-2xl font-light leading-relaxed text-white/90" // ✅ WIT: Tekst in wit met transparantie
-                style={{
-                  textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.7)',
-                }}
-              >
-                Zelfreinigende • Hygiënisch • Stil
-              </p>
-
-              {/* CTA Button - ✅ PREMIUM: Modern button met shadow en transform */}
-              <div className="pt-6 pb-2 md:pb-4">
-                <Link href={`/product/${productSlug}`}>
-                  <button 
-                    className="relative overflow-hidden group inline-flex items-center gap-3 px-8 py-5 sm:px-10 sm:py-6 text-base sm:text-lg font-semibold rounded-lg text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]" // ✅ PREMIUM: Modern button styling
-                    style={{
-                      backgroundColor: '#000000',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#1a1a1a';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#000000';
+              className="absolute inset-0 z-10 flex flex-col items-center justify-center md:items-start md:justify-center md:pl-12 px-4" // ✅ ABSOLUTE: Tekst direct over afbeelding
+            >
+              {/* ✅ GRADIENT OVERLAY: Donkere overlay voor leesbaarheid */}
+              <div 
+                className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent md:from-black/70 md:via-black/50 md:to-transparent"
+                style={{ pointerEvents: 'none' }}
+              />
+              
+              {/* ✅ TEKST CONTENT: Relatief gepositioneerd boven overlay */}
+              <div className="relative z-10 space-y-4 md:space-y-6 text-center md:text-left">
+                {/* Heading - ✅ KLEINER: Compacter voor betere balans */}
+                <h1 
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1] text-white" // ✅ WIT: Tekst in wit voor contrast
+                  style={{
+                    fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
+                    textShadow: '0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8)',
                   }}
                 >
-                  <span>Bekijk Product</span>
-                  <ArrowRight className="w-5 h-5" strokeWidth={2} />
-                </button>
-              </Link>
+                  Automatische<br className="hidden md:block" />
+                  <span className="md:hidden"> </span>
+                  Kattenbak
+                </h1>
+
+                {/* Subtitle - ✅ PREMIUM: Moderner styling */}
+                <p 
+                  className="text-lg sm:text-xl md:text-2xl font-light leading-relaxed text-white/90" // ✅ WIT: Tekst in wit met transparantie
+                  style={{
+                    textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.7)',
+                  }}
+                >
+                  Zelfreinigende • Hygiënisch • Stil
+                </p>
+
+                {/* CTA Button - ✅ PREMIUM: Modern button met shadow en transform */}
+                <div className="pt-6 pb-2 md:pb-4">
+                  <Link href={`/product/${productSlug}`}>
+                    <button 
+                      className="relative overflow-hidden group inline-flex items-center gap-3 px-8 py-5 sm:px-10 sm:py-6 text-base sm:text-lg font-semibold rounded-lg text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]" // ✅ PREMIUM: Modern button styling
+                      style={{
+                        backgroundColor: '#000000',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#1a1a1a';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = '#000000';
+                      }}
+                    >
+                      <span>Bekijk Product</span>
+                      <ArrowRight className="w-5 h-5" strokeWidth={2} />
+                    </button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
