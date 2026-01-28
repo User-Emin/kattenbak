@@ -107,30 +107,32 @@ export default function HomePage() {
       {/* ✅ SEO 10/10: Rich Snippets (FAQ, HowTo) */}
       <RichSnippets />
       <div>
-      {/* 🎨 HERO SECTION - OPTIMAAL: Witte achtergrond met zwarte tekst, perfecte layout */}
+      {/* 🎨 HERO SECTION - EDGE-TO-EDGE: Volledige breedte, geen witte ruimte */}
       <section 
-        className="relative w-full bg-white overflow-hidden" // ✅ WIT: Witte achtergrond, overflow hidden voor clean edges
+        className="relative w-full overflow-hidden" // ✅ EDGE-TO-EDGE: Geen bg-white, volledige breedte
         style={{
           minHeight: DESIGN_SYSTEM.layout.hero.minHeightMobile,
           marginTop: 0, // ✅ EDGE-TO-EDGE: Geen margin boven
           paddingTop: 0, // ✅ EDGE-TO-EDGE: Geen padding boven
+          marginLeft: 0, // ✅ EDGE-TO-EDGE: Geen margin links
+          marginRight: 0, // ✅ EDGE-TO-EDGE: Geen margin rechts
         }}
       >
-        {/* ✅ CONTAINER: Flex layout - afbeelding en tekst naast elkaar, optimale spacing */}
+        {/* ✅ CONTAINER: Edge-to-edge flex layout - geen max-width, geen margin */}
         <div 
-          className="relative w-full max-w-7xl mx-auto flex flex-col md:flex-row items-stretch" // ✅ OPTIMAAL: items-stretch voor gelijke hoogte
+          className="relative w-full flex flex-col md:flex-row items-stretch" // ✅ EDGE-TO-EDGE: Geen max-w-7xl, geen mx-auto
           style={{
             minHeight: `clamp(${DESIGN_SYSTEM.layout.hero.minHeightMobile}, 100vh, ${DESIGN_SYSTEM.layout.hero.minHeight})`,
           }}
         >
-          {/* ✅ TEKST: Links op desktop, boven op mobiel - ZWARTE TEKST - OPTIMAAL SPACING */}
+          {/* ✅ TEKST: Links op desktop, boven op mobiel - ZWARTE TEKST - EDGE-TO-EDGE */}
           <div 
-            className="w-full md:w-[50%] flex flex-col items-center justify-center md:items-start md:justify-center px-6 md:px-12 lg:px-16 py-12 md:py-16 lg:py-20 order-2 md:order-1 bg-white" // ✅ OPTIMAAL: Betere padding en spacing
+            className="w-full md:w-[50%] flex flex-col items-center justify-center md:items-start md:justify-center px-6 md:px-12 lg:px-16 py-12 md:py-16 lg:py-20 order-2 md:order-1 bg-white" // ✅ WIT: Witte achtergrond voor tekst
           >
-            <div className="space-y-5 md:space-y-6 lg:space-y-8 text-center md:text-left w-full max-w-xl"> {/* ✅ OPTIMAAL: Max-width voor betere leesbaarheid */}
-              {/* Heading - ✅ ZWART: Tekst in zwart, optimale sizing */}
+            <div className="space-y-5 md:space-y-6 lg:space-y-8 text-center md:text-left w-full max-w-xl">
+              {/* Heading - ✅ ZWART: Tekst in zwart */}
               <h1 
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight leading-[1.1] text-black" // ✅ OPTIMAAL: Groter en beter leesbaar
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight leading-[1.1] text-black" // ✅ ZWART: Tekst in zwart
                 style={{
                   fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
                 }}
@@ -140,18 +142,18 @@ export default function HomePage() {
                 Kattenbak
               </h1>
 
-              {/* Subtitle - ✅ ZWART: Tekst in zwart, optimale sizing */}
+              {/* Subtitle - ✅ ZWART: Tekst in zwart */}
               <p 
-                className="text-xl sm:text-2xl md:text-3xl font-light leading-relaxed text-gray-800" // ✅ OPTIMAAL: Groter en beter leesbaar
+                className="text-xl sm:text-2xl md:text-3xl font-light leading-relaxed text-gray-800" // ✅ ZWART: Tekst in zwart/grijs
               >
                 Zelfreinigende • Hygiënisch • Stil
               </p>
 
-              {/* CTA Button - ✅ PREMIUM: Modern button, optimale spacing */}
+              {/* CTA Button - ✅ PREMIUM: Modern button */}
               <div className="pt-4 md:pt-6">
                 <Link href={`/product/${productSlug}`}>
                   <button 
-                    className="relative overflow-hidden group inline-flex items-center gap-3 px-8 py-5 sm:px-10 sm:py-6 md:px-12 md:py-7 text-base sm:text-lg md:text-xl font-semibold rounded-lg text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]" // ✅ OPTIMAAL: Groter button
+                    className="relative overflow-hidden group inline-flex items-center gap-3 px-8 py-5 sm:px-10 sm:py-6 md:px-12 md:py-7 text-base sm:text-lg md:text-xl font-semibold rounded-lg text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
                     style={{
                       backgroundColor: '#000000',
                     }}
@@ -170,11 +172,13 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* ✅ AFBEELDING: Rechts op desktop, boven op mobiel - OPTIMAAL VISUEEL */}
+          {/* ✅ AFBEELDING: Rechts op desktop, boven op mobiel - EDGE-TO-EDGE */}
           <div 
-            className="relative w-full md:w-[50%] h-80 sm:h-96 md:h-auto min-h-[400px] md:min-h-0 overflow-hidden order-1 md:order-2 bg-gray-100" // ✅ OPTIMAAL: Betere hoogte en fallback bg
+            className="relative w-full md:w-[50%] h-80 sm:h-96 md:h-auto min-h-[400px] md:min-h-0 overflow-hidden order-1 md:order-2 bg-gray-100" // ✅ EDGE-TO-EDGE: Geen margin, volledige breedte
             style={{
               marginTop: 0, // ✅ EDGE-TO-EDGE: Geen margin boven
+              marginLeft: 0, // ✅ EDGE-TO-EDGE: Geen margin links
+              marginRight: 0, // ✅ EDGE-TO-EDGE: Geen margin rechts
             }}
           >
             {/* 🚀 PERFORMANCE: Show fallback immediately, upgrade to product image if available */}
