@@ -72,10 +72,10 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
               key={index} 
               className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
             >
-              {/* Image - ✅ EXACT ZELFDE: Identiek aan product detail - RONDE HOEKEN ECHT TOEGEPAST VIA WRAPPER + INLINE STYLE */}
+              {/* Image - ✅ EXACT ZELFDE: Identiek aan product detail - RONDE HOEKEN ECHT TOEGEPAST VIA WRAPPER + INLINE STYLE + CSS CLASS */}
               <div 
                 className={cn(
-                  'relative',
+                  'relative zigzag-image-container',
                   'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
                   isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right,
                   CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Meer verticale lengte (aspect-[3/4] mobiel, aspect-[4/5] desktop)
@@ -89,7 +89,7 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
               >
                 <div 
                   className={cn(
-                    'absolute inset-0',
+                    'absolute inset-0 zigzag-image-container',
                     CONFIG.featureSection.image.borderRadius, // ✅ RONDE HOEKEN: Wrapper heeft ronde hoeken
                     'overflow-hidden' // ✅ OVERFLOW: Zorgt dat Image binnen ronde hoeken blijft
                   )}
@@ -101,7 +101,7 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
                     src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
                     alt={feature.title}
                     fill // ✅ FILL: Vult container exact op
-                    className="object-contain" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover)
+                    className="object-contain zigzag-image" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover) + CSS class
                     style={{
                       borderRadius: '1.5rem', // ✅ ECHT ROND: Ook op Image zelf
                     } as React.CSSProperties}
