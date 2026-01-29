@@ -20,10 +20,10 @@ export const PRODUCT_PAGE_CONFIG = {
       sectionSpacing: 'py-8 sm:py-10 md:py-12 lg:py-12', // ✅ SYMMETRISCH: Gelijk boven/onder
       gridGap: 'gap-6 sm:gap-8 md:gap-10 lg:gap-10',      // ✅ SYMMETRISCH: Gelijk tussen elementen
       topMargin: 'mt-0',                // ✅ ULTRA COMPACT - breadcrumb direct tegen navbar
-    // Product Grid Ratio: Image vs Info (zoals Pergolux)
+    // Product Grid Ratio: Image breder, info smaller (winkelwagen smaller, afbeelding meer naar rechts)
     productGrid: {
-      imageWidth: 'lg:w-[58%]', // Image neemt meer ruimte
-      infoWidth: 'lg:w-[42%]',  // Info smaller
+      imageWidth: 'lg:w-[62%]', // Afbeelding meer ruimte, meer naar rechts
+      infoWidth: 'lg:w-[38%]',  // Info/winkelwagen smaller
     },
     separator: {
       color: 'border-gray-300', // ✅ GRIJZER: Iets donkerder voor betere zichtbaarheid

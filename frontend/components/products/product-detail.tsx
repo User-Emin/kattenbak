@@ -618,8 +618,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         )}> {/* ✅ EDGE-TO-EDGE: Geen padding op zijkanten */}
           {/* Left: Image Gallery - ✅ STICKY: Blijft in beeld terwijl pagina scrollt */}
           <div className={cn(
-            'flex flex-col', // ✅ BASE: Verticale layout
-            'w-full lg:w-[45%]', // ✅ DESKTOP: Kleiner (45% ipv 58%) voor directer zichtbaar
+            'flex flex-col w-full', // ✅ MOBIEL: full width
+            CONFIG.layout.productGrid.imageWidth, // ✅ DESKTOP: Afbeelding breder, meer naar rechts
             'lg:sticky lg:top-28', // ✅ STICKY: Afbeelding blijft in beeld op desktop (top-28 = onder navbar)
             'lg:h-fit', // ✅ HEIGHT: Fit content
             'self-start', 
@@ -770,8 +770,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
           {/* Right: Product Info - ✅ DESKTOP: Normaal scrollbaar, afbeelding is sticky */}
           <div className={cn(
-            'flex flex-col', 
-            'w-full lg:w-[55%]', // ✅ DESKTOP: Meer ruimte (55% ipv 42%) voor directer zichtbaar, MOBIEL: Full width
+            'flex flex-col w-full', 
+            CONFIG.layout.productGrid.infoWidth, // ✅ DESKTOP: Info/winkelwagen smaller
             'self-start',
             'mt-6 sm:mt-8 md:mt-0 lg:mt-0', // ✅ SYMMETRISCH: Gelijk spacing op mobile, geen margin op desktop
             'mx-auto lg:mx-0', // ✅ SYMMETRISCH: Gecentreerd op mobile, links uitgelijnd op desktop

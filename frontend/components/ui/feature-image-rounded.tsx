@@ -11,7 +11,6 @@ export interface FeatureImageRoundedProps {
   /** aspect-[3/4] md:aspect-[4/5] of h-64 md:h-80 */
   innerClassName?: string;
   objectFit?: 'cover' | 'contain';
-  /** Niet gebruikt bij native img – alleen voor backwards compatibility met callers */
   sizes?: string;
   quality?: number;
   unoptimized?: boolean;
@@ -20,9 +19,9 @@ export interface FeatureImageRoundedProps {
 }
 
 /**
- * Zigzag/feature afbeelding met gegarandeerde ronde hoeken (10.5L Afvalbak, Gratis meegeleverd, etc.).
- * Gebruikt gewone <img> in één wrapper – geen Next/Image span, zodat border-radius + overflow
- * direct op de afbeelding werken. Ronde hoeken zitten in de afbeeldingweergave zelf.
+ * Zigzag/feature afbeelding met gegarandeerde ronde hoeken (10.5L Afvalbak, Gratis meegeleverd).
+ * Gebruikt background-image op een div – geen <img>, dus geen element dat buiten de
+ * border-radius kan vallen. De afbeelding ís de achtergrond van de ronde div.
  */
 export function FeatureImageRounded({
   src,
@@ -47,25 +46,26 @@ export function FeatureImageRounded({
         overflow: 'hidden',
       } as React.CSSProperties}
     >
-      {/* Eén wrapper: aspect-ratio + overflow hidden. Geen Next/Image = geen span die clipping breekt. */}
+      {/* Background-image op rounded div = ronde hoeken gegarandeerd, geen img die kan ontsnappen */}
       <div
-        className={cn('relative w-full overflow-hidden', innerClassName)}
+        className={cn('relative w-full overflow-hidden bg-white', innerClassName)}
         style={{
           borderRadius: radius,
           overflow: 'hidden',
+          backgroundImage: `url(${src})`,
+          backgroundSize: objectFit === 'cover' ? 'cover' : 'contain',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         } as React.CSSProperties}
+        role="img"
+        aria-label={alt}
       >
+        {/* Fallback: onzichtbare img voor accessibility en onError */}
         <img
           src={src}
-          alt={alt}
-          className={cn(
-            'absolute inset-0 h-full w-full',
-            objectFit === 'cover' ? 'object-cover' : 'object-contain'
-          )}
-          style={{
-            borderRadius: radius,
-            display: 'block',
-          } as React.CSSProperties}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full opacity-0 pointer-events-none"
           loading="lazy"
           decoding="async"
           onError={onError}
