@@ -44,6 +44,7 @@ export function FeatureImageRounded({
     overflow: 'hidden' as const,
     clipPath: `inset(0 round ${radius})`,
     WebkitClipPath: `inset(0 round ${radius})`,
+    isolation: 'isolate' as const,
   } as React.CSSProperties;
   return (
     <div
@@ -64,6 +65,7 @@ export function FeatureImageRounded({
         <div
           className="absolute inset-0 overflow-hidden"
           style={{ ...clipStyle } as React.CSSProperties}
+          aria-hidden="true"
         >
           <Image
             src={src}

@@ -300,3 +300,21 @@
 .animate-pulse-subtle {
   animation: pulse-subtle 2s ease-in-out infinite;
 }
+
+/* ✅ ZIGZAG RONDE HOEKEN - BUITEN LAYER: Laatste woord, overschrijft alles */
+.feature-image-rounded,
+div.feature-image-rounded,
+[data-feature-image],
+.feature-image-rounded *,
+.feature-image-rounded img,
+.feature-image-rounded span,
+[data-feature-image] *,
+[data-feature-image] img,
+[data-feature-image] span,
+[data-feature-image] span img {
+  border-radius: 1.5rem !important;
+  -webkit-border-radius: 1.5rem !important;
+  overflow: hidden !important;
+  clip-path: inset(0 round 1.5rem) !important;
+  -webkit-clip-path: inset(0 round 1.5rem) !important;
+}

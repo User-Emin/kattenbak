@@ -192,11 +192,12 @@ echo -n "Waiting for application to start"
 sleep 10
 echo " ✓"
 
-# Check PM2 status
+# Check PM2 status (frontend app specifically)
 echo -n "Checking PM2 status..."
-PM2_STATUS=$(sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" "pm2 jlist" | grep -o '"status":"[^"]*"' | grep -o 'online' || echo "")
+PM2_STATUS=$(sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" "pm2 describe frontend 2>/dev/null" | grep -E "status.*online" | head -1)
+PM2_OK=$(echo "$PM2_STATUS" | grep -q "online" && echo "online" || echo "")
 
-if [ "$PM2_STATUS" == "online" ]; then
+if [ "$PM2_OK" == "online" ]; then
     echo -e " ${GREEN}✓ Process running${NC}"
 else
     echo -e " ${RED}✗ Process not running!${NC}"
