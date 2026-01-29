@@ -39,16 +39,16 @@ export function FeatureImageRounded({
 
   return (
     <div
-      className={cn('feature-image-rounded block overflow-hidden rounded-3xl', className)}
+      className={cn('feature-image-rounded block overflow-hidden rounded-lg', className)}
       data-feature-image
       style={{
         borderRadius: radius,
         overflow: 'hidden',
       } as React.CSSProperties}
     >
-      {/* Background-image op rounded div = echte ronde hoeken, geen img die kan ontsnappen */}
+      {/* Zelfde ronde hoeken als productafbeelding (rounded-lg) */}
       <div
-        className={cn('relative w-full overflow-hidden bg-white rounded-3xl', innerClassName)}
+        className={cn('relative w-full overflow-hidden bg-white rounded-lg', innerClassName)}
         style={{
           borderRadius: radius,
           overflow: 'hidden',

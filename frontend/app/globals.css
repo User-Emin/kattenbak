@@ -133,16 +133,16 @@
     border-radius: 0.25rem !important; /* 4px */
   }
 
-  /* ✅ FEATURE IMAGES (10.5L Afvalbak, Gratis meegeleverd, Veiligheidssensoren): één class, max specificiteit */
+  /* ✅ FEATURE IMAGES: ZELFDE ronde hoeken als productafbeelding (rounded-lg = 0.5rem) */
   .feature-image-rounded,
   div.feature-image-rounded,
   [data-feature-image] {
-    border-radius: 1.5rem !important;
+    border-radius: 0.5rem !important;
     overflow: hidden !important;
-    -webkit-border-radius: 1.5rem !important;
-    -moz-border-radius: 1.5rem !important;
-    clip-path: inset(0 round 1.5rem) !important;
-    -webkit-clip-path: inset(0 round 1.5rem) !important;
+    -webkit-border-radius: 0.5rem !important;
+    -moz-border-radius: 0.5rem !important;
+    clip-path: inset(0 round 0.5rem) !important;
+    -webkit-clip-path: inset(0 round 0.5rem) !important;
   }
   .feature-image-rounded *,
   .feature-image-rounded img,
@@ -152,11 +152,11 @@
   [data-feature-image] img,
   [data-feature-image] span,
   [data-feature-image] span img {
-    border-radius: 1.5rem !important;
-    -webkit-border-radius: 1.5rem !important;
-    -moz-border-radius: 1.5rem !important;
-    clip-path: inset(0 round 1.5rem) !important;
-    -webkit-clip-path: inset(0 round 1.5rem) !important;
+    border-radius: 0.5rem !important;
+    -webkit-border-radius: 0.5rem !important;
+    -moz-border-radius: 0.5rem !important;
+    clip-path: inset(0 round 0.5rem) !important;
+    -webkit-clip-path: inset(0 round 0.5rem) !important;
   }
   
   /* ✅ ZIGZAG AFBEELDINGEN: clip-path voor GEGARANDEERDE ronde hoeken (fallback waar geen FeatureImageRounded) */
@@ -301,14 +301,14 @@
   animation: pulse-subtle 2s ease-in-out infinite;
 }
 
-/* ✅ ZIGZAG RONDE HOEKEN - BUITEN LAYER: native img in één wrapper, ronde hoeken op de afbeelding zelf */
+/* ✅ ZIGZAG RONDE HOEKEN - ZELFDE als productafbeelding (rounded-lg = 0.5rem) */
 .feature-image-rounded,
 div.feature-image-rounded,
 [data-feature-image],
 .feature-image-rounded *,
 .feature-image-rounded img,
 [data-feature-image] img {
-  border-radius: 1.5rem !important;
-  -webkit-border-radius: 1.5rem !important;
+  border-radius: 0.5rem !important;
+  -webkit-border-radius: 0.5rem !important;
   overflow: hidden !important;
 }

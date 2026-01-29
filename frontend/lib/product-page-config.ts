@@ -8,8 +8,8 @@
 
 import { DESIGN_SYSTEM } from './design-system';
 
-/** Ronde hoek voor zigzag/feature afbeeldingen (10.5L Afvalbak, Veiligheidssensoren, Gratis meegeleverd) – single source of truth */
-export const ZIGZAG_IMAGE_RADIUS = '1.5rem' as const;
+/** Ronde hoek voor zigzag/feature afbeeldingen – ZELFDE als productafbeelding (rounded-lg = 0.5rem) */
+export const ZIGZAG_IMAGE_RADIUS = '0.5rem' as const;
 
 export const PRODUCT_PAGE_CONFIG = {
   // Layout configuratie - ✅ SYMMETRISCH: Perfecte balans op alle schermformaten
@@ -20,10 +20,10 @@ export const PRODUCT_PAGE_CONFIG = {
       sectionSpacing: 'py-8 sm:py-10 md:py-12 lg:py-12', // ✅ SYMMETRISCH: Gelijk boven/onder
       gridGap: 'gap-6 sm:gap-8 md:gap-10 lg:gap-10',      // ✅ SYMMETRISCH: Gelijk tussen elementen
       topMargin: 'mt-0',                // ✅ ULTRA COMPACT - breadcrumb direct tegen navbar
-    // Product Grid Ratio: Image breder, info smaller (winkelwagen smaller, afbeelding meer naar rechts)
+    // Product Grid Ratio: Afbeelding iets meer naar links, winkelwagen etc breder
     productGrid: {
-      imageWidth: 'lg:w-[62%]', // Afbeelding meer ruimte, meer naar rechts
-      infoWidth: 'lg:w-[38%]',  // Info/winkelwagen smaller
+      imageWidth: 'lg:w-[56%]', // Afbeelding iets smaller = meer naar links
+      infoWidth: 'lg:w-[44%]',  // Winkelwagen/info breder
     },
     separator: {
       color: 'border-gray-300', // ✅ GRIJZER: Iets donkerder voor betere zichtbaarheid
