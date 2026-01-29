@@ -81,16 +81,13 @@ export function ProductVariantsSection() {
         CONFIG.container.padding
       )}
     >
+      {/* ✅ TITEL: Binnen container met padding op desktop; mobiel px-4 voor leesbaarheid */}
       <div
         className={cn(
-          'mx-auto',
-          PRODUCT_PAGE_CONFIG.layout.containerPadding
+          'mx-auto md:max-w-4xl',
+          'px-4 md:px-6 lg:px-8' /* mobiel: kleine padding alleen voor titel; desktop: normaal */
         )}
-        style={{
-          maxWidth: DESIGN_SYSTEM.layout.maxWidth['2xl'],
-        }}
       >
-        {/* ✅ TITEL: "Onze varianten" - DRY via PRODUCT_PAGE_CONFIG - WITTE ACHTERGROND */}
         <div className={cn(
           CONFIG.header.container,
           CONFIG.header.spacing.bottom
@@ -101,16 +98,15 @@ export function ProductVariantsSection() {
               CONFIG.header.title.fontWeight,
               CONFIG.header.title.textColor,
               CONFIG.header.title.letterSpacing,
-              CONFIG.header.spacing.titleSubtitle // ✅ DICHTBIJ: Subtitel dichtbij hoofdtitel
+              CONFIG.header.spacing.titleSubtitle
             )}
             style={{
               fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)', // ✅ KLEINER: Iets kleiner (clamp(2rem, 5vw, 3.5rem) ipv clamp(2.5rem, 6vw, 4.5rem))
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             }}
           >
             Onze varianten
           </h2>
-          {/* ✅ SUBTEKST: Passende beschrijving onder titel - DICHTBIJ HOOFDTITEL */}
           <p
             className={cn(
               CONFIG.header.subtitle.fontSize,
@@ -122,81 +118,89 @@ export function ProductVariantsSection() {
             Kies jouw favoriete kleur en stijl
           </p>
         </div>
+      </div>
 
-        {/* ✅ GRID: 2 kaarten centraal naast elkaar desktop, onder elkaar mobiel - DRY via PRODUCT_PAGE_CONFIG */}
-        <div className={CONFIG.grid.container}>
-          {variants.slice(0, 2).map((variant) => {
-            const variantImage = variant.displayImage || (product.images && product.images.length > 0 ? product.images[0] : '/placeholder-image.jpg');
-            const variantName = variant.displayName;
-            const variantColor = variant.colorHex || variant.colorCode || null;
+      {/* ✅ MOBIEL: Horizontale slide edge-to-edge met 0 padding | DESKTOP: Grid centraal */}
+      <div
+        className={cn(
+          'w-full',
+          'md:mx-auto md:max-w-4xl md:px-6 lg:px-8',
+          'flex md:flex-row overflow-x-auto md:overflow-visible gap-4 md:gap-8',
+          'snap-x snap-mandatory md:snap-none',
+          'scrollbar-hide',
+          'px-0 md:px-0' /* ✅ 0 padding op mobiel = edge-to-edge */
+        )}
+        style={{
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+        }}
+      >
+        {variants.slice(0, 2).map((variant) => {
+          const variantImage = variant.displayImage || (product.images && product.images.length > 0 ? product.images[0] : '/placeholder-image.jpg');
+          const variantName = variant.displayName;
 
-            return (
-              <Link
-                key={variant.id}
-                href={`/product/${product.slug}${variant.id ? `?variant=${variant.id}` : ''}`}
-                className={cn(
-                  CONFIG.card.container,
-                  CONFIG.card.borderRadius, // ✅ RONDE HOEKEN: Foto's met ronde hoeken
-                  CONFIG.card.aspectRatio
-                )}
-                style={{
-                  borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
-                } as React.CSSProperties}
+          return (
+            <Link
+              key={variant.id}
+              href={`/product/${product.slug}${variant.id ? `?variant=${variant.id}` : ''}`}
+              className={cn(
+                'group relative overflow-hidden transition-all duration-300 hover:scale-[1.02]',
+                'flex-shrink-0 snap-center md:snap-align-none',
+                'min-w-[85vw] w-[85vw] md:min-w-0 md:w-[48%]', /* mobiel: vaste breedte voor slide; desktop: 48% */
+                CONFIG.card.borderRadius,
+                CONFIG.card.aspectRatio
+              )}
+              style={{
+                borderRadius: '1.5rem',
+              } as React.CSSProperties}
+            >
+              <div
+                className={cn('relative w-full h-full overflow-hidden', CONFIG.card.image.borderRadius)}
+                style={{ borderRadius: '1.5rem' } as React.CSSProperties}
               >
-                {/* ✅ AFBEELDING: Eerste afbeelding van variant - RONDE HOEKEN - DRY via PRODUCT_PAGE_CONFIG */}
-                <div 
-                  className={cn('relative w-full h-full overflow-hidden', CONFIG.card.image.borderRadius)}
-                  style={{
-                    borderRadius: '1.5rem', // ✅ ECHT ROND: 24px (rounded-3xl) - geforceerd via inline style
-                  } as React.CSSProperties}
-                >
-                  <Image
-                    src={variantImage}
-                    alt={variantName}
-                    fill
-                    className={cn(
-                      CONFIG.card.image.objectFit,
-                      'transition-transform duration-300 group-hover:scale-110'
-                    )}
-                    sizes="(max-width: 768px) 100vw, 48vw"
-                    quality={85}
-                    loading="lazy"
-                    unoptimized={variantImage.startsWith('/uploads/') || variantImage.startsWith('/images/') || variantImage.startsWith('https://') || variantImage.startsWith('http://')}
-                  />
+                <Image
+                  src={variantImage}
+                  alt={variantName}
+                  fill
+                  className={cn(
+                    CONFIG.card.image.objectFit,
+                    'transition-transform duration-300 group-hover:scale-110'
+                  )}
+                  sizes="(max-width: 768px) 85vw, 48vw"
+                  quality={85}
+                  loading="lazy"
+                  unoptimized={variantImage.startsWith('/uploads/') || variantImage.startsWith('/images/') || variantImage.startsWith('https://') || variantImage.startsWith('http://')}
+                />
 
-                  {/* ✅ SMOOTH TEKST: Direct in afbeelding, altijd zichtbaar - DRY via DESIGN_SYSTEM */}
-                  <div
-                    className="absolute inset-0 flex flex-col items-center justify-end p-4 md:p-6 transition-all duration-300 group-hover:bg-black/20"
+                <div
+                  className="absolute inset-0 flex flex-col items-center justify-end p-4 md:p-6 transition-all duration-300 group-hover:bg-black/20"
+                  style={{
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 40%, transparent 70%)',
+                  }}
+                >
+                  <h3
+                    className="text-white text-center font-semibold transition-all duration-300"
                     style={{
-                      background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 40%, transparent 70%)',
+                      fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
+                      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+                      textShadow: '0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8)',
                     }}
                   >
-                    {/* ✅ VARIANT NAAM: Smooth tekst direct in afbeelding, altijd zichtbaar */}
-                    <h3
-                      className="text-white text-center font-semibold transition-all duration-300"
-                      style={{
-                        fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
-                        fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-                        textShadow: '0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8)',
-                      }}
-                    >
-                      {variantName}
-                    </h3>
-                  </div>
+                    {variantName}
+                  </h3>
+                </div>
 
-                  {/* ✅ PLUSJE RECHTS ONDER: In afbeelding, met eigen cirkel */}
-                  <div className="absolute bottom-4 right-4 transition-all duration-300 group-hover:scale-110">
-                    <div className="bg-white/90 hover:bg-white rounded-full p-2 shadow-lg">
-                      <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                      </svg>
-                    </div>
+                <div className="absolute bottom-4 right-4 transition-all duration-300 group-hover:scale-110">
+                  <div className="bg-white/90 hover:bg-white rounded-full p-2 shadow-lg">
+                    <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
                   </div>
                 </div>
-              </Link>
-            );
-          })}
-        </div>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );

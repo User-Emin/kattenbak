@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { PRODUCT_PAGE_CONFIG } from "@/lib/product-page-config";
 import { PRODUCT_CONTENT } from "@/lib/content.config";
+import { FeatureImageRounded } from "@/components/ui/feature-image-rounded";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/types/product";
 
@@ -72,63 +72,34 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
               key={index} 
               className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
             >
-              {/* Image - ✅ VOLLEDIG HERBOUWD: Extra wrappers voor gegarandeerde ronde hoeken */}
-              <div 
+              {/* Image - ✅ FeatureImageRounded: 10.5L Afvalbak, Gratis meegeleverd, Veiligheidssensoren – echte ronde hoeken */}
+              <FeatureImageRounded
+                src={feature.image || '/images/placeholder.jpg'}
+                alt={feature.title}
                 className={cn(
-                  'zigzag-image-container',
-                  'w-full md:w-auto', // ✅ MOBIEL: Full width centraal, desktop auto
+                  'w-full md:w-auto',
                   isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right
                 )}
-                style={{
-                  borderRadius: '1.5rem',
-                  overflow: 'hidden',
-                  display: 'block',
-                } as React.CSSProperties}
-              >
-                <div 
-                  className={cn(
-                    'relative zigzag-image-container',
-                    CONFIG.featureSection.image.aspectRatio, // ✅ ASPECT RATIO: Meer verticale lengte (aspect-[3/4] mobiel, aspect-[4/5] desktop)
-                    CONFIG.featureSection.image.bgColor,
-                    'overflow-hidden'
-                  )}
-                  style={{
-                    borderRadius: '1.5rem',
-                    overflow: 'hidden',
-                  } as React.CSSProperties}
-                >
-                  <div 
-                    className="absolute inset-0 zigzag-image-container overflow-hidden"
-                    style={{
-                      borderRadius: '1.5rem',
-                      overflow: 'hidden',
-                    } as React.CSSProperties}
-                  >
-                    <Image
-                      src={feature.image || '/images/placeholder.jpg'} // ✅ FIX: Geen lege string (fallback naar placeholder)
-                      alt={feature.title}
-                      fill // ✅ FILL: Vult container exact op
-                      className="object-contain zigzag-image" // ✅ CONTAIN: Zigzag foto's volledig zichtbaar (niet object-cover) + CSS class
-                      style={{
-                        borderRadius: '1.5rem',
-                      } as React.CSSProperties}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // 🚀 PERFORMANCE: Responsive sizes voor zigzag (fastest loading)
-                      quality={80} // 🚀 PERFORMANCE: Slightly lower quality for below-fold (faster)
-                      loading="lazy" // 🚀 PERFORMANCE: Lazy load (below-the-fold, load only when visible)
-                      placeholder="blur" // 🚀 PERFORMANCE: Blur placeholder for smooth loading
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==" // 🚀 PERFORMANCE: Instant blur placeholder
-                      unoptimized={feature.image?.startsWith('/uploads/') || feature.image?.startsWith('/images/') || feature.image?.startsWith('https://') || feature.image?.startsWith('http://')} // ✅ FIX: Disable Next.js optimization for /uploads/, /images/, and https:// paths
-                      onError={(e) => {
-                        // ✅ FALLBACK: Als afbeelding niet laadt, toon placeholder
-                        const target = e.target as HTMLImageElement;
-                        if (target && !target.src.includes('placeholder')) {
-                          target.src = '/images/placeholder.jpg';
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
+                innerClassName={cn(
+                  'aspect-[3/4] md:aspect-[4/5]',
+                  CONFIG.featureSection.image.bgColor
+                )}
+                objectFit="contain"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                quality={80}
+                unoptimized={
+                  feature.image?.startsWith('/uploads/') ||
+                  feature.image?.startsWith('/images/') ||
+                  feature.image?.startsWith('https://') ||
+                  feature.image?.startsWith('http://')
+                }
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (target && !target.src.includes('placeholder')) {
+                    target.src = '/images/placeholder.jpg';
+                  }
+                }}
+              />
 
               {/* Text Content - ✅ EXACT ZELFDE: Identiek aan product detail */}
               <div className={cn(

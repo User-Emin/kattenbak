@@ -11,6 +11,7 @@ import { WebhookController } from '../controllers/webhook.controller';
 import { validateRequest } from '../middleware/validation.middleware';
 import { successResponse } from '../utils/response.util';
 import { env } from '../config/env.config';
+import { buildMollieDescription, buildMollieRedirectUrl } from '../config/mollie.config';
 import { z } from 'zod';
 import { logger } from '../config/logger.config';
 import { EmailService } from '../services/email.service';
@@ -230,16 +231,16 @@ router.post(
         
         // ✅ FALLBACK: Create payment directly from Mollie (no database save)
         try {
-          // ✅ DRY: Use MollieService instead of direct client
-          const redirectUrl = `${env.FRONTEND_URL || 'https://catsupply.nl'}/success`;
           const tempOrderId = `temp-${Date.now()}`;
-          
+          const tempOrderNumber = `TEMP-${Date.now()}`;
+          const redirectUrl = buildMollieRedirectUrl(env.FRONTEND_URL, tempOrderId);
           const payment = await MollieService.createPayment(
             tempOrderId,
             totalAmount,
-            `Order ${Date.now()}`,
+            buildMollieDescription(tempOrderNumber),
             redirectUrl,
-            paymentMethod || 'ideal'
+            paymentMethod || 'ideal',
+            tempOrderNumber
           );
           
           logger.info('Payment created via fallback (DB unavailable):', { paymentId: payment.id, amount: totalAmount });
@@ -411,14 +412,15 @@ router.post(
         }
       }
 
-      // Create Mollie payment with SUCCESS page redirect
-      const redirectUrl = `${env.FRONTEND_URL}/success?order=${order.id}`;
+      // Create Mollie payment – redirect en description via config (herkenning bestelling)
+      const redirectUrl = buildMollieRedirectUrl(env.FRONTEND_URL, order.id);
       const payment = await MollieService.createPayment(
         order.id,
         Number(order.total),
-        `Order ${order.orderNumber}`,
+        buildMollieDescription(order.orderNumber),
         redirectUrl,
-        paymentMethod
+        paymentMethod,
+        order.orderNumber
       );
 
       logger.info('✅ Order created successfully:', { 

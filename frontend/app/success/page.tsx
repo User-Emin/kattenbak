@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Package, Truck, Home, Loader2, FileText } from "lucide-react";
 import { ordersApi } from "@/lib/api/orders";
+import { PAYMENT_CONFIG } from "@/lib/config";
 import { useRouter } from "next/navigation";
 
 /**
@@ -63,8 +64,8 @@ function SuccessContent() {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        // ✅ CRITICAL: Check both "order" and "orderId" parameters for backwards compatibility
-        const id = searchParams.get("order") || searchParams.get("orderId");
+        // ✅ CRITICAL: Order ID uit redirect (zelfde param als backend MOLLIE_QUERY_ORDER_ID)
+        const id = searchParams.get(PAYMENT_CONFIG.ORDER_QUERY_PARAM) || searchParams.get("orderId");
         
         // ✅ SECURITY: If no order ID, show error immediately
         if (!id) {
@@ -164,7 +165,7 @@ function SuccessContent() {
           } else {
             // Payment status check failed, but order exists - assume payment is processing
             // Don't show error, as order exists which means payment was initiated
-            logger.warn('Payment status check failed but order exists', { orderId: id });
+            console.warn('Payment status check failed but order exists', { orderId: id });
           }
         } catch (paymentError: any) {
           // ✅ FIX: If payment check fails but order exists, don't show error

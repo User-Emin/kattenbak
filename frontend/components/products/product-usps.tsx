@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { Shield, Truck, Star, Check, Zap, Sparkles, Package } from "lucide-react";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { PRODUCT_PAGE_CONFIG } from "@/lib/product-page-config"; // ✅ DRY: Via PRODUCT_PAGE_CONFIG voor ronde hoeken
+import { PRODUCT_PAGE_CONFIG } from "@/lib/product-page-config";
+import { FeatureImageRounded } from "@/components/ui/feature-image-rounded";
 
 interface ProductUsp {
   icon: string;
@@ -88,44 +87,24 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                   </div>
                 </div>
 
-                {/* Image (zonder schaduw) - ✅ SECURITY: Only render if image exists - ✅ RONDE HOEKEN: VOLLEDIG HERBOUWD met extra wrappers */}
+                {/* Image - ✅ FeatureImageRounded: echte ronde hoeken (10.5L Afvalbak, Gratis meegeleverd, etc.) */}
                 {usp.image && usp.image.trim() !== '' && (
-                  <div className={`${isEven ? 'md:order-2' : 'md:order-1'}`}>
-                    {/* ✅ EXTRA WRAPPER: Gegarandeerde ronde hoeken */}
-                    <div 
-                      className="zigzag-image-container"
-                      style={{
-                        borderRadius: '1.5rem',
-                        overflow: 'hidden',
-                        display: 'block',
-                      } as React.CSSProperties}
-                    >
-                      <div 
-                        className={`relative h-64 md:h-80 overflow-hidden zigzag-image-container`}
-                        style={{
-                          borderRadius: '1.5rem',
-                          overflow: 'hidden',
-                        } as React.CSSProperties}
-                      >
-                        <div 
-                          className="absolute inset-0 zigzag-image-container"
-                          style={{
-                            borderRadius: '1.5rem',
-                            overflow: 'hidden',
-                          } as React.CSSProperties}
-                        >
-                          <Image
-                            src={usp.image}
-                            alt={usp.title}
-                            fill
-                            className="object-cover zigzag-image"
-                            style={{
-                              borderRadius: '1.5rem',
-                            } as React.CSSProperties}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                  <div className={isEven ? 'md:order-2' : 'md:order-1'}>
+                    <FeatureImageRounded
+                      src={usp.image}
+                      alt={usp.title}
+                      className="w-full"
+                      innerClassName="h-64 md:h-80"
+                      objectFit="cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      quality={85}
+                      unoptimized={
+                        usp.image.startsWith('/uploads/') ||
+                        usp.image.startsWith('/images/') ||
+                        usp.image.startsWith('https://') ||
+                        usp.image.startsWith('http://')
+                      }
+                    />
                   </div>
                 )}
               </div>

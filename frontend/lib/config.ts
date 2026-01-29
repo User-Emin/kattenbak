@@ -80,10 +80,13 @@ export const SITE_CONFIG = {
   DEFAULT_PRODUCT_SLUG: 'automatische-kattenbak-premium',
 } as const;
 
-// Payment Configuration
+// Payment Configuration – aligned met backend mollie.config (herkenning bestelling)
 export const PAYMENT_CONFIG = {
   PROVIDER: 'Mollie',
   TEST_MODE: process.env.NODE_ENV !== 'production',
+  SUCCESS_PATH: '/success' as const,
+  /** Query param voor order ID in redirect (zelfde als backend MOLLIE_QUERY_ORDER_ID) */
+  ORDER_QUERY_PARAM: 'order' as const,
   REDIRECT_URL: `${SITE_CONFIG.URL}/success`,
   WEBHOOK_URL: `${SITE_CONFIG.URL}/api/webhooks/mollie`,
 } as const;

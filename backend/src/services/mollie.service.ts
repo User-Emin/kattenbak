@@ -2,6 +2,7 @@ import createMollieClient, { Payment as MolliePayment, PaymentMethod as MolliePa
 import { prisma } from '../config/database.config';
 import { env } from '../config/env.config';
 import { logger } from '../config/logger.config';
+import { MOLLIE_METADATA_KEYS, MOLLIE_SUCCESS_PATH } from '../config/mollie.config';
 import { NotFoundError, InternalServerError } from '../utils/errors.util';
 import { Payment, PaymentStatus, PaymentMethod } from '@prisma/client';
 import { EmailService } from './email.service';
@@ -66,62 +67,58 @@ export class MollieService {
   }
 
   /**
-   * ✅ SECURITY: Validate and sanitize redirect URL to prevent open redirect attacks
+   * ✅ SECURITY: Validate and sanitize redirect URL (geen hardcode – allowed domain uit FRONTEND_URL)
    */
   private static validateRedirectUrl(url: string): string {
     try {
       const parsed = new URL(url);
-      
-      // ✅ SECURITY: Only allow https:// in production (no http://)
+      const fallbackBase = `${env.FRONTEND_URL.replace(/\/$/, '')}${MOLLIE_SUCCESS_PATH}`;
+
       if (env.IS_PRODUCTION && parsed.protocol !== 'https:') {
-        logger.warn('Invalid redirect URL protocol in production, using FRONTEND_URL:', { url });
-        return `${env.FRONTEND_URL}/success`;
+        logger.warn('Invalid redirect URL protocol in production, using FRONTEND_URL', { url });
+        return fallbackBase;
       }
-      
-      // ✅ SECURITY: Block localhost and private IPs in production
+
       if (env.IS_PRODUCTION) {
         const hostname = parsed.hostname.toLowerCase();
-        if (hostname === 'localhost' || 
-            hostname === '127.0.0.1' || 
-            hostname.startsWith('192.168.') ||
-            hostname.startsWith('10.') ||
-            hostname.startsWith('172.16.')) {
-          logger.warn('Blocked localhost/private IP redirect URL in production, using FRONTEND_URL:', { url });
-          return `${env.FRONTEND_URL}/success`;
+        if (hostname === 'localhost' || hostname === '127.0.0.1' ||
+            hostname.startsWith('192.168.') || hostname.startsWith('10.') || hostname.startsWith('172.16.')) {
+          logger.warn('Blocked localhost/private IP redirect URL in production', { url });
+          return fallbackBase;
+        }
+        const allowedHost = new URL(env.FRONTEND_URL).hostname.toLowerCase();
+        if (!parsed.hostname.toLowerCase().endsWith(allowedHost) && parsed.hostname !== allowedHost) {
+          logger.warn('Redirect URL not from allowed domain, using FRONTEND_URL', { url, allowedHost });
+          return fallbackBase;
         }
       }
-      
-      // ✅ SECURITY: Ensure URL is from allowed domain (catsupply.nl in production)
-      if (env.IS_PRODUCTION) {
-        const allowedDomain = 'catsupply.nl';
-        if (!parsed.hostname.toLowerCase().endsWith(allowedDomain)) {
-          logger.warn('Redirect URL not from allowed domain, using FRONTEND_URL:', { url, allowedDomain });
-          return `${env.FRONTEND_URL}/success`;
-        }
-      }
-      
+
       return url;
     } catch (error) {
-      logger.warn('Invalid redirect URL format, using FRONTEND_URL:', { url, error });
-      return `${env.FRONTEND_URL}/checkout/success`;
+      logger.warn('Invalid redirect URL format, using FRONTEND_URL', { url, error });
+      return `${env.FRONTEND_URL}${MOLLIE_SUCCESS_PATH}`;
     }
   }
 
   /**
-   * Create payment
+   * Create payment – herkenning bestelling via metadata (orderId + orderNumber).
    */
   static async createPayment(
     orderId: string,
     amount: number,
     description: string,
     redirectUrl: string,
-    paymentMethod?: string
+    paymentMethod?: string,
+    orderNumber?: string
   ): Promise<Payment> {
     try {
-      // ✅ SECURITY: Validate and sanitize redirect URL
       const validatedRedirectUrl = this.validateRedirectUrl(redirectUrl);
-      
-      // Create Mollie payment with optional method
+
+      const metadata: Record<string, string> = { [MOLLIE_METADATA_KEYS.ORDER_ID]: orderId };
+      if (orderNumber != null && orderNumber !== '') {
+        metadata[MOLLIE_METADATA_KEYS.ORDER_NUMBER] = orderNumber;
+      }
+
       const paymentData: any = {
         amount: {
           currency: 'EUR',
@@ -130,12 +127,9 @@ export class MollieService {
         description,
         redirectUrl: validatedRedirectUrl,
         webhookUrl: env.MOLLIE_WEBHOOK_URL,
-        metadata: {
-          orderId,
-        },
+        metadata,
       };
 
-      // Add payment method if specified
       if (paymentMethod) {
         paymentData.method = paymentMethod;
       }

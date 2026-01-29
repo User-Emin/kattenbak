@@ -127,26 +127,53 @@
     border-radius: 0.125rem !important; /* 2px */
   }
   
-  /* Cards en containers - iets meer rounded */
-  [class*="card"]:not(.rounded-none):not(.zigzag-image-container),
-  [class*="container"]:not(.rounded-none):not(.zigzag-image-container) {
-    border-radius: 0.25rem !important; /* 4px - maar NIET voor zigzag containers */
+  /* Cards en containers - iets meer rounded (niet voor feature-image-rounded / zigzag) */
+  [class*="card"]:not(.rounded-none):not(.zigzag-image-container):not(.feature-image-rounded),
+  [class*="container"]:not(.rounded-none):not(.zigzag-image-container):not(.feature-image-rounded) {
+    border-radius: 0.25rem !important; /* 4px */
+  }
+
+  /* ✅ FEATURE IMAGES (10.5L Afvalbak, Gratis meegeleverd, Veiligheidssensoren): één class, max specificiteit */
+  .feature-image-rounded,
+  div.feature-image-rounded,
+  [data-feature-image] {
+    border-radius: 1.5rem !important;
+    overflow: hidden !important;
+    -webkit-border-radius: 1.5rem !important;
+    -moz-border-radius: 1.5rem !important;
+    clip-path: inset(0 round 1.5rem) !important;
+    -webkit-clip-path: inset(0 round 1.5rem) !important;
+  }
+  .feature-image-rounded *,
+  .feature-image-rounded img,
+  .feature-image-rounded .feature-image-rounded-img,
+  img.feature-image-rounded-img,
+  [data-feature-image] *,
+  [data-feature-image] img,
+  [data-feature-image] span,
+  [data-feature-image] span img {
+    border-radius: 1.5rem !important;
+    -webkit-border-radius: 1.5rem !important;
+    -moz-border-radius: 1.5rem !important;
+    clip-path: inset(0 round 1.5rem) !important;
+    -webkit-clip-path: inset(0 round 1.5rem) !important;
   }
   
-  /* ✅ ZIGZAG AFBEELDINGEN: Echte ronde hoeken (24px) - ULTRA GEFORCEERD met hoogste specificity */
+  /* ✅ ZIGZAG AFBEELDINGEN: clip-path voor GEGARANDEERDE ronde hoeken (fallback waar geen FeatureImageRounded) */
   .zigzag-image-container,
   div.zigzag-image-container,
   [class*="zigzag-image-container"],
   div[class*="zigzag-image-container"],
   div.zigzag-image-container.zigzag-image-container,
   .zigzag-image-container.zigzag-image-container {
-    border-radius: 1.5rem !important; /* 24px - rounded-3xl - override ALLE andere rules */
+    border-radius: 1.5rem !important; /* 24px */
     overflow: hidden !important;
     -webkit-border-radius: 1.5rem !important;
     -moz-border-radius: 1.5rem !important;
+    clip-path: inset(0 round 1.5rem) !important;
+    -webkit-clip-path: inset(0 round 1.5rem) !important;
   }
   
-  /* ✅ ZIGZAG AFBEELDINGEN: Ook op Image zelf - override alle andere rules */
   .zigzag-image-container .zigzag-image,
   .zigzag-image-container img,
   .zigzag-image,
@@ -156,9 +183,11 @@
   img.zigzag-image,
   .zigzag-image-container img.zigzag-image,
   div.zigzag-image-container img.zigzag-image {
-    border-radius: 1.5rem !important; /* 24px - rounded-3xl */
+    border-radius: 1.5rem !important;
     -webkit-border-radius: 1.5rem !important;
     -moz-border-radius: 1.5rem !important;
+    clip-path: inset(0 round 1.5rem) !important;
+    -webkit-clip-path: inset(0 round 1.5rem) !important;
   }
   
   /* ✅ ZIGZAG AFBEELDINGEN: Fallback voor alle zigzag containers - override globals.css card rule */

@@ -10,9 +10,9 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { PRODUCT_PAGE_CONFIG } from '@/lib/product-page-config';
+import { FeatureImageRounded } from '@/components/ui/feature-image-rounded';
 
 interface Feature {
   title: string;
@@ -83,78 +83,32 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
               'animate-in'
             )}
           >
-            {/* Image - ✅ VOLLEDIG HERBOUWD: Extra wrappers voor gegarandeerde ronde hoeken */}
-            <div
-              className={cn(
-                'zigzag-image-container',
-                'max-w-xs sm:max-w-sm',
-                'mx-auto',
-                'mb-4'
+            {/* Image - ✅ FeatureImageRounded: 10.5L Afvalbak, Gratis meegeleverd – echte ronde hoeken */}
+            <FeatureImageRounded
+              src={feature.image || '/images/feature-2.jpg'}
+              alt={feature.title}
+              className="max-w-xs sm:max-w-sm mx-auto mb-4"
+              innerClassName={cn(
+                CONFIG.featureSection.image.aspectRatio,
+                CONFIG.featureSection.image.bgColor
               )}
-              style={{
-                borderRadius: '1.5rem',
-                overflow: 'hidden',
-                display: 'block',
-              } as React.CSSProperties}
-            >
-              <div
-                className={cn(
-                  'relative w-full zigzag-image-container',
-                  CONFIG.featureSection.image.bgColor
-                )}
-                style={{
-                  borderRadius: '1.5rem',
-                  overflow: 'hidden',
-                } as React.CSSProperties}
-              >
-                <div 
-                  className={cn(
-                    'relative w-full zigzag-image-container',
-                    CONFIG.featureSection.image.aspectRatio,
-                    'overflow-hidden'
-                  )}
-                  style={{
-                    borderRadius: '1.5rem',
-                    overflow: 'hidden',
-                  } as React.CSSProperties}
-                >
-                  <div 
-                    className="absolute inset-0 zigzag-image-container overflow-hidden"
-                    style={{
-                      borderRadius: '1.5rem',
-                      overflow: 'hidden',
-                    } as React.CSSProperties}
-                  >
-                    <Image
-                      src={feature.image || '/images/feature-2.jpg'}
-                      alt={feature.title}
-                      fill
-                      className="object-contain zigzag-image"
-                      style={{
-                        borderRadius: '1.5rem',
-                      } as React.CSSProperties}
-                      sizes="(max-width: 768px) 320px, 400px"
-                      quality={85}
-                      loading="lazy"
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                      unoptimized={
-                        feature.image?.startsWith('/uploads/') ||
-                        feature.image?.startsWith('/images/') ||
-                        feature.image?.startsWith('https://') ||
-                        feature.image?.startsWith('http://')
-                      }
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        if (target && !target.src.includes('feature-2.jpg')) {
-                          target.src = '/images/feature-2.jpg';
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+              objectFit="contain"
+              sizes="(max-width: 768px) 320px, 400px"
+              quality={85}
+              unoptimized={
+                !!feature.image &&
+                (feature.image.startsWith('/uploads/') ||
+                  feature.image.startsWith('/images/') ||
+                  feature.image.startsWith('https://') ||
+                  feature.image.startsWith('http://'))
+              }
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (target && !target.src.includes('feature-2.jpg')) {
+                  target.src = '/images/feature-2.jpg';
+                }
+              }}
+            />
 
             {/* Text Content - ✅ SYMMETRISCH: Gecentreerd met symmetrische spacing */}
             <div className={cn(
@@ -211,69 +165,37 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   'animate-in'
                 )}
               >
-                {/* Image - ✅ VOLLEDIG HERBOUWD: Extra wrappers voor gegarandeerde ronde hoeken */}
-                <div
+                {/* Image - ✅ FeatureImageRounded: zigzag desktop – echte ronde hoeken */}
+                <FeatureImageRounded
+                  src={feature.image || '/images/feature-2.jpg'}
+                  alt={feature.title}
                   className={cn(
-                    'zigzag-image-container',
                     'w-full md:w-auto',
                     isEven
                       ? CONFIG.featureSection.zigzag.imageOrder.left
                       : CONFIG.featureSection.zigzag.imageOrder.right
                   )}
-                  style={{
-                    borderRadius: '1.5rem',
-                    overflow: 'hidden',
-                    display: 'block',
-                  } as React.CSSProperties}
-                >
-                  <div
-                    className={cn(
-                      'relative zigzag-image-container',
-                      CONFIG.featureSection.image.aspectRatio,
-                      CONFIG.featureSection.image.bgColor,
-                      'overflow-hidden'
-                    )}
-                    style={{
-                      borderRadius: '1.5rem',
-                      overflow: 'hidden',
-                    } as React.CSSProperties}
-                  >
-                    <div
-                      className="absolute inset-0 zigzag-image-container overflow-hidden"
-                      style={{
-                        borderRadius: '1.5rem',
-                        overflow: 'hidden',
-                      } as React.CSSProperties}
-                    >
-                      <Image
-                        src={feature.image || '/images/feature-2.jpg'}
-                        alt={feature.title}
-                        fill
-                        className="object-contain zigzag-image"
-                        style={{
-                          borderRadius: '1.5rem',
-                        } as React.CSSProperties}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        quality={80}
-                        loading="lazy"
-                        placeholder="blur"
-                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                        unoptimized={
-                          feature.image?.startsWith('/uploads/') ||
-                          feature.image?.startsWith('/images/') ||
-                          feature.image?.startsWith('https://') ||
-                          feature.image?.startsWith('http://')
-                        }
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          if (target && !target.src.includes('feature-2.jpg')) {
-                            target.src = '/images/feature-2.jpg';
-                          }
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
+                  innerClassName={cn(
+                    CONFIG.featureSection.image.aspectRatio,
+                    CONFIG.featureSection.image.bgColor
+                  )}
+                  objectFit="contain"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  quality={80}
+                  unoptimized={
+                    !!feature.image &&
+                    (feature.image.startsWith('/uploads/') ||
+                      feature.image.startsWith('/images/') ||
+                      feature.image.startsWith('https://') ||
+                      feature.image.startsWith('http://'))
+                  }
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    if (target && !target.src.includes('feature-2.jpg')) {
+                      target.src = '/images/feature-2.jpg';
+                    }
+                  }}
+                />
 
                 {/* Text Content - ✅ DESKTOP: Behoud originele styling met gradient titels */}
                 <div

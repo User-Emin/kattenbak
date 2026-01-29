@@ -8,6 +8,9 @@
 
 import { DESIGN_SYSTEM } from './design-system';
 
+/** Ronde hoek voor zigzag/feature afbeeldingen (10.5L Afvalbak, Veiligheidssensoren, Gratis meegeleverd) – single source of truth */
+export const ZIGZAG_IMAGE_RADIUS = '1.5rem' as const;
+
 export const PRODUCT_PAGE_CONFIG = {
   // Layout configuratie - ✅ SYMMETRISCH: Perfecte balans op alle schermformaten
     layout: {

@@ -4,6 +4,7 @@ import { MollieService } from '../services/mollie.service';
 import { successResponse } from '../utils/response.util';
 import { extractStringParam } from '../utils/params.util';
 import { env } from '../config/env.config';
+import { buildMollieDescription, buildMollieRedirectUrl } from '../config/mollie.config';
 
 /**
  * Order Controller
@@ -25,13 +26,15 @@ export class OrderController {
       // Create order
       const order = await OrderService.createOrder(orderData);
 
-      // Create Mollie payment
-      const redirectUrl = `${env.FRONTEND_URL}/order/${order.id}/payment`;
+      // Create Mollie payment – redirect en description via config (herkenning bestelling)
+      const redirectUrl = buildMollieRedirectUrl(env.FRONTEND_URL, order.id);
       const payment = await MollieService.createPayment(
         order.id,
         Number(order.total),
-        `Order ${order.orderNumber}`,
-        redirectUrl
+        buildMollieDescription(order.orderNumber),
+        redirectUrl,
+        undefined,
+        order.orderNumber
       );
 
       successResponse(
