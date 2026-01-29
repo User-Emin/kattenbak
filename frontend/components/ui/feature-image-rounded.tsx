@@ -1,11 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { ZIGZAG_IMAGE_RADIUS } from '@/lib/product-page-config';
-
-const BLUR_PLACEHOLDER =
-  'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==';
 
 export interface FeatureImageRoundedProps {
   src: string;
@@ -15,16 +11,18 @@ export interface FeatureImageRoundedProps {
   /** aspect-[3/4] md:aspect-[4/5] of h-64 md:h-80 */
   innerClassName?: string;
   objectFit?: 'cover' | 'contain';
+  /** Niet gebruikt bij native img – alleen voor backwards compatibility met callers */
   sizes?: string;
   quality?: number;
-  priority?: boolean;
   unoptimized?: boolean;
+  priority?: boolean;
   onError?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
 }
 
 /**
  * Zigzag/feature afbeelding met gegarandeerde ronde hoeken (10.5L Afvalbak, Gratis meegeleverd, etc.).
- * Eén component = één CSS-class feature-image-rounded = max specificiteit in globals.css.
+ * Gebruikt gewone <img> in één wrapper – geen Next/Image span, zodat border-radius + overflow
+ * direct op de afbeelding werken. Ronde hoeken zitten in de afbeeldingweergave zelf.
  */
 export function FeatureImageRounded({
   src,
@@ -32,57 +30,46 @@ export function FeatureImageRounded({
   className,
   innerClassName,
   objectFit = 'contain',
-  sizes = '(max-width: 768px) 100vw, 50vw',
-  quality = 80,
-  priority = false,
-  unoptimized = false,
   onError,
+  sizes: _sizes,
+  quality: _quality,
+  unoptimized: _unoptimized,
+  priority: _priority,
 }: FeatureImageRoundedProps) {
   const radius = ZIGZAG_IMAGE_RADIUS;
-  const clipStyle = {
-    borderRadius: radius,
-    overflow: 'hidden' as const,
-    clipPath: `inset(0 round ${radius})`,
-    WebkitClipPath: `inset(0 round ${radius})`,
-    isolation: 'isolate' as const,
-  } as React.CSSProperties;
+
   return (
     <div
-      className={cn('feature-image-rounded', className)}
+      className={cn('feature-image-rounded block overflow-hidden', className)}
       data-feature-image
       style={{
         borderRadius: radius,
         overflow: 'hidden',
-        display: 'block',
-        ...clipStyle,
       } as React.CSSProperties}
     >
+      {/* Eén wrapper: aspect-ratio + overflow hidden. Geen Next/Image = geen span die clipping breekt. */}
       <div
         className={cn('relative w-full overflow-hidden', innerClassName)}
-        style={{ ...clipStyle } as React.CSSProperties}
+        style={{
+          borderRadius: radius,
+          overflow: 'hidden',
+        } as React.CSSProperties}
       >
-        {/* Clip-wrapper: force rounded corners on Next/Image output (span + img) */}
-        <div
-          className="absolute inset-0 overflow-hidden"
-          style={{ ...clipStyle } as React.CSSProperties}
-          aria-hidden="true"
-        >
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            className={cn(objectFit === 'cover' ? 'object-cover' : 'object-contain', 'feature-image-rounded-img')}
-            style={{ borderRadius: radius } as React.CSSProperties}
-            sizes={sizes}
-            quality={quality}
-            priority={priority}
-            loading={priority ? undefined : 'lazy'}
-            placeholder="blur"
-            blurDataURL={BLUR_PLACEHOLDER}
-            unoptimized={unoptimized}
-            onError={onError}
-          />
-        </div>
+        <img
+          src={src}
+          alt={alt}
+          className={cn(
+            'absolute inset-0 h-full w-full',
+            objectFit === 'cover' ? 'object-cover' : 'object-contain'
+          )}
+          style={{
+            borderRadius: radius,
+            display: 'block',
+          } as React.CSSProperties}
+          loading="lazy"
+          decoding="async"
+          onError={onError}
+        />
       </div>
     </div>
   );
