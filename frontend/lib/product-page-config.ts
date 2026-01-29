@@ -59,7 +59,7 @@ export const PRODUCT_PAGE_CONFIG = {
     thumbnails: {
       grid: 'grid grid-cols-4 gap-4', // ✅ FALLBACK: Voor mobile (horizontaal)
       aspectRatio: 'aspect-square', // ✅ VIERKANT: Voor verticale slide
-      borderRadius: 'rounded-md',
+      borderRadius: 'rounded-lg', // ✅ RONDE HOEKEN: Thumbnails met ronde hoeken
       activeBorder: 'ring-2 ring-black ring-offset-2', // ✅ FIX: ring-offset-2 voorkomt overlap
       hoverOpacity: 'hover:opacity-75',
       // ✅ VERTICALE SLIDE: Links van hoofdafbeelding
@@ -267,7 +267,7 @@ export const PRODUCT_PAGE_CONFIG = {
 
   // Feature section (ZIGZAG met afbeeldingen - Pergolux style)
   featureSection: {
-    containerSpacing: 'space-y-8 md:space-y-12 lg:space-y-16', // ✅ COMPACTER: Minder ruimte tussen zigzag secties (was space-y-20 lg:space-y-32)
+    containerSpacing: 'space-y-6 md:space-y-10 lg:space-y-12', // ✅ COMPACTER: Dunner/strakker, minder ruimte
     zigzag: {
       // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - MOBIEL: ECHT MINDER PADDING
       leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-0 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: gap-0 (0px) - echt dichtbij, DESKTOP: gap-8 (32px) tablet, gap-12 (48px) desktop
@@ -297,8 +297,8 @@ export const PRODUCT_PAGE_CONFIG = {
     text: {
       container: 'space-y-2 md:space-y-6 w-full md:w-auto', // ✅ MOBIEL: ECHT MINDER spacing tussen titel en beschrijving (space-y-2 = 8px ipv space-y-3)
       title: {
-        fontSize: 'text-xl sm:text-2xl lg:text-3xl', // ✅ MOBIEL: Kleiner op mobiel zodat titel op 1 regel past (text-xl = 20px ipv text-3xl = 30px)
-        fontWeight: 'font-bold', // ✅ BOLD: Voor betere gradient zichtbaarheid
+        fontSize: 'text-xl sm:text-2xl lg:text-3xl', // ✅ MOBIEL: Kleiner op mobiel zodat titel op 1 regel past
+        fontWeight: 'font-medium', // ✅ DUNNER: Zigzag titels dunner (was font-bold)
         textColor: 'text-black', // ✅ FALLBACK: Zwart als gradient niet werkt
         letterSpacing: 'tracking-tight', // ✅ EXACT ZELFDE: Zoals productnaam
         textAlign: 'text-center md:text-left', // ✅ MOBIEL: Centraal, desktop links

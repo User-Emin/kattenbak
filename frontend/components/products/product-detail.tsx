@@ -636,24 +636,24 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             {/* ✅ MOBIEL: Breadcrumb VERWIJDERD voor edge-to-edge - Geen padding tussen navbar en afbeelding */}
             {/* Breadcrumb op mobiel weggelaten voor echte edge-to-edge afbeelding */}
             
-            {/* Main Image Container - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
+            {/* Main Image Container - ✅ Afbeelding direct zichtbaar, minder gap */}
             <div className={cn(
               'flex flex-col', 
-              'gap-3',
-              'w-full' // ✅ VOLLEDIGE BREEDTE: Neem volledige breedte
+              'gap-2',
+              'w-full'
             )}>
-              {/* Main Image - ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
+              {/* Main Image - ✅ Direct zichtbaar, ronde hoeken */}
               <div 
                 className={cn(
                   'relative', 
                   'w-full',
-                  'aspect-square', // ✅ 1200x1200: Perfect vierkant (1:1) voor optimale weergave
-                  'md:rounded-lg', // ✅ DESKTOP: Border radius alleen op desktop
+                  'aspect-square',
+                  'rounded-lg', // ✅ RONDE HOEKEN: Hoofdafbeelding altijd
                   CONFIG.gallery.mainImage.bgColor, 
                   'overflow-hidden', 
-                  'flex items-center justify-center', // ✅ CENTREREN: Afbeelding gecentreerd
-                  'min-h-[300px] sm:min-h-[400px] lg:min-h-[600px]', // ✅ 1200x1200: Voldoende ruimte voor optimale weergave
-                  isSwiping && 'transition-transform duration-300 ease-out' // ✅ SMOOTH: Smooth swipe animatie
+                  'flex items-center justify-center',
+                  'min-h-[280px] sm:min-h-[360px] lg:min-h-[560px]', // ✅ Compacter: afbeelding direct meer zichtbaar
+                  isSwiping && 'transition-transform duration-300 ease-out'
                 )}
                 onTouchStart={onTouchStart}
                 onTouchMove={onTouchMove}
@@ -721,32 +721,31 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               </div>
 
-              {/* ✅ THUMBNAILS ONDER: Horizontaal scrollbaar (zowel desktop als mobiel) */}
+              {/* ✅ THUMBNAILS: Groter, ronde hoeken, direct zichtbaar */}
               {displayImagesSafe.length > 1 && (
                 <div className={cn(
-                  'flex flex-row gap-3 overflow-x-auto', // ✅ RUIMTE: Meer gap tussen thumbnails (gap-3)
+                  'flex flex-row gap-2 overflow-x-auto',
                   'w-full',
-                  'px-4 md:px-6', // ✅ PADDING: Padding op alle schermen
+                  'px-2 md:px-4',
                   'smooth-scroll',
-                  'py-3', // ✅ PADDING: Meer verticale padding (py-3 = 12px)
-                  'max-w-full' // ✅ SCROLL STOP: Voorkom oneindig scrollen
+                  'py-2',
+                  'max-w-full'
                 )}>
                   {displayImagesSafe.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImageIndex(index)}
                       className={cn(
-                        'w-20 h-20 flex-shrink-0', // ✅ COMPACT: Kleinere thumbnails
-                        CONFIG.gallery.thumbnails.borderRadius,
+                        'w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden', // ✅ Groter, ronde hoeken
                         CONFIG.gallery.thumbnails.hoverOpacity,
-                        'relative overflow-hidden bg-gray-100',
+                        'relative bg-gray-100',
                         'transition-all',
-                        'border-2', // ✅ FIX: Base border voor alle thumbnails
-                        'p-1', // ✅ PADDING: Padding binnen thumbnail button (p-1 = 4px)
+                        'border-2',
+                        'p-0.5',
                         index === selectedImageIndex 
-                          ? 'border-black z-10' // ✅ FIX: Zwarte border met z-index voor geselecteerde thumbnail
-                          : 'border-transparent', // ✅ FIX: Transparante border voor niet-geselecteerde
-                        index > 0 && 'ml-0' // ✅ GEEN MARGIN: Direct naast elkaar
+                          ? 'border-black z-10'
+                          : 'border-transparent',
+                        index > 0 && 'ml-0'
                       )}
                     >
                       <Image
