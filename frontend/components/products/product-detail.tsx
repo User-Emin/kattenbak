@@ -800,20 +800,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </h1>
               
 
-              {/* ✅ BOTTOM CART: Zwarte bar, button blauw met wit, tekst iets vetgedrukt (slimme variabelen) */}
-              <div className={cn(
-                CONFIG.info.bottomCart.container.bg,
-                CONFIG.info.bottomCart.container.textColor,
-                CONFIG.info.bottomCart.container.padding,
-                CONFIG.info.bottomCart.container.borderRadius,
-                CONFIG.info.bottomCart.container.textWeight,
-                'mt-4'
-              )}>
+              {/* ✅ BOTTOM CART: Zwarte bar (inline fallback zodat altijd zwart), button blauw met wit */}
+              <div
+                className={cn(
+                  CONFIG.info?.bottomCart?.container?.bg ?? 'bg-black',
+                  CONFIG.info?.bottomCart?.container?.textColor ?? 'text-white',
+                  CONFIG.info?.bottomCart?.container?.padding ?? 'p-5 sm:p-6',
+                  CONFIG.info?.bottomCart?.container?.borderRadius ?? 'rounded-lg',
+                  CONFIG.info?.bottomCart?.container?.textWeight ?? 'font-medium',
+                  'mt-4'
+                )}
+                style={{ backgroundColor: '#000' }}
+              >
               {/* Price - ✅ VARIANT SYSTEM: Show variant-adjusted price */}
               <div className={cn(CONFIG.info.price.spacing, 'mb-0')}>
                 <span className={cn(
                   CONFIG.info.price.current.fontSize,
-                  CONFIG.info.bottomCart.priceWeight,
+                  CONFIG.info?.bottomCart?.priceWeight ?? 'font-semibold',
                   'text-white'
                 )}>
                   {formatPrice(displayPrice)}
@@ -960,7 +963,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* Add to Cart Button - ✅ BLAUW met wit (slimme variabelen uit config) */}
+              {/* Add to Cart Button - ✅ BLAUW met wit (inline fallback #3071aa zodat altijd blauw) */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
@@ -972,8 +975,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   CONFIG.info.button.borderRadius,
                   CONFIG.info.button.transition,
                   'relative overflow-hidden group w-full shadow-md hover:shadow-xl duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 mb-1 sm:mb-1.5',
-                  isAdding ? 'bg-green-600 hover:bg-green-600' : cn(CONFIG.info.button.bgColor, CONFIG.info.button.hoverBgColor)
+                  isAdding ? 'bg-green-600 hover:bg-green-600' : (CONFIG.info?.button?.bgColor ?? 'bg-brand')
                 )}
+                style={isAdding ? undefined : { backgroundColor: BRAND_COLORS_HEX.primary }}
+                onMouseEnter={(e) => { if (!isAdding) e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark; }}
+                onMouseLeave={(e) => { if (!isAdding) e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary; }}
               >
                 {isAdding ? (
                   <>
