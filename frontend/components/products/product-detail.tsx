@@ -91,8 +91,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [openSpecs, setOpenSpecs] = useState<Set<number>>(new Set());
   // ✅ ACCORDION TABS: State voor accordion secties (Omschrijving, Specificaties, Vragen)
   const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
-  // ✅ FAQ: State voor FAQ accordion
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   // ✅ SWIPE: Touch/swipe state voor vloeiend swipen
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -802,15 +800,21 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </h1>
               
 
-              {/* ✅ SCHEIDINGSTREEP: Dun of weg tussen naam en prijs */}
-              <div className="border-t border-gray-200 my-2 opacity-50"></div>
-
+              {/* ✅ BOTTOM CART: Zwarte bar, button blauw met wit, tekst iets vetgedrukt (slimme variabelen) */}
+              <div className={cn(
+                CONFIG.info.bottomCart.container.bg,
+                CONFIG.info.bottomCart.container.textColor,
+                CONFIG.info.bottomCart.container.padding,
+                CONFIG.info.bottomCart.container.borderRadius,
+                CONFIG.info.bottomCart.container.textWeight,
+                'mt-4'
+              )}>
               {/* Price - ✅ VARIANT SYSTEM: Show variant-adjusted price */}
-              <div className={CONFIG.info.price.spacing}>
+              <div className={cn(CONFIG.info.price.spacing, 'mb-0')}>
                 <span className={cn(
                   CONFIG.info.price.current.fontSize,
-                  CONFIG.info.price.current.fontWeight,
-                  CONFIG.info.price.current.textColor
+                  CONFIG.info.bottomCart.priceWeight,
+                  'text-white'
                 )}>
                   {formatPrice(displayPrice)}
                 </span>
@@ -840,7 +844,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       }
                     }
                     return (
-                      <span className="text-base text-gray-500 line-through ml-3">
+                      <span className="text-base text-gray-300 line-through ml-3">
                         {formatPrice(displayComparePrice)}
                       </span>
                     );
@@ -862,28 +866,25 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   }
                   
                   return (
-                    <span className="text-sm text-gray-500 ml-2">
+                    <span className="text-sm text-gray-300 ml-2">
                       {adjustment > 0 ? '+' : ''}{formatPrice(adjustment)}
                     </span>
                   );
                 })()}
               </div>
-              
-              {/* ✅ VARIANT SYSTEM: Variant Selector - OPTIMAAL: Label met gekozen kleur opzelfde regel */}
+
+              {/* ✅ VARIANT SYSTEM: Variant Selector - wit/grijs op zwart */}
               {variants.length > 0 && (
-                <div className="mt-6 mb-4">
+                <div className="mt-4 mb-4">
                   <div className="flex items-center gap-3 flex-wrap mb-3">
-                    <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                    <label className="text-sm text-gray-200 whitespace-nowrap">
                       Kies een kleur:
                     </label>
-                    {/* ✅ Gekozen kleur opzelfde regel als label */}
                     {activeVariant && (
-                      <span className="text-sm text-gray-600">
-                        <span className="font-medium">{activeVariant.name}</span>
+                      <span className="text-sm text-gray-200">
+                        <span>{activeVariant.name}</span>
                         {activeVariant.stock > 0 && activeVariant.stock < 10 && (
-                          <span className="ml-2 text-orange-600">
-                            (Nog {activeVariant.stock} op voorraad)
-                          </span>
+                          <span className="ml-2 text-amber-300">(Nog {activeVariant.stock} op voorraad)</span>
                         )}
                       </span>
                     )}
@@ -908,8 +909,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                             'transition-all',
                             'overflow-hidden',
                             isSelected
-                              ? 'border-black'
-                              : 'border-gray-300 hover:border-gray-400',
+                              ? 'border-white ring-2 ring-white ring-offset-2 ring-offset-black'
+                              : 'border-gray-500 hover:border-gray-400',
                             isOutOfStock && 'opacity-50 cursor-not-allowed grayscale'
                           )}
                           title={variant.name + (isOutOfStock ? ' (Niet op voorraad)' : '')}
@@ -931,8 +932,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                               style={{ backgroundColor: variant.colorHex }}
                             />
                           ) : (
-                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                              <span className="text-xs text-gray-500 text-center px-1">{variant.colorName || variant.name}</span>
+                            <div className="w-full h-full bg-gray-600 flex items-center justify-center">
+                              <span className="text-xs text-gray-300 text-center px-1">{variant.colorName || variant.name}</span>
                             </div>
                           )}
                           {isOutOfStock && (
@@ -947,33 +948,31 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* ✅ SERVICE USPs - BOVEN WINKELWAGEN BUTTON: 3 USPs grijs en iets groter (niet dikgedrukt) */}
+              {/* ✅ SERVICE USPs - Iets vetgedrukt, wit/grijs op zwart */}
               {PRODUCT_CONTENT.serviceUsps.length > 0 && (
                 <div className="flex flex-col gap-2.5 sm:gap-3 mb-4 sm:mb-5">
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => (
                     <div key={index} className="flex items-center gap-2.5 text-base sm:text-lg">
-                      {/* ✅ BLAUW VIJKJE: Exact blauw #3071aa - alleen vinkje is blauw */}
-                      <Check
-                        className="w-5 h-5 sm:w-5 sm:h-5 flex-shrink-0"
-                        strokeWidth={2.5}
-                        style={{ color: BRAND_COLORS_HEX.primary }}
-                      />
-                      {/* ✅ GRIJZE TEKST: Niet dikgedrukt, grijs, iets groter */}
-                      <span className="text-gray-600 font-normal">
-                        {usp.text}
-                      </span>
+                      <Check className="w-5 h-5 flex-shrink-0 text-brand" strokeWidth={2.5} />
+                      <span className="text-gray-200">{usp.text}</span>
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* Add to Cart Button - ✅ ZWART: Zwarte button in plaats van blauw */}
+              {/* Add to Cart Button - ✅ BLAUW met wit (slimme variabelen uit config) */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
                 className={cn(
-                  'relative overflow-hidden group w-full py-5 sm:py-6 text-lg sm:text-xl font-semibold rounded-lg text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 mb-1 sm:mb-1.5',
-                  isAdding ? 'bg-green-600 hover:bg-green-600' : 'bg-black hover:bg-gray-900' // ✅ ZWART: Zwarte button (bg-black) in plaats van blauw
+                  CONFIG.info.button.size,
+                  CONFIG.info.button.fontSize,
+                  CONFIG.info.button.fontWeight,
+                  CONFIG.info.button.textColor,
+                  CONFIG.info.button.borderRadius,
+                  CONFIG.info.button.transition,
+                  'relative overflow-hidden group w-full shadow-md hover:shadow-xl duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 mb-1 sm:mb-1.5',
+                  isAdding ? 'bg-green-600 hover:bg-green-600' : cn(CONFIG.info.button.bgColor, CONFIG.info.button.hoverBgColor)
                 )}
               >
                 {isAdding ? (
@@ -989,12 +988,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ BEZORGTIJD - Direct onder winkelwagen button (iets meer padding) - BLAUW */}
+              {/* ✅ BEZORGTIJD - Iets vetgedrukt, wit op zwart */}
               <div className="flex items-center justify-center mt-2 sm:mt-2.5 mb-0 -mx-2 sm:mx-0">
-                <Truck className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5 text-brand" />
-                <span className="text-sm sm:text-base" style={{ color: DESIGN_SYSTEM.colors.text.primary, fontWeight: 500 }}>
-                  <span>Bezorgtijd: <span className="font-normal">1-2 werkdagen</span></span>
+                <Truck className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5 text-white" />
+                <span className="text-sm sm:text-base text-gray-200">
+                  Bezorgtijd: <span className="text-white">1-2 werkdagen</span>
                 </span>
+              </div>
               </div>
 
               {/* ✅ LET OP: Dikker tekst zoals USPs - BOVEN specificaties */}
@@ -1303,105 +1303,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <ProductComparisonTable productImages={originalImages} />
       </div>
 
-      {/* ✅ FAQ SECTION: Verplaatst van homepage naar productdetail voor betere SEO */}
-      {PRODUCT_CONTENT.faqs && PRODUCT_CONTENT.faqs.length > 0 && (
-        <section 
-          className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}
-          style={{
-            backgroundColor: DESIGN_SYSTEM.colors.secondary,
-          }}
-        >
-          <div className="max-w-4xl mx-auto">
-            {/* Section Heading */}
-            <div className="text-center mb-12">
-              <h2 
-                className="mb-4"
-                style={{
-                  fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
-                  fontSize: DESIGN_SYSTEM.typography.fontSize['4xl'],
-                  fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
-                  color: DESIGN_SYSTEM.colors.text.primary,
-                  letterSpacing: DESIGN_SYSTEM.typography.letterSpacing.tight,
-                }}
-              >
-                Vragen over ALP1071
-              </h2>
-              <p 
-                style={{
-                  fontSize: DESIGN_SYSTEM.typography.fontSize.lg,
-                  fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-                  color: DESIGN_SYSTEM.colors.text.secondary,
-                }}
-              >
-                Alles wat je moet weten over de automatische kattenbak
-              </p>
-            </div>
-
-            {/* FAQ Accordion */}
-            <div className="space-y-4">
-              {PRODUCT_CONTENT.faqs.map((faq, i) => (
-                <div 
-                  key={i} 
-                  className="overflow-hidden transition-all"
-                  style={{
-                    backgroundColor: DESIGN_SYSTEM.colors.secondary,
-                    border: `1px solid ${DESIGN_SYSTEM.colors.border.default}`,
-                    borderRadius: DESIGN_SYSTEM.effects.borderRadius.sm,
-                  }}
-                >
-                  <button
-                    onClick={() => {
-                      // ✅ FAQ STATE: Toggle open/closed
-                      setOpenFaq(openFaq === i ? null : i);
-                    }}
-                    className="w-full flex items-center justify-between text-left transition-colors"
-                    style={{
-                      padding: DESIGN_SYSTEM.spacing[6],
-                      backgroundColor: DESIGN_SYSTEM.colors.secondary,
-                    }}
-                  >
-                    <span 
-                      style={{
-                        fontSize: DESIGN_SYSTEM.typography.fontSize.base,
-                        fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-                        color: DESIGN_SYSTEM.colors.text.primary,
-                      }}
-                    >
-                      {faq.q}
-                    </span>
-                    {openFaq === i ? (
-                      <ChevronUp className="h-5 w-5 flex-shrink-0 ml-4" style={{ color: DESIGN_SYSTEM.colors.text.primary }} />
-                    ) : (
-                      <ChevronDown className="h-5 w-5 flex-shrink-0 ml-4" style={{ color: DESIGN_SYSTEM.colors.text.primary }} />
-                    )}
-                  </button>
-                  {openFaq === i && (
-                    <div 
-                      className="border-t"
-                      style={{
-                        padding: DESIGN_SYSTEM.spacing[6],
-                        borderColor: DESIGN_SYSTEM.colors.border.default,
-                        backgroundColor: DESIGN_SYSTEM.colors.gray[50],
-                      }}
-                    >
-                      <p 
-                        style={{
-                          fontSize: DESIGN_SYSTEM.typography.fontSize.base,
-                          fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-                          color: DESIGN_SYSTEM.colors.text.secondary,
-                          lineHeight: DESIGN_SYSTEM.typography.lineHeight.relaxed,
-                        }}
-                      >
-                        {faq.a}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* ✅ FAQ sectie "Vragen over ALP1071" verwijderd; SEO behouden via FAQJsonLd (FAQPage schema) */}
 
     </div>
   );

@@ -136,13 +136,24 @@ export const PRODUCT_PAGE_CONFIG = {
     button: {
       size: 'w-full py-6 md:py-6', // ✅ DRUK MIJ: Verticaal langer (py-6 ipv py-4) - meer prominent
       fontSize: 'text-2xl md:text-2xl', // ✅ GROOT: Echt grote tekst (text-2xl ipv text-lg) - veel opvallender
-      fontWeight: 'font-bold', // ✅ DIKKER: font-bold - vooral mobiel
-      bgColor: 'bg-black', // ✅ ZWART: Volledig zwart (was bg-blue-600)
-      hoverBgColor: 'hover:bg-gray-900', // ✅ ZWART: Donkergrijs hover (was hover:bg-blue-700)
+      fontWeight: 'font-semibold', // ✅ CTA: Iets vetgedrukt, wit op blauw
+      bgColor: 'bg-brand', // ✅ BLAUW: Blauw met wit tekst (slimme variabele)
+      hoverBgColor: 'hover:bg-brand-dark', // ✅ BLAUW DARK: Hover (slimme variabele)
       textColor: 'text-white',
-      borderRadius: DESIGN_SYSTEM.button.borderRadius, // ✅ DRY: Via DESIGN_SYSTEM (exact zoals Let op kaart)
-      transition: 'transition-all duration-200 hover:scale-[1.02]', // ✅ DRUK MIJ: Scale effect voor "druk mij" vibe
-      icon: 'w-6 h-6 md:w-6 md:h-6', // ✅ DRUK MIJ: Groter icon (w-6 h-6 ipv w-5 h-5) - meer prominent
+      borderRadius: DESIGN_SYSTEM.button.borderRadius, // ✅ DRY: Via DESIGN_SYSTEM
+      transition: 'transition-all duration-200 hover:scale-[1.02]',
+      icon: 'w-6 h-6 md:w-6 md:h-6',
+    },
+    // ✅ BOTTOM CART: Zwarte bar met prijs + button, button blauw met wit (slimme variabelen)
+    bottomCart: {
+      container: {
+        bg: 'bg-black',
+        textColor: 'text-white',
+        padding: 'p-5 sm:p-6',
+        borderRadius: 'rounded-lg',
+        textWeight: 'font-medium', // alle tekst in bar iets vetgedrukter
+      },
+      priceWeight: 'font-semibold', // prijs iets dikker
     },
     usps: {
       spacing: 'grid grid-cols-3 gap-3 mt-6', // ✅ COMPACTER: Kleinere gap (gap-3 ipv gap-4)
