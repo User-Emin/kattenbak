@@ -114,7 +114,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     });
   };
   // ✅ VARIANT SYSTEM: Selected variant state
-  const [selectedVariant, setSelectedVariant] = useState<string | null>(null); // Variant ID
+  const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
+  // ✅ Vragen accordion: welke FAQ open (zoals openSpecs)
+  const [openFaqs, setOpenFaqs] = useState<Set<number>>(new Set());
 
   // 🚀 PERFORMANCE: Preload first valid image only (no placeholder/SVG)
   useEffect(() => {
@@ -529,15 +531,20 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     },
   ];
 
-  // Toggle specification open/close
   const toggleSpec = (index: number) => {
     setOpenSpecs(prev => {
       const newSet = new Set(prev);
-      if (newSet.has(index)) {
-        newSet.delete(index);
-      } else {
-        newSet.add(index);
-      }
+      if (newSet.has(index)) newSet.delete(index);
+      else newSet.add(index);
+      return newSet;
+    });
+  };
+
+  const toggleFaq = (index: number) => {
+    setOpenFaqs(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) newSet.delete(index);
+      else newSet.add(index);
       return newSet;
     });
   };
@@ -968,13 +975,13 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* ✅ SERVICE USPs - Iets vetgedrukt, wit/grijs op zwart */}
+              {/* ✅ SERVICE USPs - Vetgedrukt en opvallender (config: serviceUspTextWeight, serviceUspEmphasis) */}
               {PRODUCT_CONTENT.serviceUsps.length > 0 && (
                 <div className="flex flex-col gap-2.5 sm:gap-3 mb-4 sm:mb-5">
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => (
-                    <div key={index} className="flex items-center gap-2.5 text-base sm:text-lg">
+                    <div key={index} className={cn('flex items-center gap-2.5 text-base sm:text-lg', CONFIG.info?.bottomCart?.serviceUspEmphasis ?? '')}>
                       <Check className="w-5 h-5 flex-shrink-0 text-brand" strokeWidth={2.5} />
-                      <span className="text-gray-200">{usp.text}</span>
+                      <span className={cn('text-gray-100', CONFIG.info?.bottomCart?.serviceUspTextWeight ?? 'font-semibold')}>{usp.text}</span>
                     </div>
                   ))}
                 </div>
@@ -1011,11 +1018,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ BEZORGTIJD - Iets vetgedrukt, wit op zwart */}
+              {/* ✅ BEZORGTIJD - Uit config (geen hardcode) */}
               <div className="flex items-center justify-center mt-2 sm:mt-2.5 mb-0 -mx-2 sm:mx-0">
                 <Truck className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5 text-white" />
-                <span className="text-sm sm:text-base text-gray-200">
-                  Bezorgtijd: <span className="text-white">1-2 werkdagen</span>
+                <span className={cn('text-sm sm:text-base text-gray-200', CONFIG.info?.bottomCart?.serviceUspTextWeight ?? 'font-semibold')}>
+                  {PRODUCT_CONTENT.delivery.label} <span className="text-white">{PRODUCT_CONTENT.delivery.days}</span>
                 </span>
               </div>
               </div>
@@ -1303,7 +1310,46 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   )}
                 </div>
 
-                {/* ✅ VERWIJDERD: Vragen Accordion - geen redundantie, FAQ al in JSON-LD */}
+                {/* ✅ Vragen accordion - open blok zoals Specificaties, SEO op echte info (content.config) */}
+                <div>
+                  <button
+                    onClick={() => toggleAccordion('vragen')}
+                    className="w-full px-4 py-2.5 text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md transition-all duration-200 flex items-center justify-between group"
+                  >
+                    <span className="text-sm md:text-base font-medium text-gray-900">
+                      {PRODUCT_CONTENT.vragenSection.title}
+                    </span>
+                    <ChevronDown
+                      className={cn(
+                        'w-4 h-4 text-gray-500 transition-transform duration-200',
+                        openAccordions.has('vragen') && 'rotate-180'
+                      )}
+                    />
+                  </button>
+                  {openAccordions.has('vragen') && PRODUCT_CONTENT.faqs && PRODUCT_CONTENT.faqs.length > 0 && (
+                    <div className="mt-4 space-y-2">
+                      {PRODUCT_CONTENT.faqs.map((faq, index) => {
+                        const isOpen = openFaqs.has(index);
+                        return (
+                          <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+                            <button
+                              onClick={() => toggleFaq(index)}
+                              className="w-full px-4 py-3 text-left bg-white hover:bg-gray-50 transition-colors flex items-center justify-between"
+                            >
+                              <span className="text-sm md:text-base font-medium text-gray-900">{faq.q}</span>
+                              <ChevronDown className={cn('w-4 h-4 text-gray-600 transition-transform duration-200', isOpen && 'rotate-180')} />
+                            </button>
+                            {isOpen && (
+                              <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
+                                <p className="text-sm md:text-base text-gray-700 leading-relaxed">{faq.a}</p>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

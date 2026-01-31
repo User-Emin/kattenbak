@@ -151,9 +151,12 @@ export const PRODUCT_PAGE_CONFIG = {
         textColor: 'text-white',
         padding: 'p-5 sm:p-6',
         borderRadius: 'rounded-lg',
-        textWeight: 'font-medium', // alle tekst in bar iets vetgedrukter
+        textWeight: 'font-medium',
       },
-      priceWeight: 'font-semibold', // prijs iets dikker
+      priceWeight: 'font-semibold',
+      // ✅ USPs vetgedrukter en opvallender (geen magic values)
+      serviceUspTextWeight: 'font-semibold',
+      serviceUspEmphasis: 'drop-shadow-sm', // subtiel opvallender
     },
     usps: {
       spacing: 'grid grid-cols-3 gap-3 mt-6', // ✅ COMPACTER: Kleinere gap (gap-3 ipv gap-4)

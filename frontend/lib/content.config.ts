@@ -360,21 +360,24 @@ Perfect voor katten van 1,5KG tot 12,5KG en geschikt vanaf 6 maanden leeftijd. N
     // Tekst wordt dynamisch uit product.description gehaald
   },
   
-  // Service USPs - ✅ BOVEN WINKELWAGEN BUTTON: 3 USPs met GRIJZE tekst (niet blauw)
+  // Service USPs - ✅ Vetgedrukt en opvallend (centraal maintainable)
   serviceUsps: [
-    {
-      text: 'Volledig automatisch • App bediening',
-      // ✅ GEEN HIGHLIGHT: Tekst is volledig grijs, alleen vinkje is blauw
-    },
-    {
-      text: 'Binnen 30 dagen gratis retour • 1 jaar garantie',
-      // ✅ GEEN HIGHLIGHT: Tekst is volledig grijs, alleen vinkje is blauw
-    },
-    {
-      text: 'Zelfreinigend systeem • Hygiënisch',
-      // ✅ GEEN HIGHLIGHT: Tekst is volledig grijs, alleen vinkje is blauw
-    },
+    { text: 'Volledig automatisch • App bediening' },
+    { text: 'Binnen 30 dagen gratis retour • 1 jaar garantie' },
+    { text: 'Zelfreinigend systeem • Hygiënisch' },
   ],
+
+  // Bezorgtijd - centraal (geen hardcode)
+  delivery: {
+    label: 'Bezorgtijd:',
+    days: '1-2 werkdagen',
+  },
+
+  // Vragen sectie - titel accordion (zoals Specificaties)
+  vragenSection: {
+    title: 'Vragen',
+    subtitle: 'Veelgestelde vragen op basis van productinformatie',
+  },
 
   // Product-specifieke USPs - ✅ VERWIJDERD: Geen foto's meer, alleen service USPs met vinkjes
   productUsps: [],
@@ -420,6 +423,10 @@ Perfect voor katten van 1,5KG tot 12,5KG en geschikt vanaf 6 maanden leeftijd. N
     {
       q: 'Hoe installeer ik de kattenbak?',
       a: 'De installatie is eenvoudig: plaats de kattenbak op een vlakke ondergrond, sluit de stroomadapter aan, download de app en volg de setup instructies. De hele installatie duurt minder dan 10 minuten. Geen gereedschap nodig.',
+    },
+    {
+      q: 'Wat zijn de afmetingen en het stroomverbruik?',
+      a: 'De kattenbak heeft een compact footprint met groot interieur voor katten tot 7kg. Het apparaat werkt op netstroom via de meegeleverde adapter en verbruikt minimaal tijdens stand-by; het reinigingsproces duurt kort. Exacte afmetingen en wattage staan in de producthandleiding.',
     },
   ],
 } as const;
