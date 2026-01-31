@@ -34,6 +34,7 @@ import { ProductFeatureSlider } from "@/components/products/product-feature-slid
 import type { Product } from "@/types/product";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 import { BRAND_COLORS_HEX } from "@/lib/color-config"; // ✅ BLAUW: Voor vinkjes
+import { PRODUCT_FETCH_CONFIG } from "@/lib/product-fetch.config"; // ✅ Slimme variabelen retry/messages
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -56,7 +57,8 @@ import {
   Maximize,
   Truck,
   Lock,
-  AlertTriangle
+  AlertTriangle,
+  RefreshCw
 } from "lucide-react";
 
 interface ProductDetailProps {
@@ -83,6 +85,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   // State management
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  /** ✅ 404 vs 5xx: alleen "Product niet gevonden" bij 404; bij 5xx "Server tijdelijk niet beschikbaar" + Probeer opnieuw */
+  const [productError, setProductError] = useState<'not_found' | 'server_error' | null>(null);
+  const [retryTrigger, setRetryTrigger] = useState(0); // Increment to re-run fetch (Probeer opnieuw)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
@@ -130,87 +135,61 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     }
   }, [product]);
 
-  // Fetch product data - ✅ FIX: Retry logic voor betrouwbaar laden
+  // Fetch product data – retry + 404 vs 5xx (slimme variabelen: PRODUCT_FETCH_CONFIG)
   useEffect(() => {
     let isMounted = true;
     let retryCount = 0;
-    const MAX_RETRIES = 5; // ✅ VERHOOGD: Meer retries voor betrouwbaarheid
-    const RETRY_DELAY = 1000; // 1 second
+    const { MAX_RETRIES, RETRY_DELAY_MS, RATE_LIMIT_DELAY_MULTIPLIER } = PRODUCT_FETCH_CONFIG;
 
     const loadProduct = async () => {
+      setProductError(null); // Clear previous error on (re)load
       try {
         const productData = await productsApi.getBySlug(slug);
         if (isMounted && productData) {
           setProduct(productData);
           setLoading(false);
         } else if (isMounted) {
-          // ✅ FIX: Als product null is, probeer opnieuw (mogelijk tijdelijke fout)
           if (retryCount < MAX_RETRIES) {
             retryCount++;
-            setTimeout(() => {
-              if (isMounted) {
-                loadProduct();
-              }
-            }, RETRY_DELAY * retryCount);
+            setTimeout(() => { if (isMounted) loadProduct(); }, RETRY_DELAY_MS * retryCount);
             return;
           }
           setLoading(false);
         }
       } catch (error: any) {
-        // ✅ SECURITY: Log error server-side only (geen gevoelige data)
         if (typeof window === 'undefined') {
           console.error('Product load error:', error?.message || 'Unknown error');
         }
-        
-        // ✅ RETRY: Probeer opnieuw bij network errors, 502, 503, 504, 429 (rate limit)
-        if (retryCount < MAX_RETRIES && (
-          error?.isNetworkError || 
-          error?.isGatewayError || 
-          error?.status === 429 || // ✅ FIX: Retry bij rate limiting
-          error?.status === 502 ||
-          error?.status === 503 ||
-          error?.status === 504 ||
-          error?.message?.includes('verbinding') ||
-          error?.message?.includes('tijdelijk niet beschikbaar') ||
-          error?.message?.includes('Bad Gateway') ||
-          error?.message?.includes('Service Unavailable') ||
-          error?.message?.includes('Too many requests') ||
-          error?.message?.includes('rate limit')
-        )) {
+        const status = error?.status;
+        const isRetryable = error?.isNetworkError || error?.isGatewayError ||
+          status === 429 || status === 502 || status === 503 || status === 504 ||
+          error?.message?.includes('verbinding') || error?.message?.includes('tijdelijk niet beschikbaar') ||
+          error?.message?.includes('Bad Gateway') || error?.message?.includes('Service Unavailable') ||
+          error?.message?.includes('Too many requests') || error?.message?.includes('rate limit');
+
+        if (retryCount < MAX_RETRIES && isRetryable) {
           retryCount++;
-          // ✅ FIX: Langere delay bij rate limiting (429)
-          const delay = error?.status === 429 ? RETRY_DELAY * retryCount * 2 : RETRY_DELAY * retryCount;
-          setTimeout(() => {
-            if (isMounted) {
-              loadProduct();
-            }
-          }, delay); // Exponential backoff, langer bij rate limiting
+          const delay = status === 429
+            ? RETRY_DELAY_MS * retryCount * RATE_LIMIT_DELAY_MULTIPLIER
+            : RETRY_DELAY_MS * retryCount;
+          setTimeout(() => { if (isMounted) loadProduct(); }, delay);
           return;
         }
-        
-        // ✅ FIX: Alleen "Product niet gevonden" tonen bij 404, niet bij andere errors
+
         if (isMounted) {
-          // Alleen set loading false als het echt niet gevonden is (404)
-          // Bij andere errors blijven we proberen of tonen we een betere error
-          if (error?.status === 404) {
-            setLoading(false);
+          setLoading(false);
+          if (status === 404) {
+            setProductError('not_found');
           } else {
-            // ✅ FIX: Bij andere errors, blijf proberen of toon loading state
-            // Dit voorkomt dat "Product niet gevonden" wordt getoond bij tijdelijke fouten
-            if (retryCount >= MAX_RETRIES) {
-              setLoading(false);
-            }
+            setProductError('server_error');
           }
         }
       }
     };
 
     loadProduct();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [slug]);
+    return () => { isMounted = false; };
+  }, [slug, retryTrigger]);
 
   // 🚀 PERFORMANCE: Show skeleton loading state (not blank spinner) for better UX
   if (loading) {
@@ -257,28 +236,66 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     );
   }
 
-  // ✅ FIX: Product not found - alleen tonen als loading klaar is EN product echt niet bestaat
-  // Dit voorkomt dat "Product niet gevonden" wordt getoond tijdens retries
-  if (!loading && !product) {
+  // ✅ 404: Product niet gevonden (alleen bij HTTP 404)
+  if (!loading && productError === 'not_found') {
+    const { title, description, ctaText } = PRODUCT_FETCH_CONFIG.NOT_FOUND;
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-4">
         <AlertTriangle className="w-16 h-16 text-gray-400 mb-4" />
-        <h1 className="text-3xl font-semibold mb-4 text-center">Product niet gevonden</h1>
-        <p className="text-gray-600 mb-6 text-center max-w-md">
-          Het product dat je zoekt bestaat niet of is niet meer beschikbaar.
-        </p>
-        <Link 
-          href="/" 
+        <h1 className="text-3xl font-semibold mb-4 text-center">{title}</h1>
+        <p className="text-gray-600 mb-6 text-center max-w-md">{description}</p>
+        <Link
+          href="/"
           className="inline-flex items-center gap-2 px-6 py-3 text-white rounded-lg transition-colors"
           style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary}
         >
           <Home className="w-5 h-5" />
-          Terug naar Home
+          {ctaText}
         </Link>
       </div>
     );
+  }
+
+  // ✅ 5xx / netwerk: Server tijdelijk niet beschikbaar + Probeer opnieuw
+  if (!loading && productError === 'server_error') {
+    const { title, description, ctaText } = PRODUCT_FETCH_CONFIG.SERVER_ERROR;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-4">
+        <AlertTriangle className="w-16 h-16 text-amber-500 mb-4" />
+        <h1 className="text-3xl font-semibold mb-4 text-center">{title}</h1>
+        <p className="text-gray-600 mb-6 text-center max-w-md">{description}</p>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              setProductError(null);
+              setLoading(true);
+              setRetryTrigger((t) => t + 1);
+            }}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 text-white rounded-lg transition-colors"
+            style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary; }}
+          >
+            <RefreshCw className="w-5 h-5" />
+            {ctaText}
+          </button>
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+          >
+            <Home className="w-5 h-5" />
+            Terug naar Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!loading && !product) {
+    return null; // Geen error state: wacht op volgende retry of mount
   }
 
   // ✅ SECURITY: Early return if product is null (should not happen after check above, but TypeScript safety)
