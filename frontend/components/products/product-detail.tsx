@@ -590,7 +590,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   });
 
   return (
-    <div className="min-h-screen bg-white"> {/* ✅ WIT: Volledig witte achtergrond */}
+    <div className={cn('min-h-screen', CONFIG.layout.pageBg ?? 'bg-gray-200')}> {/* ✅ GRIJS: Hele achtergrond echt grijs, geen kaart */}
       {/* ✅ SEO PHASE 1-3: JSON-LD Structured Data voor Google Rich Results */}
       {typeof window !== 'undefined' && !loading && product && (
         <>
@@ -824,32 +824,32 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </h1>
               
 
-              {/* ✅ BOTTOM CART: Zwarte bar (inline fallback zodat altijd zwart), button blauw met wit */}
+              {/* ✅ BOTTOM CART: Geen kaart – gewoon op grijze achtergrond, tekst zwart (zelfde dikte) */}
               <div
                 className={cn(
-                  CONFIG.info?.bottomCart?.container?.bg ?? 'bg-black',
-                  CONFIG.info?.bottomCart?.container?.textColor ?? 'text-white',
+                  CONFIG.info?.bottomCart?.container?.bg ?? 'bg-transparent',
+                  CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black',
                   CONFIG.info?.bottomCart?.container?.padding ?? 'p-5 sm:p-6',
-                  CONFIG.info?.bottomCart?.container?.borderRadius ?? 'rounded-lg',
+                  CONFIG.info?.bottomCart?.container?.borderRadius ?? 'rounded-none',
                   CONFIG.info?.bottomCart?.container?.textWeight ?? 'font-medium',
                   'mt-4'
                 )}
-                style={{ backgroundColor: '#000' }}
               >
-              {/* ✅ Productnaam in zwarte bar – vetter voor duidelijkheid (config: productNameWeight, productNameSize) */}
+              {/* Productnaam –zelfde dikte, zwart */}
               <p className={cn(
                 CONFIG.info?.bottomCart?.productNameSize ?? 'text-base sm:text-lg',
                 CONFIG.info?.bottomCart?.productNameWeight ?? 'font-semibold',
-                'text-white mb-3'
+                CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black',
+                'mb-3'
               )}>
                 {product.name}
               </p>
-              {/* Price - ✅ VARIANT SYSTEM: Show variant-adjusted price */}
+              {/* Price - variant-adjusted, zwart */}
               <div className={cn(CONFIG.info.price.spacing, 'mb-0')}>
                 <span className={cn(
                   CONFIG.info.price.current.fontSize,
                   CONFIG.info?.bottomCart?.priceWeight ?? 'font-semibold',
-                  'text-white'
+                  CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black'
                 )}>
                   {formatPrice(displayPrice)}
                 </span>
@@ -879,7 +879,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       }
                     }
                     return (
-                      <span className="text-base text-gray-300 line-through ml-3">
+                      <span className="text-base text-gray-600 line-through ml-3">
                         {formatPrice(displayComparePrice)}
                       </span>
                     );
@@ -901,7 +901,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   }
                   
                   return (
-                    <span className="text-sm text-gray-300 ml-2">
+                    <span className="text-sm text-gray-700 ml-2">
                       {adjustment > 0 ? '+' : ''}{formatPrice(adjustment)}
                     </span>
                   );
@@ -913,16 +913,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <div className="mt-4 mb-4">
                   <div className="flex items-center gap-3 flex-wrap mb-3">
                     <label className={cn(
-                      'text-sm text-gray-200 whitespace-nowrap',
+                      'text-sm whitespace-nowrap',
+                      CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black',
                       CONFIG.info?.bottomCart?.colorLabelWeight ?? 'font-semibold'
                     )}>
                       {PRODUCT_CONTENT.bottomCart.colorLabel}
                     </label>
                     {activeVariant && (
-                      <span className={cn('text-sm text-gray-200', CONFIG.info?.bottomCart?.variantNameWeight ?? 'font-semibold')}>
+                      <span className={cn('text-sm', CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black', CONFIG.info?.bottomCart?.variantNameWeight ?? 'font-semibold')}>
                         <span>{activeVariant.name}</span>
                         {activeVariant.stock > 0 && activeVariant.stock < 10 && (
-                          <span className={cn('ml-2', CONFIG.info?.bottomCart?.stockTextWeight ?? 'font-semibold', CONFIG.info?.bottomCart?.stockTextColor ?? 'text-amber-300')}>
+                          <span className={cn('ml-2', CONFIG.info?.bottomCart?.stockTextWeight ?? 'font-semibold', CONFIG.info?.bottomCart?.stockTextColor ?? 'text-gray-800')}>
                             {PRODUCT_CONTENT.bottomCart.stockLabel.replace('{count}', String(activeVariant.stock))}
                           </span>
                         )}
@@ -949,8 +950,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                             'transition-all',
                             'overflow-hidden',
                             isSelected
-                              ? 'border-white ring-2 ring-white ring-offset-2 ring-offset-black'
-                              : 'border-gray-500 hover:border-gray-400',
+                              ? 'border-gray-900 ring-2 ring-gray-900 ring-offset-2 ring-offset-gray-200'
+                              : 'border-gray-500 hover:border-gray-600',
                             isOutOfStock && 'opacity-50 cursor-not-allowed grayscale'
                           )}
                           title={variant.name + (isOutOfStock ? PRODUCT_CONTENT.bottomCart.outOfStockSuffix : '')}
@@ -994,7 +995,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => (
                     <div key={index} className={cn('flex items-center gap-2.5 text-base sm:text-lg', CONFIG.info?.bottomCart?.serviceUspEmphasis ?? '')}>
                       <Check className="w-5 h-5 flex-shrink-0 text-brand" strokeWidth={2.5} />
-                      <span className={cn('text-gray-100', CONFIG.info?.bottomCart?.serviceUspTextWeight ?? 'font-semibold')}>{usp.text}</span>
+                      <span className={cn(CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black', CONFIG.info?.bottomCart?.serviceUspTextWeight ?? 'font-semibold')}>{usp.text}</span>
                     </div>
                   ))}
                 </div>
@@ -1031,11 +1032,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* ✅ BEZORGTIJD - Uit config (geen hardcode) */}
+              {/* Bezorgtijd – zwart op grijze achtergrond */}
               <div className="flex items-center justify-center mt-2 sm:mt-2.5 mb-0 -mx-2 sm:mx-0">
-                <Truck className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5 text-white" />
-                <span className={cn('text-sm sm:text-base text-gray-200', CONFIG.info?.bottomCart?.serviceUspTextWeight ?? 'font-semibold')}>
-                  {PRODUCT_CONTENT.delivery.label} <span className="text-white">{PRODUCT_CONTENT.delivery.days}</span>
+                <Truck className={cn('w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5', CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black')} />
+                <span className={cn('text-sm sm:text-base', CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black', CONFIG.info?.bottomCart?.serviceUspTextWeight ?? 'font-semibold')}>
+                  {PRODUCT_CONTENT.delivery.label} <span className={CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black'}>{PRODUCT_CONTENT.delivery.days}</span>
                 </span>
               </div>
               </div>

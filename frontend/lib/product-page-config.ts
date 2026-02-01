@@ -14,6 +14,8 @@ export const ZIGZAG_IMAGE_RADIUS = '0.5rem' as const;
 export const PRODUCT_PAGE_CONFIG = {
   // Layout configuratie - ✅ SYMMETRISCH: Perfecte balans op alle schermformaten
     layout: {
+      /** ✅ Pagina-achtergrond: echt grijs, geen kaart – alles op achtergrond */
+      pageBg: 'bg-gray-200',
       maxWidth: 'max-w-7xl',
       containerPadding: 'px-4 sm:px-6 md:px-8 lg:px-8', // ✅ SYMMETRISCH: Gelijk links/rechts op alle breakpoints
       containerPaddingMobile: 'px-2 sm:px-4 md:px-8 lg:px-8', // ✅ MOBIEL: Minder padding op mobiel (px-2 ipv px-4)
@@ -144,27 +146,24 @@ export const PRODUCT_PAGE_CONFIG = {
       transition: 'transition-all duration-200 hover:scale-[1.02]',
       icon: 'w-6 h-6 md:w-6 md:h-6',
     },
-    // ✅ BOTTOM CART: Zwarte bar met prijs + button, button blauw met wit (slimme variabelen)
+    // ✅ BOTTOM CART: Geen kaart – gewoon op grijze achtergrond, tekst zwart (zelfde dikte)
     bottomCart: {
       container: {
-        bg: 'bg-black',
-        textColor: 'text-white',
+        bg: 'bg-transparent', // geen kaart, valt in achtergrond
+        textColor: 'text-black',
         padding: 'p-5 sm:p-6',
-        borderRadius: 'rounded-lg',
+        borderRadius: 'rounded-none',
         textWeight: 'font-medium',
       },
-      // ✅ Productnaam in zwarte bar – vetter voor duidelijkheid
       productNameWeight: 'font-semibold',
       productNameSize: 'text-base sm:text-lg',
-      // ✅ "Kies een kleur:" + variantnaam + voorraad – vetter voor duidelijkheid
       colorLabelWeight: 'font-semibold',
       variantNameWeight: 'font-semibold',
       stockTextWeight: 'font-semibold',
-      stockTextColor: 'text-amber-300',
+      stockTextColor: 'text-gray-800',
       priceWeight: 'font-semibold',
-      // ✅ USPs vetgedrukter en opvallender (geen magic values)
       serviceUspTextWeight: 'font-semibold',
-      serviceUspEmphasis: 'drop-shadow-sm', // subtiel opvallender
+      serviceUspEmphasis: 'drop-shadow-sm',
     },
     usps: {
       spacing: 'grid grid-cols-3 gap-3 mt-6', // ✅ COMPACTER: Kleinere gap (gap-3 ipv gap-4)
