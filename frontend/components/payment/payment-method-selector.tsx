@@ -109,7 +109,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
               
               {/* Check */}
               {selectedMethod === method.id && (
-                <Check className="h-5 w-5 text-accent flex-shrink-0" strokeWidth={3} />
+                <Check className="h-5 w-5 flex-shrink-0" strokeWidth={3} style={{ color: '#129DD8' }} />
               )}
             </button>
           ))}

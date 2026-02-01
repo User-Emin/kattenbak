@@ -260,7 +260,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               : DESKTOP_COMPARISON_CONFIG.checkmark.mobile.size
           )}
           style={{ 
-            backgroundColor: isDesktop ? BRAND_COLORS_HEX.white : BRAND_COLORS_HEX.primary,
+            backgroundColor: isDesktop ? BRAND_COLORS_HEX.white : '#129DD8',
             border: isDesktop ? `3px solid ${BRAND_COLORS_HEX.white}` : 'none',
             boxShadow: isDesktop ? `0 2px 8px ${BRAND_COLORS_HEX.gray[900]}40` : 'none'
           }}
@@ -272,7 +272,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 : DESKTOP_COMPARISON_CONFIG.checkmark.mobile.iconSize
             )}
             style={{ 
-              color: isDesktop ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.white,
+              color: isDesktop ? '#129DD8' : BRAND_COLORS_HEX.white,
               strokeWidth: isDesktop ? 3 : 2.5
             }} 
           />

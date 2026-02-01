@@ -989,14 +989,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <div className="flex flex-col gap-2.5 sm:gap-3 mb-4 sm:mb-5">
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => (
                     <div key={index} className={cn('flex items-center gap-2.5 text-base sm:text-lg', CONFIG.info?.bottomCart?.serviceUspEmphasis ?? '')}>
-                      <Check className="w-5 h-5 flex-shrink-0 text-brand" strokeWidth={2.5} />
+                      <Check className="w-5 h-5 flex-shrink-0" strokeWidth={2.5} style={{ color: '#129DD8' }} />
                       <span className={cn(CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black', CONFIG.info?.bottomCart?.serviceUspTextWeight ?? 'font-semibold')}>{usp.text}</span>
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* Add to Cart Button - ✅ BLAUW met wit (inline fallback #3071aa zodat altijd blauw) */}
+              {/* Add to Cart Button - brand blue via BRAND_COLORS_HEX */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
@@ -1016,7 +1016,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               >
                 {isAdding ? (
                   <>
-                    <Check className={CONFIG.info.button.icon} />
+                    <Check className={CONFIG.info.button.icon} style={{ color: '#129DD8' }} />
                     Toegevoegd
                   </>
                 ) : (
@@ -1027,8 +1027,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* Bezorgtijd – 1 lijn, links uitgelijnd (niet meer naar binnen) */}
-              <div className="flex items-center justify-start mt-2 sm:mt-2.5 mb-0 whitespace-nowrap">
+              {/* Bezorgtijd – centraal onder de button (alleen inline styles zodat centrering altijd werkt) */}
+              <div
+                className="mt-2 sm:mt-2.5 mb-0 whitespace-nowrap"
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
                 <Truck className={cn('w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5', CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black')} />
                 <span className={cn('text-sm sm:text-base', CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black', CONFIG.info?.bottomCart?.serviceUspTextWeight ?? 'font-semibold')}>
                   {PRODUCT_CONTENT.delivery.label} <span className={CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black'}>{PRODUCT_CONTENT.delivery.days}</span>

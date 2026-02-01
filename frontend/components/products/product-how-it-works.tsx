@@ -294,13 +294,13 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                       'text-xs sm:text-sm font-semibold',
                       'shadow-lg'
                     )}
-                    style={{ backgroundColor: BRAND_COLORS_HEX.primary }}>
+                    style={{ backgroundColor: '#129DD8' }}>
                       {step.number}
                     </div>
                   </div>
                 )}
                 
-                {/* ✅ SYMBOOL: Icon als fallback (alleen als geen afbeelding) */}
+                {/* Icon als fallback (alleen als geen afbeelding) */}
                 {!step.image && (
                   <div className={cn(
                     'flex-shrink-0',
@@ -317,18 +317,17 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                     <IconComponent className={cn(
                       'w-6 h-6 sm:w-7 sm:h-7 lg:w-6 lg:h-6' // ✅ COMPACT: Kleinere icon size in desktop grid
                     )}
-                    style={{ color: BRAND_COLORS_HEX.primary }} /> {/* ✅ BLAUW: Webshop blauw */}
-                    {/* ✅ NUMMER: Badge met webshop blauw */}
+                    style={{ color: '#129DD8' }} />
                     <div className={cn(
                       'absolute -top-1.5 -right-1.5',
                       'w-6 h-6 sm:w-7 sm:h-7',
                       'flex items-center justify-center',
                       'text-white',
                       'rounded-full',
-                      'text-xs sm:text-sm font-semibold', // ✅ COMPACT: Kleinere tekst
+                      'text-xs sm:text-sm font-semibold',
                       'shadow-lg'
                     )}
-                    style={{ backgroundColor: BRAND_COLORS_HEX.primary }}> {/* ✅ BLAUW: Webshop blauw */}
+                    style={{ backgroundColor: '#129DD8' }}>
                       {step.number}
                     </div>
                   </div>
@@ -393,7 +392,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                       {/* ✅ NUMMER: Grote duidelijke nummering - CENTRAAL */}
                       <div
                         className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg mx-auto mb-4"
-                        style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+                        style={{ backgroundColor: '#129DD8' }}
                       >
                         {step.number}
                       </div>
@@ -436,7 +435,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                           >
                             <IconComponent
                               className="w-10 h-10"
-                              style={{ color: BRAND_COLORS_HEX.primary }}
+                              style={{ color: '#129DD8' }}
                             />
                           </div>
                         </div>
@@ -477,7 +476,7 @@ export function ProductHowItWorks({ className, howItWorksImages = [] }: ProductH
                   index === visibleStepIndex && 'w-6'
                 )}
                 style={index === visibleStepIndex 
-                  ? { backgroundColor: BRAND_COLORS_HEX.primary } 
+                  ? { backgroundColor: '#129DD8' } 
                   : { backgroundColor: BRAND_COLORS_HEX.gray[300] }
                 }
                 onMouseEnter={(e) => {

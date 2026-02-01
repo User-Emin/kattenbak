@@ -24,7 +24,7 @@ import { RETURN_REASON_LABELS } from '@/types/return';
 /**
  * RETOURNEREN PAGE - STRAK & MINIMALISTISCH
  * 
- * ✅ Winkelwagen blauw accent (#005980) - vervangt oranje
+ * ✅ Winkelwagen blauw accent (#129DD8)
  * ✅ GEEN emoji
  * ✅ GEEN shadows
  * ✅ 1 kleur achtergrond (wit)
@@ -234,7 +234,7 @@ export default function RetournerenPage() {
               {/* Info banner */}
               <div className="bg-gray-50 border border-gray-200 rounded-sm p-4">
                 <div className="flex gap-3">
-                  <ShieldCheck className="h-5 w-5 text-brand shrink-0 mt-0.5" />
+                  <ShieldCheck className="h-5 w-5 shrink-0 mt-0.5" style={{ color: '#129DD8' }} />
                   <div className="text-sm font-light text-gray-700 leading-relaxed">
                     <p className="font-normal text-gray-900 mb-0.5">100% Tevredenheidsgarantie</p>
                     <p>Na goedkeuring ontvangt u binnen {RETURN_POLICY.processingTime} werkdagen uw geld terug.</p>
@@ -351,7 +351,7 @@ export default function RetournerenPage() {
                     </div>
 
                     <div className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
-                      <CheckCircle2 className="h-4 w-4 text-brand shrink-0 mt-0.5" strokeWidth={1.5} />
+                      <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" strokeWidth={1.5} style={{ color: '#129DD8' }} />
                       <div>
                         <h3 className="font-normal text-sm mb-0.5 text-gray-900">Terugbetaling</h3>
                         <p className="text-xs font-light text-gray-600">
@@ -361,7 +361,7 @@ export default function RetournerenPage() {
                     </div>
 
                     <div className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
-                      <TruckIcon className="h-4 w-4 text-brand shrink-0 mt-0.5" strokeWidth={1.5} />
+                      <TruckIcon className="h-4 w-4 shrink-0 mt-0.5" strokeWidth={1.5} style={{ color: '#129DD8' }} />
                       <div>
                         <h3 className="font-normal text-sm mb-0.5 text-gray-900">Verzendkosten</h3>
                         <p className="text-xs font-light text-gray-600">
@@ -371,7 +371,7 @@ export default function RetournerenPage() {
                     </div>
 
                     <div className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
-                      <ShieldCheck className="h-4 w-4 text-brand shrink-0 mt-0.5" strokeWidth={1.5} />
+                      <ShieldCheck className="h-4 w-4 shrink-0 mt-0.5" strokeWidth={1.5} style={{ color: '#129DD8' }} />
                       <div>
                         <h3 className="font-normal text-sm mb-0.5 text-gray-900">Garantie</h3>
                         <p className="text-xs font-light text-gray-600">
@@ -391,7 +391,7 @@ export default function RetournerenPage() {
                 className="w-full px-5 py-3.5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <AlertCircle className="h-5 w-5 text-brand flex-shrink-0" strokeWidth={1.5} />
+                  <AlertCircle className="h-5 w-5 flex-shrink-0" strokeWidth={1.5} style={{ color: '#129DD8' }} />
                   <span className="text-base font-normal text-gray-900">Voorwaarden voor Retourneren</span>
                 </div>
                 <svg
@@ -410,7 +410,7 @@ export default function RetournerenPage() {
                   <div className="space-y-2">
                     {RETURN_POLICY.conditions.map((condition, index) => (
                       <div key={index} className="flex items-start gap-2.5 p-3 rounded-sm bg-gray-50 border border-gray-200">
-                        <CheckCircle2 className="h-4 w-4 text-brand shrink-0 mt-0.5" strokeWidth={1.5} />
+                        <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" strokeWidth={1.5} style={{ color: '#129DD8' }} />
                         <span className="text-sm font-light text-gray-700 leading-relaxed">{condition}</span>
                       </div>
                     ))}

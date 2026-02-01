@@ -3,18 +3,21 @@
 import { useState, useEffect } from "react";
 import { Check } from "lucide-react";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
-import { BRAND_COLORS_HEX } from "@/lib/color-config";
+
+/** Hardcoded zodat deploy/cache geen oude kleuren toont - overschrijft config */
+const USP_BANNER_BG = "#ffffff";
+const USP_BANNER_TEXT = "#000000";
+const USP_BANNER_CHECK_BLUE = "#129DD8";
 
 /**
  * 🎨 USP BANNER - BOVEN NAVBAR
  * 
  * ✅ Smooth wisselend (3 USPs, 3 seconden per USP)
  * ✅ Centraal gepositioneerd
- * ✅ Wit background, zwarte tekst
+ * ✅ Wit achtergrond, zwarte tekst (hardcoded #ffffff / #000000)
+ * ✅ Vinkjes: hardcoded #129DD8 (nieuwe blauw)
  * ✅ Responsive (mobiel: 1 USP, desktop: 1 USP smooth fade)
- * ✅ DRY: Alle config uit DESIGN_SYSTEM
  * ✅ Security: Geen user input, geen XSS vectors
- * ✅ BLAUWE VIJKJES: 3 blauwe vinkjes voor "Gratis verzending binnen Nederland" (exact logo blauw)
  */
 
 // DRY: USPs configuratie - ✅ SERVICE-GERICHTE USPs: praktische voordelen voor klanten
@@ -52,9 +55,9 @@ export function UspBanner() {
     <div 
       className="w-full flex items-center justify-center relative overflow-hidden"
       style={{
-        background: DESIGN_SYSTEM.layout.uspBanner.bg, // ✅ GRADIENT
+        background: USP_BANNER_BG,
         height: DESIGN_SYSTEM.layout.uspBanner.height,
-        zIndex: parseInt(DESIGN_SYSTEM.layout.uspBanner.zIndex), // ✅ ONDER sidebar (z-[170]) maar BOVEN navbar (z-165)
+        zIndex: parseInt(DESIGN_SYSTEM.layout.uspBanner.zIndex),
         position: 'sticky',
         top: 0,
       }}
@@ -72,7 +75,7 @@ export function UspBanner() {
               transform: isActive ? 'translateY(0)' : 'translateY(10px)',
             }}
           >
-            {/* ✅ BLAUWE VIJKJES: 3 blauwe vinkjes (exact logo blauw) */}
+            {/* Vinkjes: hardcoded #129DD8 */}
             {usp.showCheckmarks ? (
               <div className="flex items-center gap-1.5">
                 {[1, 2, 3].map((i) => (
@@ -80,7 +83,7 @@ export function UspBanner() {
                     key={i}
                     className="w-4 h-4 flex-shrink-0"
                     strokeWidth={3}
-                    style={{ color: BRAND_COLORS_HEX.primary }} // ✅ EXACT LOGO BLAUW: #005980
+                    style={{ color: USP_BANNER_CHECK_BLUE }}
                   />
                 ))}
               </div>
@@ -89,7 +92,7 @@ export function UspBanner() {
               style={{
                 fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                 fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-                color: DESIGN_SYSTEM.layout.uspBanner.color, // ✅ WIT: Tekst blijft wit in zwarte banner
+                color: USP_BANNER_TEXT,
               }}
             >
               {usp.text}
