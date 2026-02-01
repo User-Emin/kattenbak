@@ -198,12 +198,16 @@ export const DESIGN_SYSTEM = {
       zIndex: '160',        // ✅ ONDER sidebar (z-[170]) maar BOVEN navbar (z-165)
     },
     
-    // Navbar
+    // Navbar – zwart, logo uit config (vervang bestand op server: public/logos/logo.png)
     navbar: {
       height: '72px',
       maxWidth: '1920px',
-      bg: '#ffffff',         // WIT
-      zIndex: '999',         // ✅ ONDER USP banner
+      bg: '#000000',         // ZWART
+      textColor: '#ffffff',  // Links en icon wit op zwart
+      zIndex: '999',
+      /** Logo: plaats nieuw logo als logo.png in public/logos/ op server */
+      logoPath: '/logos/logo.png',
+      logoPathFallback: '/logos/logo-navbar-original.png',
     },
     
     // ✅ DRY: Totale header hoogte (banner + navbar) voor sidebar positioning

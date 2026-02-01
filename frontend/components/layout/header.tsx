@@ -46,13 +46,15 @@ export function Header() {
 
   return (
     <>
-      {/* NAVBAR - WIT, LOGO CENTERED */}
+      {/* NAVBAR – zwart, logo uit DESIGN_SYSTEM (geen hardcode) */}
       <header 
-        className="bg-white sticky top-0"
+        className="sticky top-0"
         style={{ 
-          boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.08)', // Versterkte shadow
-          borderBottom: '1px solid rgba(0, 0, 0, 0.06)', // Subtiele border voor definitie
-          zIndex: 165, // ✅ BOVEN sidebar winkelwagen (z-[170]) maar ONDER USP banner (z-160)
+          backgroundColor: DESIGN_SYSTEM.layout.navbar.bg,
+          color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#ffffff',
+          boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          zIndex: 165,
         }}
       >
         <div 
@@ -66,10 +68,10 @@ export function Header() {
             {/* Email - Alleen desktop */}
             <a
               href={`mailto:${DESIGN_SYSTEM.contact.email}`}
-              className="flex items-center gap-2 transition-opacity hover:opacity-60"
+              className="flex items-center gap-2 transition-opacity hover:opacity-80"
               style={{
                 fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
-                color: DESIGN_SYSTEM.colors.text.secondary,
+                color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#ffffff',
                 fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
               }}
             >
@@ -80,10 +82,10 @@ export function Header() {
             {/* Support - Alleen desktop */}
             <a
               href={`tel:${DESIGN_SYSTEM.contact.phone}`}
-              className="flex items-center gap-2 transition-opacity hover:opacity-60"
+              className="flex items-center gap-2 transition-opacity hover:opacity-80"
               style={{
                 fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
-                color: DESIGN_SYSTEM.colors.text.secondary,
+                color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#ffffff',
                 fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
               }}
               title="Klantenservice"
@@ -114,14 +116,13 @@ export function Header() {
               }}
             >
               <img
-                src="/logos/logo-navbar-original.png"
+                src={(DESIGN_SYSTEM.layout.navbar as { logoPath?: string }).logoPath ?? '/logos/logo.png'}
                 alt="CatSupply Logo"
                 style={{
-                  // ✅ MOBIEL: Kleiner (50px) en links, DESKTOP: Normaal (80px) en center
-                  height: '50px', // Mobiel: kleiner
-                  maxHeight: '50px', // Mobiel: kleiner
+                  height: '50px',
+                  maxHeight: '50px',
                   width: 'auto',
-                  maxWidth: '150px', // Mobiel: smaller max width
+                  maxWidth: '150px',
                   display: 'block',
                   objectFit: 'contain',
                   margin: 0,
@@ -131,16 +132,12 @@ export function Header() {
                 loading="eager"
                 fetchPriority="high"
                 onError={(e) => {
-                  // ✅ SECURITY: Silent error handling (no console logs in production)
                   const target = e.target as HTMLImageElement;
-                  // ✅ FALLBACK: Try multiple logo paths
-                  if (target.src && !target.src.includes('.webp')) {
-                    target.src = '/logos/logo.webp';
-                  } else if (target.src && !target.src.includes('.png')) {
-                    target.src = '/logos/logo-navbar-original.png';
+                  const fallback = (DESIGN_SYSTEM.layout.navbar as { logoPathFallback?: string }).logoPathFallback ?? '/logos/logo-navbar-original.png';
+                  if (target.src && !target.src.endsWith(fallback.replace(/^\//, ''))) {
+                    target.src = fallback;
                   } else {
-                    // ✅ FINAL FALLBACK: Hide logo on error (graceful degradation)
-                    target.style.display = 'none';
+                    target.src = '/logos/logo.webp';
                   }
                 }}
               />
@@ -160,7 +157,7 @@ export function Header() {
               <ShoppingCart 
                 className="h-6 w-6" 
                 strokeWidth={2}
-                style={{ color: '#000000' }} // ✅ ZWART: Winkelwagenbutton zwart
+                style={{ color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#ffffff' }}
               />
               {itemCount > 0 && (
                 <span 

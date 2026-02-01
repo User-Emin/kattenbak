@@ -824,15 +824,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </h1>
               
 
-              {/* BOTTOM CART: Geen kaart, alles op 1 lijn beginnend (geen extra indent), kleine productnaam weg */}
+              {/* BOTTOM CART: Verticaal lijn met productnaam, dichtbij, letters dunner (config) */}
               <div
                 className={cn(
                   CONFIG.info?.bottomCart?.container?.bg ?? 'bg-transparent',
                   CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black',
-                  CONFIG.info?.bottomCart?.container?.padding ?? 'p-5 sm:p-6',
+                  CONFIG.info?.bottomCart?.container?.padding ?? 'pt-0 px-0 pb-0',
+                  CONFIG.info?.bottomCart?.container?.marginTop ?? 'mt-2',
                   CONFIG.info?.bottomCart?.container?.borderRadius ?? 'rounded-none',
-                  CONFIG.info?.bottomCart?.container?.textWeight ?? 'font-medium',
-                  'mt-4'
+                  CONFIG.info?.bottomCart?.container?.textWeight ?? 'font-normal'
                 )}
               >
               {/* Price - dunner en kleiner (config) */}

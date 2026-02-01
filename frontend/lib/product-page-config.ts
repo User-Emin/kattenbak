@@ -146,26 +146,28 @@ export const PRODUCT_PAGE_CONFIG = {
       transition: 'transition-all duration-200 hover:scale-[1.02]',
       icon: 'w-6 h-6 md:w-6 md:h-6',
     },
-    // ✅ BOTTOM CART: Geen kaart – gewoon op grijze achtergrond, tekst zwart (zelfde dikte)
+    // ✅ BOTTOM CART: Verticaal lijn met productnaam, dichtbij, letters iets dunner (geen hardcode)
     bottomCart: {
       container: {
-        bg: 'bg-transparent', // geen kaart, valt in achtergrond
+        bg: 'bg-transparent',
         textColor: 'text-black',
-        padding: 'p-5 sm:p-6',
+        padding: 'pt-0 px-0 pb-0', // geen extra padding – lijn met productnaam, dichtbij
+        paddingY: 'pt-0 pb-0',
+        marginTop: 'mt-2', // dichtbij productnaam
         borderRadius: 'rounded-none',
-        textWeight: 'font-medium',
+        textWeight: 'font-normal', // letters iets dunner
       },
       productNameWeight: 'font-semibold',
       productNameSize: 'text-base sm:text-lg',
-      colorLabelWeight: 'font-semibold',
-      variantNameWeight: 'font-semibold',
-      stockTextWeight: 'font-semibold',
+      colorLabelWeight: 'font-medium', // iets dunner
+      variantNameWeight: 'font-medium',
+      stockTextWeight: 'font-medium',
       stockTextColor: 'text-gray-800',
       priceWeight: 'font-semibold',
       /** Prijs echt dunner en kleiner */
       priceFontSize: 'text-xl',
       priceFontWeight: 'font-light',
-      serviceUspTextWeight: 'font-semibold',
+      serviceUspTextWeight: 'font-medium', // iets dunner
       serviceUspEmphasis: 'drop-shadow-sm',
       /** Variantkleur geselecteerd: dunnere border (detailpagina) */
       variantSelected: {
