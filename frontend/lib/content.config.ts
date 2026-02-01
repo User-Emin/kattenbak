@@ -118,6 +118,14 @@ Perfect voor katten van 1,5KG tot 12,5KG en geschikt vanaf 6 maanden leeftijd. N
     versus: 'vs',
   },
 
+  // ✅ Bottom cart (zwarte bar) – Kies een kleur, voorraad (geen hardcode)
+  bottomCart: {
+    colorLabel: 'Kies een kleur:',
+    /** Gebruik: stockLabel.replace('{count}', String(count)) */
+    stockLabel: '(Nog {count} op voorraad)',
+    outOfStockSuffix: ' (Niet op voorraad)',
+  },
+
   // Top 3 USPs (boven prijs)
   topUsps: [
     {

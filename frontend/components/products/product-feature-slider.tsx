@@ -83,11 +83,12 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
               'animate-in'
             )}
           >
-            {/* Image - ✅ FeatureImageRounded: 10.5L Afvalbak, Gratis meegeleverd – echte ronde hoeken */}
+            {/* Image - ✅ FeatureImageRounded: zigzag radius uit config voor duidelijkheid */}
             <FeatureImageRounded
               src={feature.image || '/images/feature-2.jpg'}
               alt={feature.title}
               className="max-w-xs sm:max-w-sm mx-auto mb-4"
+              borderRadiusClassName={CONFIG.featureSection.image.borderRadius}
               innerClassName={cn(
                 CONFIG.featureSection.image.aspectRatio,
                 CONFIG.featureSection.image.bgColor
@@ -165,7 +166,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   'animate-in'
                 )}
               >
-                {/* Image - ✅ FeatureImageRounded: zigzag desktop – echte ronde hoeken */}
+                {/* Image - ✅ FeatureImageRounded: zigzag radius uit config voor duidelijkheid */}
                 <FeatureImageRounded
                   src={feature.image || '/images/feature-2.jpg'}
                   alt={feature.title}
@@ -175,6 +176,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                       ? CONFIG.featureSection.zigzag.imageOrder.left
                       : CONFIG.featureSection.zigzag.imageOrder.right
                   )}
+                  borderRadiusClassName={CONFIG.featureSection.image.borderRadius}
                   innerClassName={cn(
                     CONFIG.featureSection.image.aspectRatio,
                     CONFIG.featureSection.image.bgColor

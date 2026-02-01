@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authMiddleware, adminMiddleware, rateLimitMiddleware } from '../../middleware/auth.middleware';
-import { transformOrder, transformOrders } from '../../lib/transformers';
+import { transformOrder, transformOrders, normalizeOrderStatus, normalizePaymentStatus } from '../../lib/transformers';
 import { logger } from '../../config/logger.config';
 import { extractStringParam } from '../../utils/params.util';
 import { getVariantImage, getDisplayImage } from '../../utils/variant.util'; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
@@ -556,8 +556,8 @@ router.get('/:id', async (req, res) => {
         tax: typeof order.tax === 'number' ? order.tax : parseFloat(String(order.tax || '0')),
         shippingCost: typeof order.shippingCost === 'number' ? order.shippingCost : parseFloat(String(order.shippingCost || '0')),
         discount: typeof order.discount === 'number' ? order.discount : parseFloat(String(order.discount || '0')),
-        status: order.status || 'PENDING',
-        paymentStatus: order.payment?.status || 'PENDING',
+        status: normalizeOrderStatus(order.status || 'PENDING'),
+        paymentStatus: normalizePaymentStatus(order.payment?.status || 'PENDING'),
         items: (order.items || []).map((item: any) => ({
           id: item.id,
           productId: item.productId,

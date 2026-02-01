@@ -5,6 +5,38 @@
  */
 
 import { Product, ProductVariant, Prisma, PrismaClient } from '@prisma/client';
+
+/** Normalise order status voor admin API (lowercase, compatibel met frontend type) – DRY, geen hardcode */
+export function normalizeOrderStatus(s: string | undefined | null): string {
+  if (!s) return 'pending';
+  const u = String(s).toUpperCase();
+  const map: Record<string, string> = {
+    PENDING: 'pending',
+    PAYMENT_PENDING: 'pending',
+    PAID: 'processing',
+    PROCESSING: 'processing',
+    SHIPPED: 'shipped',
+    DELIVERED: 'delivered',
+    CANCELLED: 'cancelled',
+    REFUNDED: 'cancelled',
+  };
+  return map[u] ?? s.toLowerCase();
+}
+
+/** Normalise payment status voor admin API (lowercase, direct na Mollie webhook zichtbaar) – DRY */
+export function normalizePaymentStatus(s: string | undefined | null): string {
+  if (!s) return 'pending';
+  const u = String(s).toUpperCase();
+  const map: Record<string, string> = {
+    PENDING: 'pending',
+    PAID: 'paid',
+    FAILED: 'failed',
+    CANCELLED: 'failed',
+    REFUNDED: 'refunded',
+    EXPIRED: 'failed',
+  };
+  return map[u] ?? s.toLowerCase();
+}
 import { decimalToNumber } from '../utils/price.util'; // ✅ DRY: Use shared utility
 import { getVariantImage, getDisplayImage } from '../utils/variant.util'; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 
@@ -201,8 +233,8 @@ export const transformOrder = async (order: any): Promise<any> => {
       tax: decimalToNumber(order.tax),
       discount: decimalToNumber(order.discount),
       total: decimalToNumber(order.total),
-      status: order.status || 'PENDING',
-      paymentStatus: order.payment?.status || order.paymentStatus || 'PENDING',
+      status: normalizeOrderStatus(order.status || 'PENDING'),
+      paymentStatus: normalizePaymentStatus(order.payment?.status || order.paymentStatus || 'PENDING'),
       // ✅ VARIANT SYSTEM: Use transformed items with variant images
       items: transformedItems,
       // ✅ FIX: Ensure shippingAddress and billingAddress are included
@@ -231,10 +263,10 @@ export const transformOrder = async (order: any): Promise<any> => {
       // ✅ FIX: Ensure dates are strings
       createdAt: order.createdAt ? (order.createdAt instanceof Date ? order.createdAt.toISOString() : order.createdAt) : new Date().toISOString(),
       updatedAt: order.updatedAt ? (order.updatedAt instanceof Date ? order.updatedAt.toISOString() : order.updatedAt) : new Date().toISOString(),
-      // ✅ FIX: Include payment info if available
+      // ✅ FIX: Include payment info if available (status genormaliseerd voor admin)
       payment: order.payment ? {
         id: order.payment.id,
-        status: order.payment.status,
+        status: normalizePaymentStatus(order.payment.status),
         mollieId: order.payment.mollieId || null,
       } : null,
     };

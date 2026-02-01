@@ -72,7 +72,7 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
               key={index} 
               className={isEven ? CONFIG.featureSection.zigzag.leftLayout : CONFIG.featureSection.zigzag.rightLayout}
             >
-              {/* Image - ✅ FeatureImageRounded: 10.5L Afvalbak, Gratis meegeleverd, Veiligheidssensoren – echte ronde hoeken */}
+              {/* Image - ✅ FeatureImageRounded: zigzag radius uit config */}
               <FeatureImageRounded
                 src={feature.image || '/images/placeholder.jpg'}
                 alt={feature.title}
@@ -80,6 +80,7 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
                   'w-full md:w-auto',
                   isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right
                 )}
+                borderRadiusClassName={CONFIG.featureSection.image.borderRadius}
                 innerClassName={cn(
                   'aspect-[3/4] md:aspect-[4/5]',
                   CONFIG.featureSection.image.bgColor

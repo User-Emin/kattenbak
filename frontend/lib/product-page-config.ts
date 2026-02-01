@@ -153,6 +153,14 @@ export const PRODUCT_PAGE_CONFIG = {
         borderRadius: 'rounded-lg',
         textWeight: 'font-medium',
       },
+      // ✅ Productnaam in zwarte bar – vetter voor duidelijkheid
+      productNameWeight: 'font-semibold',
+      productNameSize: 'text-base sm:text-lg',
+      // ✅ "Kies een kleur:" + variantnaam + voorraad – vetter voor duidelijkheid
+      colorLabelWeight: 'font-semibold',
+      variantNameWeight: 'font-semibold',
+      stockTextWeight: 'font-semibold',
+      stockTextColor: 'text-amber-300',
       priceWeight: 'font-semibold',
       // ✅ USPs vetgedrukter en opvallender (geen magic values)
       serviceUspTextWeight: 'font-semibold',

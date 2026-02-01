@@ -836,6 +836,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
                 style={{ backgroundColor: '#000' }}
               >
+              {/* ✅ Productnaam in zwarte bar – vetter voor duidelijkheid (config: productNameWeight, productNameSize) */}
+              <p className={cn(
+                CONFIG.info?.bottomCart?.productNameSize ?? 'text-base sm:text-lg',
+                CONFIG.info?.bottomCart?.productNameWeight ?? 'font-semibold',
+                'text-white mb-3'
+              )}>
+                {product.name}
+              </p>
               {/* Price - ✅ VARIANT SYSTEM: Show variant-adjusted price */}
               <div className={cn(CONFIG.info.price.spacing, 'mb-0')}>
                 <span className={cn(
@@ -900,18 +908,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 })()}
               </div>
 
-              {/* ✅ VARIANT SYSTEM: Variant Selector - wit/grijs op zwart */}
+              {/* ✅ VARIANT SYSTEM: Variant Selector – label/variant/voorraad uit config, vetter (geen hardcode) */}
               {variants.length > 0 && (
                 <div className="mt-4 mb-4">
                   <div className="flex items-center gap-3 flex-wrap mb-3">
-                    <label className="text-sm text-gray-200 whitespace-nowrap">
-                      Kies een kleur:
+                    <label className={cn(
+                      'text-sm text-gray-200 whitespace-nowrap',
+                      CONFIG.info?.bottomCart?.colorLabelWeight ?? 'font-semibold'
+                    )}>
+                      {PRODUCT_CONTENT.bottomCart.colorLabel}
                     </label>
                     {activeVariant && (
-                      <span className="text-sm text-gray-200">
+                      <span className={cn('text-sm text-gray-200', CONFIG.info?.bottomCart?.variantNameWeight ?? 'font-semibold')}>
                         <span>{activeVariant.name}</span>
                         {activeVariant.stock > 0 && activeVariant.stock < 10 && (
-                          <span className="ml-2 text-amber-300">(Nog {activeVariant.stock} op voorraad)</span>
+                          <span className={cn('ml-2', CONFIG.info?.bottomCart?.stockTextWeight ?? 'font-semibold', CONFIG.info?.bottomCart?.stockTextColor ?? 'text-amber-300')}>
+                            {PRODUCT_CONTENT.bottomCart.stockLabel.replace('{count}', String(activeVariant.stock))}
+                          </span>
                         )}
                       </span>
                     )}
@@ -940,7 +953,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                               : 'border-gray-500 hover:border-gray-400',
                             isOutOfStock && 'opacity-50 cursor-not-allowed grayscale'
                           )}
-                          title={variant.name + (isOutOfStock ? ' (Niet op voorraad)' : '')}
+                          title={variant.name + (isOutOfStock ? PRODUCT_CONTENT.bottomCart.outOfStockSuffix : '')}
                         >
                           {previewImage ? (
                             <Image

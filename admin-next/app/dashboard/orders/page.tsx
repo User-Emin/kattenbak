@@ -20,26 +20,18 @@ import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { getOrders } from '@/lib/api/orders';
 import { Order } from '@/types/common';
+import {
+  ORDER_STATUS_LABELS,
+  ORDER_STATUS_VARIANTS,
+  PAYMENT_STATUS_LABELS,
+  PAYMENT_STATUS_VARIANTS,
+} from '@/lib/order-status.config';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { nl } from 'date-fns/locale';
 
-// DRY: Status badge variants
-const STATUS_VARIANTS: Record<Order['status'], 'default' | 'secondary' | 'destructive' | 'outline'> = {
-  pending: 'secondary',
-  processing: 'default',
-  shipped: 'default',
-  delivered: 'outline',
-  cancelled: 'destructive',
-};
-
-const STATUS_LABELS: Record<Order['status'], string> = {
-  pending: 'In afwachting',
-  processing: 'Verwerken',
-  shipped: 'Verzonden',
-  delivered: 'Afgeleverd',
-  cancelled: 'Geannuleerd',
-};
+/** Auto-refresh interval (ms) – betalingsstatus direct na Mollie webhook zichtbaar */
+const ORDERS_REFRESH_MS = 30_000;
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -49,9 +41,19 @@ export default function OrdersPage() {
     loadOrders();
   }, []);
 
-  const loadOrders = async () => {
+  // ✅ Auto-refresh wanneer tab zichtbaar – betalingsstatus direct zichtbaar na Mollie webhook
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        loadOrders(true); // silent refresh
+      }
+    }, ORDERS_REFRESH_MS);
+    return () => clearInterval(interval);
+  }, []);
+
+  const loadOrders = async (silent = false) => {
     try {
-      setIsLoading(true);
+      if (!silent) setIsLoading(true);
       const response = await getOrders();
       
       // ✅ FIX: Check response structure
@@ -86,7 +88,7 @@ export default function OrdersPage() {
         errorMessage = errorDetails.message;
       }
       
-      toast.error(errorMessage);
+      if (!silent) toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -126,6 +128,7 @@ export default function OrdersPage() {
                   <TableHead>Items</TableHead>
                   <TableHead>Totaal</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Betaling</TableHead>
                   <TableHead>Datum</TableHead>
                   <TableHead className="text-right">Acties</TableHead>
                 </TableRow>
@@ -209,8 +212,13 @@ export default function OrdersPage() {
                       € {order.total.toFixed(2)}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={STATUS_VARIANTS[order.status]}>
-                        {STATUS_LABELS[order.status]}
+                      <Badge variant={ORDER_STATUS_VARIANTS[order.status]}>
+                        {ORDER_STATUS_LABELS[order.status]}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={PAYMENT_STATUS_VARIANTS[order.paymentStatus ?? 'pending']}>
+                        {PAYMENT_STATUS_LABELS[order.paymentStatus ?? 'pending']}
                       </Badge>
                     </TableCell>
                     <TableCell>

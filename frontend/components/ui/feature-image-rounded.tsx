@@ -1,15 +1,16 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { ZIGZAG_IMAGE_RADIUS } from '@/lib/product-page-config';
 
 export interface FeatureImageRoundedProps {
   src: string;
   alt: string;
-  /** Buitenste wrapper: layout (bijv. w-full, max-w-sm, aspect) */
+  /** Buitenste wrapper: layout (bijv. w-full, max-w-sm) */
   className?: string;
-  /** aspect-[3/4] md:aspect-[4/5] of h-64 md:h-80 */
+  /** aspect-[3/4] md:aspect-[4/5] – ZELFDE container als productafbeelding */
   innerClassName?: string;
+  /** Ronde hoeken – uit config (bijv. rounded-xl md:rounded-2xl) voor zigzag duidelijkheid */
+  borderRadiusClassName?: string;
   objectFit?: 'cover' | 'contain';
   sizes?: string;
   quality?: number;
@@ -19,15 +20,16 @@ export interface FeatureImageRoundedProps {
 }
 
 /**
- * Zigzag/feature afbeelding met gegarandeerde ronde hoeken (10.5L Afvalbak, Gratis meegeleverd).
- * Gebruikt background-image op een div – geen <img>, dus geen element dat buiten de
- * border-radius kan vallen. De afbeelding ís de achtergrond van de ronde div.
+ * Zigzag-afbeelding – FUNDAMENTEEL ZELFDE als productafbeelding:
+ * Eén wrapper met rounded-lg + overflow-hidden, één img die de container vult.
+ * Geen background-image, geen extra lagen. Zo werkt de productafbeelding ook.
  */
 export function FeatureImageRounded({
   src,
   alt,
   className,
   innerClassName,
+  borderRadiusClassName = 'rounded-lg',
   objectFit = 'contain',
   onError,
   sizes: _sizes,
@@ -35,42 +37,27 @@ export function FeatureImageRounded({
   unoptimized: _unoptimized,
   priority: _priority,
 }: FeatureImageRoundedProps) {
-  const radius = ZIGZAG_IMAGE_RADIUS;
-
   return (
     <div
-      className={cn('feature-image-rounded block overflow-hidden rounded-lg', className)}
+      className={cn(
+        'feature-image-rounded relative w-full overflow-hidden bg-white',
+        borderRadiusClassName,
+        innerClassName,
+        className
+      )}
       data-feature-image
-      style={{
-        borderRadius: radius,
-        overflow: 'hidden',
-      } as React.CSSProperties}
     >
-      {/* Zelfde ronde hoeken als productafbeelding (rounded-lg) */}
-      <div
-        className={cn('relative w-full overflow-hidden bg-white rounded-lg', innerClassName)}
-        style={{
-          borderRadius: radius,
-          overflow: 'hidden',
-          backgroundImage: `url(${src})`,
-          backgroundSize: objectFit === 'cover' ? 'cover' : 'contain',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        } as React.CSSProperties}
-        role="img"
-        aria-label={alt}
-      >
-        {/* Fallback: onzichtbare img voor accessibility en onError */}
-        <img
-          src={src}
-          alt=""
-          aria-hidden
-          className="absolute inset-0 h-full w-full opacity-0 pointer-events-none"
-          loading="lazy"
-          decoding="async"
-          onError={onError}
-        />
-      </div>
+      <img
+        src={src}
+        alt={alt}
+        className={cn(
+          'absolute inset-0 h-full w-full',
+          objectFit === 'cover' ? 'object-cover' : 'object-contain'
+        )}
+        loading="lazy"
+        decoding="async"
+        onError={onError}
+      />
     </div>
   );
 }

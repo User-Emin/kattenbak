@@ -87,13 +87,14 @@ export function ProductUsps({ usps }: ProductUspsProps) {
                   </div>
                 </div>
 
-                {/* Image - ✅ FeatureImageRounded: echte ronde hoeken (10.5L Afvalbak, Gratis meegeleverd, etc.) */}
+                {/* Image - ✅ FeatureImageRounded: zigzag radius uit config */}
                 {usp.image && usp.image.trim() !== '' && (
                   <div className={isEven ? 'md:order-2' : 'md:order-1'}>
                     <FeatureImageRounded
                       src={usp.image}
                       alt={usp.title}
                       className="w-full"
+                      borderRadiusClassName={PRODUCT_PAGE_CONFIG.featureSection.image.borderRadius}
                       innerClassName="h-64 md:h-80"
                       objectFit="cover"
                       sizes="(max-width: 768px) 100vw, 50vw"
