@@ -824,7 +824,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               </h1>
               
 
-              {/* ✅ BOTTOM CART: Geen kaart – gewoon op grijze achtergrond, tekst zwart (zelfde dikte) */}
+              {/* BOTTOM CART: Geen kaart, alles op 1 lijn beginnend (geen extra indent), kleine productnaam weg */}
               <div
                 className={cn(
                   CONFIG.info?.bottomCart?.container?.bg ?? 'bg-transparent',
@@ -835,20 +835,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   'mt-4'
                 )}
               >
-              {/* Productnaam –zelfde dikte, zwart */}
-              <p className={cn(
-                CONFIG.info?.bottomCart?.productNameSize ?? 'text-base sm:text-lg',
-                CONFIG.info?.bottomCart?.productNameWeight ?? 'font-semibold',
-                CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black',
-                'mb-3'
-              )}>
-                {product.name}
-              </p>
-              {/* Price - variant-adjusted, zwart */}
+              {/* Price - dunner en kleiner (config) */}
               <div className={cn(CONFIG.info.price.spacing, 'mb-0')}>
                 <span className={cn(
-                  CONFIG.info.price.current.fontSize,
-                  CONFIG.info?.bottomCart?.priceWeight ?? 'font-semibold',
+                  CONFIG.info?.bottomCart?.priceFontSize ?? 'text-xl',
+                  CONFIG.info?.bottomCart?.priceFontWeight ?? 'font-light',
                   CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black'
                 )}>
                   {formatPrice(displayPrice)}
@@ -879,7 +870,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       }
                     }
                     return (
-                      <span className="text-base text-gray-600 line-through ml-3">
+                      <span className="text-sm text-gray-600 line-through ml-2 font-light">
                         {formatPrice(displayComparePrice)}
                       </span>
                     );
@@ -950,7 +941,11 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                             'transition-all',
                             'overflow-hidden',
                             isSelected
-                              ? 'border-gray-900 ring-2 ring-gray-900 ring-offset-2 ring-offset-gray-200'
+                              ? cn(
+                                  CONFIG.info?.bottomCart?.variantSelected?.border ?? 'border-gray-900',
+                                  CONFIG.info?.bottomCart?.variantSelected?.ring ?? 'ring-1 ring-gray-900',
+                                  CONFIG.info?.bottomCart?.variantSelected?.ringOffset ?? 'ring-offset-1 ring-offset-gray-200'
+                                )
                               : 'border-gray-500 hover:border-gray-600',
                             isOutOfStock && 'opacity-50 cursor-not-allowed grayscale'
                           )}
@@ -1032,8 +1027,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* Bezorgtijd – zwart op grijze achtergrond */}
-              <div className="flex items-center justify-center mt-2 sm:mt-2.5 mb-0 -mx-2 sm:mx-0">
+              {/* Bezorgtijd – 1 lijn, links uitgelijnd (niet meer naar binnen) */}
+              <div className="flex items-center justify-start mt-2 sm:mt-2.5 mb-0 whitespace-nowrap">
                 <Truck className={cn('w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5', CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black')} />
                 <span className={cn('text-sm sm:text-base', CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black', CONFIG.info?.bottomCart?.serviceUspTextWeight ?? 'font-semibold')}>
                   {PRODUCT_CONTENT.delivery.label} <span className={CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black'}>{PRODUCT_CONTENT.delivery.days}</span>

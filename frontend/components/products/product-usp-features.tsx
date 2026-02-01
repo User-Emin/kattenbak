@@ -83,9 +83,10 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
                 borderRadiusClassName={CONFIG.featureSection.image.borderRadius}
                 innerClassName={cn(
                   'aspect-[3/4] md:aspect-[4/5]',
-                  CONFIG.featureSection.image.bgColor
+                  CONFIG.featureSection.image.bgColor,
+                  'overflow-hidden'
                 )}
-                objectFit="contain"
+                objectFit={(CONFIG.featureSection.image as { objectFit?: 'cover' | 'contain' }).objectFit ?? 'cover'}
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 quality={80}
                 unoptimized={

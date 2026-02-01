@@ -88,13 +88,14 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
               src={feature.image || '/images/feature-2.jpg'}
               alt={feature.title}
               className="max-w-xs sm:max-w-sm mx-auto mb-4"
-              borderRadiusClassName={CONFIG.featureSection.image.borderRadius}
-              innerClassName={cn(
-                CONFIG.featureSection.image.aspectRatio,
-                CONFIG.featureSection.image.bgColor
-              )}
-              objectFit="contain"
-              sizes="(max-width: 768px) 320px, 400px"
+                  borderRadiusClassName={CONFIG.featureSection.image.borderRadius}
+                  innerClassName={cn(
+                    CONFIG.featureSection.image.aspectRatio,
+                    CONFIG.featureSection.image.bgColor,
+                    'overflow-hidden'
+                  )}
+                  objectFit={CONFIG.featureSection.image.objectFit ?? 'cover'}
+                  sizes="(max-width: 768px) 320px, 400px"
               quality={85}
               unoptimized={
                 !!feature.image &&
@@ -179,9 +180,10 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   borderRadiusClassName={CONFIG.featureSection.image.borderRadius}
                   innerClassName={cn(
                     CONFIG.featureSection.image.aspectRatio,
-                    CONFIG.featureSection.image.bgColor
+                    CONFIG.featureSection.image.bgColor,
+                    'overflow-hidden'
                   )}
-                  objectFit="contain"
+                  objectFit={CONFIG.featureSection.image.objectFit ?? 'cover'}
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   quality={80}
                   unoptimized={

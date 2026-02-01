@@ -162,8 +162,17 @@ export const PRODUCT_PAGE_CONFIG = {
       stockTextWeight: 'font-semibold',
       stockTextColor: 'text-gray-800',
       priceWeight: 'font-semibold',
+      /** Prijs echt dunner en kleiner */
+      priceFontSize: 'text-xl',
+      priceFontWeight: 'font-light',
       serviceUspTextWeight: 'font-semibold',
       serviceUspEmphasis: 'drop-shadow-sm',
+      /** Variantkleur geselecteerd: dunnere border (detailpagina) */
+      variantSelected: {
+        border: 'border-gray-900',
+        ring: 'ring-1 ring-gray-900',
+        ringOffset: 'ring-offset-1 ring-offset-gray-200',
+      },
     },
     usps: {
       spacing: 'grid grid-cols-3 gap-3 mt-6', // ✅ COMPACTER: Kleinere gap (gap-3 ipv gap-4)
@@ -304,16 +313,17 @@ export const PRODUCT_PAGE_CONFIG = {
       },
     },
     image: {
-      aspectRatio: 'aspect-[3/4] md:aspect-[4/5]', // ✅ VERTICAAL: Meer verticale lengte voor acceptabelere groottes (was aspect-[5/3])
-      borderRadius: 'rounded-xl md:rounded-2xl lg:rounded-3xl', // ✅ RONDER: Ronde hoeken (rounded-xl op mobiel, rounded-2xl op tablet, rounded-3xl op desktop)
+      aspectRatio: 'aspect-[3/4] md:aspect-[4/5]', // ✅ VERTICAAL
+      borderRadius: 'rounded-xl md:rounded-2xl lg:rounded-3xl',
       borderRadiusValue: {
-        mobile: '0.75rem', // 12px - rounded-xl
-        tablet: '1rem', // 16px - rounded-2xl
-        desktop: '1.5rem', // 24px - rounded-3xl
+        mobile: '0.75rem',
+        tablet: '1rem',
+        desktop: '1.5rem',
       },
-      objectFit: 'object-contain', // ✅ VOLLEDIG ZICHTBAAR: Zigzag foto's volledig zichtbaar (niet object-cover)
-      bgColor: 'bg-white', // ✅ WIT: Witte achtergrond voor afbeeldingen
-      gap: 'gap-0', // ✅ GEEN GAP: Geen grijze tussenruimtes tussen afbeeldingen
+      /** 'cover' = geen witruimte boven/onder, afbeelding vult volledig */
+      objectFit: 'cover' as const,
+      bgColor: 'bg-gray-100', // subtiel grijs ipv wit bij crop
+      gap: 'gap-0',
     },
     text: {
       container: 'space-y-2 md:space-y-6 w-full md:w-auto', // ✅ MOBIEL: ECHT MINDER spacing tussen titel en beschrijving (space-y-2 = 8px ipv space-y-3)
