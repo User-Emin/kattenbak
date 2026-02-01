@@ -160,13 +160,13 @@ export function StickyCartBar({
                 </button>
               </div>
 
-              {/* Add to cart button - ✅ EXACT ZELFDE HOEKEN: Zoals Let op kaart (rounded-xl) */}
+              {/* Add to cart button - blauw (#129DD8) + achtergrond #ffffff */}
               <button
                 onClick={handleAddToCart}
-                className="bg-accent hover:bg-accent-dark text-white font-bold px-6 py-4 rounded-xl transition-all duration-200 hover:scale-[1.02] flex items-center gap-2 text-2xl"
+                className="bg-[#ffffff] hover:bg-blue-50 text-[#129DD8] font-bold px-6 py-4 rounded-xl transition-all duration-200 hover:scale-[1.02] flex items-center gap-2 text-2xl border border-[#129DD8]"
               >
-                <ShoppingCart className="h-6 w-6" />
-                Winkelwagen {/* ✅ GROOT: text-2xl voor echt grote letters */}
+                <ShoppingCart className="h-6 w-6" style={{ color: '#129DD8' }} />
+                Winkelwagen
               </button>
             </div>
           </div>

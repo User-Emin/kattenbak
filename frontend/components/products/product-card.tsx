@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { formatPrice } from "@/lib/utils";
 import { getProductImage } from "@/lib/image-config";
+import { BRAND_COLORS_HEX } from "@/lib/color-config";
 import { Product } from "@/types/product";
 import { ShoppingCart, Star } from "lucide-react";
 
@@ -87,13 +88,13 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         <CardContent className="p-6 sm:p-8 flex-1 flex flex-col">
           {/* Category */}
           {product.category && (
-            <p className="text-xs text-[#3071aa] uppercase tracking-wider font-semibold mb-3">
+            <p className="text-xs text-brand uppercase tracking-wider font-semibold mb-3">
               {product.category.name}
             </p>
           )}
 
           {/* Product name - ✅ PREMIUM: Moderner typography */}
-          <h3 className="font-light text-xl sm:text-2xl mb-3 line-clamp-2 group-hover:text-[#3071aa] transition-colors duration-300 leading-tight">
+          <h3 className="font-light text-xl sm:text-2xl mb-3 line-clamp-2 group-hover:text-brand transition-colors duration-300 leading-tight">
             {product.name}
           </h3>
 
@@ -122,31 +123,34 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           <button
             onClick={handleAddToCart}
             disabled={product.stock === 0 || isAdding}
-            className="relative overflow-hidden group w-full px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-semibold rounded-lg text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="relative overflow-hidden group w-full px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-semibold rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             style={{
-              backgroundColor: product.stock === 0 ? '#9ca3af' : '#3071aa',
+              backgroundColor: product.stock === 0 ? '#9ca3af' : '#ffffff',
+              color: product.stock === 0 ? '#ffffff' : '#129DD8',
             }}
             onMouseEnter={(e) => {
               if (product.stock > 0 && !isAdding) {
-                e.currentTarget.style.backgroundColor = '#256394';
+                e.currentTarget.style.backgroundColor = '#eff6ff';
+                e.currentTarget.style.color = '#129DD8';
               }
             }}
             onMouseLeave={(e) => {
               if (product.stock > 0 && !isAdding) {
-                e.currentTarget.style.backgroundColor = '#3071aa';
+                e.currentTarget.style.backgroundColor = '#ffffff';
+                e.currentTarget.style.color = '#129DD8';
               }
             }}
           >
             {isAdding ? (
-              <span className="flex items-center justify-center gap-2">
-                <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              <span className="flex items-center justify-center gap-2 text-[#129DD8]">
+                <span className="w-5 h-5 border-2 border-[#129DD8] border-t-transparent rounded-full animate-spin"></span>
                 Toevoegen...
               </span>
             ) : product.stock === 0 ? (
               "Uitverkocht"
             ) : (
-              <span className="flex items-center justify-center gap-2">
-                <ShoppingCart className="w-5 h-5" />
+              <span className="flex items-center justify-center gap-2" style={{ color: '#129DD8' }}>
+                <ShoppingCart className="w-5 h-5" style={{ color: '#129DD8' }} />
                 Winkelwagen
               </span>
             )}

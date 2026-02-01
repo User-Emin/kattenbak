@@ -117,6 +117,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
   // ✅ Vragen accordion: welke FAQ open (zoals openSpecs)
   const [openFaqs, setOpenFaqs] = useState<Set<number>>(new Set());
+  /** Min. tijd dat skeleton/lading zichtbaar is (ms) – voorkomt "geen lading" / flits */
+  const SKELETON_MIN_MS = 400;
 
   // 🚀 PERFORMANCE: Preload first valid image only (no placeholder/SVG)
   useEffect(() => {
@@ -149,14 +151,20 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         const productData = await productsApi.getBySlug(slug);
         if (isMounted && productData) {
           setProduct(productData);
-          setLoading(false);
+          // Skeleton min. SKELETON_MIN_MS zichtbaar houden
+          setTimeout(() => { if (isMounted) setLoading(false); }, SKELETON_MIN_MS);
         } else if (isMounted) {
           if (retryCount < MAX_RETRIES) {
             retryCount++;
             setTimeout(() => { if (isMounted) loadProduct(); }, RETRY_DELAY_MS * retryCount);
             return;
           }
-          setLoading(false);
+          setTimeout(() => {
+            if (isMounted) {
+              setLoading(false);
+              setProductError('not_found');
+            }
+          }, SKELETON_MIN_MS);
         }
       } catch (error: any) {
         if (typeof window === 'undefined') {
@@ -179,12 +187,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         }
 
         if (isMounted) {
-          setLoading(false);
-          if (status === 404) {
-            setProductError('not_found');
-          } else {
-            setProductError('server_error');
-          }
+          setTimeout(() => {
+            if (isMounted) {
+              setLoading(false);
+              if (status === 404) {
+                setProductError('not_found');
+              } else {
+                setProductError('server_error');
+              }
+            }
+          }, SKELETON_MIN_MS);
         }
       }
     };
@@ -193,22 +205,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     return () => { isMounted = false; };
   }, [slug, retryTrigger]);
 
-  // 🚀 PERFORMANCE: Show skeleton loading state (not blank spinner) for better UX
+  // 🚀 PERFORMANCE: Skeleton loading – altijd zichtbaar (geen lege pagina), E2E-detecteerbaar
   if (loading) {
     return (
-      <div className="min-h-screen">
-        {/* 🚀 PERFORMANCE: Skeleton header with breadcrumb */}
+      <div className="min-h-screen bg-gray-50" data-testid="product-detail-loading" aria-busy="true" aria-label="Product wordt geladen">
+        {/* Expliciete lading: zichtbare tekst + skeleton */}
         <div className="border-b bg-white">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center gap-2">
-              <div className="h-4 w-20 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-4 w-20 bg-gray-200 rounded animate-pulse" />
               <ChevronRight className="h-4 w-4 text-gray-400" />
-              <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
             </div>
+            <p className="text-sm text-gray-500 mt-2" aria-live="polite">Laden...</p>
           </div>
         </div>
 
-        {/* 🚀 PERFORMANCE: Skeleton product content */}
+        {/* Skeleton product content */}
         <div className="container mx-auto px-4 py-8">
           <div className="grid md:grid-cols-2 gap-8">
             {/* Image skeleton */}
@@ -296,13 +309,48 @@ export function ProductDetail({ slug }: ProductDetailProps) {
     );
   }
 
+  // Geen lege pagina: toon altijd iets (not_found of server_error wordt hierboven getoond)
   if (!loading && !product) {
-    return null; // Geen error state: wacht op volgende retry of mount
+    const { title, description, ctaText } = PRODUCT_FETCH_CONFIG.NOT_FOUND;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-4">
+        <AlertTriangle className="w-16 h-16 text-gray-400 mb-4" />
+        <h1 className="text-3xl font-semibold mb-4 text-center">{title}</h1>
+        <p className="text-gray-600 mb-6 text-center max-w-md">{description}</p>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 px-6 py-3 text-white rounded-lg transition-colors"
+          style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary}
+        >
+          <Home className="w-5 h-5" />
+          {ctaText}
+        </Link>
+      </div>
+    );
   }
 
-  // ✅ SECURITY: Early return if product is null (should not happen after check above, but TypeScript safety)
+  // Geen product na alle checks: toon altijd fallback (nooit lege main)
   if (!product) {
-    return null;
+    const { title, description, ctaText } = PRODUCT_FETCH_CONFIG.NOT_FOUND;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gray-50">
+        <AlertTriangle className="w-16 h-16 text-gray-400 mb-4" aria-hidden />
+        <h1 className="text-3xl font-semibold mb-4 text-center text-gray-900">{title}</h1>
+        <p className="text-gray-600 mb-6 text-center max-w-md">{description}</p>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 px-6 py-3 text-white rounded-lg transition-colors"
+          style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary}
+        >
+          <Home className="w-5 h-5" />
+          {ctaText}
+        </Link>
+      </div>
+    );
   }
 
   // ✅ VARIANT SYSTEM: Get selected variant or default to first variant
@@ -996,7 +1044,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* Add to Cart Button - brand blue via BRAND_COLORS_HEX */}
+              {/* Add to Cart Button - blauw (#129DD8) + achtergrond #ffffff */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
@@ -1004,24 +1052,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   CONFIG.info.button.size,
                   CONFIG.info.button.fontSize,
                   CONFIG.info.button.fontWeight,
-                  CONFIG.info.button.textColor,
                   CONFIG.info.button.borderRadius,
                   CONFIG.info.button.transition,
                   'relative overflow-hidden group w-full shadow-md hover:shadow-xl duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 mb-1 sm:mb-1.5',
-                  isAdding ? 'bg-green-600 hover:bg-green-600' : (CONFIG.info?.button?.bgColor ?? 'bg-brand')
+                  isAdding ? 'bg-green-600 text-white hover:bg-green-600' : 'bg-[#ffffff] text-[#129DD8] hover:bg-blue-50'
                 )}
-                style={isAdding ? undefined : { backgroundColor: BRAND_COLORS_HEX.primary }}
-                onMouseEnter={(e) => { if (!isAdding) e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark; }}
-                onMouseLeave={(e) => { if (!isAdding) e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary; }}
+                style={isAdding ? undefined : { backgroundColor: '#ffffff', color: '#129DD8' }}
+                onMouseEnter={(e) => { if (!isAdding) { e.currentTarget.style.backgroundColor = '#eff6ff'; e.currentTarget.style.color = '#129DD8'; } }}
+                onMouseLeave={(e) => { if (!isAdding) { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.color = '#129DD8'; } }}
               >
                 {isAdding ? (
                   <>
-                    <Check className={CONFIG.info.button.icon} style={{ color: '#129DD8' }} />
+                    <Check className={CONFIG.info.button.icon} style={{ color: '#ffffff' }} />
                     Toegevoegd
                   </>
                 ) : (
                   <>
-                    <ShoppingCart className={CONFIG.info.button.icon} />
+                    <ShoppingCart className={CONFIG.info.button.icon} style={{ color: '#129DD8' }} />
                     Winkelwagen
                   </>
                 )}

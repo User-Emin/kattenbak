@@ -4,6 +4,7 @@ import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { usePathname } from "next/navigation";
+import { BRAND_COLORS_HEX } from "@/lib/color-config";
 
 /**
  * ✅ MOBILE BOTTOM NAV - Smooth winkelwagenbutton
@@ -49,18 +50,18 @@ export function MobileBottomNav() {
             ${isOnCartPage ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}
           `}
           style={{
-            backgroundColor: '#000000',
-            color: '#ffffff',
+            backgroundColor: '#ffffff',
+            color: '#129DD8',
           }}
           aria-label="Winkelwagen"
         >
-          <ShoppingCart className="h-5 w-5" strokeWidth={2} />
+          <ShoppingCart className="h-5 w-5" strokeWidth={2} style={{ color: '#129DD8' }} />
           <span className="text-sm font-semibold">Winkelwagen</span>
           {itemCount > 0 && (
             <span 
               className="absolute -top-2 -right-2 min-w-[20px] h-5 text-white text-xs rounded-full flex items-center justify-center px-1.5 font-bold"
               style={{
-                backgroundColor: '#3071aa',
+                backgroundColor: BRAND_COLORS_HEX.primary,
               }}
             >
               {itemCount}

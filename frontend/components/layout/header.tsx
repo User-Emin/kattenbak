@@ -22,10 +22,13 @@ import { cn } from "@/lib/utils";
  * ✅ Contact links links
  */
 
+const NAV = DESIGN_SYSTEM.layout.navbar as { logoPath?: string; logoPathFallback?: string; textColor?: string };
+
 export function Header() {
   const { itemCount } = useCart();
   const { isCartOpen, openCart, closeCart } = useUI();
   const pathname = usePathname();
+  const [logoShowPlaceholder, setLogoShowPlaceholder] = useState(false);
 
   const isOnCartPage = pathname === '/cart';
 
@@ -106,41 +109,50 @@ export function Header() {
           >
             <Link 
               href="/" 
-              className="transition-opacity hover:opacity-80"
-              style={{ 
-                display: 'flex',
-                alignItems: 'center',
-                height: '100%',
-                margin: 0,
-                padding: 0,
-              }}
+              className="transition-opacity hover:opacity-80 flex items-center justify-center"
+              style={{ display: 'flex', alignItems: 'center', height: '100%', margin: 0, padding: 0 }}
             >
-              <img
-                src={(DESIGN_SYSTEM.layout.navbar as { logoPath?: string }).logoPath ?? '/logos/logo.png'}
-                alt="CatSupply Logo"
-                style={{
-                  height: '50px',
-                  maxHeight: '50px',
-                  width: 'auto',
-                  maxWidth: '150px',
-                  display: 'block',
-                  objectFit: 'contain',
-                  margin: 0,
-                  padding: 0,
-                }}
-                className="md:h-full md:max-h-[80px] md:max-w-[300px]"
-                loading="eager"
-                fetchPriority="high"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  const fallback = (DESIGN_SYSTEM.layout.navbar as { logoPathFallback?: string }).logoPathFallback ?? '/logos/logo-navbar-original.png';
-                  if (target.src && !target.src.endsWith(fallback.replace(/^\//, ''))) {
-                    target.src = fallback;
-                  } else {
-                    target.src = '/logos/logo.webp';
-                  }
-                }}
-              />
+              {logoShowPlaceholder ? (
+                <div
+                  className="flex items-center justify-center bg-gray-600 text-white text-sm font-medium rounded md:max-h-[80px] md:max-w-[300px]"
+                  style={{ height: '50px', maxHeight: '50px', minWidth: '120px', maxWidth: '150px' }}
+                  title="Logo (placeholder)"
+                >
+                  Logo
+                </div>
+              ) : (
+                <img
+                  src={NAV.logoPath ?? '/logos/logo.png'}
+                  alt="CatSupply Logo"
+                  style={{
+                    height: '50px',
+                    maxHeight: '50px',
+                    width: 'auto',
+                    maxWidth: '150px',
+                    display: 'block',
+                    objectFit: 'contain',
+                    margin: 0,
+                    padding: 0,
+                  }}
+                  className="md:h-full md:max-h-[80px] md:max-w-[300px]"
+                  loading="eager"
+                  fetchPriority="high"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    const fallback = NAV.logoPathFallback ?? '/logos/logo-navbar-original.png';
+                    const base = typeof window !== 'undefined' ? window.location.origin : '';
+                    const current = target.src.replace(base, '');
+                    if (current.includes('logo.webp')) {
+                      setLogoShowPlaceholder(true);
+                      target.style.display = 'none';
+                    } else if (current.includes('logo-navbar-original') || current.endsWith(fallback.replace(/^\//, ''))) {
+                      target.src = '/logos/logo.webp';
+                    } else {
+                      target.src = fallback;
+                    }
+                  }}
+                />
+              )}
             </Link>
           </div>
 
@@ -148,25 +160,18 @@ export function Header() {
           <div className="absolute right-4 sm:right-5 md:relative md:right-auto flex justify-end">
             <button
               onClick={handleCartToggle}
-              className={`relative transition-opacity ${
-                isOnCartPage ? 'opacity-40 cursor-default' : 'hover:opacity-60 cursor-pointer'
-              }`}
+              className="relative flex items-center justify-center w-10 h-10 rounded-lg transition-colors bg-[#ffffff] hover:bg-blue-50"
+              style={{ color: '#129DD8' }}
               aria-label="Winkelwagen"
               title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
             >
-              <ShoppingCart 
-                className="h-6 w-6" 
-                strokeWidth={2}
-                style={{ color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#ffffff' }}
-              />
+              <ShoppingCart className="h-6 w-6" strokeWidth={2} style={{ color: '#129DD8' }} />
               {itemCount > 0 && (
                 <span 
-                  className="absolute -top-2 -right-2 min-w-[20px] h-5 text-white text-xs rounded-full flex items-center justify-center px-1.5"
+                  className="absolute -top-2 -right-2 min-w-[20px] h-5 text-white text-xs rounded-full flex items-center justify-center px-1.5 font-bold"
                   style={{
-                    backgroundColor: DESIGN_SYSTEM.colors.primary,
-                    fontSize: DESIGN_SYSTEM.typography.fontSize.xs,
-                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.bold || '700', // ✅ DIKKER: Bold (700) zoals gevraagd
-                    fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ EXACT: Noto Sans zoals homepage
+                    backgroundColor: '#129DD8',
+                    fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
                   }}
                 >
                   {itemCount}
