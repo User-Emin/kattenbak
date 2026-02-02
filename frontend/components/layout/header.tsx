@@ -49,7 +49,7 @@ export function Header() {
 
   return (
     <>
-      {/* NAVBAR – passender grijs, logo + winkelwagen direct in balk (geen extra witruimte) */}
+      {/* NAVBAR – zwart, winkelwagensymbool direct in balk (design system) */}
       <header 
         className="sticky top-0"
         style={{ 

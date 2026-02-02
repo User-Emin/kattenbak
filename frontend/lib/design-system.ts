@@ -198,18 +198,21 @@ export const DESIGN_SYSTEM = {
       zIndex: '160',
     },
     
-    // Navbar – passender grijs, logo uit config; winkelwagenbutton blauw met wit
+    // Navbar – zwart, winkelwagensymbool direct in balk (design system)
     navbar: {
       height: '72px',
       maxWidth: '1920px',
-      bg: '#525252',         // Passender grijs (gray.600) – single source
-      textColor: '#ffffff',  // Links en icon wit op grijs
-      /** Winkelwagenbutton in navbar: blauw, tekst wit – analoog overal */
+      bg: '#000000',         // Zwart – single source
+      textColor: '#ffffff',  // Links en icon wit op zwart
       cartButtonBg: '#129DD8',
       cartButtonText: '#ffffff',
       zIndex: '999',
       logoPath: '/logos/logo.png',
       logoPathFallback: '/logos/logo-navbar-original.png',
+    },
+    // Productdetailpagina – achtergrond gewoon wit (aansluitend op colors.secondary)
+    productDetail: {
+      pageBg: '#ffffff',     // = colors.secondary
     },
     
     // ✅ DRY: Totale header hoogte (banner + navbar) voor sidebar positioning

@@ -7,6 +7,7 @@
  */
 
 import { DESIGN_SYSTEM } from './design-system';
+import { BRAND_COLORS_HEX } from './color-config';
 
 /** Ronde hoek voor zigzag/feature afbeeldingen – ZELFDE als productafbeelding (rounded-lg = 0.5rem) */
 export const ZIGZAG_IMAGE_RADIUS = '0.5rem' as const;
@@ -14,8 +15,8 @@ export const ZIGZAG_IMAGE_RADIUS = '0.5rem' as const;
 export const PRODUCT_PAGE_CONFIG = {
   // Layout configuratie - ✅ SYMMETRISCH: Perfecte balans op alle schermformaten
     layout: {
-      /** ✅ Pagina-achtergrond: echt grijs, geen kaart – alles op achtergrond */
-      pageBg: 'bg-gray-200',
+      /** Pagina-achtergrond: wit – aansluit op DESIGN_SYSTEM.colors.secondary / layout.productDetail.pageBg */
+      pageBg: 'bg-white',
       maxWidth: 'max-w-7xl',
       containerPadding: 'px-4 sm:px-6 md:px-8 lg:px-8', // ✅ SYMMETRISCH: Gelijk links/rechts op alle breakpoints
       containerPaddingMobile: 'px-2 sm:px-4 md:px-8 lg:px-8', // ✅ MOBIEL: Minder padding op mobiel (px-2 ipv px-4)
@@ -301,10 +302,10 @@ export const PRODUCT_PAGE_CONFIG = {
   featureSection: {
     containerSpacing: 'space-y-6 md:space-y-10 lg:space-y-12', // ✅ COMPACTER: Dunner/strakker, minder ruimte
     zigzag: {
-      // Image LEFT, text RIGHT (default) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - MOBIEL: ECHT MINDER PADDING
-      leftLayout: 'flex flex-col md:grid md:grid-cols-2 gap-0 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: gap-0 (0px) - echt dichtbij, DESKTOP: gap-8 (32px) tablet, gap-12 (48px) desktop
-      // Image RIGHT, text LEFT (reversed) - ✅ MOBIEL: Centraal met afbeelding boven, tekst eronder - MOBIEL: ECHT MINDER PADDING
-      rightLayout: 'flex flex-col md:grid md:grid-cols-2 gap-0 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left', // ✅ MOBIEL: gap-0 (0px) - echt dichtbij, DESKTOP: gap-8 (32px) tablet, gap-12 (48px) desktop
+      // Image LEFT, text RIGHT - ✅ DESKTOP: Afbeelding breder (58% / 42%) voor betere weergave
+      leftLayout: 'flex flex-col md:grid md:grid-cols-[1.2fr_0.8fr] gap-0 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left',
+      // Image RIGHT, text LEFT - ✅ DESKTOP: Afbeelding breder (58% / 42%)
+      rightLayout: 'flex flex-col md:grid md:grid-cols-[0.8fr_1.2fr] gap-0 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left',
       imageOrder: {
         left: 'order-1 md:order-1', // ✅ MOBIEL: Altijd eerste (boven)
         right: 'order-1 md:order-2', // ✅ MOBIEL: Altijd eerste (boven), desktop rechts
@@ -337,7 +338,7 @@ export const PRODUCT_PAGE_CONFIG = {
         textAlign: 'text-center md:text-left', // ✅ MOBIEL: Centraal, desktop links
         // ✅ GRADIENT: Blauw gradient voor feature titels - CONSISTENT mobiel & desktop
         gradient: {
-          background: 'linear-gradient(135deg, #3071aa 0%, #256394 50%, #3d82c0 100%)',
+          background: `linear-gradient(135deg, ${BRAND_COLORS_HEX.primaryLight} 0%, ${BRAND_COLORS_HEX.primary} 50%, ${BRAND_COLORS_HEX.primaryDark} 100%)`,
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
@@ -540,7 +541,7 @@ export const PRODUCT_PAGE_CONFIG = {
         fontSize: 'text-base',
         fontWeight: 'font-normal', // ✅ DUNNER (was medium)
         textColor: 'text-gray-900',
-        hover: 'group-hover:text-[#3071aa]',
+        hover: 'group-hover:text-brand',
         transition: 'transition-colors',
       },
     },

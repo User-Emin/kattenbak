@@ -208,9 +208,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   // 🚀 PERFORMANCE: Skeleton loading – altijd zichtbaar (geen lege pagina), E2E-detecteerbaar
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50" data-testid="product-detail-loading" aria-busy="true" aria-label="Product wordt geladen">
+      <div className="min-h-screen" style={{ backgroundColor: DESIGN_SYSTEM.colors.secondary }} data-testid="product-detail-loading" aria-busy="true" aria-label="Product wordt geladen">
         {/* Expliciete lading: zichtbare tekst + skeleton */}
-        <div className="border-b bg-white">
+        <div className="border-b" style={{ backgroundColor: DESIGN_SYSTEM.colors.secondary }}>
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center gap-2">
               <div className="h-4 w-20 bg-gray-200 rounded animate-pulse" />
@@ -335,7 +335,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   if (!product) {
     const { title, description, ctaText } = PRODUCT_FETCH_CONFIG.NOT_FOUND;
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gray-50">
+      <div className="min-h-screen flex flex-col items-center justify-center px-4" style={{ backgroundColor: DESIGN_SYSTEM.colors.secondary }}>
         <AlertTriangle className="w-16 h-16 text-gray-400 mb-4" aria-hidden />
         <h1 className="text-3xl font-semibold mb-4 text-center text-gray-900">{title}</h1>
         <p className="text-gray-600 mb-6 text-center max-w-md">{description}</p>
@@ -638,7 +638,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   });
 
   return (
-    <div className={cn('min-h-screen', CONFIG.layout.pageBg ?? 'bg-gray-200')}> {/* ✅ GRIJS: Hele achtergrond echt grijs, geen kaart */}
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: (DESIGN_SYSTEM.layout as { productDetail?: { pageBg?: string } }).productDetail?.pageBg ?? DESIGN_SYSTEM.colors.secondary }}
+    >
       {/* ✅ SEO PHASE 1-3: JSON-LD Structured Data voor Google Rich Results */}
       {typeof window !== 'undefined' && !loading && product && (
         <>
