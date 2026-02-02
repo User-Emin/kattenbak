@@ -5,7 +5,8 @@ import { ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/context/cart-context';
 import type { Product } from '@/types/product';
-import { getVariantImage } from '@/lib/variant-utils'; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
+import { getVariantImage } from '@/lib/variant-utils';
+import { DESIGN_SYSTEM } from '@/lib/design-system';
 // Defensive price formatting
 const formatCurrency = (price: any): string => {
   const num = typeof price === 'number' ? price : parseFloat(String(price));
@@ -160,12 +161,16 @@ export function StickyCartBar({
                 </button>
               </div>
 
-              {/* Add to cart button - blauw (#129DD8) + achtergrond #ffffff */}
+              {/* Add to cart – design system: blauw, tekst wit */}
               <button
                 onClick={handleAddToCart}
-                className="bg-[#ffffff] hover:bg-blue-50 text-[#129DD8] font-bold px-6 py-4 rounded-xl transition-all duration-200 hover:scale-[1.02] flex items-center gap-2 text-2xl border border-[#129DD8]"
+                className="font-bold px-6 py-4 rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02] flex items-center gap-2 text-2xl"
+                style={{
+                  backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg,
+                  color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText,
+                }}
               >
-                <ShoppingCart className="h-6 w-6" style={{ color: '#129DD8' }} />
+                <ShoppingCart className="h-6 w-6" style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText }} />
                 Winkelwagen
               </button>
             </div>

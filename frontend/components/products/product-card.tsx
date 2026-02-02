@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { formatPrice } from "@/lib/utils";
 import { getProductImage } from "@/lib/image-config";
-import { BRAND_COLORS_HEX } from "@/lib/color-config";
+import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { Product } from "@/types/product";
 import { ShoppingCart, Star } from "lucide-react";
 
@@ -125,32 +125,22 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
             disabled={product.stock === 0 || isAdding}
             className="relative overflow-hidden group w-full px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-semibold rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             style={{
-              backgroundColor: product.stock === 0 ? '#9ca3af' : '#ffffff',
-              color: product.stock === 0 ? '#ffffff' : '#129DD8',
+              backgroundColor: product.stock === 0 ? '#9ca3af' : (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg,
+              color: product.stock === 0 ? '#ffffff' : (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText,
             }}
-            onMouseEnter={(e) => {
-              if (product.stock > 0 && !isAdding) {
-                e.currentTarget.style.backgroundColor = '#eff6ff';
-                e.currentTarget.style.color = '#129DD8';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (product.stock > 0 && !isAdding) {
-                e.currentTarget.style.backgroundColor = '#ffffff';
-                e.currentTarget.style.color = '#129DD8';
-              }
-            }}
+            onMouseEnter={(e) => { if (product.stock > 0 && !isAdding) e.currentTarget.style.opacity = '0.9'; }}
+            onMouseLeave={(e) => { if (product.stock > 0 && !isAdding) e.currentTarget.style.opacity = '1'; }}
           >
             {isAdding ? (
-              <span className="flex items-center justify-center gap-2 text-[#129DD8]">
-                <span className="w-5 h-5 border-2 border-[#129DD8] border-t-transparent rounded-full animate-spin"></span>
+              <span className="flex items-center justify-center gap-2" style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText }}>
+                <span className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"></span>
                 Toevoegen...
               </span>
             ) : product.stock === 0 ? (
               "Uitverkocht"
             ) : (
-              <span className="flex items-center justify-center gap-2" style={{ color: '#129DD8' }}>
-                <ShoppingCart className="w-5 h-5" style={{ color: '#129DD8' }} />
+              <span className="flex items-center justify-center gap-2" style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText }}>
+                <ShoppingCart className="w-5 h-5" style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText }} />
                 Winkelwagen
               </span>
             )}

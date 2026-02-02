@@ -104,15 +104,15 @@
     @apply focus:ring-gray-700;
   }
   
-  /* Checkout/Cart buttons - blauw + achtergrond #ffffff */
+  /* Checkout/Cart buttons – design system: cart = blauw, tekst wit */
   .checkout-button {
     background: linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%);
     @apply text-white hover:opacity-80 rounded-sm;
   }
   .cart-button {
-    background: #ffffff;
-    color: #129DD8;
-    @apply hover:bg-blue-50 rounded-sm;
+    background: #129DD8; /* DESIGN_SYSTEM.layout.navbar.cartButtonBg */
+    color: #ffffff;
+    @apply hover:opacity-90 rounded-sm;
   }
 }
 

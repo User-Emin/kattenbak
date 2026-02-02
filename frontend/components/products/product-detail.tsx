@@ -1044,7 +1044,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* Add to Cart Button - blauw (#129DD8) + achtergrond #ffffff */}
+              {/* Add to Cart – design system: blauw, tekst wit (analoog navbar) */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
@@ -1055,20 +1055,23 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   CONFIG.info.button.borderRadius,
                   CONFIG.info.button.transition,
                   'relative overflow-hidden group w-full shadow-md hover:shadow-xl duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 mb-1 sm:mb-1.5',
-                  isAdding ? 'bg-green-600 text-white hover:bg-green-600' : 'bg-[#ffffff] text-[#129DD8] hover:bg-blue-50'
+                  isAdding && 'bg-green-600 text-white hover:bg-green-600'
                 )}
-                style={isAdding ? undefined : { backgroundColor: '#ffffff', color: '#129DD8' }}
-                onMouseEnter={(e) => { if (!isAdding) { e.currentTarget.style.backgroundColor = '#eff6ff'; e.currentTarget.style.color = '#129DD8'; } }}
-                onMouseLeave={(e) => { if (!isAdding) { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.color = '#129DD8'; } }}
+                style={isAdding ? undefined : {
+                  backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg,
+                  color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText,
+                }}
+                onMouseEnter={(e) => { if (!isAdding) e.currentTarget.style.opacity = '0.9'; }}
+                onMouseLeave={(e) => { if (!isAdding) e.currentTarget.style.opacity = '1'; }}
               >
                 {isAdding ? (
                   <>
-                    <Check className={CONFIG.info.button.icon} style={{ color: '#ffffff' }} />
+                    <Check className={CONFIG.info.button.icon} style={{ color: DESIGN_SYSTEM.colors.text.inverse }} />
                     Toegevoegd
                   </>
                 ) : (
                   <>
-                    <ShoppingCart className={CONFIG.info.button.icon} style={{ color: '#129DD8' }} />
+                    <ShoppingCart className={CONFIG.info.button.icon} style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText }} />
                     Winkelwagen
                   </>
                 )}

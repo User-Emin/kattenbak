@@ -49,7 +49,7 @@ export function Header() {
 
   return (
     <>
-      {/* NAVBAR – zwart, logo uit DESIGN_SYSTEM (geen hardcode) */}
+      {/* NAVBAR – passender grijs, logo + winkelwagen direct in balk (geen extra witruimte) */}
       <header 
         className="sticky top-0"
         style={{ 
@@ -61,9 +61,11 @@ export function Header() {
         }}
       >
         <div 
-          className="w-full mx-auto relative flex items-center justify-center md:grid md:grid-cols-3 px-3 sm:px-4 md:px-6 lg:px-12 h-20"
+          className="w-full mx-auto relative flex items-center justify-center md:grid md:grid-cols-3 px-3 sm:px-4 md:px-6 lg:px-12"
           style={{
             maxWidth: DESIGN_SYSTEM.layout.navbar.maxWidth,
+            height: DESIGN_SYSTEM.layout.navbar.height,
+            minHeight: DESIGN_SYSTEM.layout.navbar.height,
           }}
         >
           {/* LEFT: EMAIL + SUPPORT - MOBIEL: LEEG, DESKTOP: EMAIL + SUPPORT */}
@@ -156,21 +158,25 @@ export function Header() {
             </Link>
           </div>
 
-          {/* RIGHT: CART - MOBIEL: Absolute rechts met meer padding, DESKTOP: Grid */}
-          <div className="absolute right-4 sm:right-5 md:relative md:right-auto flex justify-end">
+          {/* RIGHT: Winkelwagenbutton direct in navbar – blauw, tekst wit (design system) */}
+          <div className="absolute right-4 sm:right-5 md:relative md:right-auto flex items-center">
             <button
               onClick={handleCartToggle}
-              className="relative flex items-center justify-center w-10 h-10 rounded-lg transition-colors bg-[#ffffff] hover:bg-blue-50"
-              style={{ color: '#129DD8' }}
+              className="relative flex items-center justify-center gap-1.5 py-2 px-3 rounded-md transition-opacity hover:opacity-90"
+              style={{
+                backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg,
+                color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText,
+              }}
               aria-label="Winkelwagen"
               title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
             >
-              <ShoppingCart className="h-6 w-6" strokeWidth={2} style={{ color: '#129DD8' }} />
+              <ShoppingCart className="h-6 w-6" strokeWidth={2} style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText }} />
               {itemCount > 0 && (
                 <span 
-                  className="absolute -top-2 -right-2 min-w-[20px] h-5 text-white text-xs rounded-full flex items-center justify-center px-1.5 font-bold"
+                  className="min-w-[20px] h-5 text-xs rounded-full flex items-center justify-center px-1.5 font-bold"
                   style={{
-                    backgroundColor: '#129DD8',
+                    backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg,
+                    color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText,
                     fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
                   }}
                 >

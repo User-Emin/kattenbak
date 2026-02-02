@@ -60,7 +60,7 @@ export const DESIGN_SYSTEM = {
       success: '#22c55e',     // Groen - success messages
       error: '#ef4444',       // Rood - errors
       warning: '#f59e0b',     // Geel - warnings
-      info: '#3071aa',        // Blauw - info #3071aa
+      info: '#129DD8',       // Sync met BRAND_COLORS_HEX.primary (lib/color-config.ts)
     }
   },
 
@@ -187,32 +187,34 @@ export const DESIGN_SYSTEM = {
       padding: '0 48px',
     },
     
-    // USP banner (boven navbar) - ✅ ZWART: #000000
+    // USP banner (boven navbar) – wit, zwarte tekst, iets dunner
     uspBanner: {
-      bg: '#000000',  // ✅ ZWART (was gradient)
-      bgStart: '#000000',    // ✅ ZWART
-      bgEnd: '#000000',      // ✅ ZWART
-      color: '#ffffff',      // WIT
-      height: '40px',        // ✅ KORTER: 40px (was 48px)
-      animationDuration: '3000ms', // 3 seconden per USP
-      zIndex: '160',        // ✅ ONDER sidebar (z-[170]) maar BOVEN navbar (z-165)
+      bg: '#ffffff',
+      bgStart: '#ffffff',
+      bgEnd: '#ffffff',
+      color: '#000000',
+      height: '32px',
+      animationDuration: '3000ms',
+      zIndex: '160',
     },
     
-    // Navbar – zwart, logo uit config (vervang bestand op server: public/logos/logo.png)
+    // Navbar – passender grijs, logo uit config; winkelwagenbutton blauw met wit
     navbar: {
       height: '72px',
       maxWidth: '1920px',
-      bg: '#000000',         // ZWART
-      textColor: '#ffffff',  // Links en icon wit op zwart
+      bg: '#525252',         // Passender grijs (gray.600) – single source
+      textColor: '#ffffff',  // Links en icon wit op grijs
+      /** Winkelwagenbutton in navbar: blauw, tekst wit – analoog overal */
+      cartButtonBg: '#129DD8',
+      cartButtonText: '#ffffff',
       zIndex: '999',
-      /** Logo: plaats nieuw logo als logo.png in public/logos/ op server */
       logoPath: '/logos/logo.png',
       logoPathFallback: '/logos/logo-navbar-original.png',
     },
     
     // ✅ DRY: Totale header hoogte (banner + navbar) voor sidebar positioning
     header: {
-      totalHeight: 'calc(40px + 72px)', // ✅ DRY: uspBanner.height + navbar.height (geen hardcode)
+      totalHeight: 'calc(32px + 72px)', // ✅ DRY: uspBanner.height + navbar.height
     },
     
     // ✅ Z-INDEX MANAGEMENT: Centrale z-index configuratie (geen hardcode)
