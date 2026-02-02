@@ -158,25 +158,25 @@ export function Header() {
             </Link>
           </div>
 
-          {/* RIGHT: Winkelwagenbutton direct in navbar – blauw, tekst wit (design system) */}
-          <div className="absolute right-4 sm:right-5 md:relative md:right-auto flex items-center">
+          {/* RIGHT: Winkelwagensymbool wit in navbar, meer rechts, geen onderkleur (design system) */}
+          <div className="absolute right-3 sm:right-4 md:relative md:right-auto md:ml-auto flex items-center justify-end">
             <button
               onClick={handleCartToggle}
               className="relative flex items-center justify-center gap-1.5 py-2 px-3 rounded-md transition-opacity hover:opacity-90"
               style={{
-                backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg,
-                color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText,
+                backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartSymbolBg?: string }).cartSymbolBg,
+                color: (DESIGN_SYSTEM.layout.navbar as { cartSymbolColor?: string }).cartSymbolColor,
               }}
               aria-label="Winkelwagen"
               title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
             >
-              <ShoppingCart className="h-6 w-6" strokeWidth={2} style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText }} />
+              <ShoppingCart className="h-6 w-6" strokeWidth={2} style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartSymbolColor?: string }).cartSymbolColor }} />
               {itemCount > 0 && (
                 <span 
-                  className="min-w-[20px] h-5 text-xs rounded-full flex items-center justify-center px-1.5 font-bold"
+                  className="min-w-[18px] h-4.5 text-xs rounded-full flex items-center justify-center px-1 font-bold"
                   style={{
-                    backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg,
-                    color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText,
+                    backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartSymbolColor?: string }).cartSymbolColor,
+                    color: (DESIGN_SYSTEM.layout.navbar as { bg?: string }).bg,
                     fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
                   }}
                 >

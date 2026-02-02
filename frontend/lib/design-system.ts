@@ -198,13 +198,17 @@ export const DESIGN_SYSTEM = {
       zIndex: '160',
     },
     
-    // Navbar – zwart, winkelwagensymbool direct in balk (design system)
+    // Navbar – zwart; winkelwagensymbool wit direct in balk, geen onderkleur (design system)
     navbar: {
       height: '72px',
       maxWidth: '1920px',
-      bg: '#000000',         // Zwart – single source
-      textColor: '#ffffff',  // Links en icon wit op zwart
-      cartButtonBg: '#129DD8',
+      bg: '#000000',
+      textColor: '#ffffff',
+      /** Symbool in navbar: wit, geen achtergrond (geen blauw) */
+      cartSymbolColor: '#ffffff',
+      cartSymbolBg: 'transparent',
+      /** CTA-knop "Winkelwagen" op pagina’s: zwart */
+      cartButtonBg: '#000000',
       cartButtonText: '#ffffff',
       zIndex: '999',
       logoPath: '/logos/logo.png',

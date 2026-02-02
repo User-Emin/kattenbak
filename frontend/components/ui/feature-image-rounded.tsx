@@ -12,6 +12,8 @@ export interface FeatureImageRoundedProps {
   /** Ronde hoeken – uit config (bijv. rounded-xl md:rounded-2xl) voor zigzag duidelijkheid */
   borderRadiusClassName?: string;
   objectFit?: 'cover' | 'contain';
+  /** object-position uit config – horizontale kant meer zichtbaar */
+  objectPositionClassName?: string;
   sizes?: string;
   quality?: number;
   unoptimized?: boolean;
@@ -31,6 +33,7 @@ export function FeatureImageRounded({
   innerClassName,
   borderRadiusClassName = 'rounded-lg',
   objectFit = 'contain',
+  objectPositionClassName = 'object-center',
   onError,
   sizes: _sizes,
   quality: _quality,
@@ -52,7 +55,8 @@ export function FeatureImageRounded({
         alt={alt}
         className={cn(
           'absolute inset-0 h-full w-full',
-          objectFit === 'cover' ? 'object-cover' : 'object-contain'
+          objectFit === 'cover' ? 'object-cover' : 'object-contain',
+          objectPositionClassName
         )}
         loading="lazy"
         decoding="async"

@@ -110,7 +110,7 @@
     @apply text-white hover:opacity-80 rounded-sm;
   }
   .cart-button {
-    background: #129DD8; /* DESIGN_SYSTEM.layout.navbar.cartButtonBg */
+    background: #000000; /* DESIGN_SYSTEM.layout.navbar.cartButtonBg (zwart) */
     color: #ffffff;
     @apply hover:opacity-90 rounded-sm;
   }

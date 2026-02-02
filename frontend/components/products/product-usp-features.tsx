@@ -77,16 +77,18 @@ export function ProductUspFeatures({ product = null }: ProductUspFeaturesProps =
                 src={feature.image || '/images/placeholder.jpg'}
                 alt={feature.title}
                 className={cn(
+                  CONFIG.featureSection.image.containerMaxWidth,
                   'w-full md:w-auto',
                   isEven ? CONFIG.featureSection.zigzag.imageOrder.left : CONFIG.featureSection.zigzag.imageOrder.right
                 )}
                 borderRadiusClassName={CONFIG.featureSection.image.borderRadius}
                 innerClassName={cn(
-                  'aspect-[3/4] md:aspect-[4/5]',
+                  CONFIG.featureSection.image.aspectRatio,
                   CONFIG.featureSection.image.bgColor,
                   'overflow-hidden'
                 )}
                 objectFit={(CONFIG.featureSection.image as { objectFit?: 'cover' | 'contain' }).objectFit ?? 'cover'}
+                objectPositionClassName={(CONFIG.featureSection.image as { objectPosition?: string }).objectPosition ?? 'object-center'}
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 quality={80}
                 unoptimized={

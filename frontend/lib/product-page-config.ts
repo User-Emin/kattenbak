@@ -316,17 +316,21 @@ export const PRODUCT_PAGE_CONFIG = {
       },
     },
     image: {
-      aspectRatio: 'aspect-[3/4] md:aspect-[4/5]', // ✅ VERTICAAL
+      /** Iets uitzoomen: breder aspect = horizontale kant toont meer (geen hardcode) */
+      aspectRatio: 'aspect-[4/3] md:aspect-[5/3]',
       borderRadius: 'rounded-xl md:rounded-2xl lg:rounded-3xl',
       borderRadiusValue: {
         mobile: '0.75rem',
         tablet: '1rem',
         desktop: '1.5rem',
       },
-      /** 'cover' = geen witruimte boven/onder, afbeelding vult volledig */
       objectFit: 'cover' as const,
-      bgColor: 'bg-gray-100', // subtiel grijs ipv wit bij crop
+      /** object-position: meer horizontaal zichtbaar (center = midden crop) */
+      objectPosition: 'object-center' as const,
+      bgColor: 'bg-gray-100',
       gap: 'gap-0',
+      /** Grootte zigzag-afbeeldingen: max-width container (design system) */
+      containerMaxWidth: 'max-w-xl md:max-w-2xl lg:max-w-3xl',
     },
     text: {
       container: 'space-y-2 md:space-y-6 w-full md:w-auto', // ✅ MOBIEL: ECHT MINDER spacing tussen titel en beschrijving (space-y-2 = 8px ipv space-y-3)

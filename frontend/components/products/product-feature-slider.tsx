@@ -87,7 +87,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
             <FeatureImageRounded
               src={feature.image || '/images/feature-2.jpg'}
               alt={feature.title}
-              className="max-w-xs sm:max-w-sm mx-auto mb-4"
+              className={cn(CONFIG.featureSection.image.containerMaxWidth, 'mx-auto mb-4')}
                   borderRadiusClassName={CONFIG.featureSection.image.borderRadius}
                   innerClassName={cn(
                     CONFIG.featureSection.image.aspectRatio,
@@ -95,6 +95,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                     'overflow-hidden'
                   )}
                   objectFit={CONFIG.featureSection.image.objectFit ?? 'cover'}
+                  objectPositionClassName={(CONFIG.featureSection.image as { objectPosition?: string }).objectPosition ?? 'object-center'}
                   sizes="(max-width: 768px) 320px, 400px"
               quality={85}
               unoptimized={
@@ -172,6 +173,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                   src={feature.image || '/images/feature-2.jpg'}
                   alt={feature.title}
                   className={cn(
+                    CONFIG.featureSection.image.containerMaxWidth,
                     'w-full md:w-auto',
                     isEven
                       ? CONFIG.featureSection.zigzag.imageOrder.left
@@ -184,6 +186,7 @@ export function ProductFeatureSlider({ features }: ProductFeatureSliderProps) {
                     'overflow-hidden'
                   )}
                   objectFit={CONFIG.featureSection.image.objectFit ?? 'cover'}
+                  objectPositionClassName={(CONFIG.featureSection.image as { objectPosition?: string }).objectPosition ?? 'object-center'}
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   quality={80}
                   unoptimized={
