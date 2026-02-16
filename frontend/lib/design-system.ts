@@ -194,9 +194,9 @@ export const DESIGN_SYSTEM = {
       padding: '0 48px',
     },
     
-    // URLveld / themebalk boven USP – zwart (browser chrome + top strip)
+    // URLveld / themebalk boven USP – zelfde blauw als banner (browser chrome + top strip)
     topBar: {
-      bg: '#000000',
+      bg: '#129DD8',
       height: '4px',
     },
     // USP banner (boven navbar) – blauw, witte tekst, geen vinkjes/iconen
@@ -271,6 +271,9 @@ export const DESIGN_SYSTEM = {
       /** Badge op witte knop: zwart vlak, witte cijfers */
       badgeBg: '#000000',
       badgeText: '#ffffff',
+      /** Knop: iets korter verticaal, minder rond, licht bounce */
+      buttonPaddingY: 'py-2.5',
+      buttonRounded: 'rounded-md',
     },
 
     // ✅ CHAT MODAL: Zwart header, ronde hoeken, één plek (geen hardcode in component)

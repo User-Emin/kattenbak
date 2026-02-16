@@ -55,7 +55,6 @@ import {
   Volume2,
   Settings,
   Maximize,
-  Truck,
   Lock,
   AlertTriangle,
   RefreshCw
@@ -1080,17 +1079,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 )}
               </button>
 
-              {/* Bezorgtijd – centraal onder de button (alleen inline styles zodat centrering altijd werkt) */}
+              {/* Bezorgtijd – alleen tekst, geen symbool */}
               <div
-                className="mt-2 sm:mt-2.5 mb-0 whitespace-nowrap"
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                className="mt-2 sm:mt-2.5 mb-0 whitespace-nowrap flex items-center justify-center w-full"
               >
-                <Truck className={cn('w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mr-1.5', CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black')} />
                 <span className={cn('text-sm sm:text-base', CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black', CONFIG.info?.bottomCart?.serviceUspTextWeight ?? 'font-semibold')}>
                   {PRODUCT_CONTENT.delivery.label} <span className={CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black'}>{PRODUCT_CONTENT.delivery.days}</span>
                 </span>

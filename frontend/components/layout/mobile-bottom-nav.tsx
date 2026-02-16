@@ -38,34 +38,52 @@ export function MobileBottomNav() {
     }
   };
 
+  const nav = DESIGN_SYSTEM.layout.mobileBottomNav as typeof DESIGN_SYSTEM.layout.mobileBottomNav & {
+    barBg?: string;
+    barBorderColor?: string;
+    buttonBg?: string;
+    buttonText?: string;
+    badgeBg?: string;
+    badgeText?: string;
+  };
+
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-[200] bg-white border-t border-gray-200 shadow-lg">
-      <div className="flex items-center justify-center py-3 px-4">
+    <div
+      className="md:hidden fixed bottom-0 left-0 right-0 z-[200] shadow-lg border-t"
+      style={{
+        backgroundColor: nav.barBg ?? DESIGN_SYSTEM.colors.text.primary,
+        borderColor: nav.barBorderColor ?? DESIGN_SYSTEM.colors.gray[800],
+      }}
+    >
+      <div className="flex items-center justify-center py-2.5 px-4">
         <button
           onClick={handleCartClick}
           disabled={isOnCartPage}
           className={`
-            relative flex items-center justify-center gap-2 px-6 py-3 rounded-lg
-            transition-all duration-300 transform active:scale-95
-            ${isOnCartPage ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}
+            relative flex items-center justify-center gap-2 px-6 rounded-md
+            transition-transform duration-200 ease-out active:scale-[0.97]
+            ${nav.buttonPaddingY ?? 'py-2.5'}
+            ${nav.buttonRounded ?? 'rounded-md'}
+            ${isOnCartPage ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.02] hover:opacity-90'}
           `}
           style={{
-            backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg,
-            color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText,
+            backgroundColor: nav.buttonBg ?? DESIGN_SYSTEM.colors.secondary,
+            color: nav.buttonText ?? DESIGN_SYSTEM.colors.text.primary,
           }}
           aria-label="Winkelwagen"
         >
-          <ShoppingCart className="h-5 w-5" strokeWidth={2} style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText }} />
+          <ShoppingCart className="h-5 w-5 shrink-0" strokeWidth={2} style={{ color: nav.buttonText ?? DESIGN_SYSTEM.colors.text.primary }} />
           <span className="text-sm font-semibold">Winkelwagen</span>
           {itemCount > 0 && (
-            <span 
-              className="absolute -top-2 -right-2 min-w-[20px] h-5 text-xs rounded-full flex items-center justify-center px-1.5 font-bold"
+            <span
+              className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 rounded-full flex items-center justify-center px-1.5 font-bold tabular-nums text-xs"
               style={{
-                backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText,
-                color: (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg,
+                backgroundColor: nav.badgeBg ?? DESIGN_SYSTEM.colors.text.primary,
+                color: nav.badgeText ?? DESIGN_SYSTEM.colors.text.inverse,
+                fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
               }}
             >
-              {itemCount}
+              {itemCount > 99 ? '99+' : itemCount}
             </span>
           )}
         </button>

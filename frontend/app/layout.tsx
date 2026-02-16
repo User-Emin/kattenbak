@@ -85,10 +85,12 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <link rel="apple-touch-icon" href="/logos/logo.webp" />
         <link rel="shortcut icon" href="/logos/logo.webp" type="image/webp" />
         
-        {/* URL BAR: ✅ WIT - Echt wit voor duidelijkheid */}
-        <meta name="theme-color" content="#ffffff" />
-        <meta name="msapplication-navbutton-color" content="#ffffff" />
+        {/* URL BAR / THEME: blauw van banner (DESIGN_SYSTEM.layout.uspBanner.bg) */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content={DESIGN_SYSTEM.layout.uspBanner.bg} />
+        <meta name="msapplication-navbutton-color" content={DESIGN_SYSTEM.layout.uspBanner.bg} />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="color-scheme" content="light" />
         <style dangerouslySetInnerHTML={{ __html: `
           :root {
             --theme-color-start: ${DESIGN_SYSTEM.colors.primaryStart};
@@ -139,7 +141,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         {/* ✅ SEO 10/10: Additional Meta Tags */}
         <meta name="format-detection" content="telephone=yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="CatSupply" />
         
         {/* ✅ SEO 10/10: Structured Data - Organization */}
@@ -195,8 +197,9 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <UIProvider>
           <CartProvider>
             <div className="flex flex-col min-h-screen">
-              {/* USP BANNER - Fixed top-0, boven navbar */}
+              {/* BLAUWE BALK + USP BANNER - urlveld/themering = bannerblauw */}
               <div className="fixed top-0 left-0 right-0 z-50">
+                <div className="w-full shrink-0" style={{ height: DESIGN_SYSTEM.layout.topBar?.height ?? '4px', backgroundColor: DESIGN_SYSTEM.layout.topBar?.bg ?? DESIGN_SYSTEM.layout.uspBanner.bg }} aria-hidden />
                 <UspBanner />
               </div>
               

@@ -13,6 +13,7 @@ import { DESIGN_SYSTEM } from "@/lib/design-system";
 const USPS = [
   { text: "Gratis verzending binnen Nederland" },
   { text: "30 dagen bedenktijd • Gratis retour" },
+  { text: "1 jaar garantie" },
   { text: "Nooit meer scheppen" },
 ] as const;
 

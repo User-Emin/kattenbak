@@ -371,7 +371,7 @@ Perfect voor katten van 1,5KG tot 12,5KG en geschikt vanaf 6 maanden leeftijd. N
   // Service USPs - ✅ Vetgedrukt en opvallend (centraal maintainable)
   serviceUsps: [
     { text: 'Volledig automatisch • App bediening' },
-    { text: 'Binnen 30 dagen gratis retour • 1 jaar garantie' },
+    { text: 'Binnen 30 dagen gratis retour' },
     { text: 'Zelfreinigend systeem • Hygiënisch' },
   ],
 
@@ -511,7 +511,7 @@ export const SHARED_CONTENT = {
   
   // ✅ DYNAMISCH: Trust banner content (onder hero)
   trustBanner: {
-    text: 'Gratis verzending • 30 dagen bedenktijd • 1 jaar garantie',
+    text: 'Gratis verzending • 30 dagen bedenktijd',
   },
   
   success: {
