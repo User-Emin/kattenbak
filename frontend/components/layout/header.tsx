@@ -49,14 +49,14 @@ export function Header() {
 
   return (
     <>
-      {/* NAVBAR – zwart, winkelwagensymbool direct in balk (design system) */}
+      {/* NAVBAR – wit, logo CATSUPPLY, links en winkelwagen donker (design system) */}
       <header 
         className="sticky top-0"
         style={{ 
           backgroundColor: DESIGN_SYSTEM.layout.navbar.bg,
-          color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#ffffff',
-          boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#000000',
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.08)',
+          borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
           zIndex: 165,
         }}
       >
@@ -76,7 +76,7 @@ export function Header() {
               className="flex items-center gap-2 transition-opacity hover:opacity-80"
               style={{
                 fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
-                color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#ffffff',
+                color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#000000',
                 fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
               }}
             >
@@ -90,7 +90,7 @@ export function Header() {
               className="flex items-center gap-2 transition-opacity hover:opacity-80"
               style={{
                 fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
-                color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#ffffff',
+                color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#000000',
                 fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
               }}
               title="Klantenservice"
@@ -158,31 +158,36 @@ export function Header() {
             </Link>
           </div>
 
-          {/* RIGHT: Winkelwagensymbool wit in navbar, meer rechts, geen onderkleur (design system) */}
+          {/* RIGHT: Winkelwagensymbool met badge rechtsboven op icoon (optimaal) */}
           <div className="absolute right-3 sm:right-4 md:relative md:right-auto md:ml-auto flex items-center justify-end">
             <button
               onClick={handleCartToggle}
-              className="relative flex items-center justify-center gap-1.5 py-2 px-3 rounded-md transition-opacity hover:opacity-90"
+              className="relative flex items-center justify-center py-2 px-3 rounded-md transition-opacity hover:opacity-90"
               style={{
                 backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartSymbolBg?: string }).cartSymbolBg,
                 color: (DESIGN_SYSTEM.layout.navbar as { cartSymbolColor?: string }).cartSymbolColor,
               }}
-              aria-label="Winkelwagen"
+              aria-label={itemCount > 0 ? `Winkelwagen (${itemCount} items)` : 'Winkelwagen'}
               title={isOnCartPage ? 'Je bent al op de winkelwagen pagina' : 'Open winkelwagen'}
             >
-              <ShoppingCart className="h-6 w-6" strokeWidth={2} style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartSymbolColor?: string }).cartSymbolColor }} />
-              {itemCount > 0 && (
-                <span 
-                  className="min-w-[18px] h-4.5 text-xs rounded-full flex items-center justify-center px-1 font-bold"
-                  style={{
-                    backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartSymbolColor?: string }).cartSymbolColor,
-                    color: (DESIGN_SYSTEM.layout.navbar as { bg?: string }).bg,
-                    fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
-                  }}
-                >
-                  {itemCount}
-                </span>
-              )}
+              <span className="relative inline-flex items-center justify-center">
+                <ShoppingCart className="h-6 w-6 shrink-0" strokeWidth={2} style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartSymbolColor?: string }).cartSymbolColor }} />
+                {itemCount > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 rounded-full flex items-center justify-center min-w-[18px] h-[18px] px-1 font-bold tabular-nums leading-none"
+                    style={{
+                      fontSize: (DESIGN_SYSTEM.layout.navbar as { cartBadge?: { fontSize?: string } }).cartBadge?.fontSize ?? '0.7rem',
+                      fontWeight: (DESIGN_SYSTEM.layout.navbar as { cartBadge?: { fontWeight?: string } }).cartBadge?.fontWeight ?? '700',
+                      backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartBadge?: { badgeBg?: string } }).cartBadge?.badgeBg ?? '#ffffff',
+                      color: (DESIGN_SYSTEM.layout.navbar as { cartBadge?: { badgeText?: string } }).cartBadge?.badgeText ?? '#000000',
+                      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                    }}
+                  >
+                    {itemCount > 99 ? '99+' : itemCount}
+                  </span>
+                )}
+              </span>
             </button>
           </div>
         </div>

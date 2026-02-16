@@ -196,41 +196,39 @@ export const DESIGN_SYSTEM = {
     
     // URLveld / themebalk boven USP – zelfde blauw als banner (browser chrome + top strip)
     topBar: {
-      bg: '#129DD8',
+      bg: '#000000',
       height: '4px',
     },
-    // USP banner (boven navbar) – blauw, witte tekst, geen vinkjes/iconen
+    // USP banner (boven navbar) – zwart, witte tekst
     uspBanner: {
-      bg: '#129DD8',
-      bgStart: '#129DD8',
-      bgEnd: '#129DD8',
+      bg: '#000000',
+      bgStart: '#000000',
+      bgEnd: '#000000',
       color: '#ffffff',
       height: '32px',
       animationDuration: '3000ms',
       zIndex: '160',
     },
     
-    // Navbar – zwart; winkelwagensymbool wit direct in balk, geen onderkleur (design system)
+    // Navbar – wit; logo CATSUPPLY (bijlage), links en winkelwagen symbool donker
     navbar: {
       height: '72px',
       maxWidth: '1920px',
-      bg: '#000000',
-      textColor: '#ffffff',
-      /** Symbool in navbar: wit, geen achtergrond (geen blauw) */
-      cartSymbolColor: '#ffffff',
+      bg: '#ffffff',
+      textColor: '#000000',
+      cartSymbolColor: '#000000',
       cartSymbolBg: 'transparent',
       /** CTA-knop "Winkelwagen" op pagina’s: zwart */
       cartButtonBg: '#000000',
       cartButtonText: '#ffffff',
-      /** Getal-badge naast winkelwagensymbool: grootte, positie, leesbaar */
       cartBadge: {
         minWidth: '20px',
         height: '20px',
         fontSize: '0.75rem',
         fontWeight: '700',
         borderRadius: '9999px',
-        badgeBg: '#ffffff',
-        badgeText: '#000000',
+        badgeBg: '#000000',
+        badgeText: '#ffffff',
       },
       zIndex: '999',
       logoPath: '/logos/logo.png',
@@ -271,12 +269,17 @@ export const DESIGN_SYSTEM = {
       /** Badge op witte knop: zwart vlak, witte cijfers */
       badgeBg: '#000000',
       badgeText: '#ffffff',
-      /** Knop: iets korter verticaal, minder rond, licht bounce */
+      /** Knop: compacter horizontaal en verticaal */
       buttonPaddingY: 'py-2.5',
+      buttonPaddingX: 'px-4',
       buttonRounded: 'rounded-md',
+      buttonGap: 'gap-1.5',
     },
 
-    // ✅ CHAT MODAL: Zwart header, ronde hoeken, één plek (geen hardcode in component)
+    // CHAT: button positie + modal (variabelensysteem, geen hardcode)
+    chatButton: {
+      right: 'right-2', // compact: minder padding tot rechter zijkant
+    },
     chatModal: {
       headerBg: '#000000',
       headerTextColor: '#ffffff',
@@ -287,6 +290,14 @@ export const DESIGN_SYSTEM = {
       messagesBg: '#ffffff',
       inputBorderRadius: 'rounded-2xl',
       borderColor: 'border-gray-200',
+      /** Typgebied (onderkant modal): zwart, ook mobiel ronde hoeken */
+      inputBg: '#000000',
+      inputTextColor: '#ffffff',
+      inputFieldBg: '#262626',
+      inputFieldBorder: 'border-gray-600',
+      inputBottomBorderRadius: 'rounded-b-3xl',
+      closeButtonPadding: 'p-2',
+      closeButtonRounded: 'rounded-md',
     },
     
     // Feature section (edge-to-edge afbeelding) - ✅ SMOOTH PASSEND: Legale foto onder hero
