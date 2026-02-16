@@ -1,8 +1,12 @@
 #!/bin/bash
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# SECURE DEPLOYMENT SCRIPT - DRY & PRODUCTION READY
-# Uses .env.server for credentials (NEVER committed to repo)
+# SECURE DEPLOYMENT VIA GIT – Principes
+# - Alleen git als bron: op server altijd git fetch + reset --hard origin/main
+# - Geen handmatige edits op server; schone install (rm node_modules) voorkomt EEXIST/corrupte tsc
+# - Build backend + frontend; pm2 restart all
+# - Volledige verificatie: scripts/e2e-deployment-verification.sh
+# Credentials: .env.server (SERVER_HOST, SSHPASS) of env – NOOIT in repo
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 set -e
@@ -16,22 +20,19 @@ NC='\033[0m'
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# Load credentials from .env.server
+# Load credentials: .env.server or env vars (env vars take precedence)
 if [ -f "$PROJECT_ROOT/.env.server" ]; then
   source "$PROJECT_ROOT/.env.server"
   echo -e "${GREEN}✅ Credentials loaded from .env.server${NC}"
-else
-  echo -e "${RED}❌ .env.server not found!${NC}"
-  echo "Create it with:"
-  echo "  export SERVER_HOST='$SERVER_HOST'"
-  echo "  export SERVER_USER='root'"
-  echo "  export SSHPASS='your-password'"
-  exit 1
 fi
+if [ -n "$SERVER_HOST" ] || [ -n "$SERVER_USER" ] || [ -n "$SSHPASS" ]; then
+  echo -e "${GREEN}✅ Using SERVER_* from environment${NC}"
+fi
+: "${SERVER_USER:=root}"
 
 # Validate credentials
-if [ -z "$SERVER_HOST" ] || [ -z "$SERVER_USER" ] || [ -z "$SSHPASS" ]; then
-  echo -e "${RED}❌ Missing credentials in .env.server${NC}"
+if [ -z "$SERVER_HOST" ] || [ -z "$SSHPASS" ]; then
+  echo -e "${RED}❌ Missing credentials. Set .env.server or: SERVER_HOST, SSHPASS (SERVER_USER optional, default root)${NC}"
   exit 1
 fi
 
@@ -51,39 +52,47 @@ ssh_exec() {
   sshpass -e ssh -o StrictHostKeyChecking=no "${SERVER_USER}@${SERVER_HOST}" "$@"
 }
 
-echo -e "${GREEN}📥 Pulling latest code...${NC}"
-ssh_exec << 'ENDSSH'
-cd /var/www/kattenbak
-git pull origin main
-ENDSSH
-
-# Build backend
-echo -e "${GREEN}🔧 Building backend...${NC}"
-ssh_exec << 'ENDSSH'
-cd /var/www/kattenbak/backend
-npm run build
-ENDSSH
-
-# Build frontend (webshop)
-echo -e "${GREEN}🔧 Building frontend (webshop)...${NC}"
-ssh_exec << 'ENDSSH'
-cd /var/www/kattenbak/frontend
-rm -rf .next/cache
-NEXT_PUBLIC_API_URL="https://catsupply.nl/api/v1" npm run build
-ENDSSH
-
-echo -e "${YELLOW}⚠️  Skipping admin panel build (linting errors)${NC}"
-
-echo -e "${GREEN}♻️  Restarting services...${NC}"
-ssh_exec << 'ENDSSH'
-pm2 restart all
-pm2 list
-ENDSSH
-
+# ━━━ Pre-check: code staat op origin/main (optioneel, niet blokkeren)
+echo -e "${GREEN}🔍 Pre-check: git status lokaal...${NC}"
+if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+  echo -e "   ${YELLOW}⚠️  Geen git repo (OK als je script vanaf server draait)${NC}"
+else
+  BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)
+  echo "   Branch: ${BRANCH:-?} | Deploy gebruikt altijd origin/main op server."
+fi
 echo ""
-echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}✅ DEPLOYMENT SUCCESS!${NC}"
-echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+
+# ━━━ Deploy via git: sync + server-script (schone install, build, restart)
+echo -e "${GREEN}📥 Server: git sync + deploy-from-git (schone install, build, pm2)...${NC}"
+ssh_exec "cd /var/www/kattenbak && git fetch origin && git reset --hard origin/main && bash scripts/deploy-from-git-server.sh"
+echo ""
+
+# ━━━ Volledige verificatie: E2E deployment checks
+echo -e "${GREEN}🔍 Verificatie: E2E deployment (volledig)...${NC}"
+if [ -f "$PROJECT_ROOT/scripts/e2e-deployment-verification.sh" ]; then
+  if bash "$PROJECT_ROOT/scripts/e2e-deployment-verification.sh"; then
+    echo ""
+    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${GREEN}✅ DEPLOYMENT SUCCESS – 100% BEVESTIGD (E2E geslaagd)${NC}"
+    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  else
+    echo ""
+    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${YELLOW}⚠️  DEPLOYMENT DONE – E2E verificatie gefaald (check output hierboven)${NC}"
+    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  fi
+else
+  # Fallback: alleen health checks
+  FRONT_OK=0
+  BACKEND_OK=0
+  if curl -sf --max-time 10 "https://catsupply.nl" > /dev/null; then FRONT_OK=1; echo -e "   ${GREEN}✅ Frontend: OK${NC}"; else echo -e "   ${RED}❌ Frontend: niet bereikbaar${NC}"; fi
+  if curl -sf --max-time 10 "https://catsupply.nl/api/v1/health" > /dev/null; then BACKEND_OK=1; echo -e "   ${GREEN}✅ Backend health: OK${NC}"; else echo -e "   ${RED}❌ Backend health: niet bereikbaar${NC}"; fi
+  if [ "$FRONT_OK" = 1 ] && [ "$BACKEND_OK" = 1 ]; then
+    echo -e "${GREEN}✅ DEPLOYMENT SUCCESS – Health OK${NC}"
+  else
+    echo -e "${YELLOW}⚠️  DEPLOYMENT DONE – Verificatie gedeeltelijk${NC}"
+  fi
+fi
 echo ""
 echo "🌐 Frontend: https://catsupply.nl"
 echo "🔐 Admin: https://catsupply.nl/admin"
