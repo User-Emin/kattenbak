@@ -14,11 +14,13 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { Button } from "./button";
-import { X, Send, MessageCircle, Loader2 } from "lucide-react";
+import { X, Send, Loader2 } from "lucide-react";
+import { ChatIcon } from "@/components/ui/chat-icon";
 import { CHAT_CONFIG } from "@/lib/chat-config";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { useUI } from "@/context/ui-context";
 import { cn } from "@/lib/utils";
+import { productsApi } from "@/lib/api/products";
 
 // ✅ SECURITY: Safe DESIGN_SYSTEM access with fallback (outside component, executed once)
 const SAFE_DESIGN_SYSTEM = (() => {
@@ -51,6 +53,8 @@ interface Message {
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
+  /** Modulaire waarschuwingen van RAG (bijv. externe leverancier) */
+  warnings?: string[];
 }
 
 export function ChatPopup() {
@@ -58,6 +62,8 @@ export function ChatPopup() {
   const pathname = usePathname();
   const { isCartOpen } = useUI(); // ✅ SIDEBAR: Check of cart sidebar open is
   const isProductPage = pathname?.startsWith('/product/') || false;
+  const productSlug = (pathname?.match(/^\/product\/([^/?#]+)/)?.[1] ?? '').trim() || '';
+  const [productContext, setProductContext] = useState<{ slug?: string; title?: string; description?: string; price?: string | number } | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -78,26 +84,26 @@ export function ChatPopup() {
       // ✅ SECURITY: Return validated config
       return CHAT_CONFIG;
     } catch (err) {
-      // ✅ SECURITY: Silent fallback (no error exposure to user)
-      // Return minimal fallback config that matches CHAT_CONFIG structure
+      // ✅ SECURITY: Silent fallback (no error exposure); 100% DESIGN_SYSTEM-aligned
+      const ds = DESIGN_SYSTEM;
       return {
         button: {
           position: {
-            type: 'fixed',
+            type: ds.layoutUtils.position.fixed as 'fixed',
             right: 'right-6',
             bottom: 'bottom-6',
             bottomWithCart: 'bottom-24',
           },
           size: 'w-14 h-14',
-          borderRadius: 'rounded-lg',
-          backgroundColor: 'bg-black', // ✅ ZWART: Solid zwart (geen transparantie)
+          borderRadius: ds.effects.borderRadius.xl,
+          backgroundColor: 'bg-black',
           textColor: 'text-white',
-          shadow: 'shadow-lg',
-          hoverBackgroundColor: 'hover:bg-gray-900', // ✅ ZWART HOVER: Donkerder hover
-          border: 'border-2 border-black', // ✅ ZWART BORDER: Geen grijs meer
-          display: 'flex',
-          align: 'items-center',
-          justify: 'justify-center',
+          shadow: ds.effects.shadow.lg,
+          hoverBackgroundColor: 'hover:bg-gray-900',
+          border: 'border-2 border-black',
+          display: ds.layoutUtils.display.flex,
+          align: ds.layoutUtils.flex.align.center,
+          justify: ds.layoutUtils.flex.justify.center,
           zIndex: 100,
           hoverScale: 'hover:scale-110',
           activeScale: 'active:scale-95',
@@ -109,38 +115,38 @@ export function ChatPopup() {
           iconSize: 'w-6 h-6',
         },
         animations: {
-          duration: { base: 'duration-200' },
-          timing: { ease: 'ease-in-out' },
+          duration: { base: ds.transitions.duration.base },
+          timing: { ease: ds.transitions.timing.easeInOut },
           backdrop: {
-            backgroundColor: 'bg-transparent', // ✅ VOLLEDIG TRANSPARANT: Achtergrond blijft volledig zichtbaar, niets bedekt
-            blur: '', // ✅ GEEN BLUR: Achtergrond blijft scherp zichtbaar
-            fadeIn: '', // ✅ GEEN ANIMATIE: Backdrop niet zichtbaar, dus geen fade-in nodig
-            zIndex: 'z-[99]',
-            mobileTransparent: '', // ✅ GEEN MOBILE OVERRIDE: Overal transparant
-            mobilePointerEvents: 'pointer-events-none', // ✅ POINTER EVENTS NONE: Backdrop niet klikbaar
-            position: 'fixed',
+            backgroundColor: 'bg-transparent',
+            blur: '',
+            fadeIn: '',
+            zIndex: ds.layoutUtils.zIndex.backdrop,
+            mobileTransparent: '',
+            mobilePointerEvents: ds.layoutUtils.pointerEvents.none,
+            position: ds.layoutUtils.position.fixed,
             inset: 'inset-0',
-            transition: '', // ✅ GEEN TRANSITION: Backdrop niet zichtbaar, dus geen transition nodig
+            transition: '',
           },
           modal: {
             slideIn: 'animate-in zoom-in-95 duration-300',
             container: {
-              position: 'fixed',
+              position: ds.layoutUtils.position.fixed,
               inset: 'inset-0',
               zIndex: 'z-[200]',
-              display: 'flex',
-              align: 'items-center',
-              justify: 'justify-center',
+              display: ds.layoutUtils.display.flex,
+              align: ds.layoutUtils.flex.align.center,
+              justify: ds.layoutUtils.flex.justify.center,
               padding: 'p-3 sm:p-4',
-              pointerEvents: 'pointer-events-none',
-              backgroundColor: 'bg-transparent', // ✅ VOLLEDIG TRANSPARANT: Container bedekt niets, achtergrond blijft volledig zichtbaar
+              pointerEvents: ds.layoutUtils.pointerEvents.none,
+              backgroundColor: 'bg-transparent',
             },
             content: {
-              pointerEvents: 'pointer-events-auto',
-              width: 'w-full',
-              display: 'flex',
-              direction: 'flex-col',
-              position: 'relative',
+              pointerEvents: ds.layoutUtils.pointerEvents.auto,
+              width: ds.layoutUtils.sizing.widthFull,
+              display: ds.layoutUtils.display.flex,
+              direction: ds.layoutUtils.flex.direction.col,
+              position: ds.layoutUtils.position.relative,
             },
           },
         },
@@ -148,43 +154,39 @@ export function ChatPopup() {
           maxWidth: 'max-w-md',
           maxHeight: 'max-h-[85vh] sm:max-h-[80vh]',
           backgroundColor: 'bg-white',
-          borderRadius: 'rounded-xl sm:rounded-2xl',
-          shadow: 'shadow-2xl',
-          border: 'border border-gray-200',
+          borderRadius: (ds.layout.chatModal as { modalBorderRadius?: string })?.modalBorderRadius ?? 'rounded-xl sm:rounded-2xl',
+          shadow: ds.effects.shadow.lg,
+          border: ds.layout.chatModal?.borderColor ? `border ${ds.layout.chatModal.borderColor}` : 'border border-gray-200',
           zIndex: 200,
           overflow: 'overflow-hidden',
         },
         header: {
-          backgroundColor: 'bg-black',
+          backgroundColor: 'bg-black', // DESIGN_SYSTEM.layout.chatModal.headerBg #000000
           textColor: 'text-white',
           padding: 'px-4 py-3',
-          borderRadius: 'rounded-t-xl sm:rounded-t-2xl',
-          borderBottom: 'border-b border-gray-700/20',
+          borderRadius: ds.layout.chatModal?.headerBorderRadius ?? 'rounded-t-xl sm:rounded-t-2xl',
+          borderBottom: 'border-b border-gray-200',
           sticky: 'sticky top-0',
           container: {
-            display: 'flex',
-            justify: 'justify-between',
-            align: 'items-start',
-            marginBottom: 'mb-2',
+            display: ds.layoutUtils.display.flex,
+            justify: ds.layoutUtils.flex.justify.between,
+            align: ds.layoutUtils.flex.align.start,
+            marginBottom: 'mb-0',
           },
           title: {
-            fontSize: 'text-lg',
-            fontWeight: 'font-semibold',
+            fontSize: 'text-lg', // DESIGN_SYSTEM.typography.fontSize.lg = 1.125rem → Tailwind text-lg
+            fontWeight: 'font-semibold', // DESIGN_SYSTEM.typography.fontWeight.semibold
             textColor: 'text-white',
-            letterSpacing: 'tracking-tight',
+            letterSpacing: 'tracking-normal',
           },
-          subtitle: {
-            fontSize: 'text-sm',
-            textColor: 'text-gray-300',
-            marginTop: 'mt-1',
-          },
+          subtitle: { display: 'hidden' },
           closeButton: {
-            textColor: 'text-gray-400',
-            hoverTextColor: 'hover:text-white',
+            textColor: 'text-white',
+            hoverTextColor: 'hover:text-gray-200',
             transition: 'transition-colors',
             padding: 'p-1',
-            borderRadius: 'rounded-sm',
-            hoverBackground: 'hover:bg-gray-800',
+            borderRadius: ds.effects.borderRadius.sm,
+            hoverBackground: 'hover:bg-gray-200',
           },
         },
         messages: {
@@ -297,22 +299,27 @@ export function ChatPopup() {
             textAlign: 'text-center',
           },
           field: {
+            flex: 'flex-1',
+            width: 'w-full',
             padding: 'p-3',
-            border: 'border border-gray-300',
+            border: 'border border-gray-600',
             borderRadius: 'rounded-lg',
             focus: {
-              ring: 'focus:ring-2 focus:ring-blue-500',
-              border: 'focus:border-blue-500',
+              ring: 'focus:ring-2 focus:ring-gray-500',
+              border: 'focus:border-gray-400',
+              outline: 'focus:outline-none',
             },
             fontSize: 'text-sm',
-            backgroundColor: 'bg-white',
+            backgroundColor: 'bg-black',
+            textColor: 'text-white',
+            placeholder: { textColor: 'placeholder:text-gray-400' },
           },
           button: {
             padding: 'p-3',
             borderRadius: 'rounded-lg',
-            backgroundColor: 'bg-[#3071aa]',
+            backgroundColor: 'bg-brand',
             textColor: 'text-white',
-            hoverBackgroundColor: 'hover:bg-[#256394]',
+            hoverBackgroundColor: 'hover:bg-brand-dark',
             fontSize: 'text-sm',
             fontWeight: 'font-medium',
             transition: 'transition-colors',
@@ -467,6 +474,28 @@ export function ChatPopup() {
     }
   }, [isExpanded, hasShownInitialMessage]);
 
+  // ✅ RAG: Productcontext ophalen wanneer chat op productpagina opent (modulair)
+  useEffect(() => {
+    if (!isExpanded || !isProductPage || !productSlug) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const product = await productsApi.getBySlug(productSlug);
+        if (!cancelled && product) {
+          setProductContext({
+            slug: product.slug,
+            title: product.title,
+            description: typeof product.description === 'string' ? product.description : '',
+            price: product.price != null ? String(product.price) : undefined,
+          });
+        }
+      } catch {
+        if (!cancelled) setProductContext(null);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [isExpanded, isProductPage, productSlug]);
+
   // ✅ PERFORMANCE: useCallback voor stable function reference
   const handleSendMessage = useCallback(async () => {
     if (!input.trim() || isLoading) return;
@@ -490,7 +519,8 @@ export function ChatPopup() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           query: currentInput,
-          conversation_history: messages.map(m => ({ role: m.role, content: m.content }))
+          conversation_history: messages.map(m => ({ role: m.role, content: m.content })),
+          ...(productContext ? { product_context: productContext } : {}),
         })
       });
       
@@ -515,10 +545,12 @@ export function ChatPopup() {
         throw new Error('Ongeldig antwoord ontvangen van de server');
       }
       
+      const warnings = Array.isArray(data.warnings) ? data.warnings : undefined;
       const assistantMessage: Message = {
         role: 'assistant',
-        content: answer, // Secure: using validated answer from API
-        timestamp: new Date()
+        content: answer,
+        timestamp: new Date(),
+        ...(warnings?.length ? { warnings } : {}),
       };
       
       setMessages(prev => [...prev, assistantMessage]);
@@ -536,7 +568,7 @@ export function ChatPopup() {
     } finally {
       setIsLoading(false);
     }
-  }, [input, isLoading, messages, apiUrl]);
+  }, [input, isLoading, messages, apiUrl, productContext]);
 
   // ✅ PERFORMANCE: useCallback voor stable function reference
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
@@ -555,7 +587,7 @@ export function ChatPopup() {
     // ✅ MOBILE BOTTOM NAV: Op productpagina's mobiel: boven bottom nav (dynamisch via DESIGN_SYSTEM)
     if (isProductPage && typeof window !== 'undefined' && window.innerWidth < 768) {
       // ✅ DYNAMISCH: Gebruik DESIGN_SYSTEM.layout.mobileBottomNav.chatButtonOffsetPx (geen hardcode)
-      const offsetPx = DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonOffsetPx || 140;
+      const offsetPx = DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonOffsetPx || 72;
       // ✅ DYNAMISCH: Gebruik inline style voor exacte pixel waarde (geen hardcode Tailwind class)
       return `bottom-[${offsetPx}px]`; // ✅ DYNAMISCH: Exacte pixel waarde via DESIGN_SYSTEM
     }
@@ -604,7 +636,7 @@ export function ChatPopup() {
       return {
         ...baseStyle,
         zIndex: DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonZIndexValue || 201,
-        bottom: `${DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonOffsetPx || 140}px`,
+        bottom: `${DESIGN_SYSTEM.layout.mobileBottomNav?.chatButtonOffsetPx || 72}px`,
       };
     }
     
@@ -652,7 +684,7 @@ export function ChatPopup() {
         )}
         aria-label="Open chat"
       >
-        <MessageCircle className={fallbackButton.iconSize} />
+        <ChatIcon className={fallbackButton.iconSize} size={28} />
       </button>
     );
   }
@@ -739,7 +771,7 @@ export function ChatPopup() {
           {isExpanded ? (
             <X className={safeChatConfig.button.iconSize} />
           ) : (
-            <MessageCircle className={safeChatConfig.button.iconSize} />
+            <ChatIcon className={safeChatConfig.button.iconSize} size={28} />
           )}
         </button>
       )}
@@ -856,7 +888,7 @@ export function ChatPopup() {
                     safeChatConfig.emptyState.textColor,
                     safeChatConfig.emptyState.container.marginTop
                   )}>
-                    <MessageCircle className={cn(
+                    <ChatIcon size={48} className={cn(
                       safeChatConfig.emptyState.iconSize,
                       safeChatConfig.emptyState.iconContainer.marginX,
                       safeChatConfig.emptyState.iconContainer.marginBottom,
@@ -872,7 +904,7 @@ export function ChatPopup() {
                       safeChatConfig.emptyState.suggestionsContainer.marginTop,
                       safeChatConfig.emptyState.suggestionsContainer.spacing
                     )}>
-                      {["Hoeveel liter is de afvalbak?", "Heeft deze kattenbak een app?", "Is het veilig voor mijn kat?"].map((suggestion, idx) => (
+                      {["Past een Maine Coon in?", "Is het geschikt voor kittens?", "Hoeveel liter is de afvalbak?", "Is het veilig voor mijn kat?"].map((suggestion, idx) => (
                         <button
                           key={idx}
                           onClick={() => setInput(suggestion)}
@@ -936,6 +968,16 @@ export function ChatPopup() {
                       )}>
                         {msg.timestamp.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
                       </span>
+                      {msg.role === 'assistant' && msg.warnings?.length ? (
+                        <div className="mt-2 pt-2 border-t border-gray-200">
+                          <p className="text-xs text-amber-700 font-medium">Let op:</p>
+                          <ul className="text-xs text-amber-800 mt-0.5 list-disc list-inside space-y-0.5">
+                            {msg.warnings.map((w, i) => (
+                              <li key={i}>{w}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 ))}
@@ -1001,8 +1043,9 @@ export function ChatPopup() {
                       safeChatConfig.input.field.fontSize,
                       safeChatConfig.input.field.fontWeight,
                       safeChatConfig.input.field.backgroundColor,
-                      safeChatConfig.input.field.focus.backgroundColor,
-                      safeChatConfig.input.field.placeholder?.textColor || 'placeholder:text-gray-500',
+                      safeChatConfig.input.field.textColor,
+                      safeChatConfig.input.field.focus?.backgroundColor,
+                      safeChatConfig.input.field.placeholder?.textColor || 'placeholder:text-gray-400',
                       safeChatConfig.utilities?.fontFamily || 'font-sans'
                     )}
                     disabled={isLoading}

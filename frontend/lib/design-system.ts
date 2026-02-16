@@ -164,17 +164,24 @@ export const DESIGN_SYSTEM = {
       padding: '0 48px',
     },
     
-    // Hero
+    // Hero – afbeelding zwevend: ronde hoeken + marge (geen hardcode)
     hero: {
       minHeight: '600px',
       minHeightMobile: '500px',
       splitRatio: {
-        text: '35%',        // Tekst kant (smaller)
-        image: '65%',       // Afbeelding kant (larger)
+        text: '35%',
+        image: '65%',
       },
-      spacing: '32px',      // Gap tussen tekst en afbeelding
-      // ✅ DYNAMISCH: Lokale hero foto uit Downloads (geen hardcode)
+      spacing: '32px',
       imageUrl: '/images/hero-main.jpg',
+      /** Zwevend effect: marge rond afbeelding (responsive via Tailwind) */
+      imageMargin: '1rem',       // 16px base
+      imageMarginSm: '1.25rem',  // 20px sm
+      imageMarginMd: '1.5rem',   // 24px md
+      imageMarginLg: '2rem',    // 32px lg
+      imageRounded: '1rem',      // rounded-2xl (16px)
+      imageRoundedLg: '1.5rem',  // rounded-3xl op groot
+      imageShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
     },
     
     // Trust banner (onder hero) - ✅ ZWART: #000000
@@ -187,12 +194,17 @@ export const DESIGN_SYSTEM = {
       padding: '0 48px',
     },
     
-    // USP banner (boven navbar) – wit, zwarte tekst, iets dunner
+    // URLveld / themebalk boven USP – zwart (browser chrome + top strip)
+    topBar: {
+      bg: '#000000',
+      height: '4px',
+    },
+    // USP banner (boven navbar) – blauw, witte tekst, geen vinkjes/iconen
     uspBanner: {
-      bg: '#ffffff',
-      bgStart: '#ffffff',
-      bgEnd: '#ffffff',
-      color: '#000000',
+      bg: '#129DD8',
+      bgStart: '#129DD8',
+      bgEnd: '#129DD8',
+      color: '#ffffff',
       height: '32px',
       animationDuration: '3000ms',
       zIndex: '160',
@@ -210,6 +222,16 @@ export const DESIGN_SYSTEM = {
       /** CTA-knop "Winkelwagen" op pagina’s: zwart */
       cartButtonBg: '#000000',
       cartButtonText: '#ffffff',
+      /** Getal-badge naast winkelwagensymbool: grootte, positie, leesbaar */
+      cartBadge: {
+        minWidth: '20px',
+        height: '20px',
+        fontSize: '0.75rem',
+        fontWeight: '700',
+        borderRadius: '9999px',
+        badgeBg: '#ffffff',
+        badgeText: '#000000',
+      },
       zIndex: '999',
       logoPath: '/logos/logo.png',
       logoPathFallback: '/logos/logo-navbar-original.png',
@@ -230,16 +252,38 @@ export const DESIGN_SYSTEM = {
       sidebarBackdrop: 'z-[160]', // ✅ ONDER sidebar maar BOVEN header (z-[165])
     },
     
-    // ✅ MOBILE BOTTOM NAV: Centrale configuratie (geen hardcode)
+    // ✅ MOBILE BOTTOM NAV: Zwarte balk, witte knop (mobiel) – centrale configuratie (geen hardcode)
     mobileBottomNav: {
-      height: '80px', // ✅ Totaal: py-3 (12px) + button height + padding = ~80px
+      height: '80px',
       heightPx: 80,
       zIndex: 'z-[200]',
-      zIndexValue: 200, // ✅ Z-INDEX WAARDE: Voor vergelijking
-      chatButtonOffset: '100px', // ✅ CHAT BUTTON OFFSET: 80px nav + 20px margin = 100px (dichterbij bottom nav)
-      chatButtonOffsetPx: 100,
-      chatButtonZIndex: 'z-[201]', // ✅ CHAT BUTTON Z-INDEX: Boven bottom nav (z-[200])
-      chatButtonZIndexValue: 201, // ✅ CHAT BUTTON Z-INDEX WAARDE: Voor vergelijking
+      zIndexValue: 200,
+      chatButtonOffset: '72px',
+      chatButtonOffsetPx: 72,
+      chatButtonZIndex: 'z-[201]',
+      chatButtonZIndexValue: 201,
+      /** Balk/border: zwart */
+      barBg: '#000000',
+      barBorderColor: '#262626',
+      /** Knop op mobiel: wit, zwarte tekst */
+      buttonBg: '#ffffff',
+      buttonText: '#000000',
+      /** Badge op witte knop: zwart vlak, witte cijfers */
+      badgeBg: '#000000',
+      badgeText: '#ffffff',
+    },
+
+    // ✅ CHAT MODAL: Zwart header, ronde hoeken, één plek (geen hardcode in component)
+    chatModal: {
+      headerBg: '#000000',
+      headerTextColor: '#ffffff',
+      borderRadius: 'rounded-3xl',
+      borderRadiusLg: 'rounded-[1.5rem]',
+      modalBorderRadius: 'rounded-3xl sm:rounded-[2rem]',
+      headerBorderRadius: 'rounded-t-3xl sm:rounded-t-[2rem]',
+      messagesBg: '#ffffff',
+      inputBorderRadius: 'rounded-2xl',
+      borderColor: 'border-gray-200',
     },
     
     // Feature section (edge-to-edge afbeelding) - ✅ SMOOTH PASSEND: Legale foto onder hero

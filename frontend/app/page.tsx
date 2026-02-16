@@ -106,27 +106,18 @@ export default function HomePage() {
       {/* ✅ SEO 10/10: Rich Snippets (FAQ, HowTo) */}
       <RichSnippets />
       <div>
-      {/* 🎨 HERO SECTION - EDGE-TO-EDGE: Volledige breedte, geen witte ruimte */}
-      <section 
-        className="relative w-full overflow-hidden" // ✅ EDGE-TO-EDGE: Geen bg-white, volledige breedte
-        style={{
-          minHeight: DESIGN_SYSTEM.layout.hero.minHeightMobile,
-          marginTop: 0, // ✅ EDGE-TO-EDGE: Geen margin boven
-          paddingTop: 0, // ✅ EDGE-TO-EDGE: Geen padding boven
-          marginLeft: 0, // ✅ EDGE-TO-EDGE: Geen margin links
-          marginRight: 0, // ✅ EDGE-TO-EDGE: Geen margin rechts
-        }}
+      <section
+        className="relative w-full overflow-hidden"
+        style={{ minHeight: DESIGN_SYSTEM.layout.hero.minHeightMobile }}
       >
-        {/* ✅ CONTAINER: Edge-to-edge flex layout - geen max-width, geen margin */}
-        <div 
-          className="relative w-full flex flex-col md:flex-row items-stretch" // ✅ EDGE-TO-EDGE: Geen max-w-7xl, geen mx-auto
+        <div
+          className="relative w-full flex flex-col md:flex-row items-stretch"
           style={{
             minHeight: `clamp(${DESIGN_SYSTEM.layout.hero.minHeightMobile}, 100vh, ${DESIGN_SYSTEM.layout.hero.minHeight})`,
           }}
         >
-          {/* ✅ TEKST: Links op desktop, boven op mobiel - ZWARTE TEKST - EDGE-TO-EDGE */}
-          <div 
-            className="w-full md:w-[50%] flex flex-col items-center justify-center md:items-start md:justify-center px-6 md:px-12 lg:px-16 py-12 md:py-16 lg:py-20 order-2 md:order-1 bg-white" // ✅ WIT: Witte achtergrond voor tekst
+          <div
+            className="w-full md:w-[50%] flex flex-col items-center justify-center md:items-start md:justify-center px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16 lg:py-20 order-2 md:order-1 bg-white"
           >
             <div className="space-y-5 md:space-y-6 lg:space-y-8 text-center md:text-left w-full max-w-xl">
               {/* Heading - ✅ RUSTIGER: Minder groot, passender */}
@@ -171,43 +162,45 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* ✅ AFBEELDING: Rechts op desktop, boven op mobiel - EDGE-TO-EDGE */}
-          <div 
-            className="relative w-full md:w-[50%] h-80 sm:h-96 md:h-auto min-h-[400px] md:min-h-0 overflow-hidden order-1 md:order-2 bg-gray-100" // ✅ EDGE-TO-EDGE: Geen margin, volledige breedte
-            style={{
-              marginTop: 0, // ✅ EDGE-TO-EDGE: Geen margin boven
-              marginLeft: 0, // ✅ EDGE-TO-EDGE: Geen margin links
-              marginRight: 0, // ✅ EDGE-TO-EDGE: Geen margin rechts
-            }}
+          {/* Beeld: zwevend (marge + ronde hoeken uit layout.hero) */}
+          <div
+            className="relative w-full md:w-[50%] h-72 sm:h-80 md:h-auto min-h-[320px] sm:min-h-[380px] md:min-h-0 order-1 md:order-2 flex items-center justify-center p-4 sm:p-5 md:p-6 lg:p-8"
+            style={{ fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary }}
           >
-            {/* 🚀 PERFORMANCE: Show fallback immediately, upgrade to product image if available */}
-            {optimizedHeroImage !== heroImage ? (
-              <Image
-                key="optimized-hero"
-                src={optimizedHeroImage}
-                alt="Premium automatische kattenbak"
-                fill
-                className="object-cover object-center" // ✅ OPTIMAAL: object-center voor betere compositie
-                sizes="(max-width: 768px) 100vw, 50vw" // ✅ RESPONSIVE: 50% op desktop
-                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
-                quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
-                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
-                unoptimized={optimizedHeroImage.startsWith('/uploads/') || optimizedHeroImage.includes('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (both relative and absolute)
-              />
-            ) : (
-              <Image
-                key="fallback-hero"
-                src={heroImage}
-                alt="Premium automatische kattenbak"
-                fill
-                className="object-cover object-center" // ✅ OPTIMAAL: object-center voor betere compositie
-                sizes="(max-width: 768px) 100vw, 50vw" // ✅ RESPONSIVE: 50% op desktop
-                priority // 🚀 PERFORMANCE: Above-the-fold, load immediately
-                quality={90} // 🚀 PERFORMANCE: Highest quality voor hero (above-the-fold)
-                loading="eager" // 🚀 PERFORMANCE: Load immediately (priority image)
-                unoptimized={heroImage.startsWith('/uploads/') || heroImage.includes('/uploads/')} // ✅ FIX: Disable Next.js optimization for /uploads/ paths (both relative and absolute)
-              />
-            )}
+            <div
+              className="relative w-full h-full min-h-[280px] sm:min-h-[340px] rounded-2xl lg:rounded-3xl overflow-hidden bg-gray-100"
+              style={{
+                boxShadow: (DESIGN_SYSTEM.layout.hero as { imageShadow?: string }).imageShadow ?? DESIGN_SYSTEM.effects.shadow.lg,
+              }}
+            >
+              {optimizedHeroImage !== heroImage ? (
+                <Image
+                  key="optimized-hero"
+                  src={optimizedHeroImage}
+                  alt="Premium automatische kattenbak"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                  quality={90}
+                  loading="eager"
+                  unoptimized={optimizedHeroImage.startsWith('/uploads/') || optimizedHeroImage.includes('/uploads/')}
+                />
+              ) : (
+                <Image
+                  key="fallback-hero"
+                  src={heroImage}
+                  alt="Premium automatische kattenbak"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                  quality={90}
+                  loading="eager"
+                  unoptimized={heroImage.startsWith('/uploads/') || heroImage.includes('/uploads/')}
+                />
+              )}
+            </div>
           </div>
         </div>
       </section>

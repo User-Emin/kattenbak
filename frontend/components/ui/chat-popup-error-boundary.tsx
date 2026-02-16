@@ -7,7 +7,8 @@
  */
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { MessageCircle, X } from 'lucide-react';
+import { X } from 'lucide-react';
+import { ChatIcon } from '@/components/ui/chat-icon';
 
 interface Props {
   children: ReactNode;
@@ -60,7 +61,7 @@ export class ChatPopupErrorBoundary extends Component<Props, State> {
           <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 max-w-xs">
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0">
-                <MessageCircle className="w-5 h-5 text-gray-400" />
+                <ChatIcon size={20} className="w-5 h-5 text-gray-400" />
               </div>
               <div className="flex-1">
                 <h3 className="text-sm font-semibold text-gray-900 mb-1">
@@ -71,7 +72,7 @@ export class ChatPopupErrorBoundary extends Component<Props, State> {
                 </p>
                 <button
                   onClick={this.handleReset}
-                  className="text-xs font-medium text-[#3071aa] hover:text-[#256394]"
+                  className="text-xs font-medium text-brand hover:text-brand-dark"
                 >
                   Opnieuw proberen
                 </button>
