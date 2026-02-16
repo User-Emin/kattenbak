@@ -52,12 +52,12 @@ pm2 list
 echo ""
 
 echo -e "${YELLOW}━━━ 7. Backend readiness (robuste check: wacht tot health 200) ━━━${NC}"
-BACKEND_URL="${BACKEND_HEALTH_URL:-http://127.0.0.1:3101/api/v1/health}"
-MAX_ATTEMPTS=30
+# Probeer /health (eerste route) en /api/v1/health; backend kan even nodig hebben voor async routes
+MAX_ATTEMPTS=40
 SLEEP=3
 attempt=1
 while [ $attempt -le $MAX_ATTEMPTS ]; do
-  if curl -sf --max-time 5 "$BACKEND_URL" > /dev/null 2>&1; then
+  if curl -sf --max-time 5 "http://127.0.0.1:3101/health" > /dev/null 2>&1 || curl -sf --max-time 5 "http://127.0.0.1:3101/api/v1/health" > /dev/null 2>&1; then
     echo -e "${GREEN}✅ Backend bereikbaar (attempt $attempt)${NC}"
     break
   fi
@@ -66,7 +66,9 @@ while [ $attempt -le $MAX_ATTEMPTS ]; do
   attempt=$((attempt + 1))
 done
 if [ $attempt -gt $MAX_ATTEMPTS ]; then
-  echo -e "${RED}⚠️  Backend na ${MAX_ATTEMPTS} pogingen niet bereikbaar – check: pm2 logs backend${NC}"
+  echo -e "${RED}⚠️  Backend na ${MAX_ATTEMPTS} pogingen niet bereikbaar. Laatste backend-logs:${NC}"
+  pm2 logs backend --lines 25 --nostream 2>/dev/null || true
+  echo -e "${RED}   Fix backend (DB/env?) en run daarna: pm2 restart backend${NC}"
 fi
 echo ""
 
