@@ -51,5 +51,24 @@ pm2 restart all
 pm2 list
 echo ""
 
-echo -e "${GREEN}✅ Deploy from git klaar. Voer verificatie uit (bijv. scripts/e2e-deployment-verification.sh).${NC}"
+echo -e "${YELLOW}━━━ 7. Backend readiness (robuste check: wacht tot health 200) ━━━${NC}"
+BACKEND_URL="${BACKEND_HEALTH_URL:-http://127.0.0.1:3101/api/v1/health}"
+MAX_ATTEMPTS=30
+SLEEP=3
+attempt=1
+while [ $attempt -le $MAX_ATTEMPTS ]; do
+  if curl -sf --max-time 5 "$BACKEND_URL" > /dev/null 2>&1; then
+    echo -e "${GREEN}✅ Backend bereikbaar (attempt $attempt)${NC}"
+    break
+  fi
+  echo "   Backend nog niet klaar (attempt $attempt/$MAX_ATTEMPTS), wacht ${SLEEP}s..."
+  sleep $SLEEP
+  attempt=$((attempt + 1))
+done
+if [ $attempt -gt $MAX_ATTEMPTS ]; then
+  echo -e "${RED}⚠️  Backend na ${MAX_ATTEMPTS} pogingen niet bereikbaar – check: pm2 logs backend${NC}"
+fi
+echo ""
+
+echo -e "${GREEN}✅ Deploy from git klaar. Backend-check gedaan. Voer E2E uit (scripts/e2e-deployment-verification.sh).${NC}"
 echo "🌐 https://catsupply.nl | 🔐 /admin | 🔌 /api/v1"

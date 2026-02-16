@@ -67,6 +67,10 @@ echo -e "${GREEN}📥 Server: git sync + deploy-from-git (schone install, build,
 ssh_exec "cd /var/www/kattenbak && git fetch origin && git reset --hard origin/main && bash scripts/deploy-from-git-server.sh"
 echo ""
 
+# ━━━ Korte pauze zodat backend/nginx zeker klaar is na server-side wait
+echo -e "${GREEN}⏳ 5s wachten (backend readiness al op server gecontroleerd)...${NC}"
+sleep 5
+
 # ━━━ Volledige verificatie: E2E deployment checks
 echo -e "${GREEN}🔍 Verificatie: E2E deployment (volledig)...${NC}"
 if [ -f "$PROJECT_ROOT/scripts/e2e-deployment-verification.sh" ]; then
