@@ -71,67 +71,60 @@ const DESKTOP_COMPARISON_CONFIG = {
   },
 } as const;
 
-// ✅ SLIMME VARIABELEN: Mobiele vergelijkingstabel configuratie - OPTIMAAL RESPONSIVE & LEESBAAR
-// ✅ DRY: Volledige aansluiting op PRODUCT_PAGE_CONFIG - geen duplicaten, geen hardcode, geen redundantie
+// ✅ Mobiele vergelijkingstabel - full width, optimale leesbaarheid, grotere touch-targets
 const MOBILE_COMPARISON_CONFIG = {
-  // Container configuratie - ✅ FIX: Cards blijven altijd zichtbaar, geen verdwijnen
   container: {
-    maxWidth: 'max-w-sm',
-    slidePadding: '0.5rem', // 8px - optimaal voor zichtbaarheid zonder overlap
-    // ✅ FIX: overflow-visible op outer container, overflow-hidden alleen op inner voor slide effect
-    overflow: 'overflow-visible', // ✅ FIX: Cards verdwijnen niet meer
+    maxWidth: 'max-w-full', // ✅ Full width op mobiel (geen max-w-sm)
+    slidePadding: '12px', // ✅ Horizontale padding per card (gebruikt in style)
+    overflow: 'overflow-visible',
   },
-  // Card configuratie
   card: {
-    padding: 'p-2.5', // 10px - compact maar leesbaar
+    padding: 'p-4', // ✅ Iets meer ruimte voor adem
     borderRadius: 'rounded-xl',
     spacing: {
-      header: 'mb-2', // Spacing tussen header en stroken
-      stroken: 'space-y-1.5', // Spacing tussen stroken
+      header: 'mb-3',
+      stroken: 'space-y-2', // ✅ Duidelijke scheiding tussen Automatische/Handmatige
     },
   },
-  // Header configuratie (feature titel + beschrijving)
   header: {
     spacing: {
-      container: 'mb-2',
-      iconTitle: 'gap-1.5 mb-1.5', // Gap tussen icon en titel, margin bottom
-      description: 'mt-1.5 px-1', // Margin top en padding voor beschrijving
+      container: 'mb-3',
+      iconTitle: 'gap-2 mb-2',
+      description: 'mt-2 px-1',
     },
     icon: {
-      size: 'w-4 h-4', // 16px - compact
+      size: 'w-5 h-5', // ✅ Iets groter voor herkenbaarheid
     },
     title: {
-      fontSize: 'text-sm', // 14px - optimaal leesbaar
+      fontSize: 'text-sm',
       fontWeight: 'font-bold',
       lineHeight: 'leading-tight',
     },
     description: {
-      fontSize: 'text-xs', // 12px - compact
+      fontSize: 'text-xs',
       lineHeight: 'leading-snug',
     },
   },
-  // Strook configuratie (Automatische/Handmatige rijen) - OPTIMAAL COMPACT & LEESBAAR
   strook: {
-    padding: 'p-1.5', // 6px - compact maar nog leesbaar
+    padding: 'py-2.5 px-3', // ✅ Grotere touch/leesgebied
     borderRadius: 'rounded-lg',
     spacing: {
-      container: 'gap-1.5', // Gap tussen image en tekst
-      checkmark: 'ml-0.5', // Margin left voor checkmark
+      container: 'gap-2',
+      checkmark: 'ml-1',
     },
     label: {
-      fontSize: 'text-xs', // 12px - compact maar leesbaar
+      fontSize: 'text-xs sm:text-sm',
       fontWeight: 'font-semibold',
     },
     image: {
-      size: 'sm' as const, // ComparisonImage size (w-12 h-12)
+      size: 'sm' as const,
     },
   },
-  // Navigation dots configuratie - ✅ DRY: Aansluiting op DESIGN_SYSTEM
   navigation: {
-    container: 'flex justify-center items-center gap-2 mt-5 mb-4 mx-auto',
+    container: 'flex justify-center items-center gap-2.5 mt-4 mb-4 mx-auto',
     dot: {
-      base: 'w-2 h-2 rounded-full transition-all duration-300', // ✅ SMOOTH: Transition duration
-      active: 'w-6',
+      base: 'w-2.5 h-2.5 rounded-full transition-all duration-300 min-w-[10px] min-h-[10px]', // ✅ Grotere dots voor touch
+      active: 'w-7',
     },
   },
 } as const;
@@ -314,13 +307,13 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
 
       {/* ✅ RESPONSIVE TABLE: Desktop compact, mobiel swipe-vriendelijk */}
       {/* Desktop Table - ✅ SMOOTH: Vinkjes symmetrisch gecentreerd, duidelijke scheiding */}
-      <div className="hidden md:block overflow-x-auto">
+      <div className={cn('hidden md:block', PRODUCT_PAGE_CONFIG.comparisonTable?.desktop?.tableOverflow ?? 'overflow-x-auto')}>
         <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
           <thead style={{ backgroundColor: BRAND_COLORS_HEX.gray[50] }}>
             <tr>
               <th 
                 className={cn(
-                  DESKTOP_COMPARISON_CONFIG.table.cellPadding,
+                  (PRODUCT_PAGE_CONFIG.comparisonTable?.desktop?.cellPadding ?? DESKTOP_COMPARISON_CONFIG.table.cellPadding),
                   'text-left',
                   DESKTOP_COMPARISON_CONFIG.table.headerTextSize,
                   'font-semibold',
@@ -332,7 +325,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               </th>
               <th 
                 className={cn(
-                  DESKTOP_COMPARISON_CONFIG.table.cellPadding,
+                  (PRODUCT_PAGE_CONFIG.comparisonTable?.desktop?.cellPadding ?? DESKTOP_COMPARISON_CONFIG.table.cellPadding),
                   'text-center',
                   DESKTOP_COMPARISON_CONFIG.table.headerTextSize,
                   'font-semibold text-white',
@@ -352,7 +345,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               </th>
               <th 
                 className={cn(
-                  DESKTOP_COMPARISON_CONFIG.table.cellPadding,
+                  (PRODUCT_PAGE_CONFIG.comparisonTable?.desktop?.cellPadding ?? DESKTOP_COMPARISON_CONFIG.table.cellPadding),
                   'text-center',
                   DESKTOP_COMPARISON_CONFIG.table.headerTextSize,
                   'font-semibold',
@@ -389,7 +382,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   } : {})
                 }}
               >
-                <td className={DESKTOP_COMPARISON_CONFIG.table.cellPadding}>
+                <td className={(PRODUCT_PAGE_CONFIG.comparisonTable?.desktop?.cellPadding ?? DESKTOP_COMPARISON_CONFIG.table.cellPadding)}>
                   <div className={cn('flex items-start', DESKTOP_COMPARISON_CONFIG.feature.gap)}>
                     {/* ✅ ICON: Feature icoon (zoals in screenshot) - SLIMME VARIABELEN */}
                     {row.icon && (
@@ -429,7 +422,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 </td>
                 {/* ✅ SYMMETRISCH: Vinkjes perfect gecentreerd onder kolomnamen - HELE KOLOM BLAUW - RONDER EN DUIDELIJKER - SLIMME VARIABELEN */}
                 <td 
-                  className={DESKTOP_COMPARISON_CONFIG.table.cellPadding}
+                  className={(PRODUCT_PAGE_CONFIG.comparisonTable?.desktop?.cellPadding ?? DESKTOP_COMPARISON_CONFIG.table.cellPadding)}
                   style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
                 >
                   <div className="flex items-center justify-center">
@@ -437,7 +430,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   </div>
                 </td>
                 <td 
-                  className={DESKTOP_COMPARISON_CONFIG.table.cellPadding}
+                  className={(PRODUCT_PAGE_CONFIG.comparisonTable?.desktop?.cellPadding ?? DESKTOP_COMPARISON_CONFIG.table.cellPadding)}
                   style={{
                     backgroundColor: index % 2 === 0 
                       ? BRAND_COLORS_HEX.white 
@@ -460,7 +453,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
         <div 
           className={cn(
             'relative mx-auto w-full',
-            MOBILE_COMPARISON_CONFIG.container.maxWidth
+            PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.containerMaxWidth ?? MOBILE_COMPARISON_CONFIG.container.maxWidth
           )} 
           style={{ boxSizing: 'border-box' }}
         >
@@ -499,8 +492,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                       minWidth: `${cardWidthPercent}%`, // ✅ FIX: Min width voor consistentie
                       maxWidth: `${cardWidthPercent}%`, // ✅ FIX: Max width voorkomt overflow
                       boxSizing: 'border-box',
-                      paddingLeft: MOBILE_COMPARISON_CONFIG.container.slidePadding,
-                      paddingRight: MOBILE_COMPARISON_CONFIG.container.slidePadding,
+                      paddingLeft: PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.slidePadding ?? MOBILE_COMPARISON_CONFIG.container.slidePadding,
+                      paddingRight: PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.slidePadding ?? MOBILE_COMPARISON_CONFIG.container.slidePadding,
                       // ✅ FIX: Zorg dat card altijd zichtbaar blijft
                       flexBasis: `${cardWidthPercent}%`
                     }}
@@ -508,8 +501,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 <div
                   className={cn(
                     'w-full border transition-all',
-                    MOBILE_COMPARISON_CONFIG.card.padding,
-                    MOBILE_COMPARISON_CONFIG.card.borderRadius,
+                    PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.cardPadding ?? MOBILE_COMPARISON_CONFIG.card.padding,
+                    PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.cardBorderRadius ?? MOBILE_COMPARISON_CONFIG.card.borderRadius,
                     row.highlight 
                       ? 'shadow-md' 
                       : 'shadow-sm'
@@ -676,8 +669,9 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
               key={index}
               onClick={() => goToSlide(index)}
               className={cn(
-                MOBILE_COMPARISON_CONFIG.navigation.dot.base,
-                index === visibleIndex && MOBILE_COMPARISON_CONFIG.navigation.dot.active
+                'rounded-full transition-all duration-300 min-w-[10px] min-h-[10px]',
+                PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.dotSize ?? MOBILE_COMPARISON_CONFIG.navigation.dot.base,
+                index === visibleIndex && (PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.dotActiveWidth ?? MOBILE_COMPARISON_CONFIG.navigation.dot.active)
               )}
               style={index === visibleIndex 
                 ? { backgroundColor: BRAND_COLORS_HEX.primary } 

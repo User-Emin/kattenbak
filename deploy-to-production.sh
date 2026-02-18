@@ -33,15 +33,10 @@ ssh_exec() {
   ssh $SSH_OPTS "${SERVER_USER}@${SERVER_HOST}" "$@"
 }
 
-echo -e "${GREEN}📥 Pulling latest code...${NC}"
-ssh_exec << 'ENDSSH'
-cd /var/www/kattenbak
-git fetch origin
-git pull origin main
-echo "✅ Code updated"
-ENDSSH
+echo -e "${GREEN}📥 Volledige pull (fetch + reset --hard origin/main)...${NC}"
+ssh_exec "cd /var/www/kattenbak && git fetch origin && git reset --hard origin/main && git rev-parse --short HEAD && echo '✅ Code updated'"
 
-# Build backend
+# Build backend (npm ci in backend dir so node_modules exists for PM2 cwd)
 echo -e "${GREEN}🔧 Building backend...${NC}"
 ssh_exec << 'ENDSSH'
 cd /var/www/kattenbak/backend

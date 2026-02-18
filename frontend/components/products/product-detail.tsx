@@ -1440,16 +1440,22 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             {((CONFIG.howItWorksSteps as { stepTitles?: readonly string[] }).stepTitles ?? []).map((title, index) => {
               const icons = [PlugIcon, GritIcon, TrashBagIcon, PowerIcon, TimerIcon, CheckIcon];
               const IconComponent = icons[index] ?? CheckIcon;
+              const steps = CONFIG.howItWorksSteps as { iconWrapper?: string; iconWrapperFirstTwo?: string; numberBg?: string };
+              const isFirstTwo = index < 2;
               return (
                 <div
                   key={index}
                   className={(CONFIG.howItWorksSteps as { stepRow?: string }).stepRow}
                 >
                   <div
-                    className={(CONFIG.howItWorksSteps as { iconWrapper?: string }).iconWrapper}
-                    style={{ backgroundColor: `${(CONFIG.howItWorksSteps as { numberBg?: string }).numberBg}20` }}
+                    className={isFirstTwo ? (steps.iconWrapperFirstTwo ?? steps.iconWrapper) : steps.iconWrapper}
+                    style={{
+                      backgroundColor: isFirstTwo
+                        ? (CONFIG.howItWorksSteps as { numberBg?: string }).numberBg
+                        : `${(CONFIG.howItWorksSteps as { numberBg?: string }).numberBg}20`,
+                    }}
                   >
-                    <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
+                    <IconComponent className={cn('w-5 h-5 sm:w-6 sm:h-6', isFirstTwo ? 'text-white' : 'text-gray-700')} />
                   </div>
                   <div
                     className={(CONFIG.howItWorksSteps as { number?: string }).number}

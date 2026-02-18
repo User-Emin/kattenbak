@@ -137,15 +137,15 @@ export const PRODUCT_PAGE_CONFIG = {
       marginBottom: 'mb-6',
     },
     button: {
-      size: 'w-full py-2.5 md:py-3', // ✅ COMPACT: Winkelwagenbutton strak
-      fontSize: 'text-xs md:text-sm', // ✅ COMPACT: Kleinere tekst
+      size: 'w-full py-3 md:py-3.5', // ✅ Winkelwagenbutton iets groter
+      fontSize: 'text-sm md:text-base', // ✅ Leesbaar
       fontWeight: 'font-semibold', // ✅ CTA: Vetgedrukt, wit op zwart
       bgColor: 'bg-brand', // ✅ BLAUW: Blauw met wit tekst (slimme variabele)
       hoverBgColor: 'hover:bg-brand-dark', // ✅ BLAUW DARK: Hover (slimme variabele)
       textColor: 'text-white',
       borderRadius: DESIGN_SYSTEM.button.borderRadius, // ✅ DRY: Via DESIGN_SYSTEM
       transition: 'transition-all duration-200 hover:scale-[1.02]',
-      icon: 'w-4 h-4 md:w-4 md:h-4', // ✅ COMPACTER: Kleinere icon in winkelwagenbutton
+      icon: 'w-5 h-5 md:w-5 md:h-5', // ✅ Iets groter icoon winkelwagenbutton
     },
     // ✅ BOTTOM CART: Verticaal lijn met productnaam, dichtbij, letters iets dunner (geen hardcode)
     bottomCart: {
@@ -269,15 +269,16 @@ export const PRODUCT_PAGE_CONFIG = {
     },
   },
 
-  /** Hoe werkt het – één sectie, 1 kolom (niet dubbel), icoon per stap, responsive mobiel */
+  /** Hoe werkt het – desktop compact naast elkaar, mobiel onder elkaar; eerste 2 met kleur */
   howItWorksSteps: {
     sectionTitle: 'Hoe werkt het?',
     sectionTitleClass: 'text-center text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-5',
     wrapper: 'max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-5 sm:py-6',
     wrapperBg: 'bg-gray-50',
-    list: 'flex flex-col gap-3 sm:gap-4',
+    list: 'flex flex-col gap-3 sm:gap-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-3 lg:gap-4',
     stepRow: 'flex items-center gap-3 sm:gap-4 w-full rounded-lg border border-gray-200 bg-white p-3 sm:p-4 text-left',
     iconWrapper: 'flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full',
+    iconWrapperFirstTwo: 'flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full',
     number: 'flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-white text-sm font-semibold',
     numberBg: BRAND_COLORS_HEX.primary,
     title: 'text-base sm:text-lg font-medium text-gray-900 leading-snug',
@@ -289,6 +290,22 @@ export const PRODUCT_PAGE_CONFIG = {
       'Timer app',
       'Klaar!',
     ] as const,
+  },
+
+  /** Vergelijkingstabel – 100% optimaal mobiel (slider) en desktop */
+  comparisonTable: {
+    mobile: {
+      containerMaxWidth: 'max-w-full',
+      slidePadding: '12px',
+      cardPadding: 'p-4 sm:p-5',
+      cardBorderRadius: 'rounded-xl',
+      dotSize: 'w-2.5 h-2.5 sm:w-3 sm:h-3',
+      dotActiveWidth: 'w-7 sm:w-8',
+    },
+    desktop: {
+      cellPadding: 'px-6 py-5',
+      tableOverflow: 'overflow-x-auto',
+    },
   },
 
   /** Q&A / Vragen – inline beneden zigzag (zelfde content als accordion, geen hardcode) */
