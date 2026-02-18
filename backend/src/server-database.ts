@@ -126,8 +126,16 @@ app.get('/health', (req: Request, res: Response) => {
   });
 });
 
+// Database connection state (set after first connect attempt)
+let dbConnected = false;
+
 app.get('/api/v1/health', (req: Request, res: Response) => {
-  res.json({ success: true, message: 'API v1 healthy with database', version: '1.0.0' });
+  res.status(200).json({
+    success: true,
+    message: dbConnected ? 'API v1 healthy with database' : 'API up, database reconnecting',
+    version: '1.0.0',
+    database: dbConnected ? 'connected' : 'disconnected',
+  });
 });
 
 // =============================================================================
@@ -480,10 +488,16 @@ const authMiddleware = async (req: Request, res: Response, next: any) => {
     }
 
     const token = authHeader.substring(7);
-    const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-    
+    // ✅ SECURITY: Use env config (no hardcoded fallback); min 32 chars enforced by Zod
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET || JWT_SECRET.length < 32) {
+      return res.status(503).json({
+        success: false,
+        error: 'Server configuratie ontbreekt (JWT_SECRET)'
+      });
+    }
     try {
-      const decoded = jwt.verify(token, JWT_SECRET);
+      const decoded = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
       (req as any).user = decoded;
       next();
     } catch (jwtError: any) {
@@ -1176,12 +1190,18 @@ app.post('/api/v1/admin/auth/login', async (req: Request, res: Response) => {
       });
     }
 
-    // Generate JWT token
-    const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+    // Generate JWT token - ✅ SECURITY: No fallback; use env only (Zod validates min 32 chars)
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET || JWT_SECRET.length < 32) {
+      return res.status(503).json({
+        success: false,
+        error: 'Server configuratie ontbreekt (JWT_SECRET)'
+      });
+    }
     const token = jwt.sign(
       { id: '1', email: ADMIN_EMAIL, role: 'ADMIN' },
       JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '7d', algorithm: 'HS256' }
     );
     
     console.log(`✅ Admin login successful: ${email}`);
@@ -1362,11 +1382,16 @@ console.log('✅ Return endpoints loaded: /api/v1/returns');
 // RAG ENDPOINTS - AI Chat with Enhanced Pipeline
 // =============================================================================
 
-// Import RAG routes - ENABLED with full security
-const ragRoutes = require('./routes/rag.routes').default;
-app.use('/api/v1/rag', ragRoutes);
-
-console.log('✅ RAG endpoints loaded: /api/v1/rag/chat, /api/v1/rag/health');
+try {
+  const ragRoutes = require('./routes/rag.routes').default;
+  app.use('/api/v1/rag', ragRoutes);
+  console.log('✅ RAG endpoints loaded: /api/v1/rag/chat, /api/v1/rag/health');
+} catch (e: any) {
+  console.error('RAG routes failed to load (chat disabled):', e?.message || e);
+  app.use('/api/v1/rag', (req: Request, res: Response) => {
+    res.status(503).json(error('Chat tijdelijk niet beschikbaar'));
+  });
+}
 
 // =============================================================================
 // ERROR HANDLERS
@@ -1386,20 +1411,34 @@ app.use((err: any, req: Request, res: Response, next: any) => {
 // =============================================================================
 
 app.listen(PORT, async () => {
-  // Test database connection
+  console.log('='.repeat(60));
+  console.log('🚀 KATTENBAK BACKEND - DATABASE EDITION');
+  console.log('='.repeat(60));
+  console.log(`✅ Server: http://localhost:${PORT}`);
+  console.log(`✅ Env: ${ENV.NODE_ENV} | Mollie: ${ENV.isTest ? 'TEST' : 'LIVE'}`);
+
+  // Connect database without crashing – process stays up so nginx gets 200 and can retry
   try {
     await prisma.$connect();
-    console.log('='.repeat(60));
-    console.log('🚀 KATTENBAK BACKEND - DATABASE EDITION');
-    console.log('='.repeat(60));
-    console.log(`✅ Server: http://localhost:${PORT}`);
-    console.log(`✅ Env: ${ENV.NODE_ENV} | Mollie: ${ENV.isTest ? 'TEST' : 'LIVE'}`);
-    console.log(`✅ Database: PostgreSQL connected`);
-    console.log('='.repeat(60));
+    dbConnected = true;
+    console.log('✅ Database: PostgreSQL connected');
   } catch (err: any) {
-    console.error('❌ Database connection failed:', err.message);
-    process.exit(1);
+    console.error('❌ Database connection failed (will retry):', err.message);
+    dbConnected = false;
+    // Optional: periodic reconnect (every 30s)
+    const reconnect = async () => {
+      try {
+        await prisma.$connect();
+        dbConnected = true;
+        console.log('✅ Database: reconnected');
+      } catch (e: any) {
+        console.error('Database reconnect failed:', e.message);
+        setTimeout(reconnect, 30000);
+      }
+    };
+    setTimeout(reconnect, 30000);
   }
+  console.log('='.repeat(60));
 });
 
 export default app;

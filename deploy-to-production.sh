@@ -46,6 +46,7 @@ echo -e "${GREEN}🔧 Building backend...${NC}"
 ssh_exec << 'ENDSSH'
 cd /var/www/kattenbak/backend
 npm ci --legacy-peer-deps
+npx prisma generate
 npm run build
 echo "✅ Backend built"
 ENDSSH

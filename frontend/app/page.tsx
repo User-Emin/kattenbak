@@ -191,7 +191,10 @@ export default function HomePage() {
                   src={optimizedHeroImage}
                   alt="Premium automatische kattenbak"
                   fill
-                  className="object-cover object-center"
+                  className={cn(
+                    'object-cover object-center',
+                    (DESIGN_SYSTEM.layout.hero as { imageBorderRadiusClass?: string }).imageBorderRadiusClass ?? 'rounded-2xl lg:rounded-3xl'
+                  )}
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
                   quality={90}
@@ -204,7 +207,10 @@ export default function HomePage() {
                   src={heroImage}
                   alt="Premium automatische kattenbak"
                   fill
-                  className="object-cover object-center"
+                  className={cn(
+                    'object-cover object-center',
+                    (DESIGN_SYSTEM.layout.hero as { imageBorderRadiusClass?: string }).imageBorderRadiusClass ?? 'rounded-2xl lg:rounded-3xl'
+                  )}
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
                   quality={90}
