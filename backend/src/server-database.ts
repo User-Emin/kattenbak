@@ -4,14 +4,28 @@
  * - Geen @ imports (direct requires)
  * - Enterprise niveau
  * - Alles dynamisch uit database
+ * - ✅ CRASH-PREVENTION: Geen exit bij uncaught/rejection; product-routes 503 bij DB down
  */
 
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 
-// Load environment
-dotenv.config();
+// ✅ CRASH-PREVENTION: Proces blijft draaien bij uncaught exception of unhandled rejection
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception (process blijft draaien):', err?.message || err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled rejection (process blijft draaien):', reason);
+});
+
+// ✅ ISOLATIE: Productie laadt alleen .env uit backend-cwd (nooit parent .env)
+if (process.env.NODE_ENV === 'production') {
+  dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+} else {
+  dotenv.config();
+}
 
 const app: Application = express();
 const PORT = 3101;
@@ -112,6 +126,22 @@ const success = (data: any) => ({ success: true, data });
 const error = (message: string) => ({ success: false, error: message });
 
 // =============================================================================
+// ROOT – wijst naar webshop (lokaal: 3002, productie: catsupply.nl)
+// =============================================================================
+
+app.get('/', (req: Request, res: Response) => {
+  const shopUrl = ENV.isProduction ? 'https://catsupply.nl' : 'http://localhost:3002';
+  res.setHeader('Content-Type', 'application/json');
+  res.json({
+    success: true,
+    message: 'API backend. Webshop (frontend) staat op:',
+    webshop_url: shopUrl,
+    health: '/health',
+    api_v1: '/api/v1',
+  });
+});
+
+// =============================================================================
 // HEALTH ENDPOINTS
 // =============================================================================
 
@@ -171,6 +201,9 @@ const sanitizeProduct = (product: any) => ({
 
 // GET all products
 app.get('/api/v1/products', async (req: Request, res: Response) => {
+  if (!dbConnected) {
+    return res.status(503).json(error('Service tijdelijk niet beschikbaar'));
+  }
   try {
     const products = await prisma.product.findMany({
       where: { isActive: true },
@@ -197,6 +230,9 @@ app.get('/api/v1/products', async (req: Request, res: Response) => {
 
 // GET featured products
 app.get('/api/v1/products/featured', async (req: Request, res: Response) => {
+  if (!dbConnected) {
+    return res.status(503).json(success([]));
+  }
   try {
     const products = await prisma.product.findMany({
       where: { isActive: true, isFeatured: true },
@@ -215,6 +251,9 @@ app.get('/api/v1/products/featured', async (req: Request, res: Response) => {
 // GET product by ID or SLUG (smart detection)
 // ✅ WATERDICHT FIX: Detect slug vs ID - if contains dash, treat as slug
 app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
+  if (!dbConnected) {
+    return res.status(503).json(error('Service tijdelijk niet beschikbaar'));
+  }
   try {
     const identifier = req.params.id;
     const isSlug = identifier.includes('-');
@@ -249,6 +288,9 @@ app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
 
 // GET product by slug
 app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
+  if (!dbConnected) {
+    return res.status(503).json(error('Service tijdelijk niet beschikbaar'));
+  }
   try {
     // SECURITY: Sanitize slug input
     const slug = String(req.params.slug).toLowerCase().trim();
@@ -1232,9 +1274,8 @@ app.post('/api/v1/admin/auth/login', async (req: Request, res: Response) => {
 // ADMIN UPLOAD ROUTES - File/Image/Video Upload (INLINE - NO @ IMPORTS)
 // =============================================================================
 
-// Multer setup - DIRECT no @ imports
+// Multer setup - DIRECT no @ imports (path al geïmporteerd bovenaan)
 const multer = require('multer');
-const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const UPLOAD_DIR = '/var/www/uploads/products';
