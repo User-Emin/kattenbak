@@ -1426,54 +1426,43 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         <div className="border-t border-gray-300 my-6 sm:my-8"></div>
       </div>
 
-      {/* ✅ 6 STAPPEN HORIZONTAAL: Zelfde lijn direct onder productdetail, boven zigzag – variabelensysteem */}
-      <section
-        className={cn(CONFIG.howItWorksHorizontal.wrapper, CONFIG.howItWorksHorizontal.wrapperBg)}
-        data-testid="how-it-works-horizontal"
-        aria-label="In 6 stappen klaar"
-      >
-        {(CONFIG.howItWorksHorizontal as { sectionTitle?: string; sectionTitleClass?: string }).sectionTitle && (
-          <h2 className={(CONFIG.howItWorksHorizontal as { sectionTitleClass?: string }).sectionTitleClass}>
-            {(CONFIG.howItWorksHorizontal as { sectionTitle?: string }).sectionTitle}
-          </h2>
-        )}
-        <div className={CONFIG.howItWorksHorizontal.container}>
-          {(CONFIG.howItWorksHorizontal.stepTitles as readonly string[]).map((title, index) => (
-            <div
-              key={index}
-              className={CONFIG.howItWorksHorizontal.step.container}
-              style={{ borderColor: `${CONFIG.howItWorksHorizontal.step.numberBg}30` }}
-            >
-              <div
-                className={CONFIG.howItWorksHorizontal.step.number}
-                style={{ backgroundColor: CONFIG.howItWorksHorizontal.step.numberBg }}
-              >
-                {index + 1}
-              </div>
-              <span className={CONFIG.howItWorksHorizontal.step.title}>{title}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ✅ Hoe werkt het – inline in stroomlijn net boven zigzag (config, geen hardcode) */}
-      {(CONFIG.howItWorksInline as { sectionTitle?: string })?.sectionTitle && (
+      {/* ✅ Hoe werkt het – één sectie, 1 kolom, icoon per stap, responsive mobiel (niet dubbel) */}
+      {(CONFIG.howItWorksSteps as { sectionTitle?: string })?.sectionTitle && (
         <section
-          className={cn((CONFIG.howItWorksInline as { wrapper?: string }).wrapper, (CONFIG.howItWorksInline as { wrapperBg?: string }).wrapperBg)}
+          className={cn((CONFIG.howItWorksSteps as { wrapper?: string }).wrapper, (CONFIG.howItWorksSteps as { wrapperBg?: string }).wrapperBg)}
+          data-testid="how-it-works-steps"
           aria-label="Hoe werkt het"
         >
-          <h2 className={(CONFIG.howItWorksInline as { sectionTitleClass?: string }).sectionTitleClass}>
-            {(CONFIG.howItWorksInline as { sectionTitle?: string }).sectionTitle}
+          <h2 className={(CONFIG.howItWorksSteps as { sectionTitleClass?: string }).sectionTitleClass}>
+            {(CONFIG.howItWorksSteps as { sectionTitle?: string }).sectionTitle}
           </h2>
-          <div className={(CONFIG.howItWorksInline as { stepsContainer?: string }).stepsContainer}>
-            {(CONFIG.howItWorksHorizontal.stepTitles as readonly string[]).map((title, index) => (
-              <span
-                key={index}
-                className={(CONFIG.howItWorksInline as { stepPill?: string }).stepPill}
-              >
-                {index + 1}. {title}
-              </span>
-            ))}
+          <div className={(CONFIG.howItWorksSteps as { list?: string }).list}>
+            {((CONFIG.howItWorksSteps as { stepTitles?: readonly string[] }).stepTitles ?? []).map((title, index) => {
+              const icons = [PlugIcon, GritIcon, TrashBagIcon, PowerIcon, TimerIcon, CheckIcon];
+              const IconComponent = icons[index] ?? CheckIcon;
+              return (
+                <div
+                  key={index}
+                  className={(CONFIG.howItWorksSteps as { stepRow?: string }).stepRow}
+                >
+                  <div
+                    className={(CONFIG.howItWorksSteps as { iconWrapper?: string }).iconWrapper}
+                    style={{ backgroundColor: `${(CONFIG.howItWorksSteps as { numberBg?: string }).numberBg}20` }}
+                  >
+                    <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
+                  </div>
+                  <div
+                    className={(CONFIG.howItWorksSteps as { number?: string }).number}
+                    style={{ backgroundColor: (CONFIG.howItWorksSteps as { numberBg?: string }).numberBg }}
+                  >
+                    {index + 1}
+                  </div>
+                  <span className={(CONFIG.howItWorksSteps as { title?: string }).title}>
+                    {title}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </section>
       )}

@@ -269,20 +269,18 @@ export const PRODUCT_PAGE_CONFIG = {
     },
   },
 
-  // 6 stappen horizontaal – direct onder productdetail, boven zigzag (variabelensysteem)
-  howItWorksHorizontal: {
-    sectionTitle: 'In 6 stappen klaar',
-    sectionTitleClass: 'text-center text-sm font-semibold text-gray-700 mb-3',
-    wrapper: 'max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6',
+  /** Hoe werkt het – één sectie, 1 kolom (niet dubbel), icoon per stap, responsive mobiel */
+  howItWorksSteps: {
+    sectionTitle: 'Hoe werkt het?',
+    sectionTitleClass: 'text-center text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-5',
+    wrapper: 'max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-5 sm:py-6',
     wrapperBg: 'bg-gray-50',
-    container: 'w-full flex flex-row flex-wrap justify-center items-stretch gap-2 sm:gap-3 md:gap-4',
-    step: {
-      container: 'flex-1 min-w-[calc(50%-0.5rem)] sm:min-w-[calc(33.33%-0.5rem)] md:min-w-0 flex flex-col items-center justify-start text-center rounded-lg border border-gray-200 p-3 sm:p-4 transition-all',
-      number: 'w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-white text-sm font-semibold mb-2',
-      numberBg: BRAND_COLORS_HEX.primary,
-      title: 'text-xs sm:text-sm font-medium text-gray-900 leading-tight',
-    },
-    /** Staptitels – single source of truth (zelfde als accordion) */
+    list: 'flex flex-col gap-3 sm:gap-4',
+    stepRow: 'flex items-center gap-3 sm:gap-4 w-full rounded-lg border border-gray-200 bg-white p-3 sm:p-4 text-left',
+    iconWrapper: 'flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full',
+    number: 'flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-white text-sm font-semibold',
+    numberBg: BRAND_COLORS_HEX.primary,
+    title: 'text-base sm:text-lg font-medium text-gray-900 leading-snug',
     stepTitles: [
       'Stekker erin',
       'Grit tot MAX',
@@ -291,16 +289,6 @@ export const PRODUCT_PAGE_CONFIG = {
       'Timer app',
       'Klaar!',
     ] as const,
-  },
-
-  /** Hoe werkt het – inline in pagina net boven zigzag (stroomlijn, geen hardcode) */
-  howItWorksInline: {
-    sectionTitle: 'Hoe werkt het?',
-    sectionTitleClass: 'text-center text-base sm:text-lg font-semibold text-gray-900 mb-3',
-    wrapper: 'max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-5',
-    wrapperBg: 'bg-white border-t border-gray-100',
-    stepsContainer: 'flex flex-wrap justify-center gap-2 sm:gap-3',
-    stepPill: 'px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-gray-100 text-gray-800 border border-gray-200/80 transition-colors hover:bg-gray-50',
   },
 
   /** Q&A / Vragen – inline beneden zigzag (zelfde content als accordion, geen hardcode) */
