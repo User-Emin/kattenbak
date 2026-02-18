@@ -116,6 +116,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
   // ✅ Vragen accordion: welke FAQ open (zoals openSpecs)
   const [openFaqs, setOpenFaqs] = useState<Set<number>>(new Set());
+  // ✅ Q&A inline (beneden zigzag): één open item tegelijk
+  const [openFaqInlineIndex, setOpenFaqInlineIndex] = useState<number | null>(null);
   /** Min. tijd dat skeleton/lading zichtbaar is (ms) – voorkomt "geen lading" / flits */
   const SKELETON_MIN_MS = 400;
 
@@ -1036,7 +1038,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
 
               {/* ✅ SERVICE USPs - Vetgedrukt en opvallender (config: serviceUspTextWeight, serviceUspEmphasis) */}
               {PRODUCT_CONTENT.serviceUsps.length > 0 && (
-                <div className="flex flex-col gap-2.5 sm:gap-3 mb-4 sm:mb-5">
+                <div className="flex flex-col gap-0.5 sm:gap-1 mb-4 sm:mb-5">
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => (
                     <div key={index} className={cn('flex items-center gap-2.5 text-base sm:text-lg', CONFIG.info?.bottomCart?.serviceUspEmphasis ?? '')}>
                       <Check className="w-5 h-5 flex-shrink-0" strokeWidth={2.5} style={{ color: '#129DD8' }} />
@@ -1056,7 +1058,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   CONFIG.info.button.fontWeight,
                   CONFIG.info.button.borderRadius,
                   CONFIG.info.button.transition,
-                  'relative overflow-hidden group w-full shadow-md hover:shadow-xl duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 mb-1 sm:mb-1.5',
+                  'relative overflow-hidden group w-full shadow-md hover:shadow-xl duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 mb-1 sm:mb-1.5',
                   isAdding && 'bg-green-600 text-white hover:bg-green-600'
                 )}
                 style={isAdding ? undefined : {
@@ -1419,15 +1421,99 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       </div>
 
 
-      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en app banner - IETS GRIJZER */}
+      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en 6 stappen - IETS GRIJZER */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
         <div className="border-t border-gray-300 my-6 sm:my-8"></div>
       </div>
 
-      {/* ✅ PREMIUM KWALITEIT SECTIE VERWIJDERD - Focus op 10.5L afvalbak */}
+      {/* ✅ 6 STAPPEN HORIZONTAAL: Zelfde lijn direct onder productdetail, boven zigzag – variabelensysteem */}
+      <section
+        className={cn(CONFIG.howItWorksHorizontal.wrapper, CONFIG.howItWorksHorizontal.wrapperBg)}
+        data-testid="how-it-works-horizontal"
+        aria-label="In 6 stappen klaar"
+      >
+        {(CONFIG.howItWorksHorizontal as { sectionTitle?: string; sectionTitleClass?: string }).sectionTitle && (
+          <h2 className={(CONFIG.howItWorksHorizontal as { sectionTitleClass?: string }).sectionTitleClass}>
+            {(CONFIG.howItWorksHorizontal as { sectionTitle?: string }).sectionTitle}
+          </h2>
+        )}
+        <div className={CONFIG.howItWorksHorizontal.container}>
+          {(CONFIG.howItWorksHorizontal.stepTitles as readonly string[]).map((title, index) => (
+            <div
+              key={index}
+              className={CONFIG.howItWorksHorizontal.step.container}
+              style={{ borderColor: `${CONFIG.howItWorksHorizontal.step.numberBg}30` }}
+            >
+              <div
+                className={CONFIG.howItWorksHorizontal.step.number}
+                style={{ backgroundColor: CONFIG.howItWorksHorizontal.step.numberBg }}
+              >
+                {index + 1}
+              </div>
+              <span className={CONFIG.howItWorksHorizontal.step.title}>{title}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ✅ Hoe werkt het – inline in stroomlijn net boven zigzag (config, geen hardcode) */}
+      {(CONFIG.howItWorksInline as { sectionTitle?: string })?.sectionTitle && (
+        <section
+          className={cn((CONFIG.howItWorksInline as { wrapper?: string }).wrapper, (CONFIG.howItWorksInline as { wrapperBg?: string }).wrapperBg)}
+          aria-label="Hoe werkt het"
+        >
+          <h2 className={(CONFIG.howItWorksInline as { sectionTitleClass?: string }).sectionTitleClass}>
+            {(CONFIG.howItWorksInline as { sectionTitle?: string }).sectionTitle}
+          </h2>
+          <div className={(CONFIG.howItWorksInline as { stepsContainer?: string }).stepsContainer}>
+            {(CONFIG.howItWorksHorizontal.stepTitles as readonly string[]).map((title, index) => (
+              <span
+                key={index}
+                className={(CONFIG.howItWorksInline as { stepPill?: string }).stepPill}
+              >
+                {index + 1}. {title}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ✅ FEATURE SLIDER: Smooth slide animaties voor mobiel, zigzag voor desktop */}
       <ProductFeatureSlider features={features} />
+
+      {/* ✅ Q&A / Vragen – inline beneden zigzag (zelfde content als accordion, config) */}
+      {PRODUCT_CONTENT.faqs && PRODUCT_CONTENT.faqs.length > 0 && (
+        <section
+          className={cn(CONFIG.faqInline.wrapper, CONFIG.faqInline.wrapperBg)}
+          aria-label="Veelgestelde vragen"
+        >
+          <h2 className={CONFIG.faqInline.sectionTitleClass}>
+            {PRODUCT_CONTENT.vragenSection?.title ?? 'Vragen'}
+          </h2>
+          <div className="space-y-2 sm:space-y-3 max-w-3xl mx-auto">
+            {PRODUCT_CONTENT.faqs.map((faq, index) => {
+              const isOpen = openFaqInlineIndex === index;
+              return (
+                <div key={index} className={CONFIG.faqInline.itemContainer}>
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaqInlineIndex(isOpen ? null : index)}
+                    className="w-full px-4 py-3 text-left flex items-center justify-between gap-2"
+                  >
+                    <span className={CONFIG.faqInline.questionClass}>{faq.q}</span>
+                    <ChevronDown className={cn('w-4 h-4 flex-shrink-0 text-gray-500 transition-transform duration-200', isOpen && 'rotate-180')} />
+                  </button>
+                  {isOpen && (
+                    <div className="px-4 pb-3 pt-0 border-t border-gray-100">
+                      <p className={cn(CONFIG.faqInline.answerClass, 'pt-3')}>{faq.a}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* ✅ VERGELIJKINGSTABEL: Modern, smooth, gebaseerd op echte info */}
       <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}>

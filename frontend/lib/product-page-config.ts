@@ -137,15 +137,15 @@ export const PRODUCT_PAGE_CONFIG = {
       marginBottom: 'mb-6',
     },
     button: {
-      size: 'w-full py-6 md:py-6', // ✅ DRUK MIJ: Verticaal langer (py-6 ipv py-4) - meer prominent
-      fontSize: 'text-2xl md:text-2xl', // ✅ GROOT: Echt grote tekst (text-2xl ipv text-lg) - veel opvallender
-      fontWeight: 'font-semibold', // ✅ CTA: Iets vetgedrukt, wit op blauw
+      size: 'w-full py-2.5 md:py-3', // ✅ COMPACT: Winkelwagenbutton strak
+      fontSize: 'text-xs md:text-sm', // ✅ COMPACT: Kleinere tekst
+      fontWeight: 'font-semibold', // ✅ CTA: Vetgedrukt, wit op zwart
       bgColor: 'bg-brand', // ✅ BLAUW: Blauw met wit tekst (slimme variabele)
       hoverBgColor: 'hover:bg-brand-dark', // ✅ BLAUW DARK: Hover (slimme variabele)
       textColor: 'text-white',
       borderRadius: DESIGN_SYSTEM.button.borderRadius, // ✅ DRY: Via DESIGN_SYSTEM
       transition: 'transition-all duration-200 hover:scale-[1.02]',
-      icon: 'w-6 h-6 md:w-6 md:h-6',
+      icon: 'w-4 h-4 md:w-4 md:h-4', // ✅ COMPACTER: Kleinere icon in winkelwagenbutton
     },
     // ✅ BOTTOM CART: Verticaal lijn met productnaam, dichtbij, letters iets dunner (geen hardcode)
     bottomCart: {
@@ -267,6 +267,50 @@ export const PRODUCT_PAGE_CONFIG = {
         },
       },
     },
+  },
+
+  // 6 stappen horizontaal – direct onder productdetail, boven zigzag (variabelensysteem)
+  howItWorksHorizontal: {
+    sectionTitle: 'In 6 stappen klaar',
+    sectionTitleClass: 'text-center text-sm font-semibold text-gray-700 mb-3',
+    wrapper: 'max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6',
+    wrapperBg: 'bg-gray-50',
+    container: 'w-full flex flex-row flex-wrap justify-center items-stretch gap-2 sm:gap-3 md:gap-4',
+    step: {
+      container: 'flex-1 min-w-[calc(50%-0.5rem)] sm:min-w-[calc(33.33%-0.5rem)] md:min-w-0 flex flex-col items-center justify-start text-center rounded-lg border border-gray-200 p-3 sm:p-4 transition-all',
+      number: 'w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-white text-sm font-semibold mb-2',
+      numberBg: BRAND_COLORS_HEX.primary,
+      title: 'text-xs sm:text-sm font-medium text-gray-900 leading-tight',
+    },
+    /** Staptitels – single source of truth (zelfde als accordion) */
+    stepTitles: [
+      'Stekker erin',
+      'Grit tot MAX',
+      'Afvalzak',
+      'Aanzetten',
+      'Timer app',
+      'Klaar!',
+    ] as const,
+  },
+
+  /** Hoe werkt het – inline in pagina net boven zigzag (stroomlijn, geen hardcode) */
+  howItWorksInline: {
+    sectionTitle: 'Hoe werkt het?',
+    sectionTitleClass: 'text-center text-base sm:text-lg font-semibold text-gray-900 mb-3',
+    wrapper: 'max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-5',
+    wrapperBg: 'bg-white border-t border-gray-100',
+    stepsContainer: 'flex flex-wrap justify-center gap-2 sm:gap-3',
+    stepPill: 'px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-gray-100 text-gray-800 border border-gray-200/80 transition-colors hover:bg-gray-50',
+  },
+
+  /** Q&A / Vragen – inline beneden zigzag (zelfde content als accordion, geen hardcode) */
+  faqInline: {
+    sectionTitleClass: 'text-center text-lg sm:text-xl font-semibold text-gray-900 mb-6',
+    wrapper: 'max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10',
+    wrapperBg: 'bg-gray-50/80',
+    itemContainer: 'border border-gray-200 rounded-lg overflow-hidden bg-white transition-colors hover:border-gray-300',
+    questionClass: 'text-sm md:text-base font-medium text-gray-900',
+    answerClass: 'text-sm md:text-base text-gray-700 leading-relaxed',
   },
 
   // Edge-to-edge section configuratie - ✅ MOBIEL: Verticaal langer, tekst korter
