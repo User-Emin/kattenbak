@@ -14,6 +14,7 @@ import { IMAGE_CONFIG, getImageFillProps } from "@/lib/image-config";
 import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { cn } from "@/lib/utils";
 import { SHARED_CONTENT } from "@/lib/content.config";
 import { BRAND_COLORS_HEX } from "@/lib/color-config";
 import { MODERN_DESIGN } from "@/lib/modern-design-enhancements";
@@ -120,9 +121,13 @@ export default function HomePage() {
             className="w-full md:w-[50%] flex flex-col items-center justify-center md:items-start md:justify-center px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16 lg:py-20 order-2 md:order-1 bg-white"
           >
             <div className="space-y-5 md:space-y-6 lg:space-y-8 text-center md:text-left w-full max-w-xl">
-              {/* Heading - ✅ RUSTIGER: Minder groot, passender */}
-              <h1 
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1] text-black" // ✅ RUSTIGER: Kleiner (text-3xl ipv text-4xl, etc.)
+              {/* Heading – grootte en gewicht uit design system (geen hardcode) */}
+              <h1
+                className={cn(
+                  (DESIGN_SYSTEM.layout.hero as { titleFontSize?: string }).titleFontSize ?? 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl',
+                  (DESIGN_SYSTEM.layout.hero as { titleFontWeight?: string }).titleFontWeight ?? 'font-medium',
+                  'tracking-tight leading-[1.1] text-black'
+                )}
                 style={{
                   fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
                 }}
@@ -139,23 +144,27 @@ export default function HomePage() {
                 Zelfreinigende • Hygiënisch • Stil
               </p>
 
-              {/* CTA Button - ✅ PREMIUM: Modern button */}
+              {/* CTA Button – padding en grootte uit design system (geen hardcode) */}
               <div className="pt-4 md:pt-6">
                 <Link href={`/product/${productSlug}`}>
-                  <button 
-                    className="relative overflow-hidden group inline-flex items-center gap-3 px-8 py-5 sm:px-10 sm:py-6 md:px-12 md:py-7 text-base sm:text-lg md:text-xl font-semibold rounded-lg text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
+                  <button
+                    className={cn(
+                      'relative overflow-hidden group inline-flex items-center gap-2 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]',
+                      (DESIGN_SYSTEM.layout.hero as { ctaButtonPadding?: string }).ctaButtonPadding ?? 'px-6 py-3 sm:px-8 sm:py-4',
+                      (DESIGN_SYSTEM.layout.hero as { ctaButtonFontSize?: string }).ctaButtonFontSize ?? 'text-base sm:text-lg'
+                    )}
                     style={{
-                      backgroundColor: '#000000',
+                      backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg ?? '#000000',
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor = '#1a1a1a';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#000000';
+                      e.currentTarget.style.backgroundColor = (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg ?? '#000000';
                     }}
                   >
                     <span>Bekijk Product</span>
-                    <ArrowRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2} />
+                    <ArrowRight className="w-5 h-5" strokeWidth={2} />
                   </button>
                 </Link>
               </div>
@@ -168,7 +177,10 @@ export default function HomePage() {
             style={{ fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary }}
           >
             <div
-              className="relative w-full h-full min-h-[280px] sm:min-h-[340px] rounded-2xl lg:rounded-3xl overflow-hidden bg-gray-100"
+              className={cn(
+                'relative w-full h-full min-h-[280px] sm:min-h-[340px] overflow-hidden bg-gray-100',
+                (DESIGN_SYSTEM.layout.hero as { imageBorderRadiusClass?: string }).imageBorderRadiusClass ?? 'rounded-2xl lg:rounded-3xl'
+              )}
               style={{
                 boxShadow: (DESIGN_SYSTEM.layout.hero as { imageShadow?: string }).imageShadow ?? DESIGN_SYSTEM.effects.shadow.lg,
               }}

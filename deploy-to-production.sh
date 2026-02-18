@@ -13,20 +13,24 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-SERVER_HOST="catsupply.nl"
-SERVER_USER="root"
+SERVER_HOST="${SERVER_HOST:-catsupply.nl}"
+SERVER_USER="${SERVER_USER:-root}"
+# SSH key: gebruik -i als bestand bestaat (bijv. ~/.ssh/id_ed25519_mewsimqr)
+SSH_KEY="${SSH_KEY:-$HOME/.ssh/id_ed25519_mewsimqr}"
+SSH_OPTS="-o StrictHostKeyChecking=no"
+[ -f "$SSH_KEY" ] && SSH_OPTS="$SSH_OPTS -i $SSH_KEY"
 
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${CYAN}🚀 PRODUCTION DEPLOYMENT${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
-echo -e "${YELLOW}Server: ${SERVER_HOST}${NC}"
-echo -e "${YELLOW}User: ${SERVER_USER}${NC}"
+echo -e "${YELLOW}Server: ${SERVER_USER}@${SERVER_HOST}${NC}"
+echo -e "${YELLOW}SSH key: ${SSH_KEY}${NC}"
 echo ""
 
 # SSH command helper
 ssh_exec() {
-  ssh -o StrictHostKeyChecking=no "${SERVER_USER}@${SERVER_HOST}" "$@"
+  ssh $SSH_OPTS "${SERVER_USER}@${SERVER_HOST}" "$@"
 }
 
 echo -e "${GREEN}📥 Pulling latest code...${NC}"

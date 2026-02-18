@@ -164,7 +164,7 @@ export const DESIGN_SYSTEM = {
       padding: '0 48px',
     },
     
-    // Hero – afbeelding zwevend: ronde hoeken + marge (geen hardcode)
+    // Hero – afbeelding zwevend: ronde hoeken + marge (SECURITY_POLICY: centrale config, geen hardcode)
     hero: {
       minHeight: '600px',
       minHeightMobile: '500px',
@@ -174,14 +174,21 @@ export const DESIGN_SYSTEM = {
       },
       spacing: '32px',
       imageUrl: '/images/hero-main.jpg',
-      /** Zwevend effect: marge rond afbeelding (responsive via Tailwind) */
-      imageMargin: '1rem',       // 16px base
-      imageMarginSm: '1.25rem',  // 20px sm
-      imageMarginMd: '1.5rem',   // 24px md
-      imageMarginLg: '2rem',    // 32px lg
-      imageRounded: '1rem',      // rounded-2xl (16px)
-      imageRoundedLg: '1.5rem',  // rounded-3xl op groot
+      imageMargin: '1rem',
+      imageMarginSm: '1.25rem',
+      imageMarginMd: '1.5rem',
+      imageMarginLg: '2rem',
+      imageRounded: '1rem',
+      imageRoundedLg: '1.5rem',
+      /** Hero afbeelding ronde hoeken – class uit design system (geen magic values in component) */
+      imageBorderRadiusClass: 'rounded-2xl lg:rounded-3xl' as const,
       imageShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+      /** Hero titel "Automatische Kattenbak" – kleinere grootte, iets dikker */
+      titleFontSize: 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl' as const,
+      titleFontWeight: 'font-medium' as const,
+      /** CTA "Bekijk Product" – minder padding */
+      ctaButtonPadding: 'px-6 py-3 sm:px-8 sm:py-4' as const,
+      ctaButtonFontSize: 'text-base sm:text-lg' as const,
     },
     
     // Trust banner (onder hero) - ✅ ZWART: #000000
@@ -231,8 +238,8 @@ export const DESIGN_SYSTEM = {
         badgeText: '#ffffff',
       },
       zIndex: '999',
-      logoPath: '/logos/logo.png',
-      logoPathFallback: '/logos/logo-navbar-original.png',
+      logoPath: '/logos/logo-navbar-catsupply.png', // CATSUPPLY logo: blauwe CAT, donkergrijze SUPPLY, poot in A, pijl in Y
+      logoPathFallback: '/logos/logo.png',
     },
     // Productdetailpagina – achtergrond gewoon wit (aansluitend op colors.secondary)
     productDetail: {
