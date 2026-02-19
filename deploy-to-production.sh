@@ -56,6 +56,15 @@ NEXT_PUBLIC_API_URL="https://catsupply.nl/api/v1" npm run build
 echo "✅ Frontend built"
 ENDSSH
 
+# Build admin
+echo -e "${GREEN}🔧 Building admin...${NC}"
+ssh_exec << 'ENDSSH'
+cd /var/www/kattenbak/admin-next
+npm ci --legacy-peer-deps
+NEXT_PUBLIC_API_URL="https://catsupply.nl/api/v1" npm run build
+echo "✅ Admin built"
+ENDSSH
+
 # Restart services
 echo -e "${GREEN}♻️  Restarting services...${NC}"
 ssh_exec << 'ENDSSH'

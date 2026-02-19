@@ -10,7 +10,7 @@ export const ProductVariantCreateSchema = z.object({
   productId: z.string().cuid('Ongeldige product ID'),
   name: z.string().min(2).max(100).trim(),
   colorName: z.string().min(2).max(50).trim().optional(), // Optional, will be converted to colorCode
-  colorCode: z.enum(['WIT', 'ZWART', 'GRIJS', 'ZILVER', 'BEIGE', 'BLAUW', 'ROOD', 'GROEN']).optional(), // ✅ SECURITY: Whitelist
+  colorCode: z.enum(['WIT', 'ZWART', 'GRIJS', 'ZILVER', 'BEIGE', 'BLAUW', 'ROOD', 'GROEN', 'BRUIN']).optional(), // ✅ SECURITY: Whitelist
   colorImageUrl: z.string()
     .refine(
       (val) => !val || (val.startsWith('/') || val.startsWith('http://') || val.startsWith('https://')),

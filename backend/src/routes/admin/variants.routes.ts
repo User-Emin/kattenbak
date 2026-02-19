@@ -122,9 +122,21 @@ router.post('/', async (req, res) => {
       });
     }
     
-    // ✅ FIX: Create variant with type casting
+    // Map to Prisma fields only (colorName/colorHex niet in schema)
+    const colorCode = data.colorCode || (data.colorName ? data.colorName.toUpperCase() : null);
     const variant = await prisma.productVariant.create({
-      data: data as any, // Type assertion for Prisma
+      data: {
+        productId: data.productId,
+        name: data.name,
+        colorCode,
+        colorImageUrl: data.colorImageUrl ?? null,
+        priceAdjustment: data.priceAdjustment ?? 0,
+        sku: data.sku,
+        stock: data.stock ?? 0,
+        images: data.images ?? [],
+        isActive: data.isActive ?? true,
+        sortOrder: data.sortOrder ?? 0,
+      },
       include: {
         product: true
       }
@@ -192,9 +204,22 @@ router.put('/:id', async (req, res) => {
       }
     }
     
+    // Map to Prisma fields only
+    const updatePayload: Record<string, unknown> = {};
+    if (data.name !== undefined) updatePayload.name = data.name;
+    if (data.colorCode !== undefined) updatePayload.colorCode = data.colorCode;
+    else if (data.colorName !== undefined) updatePayload.colorCode = data.colorName.toUpperCase();
+    if (data.colorImageUrl !== undefined) updatePayload.colorImageUrl = data.colorImageUrl;
+    if (data.priceAdjustment !== undefined) updatePayload.priceAdjustment = data.priceAdjustment;
+    if (data.sku !== undefined) updatePayload.sku = data.sku;
+    if (data.stock !== undefined) updatePayload.stock = data.stock;
+    if (data.images !== undefined) updatePayload.images = data.images;
+    if (data.isActive !== undefined) updatePayload.isActive = data.isActive;
+    if (data.sortOrder !== undefined) updatePayload.sortOrder = data.sortOrder;
+
     const variant = await prisma.productVariant.update({
       where: { id: req.params.id },
-      data,
+      data: updatePayload,
       include: {
         product: true
       }

@@ -47,13 +47,8 @@ export default function ProductEditPage() {
     });
 
     await updateMutation.mutateAsync(
-      { id: productId, data: apiData },
-      {
-        onSuccess: () => {
-          // Auto-redirect na success
-          setTimeout(() => router.push('/dashboard/products'), 500);
-        },
-      }
+      { id: productId, data: apiData }
+      // Geen redirect: blijf op bewerkpagina voor stabiele variant/foto bewerking
     );
   };
 

@@ -353,7 +353,7 @@ router.put('/:id', async (req, res) => {
         const colorImageUrl = variantFields.previewImage || variantFields.colorImageUrl || null;
         
         // ✅ SECURITY: Validate colorCode against whitelist
-        const validColorCodes = ['WIT', 'ZWART', 'GRIJS', 'ZILVER', 'BEIGE', 'BLAUW', 'ROOD', 'GROEN'];
+        const validColorCodes = ['WIT', 'ZWART', 'GRIJS', 'ZILVER', 'BEIGE', 'BLAUW', 'ROOD', 'GROEN', 'BRUIN'];
         if (colorCode && !validColorCodes.includes(colorCode)) {
           console.warn(`[VARIANT] Invalid colorCode: ${colorCode}, skipping variant`);
           continue;

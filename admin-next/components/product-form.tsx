@@ -314,6 +314,7 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
                 <FormItem>
                   <FormControl>
                     <VariantManager
+                      productId={initialData?.id}
                       variants={field.value || []}
                       onChange={field.onChange}
                     />

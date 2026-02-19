@@ -173,7 +173,7 @@ export default function LoginPage() {
           <div className="mt-6 p-3 bg-muted/50 rounded-lg text-xs text-muted-foreground">
             <p className="font-medium mb-1">Development credentials:</p>
             <p>Email: admin@catsupply.nl</p>
-            <p>Password: admin123</p>
+            <p>Password: admin123456789 (zie docs/LOCAL_ADMIN.md)</p>
           </div>
         </CardContent>
       </Card>

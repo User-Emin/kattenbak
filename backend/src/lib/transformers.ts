@@ -100,6 +100,7 @@ const COLOR_CODE_TO_HEX: Record<string, string> = {
   'BLAUW': '#0000FF',
   'ROOD': '#FF0000',
   'GROEN': '#008000',
+  'BRUIN': '#8B4513',
 };
 
 const getColorHex = (colorCode: string | null | undefined): string | null => {

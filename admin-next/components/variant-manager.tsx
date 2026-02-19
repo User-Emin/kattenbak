@@ -1,32 +1,38 @@
 /**
  * VARIANT MANAGER - Product Color/Size Variants
- * DRY, Secure, Type-Safe
- * Features:
+ * Stabiele bewerking met incrementele opslag
  * - Add/Edit/Delete variants
- * - Color picker
- * - Stock management per variant
- * - Images per variant (Coolblue-style!)
+ * - Aparte foto-upload per variant
+ * - Opslaan per variant (geen redirect, geen verlies)
  */
 
 'use client';
 
 import { useState } from 'react';
-import { Plus, Trash2, Edit2, Check, X } from 'lucide-react';
+import { Plus, Trash2, Edit2, Check, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { ImageUpload } from '@/components/image-upload';
+import { useCreateVariant, useUpdateVariant } from '@/lib/hooks/use-variants';
 import type { ProductVariant } from '@/types/product';
 
 interface VariantManagerProps {
+  productId?: string;
   variants: ProductVariant[];
   onChange: (variants: ProductVariant[]) => void;
 }
 
-export function VariantManager({ variants = [], onChange }: VariantManagerProps) {
+const isTempId = (id: string) => id.startsWith('variant-');
+
+export function VariantManager({ productId, variants = [], onChange }: VariantManagerProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+
+  const createMutation = useCreateVariant(productId || '');
+  const updateMutation = useUpdateVariant(productId || '');
+  const isSaving = createMutation.isPending || updateMutation.isPending;
+  const canSaveIncrementally = !!productId;
   // ✅ VARIANT SYSTEM: Updated to use colorCode and colorImageUrl
   const [newVariant, setNewVariant] = useState<Partial<ProductVariant>>({
     name: '',
@@ -79,12 +85,60 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
     setIsAdding(false);
   };
 
-  // Handle update variant
+  // Handle update variant (alleen form state, sluit editor niet)
   const handleUpdate = (id: string, updates: Partial<ProductVariant>) => {
     onChange(
       variants.map((v) => (v.id === id ? { ...v, ...updates } : v))
     );
-    setEditingId(null);
+  };
+
+  // Incrementeel opslaan: direct naar backend (geen redirect, blijf op pagina)
+  const handleSaveVariant = async (variant: ProductVariant) => {
+    if (!productId) {
+      setEditingId(null);
+      return;
+    }
+    const temp = isTempId(variant.id);
+    try {
+      if (temp) {
+        const res = await createMutation.mutateAsync({
+          name: variant.name,
+          colorName: variant.colorName,
+          colorCode: variant.colorCode,
+          colorHex: variant.colorHex || '#000000',
+          previewImage: variant.previewImage,
+          priceAdjustment: variant.priceAdjustment ?? 0,
+          stock: variant.stock ?? 0,
+          sku: variant.sku,
+          images: variant.images ?? [],
+        });
+        // API retourneert { success, data: ProductVariant }
+        const newVariant = (res as { data?: ProductVariant })?.data ?? (res as unknown as ProductVariant);
+        onChange(
+          variants.map((v) => (v.id === variant.id ? { ...variant, ...newVariant, id: newVariant.id } : v))
+        );
+        setEditingId(newVariant.id);
+        setIsAdding(false);
+      } else {
+        await updateMutation.mutateAsync({
+          id: variant.id,
+          data: {
+            name: variant.name,
+            colorName: variant.colorName,
+            colorCode: variant.colorCode,
+            colorHex: variant.colorHex,
+            previewImage: variant.previewImage,
+            priceAdjustment: variant.priceAdjustment,
+            stock: variant.stock,
+            sku: variant.sku,
+            images: variant.images,
+          },
+        });
+        setEditingId(null);
+      }
+    } catch {
+      // Toast al in hook
+    }
   };
 
   // Handle delete variant with confirmation
@@ -368,6 +422,7 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
                     variant="outline"
                     size="sm"
                     onClick={() => setEditingId(null)}
+                    disabled={isSaving}
                   >
                     <X className="w-4 h-4 mr-2" />
                     Annuleren
@@ -375,10 +430,15 @@ export function VariantManager({ variants = [], onChange }: VariantManagerProps)
                   <Button
                     type="button"
                     size="sm"
-                    onClick={() => setEditingId(null)}
+                    onClick={() => handleSaveVariant(variant)}
+                    disabled={isSaving || (isTempId(variant.id) && !productId)}
                   >
-                    <Check className="w-4 h-4 mr-2" />
-                    Opslaan
+                    {isSaving ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Check className="w-4 h-4 mr-2" />
+                    )}
+                    {canSaveIncrementally ? 'Opslaan' : 'Sluiten'}
                   </Button>
                 </div>
               </div>
