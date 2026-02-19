@@ -8,7 +8,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Trash2, Edit2, Check, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,11 +28,25 @@ const isTempId = (id: string) => id.startsWith('variant-');
 export function VariantManager({ productId, variants = [], onChange }: VariantManagerProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  /** Lokale edit-buffer: voorkomt form-update bij elke wijziging (foto verwijderen, etc.) */
+  const [editingVariant, setEditingVariant] = useState<ProductVariant | null>(null);
 
   const createMutation = useCreateVariant(productId || '');
   const updateMutation = useUpdateVariant(productId || '');
   const isSaving = createMutation.isPending || updateMutation.isPending;
   const canSaveIncrementally = !!productId;
+
+  // Sync buffer bij openen edit mode – variants niet in deps: foto verwijderen mag lokale edits niet overschrijven
+  useEffect(() => {
+    if (editingId) {
+      const v = variants.find((x) => x.id === editingId);
+      if (v) setEditingVariant({ ...v });
+      else setEditingVariant(null);
+    } else {
+      setEditingVariant(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- variants bewust uitgesloten
+  }, [editingId]);
   // ✅ VARIANT SYSTEM: Updated to use colorCode and colorImageUrl
   const [newVariant, setNewVariant] = useState<Partial<ProductVariant>>({
     name: '',
@@ -85,56 +99,63 @@ export function VariantManager({ productId, variants = [], onChange }: VariantMa
     setIsAdding(false);
   };
 
-  // Handle update variant (alleen form state, sluit editor niet)
-  const handleUpdate = (id: string, updates: Partial<ProductVariant>) => {
-    onChange(
-      variants.map((v) => (v.id === id ? { ...v, ...updates } : v))
-    );
+  /** Update lokale buffer – geen form update, voorkomt "eruit gooien" bij foto verwijderen etc. */
+  const updateEditingBuffer = (updates: Partial<ProductVariant>) => {
+    if (editingVariant) setEditingVariant((prev) => (prev ? { ...prev, ...updates } : null));
   };
 
-  // Incrementeel opslaan: direct naar backend (geen redirect, blijf op pagina)
-  const handleSaveVariant = async (variant: ProductVariant) => {
+  /** Push buffer naar form (bij Opslaan zonder API, of na succesvolle API-save) */
+  const flushBufferToForm = (v: ProductVariant) => {
+    onChange(variants.map((x) => (x.id === v.id ? v : x)));
+  };
+
+  // Incrementeel opslaan: gebruik buffer, direct naar backend
+  const handleSaveVariant = async () => {
+    const v = editingVariant;
+    if (!v) return;
     if (!productId) {
+      flushBufferToForm(v);
       setEditingId(null);
+      setEditingVariant(null);
       return;
     }
-    const temp = isTempId(variant.id);
+    const temp = isTempId(v.id);
     try {
       if (temp) {
         const res = await createMutation.mutateAsync({
-          name: variant.name,
-          colorName: variant.colorName,
-          colorCode: variant.colorCode,
-          colorHex: variant.colorHex || '#000000',
-          previewImage: variant.previewImage,
-          priceAdjustment: variant.priceAdjustment ?? 0,
-          stock: variant.stock ?? 0,
-          sku: variant.sku,
-          images: variant.images ?? [],
+          name: v.name,
+          colorName: v.colorName,
+          colorCode: v.colorCode,
+          colorHex: v.colorHex || '#000000',
+          previewImage: v.previewImage,
+          priceAdjustment: v.priceAdjustment ?? 0,
+          stock: v.stock ?? 0,
+          sku: v.sku,
+          images: v.images ?? [],
         });
-        // API retourneert { success, data: ProductVariant }
         const newVariant = (res as { data?: ProductVariant })?.data ?? (res as unknown as ProductVariant);
-        onChange(
-          variants.map((v) => (v.id === variant.id ? { ...variant, ...newVariant, id: newVariant.id } : v))
-        );
+        onChange(variants.map((x) => (x.id === v.id ? { ...v, ...newVariant, id: newVariant.id } : x)));
         setEditingId(newVariant.id);
+        setEditingVariant(newVariant);
         setIsAdding(false);
       } else {
         await updateMutation.mutateAsync({
-          id: variant.id,
+          id: v.id,
           data: {
-            name: variant.name,
-            colorName: variant.colorName,
-            colorCode: variant.colorCode,
-            colorHex: variant.colorHex,
-            previewImage: variant.previewImage,
-            priceAdjustment: variant.priceAdjustment,
-            stock: variant.stock,
-            sku: variant.sku,
-            images: variant.images,
+            name: v.name,
+            colorName: v.colorName,
+            colorCode: v.colorCode,
+            colorHex: v.colorHex,
+            previewImage: v.previewImage,
+            priceAdjustment: v.priceAdjustment,
+            stock: v.stock,
+            sku: v.sku,
+            images: v.images,
           },
         });
+        flushBufferToForm(v);
         setEditingId(null);
+        setEditingVariant(null);
       }
     } catch {
       // Toast al in hook
@@ -333,54 +354,44 @@ export function VariantManager({ productId, variants = [], onChange }: VariantMa
       {variants.map((variant) => (
         <Card key={variant.id}>
           <CardContent className="pt-6">
-            {editingId === variant.id ? (
-              // Edit Mode
+            {editingId === variant.id && editingVariant ? (
+              // Edit Mode – gebruik lokale buffer (geen form-update bij foto verwijderen)
               <div className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <Input
-                    value={variant.name}
-                    onChange={(e) =>
-                      handleUpdate(variant.id, { name: e.target.value })
-                    }
+                    value={editingVariant.name}
+                    onChange={(e) => updateEditingBuffer({ name: e.target.value })}
                     placeholder="Variant naam"
                   />
                   <Input
-                    value={variant.sku}
-                    onChange={(e) =>
-                      handleUpdate(variant.id, { sku: e.target.value })
-                    }
+                    value={editingVariant.sku}
+                    onChange={(e) => updateEditingBuffer({ sku: e.target.value })}
                     placeholder="SKU"
                   />
                   <Input
-                    value={variant.colorName}
-                    onChange={(e) =>
-                      handleUpdate(variant.id, { colorName: e.target.value })
-                    }
+                    value={editingVariant.colorName}
+                    onChange={(e) => updateEditingBuffer({ colorName: e.target.value })}
                     placeholder="Kleur naam"
                   />
                   <div className="flex gap-2">
                     <Input
                       type="color"
-                      value={variant.colorHex}
-                      onChange={(e) =>
-                        handleUpdate(variant.id, { colorHex: e.target.value })
-                      }
+                      value={editingVariant.colorHex}
+                      onChange={(e) => updateEditingBuffer({ colorHex: e.target.value })}
                       className="w-16 h-10 p-1"
                     />
                     <Input
-                      value={variant.colorHex}
-                      onChange={(e) =>
-                        handleUpdate(variant.id, { colorHex: e.target.value })
-                      }
+                      value={editingVariant.colorHex}
+                      onChange={(e) => updateEditingBuffer({ colorHex: e.target.value })}
                       placeholder="#000000"
                     />
                   </div>
                   <Input
                     type="number"
                     step="0.01"
-                    value={variant.priceAdjustment}
+                    value={editingVariant.priceAdjustment}
                     onChange={(e) =>
-                      handleUpdate(variant.id, {
+                      updateEditingBuffer({
                         priceAdjustment: parseFloat(e.target.value) || 0,
                       })
                     }
@@ -388,9 +399,9 @@ export function VariantManager({ productId, variants = [], onChange }: VariantMa
                   />
                   <Input
                     type="number"
-                    value={variant.stock}
+                    value={editingVariant.stock}
                     onChange={(e) =>
-                      handleUpdate(variant.id, {
+                      updateEditingBuffer({
                         stock: parseInt(e.target.value) || 0,
                       })
                     }
@@ -398,17 +409,14 @@ export function VariantManager({ productId, variants = [], onChange }: VariantMa
                   />
                 </div>
 
-                {/* ✅ COOLBLUE-STYLE: Edit Variant Images - STABLE */}
+                {/* Variant afbeeldingen – alleen lokale buffer, geen form-update */}
                 <div>
                   <label className="text-sm font-medium mb-2 block">
                     🎨 Variant Afbeeldingen
                   </label>
                   <ImageUpload
-                    value={variant.images || []}
-                    onChange={(images) => {
-                      // ✅ STABLE: Update immediately to prevent loss during upload
-                      handleUpdate(variant.id, { images });
-                    }}
+                    value={editingVariant.images || []}
+                    onChange={(images) => updateEditingBuffer({ images })}
                     maxImages={10}
                   />
                   <p className="text-xs text-muted-foreground mt-2">
@@ -421,7 +429,10 @@ export function VariantManager({ productId, variants = [], onChange }: VariantMa
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => setEditingId(null)}
+                    onClick={() => {
+                      setEditingId(null);
+                      setEditingVariant(null);
+                    }}
                     disabled={isSaving}
                   >
                     <X className="w-4 h-4 mr-2" />
@@ -430,8 +441,8 @@ export function VariantManager({ productId, variants = [], onChange }: VariantMa
                   <Button
                     type="button"
                     size="sm"
-                    onClick={() => handleSaveVariant(variant)}
-                    disabled={isSaving || (isTempId(variant.id) && !productId)}
+                    onClick={handleSaveVariant}
+                    disabled={isSaving || (isTempId(editingVariant.id) && !productId)}
                   >
                     {isSaving ? (
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />

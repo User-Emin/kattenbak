@@ -159,7 +159,9 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
     }
   };
 
-  const handleRemove = (index: number) => {
+  const handleRemove = (index: number, e?: React.MouseEvent) => {
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
     const newImages = value.filter((_, i) => i !== index);
     onChange(newImages);
   };
@@ -354,7 +356,7 @@ export function ImageUpload({ value = [], onChange, maxImages = 10 }: ImageUploa
                   variant="destructive"
                   size="icon"
                   className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={() => handleRemove(index)}
+                  onClick={(e) => handleRemove(index, e)}
                   disabled={isUploading}
                 >
                   <X className="h-4 w-4" />
