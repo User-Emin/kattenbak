@@ -292,7 +292,7 @@ export const PRODUCT_PAGE_CONFIG = {
     ] as const,
   },
 
-  /** Vergelijkingstabel – 100% optimaal mobiel (slider) en desktop */
+  /** Vergelijkingstabel – mobiel: 1 slide = 100% viewport, transform per stap = (100/N)% van track */
   comparisonTable: {
     mobile: {
       containerMaxWidth: 'max-w-full',
@@ -301,6 +301,7 @@ export const PRODUCT_PAGE_CONFIG = {
       cardBorderRadius: 'rounded-xl',
       dotSize: 'w-2.5 h-2.5 sm:w-3 sm:h-3',
       dotActiveWidth: 'w-7 sm:w-8',
+      touchAction: 'pan-y', // voorkomt horizontaal scroll-conflict op touch
     },
     desktop: {
       cellPadding: 'px-6 py-5',

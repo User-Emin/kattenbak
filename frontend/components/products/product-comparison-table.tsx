@@ -457,21 +457,21 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
           )} 
           style={{ boxSizing: 'border-box' }}
         >
-          {/* ✅ FIX: Inner container met overflow-hidden voor slide effect - maar cards blijven binnen viewport */}
+          {/* ✅ Inner: overflow-hidden = viewport voor slider; 1 slide = 100% viewport */}
           <div 
-            className="relative overflow-hidden w-full" 
+            className="relative overflow-hidden w-full isolate"
             style={{ 
               boxSizing: 'border-box',
               width: '100%',
-              minWidth: '100%',
-              // ✅ FIX: Zorg dat container altijd volledige breedte heeft en cards niet verdwijnen
-              maxWidth: '100%'
+              minWidth: 0,
+              touchAction: PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.touchAction ?? 'pan-y',
             }}
           >
+            {/* Track: width = N×100%; per slide move = (100/N)% van track */}
             <div 
-              className="flex transition-transform duration-700 ease-out" 
+              className="flex transition-transform duration-500 ease-out"
               style={{ 
-                transform: `translateX(-${visibleIndex * 100}%)`,
+                transform: `translate3d(-${visibleIndex * (100 / comparisonData.length)}%, 0, 0)`,
                 width: `${comparisonData.length * 100}%`,
                 boxSizing: 'border-box',
                 // ✅ FIX: Zorg dat flex container correcte breedte heeft
