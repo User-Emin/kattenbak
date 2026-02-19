@@ -500,27 +500,24 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                   >
                 <div
                   className={cn(
-                    'w-full border transition-all',
-                    PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.cardPadding ?? MOBILE_COMPARISON_CONFIG.card.padding,
-                    PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.cardBorderRadius ?? MOBILE_COMPARISON_CONFIG.card.borderRadius,
-                    row.highlight 
-                      ? 'shadow-md' 
-                      : 'shadow-sm'
+                    'w-full',
+                    PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.useCard !== false
+                      ? cn(
+                          'border transition-all',
+                          PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.cardPadding ?? MOBILE_COMPARISON_CONFIG.card.padding,
+                          PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.cardBorderRadius ?? MOBILE_COMPARISON_CONFIG.card.borderRadius,
+                          row.highlight ? 'shadow-md' : 'shadow-sm'
+                        )
+                      : (PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.contentPadding ?? 'py-5 px-4 sm:py-6 sm:px-5')
                   )}
-                  style={{ 
+                  style={PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.useCard !== false ? { 
                     ...(row.highlight 
-                      ? { 
-                          backgroundColor: `${BRAND_COLORS_HEX.primary}0D`,
-                          borderColor: `${BRAND_COLORS_HEX.primary}4D` 
-                        } 
-                      : { 
-                          backgroundColor: BRAND_COLORS_HEX.white,
-                          borderColor: BRAND_COLORS_HEX.gray[200]
-                        }),
+                      ? { backgroundColor: `${BRAND_COLORS_HEX.primary}0D`, borderColor: `${BRAND_COLORS_HEX.primary}4D` } 
+                      : { backgroundColor: BRAND_COLORS_HEX.white, borderColor: BRAND_COLORS_HEX.gray[200] }),
                     boxSizing: 'border-box'
-                  }}
+                  } : { boxSizing: 'border-box' }}
                 >
-                  {/* ✅ HEADER: Feature titel + beschrijving */}
+                  {/* HEADER: Feature titel + beschrijving */}
                   <div className={cn('text-center', MOBILE_COMPARISON_CONFIG.header.spacing.container)}>
                     <div className={cn(
                       'flex items-center justify-center',

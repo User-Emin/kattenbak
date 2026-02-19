@@ -269,7 +269,7 @@ export const PRODUCT_PAGE_CONFIG = {
     },
   },
 
-  /** Hoe werkt het – desktop compact naast elkaar, mobiel onder elkaar; eerste 2 met kleur */
+  /** Hoe werkt het – desktop compact naast elkaar; eerste 2 realistischer (icon+titel inline, groter) */
   howItWorksSteps: {
     sectionTitle: 'Hoe werkt het?',
     sectionTitleClass: 'text-center text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-5',
@@ -278,7 +278,7 @@ export const PRODUCT_PAGE_CONFIG = {
     list: 'flex flex-col gap-3 sm:gap-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-3 lg:gap-4',
     stepRow: 'flex items-center gap-3 sm:gap-4 w-full rounded-lg border border-gray-200 bg-white p-3 sm:p-4 text-left',
     iconWrapper: 'flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full',
-    iconWrapperFirstTwo: 'flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full',
+    iconWrapperFirstTwo: 'flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-xl',
     number: 'flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-white text-sm font-semibold',
     numberBg: BRAND_COLORS_HEX.primary,
     title: 'text-base sm:text-lg font-medium text-gray-900 leading-snug',
@@ -292,16 +292,18 @@ export const PRODUCT_PAGE_CONFIG = {
     ] as const,
   },
 
-  /** Vergelijkingstabel – mobiel: 1 slide = 100% viewport, transform per stap = (100/N)% van track */
+  /** Vergelijkingstabel – mobiel: content direct op achtergrond (geen dubbelkaart), groter */
   comparisonTable: {
     mobile: {
       containerMaxWidth: 'max-w-full',
       slidePadding: '12px',
+      useCard: false, // content direct op achtergrond, geen extra kaart
+      contentPadding: 'py-5 sm:py-6', // verticale ruimte bij useCard false (slide heeft al px)
       cardPadding: 'p-4 sm:p-5',
       cardBorderRadius: 'rounded-xl',
       dotSize: 'w-2.5 h-2.5 sm:w-3 sm:h-3',
       dotActiveWidth: 'w-7 sm:w-8',
-      touchAction: 'pan-y', // voorkomt horizontaal scroll-conflict op touch
+      touchAction: 'pan-y',
     },
     desktop: {
       cellPadding: 'px-6 py-5',
@@ -350,7 +352,7 @@ export const PRODUCT_PAGE_CONFIG = {
 
   // Feature section (ZIGZAG met afbeeldingen - Pergolux style)
   featureSection: {
-    containerSpacing: 'space-y-6 md:space-y-10 lg:space-y-12', // ✅ COMPACTER: Dunner/strakker, minder ruimte
+    containerSpacing: 'space-y-10 md:space-y-14 lg:space-y-20', // meer ruimte tussen zigzags
     zigzag: {
       // Image LEFT, text RIGHT - ✅ DESKTOP: Afbeelding breder (58% / 42%) voor betere weergave
       leftLayout: 'flex flex-col md:grid md:grid-cols-[1.2fr_0.8fr] gap-0 md:gap-8 lg:gap-12 items-center justify-center text-center md:text-left',

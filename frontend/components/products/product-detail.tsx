@@ -1455,7 +1455,10 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                         : `${(CONFIG.howItWorksSteps as { numberBg?: string }).numberBg}20`,
                     }}
                   >
-                    <IconComponent className={cn('w-5 h-5 sm:w-6 sm:h-6', isFirstTwo ? 'text-white' : 'text-gray-700')} />
+                    <IconComponent className={cn(
+                      isFirstTwo ? 'w-7 h-7 sm:w-8 sm:h-8' : 'w-5 h-5 sm:w-6 sm:h-6',
+                      isFirstTwo ? 'text-white' : 'text-gray-700'
+                    )} />
                   </div>
                   <div
                     className={(CONFIG.howItWorksSteps as { number?: string }).number}
