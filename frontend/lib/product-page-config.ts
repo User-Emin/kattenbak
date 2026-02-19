@@ -303,18 +303,21 @@ export const PRODUCT_PAGE_CONFIG = {
     ] as const,
   },
 
-  /** Vergelijkingstabel – mobiel: content direct op achtergrond (geen dubbelkaart), groter */
+  /** Vergelijkingstabel – mobiel: levendige kaarten met gradient, shadow en brandkleur */
   comparisonTable: {
     mobile: {
       containerMaxWidth: 'max-w-full',
       slidePadding: '12px',
-      useCard: false, // content direct op achtergrond, geen extra kaart
-      contentPadding: 'py-5 sm:py-6', // verticale ruimte bij useCard false (slide heeft al px)
+      useCard: true, // levendige kaarten op mobiel
+      contentPadding: 'py-5 sm:py-6',
       cardPadding: 'p-4 sm:p-5',
-      cardBorderRadius: 'rounded-xl',
-      dotSize: 'w-2.5 h-2.5 sm:w-3 sm:h-3',
-      dotActiveWidth: 'w-7 sm:w-8',
+      cardBorderRadius: 'rounded-2xl',
+      dotSize: 'w-3 h-3 sm:w-3.5 sm:h-3.5',
+      dotActiveWidth: 'w-8 sm:w-9',
       touchAction: 'pan-y',
+      /** Levendiger: gradient border, sterke shadow, subtiele achtergrond */
+      cardShadow: 'shadow-lg',
+      cardBorderWidth: '2px',
     },
     desktop: {
       cellPadding: 'px-6 py-5',
@@ -332,11 +335,14 @@ export const PRODUCT_PAGE_CONFIG = {
     answerClass: 'text-sm md:text-base text-gray-700 leading-relaxed',
   },
 
-  // Edge-to-edge section configuratie - ✅ MOBIEL: Verticaal langer, tekst korter
+  // Edge sectie (ALP1017 / Premium zelfreinigende) –zelfde padding + rondingen als hero
   edgeSection: {
-    container: 'relative w-full', // ✅ EDGE-TO-EDGE: Volledige breedte
+    container: 'relative w-full',
+    /** Padding en rondingen identiek aan hero afbeelding (DESIGN_SYSTEM.layout.hero) */
+    imagePaddingClass: 'p-4 sm:p-5 md:p-6 lg:p-8',
+    imageBorderRadiusClass: 'rounded-2xl lg:rounded-3xl',
     image: {
-      aspectRatio: 'aspect-[21/9] sm:aspect-[21/7] md:aspect-[21/6]', // ✅ MOBIEL: Verticaal langer op mobiel (21/9 ipv 21/7)
+      aspectRatio: 'aspect-[21/9] sm:aspect-[21/7] md:aspect-[21/6]',
       objectFit: 'object-cover',
       brightness: 'brightness-75',
     },

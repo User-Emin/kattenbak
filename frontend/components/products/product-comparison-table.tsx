@@ -503,17 +503,25 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                     'w-full',
                     PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.useCard !== false
                       ? cn(
-                          'border transition-all',
+                          'border-2 transition-all duration-300',
                           PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.cardPadding ?? MOBILE_COMPARISON_CONFIG.card.padding,
                           PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.cardBorderRadius ?? MOBILE_COMPARISON_CONFIG.card.borderRadius,
-                          row.highlight ? 'shadow-md' : 'shadow-sm'
+                          PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.cardShadow ?? (row.highlight ? 'shadow-lg' : 'shadow-md')
                         )
                       : (PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.contentPadding ?? 'py-5 px-4 sm:py-6 sm:px-5')
                   )}
                   style={PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.useCard !== false ? { 
                     ...(row.highlight 
-                      ? { backgroundColor: `${BRAND_COLORS_HEX.primary}0D`, borderColor: `${BRAND_COLORS_HEX.primary}4D` } 
-                      : { backgroundColor: BRAND_COLORS_HEX.white, borderColor: BRAND_COLORS_HEX.gray[200] }),
+                      ? { 
+                          backgroundColor: `${BRAND_COLORS_HEX.primary}12`, 
+                          borderColor: `${BRAND_COLORS_HEX.primary}66`,
+                          boxShadow: `0 4px 20px ${BRAND_COLORS_HEX.primary}25, 0 0 0 1px ${BRAND_COLORS_HEX.primary}20`
+                        } 
+                      : { 
+                          backgroundColor: BRAND_COLORS_HEX.white, 
+                          borderColor: BRAND_COLORS_HEX.gray[200],
+                          boxShadow: '0 4px 14px rgba(0,0,0,0.08)'
+                        }),
                     boxSizing: 'border-box'
                   } : { boxSizing: 'border-box' }}
                 >

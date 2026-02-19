@@ -4,42 +4,35 @@
  * ✅ Exported voor gebruik in accordion en andere componenten
  */
 
-// ✅ OPTIMALE SYMBOLEN: Professionele en duidelijke SVG icons voor stekker en grit
+// ✅ OPTIMALE SYMBOLEN: Herkenbaar en passend bij "Stekker erin" en "Grit tot MAX"
+/** Stekker erin: Stroomstekker – pinnen in stopcontact, kabel omhoog */
 export const PlugIcon = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-    {/* ✅ STEEKER: Professionele Europese stekker met 2 pinnen */}
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
     {/* Body */}
-    <rect x="7" y="11" width="10" height="8" rx="1.5" strokeLinecap="round" strokeLinejoin="round" fill="currentColor" opacity={0.1} />
-    {/* Linker pin */}
-    <rect x="8.5" y="13" width="2.5" height="6" rx="0.5" fill="currentColor" />
-    {/* Rechter pin */}
-    <rect x="13" y="13" width="2.5" height="6" rx="0.5" fill="currentColor" />
+    <rect x="8" y="10" width="8" height="10" rx="1.5" fill="currentColor" opacity={0.12} stroke="currentColor" strokeWidth={2} />
+    {/* Pinnen (in stopcontact) */}
+    <line x1="10.5" y1="20" x2="10.5" y2="23" strokeWidth={2.5} />
+    <line x1="13.5" y1="20" x2="13.5" y2="23" strokeWidth={2.5} />
     {/* Kabel */}
-    <path d="M11.5 11V7a1.5 1.5 0 0 1 1.5-1.5h0a1.5 1.5 0 0 1 1.5 1.5v4" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-    <path d="M12 5.5V3" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} />
-    <circle cx="12" cy="1.5" r="1" fill="currentColor" />
+    <path d="M12 10V5a1.5 1.5 0 013 0v3" />
+    <path d="M12 3.5V1.5" strokeWidth={2} />
   </svg>
 );
 
+/** Grit tot MAX: Kattenbak met vulniveau – duidelijke MAX-lijn zonder tekst */
 export const GritIcon = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    {/* ✅ GRIT: Professionele kattenbak met grit korrels en MAX lijn */}
-    {/* Bak */}
-    <rect x="3" y="7" width="18" height="13" rx="2.5" strokeLinecap="round" strokeLinejoin="round" fill="currentColor" opacity={0.05} />
-    {/* MAX lijn (duidelijk zichtbaar) */}
-    <path d="M4 11.5h16" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} strokeDasharray="3 2" opacity={0.8} />
-    <text x="20" y="12" fontSize="8" fill="currentColor" opacity={0.6} fontWeight="bold">MAX</text>
-    {/* Grit korrels (realistisch patroon) */}
-    <circle cx="6" cy="9.5" r="1.8" fill="currentColor" opacity={0.7} />
-    <circle cx="11" cy="9.5" r="1.6" fill="currentColor" opacity={0.75} />
-    <circle cx="16" cy="9.5" r="1.7" fill="currentColor" opacity={0.7} />
-    <circle cx="18" cy="9.5" r="1.3" fill="currentColor" opacity={0.65} />
-    <circle cx="8" cy="13" r="1.4" fill="currentColor" opacity={0.6} />
-    <circle cx="13" cy="13" r="1.5" fill="currentColor" opacity={0.65} />
-    <circle cx="15" cy="13" r="1.2" fill="currentColor" opacity={0.6} />
-    <circle cx="6" cy="15.5" r="1.1" fill="currentColor" opacity={0.55} />
-    <circle cx="11" cy="15.5" r="1.3" fill="currentColor" opacity={0.6} />
-    <circle cx="17" cy="15.5" r="1.2" fill="currentColor" opacity={0.55} />
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    {/* Bak (kattenbak omtrek) */}
+    <rect x="3" y="8" width="18" height="12" rx="2" fill="currentColor" opacity={0.08} stroke="currentColor" strokeWidth={2} />
+    {/* MAX vulniveau – duidelijke horizontale lijn */}
+    <line x1="4" y1="12" x2="20" y2="12" strokeWidth={2.5} strokeDasharray="4 3" opacity={0.9} />
+    {/* Grit korrels (boven MAX = vol) */}
+    <circle cx="6" cy="10" r="1.5" fill="currentColor" opacity={0.6} />
+    <circle cx="11" cy="10.5" r="1.4" fill="currentColor" opacity={0.65} />
+    <circle cx="16" cy="10" r="1.5" fill="currentColor" opacity={0.6} />
+    <circle cx="8" cy="13" r="1.3" fill="currentColor" opacity={0.5} />
+    <circle cx="13" cy="13" r="1.4" fill="currentColor" opacity={0.55} />
+    <circle cx="18" cy="13" r="1.2" fill="currentColor" opacity={0.5} />
   </svg>
 );
 

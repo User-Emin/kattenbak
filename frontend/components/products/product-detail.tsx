@@ -1447,7 +1447,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* ✅ FEATURE SLIDER: Smooth slide animaties voor mobiel, zigzag voor desktop */}
       <ProductFeatureSlider features={features} />
 
-      {/* ✅ Q&A / Vragen – inline beneden zigzag (zelfde content als accordion, config) */}
+      {/* ✅ VERGELIJKINGSTABEL: Modern, smooth, gebaseerd op echte info – boven Vragen */}
+      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}>
+        <ProductComparisonTable productImages={originalImages} />
+      </div>
+
+      {/* ✅ Q&A / Vragen – inline onder vergelijkingstabel (zelfde content als accordion, config) */}
       {PRODUCT_CONTENT.faqs && PRODUCT_CONTENT.faqs.length > 0 && (
         <section
           className={cn(CONFIG.faqInline.wrapper, CONFIG.faqInline.wrapperBg)}
@@ -1480,11 +1485,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           </div>
         </section>
       )}
-
-      {/* ✅ VERGELIJKINGSTABEL: Modern, smooth, gebaseerd op echte info */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}>
-        <ProductComparisonTable productImages={originalImages} />
-      </div>
 
       {/* ✅ FAQ sectie "Vragen over ALP1071" verwijderd; SEO behouden via FAQJsonLd (FAQPage schema) */}
 
