@@ -406,6 +406,11 @@ router.put('/:id', async (req, res) => {
         ? new Date() 
         : existing.publishedAt
     };
+
+    // Ensure howItWorksImages persists (productbewerking → productdetail)
+    if ((data as any).howItWorksImages !== undefined) {
+      updatePayload.howItWorksImages = (data as any).howItWorksImages;
+    }
     
     // Only include categoryId if it's actually being updated
     if (categoryId) {

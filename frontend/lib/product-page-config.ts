@@ -269,7 +269,7 @@ export const PRODUCT_PAGE_CONFIG = {
     },
   },
 
-  /** Hoe werkt het – desktop compact naast elkaar; eerste 2 realistischer (icon+titel inline, groter) */
+  /** Hoe werkt het – desktop compact; images vervangen symbolen wanneer geüpload (product.howItWorksImages) */
   howItWorksSteps: {
     sectionTitle: 'Hoe werkt het?',
     sectionTitleClass: 'text-center text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-5',
@@ -277,8 +277,10 @@ export const PRODUCT_PAGE_CONFIG = {
     wrapperBg: 'bg-gray-50',
     list: 'flex flex-col gap-3 sm:gap-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-3 lg:gap-4',
     stepRow: 'flex items-center gap-3 sm:gap-4 w-full rounded-lg border border-gray-200 bg-white p-3 sm:p-4 text-left',
-    iconWrapper: 'flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full',
-    iconWrapperFirstTwo: 'flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-xl',
+    iconWrapper: 'flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full overflow-hidden',
+    iconWrapperFirstTwo: 'flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-xl overflow-hidden',
+    imageWrapper: 'relative w-10 h-10 sm:w-12 sm:h-12 rounded-lg overflow-hidden flex-shrink-0',
+    imageWrapperFirstTwo: 'relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden flex-shrink-0',
     number: 'flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-white text-sm font-semibold',
     numberBg: BRAND_COLORS_HEX.primary,
     title: 'text-base sm:text-lg font-medium text-gray-900 leading-snug',
@@ -289,6 +291,15 @@ export const PRODUCT_PAGE_CONFIG = {
       'Aanzetten',
       'Timer app',
       'Klaar!',
+    ] as const,
+    /** Volledige stappen voor accordion – titel + beschrijving (DRY) */
+    steps: [
+      { title: 'Stekker erin en klaarzetten', description: 'Plaats de kattenbak op een vlakke, stevige ondergrond. Sluit de stekker aan op een stopcontact.' },
+      { title: 'Grit toevoegen tot MAX lijn', description: 'Vul de kattenbak met klonterend grit tot net onder de MAX lijn (ongeveer 8-10 kg).' },
+      { title: 'Afvalzak plaatsen over bak', description: 'Plaats de afvalzak over de afvalbak heen voor optimale werking. De zak moet goed aansluiten.' },
+      { title: 'Aanzetten en klaar', description: 'Druk op de Power knop. Een blauw licht geeft aan dat de kattenbak klaar is voor gebruik.' },
+      { title: 'Timer instellen via app', description: 'Bepaal wanneer na de wcsessie de kattenbak automatisch moet schoonmaken. Stel de timer in via de app of op de kattenbak zelf.' },
+      { title: 'Klaar! Automatisch schoon', description: 'De kattenbak reinigt automatisch na elk gebruik volgens je instellingen. De afvalzak hoeft slechts 1x per week geleegd te worden.' },
     ] as const,
   },
 

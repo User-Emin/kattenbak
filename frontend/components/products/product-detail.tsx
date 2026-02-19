@@ -1244,57 +1244,17 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   
                   {openAccordions.has('hoe-werkt-het') && (
                     <div className={CONFIG.howItWorks.accordion.content.container}>
-                      {/* ✅ STAPPEN: Onder elkaar met afbeeldingen - SLIMME VARIABELEN */}
+                      {/* ✅ STAPPEN: DRY uit config; image vervangt icoon wanneer geüpload */}
                       {(() => {
-                        // ✅ DRY: Hergebruik stappen logica uit ProductHowItWorks
                         const howItWorksImages = product.howItWorksImages || [];
-                        const steps = [
-                          {
-                            icon: PlugIcon,
-                            title: 'Stekker erin en klaarzetten',
-                            description: 'Plaats de kattenbak op een vlakke, stevige ondergrond. Sluit de stekker aan op een stopcontact.',
-                            number: 1,
-                            image: howItWorksImages.length > 0 ? howItWorksImages[0] : undefined,
-                          },
-                          {
-                            icon: GritIcon,
-                            title: 'Grit toevoegen tot MAX lijn',
-                            description: 'Vul de kattenbak met klonterend grit tot net onder de MAX lijn (ongeveer 8-10 kg).',
-                            number: 2,
-                            image: howItWorksImages.length > 1 ? howItWorksImages[1] : undefined,
-                          },
-                          {
-                            icon: TrashBagIcon,
-                            title: 'Afvalzak plaatsen over bak',
-                            description: 'Plaats de afvalzak over de afvalbak heen voor optimale werking. De zak moet goed aansluiten.',
-                            number: 3,
-                            image: howItWorksImages.length > 2 ? howItWorksImages[2] : undefined,
-                          },
-                          {
-                            icon: PowerIcon,
-                            title: 'Aanzetten en klaar',
-                            description: 'Druk op de Power knop. Een blauw licht geeft aan dat de kattenbak klaar is voor gebruik.',
-                            number: 4,
-                            image: howItWorksImages.length > 3 ? howItWorksImages[3] : undefined,
-                          },
-                          {
-                            icon: TimerIcon,
-                            title: 'Timer instellen via app',
-                            description: 'Bepaal wanneer na de wcsessie de kattenbak automatisch moet schoonmaken. Stel de timer in via de app of op de kattenbak zelf.',
-                            number: 5,
-                            image: howItWorksImages.length > 4 ? howItWorksImages[4] : undefined,
-                          },
-                          {
-                            icon: CheckIcon,
-                            title: 'Klaar! Automatisch schoon',
-                            description: 'De kattenbak reinigt automatisch na elk gebruik volgens je instellingen. De afvalzak hoeft slechts 1x per week geleegd te worden.',
-                            number: 6,
-                            image: howItWorksImages.length > 5 ? howItWorksImages[5] : undefined,
-                          },
-                        ];
+                        const stepDefs = (CONFIG.howItWorksSteps as { steps?: readonly { title: string; description: string }[] }).steps
+                          ?? (CONFIG.howItWorksSteps as { stepTitles?: readonly string[] }).stepTitles?.map((t, i) => ({ title: t, description: '' })) ?? [];
+                        const icons = [PlugIcon, GritIcon, TrashBagIcon, PowerIcon, TimerIcon, CheckIcon];
 
-                        return steps.map((step, index) => {
-                          const IconComponent = step.icon;
+                        return stepDefs.map((stepDef, index) => {
+                          const stepImage = howItWorksImages[index];
+                          const IconComponent = icons[index] ?? CheckIcon;
+                          const step = { ...stepDef, number: index + 1, image: stepImage, icon: IconComponent };
                           return (
                             <div
                               key={step.number}
@@ -1304,19 +1264,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                                 'duration-300'
                               )}
                               style={{
-                                animationDelay: `${index * 50}ms`, // ✅ SMOOTH: Staggered animatie
+                                animationDelay: `${index * 50}ms`,
                               }}
                             >
                               <div className={CONFIG.howItWorks.accordion.content.step.spacing}>
-                                {/* ✅ AFBEELDING: Met nummer badge */}
                                 {step.image && (
                                   <div 
-                                    className={cn(
-                                      CONFIG.howItWorks.accordion.content.step.image.container
-                                    )}
-                                    style={{ 
-                                      borderColor: `${BRAND_COLORS_HEX.primary}30` 
-                                    }}
+                                    className={cn(CONFIG.howItWorks.accordion.content.step.image.container)}
+                                    style={{ borderColor: `${BRAND_COLORS_HEX.primary}30` }}
                                   >
                                     <Image
                                       src={step.image}
@@ -1330,7 +1285,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                                       placeholder="blur"
                                       blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                                     />
-                                    {/* ✅ NUMMER BADGE */}
                                     <div 
                                       className={CONFIG.howItWorks.accordion.content.step.image.numberBadge.container}
                                       style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
@@ -1339,16 +1293,16 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                                     </div>
                                   </div>
                                 )}
-                                
-                                {/* ✅ CONTENT: Icon, titel en beschrijving */}
                                 <div className={CONFIG.howItWorks.accordion.content.step.content.container}>
                                   <div className={CONFIG.howItWorks.accordion.content.step.content.header.container}>
-                                    <IconComponent 
-                                      className={cn(
-                                        CONFIG.howItWorks.accordion.content.step.content.header.icon.size,
-                                        CONFIG.howItWorks.accordion.content.step.content.header.icon.color
-                                      )}
-                                    />
+                                    {!step.image && (
+                                      <IconComponent 
+                                        className={cn(
+                                          CONFIG.howItWorks.accordion.content.step.content.header.icon.size,
+                                          CONFIG.howItWorks.accordion.content.step.content.header.icon.color
+                                        )}
+                                      />
+                                    )}
                                     <h3 className={cn(
                                       CONFIG.howItWorks.accordion.content.step.content.header.title.fontSize,
                                       CONFIG.howItWorks.accordion.content.step.content.header.title.fontWeight,
@@ -1440,13 +1394,26 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             {((CONFIG.howItWorksSteps as { stepTitles?: readonly string[] }).stepTitles ?? []).map((title, index) => {
               const icons = [PlugIcon, GritIcon, TrashBagIcon, PowerIcon, TimerIcon, CheckIcon];
               const IconComponent = icons[index] ?? CheckIcon;
-              const steps = CONFIG.howItWorksSteps as { iconWrapper?: string; iconWrapperFirstTwo?: string; numberBg?: string };
+              const steps = CONFIG.howItWorksSteps as { iconWrapper?: string; iconWrapperFirstTwo?: string; imageWrapper?: string; imageWrapperFirstTwo?: string; numberBg?: string };
               const isFirstTwo = index < 2;
+              const stepImage = product?.howItWorksImages?.[index];
               return (
                 <div
                   key={index}
                   className={(CONFIG.howItWorksSteps as { stepRow?: string }).stepRow}
                 >
+                  {stepImage ? (
+                    <div className={cn('relative', isFirstTwo ? steps.imageWrapperFirstTwo : steps.imageWrapper)}>
+                      <Image
+                        src={stepImage}
+                        alt={title}
+                        fill
+                        className="object-cover"
+                        sizes="56px"
+                        unoptimized={stepImage.startsWith('/uploads/') || stepImage.includes('/uploads/')}
+                      />
+                    </div>
+                  ) : (
                   <div
                     className={isFirstTwo ? (steps.iconWrapperFirstTwo ?? steps.iconWrapper) : steps.iconWrapper}
                     style={{
@@ -1460,6 +1427,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                       isFirstTwo ? 'text-white' : 'text-gray-700'
                     )} />
                   </div>
+                  )}
                   <div
                     className={(CONFIG.howItWorksSteps as { number?: string }).number}
                     style={{ backgroundColor: (CONFIG.howItWorksSteps as { numberBg?: string }).numberBg }}
