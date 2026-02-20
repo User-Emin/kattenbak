@@ -269,9 +269,10 @@ export const PRODUCT_PAGE_CONFIG = {
     },
   },
 
-  /** Hoe werkt het – desktop compact; images vervangen symbolen wanneer geüpload (product.howItWorksImages) */
+  /** Hoe werkt het – alleen accordion (open balk), geen aparte sectie boven zigzag */
   howItWorksSteps: {
-    sectionTitle: 'Hoe werkt het?',
+    /** Leeg = sectie verborgen; accordion blijft via howItWorks.accordion */
+    sectionTitle: '' as string | undefined,
     sectionTitleClass: 'text-center text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-5',
     wrapper: 'max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-5 sm:py-6',
     wrapperBg: 'bg-gray-50',
@@ -303,22 +304,28 @@ export const PRODUCT_PAGE_CONFIG = {
     ] as const,
   },
 
-  /** Vergelijkingstabel – mobiel: direct op achtergrond, geen dubbel kaart, zwart */
+  /** Vergelijkingstabel – mobiel: direct op achtergrond, zwarte stroken, duidelijke subtekst */
   comparisonTable: {
     mobile: {
       containerMaxWidth: 'max-w-full',
       slidePadding: '12px',
-      useCard: false, // direct op achtergrond, geen kaart
+      useCard: false,
       contentPadding: 'py-5 sm:py-6',
       cardPadding: 'p-4 sm:p-5',
       cardBorderRadius: 'rounded-none',
       dotSize: 'w-3 h-3 sm:w-3.5 sm:h-3.5',
       dotActiveWidth: 'w-8 sm:w-9',
+      /** Padding onder slide-puntjes */
+      dotsContainerPadding: 'mt-4 mb-4 pb-6',
       touchAction: 'pan-y',
       cardShadow: '',
       cardBorderWidth: '0',
-      /** Zwarte achtergrond voor mobiel, transparant op desktop */
       wrapperBg: 'bg-black md:bg-transparent',
+      /** Duidelijke subtekst – grotere font, zwart/wit via config */
+      descriptionFontSize: 'text-sm sm:text-base',
+      /** Stroken (Automatische/Handmatige) – zwart op mobiel */
+      strokenBg: 'bg-gray-900',
+      strokenBgHighlight: 'bg-gray-800',
     },
     desktop: {
       cellPadding: 'px-6 py-5',

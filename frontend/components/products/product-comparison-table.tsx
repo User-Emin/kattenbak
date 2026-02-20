@@ -536,7 +536,7 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
                       {row.icon && (
                         <row.icon 
                           className={cn('flex-shrink-0', MOBILE_COMPARISON_CONFIG.header.icon.size)} 
-                          style={{ color: isDarkMobile ? (row.highlight ? '#60a5fa' : '#e5e7eb') : (row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500]) }} 
+                          style={{ color: isDarkMobile ? (row.highlight ? BRAND_COLORS_HEX.primaryLight : BRAND_COLORS_HEX.gray[200]) : (row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500]) }} 
                         />
                       )}
                       <div 
@@ -546,7 +546,7 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
                           MOBILE_COMPARISON_CONFIG.header.title.lineHeight,
                           'text-center'
                         )}
-                        style={row.highlight ? { color: isDarkMobile ? '#60a5fa' : BRAND_COLORS_HEX.primary } : { color: isDarkMobile ? '#f3f4f6' : BRAND_COLORS_HEX.gray[900] }}
+                        style={row.highlight ? { color: isDarkMobile ? BRAND_COLORS_HEX.primaryLight : BRAND_COLORS_HEX.primary } : { color: isDarkMobile ? BRAND_COLORS_HEX.white : BRAND_COLORS_HEX.gray[900] }}
                       >
                         {row.feature}
                       </div>
@@ -554,12 +554,12 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
                     {row.description && (
                       <p 
                         className={cn(
-                          MOBILE_COMPARISON_CONFIG.header.description.fontSize,
+                          PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.descriptionFontSize ?? MOBILE_COMPARISON_CONFIG.header.description.fontSize,
                           MOBILE_COMPARISON_CONFIG.header.description.lineHeight,
                           'text-center',
                           MOBILE_COMPARISON_CONFIG.header.spacing.description
                         )}
-                        style={{ color: isDarkMobile ? '#d1d5db' : BRAND_COLORS_HEX.gray[600] }}
+                        style={{ color: isDarkMobile ? BRAND_COLORS_HEX.gray[200] : BRAND_COLORS_HEX.gray[900] }}
                       >
                         {row.description}
                       </p>
@@ -573,9 +573,16 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
                       className={cn(
                         'flex items-center justify-between w-full',
                         MOBILE_COMPARISON_CONFIG.strook.borderRadius,
-                        MOBILE_COMPARISON_CONFIG.strook.padding
+                        MOBILE_COMPARISON_CONFIG.strook.padding,
+                        isDarkMobile && (PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.strokenBgHighlight ?? '')
                       )}
-                      style={{ 
+                      style={isDarkMobile ? { 
+                        backgroundColor: BRAND_COLORS_HEX.gray[800],
+                        borderColor: BRAND_COLORS_HEX.gray[700],
+                        borderWidth: '1px',
+                        borderStyle: 'solid',
+                        boxSizing: 'border-box'
+                      } : { 
                         backgroundColor: `${BRAND_COLORS_HEX.primary}1A`,
                         borderColor: `${BRAND_COLORS_HEX.primary}33`,
                         borderWidth: '1px',
@@ -602,7 +609,7 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
                             MOBILE_COMPARISON_CONFIG.strook.label.fontWeight,
                             'truncate whitespace-nowrap'
                           )}
-                          style={{ color: BRAND_COLORS_HEX.primary }}
+                          style={{ color: isDarkMobile ? BRAND_COLORS_HEX.white : BRAND_COLORS_HEX.primary }}
                         >
                           Automatische
                         </span>
@@ -620,9 +627,16 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
                       className={cn(
                         'flex items-center justify-between w-full',
                         MOBILE_COMPARISON_CONFIG.strook.borderRadius,
-                        MOBILE_COMPARISON_CONFIG.strook.padding
+                        MOBILE_COMPARISON_CONFIG.strook.padding,
+                        isDarkMobile && (PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.strokenBg ?? '')
                       )} 
-                      style={{ 
+                      style={isDarkMobile ? { 
+                        backgroundColor: BRAND_COLORS_HEX.gray[900],
+                        borderColor: BRAND_COLORS_HEX.gray[700],
+                        borderWidth: '1px',
+                        borderStyle: 'solid',
+                        boxSizing: 'border-box'
+                      } : { 
                         backgroundColor: BRAND_COLORS_HEX.gray[100],
                         borderColor: BRAND_COLORS_HEX.gray[200],
                         borderWidth: '1px',
@@ -649,7 +663,7 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
                             MOBILE_COMPARISON_CONFIG.strook.label.fontWeight,
                             'truncate whitespace-nowrap'
                           )}
-                          style={{ color: BRAND_COLORS_HEX.gray[700] }}
+                          style={{ color: isDarkMobile ? BRAND_COLORS_HEX.gray[200] : BRAND_COLORS_HEX.gray[700] }}
                         >
                           Handmatige
                         </span>
@@ -669,8 +683,11 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
             </div>
           </div>
         </div>
-        {/* ✅ MOBIEL: Navigation dots - CENTRAAL - SLIMME VARIABELEN - DRY via PRODUCT_PAGE_CONFIG */}
-        <div className={MOBILE_COMPARISON_CONFIG.navigation.container}>
+        {/* ✅ MOBIEL: Navigation dots – padding beneden via config */}
+        <div className={cn(
+          'flex justify-center items-center gap-2.5 mx-auto',
+          PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.dotsContainerPadding ?? MOBILE_COMPARISON_CONFIG.navigation.container
+        )}>
           {comparisonData.map((_, index) => (
             <button
               key={index}
@@ -681,8 +698,8 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
                 index === visibleIndex && (PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.dotActiveWidth ?? MOBILE_COMPARISON_CONFIG.navigation.dot.active)
               )}
               style={index === visibleIndex 
-                ? { backgroundColor: isDarkMobile ? '#60a5fa' : BRAND_COLORS_HEX.primary } 
-                : { backgroundColor: isDarkMobile ? '#4b5563' : BRAND_COLORS_HEX.gray[300] }
+                ? { backgroundColor: isDarkMobile ? BRAND_COLORS_HEX.primaryLight : BRAND_COLORS_HEX.primary } 
+                : { backgroundColor: isDarkMobile ? BRAND_COLORS_HEX.gray[600] : BRAND_COLORS_HEX.gray[300] }
               }
               onMouseEnter={(e) => {
                 if (index !== visibleIndex) {
