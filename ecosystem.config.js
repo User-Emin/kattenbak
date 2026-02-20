@@ -6,6 +6,9 @@ module.exports = {
       cwd: '/var/www/kattenbak/backend',
       instances: 1,
       exec_mode: 'fork',
+      /** ✅ ZERO-DOWNTIME: PM2 waits for process.send('ready') before killing old process */
+      wait_ready: true,
+      listen_timeout: 30000,
       env: {
         NODE_ENV: 'production',
         PORT: 3101
@@ -18,7 +21,7 @@ module.exports = {
       autorestart: true,
       max_restarts: 10,
       min_uptime: '10s',
-      kill_timeout: 5000,
+      kill_timeout: 10000,
       // CPU optimization for KVM
       node_args: '--max-old-space-size=512',
       merge_logs: true,

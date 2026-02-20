@@ -45,26 +45,47 @@ echo ""
 echo -e "${GREEN}📥 Volledige pull (fetch + reset --hard origin/main)...${NC}"
 ssh_exec "cd /var/www/kattenbak && git fetch origin && git reset --hard origin/main && git rev-parse --short HEAD && echo '✅ Code updated'"
 
-# Build backend (npm ci in backend dir – node_modules MUST exist for backend to start)
+# ━━━ BACKEND FIRST (isolated – nooit frontend bouwen als backend faalt) ━━━
 echo -e "${GREEN}🔧 Building backend...${NC}"
-ssh_exec "cd /var/www/kattenbak/backend && npm ci --legacy-peer-deps && npx prisma generate && npm run build && (test -d node_modules/express || test -d ../node_modules/express) && echo '✅ Backend built' || (echo '❌ node_modules/express missing - backend will fail!' && exit 1)"
+ssh_exec "cd /var/www/kattenbak/backend && npm ci --legacy-peer-deps && npx prisma generate && npm run build && (test -d node_modules/express || test -d ../node_modules/express) && echo '✅ Backend built' || (echo '❌ node_modules/express missing!' && exit 1)"
 
-# Build frontend
+echo -e "${GREEN}♻️  Restarting backend (PM2 wait-ready)...${NC}"
+ssh_exec "cd /var/www/kattenbak && pm2 reload backend --update-env 2>/dev/null || pm2 start ecosystem.config.js --only backend && pm2 save"
+
+echo -e "${GREEN}🏥 Wacht op backend + DB (max 90s)...${NC}"
+sleep 5
+BACKEND_READY=false
+for i in $(seq 1 20); do
+  RAW=$(curl -sf --max-time 5 https://catsupply.nl/api/v1/health 2>/dev/null || echo '{}')
+  SUCCESS=$(echo "$RAW" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('success', False))" 2>/dev/null || echo "false")
+  DB=$(echo "$RAW" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('database',''))" 2>/dev/null || echo "")
+  if [ "$SUCCESS" = "True" ] && [ "$DB" = "connected" ]; then
+    echo -e "${GREEN}✅ Backend + DB ready${NC}"
+    BACKEND_READY=true
+    break
+  fi
+  echo "   Poging $i/20 (db=$DB)..."
+  sleep 3
+done
+if [ "$BACKEND_READY" != "true" ]; then
+  echo -e "${RED}⚠️ Backend/DB niet ready na 20 pogingen - check server logs${NC}"
+  ssh_exec "pm2 logs backend --lines 20 --nostream 2>/dev/null || true"
+fi
+
+# ━━━ FRONTEND + ADMIN (na backend OK) ━━━
 echo -e "${GREEN}🔧 Building frontend...${NC}"
 ssh_exec "cd /var/www/kattenbak/frontend && rm -rf .next/cache && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm ci --legacy-peer-deps && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm run build && echo '✅ Frontend built'"
 
-# Build admin
 echo -e "${GREEN}🔧 Building admin...${NC}"
 ssh_exec "cd /var/www/kattenbak/admin-next && npm ci --legacy-peer-deps && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm run build && echo '✅ Admin built'"
 
-# Restart services (reload ecosystem to pick up config changes e.g. server-database.js)
-echo -e "${GREEN}♻️  Restarting services...${NC}"
-ssh_exec "cd /var/www/kattenbak && pm2 reload ecosystem.config.js --update-env 2>/dev/null || pm2 start ecosystem.config.js && pm2 save && pm2 list && echo '✅ Services restarted'"
+echo -e "${GREEN}♻️  Restarting frontend + admin...${NC}"
+ssh_exec "cd /var/www/kattenbak && pm2 reload frontend admin --update-env 2>/dev/null || true && pm2 save && pm2 list && echo '✅ Services restarted'"
 
 # Health check
-echo -e "${GREEN}🏥 Health check...${NC}"
-sleep 5
-BACKEND_HEALTH=$(curl -s https://catsupply.nl/api/v1/health | python3 -c 'import sys, json; print(json.load(sys.stdin).get("success", False))' 2>/dev/null || echo "false")
+echo -e "${GREEN}🏥 Final health check...${NC}"
+sleep 3
+BACKEND_HEALTH=$(curl -s https://catsupply.nl/api/v1/health | python3 -c "import sys, json; d=json.load(sys.stdin); print(d.get('success', False) and d.get('database')=='connected')" 2>/dev/null || echo "false")
 FRONTEND_HEALTH=$(curl -s -o /dev/null -w '%{http_code}' https://catsupply.nl)
 
 if [ "$BACKEND_HEALTH" = "True" ] && [ "$FRONTEND_HEALTH" = "200" ]; then

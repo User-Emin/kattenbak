@@ -11,6 +11,7 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import { existsSync } from 'fs';
 
 // ✅ CRASH-PREVENTION: Proces blijft draaien bij uncaught exception of unhandled rejection
 process.on('uncaughtException', (err) => {
@@ -88,23 +89,21 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' })); // WATERDICHT FIX: 413 error - increased for image uploads
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// ✅ SECURITY: Serve static uploads - images and videos
-// Security: Only serve files from trusted upload directory, no path traversal
-app.use('/uploads', express.static('/var/www/uploads', {
-  // ✅ SECURITY: Set security headers for static files
-  setHeaders: (res, path) => {
-    // ✅ SECURITY: Prevent MIME type sniffing
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    // ✅ SECURITY: Cache control for immutable files (UUID filenames)
-    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-    // ✅ SECURITY: Prevent XSS via images
-    res.setHeader('X-Frame-Options', 'DENY');
-  },
-  // ✅ SECURITY: Only serve files, not directory listings
-  index: false,
-  // ✅ SECURITY: Don't expose dotfiles
-  dotfiles: 'ignore'
-}));
+// ✅ SECURITY: Serve static uploads - images and videos (skip if dir missing to prevent crash)
+const UPLOADS_DIR = '/var/www/uploads';
+if (existsSync(UPLOADS_DIR)) {
+  app.use('/uploads', express.static(UPLOADS_DIR, {
+    setHeaders: (res) => {
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('X-Frame-Options', 'DENY');
+    },
+    index: false,
+    dotfiles: 'ignore'
+  }));
+} else {
+  console.warn('⚠️ Uploads dir not found:', UPLOADS_DIR, '- /uploads will 404');
+}
 
 // ENV config
 const ENV = {
@@ -172,32 +171,60 @@ app.get('/api/v1/health', (req: Request, res: Response) => {
 // PRODUCTS ENDPOINTS - DATABASE
 // =============================================================================
 
-// Helper: Convert Prisma Decimal to Number (defensive)
+// Helper: Convert Prisma Decimal to Number (defensive) – ✅ ISOLATIE: nooit throwen
 const toNumber = (value: any): number => {
-  if (value === null || value === undefined) return 0;
-  if (typeof value === 'number') return value;
-  const num = parseFloat(String(value));
-  return isNaN(num) ? 0 : num;
+  try {
+    if (value === null || value === undefined) return 0;
+    if (typeof value === 'number' && !isNaN(value)) return value;
+    const num = parseFloat(String(value));
+    return isNaN(num) ? 0 : num;
+  } catch {
+    return 0;
+  }
 };
 
-// Helper: Sanitize variant for API response
-const sanitizeVariant = (variant: any) => ({
-  ...variant,
-  priceAdjustment: toNumber(variant.priceAdjustment),
-  price: toNumber(variant.priceAdjustment), // Frontend expects 'price'
-  stock: variant.stock || 0,
-});
+// Helper: Sanitize variant – ✅ ISOLATIE: nooit throwen
+const sanitizeVariant = (variant: any) => {
+  try {
+    if (!variant || typeof variant !== 'object') return { priceAdjustment: 0, price: 0, stock: 0 };
+    return {
+      ...variant,
+      priceAdjustment: toNumber(variant.priceAdjustment),
+      price: toNumber(variant.priceAdjustment),
+      stock: variant.stock ?? 0,
+    };
+  } catch (e: any) {
+    console.warn('sanitizeVariant failed:', variant?.id, e?.message);
+    return variant ? { ...variant, priceAdjustment: 0, price: 0, stock: 0 } : {};
+  }
+};
 
-// Helper: Sanitize product for API response
-const sanitizeProduct = (product: any) => ({
-  ...product,
-  price: toNumber(product.price),
-  compareAtPrice: product.compareAtPrice ? toNumber(product.compareAtPrice) : null,
-  costPrice: product.costPrice ? toNumber(product.costPrice) : null,
-  weight: product.weight ? toNumber(product.weight) : null,
-  // ✅ FIX: Transform variants if present
-  variants: product.variants ? product.variants.map(sanitizeVariant) : undefined,
-});
+// Helper: Sanitize product – ✅ ISOLATIE: nooit throwen
+const sanitizeProduct = (product: any) => {
+  try {
+    if (!product || typeof product !== 'object') return null;
+    const safeVariants = Array.isArray(product.variants)
+      ? product.variants.map((v: any) => {
+          try {
+            return sanitizeVariant(v);
+          } catch {
+            return { ...v, priceAdjustment: 0, price: 0, stock: 0 };
+          }
+        })
+      : [];
+    return {
+      ...product,
+      price: toNumber(product.price),
+      compareAtPrice: product.compareAtPrice != null ? toNumber(product.compareAtPrice) : null,
+      costPrice: product.costPrice != null ? toNumber(product.costPrice) : null,
+      weight: product.weight != null ? toNumber(product.weight) : null,
+      variants: safeVariants,
+    };
+  } catch (e: any) {
+    console.error('sanitizeProduct failed:', product?.id, e?.message);
+    return product ? { ...product, price: toNumber(product.price), variants: [] } : null;
+  }
+};
 
 // GET all products
 app.get('/api/v1/products', async (req: Request, res: Response) => {
@@ -210,8 +237,8 @@ app.get('/api/v1/products', async (req: Request, res: Response) => {
       orderBy: { createdAt: 'desc' },
     });
 
-    // DEFENSIVE: Convert Decimal to Number for frontend
-    const sanitizedProducts = products.map(sanitizeProduct);
+    // DEFENSIVE: Convert Decimal to Number – filter nulls (isolatie)
+    const sanitizedProducts = products.map(sanitizeProduct).filter((p: any) => p != null);
 
     res.json(success({
       products: sanitizedProducts,
@@ -239,8 +266,8 @@ app.get('/api/v1/products/featured', async (req: Request, res: Response) => {
       take: 3,
     });
 
-    // DEFENSIVE: Sanitize all products
-    const sanitizedProducts = products.map(sanitizeProduct);
+    // DEFENSIVE: Sanitize all products – filter nulls (isolatie)
+    const sanitizedProducts = products.map(sanitizeProduct).filter((p: any) => p != null);
     res.json(success(sanitizedProducts));
   } catch (err: any) {
     console.error('Featured products error:', err.message);
@@ -278,22 +305,34 @@ app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
       return res.status(404).json(error('Product not found'));
     }
 
-    // DEFENSIVE: Sanitize product
-    res.json(success(sanitizeProduct(product)));
+    const sanitized = sanitizeProduct(product);
+    if (!sanitized) {
+      return res.status(500).json(error('Could not process product'));
+    }
+    res.json(success(sanitized));
   } catch (err: any) {
     console.error('Product by ID/Slug error:', err.message);
     res.status(500).json(error('Could not fetch product'));
   }
 });
 
-// GET product by slug
+// GET product by slug – ✅ VOLLEDIG GEÏSOLEERD
 app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
   if (!dbConnected) {
     return res.status(503).json(error('Service tijdelijk niet beschikbaar'));
   }
+  let slug: string;
   try {
-    // SECURITY: Sanitize slug input
-    const slug = String(req.params.slug).toLowerCase().trim();
+    const raw = req.params.slug;
+    slug = (Array.isArray(raw) ? raw[0] : raw) ? String(raw).toLowerCase().trim() : '';
+    if (!slug) {
+      return res.status(400).json(error('Ongeldige slug'));
+    }
+  } catch {
+    return res.status(400).json(error('Ongeldige aanvraag'));
+  }
+
+  try {
     
     // ✅ FIX: Select only fields that exist in database (zorg dat data niet verloren gaat)
     const product = await prisma.product.findUnique({
@@ -361,16 +400,13 @@ app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
       return res.status(404).json(error('Product not found'));
     }
     
-    // DEFENSIVE: Sanitize product
-    try {
-      const sanitized = sanitizeProduct(product);
-      res.json(success(sanitized));
-    } catch (sanitizeError: any) {
-      // ✅ SECURITY: Log error but don't leak details
-      console.error('Product sanitization error:', sanitizeError?.message || 'Unknown error');
-      // ✅ FIX: Return product anyway (zorg dat data niet verloren gaat)
-      res.json(success(product));
+    // DEFENSIVE: Sanitize product – ✅ ISOLATIE: sanitizeProduct gooit nooit
+    const sanitized = sanitizeProduct(product);
+    if (!sanitized) {
+      console.error('sanitizeProduct returned null for slug:', slug);
+      return res.status(500).json(error('Could not process product'));
     }
+    res.json(success(sanitized));
   } catch (err: any) {
     // ✅ SECURITY: Log error but don't leak details
     console.error('Product by slug error:', {
@@ -972,6 +1008,9 @@ app.get('/api/v1/admin/orders', async (req: Request, res: Response) => {
 // GET /api/v1/orders/by-number/:orderNumber - Get order by orderNumber
 // ✅ FIX: Added for return page to find order by ORD1768729461323
 app.get('/api/v1/orders/by-number/:orderNumber', async (req: Request, res: Response) => {
+  if (!dbConnected) {
+    return res.status(503).json(error('Service tijdelijk niet beschikbaar'));
+  }
   try {
     const { orderNumber } = req.params;
     
@@ -1084,17 +1123,18 @@ app.get('/api/v1/admin/orders/by-number/:orderNumber', async (req: Request, res:
 
 // SECURITY: Only returns minimal info (orderNumber, customerEmail, status)
 // No authentication required - order ID is the security token
+// ✅ CRITICAL: Success page depends on this – dbConnected check + isolatie
 app.get('/api/v1/orders/:id', async (req: Request, res: Response) => {
+  if (!dbConnected) {
+    return res.status(503).json(error('Service tijdelijk niet beschikbaar'));
+  }
   try {
-    const { id } = req.params;
-
-    // VALIDATION: Sanitize input
-    const sanitizedId = String(id).trim();
-    if (!sanitizedId) {
-      return res.status(400).json(error('Order ID is required'));
+    const rawId = req.params.id;
+    const sanitizedId = (Array.isArray(rawId) ? rawId[0] : rawId) ? String(rawId).trim() : '';
+    if (!sanitizedId || sanitizedId.length < 5) {
+      return res.status(400).json(error('Ongeldig order ID'));
     }
 
-    // Fetch order with minimal info (for privacy)
     const order = await prisma.order.findUnique({
       where: { id: sanitizedId },
       select: {
@@ -1111,16 +1151,14 @@ app.get('/api/v1/orders/:id', async (req: Request, res: Response) => {
       return res.status(404).json(error('Order not found'));
     }
 
-    // DEFENSIVE: Convert Decimals to Numbers
     const sanitizedOrder = {
       ...order,
       total: toNumber(order.total),
     };
-
-    res.json(success(sanitizedOrder));
+    return res.json(success(sanitizedOrder));
   } catch (err: any) {
-    console.error('Public order by ID error:', err.message);
-    res.status(500).json(error('Could not fetch order'));
+    console.error('Public order by ID error:', err?.message || err);
+    return res.status(500).json(error('Could not fetch order'));
   }
 });
 
@@ -1390,7 +1428,7 @@ console.log('✅ Admin upload endpoints loaded: /api/v1/admin/upload/images, /ap
 // =============================================================================
 
 // ✅ CRITICAL FIX: Import ordersRoutes (uses OrderService.createOrder() with proper order number generation)
-// Import order routes
+// ✅ Success page + payment-status: 503 bij DB down
 let ordersRoutes;
 try {
   ordersRoutes = require('./routes/orders.routes').default;
@@ -1401,7 +1439,12 @@ try {
   console.error('Failed to load orders routes:', e);
   ordersRoutes = require('./routes/orders.routes');
 }
-app.use('/api/v1/orders', ordersRoutes);
+app.use('/api/v1/orders', (req: Request, res: Response, next: any) => {
+  if (!dbConnected) {
+    return res.status(503).json(error('Service tijdelijk niet beschikbaar'));
+  }
+  next();
+}, ordersRoutes);
 
 // Import return routes
 // ✅ FIX: Handle both default and named exports
@@ -1463,6 +1506,10 @@ app.listen(PORT, async () => {
     await prisma.$connect();
     dbConnected = true;
     console.log('✅ Database: PostgreSQL connected');
+    // ✅ PM2 wait-ready: Signal ready only after DB connected (zero-downtime deploy)
+    if (typeof process.send === 'function') {
+      process.send('ready');
+    }
   } catch (err: any) {
     console.error('❌ Database connection failed (will retry):', err.message);
     dbConnected = false;
@@ -1472,6 +1519,9 @@ app.listen(PORT, async () => {
         await prisma.$connect();
         dbConnected = true;
         console.log('✅ Database: reconnected');
+        if (typeof process.send === 'function') {
+          process.send('ready');
+        }
       } catch (e: any) {
         console.error('Database reconnect failed:', e.message);
         setTimeout(reconnect, 30000);
