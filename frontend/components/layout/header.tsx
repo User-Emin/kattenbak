@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ShoppingCart, Mail, Headphones, X } from "lucide-react";
+import { ShoppingCart, Mail, X, Package } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/config";
 import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { MiniCart } from "@/components/ui/mini-cart";
@@ -68,8 +69,21 @@ export function Header() {
             minHeight: DESIGN_SYSTEM.layout.navbar.height,
           }}
         >
-          {/* LEFT: EMAIL + SUPPORT - MOBIEL: LEEG, DESKTOP: EMAIL + SUPPORT */}
+          {/* LEFT: PRODUCT + EMAIL + SUPPORT - MOBIEL: LEEG, DESKTOP: PRODUCT LINKS */}
           <div className="hidden md:flex items-center gap-6">
+            {/* ✅ SEO: Product focus – directe link naar productpagina */}
+            <Link
+              href={`/product/${SITE_CONFIG.DEFAULT_PRODUCT_SLUG}`}
+              className="flex items-center gap-2 transition-opacity hover:opacity-80"
+              style={{
+                fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+                color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#000000',
+                fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+              }}
+            >
+              <Package className="w-4 h-4" strokeWidth={2} />
+              <span>Bekijk Product</span>
+            </Link>
             {/* Email - Alleen desktop */}
             <a
               href={`mailto:${DESIGN_SYSTEM.contact.email}`}
@@ -84,20 +98,7 @@ export function Header() {
               <span>{DESIGN_SYSTEM.contact.email}</span>
             </a>
 
-            {/* Support - Alleen desktop */}
-            <a
-              href={`tel:${DESIGN_SYSTEM.contact.phone}`}
-              className="flex items-center gap-2 transition-opacity hover:opacity-80"
-              style={{
-                fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
-                color: (DESIGN_SYSTEM.layout.navbar as { textColor?: string }).textColor ?? '#000000',
-                fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-              }}
-              title="Klantenservice"
-            >
-              <Headphones className="w-4 h-4" strokeWidth={2} />
-              <span className="hidden lg:inline">Support</span>
-            </a>
+            {/* Support verwijderd op verzoek */}
           </div>
 
           {/* CENTER: LOGO - MOBIEL: CENTER, DESKTOP: CENTER - ✅ DRY: Via DESIGN_SYSTEM */}
@@ -126,6 +127,7 @@ export function Header() {
                 <img
                   src={NAV.logoPath ?? '/logos/logo.png'}
                   alt="CatSupply Logo"
+                  data-testid="navbar-logo"
                   style={{
                     height: '50px',
                     maxHeight: '50px',
@@ -162,7 +164,7 @@ export function Header() {
           <div className="absolute right-3 sm:right-4 md:relative md:right-auto md:ml-auto flex items-center justify-end">
             <button
               onClick={handleCartToggle}
-              className="relative flex items-center justify-center py-2 px-3 rounded-md transition-opacity hover:opacity-90"
+              className="relative flex items-center justify-center py-3 px-3 rounded-md transition-opacity hover:opacity-90"
               style={{
                 backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartSymbolBg?: string }).cartSymbolBg,
                 color: (DESIGN_SYSTEM.layout.navbar as { cartSymbolColor?: string }).cartSymbolColor,

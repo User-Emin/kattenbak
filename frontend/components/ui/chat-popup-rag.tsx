@@ -90,7 +90,7 @@ export function ChatPopup() {
         button: {
           position: {
             type: ds.layoutUtils.position.fixed as 'fixed',
-            right: 'right-6',
+            right: (ds.layout.chatButton as { right?: string })?.right ?? 'right-2',
             bottom: 'bottom-6',
             bottomWithCart: 'bottom-24',
           },
@@ -156,16 +156,16 @@ export function ChatPopup() {
           backgroundColor: 'bg-white',
           borderRadius: (ds.layout.chatModal as { modalBorderRadius?: string })?.modalBorderRadius ?? 'rounded-xl sm:rounded-2xl',
           shadow: ds.effects.shadow.lg,
-          border: ds.layout.chatModal?.borderColor ? `border ${ds.layout.chatModal.borderColor}` : 'border border-gray-200',
+          border: 'border border-black/10',
           zIndex: 200,
           overflow: 'overflow-hidden',
         },
         header: {
-          backgroundColor: 'bg-black', // DESIGN_SYSTEM.layout.chatModal.headerBg #000000
+          backgroundColor: 'bg-black',
           textColor: 'text-white',
           padding: 'px-4 py-3',
           borderRadius: ds.layout.chatModal?.headerBorderRadius ?? 'rounded-t-xl sm:rounded-t-2xl',
-          borderBottom: 'border-b border-gray-200',
+          borderBottom: 'border-b border-black/10',
           sticky: 'sticky top-0',
           container: {
             display: ds.layoutUtils.display.flex,
@@ -182,18 +182,18 @@ export function ChatPopup() {
           subtitle: { display: 'hidden' },
           closeButton: {
             textColor: 'text-white',
-            hoverTextColor: 'hover:text-gray-200',
+            hoverTextColor: 'hover:text-white/80',
             transition: 'transition-colors',
             padding: 'p-1',
             borderRadius: ds.effects.borderRadius.sm,
-            hoverBackground: 'hover:bg-gray-200',
+            hoverBackground: 'hover:bg-white/10',
           },
         },
         messages: {
           container: {
             padding: 'p-4',
             spacing: 'space-y-4',
-            backgroundColor: 'bg-gray-50',
+            backgroundColor: 'bg-white',
             flex: 'flex-1',
             overflow: 'overflow-y-auto',
             display: 'flex',
@@ -220,20 +220,20 @@ export function ChatPopup() {
             borderRadius: 'rounded-sm',
             padding: 'p-3',
             backgroundColor: 'bg-white',
-            textColor: 'gradient-text', // ✅ GRADIENT (was text-black)
-            border: 'border border-gray-200',
+            textColor: 'text-black',
+            border: 'border border-black/10',
           },
           timestamp: {
             fontSize: 'text-xs',
-            textColor: 'text-gray-500',
+            textColor: 'text-black/70',
             marginTop: 'mt-1',
             display: 'block',
           },
         },
         emptyState: {
-          textColor: 'text-gray-600',
+          textColor: 'text-black',
           iconSize: 'w-12 h-12',
-          iconColor: 'text-gray-400',
+          iconColor: 'text-black/70',
           fontSize: 'text-sm',
           container: {
             align: 'items-center',
@@ -253,7 +253,8 @@ export function ChatPopup() {
             backgroundColor: 'bg-white',
             borderRadius: 'rounded',
             fontSize: 'text-sm',
-            hoverBackgroundColor: 'hover:bg-gray-100',
+            hoverBackgroundColor: 'hover:bg-black/5',
+            border: 'border border-black/10',
             display: 'block',
             width: 'w-full',
             textAlign: 'text-left',
@@ -261,11 +262,11 @@ export function ChatPopup() {
         },
         loading: {
           backgroundColor: 'bg-white',
-          border: 'border border-gray-200',
+          border: 'border border-black/10',
           borderRadius: 'rounded-lg',
           padding: 'p-3',
           iconSize: 'w-5 h-5',
-          iconColor: 'text-gray-400',
+          iconColor: 'text-black/70',
         },
         error: {
           backgroundColor: 'bg-red-50',
@@ -278,9 +279,9 @@ export function ChatPopup() {
         input: {
           container: {
             padding: 'p-4',
-            backgroundColor: 'bg-white',
-            borderTop: 'border-t border-gray-200',
-            borderRadius: 'rounded-b-lg',
+            backgroundColor: 'bg-black',
+            borderTop: 'border-t border-black/20',
+            borderRadius: 'rounded-b-3xl',
           },
           fieldContainer: {
             display: 'flex',
@@ -288,6 +289,20 @@ export function ChatPopup() {
           },
           field: {
             flex: 'flex-1',
+            width: 'w-full',
+            padding: 'px-4 py-2.5',
+            border: 'border border-white/30',
+            borderRadius: 'rounded-full',
+            fontSize: 'text-base',
+            fontWeight: 'font-normal',
+            backgroundColor: 'bg-black',
+            textColor: 'text-white',
+            placeholder: { textColor: 'placeholder:text-white/60' },
+            focus: {
+              ring: 'focus:ring-2 focus:ring-white/40',
+              border: 'focus:border-white/50',
+              outline: 'focus:outline-none',
+            },
           },
           buttonContainer: {
             display: 'flex',
@@ -297,22 +312,8 @@ export function ChatPopup() {
           footer: {
             marginTop: 'mt-2',
             textAlign: 'text-center',
-          },
-          field: {
-            flex: 'flex-1',
-            width: 'w-full',
-            padding: 'p-3',
-            border: 'border border-gray-600',
-            borderRadius: 'rounded-lg',
-            focus: {
-              ring: 'focus:ring-2 focus:ring-gray-500',
-              border: 'focus:border-gray-400',
-              outline: 'focus:outline-none',
-            },
-            fontSize: 'text-sm',
-            backgroundColor: 'bg-black',
-            textColor: 'text-white',
-            placeholder: { textColor: 'placeholder:text-gray-400' },
+            fontSize: 'text-xs',
+            textColor: 'text-white/80',
           },
           button: {
             padding: 'p-3',
@@ -324,10 +325,6 @@ export function ChatPopup() {
             fontWeight: 'font-medium',
             transition: 'transition-colors',
             iconSize: 'w-5 h-5',
-          },
-          footer: {
-            fontSize: 'text-xs',
-            textColor: 'text-gray-500',
           },
         },
         utilities: {
@@ -648,7 +645,7 @@ export function ChatPopup() {
   if (!safeChatConfig || !safeChatConfig.button || !safeChatConfig.modal || !safeChatConfig.animations) {
     // Return minimal button only (no popup) to prevent crash - 100% DYNAMISCH via fallback config
     const fallbackButton = safeChatConfig?.button || {
-      position: { type: 'fixed', right: 'right-6', bottom: 'bottom-6' },
+      position: { type: 'fixed', right: DESIGN_SYSTEM.layout.chatButton?.right ?? 'right-2', bottom: 'bottom-6' },
       size: 'w-16 h-16',
       borderRadius: 'rounded-full',
       backgroundColor: 'bg-black', // ✅ ZWART: Solid zwart (geen transparantie)
@@ -695,8 +692,8 @@ export function ChatPopup() {
       {showChatBubble && !isExpanded && !chatBubbleDismissed && (
         <div
           className={cn(
-            'fixed z-[101]', // ✅ BOVEN: Boven chatbutton (z-[100])
-            'right-6', // ✅ POSITION: Rechts uitgelijnd met chatbutton
+            'fixed z-[101]',
+            safeChatConfig.button.position.right,
             buttonBottomClass,
             'mb-24', // ✅ POSITION: Boven chatbutton (mb-24 voor ruimte)
             'animate-in fade-in slide-in-from-bottom-4 duration-500', // ✅ SMOOTH: Smooth fade-in en slide-up
@@ -706,11 +703,11 @@ export function ChatPopup() {
             animation: 'fadeInUp 0.5s ease-out', // ✅ SMOOTH: Custom animation
           }}
         >
-          <div className="bg-white rounded-lg shadow-xl border border-gray-200 p-4 relative">
+          <div className="bg-white rounded-lg shadow-xl border border-black/10 p-4 relative">
             {/* ✅ KRUISJE: Sluit chatwolk en toon niet meer */}
             <button
               onClick={handleDismissChatBubble}
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute top-2 right-2 text-black/70 hover:text-black transition-colors"
               aria-label="Sluit chatwolk"
             >
               <X className="w-4 h-4" />
@@ -718,13 +715,13 @@ export function ChatPopup() {
             
             {/* ✅ SPEECH BUBBLE ARROW: Wijs naar chatbutton */}
             <div className="absolute bottom-0 right-6 transform translate-y-full">
-              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-gray-200"></div>
+              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-black/10"></div>
             </div>
             <div className="absolute bottom-0 right-6 transform translate-y-full -mt-px">
               <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
             </div>
             
-            <p className="text-sm text-gray-900 font-medium leading-relaxed pr-6">
+            <p className="text-sm text-black font-medium leading-relaxed pr-6">
               Ik ben een AI assistent. Heb je vragen over dit product?
             </p>
           </div>
@@ -762,6 +759,7 @@ export function ChatPopup() {
           safeChatConfig.button.display,
           safeChatConfig.button.align,
           safeChatConfig.button.justify,
+          'gap-2',
           safeChatConfig.utilities?.fontFamily || 'font-sans',
           !isExpanded && safeChatConfig.button.pulse // ✅ MODERN: Pulse animation when closed
         )}
@@ -771,7 +769,10 @@ export function ChatPopup() {
           {isExpanded ? (
             <X className={safeChatConfig.button.iconSize} />
           ) : (
-            <ChatIcon className={safeChatConfig.button.iconSize} size={28} />
+            <>
+              <ChatIcon className={safeChatConfig.button.iconSize} size={20} />
+              <span className="text-sm font-semibold tracking-tight">Vraag AI</span>
+            </>
           )}
         </button>
       )}
@@ -827,15 +828,18 @@ export function ChatPopup() {
               safeChatConfig.utilities?.fontFamily || 'font-sans'
             )}>
               
-              {/* ✅ MODERN: Header - Consistent met cookie modal - 100% DRY */}
-              <div className={cn(
-                safeChatConfig.header.sticky,
-                safeChatConfig.header.backgroundColor,
-                safeChatConfig.header.textColor,
-                safeChatConfig.header.padding,
-                safeChatConfig.header.borderRadius,
-                safeChatConfig.header.borderBottom
-              )}>
+              {/* ✅ MODERN: Header - Zwart (geen grijs), gegarandeerd via class + inline backup */}
+              <div
+                className={cn(
+                  safeChatConfig.header.sticky,
+                  'bg-black',
+                  safeChatConfig.header.textColor,
+                  safeChatConfig.header.padding,
+                  safeChatConfig.header.borderRadius,
+                  safeChatConfig.header.borderBottom
+                )}
+                style={{ backgroundColor: '#000000' }}
+              >
                 <div className={cn(
                   safeChatConfig.header.container.display,
                   safeChatConfig.header.container.justify,
@@ -860,7 +864,7 @@ export function ChatPopup() {
                       safeChatConfig.header.closeButton.transition,
                       safeChatConfig.header.closeButton.padding,
                       safeChatConfig.header.closeButton.borderRadius,
-                      'hover:bg-gray-200' // ✅ WHATSAPP: Lichte hover (was hover:bg-gray-800)
+                      'hover:bg-white/10'
                     )}
                     aria-label="Sluit chat"
                   >
@@ -951,7 +955,7 @@ export function ChatPopup() {
                         safeChatConfig.utilities?.fontFamily || 'font-sans',
                         msg.role === 'user'
                           ? cn(safeChatConfig.messages?.user?.backgroundColor || 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]', safeChatConfig.messages?.user?.textColor || 'text-white') // ✅ GRADIENT (was bg-black)
-                          : cn(safeChatConfig.messages?.assistant?.backgroundColor || 'bg-white', safeChatConfig.messages?.assistant?.textColor || 'gradient-text', safeChatConfig.messages?.assistant?.border || 'border border-gray-200') // ✅ GRADIENT (was text-black)
+                          : cn(safeChatConfig.messages?.assistant?.backgroundColor || 'bg-white', safeChatConfig.messages?.assistant?.textColor || 'text-black', safeChatConfig.messages?.assistant?.border || 'border border-black/10')
                       )}
                     >
                       <p className={cn(
@@ -962,14 +966,14 @@ export function ChatPopup() {
                       </p>
                       <span className={cn(
                         safeChatConfig.messages?.timestamp?.fontSize || 'text-xs',
-                        safeChatConfig.messages?.timestamp?.textColor || 'text-gray-500',
+                        safeChatConfig.messages?.timestamp?.textColor || 'text-black/70',
                         safeChatConfig.messages?.timestamp?.marginTop,
                         safeChatConfig.messages?.timestamp?.display
                       )}>
                         {msg.timestamp.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                       {msg.role === 'assistant' && msg.warnings?.length ? (
-                        <div className="mt-2 pt-2 border-t border-gray-200">
+                        <div className="mt-2 pt-2 border-t border-black/10">
                           <p className="text-xs text-amber-700 font-medium">Let op:</p>
                           <ul className="text-xs text-amber-800 mt-0.5 list-disc list-inside space-y-0.5">
                             {msg.warnings.map((w, i) => (
@@ -1045,7 +1049,7 @@ export function ChatPopup() {
                       safeChatConfig.input.field.backgroundColor,
                       safeChatConfig.input.field.textColor,
                       safeChatConfig.input.field.focus?.backgroundColor,
-                      safeChatConfig.input.field.placeholder?.textColor || 'placeholder:text-gray-400',
+                      safeChatConfig.input.field.placeholder?.textColor || 'placeholder:text-white/60',
                       safeChatConfig.utilities?.fontFamily || 'font-sans'
                     )}
                     disabled={isLoading}

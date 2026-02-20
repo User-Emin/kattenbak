@@ -10,43 +10,43 @@ import { DESIGN_SYSTEM } from './design-system';
 export const CHAT_CONFIG = {
   // Button styling - ULTRA MODERN, dynamisch via DESIGN_SYSTEM
   button: {
-    size: 'w-16 h-16', // ✅ MODERN: 64px (was 56px) - beter zichtbaar
-    borderRadius: 'rounded-full', // ✅ ROND: Volledig rond zoals gevraagd
+    size: 'px-4 py-3', // ✅ OVAAL: Rechthoekig maar rond
+    borderRadius: 'rounded-2xl', // ✅ RONDIG: Ovaal, niet volledig rond
     backgroundColor: 'bg-black', // ✅ ZWART: Volledig zwart zoals gevraagd
     textColor: 'text-white', // ✅ WIT SYMBOOL: Symbool wit
     hoverBackgroundColor: 'hover:bg-gray-900', // ✅ HOVER: Donkerder zwart
-    border: 'border-2 border-gray-800', // ✅ BORDER: Donkere border voor contrast
+    border: 'border-2 border-black', // ✅ BORDER: Volledig zwart
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     zIndex: 'z-[50]', // ✅ DYNAMISCH: DESIGN_SYSTEM.layoutUtils.zIndex.dropdown - Tailwind class
     position: {
       type: DESIGN_SYSTEM.layoutUtils.position.fixed,
-      right: 'right-6', // ✅ MODERN: meer ruimte (was right-4)
-      bottom: 'bottom-6', // ✅ MODERN: meer ruimte (was bottom-8)
-      bottomWithCart: 'bottom-32 md:bottom-28', // ✅ MODERN: responsive
+      right: DESIGN_SYSTEM.layout.chatButton?.right ?? 'right-2',
+      bottom: 'bottom-6',
+      bottomWithCart: 'bottom-32 md:bottom-28',
     },
     display: DESIGN_SYSTEM.layoutUtils.display.flex,
     align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
     justify: DESIGN_SYSTEM.layoutUtils.flex.justify.center,
     transition: 'transition-all duration-200 ease-in-out', // ✅ Direct Tailwind classes
     transitionClasses: 'transition-all duration-200 ease-in-out', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
-    hoverScale: 'hover:scale-110', // ✅ MODERN: smooth scale
+    hoverScale: 'hover:scale-105', // ✅ MODERN: subtieler bij ovaal
     activeScale: 'active:scale-95', // ✅ MODERN: press feedback
     focus: {
       outline: 'focus:outline-none',
       ring: 'focus:ring-4',
       ringColor: 'focus:ring-gray-400/30', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[400] - Tailwind class
     },
-    iconSize: 'w-7 h-7', // ✅ MODERN: groter icon (was w-6 h-6)
+    iconSize: 'w-5 h-5', // ✅ MODERN: iets compacter door tekst
     pulse: '', // ✅ FIX: Geen beweging (was animate-pulse)
   },
 
   // Modal styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
   modal: {
-    maxWidth: 'max-w-sm', // ✅ KORTER: Horizontaal korter (was max-w-md)
-    maxHeight: 'max-h-[90vh] sm:max-h-[85vh]', // ✅ LANGER: Verticaal langer (was 85vh/80vh)
-    backgroundColor: 'bg-white', // ✅ WIT: Normale achtergrond (was bg-white/95 - terug naar origineel)
-    borderRadius: 'rounded-3xl sm:rounded-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
-    border: 'border border-gray-200', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[200] - Tailwind class
+    maxWidth: 'max-w-sm',
+    maxHeight: 'max-h-[90vh] sm:max-h-[85vh]',
+    backgroundColor: 'bg-white', // ✅ DESIGN_SYSTEM.layout.chatModal.messagesBg (#ffffff)
+    borderRadius: DESIGN_SYSTEM.layout.chatModal.modalBorderRadius ?? 'rounded-3xl sm:rounded-[2rem]',
+    border: 'border border-black/10',
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
     zIndex: 200, // ✅ Consistent met cookie modal z-[200]
     overflow: 'overflow-hidden', // ✅ Consistent met cookie modal
@@ -54,13 +54,13 @@ export const CHAT_CONFIG = {
     // Note: Container and content layout utilities are in animations.modal
   },
 
-  // Header styling - ✅ GRADIENT GRIJS EXACT: Zoals navbar
-    header: {
-    backgroundColor: 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]', // ✅ GRADIENT GRIJS EXACT: Via DESIGN_SYSTEM.colors.primaryStart/End (geen hardcode in component)
-      textColor: 'text-white', // ✅ WIT TEKST: Op gradient achtergrond
-    padding: 'px-4 py-3', // ✅ Consistent met cookie modal
-    borderRadius: 'rounded-t-3xl sm:rounded-t-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
-    borderBottom: 'border-b border-gray-200', // ✅ WHATSAPP: Lichte border (was border-gray-700/20)
+  // Header styling - ✅ ZWART: geen grijs, altijd zwart (design-system headerBg #000000)
+  header: {
+    backgroundColor: 'bg-black',
+    textColor: 'text-white',
+    padding: 'px-4 py-3',
+    borderRadius: DESIGN_SYSTEM.layout.chatModal?.headerBorderRadius ?? 'rounded-t-3xl sm:rounded-t-[2rem]',
+    borderBottom: 'border-b border-black/10',
     sticky: 'sticky top-0', // ✅ Consistent met cookie modal
     transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
     container: {
@@ -80,20 +80,20 @@ export const CHAT_CONFIG = {
       display: 'hidden', // ✅ WHATSAPP: Verberg subtitle (alleen naam)
     },
     closeButton: {
-      textColor: 'text-white', // ✅ WIT: Op gradient achtergrond (was text-gray-600)
-      hoverTextColor: 'hover:text-gray-200', // ✅ LICHT GRIJS HOVER: Op gradient achtergrond (was hover:text-black)
-      transition: 'transition-colors', // ✅ DYNAMISCH: DESIGN_SYSTEM.layoutUtils.transitions.colors - Tailwind class
-      padding: 'p-1', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[1] - Tailwind class
-      borderRadius: 'rounded-sm', // ✅ DYNAMISCH: DESIGN_SYSTEM.effects.borderRadius.sm - Tailwind class
-      hoverBackground: 'hover:bg-gray-200', // ✅ WHATSAPP: Lichte hover (was gray-800)
+      textColor: 'text-white',
+      hoverTextColor: 'hover:text-white/80',
+      transition: 'transition-colors',
+      padding: DESIGN_SYSTEM.layout.chatModal?.closeButtonPadding ?? 'p-2',
+      borderRadius: DESIGN_SYSTEM.layout.chatModal?.closeButtonRounded ?? 'rounded-md',
+      hoverBackground: 'hover:bg-white/10',
     },
   },
 
-  // Messages styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
+  // Messages: wit, geen grijze details
   messages: {
     container: {
-      padding: 'p-4 sm:p-6', // ✅ DYNAMISCH: 16px mobile, 24px desktop (was: DESIGN_SYSTEM.spacing[6] = '1.5rem' string)
-      backgroundColor: 'bg-gray-50', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[50] - Tailwind class
+      padding: 'p-4 sm:p-6',
+      backgroundColor: 'bg-white',
       spacing: 'space-y-4',
       flex: DESIGN_SYSTEM.layoutUtils.flex.grow.grow,
       overflow: DESIGN_SYSTEM.layoutUtils.overflow.yAuto,
@@ -119,9 +119,9 @@ export const CHAT_CONFIG = {
       transition: 'transition-all duration-200', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
     },
     assistant: {
-      backgroundColor: 'bg-white', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.secondary (#ffffff) - Tailwind class
-      textColor: 'gradient-text', // ✅ GRADIENT (was text-black) - gebruikt .gradient-text utility
-      border: 'border border-gray-200', // ✅ DYNAMISCH: DESIGN_SYSTEM.colors.gray[200] - Tailwind class
+      backgroundColor: 'bg-white',
+      textColor: 'text-black',
+      border: 'border border-black/10',
       borderRadius: 'rounded-xl', // ✅ RONDER: Extra ronde hoeken, smoother
       padding: 'p-4', // ✅ DYNAMISCH: DESIGN_SYSTEM.spacing[4] - Tailwind class
       maxWidth: 'max-w-[85%]',
@@ -130,8 +130,8 @@ export const CHAT_CONFIG = {
       transition: 'transition-all duration-200', // ✅ DYNAMISCH: DESIGN_SYSTEM layoutUtils + transitions - Tailwind classes
     },
     timestamp: {
-      fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // 12px
-      textColor: 'text-gray-500', // ✅ Gray-500 (geen opacity, solid color)
+      fontSize: DESIGN_SYSTEM.typography.fontSize.xs,
+      textColor: 'text-black/70',
       marginTop: 'mt-1',
       display: DESIGN_SYSTEM.layoutUtils.display.block,
     },
@@ -141,79 +141,69 @@ export const CHAT_CONFIG = {
     },
   },
 
-  // Input styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
+  // Input: zwart typgebied uit layout.chatModal, ronde hoeken ook mobiel
   input: {
     container: {
-      padding: 'p-3 sm:p-4', // ✅ KORTER: Minder padding (was p-4)
-      backgroundColor: 'bg-white', // ✅ Direct Tailwind class (was: DESIGN_SYSTEM.colors.secondary = '#ffffff' string)
-      borderTop: 'border-t border-gray-200', // ✅ Direct Tailwind class (was: template literal)
-      borderRadius: 'rounded-b-3xl sm:rounded-b-[2rem]', // ✅ RONDER: Extra ronde hoeken, smoother
-      transition: 'transition-all duration-200', // ✅ Direct Tailwind classes
+      padding: 'p-3 sm:p-4',
+      backgroundColor: 'bg-black',
+      borderTop: 'border-t border-black/20',
+      borderRadius: DESIGN_SYSTEM.layout.chatModal?.inputBottomBorderRadius ?? 'rounded-b-3xl',
+      transition: 'transition-all duration-200',
     },
     fieldContainer: {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       gap: 'gap-2',
-    },
-    field: {
-      flex: DESIGN_SYSTEM.layoutUtils.flex.grow.grow,
     },
     buttonContainer: {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
       justify: DESIGN_SYSTEM.layoutUtils.flex.justify.center,
     },
-    footer: {
-      marginTop: 'mt-1.5', // ✅ KORTER: Minder margin (was mt-2)
-      textAlign: 'text-center',
-      fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // ✅ DYNAMISCH: via DESIGN_SYSTEM
-    },
     field: {
-      borderRadius: 'rounded-full', // ✅ ROND: Volledig rond
-      border: 'border border-gray-300', // ✅ BORDER: Subtiele border voor typveld vibe
-      backgroundColor: 'bg-white', // ✅ WIT: Witte achtergrond (was gray-100)
-      padding: 'px-4 py-2.5', // ✅ WHATSAPP: Compactere padding (was px-5 py-3.5)
-      width: 'w-full', // ✅ LANGER: Volledige breedte
-      fontSize: DESIGN_SYSTEM.typography.fontSize.base, // ✅ WHATSAPP: Base size (was sm)
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal, // ✅ WHATSAPP: Normal weight (was semibold)
-      placeholder: {
-        textColor: 'placeholder:text-gray-500', // ✅ WHATSAPP: Grijze placeholder
-      },
+      flex: DESIGN_SYSTEM.layoutUtils.flex.grow.grow,
+      borderRadius: 'rounded-full',
+      border: 'border border-white/30',
+      backgroundColor: 'bg-black',
+      textColor: 'text-white',
+      padding: 'px-4 py-2.5',
+      width: 'w-full',
+      fontSize: DESIGN_SYSTEM.typography.fontSize.base,
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+      placeholder: { textColor: 'placeholder:text-white/60' },
       focus: {
-        ring: 'focus:ring-2 focus:ring-gray-300', // ✅ TYPVELD: Subtiele focus ring
-        border: 'focus:border-gray-400', // ✅ TYPVELD: Border blijft bij focus
-        backgroundColor: 'focus:bg-white', // ✅ WIT: Witte achtergrond bij focus
-        outline: 'focus:outline-none', // ✅ Geen outline
+        ring: 'focus:ring-2 focus:ring-white/40',
+        border: 'focus:border-white/50',
+        backgroundColor: 'focus:bg-gray-800',
+        outline: 'focus:outline-none',
       },
-      transition: 'transition-all duration-200 ease-out', // ✅ SMOOTHER: ease-out voor vloeiendere animatie
+      transition: 'transition-all duration-200 ease-out',
     },
     button: {
-      borderRadius: 'rounded-full', // ✅ WHATSAPP: Volledig rond
-      backgroundColor: 'bg-gray-50', // ✅ WHATSAPP: Lichte achtergrond (was zwart)
-      textColor: 'text-gray-600', // ✅ WHATSAPP: Grijze tekst (was wit)
-      hoverBackgroundColor: 'hover:bg-gray-200', // ✅ WHATSAPP: Lichtere hover (was gray-900)
-      activeBackgroundColor: 'active:bg-gray-300', // ✅ WHATSAPP: Active state
-      padding: 'p-2.5', // ✅ WHATSAPP: Gelijkmatige padding (was px-4 py-6)
-      minWidth: 'min-w-[44px]', // ✅ WHATSAPP: Minimum touch target
-      minHeight: 'min-h-[44px]', // ✅ WHATSAPP: Minimum touch target
-      fontSize: DESIGN_SYSTEM.typography.fontSize.base, // ✅ DYNAMISCH: via DESIGN_SYSTEM
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal, // ✅ WHATSAPP: Normal weight (was semibold)
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ DYNAMISCH: via DESIGN_SYSTEM
-      iconSize: 'w-5 h-5', // ✅ WHATSAPP: Standaard icon size
-      disabled: {
-        opacity: 'disabled:opacity-40', // ✅ WHATSAPP: Disabled state
-        cursor: 'disabled:cursor-not-allowed',
-      },
-      transition: 'transition-all duration-150 ease-out', // ✅ WHATSAPP: Snellere transition (was 200ms)
+      borderRadius: 'rounded-full',
+      backgroundColor: 'bg-white/15',
+      textColor: 'text-white',
+      hoverBackgroundColor: 'hover:bg-white/25',
+      activeBackgroundColor: 'active:bg-white/20',
+      padding: 'p-2.5',
+      minWidth: 'min-w-[44px]',
+      minHeight: 'min-h-[44px]',
+      fontSize: DESIGN_SYSTEM.typography.fontSize.base,
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
+      iconSize: 'w-5 h-5',
+      disabled: { opacity: 'disabled:opacity-40', cursor: 'disabled:cursor-not-allowed' },
+      transition: 'transition-all duration-150 ease-out',
     },
     footer: {
-      fontSize: DESIGN_SYSTEM.typography.fontSize.xs, // 12px
-      textColor: 'text-gray-500', // ✅ Gray-500 (geen transparantie)
-      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ EXACT: Noto Sans zoals homepage
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal, // ✅ SMOOTH: Normal weight voor smooth rendering
-      letterSpacing: 'tracking-normal', // ✅ SMOOTH: Normale letter spacing
-      antialiased: 'antialiased', // ✅ SMOOTH: Antialiased voor smooth rendering zoals homepage
-      marginTop: 'mt-1.5', // ✅ KORTER: Minder margin
+      marginTop: 'mt-1.5',
+      textAlign: 'text-center',
+      fontSize: DESIGN_SYSTEM.typography.fontSize.xs,
+      textColor: 'text-white/80',
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
+      letterSpacing: 'tracking-normal',
+      antialiased: 'antialiased',
     },
   },
 
@@ -264,13 +254,13 @@ export const CHAT_CONFIG = {
     },
   },
 
-  // Empty state styling - Zwart-wit (GEEN transparantie)
+  // Empty state: geen grijze details
   emptyState: {
     iconSize: 'w-12 h-12',
-    iconColor: 'text-gray-400', // ✅ Gray-400 (geen transparantie)
-    textColor: 'text-gray-600', // ✅ Gray-600 (geen transparantie)
-    fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
-    fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
+    iconColor: 'text-black/70',
+    textColor: 'text-black',
+    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+    fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
     container: {
       align: DESIGN_SYSTEM.layoutUtils.flex.align.center,
       textAlign: 'text-center',
@@ -284,11 +274,12 @@ export const CHAT_CONFIG = {
       marginTop: 'mt-4',
       spacing: 'space-y-2',
     },
-      suggestionButton: {
-      backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
-      hoverBackgroundColor: 'hover:bg-gray-100',
-      borderRadius: 'rounded-xl', // ✅ RONDER: Extra ronde hoeken, smoother
-      padding: 'px-4 py-2', // ✅ Direct Tailwind classes (was: template literal)
+    suggestionButton: {
+      backgroundColor: 'bg-white',
+      hoverBackgroundColor: 'hover:bg-black/5',
+      border: 'border border-black/10',
+      borderRadius: 'rounded-xl',
+      padding: 'px-4 py-2',
       fontSize: DESIGN_SYSTEM.typography.fontSize.sm, // 14px
       fontWeight: DESIGN_SYSTEM.typography.fontWeight.bold, // ✅ DIKKER: 700 - dikker dan banner
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // Noto Sans
@@ -298,13 +289,13 @@ export const CHAT_CONFIG = {
     },
   },
 
-  // Loading state - Zwart-wit (GEEN transparantie)
+  // Loading state: geen grijze details
   loading: {
-    backgroundColor: 'bg-white', // ✅ WIT (geen transparantie)
-    border: 'border border-gray-200',
+    backgroundColor: 'bg-white',
+    border: 'border border-black/10',
     borderRadius: 'rounded-lg', // ✅ RONDER: Minder hoekig, smoother
     padding: 'p-4', // ✅ Direct Tailwind class (was: template literal)
-    iconColor: 'text-[#3C3C3D]', // ✅ GRADIENT START (was text-black)
+    iconColor: `text-[${DESIGN_SYSTEM.colors.primaryStart}]`, // ✅ DESIGN_SYSTEM: primaryStart
     iconSize: 'w-5 h-5',
   },
 

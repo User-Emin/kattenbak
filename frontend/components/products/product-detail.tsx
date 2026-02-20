@@ -1040,7 +1040,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 <div className="flex flex-col gap-0.5 sm:gap-1 mb-4 sm:mb-5">
                   {PRODUCT_CONTENT.serviceUsps.map((usp, index) => (
                     <div key={index} className={cn('flex items-center gap-2.5 text-base sm:text-lg', CONFIG.info?.bottomCart?.serviceUspEmphasis ?? '')}>
-                      <Check className="w-5 h-5 flex-shrink-0" strokeWidth={2.5} style={{ color: '#129DD8' }} />
+                      <span className="w-6 h-6 rounded-full bg-gray-100 border border-black/10 flex items-center justify-center flex-shrink-0">
+                        <Check className="w-4 h-4" strokeWidth={2.5} style={{ color: '#000000' }} />
+                      </span>
                       <span className={cn(CONFIG.info?.bottomCart?.container?.textColor ?? 'text-black', CONFIG.info?.bottomCart?.serviceUspTextWeight ?? 'font-semibold')}>{usp.text}</span>
                     </div>
                   ))}

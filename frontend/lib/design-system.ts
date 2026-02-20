@@ -182,6 +182,8 @@ export const DESIGN_SYSTEM = {
       imageRoundedLg: '1.5rem',
       /** Hero afbeelding ronde hoeken – class uit design system (geen magic values in component) */
       imageBorderRadiusClass: 'rounded-2xl lg:rounded-3xl' as const,
+      /** Zelfde padding als hero – voor edge sectie (ALP1017) exact gelijk */
+      imagePaddingClass: 'p-4 sm:p-5 md:p-6 lg:p-8' as const,
       imageShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
       /** Hero titel "Automatische Kattenbak" – kleinere grootte, iets dikker */
       titleFontSize: 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl' as const,
@@ -212,7 +214,7 @@ export const DESIGN_SYSTEM = {
       bgStart: '#000000',
       bgEnd: '#000000',
       color: '#ffffff',
-      height: '32px',
+      height: '40px',
       animationDuration: '3000ms',
       zIndex: '160',
     },
@@ -248,7 +250,7 @@ export const DESIGN_SYSTEM = {
     
     // ✅ DRY: Totale header hoogte (banner + navbar) voor sidebar positioning
     header: {
-      totalHeight: 'calc(32px + 72px)', // ✅ DRY: uspBanner.height + navbar.height
+      totalHeight: 'calc(40px + 72px)', // ✅ DRY: uspBanner.height + navbar.height
     },
     
     // ✅ Z-INDEX MANAGEMENT: Centrale z-index configuratie (geen hardcode)
