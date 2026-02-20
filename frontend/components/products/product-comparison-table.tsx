@@ -301,10 +301,10 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
 
   return (
     <div 
-      className="w-full bg-white rounded-xl shadow-2xl"
-      style={{ 
-        boxShadow: `0 10px 40px ${BRAND_COLORS_HEX.primary}30, 0 4px 20px ${BRAND_COLORS_HEX.gray[900]}20`
-      }}
+      className={cn(
+        'w-full',
+        'md:bg-white md:rounded-xl md:shadow-2xl'
+      )}
     >
 
       {/* ✅ RESPONSIVE TABLE: Desktop compact, mobiel swipe-vriendelijk */}
