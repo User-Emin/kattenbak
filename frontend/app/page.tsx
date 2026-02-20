@@ -150,8 +150,8 @@ export default function HomePage() {
                   <button
                     className={cn(
                       'relative overflow-hidden group inline-flex items-center gap-2 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]',
-                      (DESIGN_SYSTEM.layout.hero as { ctaButtonPadding?: string }).ctaButtonPadding ?? 'px-6 py-3 sm:px-8 sm:py-4',
-                      (DESIGN_SYSTEM.layout.hero as { ctaButtonFontSize?: string }).ctaButtonFontSize ?? 'text-base sm:text-lg'
+                      (DESIGN_SYSTEM.layout.hero as { ctaButtonPadding?: string }).ctaButtonPadding ?? 'px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4',
+                      (DESIGN_SYSTEM.layout.hero as { ctaButtonFontSize?: string }).ctaButtonFontSize ?? 'text-sm sm:text-base md:text-lg'
                     )}
                     style={{
                       backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg ?? '#000000',
@@ -171,53 +171,52 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Beeld: zwevend (marge + ronde hoeken uit layout.hero) */}
+          {/* Beeld: ronde hoeken + padding uit design system (zelfde als edge sectie) */}
           <div
-            className="relative w-full md:w-[50%] h-72 sm:h-80 md:h-auto min-h-[320px] sm:min-h-[380px] md:min-h-0 order-1 md:order-2 flex items-center justify-center p-4 sm:p-5 md:p-6 lg:p-8"
+            className={cn(
+              'relative w-full md:w-[50%] h-72 sm:h-80 md:h-auto min-h-[320px] sm:min-h-[380px] md:min-h-0 order-1 md:order-2 flex items-center justify-center',
+              (DESIGN_SYSTEM.layout.hero as { imagePaddingClass?: string }).imagePaddingClass ?? 'p-4 sm:p-5 md:p-6 lg:p-8'
+            )}
             style={{ fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary }}
           >
             <div
               className={cn(
-                'relative w-full h-full min-h-[280px] sm:min-h-[340px] overflow-hidden bg-gray-100',
+                'relative w-full h-full min-h-[280px] sm:min-h-[340px] overflow-hidden isolate bg-gray-100',
                 (DESIGN_SYSTEM.layout.hero as { imageBorderRadiusClass?: string }).imageBorderRadiusClass ?? 'rounded-2xl lg:rounded-3xl'
               )}
               style={{
                 boxShadow: (DESIGN_SYSTEM.layout.hero as { imageShadow?: string }).imageShadow ?? DESIGN_SYSTEM.effects.shadow.lg,
               }}
             >
-              {optimizedHeroImage !== heroImage ? (
-                <Image
-                  key="optimized-hero"
-                  src={optimizedHeroImage}
-                  alt="Premium automatische kattenbak"
-                  fill
-                  className={cn(
-                    'object-cover object-center',
-                    (DESIGN_SYSTEM.layout.hero as { imageBorderRadiusClass?: string }).imageBorderRadiusClass ?? 'rounded-2xl lg:rounded-3xl'
-                  )}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
-                  quality={90}
-                  loading="eager"
-                  unoptimized={optimizedHeroImage.startsWith('/uploads/') || optimizedHeroImage.includes('/uploads/')}
-                />
-              ) : (
-                <Image
-                  key="fallback-hero"
-                  src={heroImage}
-                  alt="Premium automatische kattenbak"
-                  fill
-                  className={cn(
-                    'object-cover object-center',
-                    (DESIGN_SYSTEM.layout.hero as { imageBorderRadiusClass?: string }).imageBorderRadiusClass ?? 'rounded-2xl lg:rounded-3xl'
-                  )}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
-                  quality={90}
-                  loading="eager"
-                  unoptimized={heroImage.startsWith('/uploads/') || heroImage.includes('/uploads/')}
-                />
-              )}
+              <div className="absolute inset-0 overflow-hidden rounded-[inherit] [border-radius:inherit]">
+                {optimizedHeroImage !== heroImage ? (
+                  <Image
+                    key="optimized-hero"
+                    src={optimizedHeroImage}
+                    alt="Premium automatische kattenbak"
+                    fill
+                    className="object-cover object-center rounded-[inherit]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                    quality={90}
+                    loading="eager"
+                    unoptimized={optimizedHeroImage.startsWith('/uploads/') || optimizedHeroImage.includes('/uploads/')}
+                  />
+                ) : (
+                  <Image
+                    key="fallback-hero"
+                    src={heroImage}
+                    alt="Premium automatische kattenbak"
+                    fill
+                    className="object-cover object-center rounded-[inherit]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                    quality={90}
+                    loading="eager"
+                    unoptimized={heroImage.startsWith('/uploads/') || heroImage.includes('/uploads/')}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>

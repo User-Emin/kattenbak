@@ -79,7 +79,7 @@ export const HOME_CONTENT = {
     },
     {
       q: 'Wat zit er in de doos?',
-      a: 'Bij aankoop krijg je: 1x automatische kattenbak, 1x stroomadapter, 1x afvalzak (starter), 1x borstel voor onderhoud, 1x geurfilter, 1x inloopmat en 1x handleiding (NL/EN). Alles wat je nodig hebt voor direct gebruik.',
+      a: '1× automatische kattenbak, 1× stroomadapter, 1× inloopmat, 1× rol afvalzakken, 1× handleiding (EN). Alles wat je nodig hebt voor direct gebruik.',
     },
     {
       q: 'Hoe installeer ik de kattenbak?',
@@ -93,20 +93,14 @@ export const HOME_CONTENT = {
 // ============================================
 
 export const PRODUCT_CONTENT = {
-  // ✅ SEO PHASE 2: Uitgebreide product beschrijving (500+ woorden)
-  mainDescription: `De automatische kattenbak met zelfreinigende functie is de perfecte oplossing voor katteneigenaren die op zoek zijn naar gemak, hygiëne en innovatie. Deze premium kattenbak is speciaal ontworpen voor katten tot 7kg en combineert geavanceerde technologie met gebruiksvriendelijkheid.
+  // ✅ GS1-vriendelijk: concurrentiewaardige productbeschrijving met exacte specificaties
+  mainDescription: `De Automatische Kattenbak Premium is een zelfreinigende kattenbak met 65L vulruimte en 10.5L afvalbak – groter dan de meeste concurrenten (9L). Voor katteneigenaren die zoeken naar gemak, hygiëne en innovatie. Volledig automatisch reinigingssysteem, bedienbaar via app (iOS/Android), met open-top design dat stress vermindert bij katten die niet van gesloten ruimtes houden.
 
-De kattenbak beschikt over een volledig automatisch reinigingssysteem dat na elk gebruik de bak reinigt. Intelligente sensoren detecteren wanneer je kat klaar is en starten automatisch een reinigingscyclus. Alle afval wordt verzameld in een afgesloten compartiment van 10.5L, de grootste afvalbak in zijn klasse. Dit betekent minder vaak legen - bij één kat slechts 1x per 4-6 dagen.
+Specificaties (leverancier-geverifieerd): afmetingen 55×51×54 cm (L×B×H), gewicht 11 kg, materiaal PP+ABS+POM. Dubbele veiligheidssensoren (IR + gewicht) stoppen de cyclus direct als je kat de bak betreedt – getest op 10.000+ cycli. WiFi 2.4GHz, voedingsadapter DC 12V/2A. Geschikt voor klonterende vulling (klei, plantaardig, gemengd). Katten van 1,5 tot 12,5 kg, vanaf 6 maanden. Geluidsniveau onder 40 dB.
 
-Dubbele veiligheidssensoren (IR- en gewichtssensoren) zorgen voor maximale veiligheid. Het systeem stopt automatisch als je kat de bak in gaat, getest op meer dan 10.000 cycli. Het open-top design zonder deur vermindert stress bij je kat en zorgt voor een natuurlijke, comfortabele ervaring.
+Bij één kat leeg je de afvalzak ca. 1x per 4–6 dagen; bij 2–3 katten vaker. High-efficiency filter, anti-splash wanden, modulair ontwerp voor eenvoudige reiniging.
 
-De app-bediening biedt real-time monitoring, waarmee je de status van de kattenbak kunt bekijken, reinigingsschema's kunt plannen en gezondheidsdata kunt inzien. De app is gratis te downloaden voor iOS en Android en biedt volledige controle over je kattenbak, waar je ook bent.
-
-Het ultra-stille motorgeluid van minder dan 40 decibel zorgt ervoor dat je kat niet wordt verstoord tijdens het gebruik. Het modulaire ontwerp maakt het makkelijk om onderdelen te vervangen en te upgraden, wat de levensduur van de kattenbak verlengt.
-
-De kattenbak is geschikt voor alle klonterende vullingen, inclusief klei, plantaardige en gemixte vullingen. Het high-efficiency filter systeem zorgt voor optimale luchtzuivering en houdt de lucht fris en geurvrij. Anti-splash hoge wanden voorkomen morsen en houden de omgeving schoon.
-
-Perfect voor katten van 1,5KG tot 12,5KG en geschikt vanaf 6 maanden leeftijd. Niet geschikt voor kittens onder 6 maanden. De kattenbak wordt geleverd met geurblokje, kwast, afvalzak (1 rol) en inloopmat - alles wat je nodig hebt voor direct gebruik.`,
+Leveringsinhoud: 1× automatische kattenbak, 1× stroomadapter, 1× inloopmat, 1× rol afvalzakken, 1× handleiding (EN).`,
 
   // UI Labels - DRY
   labels: {
@@ -269,9 +263,7 @@ Perfect voor katten van 1,5KG tot 12,5KG en geschikt vanaf 6 maanden leeftijd. N
     },
     {
       title: 'Gratis meegeleverd',
-      description: 'Bij aankoop krijg je gratis: geurblokje, kwast, afvalzak (1 rol) en inloopmat. Alles wat je nodig hebt voor direct gebruik.',
-      // ✅ BULLET POINTS VERWIJDERD: Alleen titel en beschrijving
-      // ✅ KORTER: Titel alleen "Gratis meegeleverd", beschrijving ingekort voor betere leesbaarheid
+      description: '1× inloopmat en 1× rol afvalzakken zijn inbegrepen. Plus stroomadapter en handleiding – direct klaar voor gebruik.',
     },
   ],
 
@@ -281,9 +273,15 @@ Perfect voor katten van 1,5KG tot 12,5KG en geschikt vanaf 6 maanden leeftijd. N
     subtitle: 'Onze kattenbak vs. concurrent',
     rows: [
       {
+        feature: 'Vulruimte (litter)',
+        ourProduct: '65L',
+        competitor: '65L',
+        highlight: false,
+      },
+      {
         feature: 'Afvalbak capaciteit',
         ourProduct: '10.5L',
-        competitor: 'Niet vermeld',
+        competitor: '9L',
         highlight: true,
       },
       {
@@ -294,14 +292,14 @@ Perfect voor katten van 1,5KG tot 12,5KG en geschikt vanaf 6 maanden leeftijd. N
       },
       {
         feature: 'Formaat (L×B×H)',
-        ourProduct: '65 × 53 × 65 cm',
-        competitor: '48 × 52 × 50 cm',
+        ourProduct: '55 × 51 × 54 cm',
+        competitor: '50 × 50 × 50 cm',
         highlight: false,
       },
       {
         feature: 'Gewicht',
-        ourProduct: '8.5 kg',
-        competitor: '±7 kg',
+        ourProduct: '11 kg',
+        competitor: '9,5 kg',
         highlight: false,
       },
       {
@@ -368,17 +366,25 @@ Perfect voor katten van 1,5KG tot 12,5KG en geschikt vanaf 6 maanden leeftijd. N
     // Tekst wordt dynamisch uit product.description gehaald
   },
   
-  // Service USPs - ✅ Vetgedrukt en opvallend (centraal maintainable)
+  // Service USPs - ✅ Compact: minder padding tussen items
   serviceUsps: [
     { text: 'Volledig automatisch • App bediening' },
     { text: 'Binnen 30 dagen gratis retour' },
     { text: 'Zelfreinigend systeem • Hygiënisch' },
   ],
 
-  // Bezorgtijd - centraal (geen hardcode)
+  // Bezorgtijd + leveringsinhoud - centraal (geen hardcode)
   delivery: {
     label: 'Bezorgtijd:',
     days: '1-2 werkdagen',
+    /** Items standaard meegeleverd – gebruikt in product-detail accordion */
+    items: [
+      '1× automatische kattenbak',
+      '1× stroomadapter',
+      '1× inloopmat',
+      '1× rol afvalzakken',
+      '1× handleiding (EN)',
+    ] as const,
   },
 
   // Vragen sectie - titel accordion (zoals Specificaties)
@@ -426,7 +432,7 @@ Perfect voor katten van 1,5KG tot 12,5KG en geschikt vanaf 6 maanden leeftijd. N
     },
     {
       q: 'Wat zit er in de doos?',
-      a: 'Bij aankoop krijg je: 1x automatische kattenbak, 1x stroomadapter, 1x afvalzak (starter), 1x borstel voor onderhoud, 1x geurfilter, 1x inloopmat en 1x handleiding (NL/EN). Alles wat je nodig hebt voor direct gebruik.',
+      a: '1× automatische kattenbak, 1× stroomadapter, 1× inloopmat, 1× rol afvalzakken, 1× handleiding (EN). Alles wat je nodig hebt voor direct gebruik.',
     },
     {
       q: 'Hoe installeer ik de kattenbak?',

@@ -303,21 +303,22 @@ export const PRODUCT_PAGE_CONFIG = {
     ] as const,
   },
 
-  /** Vergelijkingstabel – mobiel: levendige kaarten met gradient, shadow en brandkleur */
+  /** Vergelijkingstabel – mobiel: direct op achtergrond, geen dubbel kaart, zwart */
   comparisonTable: {
     mobile: {
       containerMaxWidth: 'max-w-full',
       slidePadding: '12px',
-      useCard: true, // levendige kaarten op mobiel
+      useCard: false, // direct op achtergrond, geen kaart
       contentPadding: 'py-5 sm:py-6',
       cardPadding: 'p-4 sm:p-5',
-      cardBorderRadius: 'rounded-2xl',
+      cardBorderRadius: 'rounded-none',
       dotSize: 'w-3 h-3 sm:w-3.5 sm:h-3.5',
       dotActiveWidth: 'w-8 sm:w-9',
       touchAction: 'pan-y',
-      /** Levendiger: gradient border, sterke shadow, subtiele achtergrond */
-      cardShadow: 'shadow-lg',
-      cardBorderWidth: '2px',
+      cardShadow: '',
+      cardBorderWidth: '0',
+      /** Zwarte achtergrond voor mobiel, transparant op desktop */
+      wrapperBg: 'bg-black md:bg-transparent',
     },
     desktop: {
       cellPadding: 'px-6 py-5',

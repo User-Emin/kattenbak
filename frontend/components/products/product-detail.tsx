@@ -735,7 +735,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
               > {/* ✅ 1200x1200 OPTIMAAL: Vierkant formaat voor perfecte weergave */}
                 <ProductImage
                   src={currentImage}
-                  alt={product.name}
+                  alt={product?.name ?? 'Product'}
                   fill
                   enableZoom={true} // ✅ ZOOM: Hover zoom en click lightbox functionaliteit
                   zoomScale={2.5}
@@ -824,7 +824,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                     >
                       <Image
                         src={image}
-                        alt={`${product.name} ${index + 1}`}
+                        alt={`${product?.name ?? 'Product'} ${index + 1}`}
                         fill
                         className="object-cover"
                         sizes="80px" // 🚀 PERFORMANCE: Thumbnail size (80x80px) - exact size for fastest loading
@@ -872,7 +872,7 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                 'transition-all duration-300 ease-out', // ✅ SMOOTH: Smooth transitions
                 'animate-in fade-in slide-in-from-right-4 duration-500' // ✅ SMOOTH: Fade-in en slide-in animatie bij laden
               )}>
-                {product.name}
+                {product?.name ?? 'Product'}
               </h1>
               
 
@@ -1146,13 +1146,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                           <>
                             <h4 className="text-sm sm:text-base font-semibold mb-1.5">Standaard meegeleverd:</h4>
                             <ul className="space-y-1 ml-4 text-sm sm:text-base">
-                              <li>• 1x {product.name}</li>
-                              <li>• 1x Stroomadapter</li>
-                              <li>• 1x Afvalzak (starter)</li>
-                              <li>• 1x Borstel (voor onderhoud)</li>
-                              <li>• 1x Geurfilter</li>
-                              <li>• 1x Inloopmat</li>
-                              <li>• 1x Handleiding (NL/EN)</li>
+                              {PRODUCT_CONTENT.delivery.items.map((item) => (
+                                <li key={item}>• {item}</li>
+                              ))}
                             </ul>
                           </>
                         )}
@@ -1447,9 +1443,15 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* ✅ FEATURE SLIDER: Smooth slide animaties voor mobiel, zigzag voor desktop */}
       <ProductFeatureSlider features={features} />
 
-      {/* ✅ VERGELIJKINGSTABEL: Modern, smooth, gebaseerd op echte info – boven Vragen */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16')}>
-        <ProductComparisonTable productImages={originalImages} />
+      {/* ✅ VERGELIJKINGSTABEL: Mobiel direct op zwarte achtergrond, geen dubbel kaart */}
+      <div className={cn(
+        CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16',
+        'md:bg-transparent',
+        PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.wrapperBg ?? ''
+      )}>
+        <div className={cn(PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.wrapperBg ? 'text-white md:text-inherit' : '')}>
+          <ProductComparisonTable productImages={originalImages} />
+        </div>
       </div>
 
       {/* ✅ Q&A / Vragen – inline onder vergelijkingstabel (zelfde content als accordion, config) */}

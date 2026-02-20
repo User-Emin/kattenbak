@@ -2,9 +2,8 @@ module.exports = {
   apps: [
     {
       name: 'backend',
-      script: 'node',
-      args: 'dist/server.js',
-      cwd: './backend',
+      script: 'dist/server-database.js',
+      cwd: '/var/www/kattenbak/backend',
       instances: 1,
       exec_mode: 'fork',
       env: {

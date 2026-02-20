@@ -32,19 +32,19 @@ async function main() {
     console.log('✅ Skipping product seed to preserve admin data');
   } else {
     product = await prisma.product.create({
-      sku: 'KB-AUTO-001',
+      sku: 'ALP1017',
       slug: 'automatische-kattenbak-premium',
-      name: 'Automatische Kattenbak Premium',
-      description: 'Volledig automatisch zelfreinigend systeem met dubbele beveiliging en 10.5L XL afvalbak capaciteit.',
-      shortDescription: 'Premium automatische kattenbak met zelfreinigend systeem',
+      name: 'ALP1017 Kattenbak',
+      description: 'Premium zelfreinigende kattenbak met app-bediening. 65L vulruimte, 10.5L afvalbak, dubbele IR- en gewichtssensoren, open-top design. 55×51×54 cm, 11 kg.',
+      shortDescription: 'Premium zelfreinigende kattenbak met app-bediening',
       price: 299.99,
       compareAtPrice: 399.99,
       stock: 50,
-      weight: 5.2,
+      weight: 11,
       dimensions: {
-        length: 50,
-        width: 40,
-        height: 35,
+        length: 55,
+        width: 51,
+        height: 54,
         unit: 'cm',
       },
       isActive: true,

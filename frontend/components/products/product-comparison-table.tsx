@@ -27,6 +27,7 @@ interface ComparisonRow {
 
 interface ProductComparisonTableProps {
   productImages?: string[]; // ✅ DYNAMISCH: Product afbeeldingen voor vergelijking
+  darkModeMobile?: boolean; // ✅ Mobiel: zwarte achtergrond, witte tekst/icons
 }
 
 // ✅ DRY: Shared constants
@@ -206,7 +207,8 @@ const comparisonData: ComparisonRow[] = [
   },
 ];
 
-export function ProductComparisonTable({ productImages = [] }: ProductComparisonTableProps) {
+export function ProductComparisonTable({ productImages = [], darkModeMobile }: ProductComparisonTableProps) {
+  const isDarkMobile = darkModeMobile ?? !!PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.wrapperBg;
   const [visibleIndex, setVisibleIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -534,7 +536,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                       {row.icon && (
                         <row.icon 
                           className={cn('flex-shrink-0', MOBILE_COMPARISON_CONFIG.header.icon.size)} 
-                          style={{ color: row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500] }} 
+                          style={{ color: isDarkMobile ? (row.highlight ? '#60a5fa' : '#e5e7eb') : (row.highlight ? BRAND_COLORS_HEX.primary : BRAND_COLORS_HEX.gray[500]) }} 
                         />
                       )}
                       <div 
@@ -544,7 +546,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                           MOBILE_COMPARISON_CONFIG.header.title.lineHeight,
                           'text-center'
                         )}
-                        style={row.highlight ? { color: BRAND_COLORS_HEX.primary } : { color: BRAND_COLORS_HEX.gray[900] }}
+                        style={row.highlight ? { color: isDarkMobile ? '#60a5fa' : BRAND_COLORS_HEX.primary } : { color: isDarkMobile ? '#f3f4f6' : BRAND_COLORS_HEX.gray[900] }}
                       >
                         {row.feature}
                       </div>
@@ -557,7 +559,7 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                           'text-center',
                           MOBILE_COMPARISON_CONFIG.header.spacing.description
                         )}
-                        style={{ color: BRAND_COLORS_HEX.gray[600] }}
+                        style={{ color: isDarkMobile ? '#d1d5db' : BRAND_COLORS_HEX.gray[600] }}
                       >
                         {row.description}
                       </p>
@@ -679,8 +681,8 @@ export function ProductComparisonTable({ productImages = [] }: ProductComparison
                 index === visibleIndex && (PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.dotActiveWidth ?? MOBILE_COMPARISON_CONFIG.navigation.dot.active)
               )}
               style={index === visibleIndex 
-                ? { backgroundColor: BRAND_COLORS_HEX.primary } 
-                : { backgroundColor: BRAND_COLORS_HEX.gray[300] }
+                ? { backgroundColor: isDarkMobile ? '#60a5fa' : BRAND_COLORS_HEX.primary } 
+                : { backgroundColor: isDarkMobile ? '#4b5563' : BRAND_COLORS_HEX.gray[300] }
               }
               onMouseEnter={(e) => {
                 if (index !== visibleIndex) {
