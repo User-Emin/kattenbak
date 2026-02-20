@@ -45,6 +45,9 @@ echo ""
 echo -e "${GREEN}📥 Volledige pull (fetch + reset --hard origin/main)...${NC}"
 ssh_exec "cd /var/www/kattenbak && git fetch origin && git reset --hard origin/main && git rev-parse --short HEAD && echo '✅ Code updated'"
 
+echo -e "${GREEN}📦 Root deps (workspace hoisting voor express etc)...${NC}"
+ssh_exec "cd /var/www/kattenbak && npm ci --legacy-peer-deps 2>/dev/null || true"
+
 # ━━━ BACKEND FIRST (isolated – nooit frontend bouwen als backend faalt) ━━━
 echo -e "${GREEN}🔧 Building backend...${NC}"
 ssh_exec "cd /var/www/kattenbak/backend && npm ci --legacy-peer-deps && npx prisma generate && npm run build && (test -d node_modules/express || test -d ../node_modules/express) && echo '✅ Backend built' || (echo '❌ node_modules/express missing!' && exit 1)"
