@@ -4,9 +4,9 @@ module.exports = {
       name: 'backend',
       script: 'dist/server-database.js',
       cwd: '/var/www/kattenbak/backend',
-      instances: 1,
-      exec_mode: 'fork',
-      /** ✅ ZERO-DOWNTIME: PM2 waits for process.send('ready') before killing old process */
+      /** ✅ 4vCPU/16GB: Cluster 4 workers – max concurrent users (SECURITY_POLICY: env BACKEND_INSTANCES) */
+      instances: process.env.BACKEND_INSTANCES || 4,
+      exec_mode: 'cluster',
       wait_ready: true,
       listen_timeout: 30000,
       env: {
@@ -16,31 +16,51 @@ module.exports = {
       error_file: '../logs/backend-error.log',
       out_file: '../logs/backend-out.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
-      max_memory_restart: '500M',
+      max_memory_restart: '512M',
       watch: false,
       autorestart: true,
       max_restarts: 10,
       min_uptime: '10s',
       kill_timeout: 10000,
-      // CPU optimization for KVM
-      node_args: '--max-old-space-size=512',
+      node_args: '--max-old-space-size=384',
       merge_logs: true,
       log_type: 'json'
     },
     {
       name: 'frontend',
-      script: '.next/standalone/frontend/server.js',  // ✅ CPU-FRIENDLY: Use pre-built standalone (NO BUILD on server)
+      script: '.next/standalone/frontend/server.js',
       cwd: './frontend',
       instances: 1,
       exec_mode: 'fork',
       env: {
         NODE_ENV: 'production',
-        PORT: 3102,  // ✅ FIX: Port 3102 (matches Nginx config)
+        PORT: 3102,
         HOSTNAME: '0.0.0.0',
         NEXT_TELEMETRY_DISABLED: 1
       },
       error_file: '../logs/frontend-error.log',
       out_file: '../logs/frontend-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss',
+      max_memory_restart: '800M',
+      watch: false,
+      autorestart: true,
+      max_restarts: 10,
+      min_uptime: '10s'
+    },
+    {
+      name: 'frontend2',
+      script: '.next/standalone/frontend/server.js',
+      cwd: './frontend',
+      instances: 1,
+      exec_mode: 'fork',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3104,
+        HOSTNAME: '0.0.0.0',
+        NEXT_TELEMETRY_DISABLED: 1
+      },
+      error_file: '../logs/frontend2-error.log',
+      out_file: '../logs/frontend2-out.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
       max_memory_restart: '800M',
       watch: false,

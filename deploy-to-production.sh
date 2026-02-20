@@ -79,8 +79,11 @@ ssh_exec "cd /var/www/kattenbak/frontend && rm -rf .next/cache && NEXT_PUBLIC_AP
 echo -e "${GREEN}🔧 Building admin...${NC}"
 ssh_exec "cd /var/www/kattenbak/admin-next && npm ci --legacy-peer-deps && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm run build && echo '✅ Admin built'"
 
-echo -e "${GREEN}♻️  Restarting frontend + admin...${NC}"
-ssh_exec "cd /var/www/kattenbak && pm2 reload frontend admin --update-env 2>/dev/null || true && pm2 save && pm2 list && echo '✅ Services restarted'"
+echo -e "${GREEN}♻️  Restarting frontend + frontend2 + admin...${NC}"
+ssh_exec "cd /var/www/kattenbak && pm2 reload ecosystem.config.js --update-env && pm2 save && pm2 list && echo '✅ Services restarted'"
+
+echo -e "${GREEN}📋 Nginx config updaten (least_conn balancer)...${NC}"
+ssh_exec "cp /var/www/kattenbak/deployment/nginx-catsupply.conf /etc/nginx/sites-available/catsupply.conf 2>/dev/null && nginx -t && nginx -s reload 2>/dev/null && echo '✅ Nginx reloaded' || echo '⚠️ Nginx config path kan anders zijn – handmatig kopiëren indien nodig'"
 
 # Health check
 echo -e "${GREEN}🏥 Final health check...${NC}"
