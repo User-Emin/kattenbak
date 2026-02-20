@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/cart-context";
+import { useUI } from "@/context/ui-context";
 import { productsApi } from "@/lib/api/products";
 import { formatPrice } from "@/lib/utils";
 import { PRODUCT_PAGE_CONFIG, cn } from "@/lib/product-page-config";
@@ -79,6 +80,7 @@ interface ProductDetailProps {
 export function ProductDetail({ slug }: ProductDetailProps) {
   const router = useRouter();
   const { addItem } = useCart();
+  const { isCartOpen } = useUI();
   const CONFIG = PRODUCT_PAGE_CONFIG;
   
   // State management
@@ -699,16 +701,12 @@ export function ProductDetail({ slug }: ProductDetailProps) {
             'self-start', 
             'px-0' // ✅ EDGE-TO-EDGE: 0 padding tot navbar en zijkanten
           )}> {/* ✅ STICKY: Afbeelding blijft zichtbaar terwijl je scrollt */}
-            {/* ✅ SEO PHASE 1: Breadcrumb Navigation - EDGE-TO-EDGE: 0 padding tot navbar (legaal voor SEO) */}
+            {/* ✅ SEO: Breadcrumb altijd zichtbaar (desktop + mobiel) – compact op mobiel */}
             {!loading && product && (
-              <div className="hidden lg:block mb-4 px-0 w-full">
-                <div className="px-6 lg:px-8">
-                  <BreadcrumbNavigation />
-                </div>
+              <div className="block mb-3 lg:mb-4 px-2 sm:px-4 lg:px-8 w-full">
+                <BreadcrumbNavigation className="text-xs sm:text-sm" />
               </div>
             )}
-            {/* ✅ MOBIEL: Breadcrumb VERWIJDERD voor edge-to-edge - Geen padding tussen navbar en afbeelding */}
-            {/* Breadcrumb op mobiel weggelaten voor echte edge-to-edge afbeelding */}
             
             {/* Main Image Container - ✅ Afbeelding direct zichtbaar, minder gap */}
             <div className={cn(
@@ -884,7 +882,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   CONFIG.info?.bottomCart?.container?.padding ?? 'pt-0 px-0 pb-0',
                   CONFIG.info?.bottomCart?.container?.marginTop ?? 'mt-2',
                   CONFIG.info?.bottomCart?.container?.borderRadius ?? 'rounded-none',
-                  CONFIG.info?.bottomCart?.container?.textWeight ?? 'font-normal'
+                  CONFIG.info?.bottomCart?.container?.textWeight ?? 'font-normal',
+                  isCartOpen ? 'hidden md:block' : ''
                 )}
               >
               {/* Price - dunner en kleiner (config) */}
