@@ -50,7 +50,7 @@ ssh_exec "cd /var/www/kattenbak && npm ci --legacy-peer-deps"
 
 # ━━━ BACKEND FIRST (isolated – nooit frontend bouwen als backend faalt) ━━━
 echo -e "${GREEN}🔧 Building backend...${NC}"
-ssh_exec "cd /var/www/kattenbak && npm run prisma:generate --workspace=backend && npm run build --workspace=backend && (test -d node_modules/express) && echo '✅ Backend built' || (echo '❌ root node_modules/express missing!' && exit 1)"
+ssh_exec "cd /var/www/kattenbak && npm --workspace=backend run prisma:generate && npm --workspace=backend run build && (test -d node_modules/express) && echo '✅ Backend built' || (echo '❌ root node_modules/express missing!' && exit 1)"
 
 echo -e "${GREEN}♻️  Restarting backend (PM2 wait-ready)...${NC}"
 ssh_exec "cd /var/www/kattenbak && pm2 reload backend --update-env 2>/dev/null || pm2 start ecosystem.config.js --only backend && pm2 save"
@@ -77,13 +77,13 @@ fi
 
 # ━━━ FRONTEND + ADMIN (na backend OK) ━━━
 echo -e "${GREEN}🔧 Building frontend...${NC}"
-ssh_exec "cd /var/www/kattenbak && rm -rf frontend/.next/cache && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm run build --workspace=frontend && echo '✅ Frontend built'"
+ssh_exec "cd /var/www/kattenbak && rm -rf frontend/.next/cache && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm --workspace=frontend run build && echo '✅ Frontend built'"
 
 echo -e "${GREEN}🔧 Building admin...${NC}"
-ssh_exec "cd /var/www/kattenbak && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm run build --workspace=admin-next && echo '✅ Admin built'"
+ssh_exec "cd /var/www/kattenbak && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm --workspace=admin-next run build && echo '✅ Admin built'"
 
 echo -e "${GREEN}🧬 Prisma generate (stability check voor cluster)...${NC}"
-ssh_exec "cd /var/www/kattenbak && npm run prisma:generate --workspace=backend && echo '✅ Prisma client ready'"
+ssh_exec "cd /var/www/kattenbak && npm --workspace=backend run prisma:generate && echo '✅ Prisma client ready'"
 
 echo -e "${GREEN}♻️  Restarting frontend + frontend2 + admin...${NC}"
 ssh_exec "cd /var/www/kattenbak && pm2 reload ecosystem.config.js --update-env && pm2 save && pm2 list && echo '✅ Services restarted'"
