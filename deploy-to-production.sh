@@ -50,7 +50,7 @@ ssh_exec "cd /var/www/kattenbak && npm ci --legacy-peer-deps 2>/dev/null || true
 
 # ━━━ BACKEND FIRST (isolated – nooit frontend bouwen als backend faalt) ━━━
 echo -e "${GREEN}🔧 Building backend...${NC}"
-ssh_exec "cd /var/www/kattenbak/backend && npm ci --legacy-peer-deps && npx prisma generate && npm run build && (test -d node_modules/express || test -d ../node_modules/express) && echo '✅ Backend built' || (echo '❌ node_modules/express missing!' && exit 1)"
+ssh_exec "cd /var/www/kattenbak/backend && npm ci --legacy-peer-deps && ./node_modules/.bin/prisma generate && npm run build && (test -d node_modules/express || test -d ../node_modules/express) && echo '✅ Backend built' || (echo '❌ node_modules/express missing!' && exit 1)"
 
 echo -e "${GREEN}♻️  Restarting backend (PM2 wait-ready)...${NC}"
 ssh_exec "cd /var/www/kattenbak && pm2 reload backend --update-env 2>/dev/null || pm2 start ecosystem.config.js --only backend && pm2 save"
@@ -83,7 +83,7 @@ echo -e "${GREEN}🔧 Building admin...${NC}"
 ssh_exec "cd /var/www/kattenbak/admin-next && npm ci --legacy-peer-deps && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm run build && echo '✅ Admin built'"
 
 echo -e "${GREEN}🧬 Prisma generate (stability check voor cluster)...${NC}"
-ssh_exec "cd /var/www/kattenbak/backend && npx prisma generate && echo '✅ Prisma client ready'"
+ssh_exec "cd /var/www/kattenbak/backend && ./node_modules/.bin/prisma generate && echo '✅ Prisma client ready'"
 
 echo -e "${GREEN}♻️  Restarting frontend + frontend2 + admin...${NC}"
 ssh_exec "cd /var/www/kattenbak && pm2 reload ecosystem.config.js --update-env && pm2 save && pm2 list && echo '✅ Services restarted'"
