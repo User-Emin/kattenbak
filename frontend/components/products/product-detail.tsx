@@ -93,8 +93,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [showAllSpecs, setShowAllSpecs] = useState(false); // ✅ Toon meer specs state
   const [showAllFeatures, setShowAllFeatures] = useState(false); // ✅ Toon meer features state
   const [openSpecs, setOpenSpecs] = useState<Set<number>>(new Set());
-  // ✅ ACCORDION TABS: State voor accordion secties (Omschrijving, Specificaties, Vragen)
-  const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
+  // ✅ ACCORDION TABS: Omschrijving standaard open (ook na refresh)
+  const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set(['omschrijving']));
   // ✅ SWIPE: Touch/swipe state voor vloeiend swipen
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -1443,14 +1443,14 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       {/* ✅ FEATURE SLIDER: Smooth slide animaties voor mobiel, zigzag voor desktop */}
       <ProductFeatureSlider features={features} />
 
-      {/* ✅ VERGELIJKINGSTABEL: Mobiel direct op zwarte achtergrond, geen dubbel kaart */}
+      {/* ✅ VERGELIJKINGSTABEL: Mobiel blauwe kaart, witte achtergrond, zwarte tekst */}
       <div className={cn(
         CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16',
         'md:bg-transparent',
         PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.wrapperBg ?? ''
       )}>
-        <div className={cn(PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.wrapperBg ? 'text-white md:text-inherit' : '')}>
-          <ProductComparisonTable productImages={originalImages} />
+        <div className={(PRODUCT_PAGE_CONFIG.comparisonTable?.mobile as { darkModeMobile?: boolean })?.darkModeMobile ? 'text-white md:text-inherit' : ''}>
+          <ProductComparisonTable productImages={originalImages} darkModeMobile={(PRODUCT_PAGE_CONFIG.comparisonTable?.mobile as { darkModeMobile?: boolean })?.darkModeMobile} />
         </div>
       </div>
 

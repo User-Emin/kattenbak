@@ -304,28 +304,29 @@ export const PRODUCT_PAGE_CONFIG = {
     ] as const,
   },
 
-  /** Vergelijkingstabel – mobiel: direct op achtergrond, zwarte stroken, duidelijke subtekst */
+  /** Vergelijkingstabel – mobiel: blauwe kaart zoals desktop, witte achtergrond, zwarte tekst */
   comparisonTable: {
     mobile: {
       containerMaxWidth: 'max-w-full',
       slidePadding: '12px',
-      useCard: false,
+      useCard: true,
       contentPadding: 'py-5 sm:py-6',
       cardPadding: 'p-4 sm:p-5',
-      cardBorderRadius: 'rounded-none',
+      cardBorderRadius: 'rounded-xl',
       dotSize: 'w-3 h-3 sm:w-3.5 sm:h-3.5',
       dotActiveWidth: 'w-8 sm:w-9',
-      /** Padding onder slide-puntjes */
       dotsContainerPadding: 'mt-4 mb-4 pb-6',
       touchAction: 'pan-y',
-      cardShadow: '',
-      cardBorderWidth: '0',
-      wrapperBg: 'bg-black md:bg-transparent',
-      /** Duidelijke subtekst – grotere font, zwart/wit via config */
+      cardShadow: 'shadow-lg',
+      cardBorderWidth: '2',
+      /** Wit achtergrond – tekst zwart, kaart blauw zoals desktop */
+      wrapperBg: 'bg-white md:bg-transparent',
+      /** false = witte achtergrond, zwarte tekst; true = zwarte achtergrond */
+      darkModeMobile: false,
       descriptionFontSize: 'text-sm sm:text-base',
-      /** Stroken (Automatische/Handmatige) – zwart op mobiel */
-      strokenBg: 'bg-gray-900',
-      strokenBgHighlight: 'bg-gray-800',
+      /** Stroken lichtgrijs op wit (niet zwart) */
+      strokenBg: 'bg-gray-100',
+      strokenBgHighlight: 'bg-gray-50',
     },
     desktop: {
       cellPadding: 'px-6 py-5',

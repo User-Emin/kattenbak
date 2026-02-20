@@ -208,7 +208,7 @@ const comparisonData: ComparisonRow[] = [
 ];
 
 export function ProductComparisonTable({ productImages = [], darkModeMobile }: ProductComparisonTableProps) {
-  const isDarkMobile = darkModeMobile ?? !!PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.wrapperBg;
+  const isDarkMobile = darkModeMobile ?? (PRODUCT_PAGE_CONFIG.comparisonTable?.mobile as { darkModeMobile?: boolean })?.darkModeMobile ?? false;
   const [visibleIndex, setVisibleIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
