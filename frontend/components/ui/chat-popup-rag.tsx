@@ -701,17 +701,17 @@ export function ChatPopup() {
             buttonBottomClass,
             'mb-24', // ✅ POSITION: Boven chatbutton (mb-24 voor ruimte)
             'animate-in fade-in slide-in-from-bottom-4 duration-500', // ✅ SMOOTH: Smooth fade-in en slide-up
-            'max-w-sm' // ✅ GROTER: max-w-sm ipv max-w-xs
+            'max-w-sm'
           )}
           style={{
-            animation: 'fadeInUp 0.5s ease-out', // ✅ SMOOTH: Custom animation
+            animation: 'fadeInUp 0.5s ease-out',
           }}
         >
-          <div className="bg-white rounded-lg shadow-xl border border-black/10 p-4 relative">
+          <div className="bg-black rounded-2xl shadow-xl border border-black/10 p-4 relative transition-all duration-200 ease-out">
             {/* ✅ KRUISJE: Sluit chatwolk en toon niet meer */}
             <button
               onClick={handleDismissChatBubble}
-              className="absolute top-2 right-2 text-black/70 hover:text-black transition-colors"
+              className="absolute top-2 right-2 text-white/70 hover:text-white transition-colors"
               aria-label="Sluit chatwolk"
             >
               <X className="w-4 h-4" />
@@ -719,13 +719,10 @@ export function ChatPopup() {
             
             {/* ✅ SPEECH BUBBLE ARROW: Wijs naar chatbutton */}
             <div className="absolute bottom-0 right-6 transform translate-y-full">
-              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-black/10"></div>
-            </div>
-            <div className="absolute bottom-0 right-6 transform translate-y-full -mt-px">
-              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
+              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-black/90"></div>
             </div>
             
-            <p className="text-sm text-black font-medium leading-relaxed pr-6">
+            <p className="text-sm text-white font-medium leading-relaxed pr-6">
               Ik ben een AI assistent. Heb je vragen over dit product?
             </p>
           </div>
@@ -971,7 +968,7 @@ export function ChatPopup() {
                       </p>
                       <span className={cn(
                         safeChatConfig.messages?.timestamp?.fontSize || 'text-xs',
-                        safeChatConfig.messages?.timestamp?.textColor || 'text-black/70',
+                        msg.role === 'user' ? 'text-white/80' : (safeChatConfig.messages?.timestamp?.textColor || 'text-black/70'),
                         safeChatConfig.messages?.timestamp?.marginTop,
                         safeChatConfig.messages?.timestamp?.display
                       )}>
