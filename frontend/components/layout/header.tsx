@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ShoppingCart, Mail, X, Package } from "lucide-react";
@@ -30,6 +31,7 @@ export function Header() {
   const { isCartOpen, openCart, closeCart } = useUI();
   const pathname = usePathname();
   const [logoShowPlaceholder, setLogoShowPlaceholder] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const isOnCartPage = pathname === '/cart';
 
@@ -47,6 +49,65 @@ export function Header() {
     // ✅ DIRECT: Navigeer direct naar winkelwagenpagina
     window.location.href = '/cart';
   };
+
+  // ✅ Portal mount: voorkomt stacking context issues met banner
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const cartSidebar = (
+    <>
+      <div
+        className={cn('fixed inset-0 backdrop-blur-sm', DESIGN_SYSTEM.layout.sidebarZIndex.sidebarBackdrop)}
+        style={{
+          background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.2) 0%, rgba(122, 122, 125, 0.2) 100%)', // ✅ GRADIENT met opacity (was bg-black/20)
+        }}
+        onClick={closeCart}
+      />
+      <div 
+        className={cn(
+          'fixed right-0 w-full max-w-md bg-white shadow-2xl animate-slide-in-right flex flex-col',
+          DESIGN_SYSTEM.layout.sidebarZIndex.sidebar,
+          'md:w-96' // ✅ DESKTOP: Vaste breedte op desktop
+        )}
+        style={{
+          top: DESIGN_SYSTEM.layout.sidebar?.top ?? '0',
+          height: DESIGN_SYSTEM.layout.sidebar?.height ?? '100vh',
+        }}
+      >
+        {/* ✅ HEADER: Duidelijke sluit button */}
+        <div 
+          className="flex items-center justify-between flex-shrink-0 border-b"
+          style={{
+            padding: DESIGN_SYSTEM.spacing[6],
+            borderColor: DESIGN_SYSTEM.colors.border.default,
+          }}
+        >
+          <h2 
+            style={{
+              fontSize: DESIGN_SYSTEM.typography.fontSize.xl,
+              fontWeight: DESIGN_SYSTEM.typography.fontWeight.bold || '700', // ✅ DIKKER: Bold (700) zoals gevraagd
+              color: DESIGN_SYSTEM.colors.text.primary,
+              fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ EXACT: Noto Sans
+            }}
+          >
+            Winkelwagen
+          </h2>
+          <button 
+            onClick={closeCart} 
+            className="p-2 hover:bg-gray-50 rounded transition-colors"
+            aria-label="Sluit winkelwagen"
+          >
+            <X className="h-6 w-6" />
+          </button>
+        </div>
+        {/* ✅ CONTENT: Scrollbaar met optimale mobiele layout */}
+        <div className="flex-1 overflow-hidden">
+          <MiniCart onClose={closeCart} />
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <>
@@ -196,59 +257,7 @@ export function Header() {
       </header>
 
       {/* CART SIDEBAR - ✅ OPTIMAAL MOBIEL: Swipe to close, betere sluit functionaliteit */}
-      {isCartOpen && (
-        <>
-          <div
-            className={cn('fixed inset-0 backdrop-blur-sm', DESIGN_SYSTEM.layout.sidebarZIndex.sidebarBackdrop)}
-            style={{
-              background: 'linear-gradient(135deg, rgba(60, 60, 61, 0.2) 0%, rgba(122, 122, 125, 0.2) 100%)', // ✅ GRADIENT met opacity (was bg-black/20)
-            }}
-            onClick={closeCart}
-          />
-          <div 
-            className={cn(
-              'fixed right-0 w-full max-w-md bg-white shadow-2xl animate-slide-in-right flex flex-col',
-              DESIGN_SYSTEM.layout.sidebarZIndex.sidebar,
-              'md:w-96' // ✅ DESKTOP: Vaste breedte op desktop
-            )}
-            style={{
-              top: DESIGN_SYSTEM.layout.sidebar?.top ?? '0',
-              height: DESIGN_SYSTEM.layout.sidebar?.height ?? '100vh',
-            }}
-          >
-            {/* ✅ HEADER: Duidelijke sluit button */}
-            <div 
-              className="flex items-center justify-between flex-shrink-0 border-b"
-              style={{
-                padding: DESIGN_SYSTEM.spacing[6],
-                borderColor: DESIGN_SYSTEM.colors.border.default,
-              }}
-            >
-              <h2 
-                style={{
-                  fontSize: DESIGN_SYSTEM.typography.fontSize.xl,
-                  fontWeight: DESIGN_SYSTEM.typography.fontWeight.bold || '700', // ✅ DIKKER: Bold (700) zoals gevraagd
-                  color: DESIGN_SYSTEM.colors.text.primary,
-                  fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary, // ✅ EXACT: Noto Sans
-                }}
-              >
-                Winkelwagen
-              </h2>
-              <button 
-                onClick={closeCart} 
-                className="p-2 hover:bg-gray-50 rounded transition-colors"
-                aria-label="Sluit winkelwagen"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-            {/* ✅ CONTENT: Scrollbaar met optimale mobiele layout */}
-            <div className="flex-1 overflow-hidden">
-              <MiniCart onClose={closeCart} />
-            </div>
-          </div>
-        </>
-      )}
+      {isCartOpen && isMounted && createPortal(cartSidebar, document.body)}
     </>
   );
 }
