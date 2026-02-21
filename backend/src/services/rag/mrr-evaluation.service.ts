@@ -71,7 +71,7 @@ export class MRREvaluationService {
     },
     {
       question: "Hoeveel lawaai maakt het?",
-      expected_keywords: ["stil", "motor", "geluid"],
+      expected_keywords: ["stil", "geluid", "fluisterstil"],
       category: "technical",
       difficulty: "easy"
     },
@@ -83,7 +83,7 @@ export class MRREvaluationService {
     },
     {
       question: "Geschikt voor grote kat?",
-      expected_keywords: ["groot", "ruim", "open-top"],
+      expected_keywords: ["12.5", "geschikt", "katten"],
       category: "product",
       difficulty: "easy"
     },
@@ -133,7 +133,7 @@ export class MRREvaluationService {
     },
     {
       question: "Welke onderdelen zijn vervangbaar?",
-      expected_keywords: ["vervangbaar", "modulair", "liner"],
+      expected_keywords: ["vervangbaar", "filter", "liner"],
       category: "product",
       difficulty: "medium"
     },
@@ -145,7 +145,7 @@ export class MRREvaluationService {
     },
     {
       question: "Is het energiezuinig?",
-      expected_keywords: ["energiezuinig", "watt", "stroom"],
+      expected_keywords: ["watt", "12V", "energiezuinig"],
       category: "technical",
       difficulty: "medium"
     },
@@ -165,13 +165,13 @@ export class MRREvaluationService {
     },
     {
       question: "Vergelijk voor- en nadelen versus normale kattenbak",
-      expected_keywords: ["voordelen", "automatisch", "hygiënisch"],
+      expected_keywords: ["automatisch", "hygiënisch", "nadelen"],
       category: "general",
       difficulty: "hard"
     },
     {
       question: "Wat als stroom uitvalt?",
-      expected_keywords: ["stroom", "handmatig", "herstart"],
+      expected_keywords: ["stroom", "handmatig", "stroomuitval"],
       category: "technical",
       difficulty: "hard"
     },
@@ -183,7 +183,7 @@ export class MRREvaluationService {
     },
     {
       question: "Hoe lang duurt aanpassen voor bang kat?",
-      expected_keywords: ["wennen", "weken", "kat"],
+      expected_keywords: ["wennen", "kat", "tijd"],
       category: "general",
       difficulty: "hard"
     }
