@@ -5,6 +5,7 @@ import { useCart } from "@/context/cart-context";
 import { useUI } from "@/context/ui-context";
 import { usePathname } from "next/navigation";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { cn } from "@/lib/utils";
 
 /**
  * ✅ MOBILE BOTTOM NAV - Smooth winkelwagenbutton
@@ -22,8 +23,8 @@ export function MobileBottomNav() {
   // ✅ SLIM: Alleen tonen op productpagina's (pattern: /product/...)
   const isProductPage = pathname?.startsWith('/product/') || false;
   
-  // ✅ NIET TONEN: Als niet op productpagina
-  if (!isProductPage) {
+  // ✅ NIET TONEN: Als niet op productpagina of cart sidebar open
+  if (!isProductPage || isCartOpen) {
     return null;
   }
 
@@ -55,17 +56,18 @@ export function MobileBottomNav() {
         borderColor: nav.barBorderColor ?? DESIGN_SYSTEM.colors.gray[800],
       }}
     >
-      <div className="flex items-center justify-center py-2.5 px-4">
+      <div className="flex items-center justify-center py-2.5 px-3">
         <button
           onClick={handleCartClick}
           disabled={isOnCartPage}
-          className={`
-            relative flex items-center justify-center gap-2 px-6 rounded-md
-            transition-transform duration-200 ease-out active:scale-[0.97]
-            ${nav.buttonPaddingY ?? 'py-2.5'}
-            ${nav.buttonRounded ?? 'rounded-md'}
-            ${isOnCartPage ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.02] hover:opacity-90'}
-          `}
+          className={cn(
+            'relative flex items-center justify-center rounded-md transition-transform duration-200 ease-out active:scale-[0.97]',
+            nav.buttonPaddingY ?? 'py-2.5',
+            nav.buttonPaddingX ?? 'px-4',
+            nav.buttonRounded ?? 'rounded-md',
+            nav.buttonGap ?? 'gap-1.5',
+            isOnCartPage ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.02] hover:opacity-90'
+          )}
           style={{
             backgroundColor: nav.buttonBg ?? DESIGN_SYSTEM.colors.secondary,
             color: nav.buttonText ?? DESIGN_SYSTEM.colors.text.primary,

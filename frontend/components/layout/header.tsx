@@ -212,8 +212,8 @@ export function Header() {
               'md:w-96' // ✅ DESKTOP: Vaste breedte op desktop
             )}
             style={{
-              top: DESIGN_SYSTEM.layout.header.totalHeight, // ✅ DRY: Start onder banner + navbar (geen overlap)
-              height: `calc(100vh - ${DESIGN_SYSTEM.layout.header.totalHeight})`, // ✅ DRY: Volledige hoogte minus banner + navbar
+              top: DESIGN_SYSTEM.layout.sidebar?.top ?? '0',
+              height: DESIGN_SYSTEM.layout.sidebar?.height ?? '100vh',
             }}
           >
             {/* ✅ HEADER: Duidelijke sluit button */}

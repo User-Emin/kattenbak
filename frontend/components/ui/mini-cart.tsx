@@ -43,8 +43,8 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
 
   return (
     <div className={`flex flex-col h-full ${COMPONENT_COLORS.sidebar.bg}`}>
-      {/* ✅ MOBIEL: Scrollable items section met optimale padding */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+      {/* ✅ MOBIEL: Scrollable items section met extra bottom padding zodat items niet onder overzicht vallen */}
+      <div className={`flex-1 overflow-y-auto p-4 sm:p-6 ${DESIGN_SYSTEM.layout.sidebar?.itemsPaddingBottom ?? ''}`}>
         <h2 className={`text-xl font-normal mb-6 ${COMPONENT_COLORS.sidebar.text}`}>Winkelwagen ({itemCount})</h2>
         
         <div className="space-y-4">
@@ -104,7 +104,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
       </div>
 
       {/* ✅ MOBIEL: Fixed footer met optimale padding */}
-      <div className={`flex-shrink-0 ${COMPONENT_COLORS.sidebar.bg} border-t ${COMPONENT_COLORS.sidebar.border} p-4 sm:p-6 pt-4 sm:pt-5`}>
+      <div className={`flex-shrink-0 ${COMPONENT_COLORS.sidebar.bg} border-t ${COMPONENT_COLORS.sidebar.border} ${DESIGN_SYSTEM.layout.sidebar?.footerPadding ?? 'p-4 sm:p-6'} ${DESIGN_SYSTEM.layout.sidebar?.footerPaddingTop ?? 'pt-4 sm:pt-5'}`}>
         {/* Overzicht Section - Direct op achtergrond */}
         <div className="space-y-2 mb-5">
           <h3 className={`font-semibold ${COMPONENT_COLORS.sidebar.text} text-base mb-3`}>Overzicht</h3>

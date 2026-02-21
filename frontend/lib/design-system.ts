@@ -249,6 +249,14 @@ export const DESIGN_SYSTEM = {
       sidebar: 'z-[170]', // ✅ BOVEN header (z-[165]) en mobile bottom nav (z-[200]) - sidebar moet boven header
       sidebarBackdrop: 'z-[160]', // ✅ ONDER sidebar maar BOVEN header (z-[165])
     },
+    // ✅ SIDEBAR LAYOUT: Centrale config voor overlap + padding
+    sidebar: {
+      top: '0',
+      height: '100vh',
+      itemsPaddingBottom: 'pb-32',
+      footerPadding: 'p-4 sm:p-6',
+      footerPaddingTop: 'pt-4 sm:pt-5',
+    },
     
     // ✅ MOBILE BOTTOM NAV: Zwarte balk, witte knop (mobiel) – centrale configuratie (geen hardcode)
     mobileBottomNav: {
