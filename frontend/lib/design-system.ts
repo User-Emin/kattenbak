@@ -251,11 +251,12 @@ export const DESIGN_SYSTEM = {
     },
     // ✅ SIDEBAR LAYOUT: Centrale config voor overlap + padding
     sidebar: {
-      top: '0',
-      height: '100vh',
+      top: 'calc(40px + 72px)', // ✅ DRY: header.totalHeight (banner + navbar)
+      height: 'calc(100vh - (40px + 72px))', // ✅ DRY: viewport minus header
       itemsPaddingBottom: 'pb-32',
       footerPadding: 'p-4 sm:p-6',
       footerPaddingTop: 'pt-4 sm:pt-5',
+      footerSafeAreaPadding: 'pb-6 sm:pb-6',
     },
     
     // ✅ MOBILE BOTTOM NAV: Zwarte balk, witte knop (mobiel) – centrale configuratie (geen hardcode)

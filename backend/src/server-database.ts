@@ -12,6 +12,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { existsSync } from 'fs';
+import adminVariantsRoutes from './routes/admin/variants.routes';
 
 // ✅ CRASH-PREVENTION: Proces blijft draaien bij uncaught exception of unhandled rejection
 process.on('uncaughtException', (err) => {
@@ -104,6 +105,11 @@ if (existsSync(UPLOADS_DIR)) {
 } else {
   console.warn('⚠️ Uploads dir not found:', UPLOADS_DIR, '- /uploads will 404');
 }
+
+// =============================================================================
+// ADMIN VARIANTS ROUTES (Router-based, auth/admin protected)
+// =============================================================================
+app.use('/api/v1/admin/variants', adminVariantsRoutes);
 
 // ENV config
 const ENV = {
