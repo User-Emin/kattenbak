@@ -24,6 +24,20 @@
       "importance": "critical"
     },
     {
+      "type": "safety",
+      "title": "Veiligheidsinstructies (Safety Instructions)",
+      "content": "Volg deze veiligheidsinstructies strikt. 1) Gebruik alleen de originele stroomkabel en adapter om schade en gevaar te voorkomen. 2) Zet de stroom uit vóór gebruik of demontage; dompel de basis en elektrische onderdelen nooit in water. 3) Plaats het product op een stabiele, vlakke ondergrond; niet op een verhoogde plek i.v.m. valgevaar. 4) Niet geschikt voor kittens onder 6 maanden; begeleid je kat bij het gebruik en zorg dat ze niet aan de stroomkabel knagen. 5) Alleen geschikt voor katten zwaarder dan 1,5 kg; aanbevolen maximaal gewicht 12,5 kg. 6) Voeg tijdens gebruik geen nieuwe kattenbakvulling toe. 7) Steek nooit je handen in de trommel terwijl de machine draait. 8) Wissel niet tussen reinigen en legen; wacht tot de huidige taak klaar is. 9) Het niet volgen van deze richtlijnen kan tot ongelukken bij je huisdier leiden; volg de gebruiksaanwijzing strikt.",
+      "keywords": ["veiligheidsinstructies", "safety", "waarschuwing", "kitten", "6 maanden", "gewicht", "1.5 kg", "12.5 kg", "stroomkabel", "adapter", "water", "stabiel", "vlak", "trommel", "reiniging", "legen", "handleiding"],
+      "importance": "critical"
+    },
+    {
+      "type": "specification",
+      "title": "Gewicht en geschiktheid: katten en kittens",
+      "content": "De slimme automatische kattenbak is geschikt voor katten van minimaal 1,5 kg tot maximaal 12,5 kg. Daarmee past een Maine Coon of andere groot ras binnen de specificaties, zolang het gewicht onder 12,5 kg blijft. Niet geschikt voor kittens onder 6 maanden; begeleid je kat bij de eerste keren. Ruim open interieur biedt voldoende ruimte voor grote katten.",
+      "keywords": ["gewicht", "geschiktheid", "Maine Coon", "mainecoon", "grote kat", "1.5 kg", "12.5 kg", "kitten", "6 maanden", "niet geschikt", "past", "ruimte"],
+      "importance": "critical"
+    },
+    {
       "type": "feature",
       "title": "App Control & Health Monitoring",
       "content": "Slimme app om je kattenbak te bedienen vanaf je telefoon. Monitor het toiletgedrag van je kat: frequentie, tijdstip, duur, gewichtsveranderingen. Krijg push-meldingen wanneer de bak geleegd moet worden of bij afwijkend gedrag. Perfect voor het vroegtijdig detecteren van gezondheidsproblemen zoals nierziekte of diabetes. Compatibel met iOS en Android.",
@@ -32,15 +46,15 @@
     },
     {
       "type": "specification",
-      "title": "10.5L XL Afvalbak Capaciteit - Grootste in Klasse",
-      "content": "Extra grote 10.5 liter afvalbak. Dit is 16% groter dan standaard ronde automatische kattenbakken (9L) en maar liefst 50% groter dan vierkante concurrenten (7L). Perfect voor meerdere katten of als je minder vaak wilt legen. Gemiddeld 7-10 dagen voor één kat, 3-5 dagen voor twee katten. De grootste capaciteit op de markt!",
-      "keywords": ["capaciteit", "10.5L", "10.5 liter", "groot", "XL", "afval", "ruim", "meerdere katten", "grootste"],
+      "title": "10.5L XL Afvalbak Capaciteit",
+      "content": "Extra grote 10.5 liter afvalbak. Geschikt voor meerdere katten of als je minder vaak wilt legen. Gemiddeld 7-10 dagen voor één kat, 3-5 dagen voor twee katten.",
+      "keywords": ["capaciteit", "10.5L", "10.5 liter", "groot", "XL", "afval", "ruim", "meerdere katten"],
       "importance": "critical"
     },
     {
       "type": "feature",
       "title": "High-Efficiency Filter Systeem",
-      "content": "Hoogwaardig dubbel filtersysteem dat geuren effectief neutraliseert met actieve kool. Houd je huis fris en geurvrij. Vervangbare filters die 3-6 maanden meegaan. Veel effectiever dan standaard kattenbakken zonder filter. Het filter zuivert de lucht continu tijdens en na gebruik.",
+      "content": "Hoogwaardig dubbel filtersysteem dat geuren effectief neutraliseert met actieve kool. Houd je huis fris en geurvrij. Vervangbare filters die 3-6 maanden meegaan. Het filter zuivert de lucht continu tijdens en na gebruik.",
       "keywords": ["filter", "geur", "hygiëne", "fris", "geurvrij", "neutraliseren", "actieve kool"],
       "importance": "high"
     },
@@ -54,15 +68,15 @@
     {
       "type": "specification",
       "title": "Ultra-Quiet Motor (<40dB) - Fluisterstil",
-      "content": "Ultra-stille motor met minder dan 40 decibel geluidsniveau. Dat is zachter dan normaal praten (60dB) en vergelijkbaar met een bibliotheek. De meeste katten wennen er snel aan en schrikken niet. Veel stiller dan andere automatische bakken die 50-60dB produceren. Moderne geluidsdemping technologie.",
+      "content": "Ultra-stille motor met minder dan 40 decibel geluidsniveau. Zachter dan normaal praten (60dB), vergelijkbaar met een bibliotheek. De meeste katten wennen er snel aan en schrikken niet. Moderne geluidsdemping technologie.",
       "keywords": ["geluid", "lawaai", "decibel", "40dB", "stil", "quiet", "fluisterstil", "motor"],
       "importance": "high"
     },
     {
       "type": "specification",
       "title": "Compact Footprint, Groot Interieur",
-      "content": "Compacte buitenmaten (55cm x 45cm x 35cm) met verrassend ruim interieur. De slimme open-top constructie maximaliseert de interne ruimte. Ideaal voor kleine appartementen en ruimtes. Geschikt voor katten tot 7kg, met voldoende ruimte voor zelfs grote katten.",
-      "keywords": ["compact", "afmetingen", "ruimtebesparend", "groot interieur", "efficient", "55cm", "45cm", "35cm"],
+      "content": "Productafmetingen: 55×51×53.6cm (550×510×536mm). Gewicht: 11kg. Compacte voetafdruk met ruim open-top interieur. Past in de meeste badkamers en bijkeukens. Verpakking: 60×60×55cm. Geschikt voor katten van 1,5 kg tot 12,5 kg, met voldoende ruimte voor grote rassen zoals Maine Coon.",
+      "keywords": ["compact", "afmetingen", "ruimtebesparend", "groot interieur", "efficient", "55cm", "51cm", "11kg", "gewicht", "1.5 kg", "12.5 kg", "Maine Coon"],
       "importance": "high"
     },
     {
@@ -80,51 +94,30 @@
       "importance": "critical"
     },
     {
-      "type": "comparison",
-      "title": "Vergelijking: Onze Kattenbak vs Ronde Concurrenten",
-      "content": "Onze kattenbak heeft cruciale voordelen ten opzichte van ronde automatische bakken: Open-top design (geen benauwend deksel), Dubbele veiligheidssensoren (vs enkele sensor), 10.5L capaciteit (vs 9L = 16% meer), Anti-splash hoge wanden, en Modulair demonteerbaar ontwerp. Beide hebben zelfreiniging en app-bediening.",
-      "keywords": ["vergelijking", "ronde bak", "concurrenten", "beter", "voordelen"],
+      "type": "feature",
+      "title": "Open-Top Design - Voordelen voor Kattenwelzijn",
+      "content": "Open-top design zonder deksel. Katten voelen zich niet opgesloten, betere ventilatie voorkomt geuraccumulatie, eigenaar kan gedrag observeren, makkelijker toegang voor oudere katten.",
+      "keywords": ["open-top", "voordeel", "welzijn", "stress-vrij", "geen deksel"],
       "importance": "high"
     },
     {
-      "type": "comparison",
-      "title": "Vergelijking: Onze Kattenbak vs Vierkante Concurrenten",
-      "content": "Vergeleken met vierkante automatische bakken biedt onze kattenbak: Volledige automatische zelfreiniging (vs handmatig), Open-top low-stress design, Dubbele veiligheidssensoren, High-efficiency filter, maar liefst 50% grotere afvalbak (10.5L vs 7L), Anti-splash wanden, en Modulair design. Vierkante bakken zijn goedkoper maar missen essentiële features.",
-      "keywords": ["vergelijking", "vierkante bak", "handmatig", "goedkoop", "verschillen"],
-      "importance": "high"
-    },
-    {
-      "type": "comparison",
-      "title": "10.5L Capaciteit - Grootste Afvalbak op de Markt",
-      "content": "Met 10.5 liter is onze afvalbak de grootste in de categorie automatische kattenbakken. Vergelijking: Onze bak 10.5L | Ronde concurrenten 9L (+16%) | Vierkante concurrenten 7L (+50%). Dit betekent minder vaak legen: 7-10 dagen voor 1 kat vs 5-7 dagen bij kleinere bakken. Voor huishoudens met 2 katten: 3-5 dagen vs 2-3 dagen.",
-      "keywords": ["10.5L", "grootste", "capaciteit", "vergelijking", "7L", "9L", "beste"],
-      "importance": "critical"
-    },
-    {
-      "type": "comparison",
-      "title": "Open-Top Design - Uniek Voordeel voor Katten Welzijn",
-      "content": "Ons open-top design zonder deksel is een unique selling point. Voordelen: Katten voelen zich niet opgesloten (anti-claustrofobie), Betere ventilatie voorkomt geuraccumulatie, Eigenaar kan gedrag observeren, Makkelijker toegang voor oudere katten. Nadeel concurrenten: Ronde bakken hebben gesloten deksel (claustrofobisch), vierkante bakken zijn soms open maar missen automatisering.",
-      "keywords": ["open-top", "unique", "voordeel", "welzijn", "stress-vrij", "geen deksel"],
-      "importance": "critical"
-    },
-    {
-      "type": "comparison",
-      "title": "Dubbele Veiligheidssensoren - Premium Veiligheidsfeature",
-      "content": "Onze dubbele veiligheidssensoren (gewicht + infrarood) bieden superieure bescherming. Vergelijking: Onze bak heeft 2 onafhankelijke sensoren | Ronde concurrenten hebben meestal 1 sensor | Vierkante bakken hebben vaak geen sensoren (handmatig). De dubbele sensoren detecteren je kat in 0.1 seconde en stoppen de reiniging instant. Dit voorkomt 100% van ongevallen.",
-      "keywords": ["dubbele sensoren", "veiligheid", "premium", "unique", "bescherming", "beste"],
+      "type": "safety",
+      "title": "Dubbele Veiligheidssensoren",
+      "content": "Dubbele veiligheidssensoren (gewicht + infrarood) voor betere bescherming. Twee onafhankelijke sensoren detecteren je kat in 0.1 seconde en stoppen de reiniging direct.",
+      "keywords": ["dubbele sensoren", "veiligheid", "bescherming"],
       "importance": "critical"
     },
     {
       "type": "use_case",
-      "title": "Perfect voor Grote Katten (tot 7kg)",
-      "content": "Ondanks compacte buitenmaat geschikt voor grote katten tot 7kg. Het ruime open interieur biedt voldoende ruimte, zelfs voor Maine Coons, Ragdolls en andere grote rassen. Het compacte uiterlijk is misleidend - binnenin is het zeer ruim dankzij het open-top ontwerp zonder plafond.",
-      "keywords": ["grote kat", "Maine Coon", "Ragdoll", "zwaar", "ruim", "7kg"],
+      "title": "Perfect voor Grote Katten (1,5–12,5 kg)",
+      "content": "Geschikt voor katten van 1,5 kg tot 12,5 kg. Het ruime open interieur biedt voldoende ruimte voor Maine Coons, Ragdolls en andere grote rassen binnen dit gewichtsbereik. Niet geschikt voor kittens onder 6 maanden. Het open-top ontwerp zonder plafond maximaliseert de bruikbare ruimte.",
+      "keywords": ["grote kat", "Maine Coon", "Ragdoll", "zwaar", "ruim", "12.5 kg", "1.5 kg", "kitten", "6 maanden"],
       "importance": "high"
     },
     {
       "type": "use_case",
       "title": "Ideaal voor Meerdere Katten (2-3 katten)",
-      "content": "Door de extra grote 10.5L capaciteit perfect geschikt voor huishoudens met 2-3 katten. De app monitort gebruik per kat (als ze verschillende tijden gebruiken). Je hoeft de bak slechts om de 3-5 dagen te legen bij 2 katten, vs dagelijks bij handmatige bakken. Bespaart enorm veel tijd bij meerdere katten.",
+      "content": "Door de 10.5L capaciteit geschikt voor huishoudens met 2-3 katten. De app monitort gebruik per kat. Bij 2 katten legen om de 3-5 dagen.",
       "keywords": ["meerdere katten", "2 katten", "3 katten", "huishouden", "gezin"],
       "importance": "high"
     },
@@ -138,7 +131,7 @@
     {
       "type": "faq",
       "title": "Hoeveel lawaai maakt de reiniging? Is het stil genoeg?",
-      "content": "De motor is ultra-stil met minder dan 40 decibel. Ter vergelijking: normaal praten is 60dB, een bibliotheek is 30-40dB. De meeste katten wennen er binnen 2-3 dagen aan en schrikken niet meer. Veel stiller dan andere automatische bakken die 50-60dB produceren. De reiniging duurt slechts 2-3 minuten.",
+      "content": "De motor is ultra-stil met minder dan 40 decibel (zachter dan normaal praten, vergelijkbaar met een bibliotheek). De meeste katten wennen er binnen 2-3 dagen aan. De reiniging duurt 2-3 minuten.",
       "keywords": ["geluid", "lawaai", "decibel", "stil", "schrikken", "40dB", "quiet"],
       "importance": "high"
     },
@@ -159,14 +152,14 @@
     {
       "type": "faq",
       "title": "Hoe vaak moet ik de afvalbak legen?",
-      "content": "Gemiddeld: Voor één kat: 7-10 dagen. Voor twee katten: 3-5 dagen. Voor drie katten: 2-3 dagen. De app stuurt een push-melding wanneer de bak 80% vol is. De 10.5L capaciteit is 16-50% groter dan concurrenten, dus je leegt minder vaak. De app toont exact vulpercentage.",
+      "content": "Gemiddeld: voor één kat 7-10 dagen, voor twee katten 3-5 dagen, voor drie katten 2-3 dagen. De app stuurt een push-melding wanneer de bak 80% vol is en toont het vulpercentage.",
       "keywords": ["legen", "frequentie", "vaak", "capaciteit", "wanneer", "hoelang"],
       "importance": "high"
     },
     {
       "type": "faq",
       "title": "Hoeveel kost het stroomverbruik per maand?",
-      "content": "Zeer energiezuinig met slechts 3-5 kWh per maand (afhankelijk van gebruik). Dat is ongeveer €0.75 - €1.25 per maand bij gemiddelde elektriciteitsprijzen. Vergelijkbaar met een LED lamp. De motor gebruikt alleen stroom tijdens reiniging (2-3 minuten per keer). Stand-by verbruik is minimaal (<1W).",
+      "content": "Zeer energiezuinig. De kattenbak werkt op DC 12V/2A (maximaal 24 watt tijdens reiniging). Jaarlijks verbruik is verwaarloosbaar, vergelijkbaar met een LED-lamp. De motor gebruikt alleen stroom tijdens reinigingscycli (2-3 minuten per keer). Stand-by verbruik is minimaal. Energiezuinig ontwerp voor dagelijks gebruik.",
       "keywords": ["stroomverbruik", "energie", "kosten", "elektriciteit", "kWh", "hoeveel"],
       "importance": "medium"
     },
@@ -180,15 +173,15 @@
     {
       "type": "faq",
       "title": "Hoe lang duurt de garantie en wat dekt het?",
-      "content": "2 jaar volledige fabrieksgarantie op alle onderdelen (motor, sensoren, elektronica). Dekt productiefouten en defecten. Niet gedekt: normale slijtage, verkeerd gebruik, schade door huisdier. Binnen 30 dagen volledige geld-terug-garantie als je niet tevreden bent. Technische support via email/telefoon. Onderdelen leverbaar tot 5 jaar na aankoop.",
-      "keywords": ["garantie", "warranty", "defect", "reparatie", "service", "hoelang"],
+      "content": "2 jaar fabrieksgarantie conform EU-wetgeving. De garantie dekt fabricagefouten en defecten aan motor, sensoren en elektronica. Niet gedekt: normale slijtage, verkeerd gebruik, schade door huisdier. Binnen 30 dagen volledige geld-terug-garantie als je niet tevreden bent. Technische support via klantenservice. Onderdelen leverbaar tot 5 jaar na aankoop.",
+      "keywords": ["garantie", "2 jaar", "dekt", "warranty", "defect", "reparatie", "service", "hoelang"],
       "importance": "medium"
     },
     {
       "type": "specification",
       "title": "Technische Specificaties en Afmetingen",
-      "content": "Afmetingen: 55cm (L) x 45cm (B) x 35cm (H). Gewicht: 5.2kg (leeg). Afvalbak capaciteit: 10.5L. Geschikt voor katten: tot 7kg. Stroomverbruik: 15W (tijdens reiniging), <1W (stand-by). Geluidsni veau: <40dB. Materiaal: ABS kunststof (BPA-vrij, voedselcontact-veilig). Kleur: Wit of Grijs. Stroomaansluiting: 220-240V, 50Hz (EU plug). Sensoren: Gewichtssensor + Infrarood bewegingssensor.",
-      "keywords": ["specificaties", "afmetingen", "gewicht", "technisch", "specs", "details", "55cm", "45cm", "35cm", "5.2kg"],
+      "content": "Afmetingen: 55×51×53.6cm (550×510×536mm). Gewicht: 11kg. Afvalbak capaciteit: 10.5L. Geschikt voor katten: 1,5 kg tot 12,5 kg; niet geschikt voor kittens onder 6 maanden. Voeding: DC 12V/2A adapter (max 24W tijdens reiniging). WiFi: 2.4GHz. Geluidsniveau: <40dB. Materiaal: PP, ABS en POM kunststof. Kleur: Grijs. Sensoren: Gewichtssensor + Infrarood bewegingssensor.",
+      "keywords": ["specificaties", "afmetingen", "gewicht", "technisch", "specs", "details", "55cm", "51cm", "11kg", "10.5L", "24W", "12V", "1.5 kg", "12.5 kg", "kitten", "6 maanden"],
       "importance": "high"
     },
     {
@@ -199,31 +192,31 @@
       "importance": "medium"
     },
     {
-      "type": "comparison",
-      "title": "App Control & Health Monitoring - Smart Advantage",
-      "content": "Onze app biedt volledige controle: Real-time monitoring van toiletbezoek (tijdstip, frequentie, duur), Gewichtstracking per bezoek (detecteert gewichtsverlies vroeg), Push-meldingen (bak vol, afwijkend gedrag, sensor waarschuwing), Remote bediening (start reiniging op afstand), Statistieken en grafieken (wekelijks/maandelijks overzicht). Vergelijking: Ronde concurrenten hebben basis app (alleen meldingen), Vierkante bakken hebben GEEN app.",
-      "keywords": ["app", "smart", "monitoring", "gezondheid", "vergelijking", "remote"],
+      "type": "feature",
+      "title": "App Control & Health Monitoring",
+      "content": "De app biedt real-time monitoring van toiletbezoek (tijdstip, frequentie, duur), gewichtstracking per bezoek, push-meldingen (bak vol, afwijkend gedrag), remote bediening en statistieken (wekelijks/maandelijks).",
+      "keywords": ["app", "smart", "monitoring", "gezondheid", "remote"],
       "importance": "high"
     },
     {
-      "type": "comparison",
-      "title": "High-Efficiency Filter - Superieure Geurcontrole",
-      "content": "Ons dubbel filter systeem met actieve kool elimineert 95% van geuren. Vergelijking: Onze bak heeft high-efficiency filter (actieve kool + zeoliet) | Ronde concurrenten hebben basis filter of geen filter | Vierkante bakken hebben meestal geen filter (open bak = directe geur). Filter gaat 3-6 maanden mee. Vervangingsfilters €12.99 per set van 3.",
-      "keywords": ["filter", "geurcontrole", "unique", "actieve kool", "vergelijking"],
+      "type": "feature",
+      "title": "High-Efficiency Filter",
+      "content": "Dubbel filtersysteem met actieve kool voor geurcontrole. Filter gaat 3-6 maanden mee. Vervangingsfilters €12.99 per set van 3.",
+      "keywords": ["filter", "geurcontrole", "actieve kool"],
       "importance": "high"
     },
     {
-      "type": "comparison",
-      "title": "Anti-Splash Hoge Wanden - Schone Vloeren Gegarandeerd",
-      "content": "Onze 35cm hoge zijwanden voorkomen 99% van morsen. Perfect voor actieve gravers. Vergelijking: Onze bak heeft anti-splash hoge wanden (35cm) | Ronde concurrenten hebben lagere wanden (25-28cm, meer morsen) | Vierkante bakken hebben standaard wanden (20-25cm). Betekent minder stofzuigen en dweilen rondom de bak. Ideaal bij laminaat/parket.",
-      "keywords": ["anti-splash", "hoge wanden", "schoon", "morsen", "unique", "35cm"],
+      "type": "feature",
+      "title": "Anti-Splash Hoge Wanden",
+      "content": "35cm hoge zijwanden beperken morsen. Geschikt voor actieve gravers. Minder schoonmaken rondom de bak; ideaal bij laminaat of parket.",
+      "keywords": ["anti-splash", "hoge wanden", "schoon", "morsen", "35cm"],
       "importance": "high"
     },
     {
-      "type": "comparison",
-      "title": "Modulair Design (OEM-Friendly) - Toekomstbestendig",
-      "content": "Volledig modulair ontwerp waarbij alle onderdelen vervangbaar en upgradebaar zijn. Vergelijking: Onze bak is volledig demonteerbaar (motor, sensoren, afvalbak, zeven - alles los verkrijgbaar) | Ronde concurrenten zijn niet modulair (hele unit vervangen bij defect) | Vierkante bakken zijn vast ontwerp. Betekent langere levensduur en lagere onderhoudskosten. Toekomst-proof voor firmware updates en hardware upgrades.",
-      "keywords": ["modulair", "OEM", "upgradebaar", "toekomstbestendig", "unique", "vervangbaar"],
+      "type": "usability",
+      "title": "Modulair Design",
+      "content": "Volledig demonteerbaar: motor, sensoren, afvalbak en zeven zijn los vervangbaar. Langere levensduur en lagere onderhoudskosten. Geschikt voor firmware-updates.",
+      "keywords": ["modulair", "upgradebaar", "toekomstbestendig", "vervangbaar"],
       "importance": "medium"
     }
   ]

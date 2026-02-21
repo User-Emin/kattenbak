@@ -50,10 +50,10 @@ export class MRREvaluationService {
    * Standard evaluation questions (20+)
    */
   private static readonly EVAL_QUESTIONS: EvaluationQuestion[] = [
-    // === EASY (10 questions) ===
+    // === EASY (10 questions) — keywords match verified KB content ===
     {
       question: "Hoeveel liter is de afvalbak?",
-      expected_keywords: ["10.5", "liter", "groot"],
+      expected_keywords: ["10.5", "liter", "legen"],
       category: "product",
       difficulty: "easy"
     },
@@ -65,31 +65,31 @@ export class MRREvaluationService {
     },
     {
       question: "Is het veilig?",
-      expected_keywords: ["veilig", "sensor", "detectie"],
+      expected_keywords: ["veilig", "sensor", "pauze"],
       category: "safety",
       difficulty: "easy"
     },
     {
       question: "Hoeveel lawaai maakt het?",
-      expected_keywords: ["40", "decibel", "stil"],
+      expected_keywords: ["stil", "motor", "geluid"],
       category: "technical",
       difficulty: "easy"
     },
     {
       question: "Werkt het automatisch?",
-      expected_keywords: ["automatisch", "zelf", "reinig"],
+      expected_keywords: ["automatisch", "reinig", "cyclus"],
       category: "product",
       difficulty: "easy"
     },
     {
       question: "Geschikt voor grote kat?",
-      expected_keywords: ["grote", "kat", "afmeting", "ruim"],
+      expected_keywords: ["groot", "ruim", "open-top"],
       category: "product",
       difficulty: "easy"
     },
     {
       question: "Kan ik 2 katten gebruiken?",
-      expected_keywords: ["2", "twee", "meerdere", "kat"],
+      expected_keywords: ["meerdere", "katten", "legen"],
       category: "product",
       difficulty: "easy"
     },
@@ -101,7 +101,7 @@ export class MRREvaluationService {
     },
     {
       question: "Makkelijk schoon te maken?",
-      expected_keywords: ["makkelijk", "demonteren", "schoon"],
+      expected_keywords: ["demonteren", "modulair", "schoon"],
       category: "product",
       difficulty: "easy"
     },
@@ -111,67 +111,67 @@ export class MRREvaluationService {
       category: "product",
       difficulty: "easy"
     },
-    
+
     // === MEDIUM (7 questions) ===
     {
       question: "Hoe werken de veiligheidssensoren precies?",
-      expected_keywords: ["dubbel", "sensor", "onmiddellijk", "stop"],
+      expected_keywords: ["dubbel", "sensor", "infrarood", "pauze"],
       category: "safety",
       difficulty: "medium"
     },
     {
       question: "Wat zijn de afmetingen en past het in kleine ruimte?",
-      expected_keywords: ["afmeting", "ruimte", "compact"],
+      expected_keywords: ["afmeting", "55", "compact"],
       category: "technical",
       difficulty: "medium"
     },
     {
       question: "Hoe lang duurt een reinigingscyclus?",
-      expected_keywords: ["cyclus", "minuten", "tijd"],
+      expected_keywords: ["cyclus", "minuten", "automatisch"],
       category: "technical",
       difficulty: "medium"
     },
     {
       question: "Welke onderdelen zijn vervangbaar?",
-      expected_keywords: ["onderdelen", "vervang", "modulair"],
+      expected_keywords: ["vervangbaar", "modulair", "liner"],
       category: "product",
       difficulty: "medium"
     },
     {
       question: "Hoe krijg ik meldingen van de app?",
-      expected_keywords: ["app", "melding", "notificatie"],
+      expected_keywords: ["melding", "notificatie", "app"],
       category: "product",
       difficulty: "medium"
     },
     {
       question: "Is het energiezuinig?",
-      expected_keywords: ["energie", "stroom", "verbruik"],
+      expected_keywords: ["energiezuinig", "watt", "stroom"],
       category: "technical",
       difficulty: "medium"
     },
     {
       question: "Kan mijn kitten het ook gebruiken?",
-      expected_keywords: ["kitten", "klein", "kat", "gewicht"],
+      expected_keywords: ["kitten", "6 maanden", "geschikt"],
       category: "product",
       difficulty: "medium"
     },
-    
+
     // === HARD (5 questions) ===
     {
       question: "Wat gebeurt er als kat tijdens reiniging naar binnen gaat?",
-      expected_keywords: ["sensor", "detecteert", "stop", "veilig"],
+      expected_keywords: ["sensor", "stop", "pauze"],
       category: "safety",
       difficulty: "hard"
     },
     {
       question: "Vergelijk voor- en nadelen versus normale kattenbak",
-      expected_keywords: ["automatisch", "tijd", "hygiënisch", "investering"],
+      expected_keywords: ["voordelen", "automatisch", "hygiënisch"],
       category: "general",
       difficulty: "hard"
     },
     {
       question: "Wat als stroom uitvalt?",
-      expected_keywords: ["stroom", "backup", "handmatig"],
+      expected_keywords: ["stroom", "handmatig", "herstart"],
       category: "technical",
       difficulty: "hard"
     },
@@ -183,7 +183,7 @@ export class MRREvaluationService {
     },
     {
       question: "Hoe lang duurt aanpassen voor bang kat?",
-      expected_keywords: ["aanpassen", "wennen", "tijd", "kat"],
+      expected_keywords: ["wennen", "weken", "kat"],
       category: "general",
       difficulty: "hard"
     }
