@@ -130,35 +130,21 @@ export function ChatPopup() {
           },
           modal: {
             slideIn: 'animate-in zoom-in-95 duration-300',
-            container: {
-              position: ds.layoutUtils.position.fixed,
-              inset: 'inset-0',
-              zIndex: 'z-[200]',
-              display: ds.layoutUtils.display.flex,
-              align: ds.layoutUtils.flex.align.center,
-              justify: ds.layoutUtils.flex.justify.center,
-              padding: 'p-3 sm:p-4',
-              pointerEvents: ds.layoutUtils.pointerEvents.none,
-              backgroundColor: 'bg-transparent',
-            },
-            content: {
-              pointerEvents: ds.layoutUtils.pointerEvents.auto,
-              width: ds.layoutUtils.sizing.widthFull,
-              display: ds.layoutUtils.display.flex,
-              direction: ds.layoutUtils.flex.direction.col,
-              position: ds.layoutUtils.position.relative,
-            },
           },
         },
         modal: {
-          maxWidth: 'max-w-md',
-          maxHeight: 'max-h-[85vh] sm:max-h-[80vh]',
+          maxWidth: 'max-w-[380px] sm:max-w-sm',
+          height: 'h-[min(85dvh,560px)] sm:h-[min(80dvh,600px)]',
           backgroundColor: 'bg-white',
           borderRadius: (ds.layout.chatModal as { modalBorderRadius?: string })?.modalBorderRadius ?? 'rounded-xl sm:rounded-2xl',
           shadow: ds.effects.shadow.lg,
           border: 'border border-black/10',
-          zIndex: 200,
+          zIndex: 'z-[200]',
           overflow: 'overflow-hidden',
+          position: 'fixed',
+          right: 'right-3 sm:right-4',
+          bottom: 'bottom-20 sm:bottom-24',
+          transition: 'transition-all duration-300',
         },
         header: {
           backgroundColor: 'bg-black',
@@ -778,331 +764,313 @@ export function ChatPopup() {
         </button>
       )}
 
-      {/* Chat Popup */}
+      {/* Chat Popup — stabiele vaste positie direct boven chat-knop */}
       {isExpanded && (
         <>
-          {/* ✅ ULTRA MODERN: Backdrop - 100% Dynamisch via DESIGN_SYSTEM */}
+          {/* Lichtgewicht backdrop om buiten-klik te vangen */}
           <div
             className={cn(
               safeChatConfig.animations.backdrop.position,
               safeChatConfig.animations.backdrop.inset,
               safeChatConfig.animations.backdrop.backgroundColor,
               safeChatConfig.animations.backdrop.blur,
-              safeChatConfig.animations.backdrop.fadeIn,
               safeChatConfig.animations.backdrop.zIndex,
-              safeChatConfig.animations.backdrop.mobileTransparent,
               safeChatConfig.animations.backdrop.mobilePointerEvents,
-              safeChatConfig.animations.backdrop.transition
             )}
             onClick={() => setIsExpanded(false)}
           />
-          
-          {/* ✅ ULTRA MODERN: Chat Modal - 100% Dynamisch via DESIGN_SYSTEM */}
-          <div className={cn(
-            safeChatConfig.animations.modal.container.position,
-            safeChatConfig.animations.modal.container.inset,
-            safeChatConfig.animations.modal.container.zIndex,
-            safeChatConfig.animations.modal.container.display,
-            safeChatConfig.animations.modal.container.align,
-            safeChatConfig.animations.modal.container.justify,
-            safeChatConfig.animations.modal.container.padding,
-            safeChatConfig.animations.modal.container.pointerEvents,
-            safeChatConfig.animations.modal.container.backgroundColor || 'bg-transparent', // ✅ VOLLEDIG TRANSPARANT: Container bedekt niets, achtergrond blijft volledig zichtbaar
-            safeChatConfig.animations.modal.container.transition
-          )}>
-            <div className={cn(
-              safeChatConfig.animations.modal.content.pointerEvents,
-              safeChatConfig.animations.modal.content.width,
-              safeChatConfig.modal.maxWidth,
-              safeChatConfig.modal.maxHeight,
-              safeChatConfig.modal.backgroundColor,
-              safeChatConfig.modal.borderRadius,
-              safeChatConfig.modal.shadow,
-              safeChatConfig.modal.border,
-              safeChatConfig.modal.overflow,
-              safeChatConfig.animations.modal.slideIn,
-              safeChatConfig.animations.modal.content.display,
-              safeChatConfig.animations.modal.content.direction,
-              safeChatConfig.animations.modal.content.position,
-              safeChatConfig.animations.modal.content.marginBottom || 'mb-4', // ✅ POPUP: Margin onderaan zodat modal boven button verschijnt
-              safeChatConfig.animations.modal.content.transition,
-              safeChatConfig.utilities?.fontFamily || 'font-sans'
-            )}>
-              
-              {/* ✅ MODERN: Header - Zwart (geen grijs), gegarandeerd via class + inline backup */}
-              <div
-                className={cn(
-                  safeChatConfig.header.sticky,
-                  'bg-black',
-                  safeChatConfig.header.textColor,
-                  safeChatConfig.header.padding,
-                  safeChatConfig.header.borderRadius,
-                  safeChatConfig.header.borderBottom
-                )}
-                style={{ backgroundColor: '#000000' }}
-              >
-                <div className={cn(
-                  safeChatConfig.header.container.display,
-                  safeChatConfig.header.container.justify,
-                  safeChatConfig.header.container.align,
-                  safeChatConfig.header.container.marginBottom
-                )}>
-                  {/* ✅ WHATSAPP: Alleen naam (geen subtitle) */}
-                  <h3 className={cn(
-                    safeChatConfig.header.title.fontSize || 'text-lg',
-                    safeChatConfig.header.title.fontWeight || 'font-semibold',
-                    safeChatConfig.header.title.textColor || 'text-white', // ✅ WIT: Via config (geen hardcode)
-                    safeChatConfig.header.title.letterSpacing || 'tracking-normal',
-                    safeChatConfig.utilities?.fontFamily || 'font-sans'
-                  )}>
-                    AI Assistent
-                  </h3>
-                  <button
-                    onClick={() => setIsExpanded(false)}
-                    className={cn(
-                      safeChatConfig.header.closeButton.textColor, // ✅ WIT: Via config (geen hardcode)
-                      safeChatConfig.header.closeButton.hoverTextColor, // ✅ HOVER: Via config (geen hardcode)
-                      safeChatConfig.header.closeButton.transition,
-                      safeChatConfig.header.closeButton.padding,
-                      safeChatConfig.header.closeButton.borderRadius,
-                      'hover:bg-white/10'
-                    )}
-                    aria-label="Sluit chat"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
 
-              {safeChatConfig.supportQuickReplies?.items?.length ? (
-                <div className={cn(
-                  safeChatConfig.supportQuickReplies.container.padding,
-                  safeChatConfig.supportQuickReplies.container.backgroundColor,
-                  safeChatConfig.supportQuickReplies.container.borderBottom
+          {/* Modal: direct fixed, vaste hoogte — resizet niet bij typen */}
+          <div className={cn(
+            safeChatConfig.modal.position,
+            safeChatConfig.modal.right,
+            safeChatConfig.modal.bottom,
+            safeChatConfig.modal.zIndex,
+            safeChatConfig.modal.maxWidth,
+            safeChatConfig.modal.height,
+            'w-full flex flex-col',
+            safeChatConfig.modal.backgroundColor,
+            safeChatConfig.modal.borderRadius,
+            safeChatConfig.modal.shadow,
+            safeChatConfig.modal.border,
+            safeChatConfig.modal.overflow,
+            safeChatConfig.animations.modal.slideIn,
+            safeChatConfig.utilities?.fontFamily || 'font-sans',
+          )}>
+
+            {/* Header */}
+            <div
+              className={cn(
+                safeChatConfig.header.sticky,
+                'bg-black shrink-0',
+                safeChatConfig.header.textColor,
+                safeChatConfig.header.padding,
+                safeChatConfig.header.borderRadius,
+                safeChatConfig.header.borderBottom,
+              )}
+              style={{ backgroundColor: '#000000' }}
+            >
+              <div className={cn(
+                safeChatConfig.header.container.display,
+                safeChatConfig.header.container.justify,
+                safeChatConfig.header.container.align,
+                safeChatConfig.header.container.marginBottom,
+              )}>
+                <h3 className={cn(
+                  safeChatConfig.header.title.fontSize || 'text-lg',
+                  safeChatConfig.header.title.fontWeight || 'font-semibold',
+                  safeChatConfig.header.title.textColor || 'text-white',
+                  safeChatConfig.header.title.letterSpacing || 'tracking-normal',
+                  safeChatConfig.utilities?.fontFamily || 'font-sans',
                 )}>
-                  <p className={cn(
-                    safeChatConfig.supportQuickReplies.label.fontSize,
-                    safeChatConfig.supportQuickReplies.label.fontWeight,
-                    safeChatConfig.supportQuickReplies.label.textColor,
-                    safeChatConfig.supportQuickReplies.label.marginBottom,
-                    safeChatConfig.utilities?.fontFamily || 'font-sans'
-                  )}>
-                    {safeChatConfig.supportQuickReplies.label.text}
-                  </p>
-                  <div className={cn(
-                    safeChatConfig.supportQuickReplies.list.display,
-                    safeChatConfig.supportQuickReplies.list.wrap,
-                    safeChatConfig.supportQuickReplies.list.gap
-                  )}>
-                    {safeChatConfig.supportQuickReplies.items.map((item, idx) => (
-                      <button
-                        key={`${item.label}-${idx}`}
-                        onClick={() => sendMessage(item.value)}
-                        disabled={isLoading}
-                        className={cn(
-                          safeChatConfig.supportQuickReplies.button.backgroundColor,
-                          safeChatConfig.supportQuickReplies.button.hoverBackgroundColor,
-                          safeChatConfig.supportQuickReplies.button.border,
-                          safeChatConfig.supportQuickReplies.button.borderRadius,
-                          safeChatConfig.supportQuickReplies.button.padding,
-                          safeChatConfig.supportQuickReplies.button.fontSize,
-                          safeChatConfig.supportQuickReplies.button.fontWeight,
-                          safeChatConfig.supportQuickReplies.button.fontFamily,
-                          safeChatConfig.supportQuickReplies.button.textColor,
-                          safeChatConfig.utilities?.transition?.colors || 'transition-colors',
-                          safeChatConfig.utilities?.disabled?.opacity || 'disabled:opacity-50',
-                          safeChatConfig.utilities?.disabled?.cursor || 'disabled:cursor-not-allowed'
-                        )}
-                      >
-                        {item.label}
-                      </button>
-                    ))}
+                  AI Assistent
+                </h3>
+                <button
+                  onClick={() => setIsExpanded(false)}
+                  className={cn(
+                    safeChatConfig.header.closeButton.textColor,
+                    safeChatConfig.header.closeButton.hoverTextColor,
+                    safeChatConfig.header.closeButton.transition,
+                    safeChatConfig.header.closeButton.padding,
+                    safeChatConfig.header.closeButton.borderRadius,
+                    'hover:bg-white/10',
+                  )}
+                  aria-label="Sluit chat"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Berichten — neemt resterende ruimte, scrollt intern */}
+            <div className={cn(
+              'flex-1 overflow-y-auto',
+              safeChatConfig.messages.container.padding,
+              safeChatConfig.messages.container.spacing,
+              safeChatConfig.messages.container.backgroundColor,
+              'flex flex-col',
+              safeChatConfig.utilities?.fontFamily || 'font-sans',
+            )}>
+
+              {messages.map((msg, idx) => (
+                <div
+                  key={idx}
+                  className={cn(
+                    safeChatConfig.messages.messageWrapper.display,
+                    safeChatConfig.messages.messageWrapper.padding || 'px-2',
+                    msg.role === 'user'
+                      ? safeChatConfig.messages.messageWrapper.userJustify
+                      : safeChatConfig.messages.messageWrapper.assistantJustify,
+                  )}
+                >
+                  <div
+                    className={cn(
+                      msg.role === 'user'
+                        ? safeChatConfig.messages?.user?.maxWidth || 'max-w-[85%]'
+                        : safeChatConfig.messages?.assistant?.maxWidth || 'max-w-[85%]',
+                      msg.role === 'user'
+                        ? safeChatConfig.messages?.user?.borderRadius || 'rounded-lg'
+                        : safeChatConfig.messages?.assistant?.borderRadius || 'rounded-lg',
+                      msg.role === 'user'
+                        ? safeChatConfig.messages?.user?.padding || 'p-4'
+                        : safeChatConfig.messages?.assistant?.padding || 'p-4',
+                      msg.role === 'user'
+                        ? safeChatConfig.messages?.user?.fontWeight || 'font-semibold'
+                        : safeChatConfig.messages?.assistant?.fontWeight || 'font-semibold',
+                      safeChatConfig.utilities?.transition?.all || 'transition-all',
+                      safeChatConfig.utilities?.fontFamily || 'font-sans',
+                      msg.role === 'user'
+                        ? cn(
+                            safeChatConfig.messages?.user?.backgroundColor || 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]',
+                            safeChatConfig.messages?.user?.textColor || 'text-white',
+                          )
+                        : cn(
+                            safeChatConfig.messages?.assistant?.backgroundColor || 'bg-white',
+                            safeChatConfig.messages?.assistant?.textColor || 'text-black',
+                            safeChatConfig.messages?.assistant?.border || 'border border-black/10',
+                          ),
+                    )}
+                  >
+                    <p className={cn(
+                      SAFE_DESIGN_SYSTEM.typography.fontSize.sm,
+                      safeChatConfig.utilities?.whitespace?.preWrap || 'whitespace-pre-wrap',
+                    )}>
+                      {msg.content}
+                    </p>
+                    <span className={cn(
+                      safeChatConfig.messages?.timestamp?.fontSize || 'text-xs',
+                      msg.role === 'user'
+                        ? 'text-white/80'
+                        : (safeChatConfig.messages?.timestamp?.textColor || 'text-black/70'),
+                      safeChatConfig.messages?.timestamp?.marginTop,
+                      safeChatConfig.messages?.timestamp?.display,
+                    )}>
+                      {msg.timestamp.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                    {msg.role === 'assistant' && msg.warnings?.length ? (
+                      <div className="mt-2 pt-2 border-t border-black/10">
+                        <p className="text-xs text-amber-700 font-medium">Let op:</p>
+                        <ul className="text-xs text-amber-800 mt-0.5 list-disc list-inside space-y-0.5">
+                          {msg.warnings.map((w, i) => <li key={i}>{w}</li>)}
+                        </ul>
+                      </div>
+                    ) : null}
                   </div>
+                </div>
+              ))}
+
+              {/* Quick replies inline — alleen tonen zolang gebruiker nog niets heeft verstuurd */}
+              {messages.length > 0 &&
+                !messages.some(m => m.role === 'user') &&
+                !isLoading &&
+                safeChatConfig.supportQuickReplies?.items?.length ? (
+                <div className={cn(
+                  safeChatConfig.supportQuickReplies.inlineContainer.display,
+                  safeChatConfig.supportQuickReplies.inlineContainer.wrap,
+                  safeChatConfig.supportQuickReplies.inlineContainer.gap,
+                  safeChatConfig.supportQuickReplies.inlineContainer.padding,
+                )}>
+                  {safeChatConfig.supportQuickReplies.items.map((item, idx) => (
+                    <button
+                      key={`qr-${idx}`}
+                      onClick={() => sendMessage(item.value)}
+                      disabled={isLoading}
+                      className={cn(
+                        safeChatConfig.supportQuickReplies.button.backgroundColor,
+                        safeChatConfig.supportQuickReplies.button.hoverBackgroundColor,
+                        safeChatConfig.supportQuickReplies.button.border,
+                        safeChatConfig.supportQuickReplies.button.borderRadius,
+                        safeChatConfig.supportQuickReplies.button.padding,
+                        safeChatConfig.supportQuickReplies.button.fontSize,
+                        safeChatConfig.supportQuickReplies.button.fontWeight,
+                        safeChatConfig.supportQuickReplies.button.fontFamily,
+                        safeChatConfig.supportQuickReplies.button.textColor,
+                        safeChatConfig.supportQuickReplies.button.transition,
+                        safeChatConfig.utilities?.disabled?.opacity || 'disabled:opacity-50',
+                        safeChatConfig.utilities?.disabled?.cursor || 'disabled:cursor-not-allowed',
+                      )}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
                 </div>
               ) : null}
 
-              {/* ✅ WARNING BANNER REMOVED - Nu alleen in product detail pagina */}
-
-              {/* ✅ MODERN: Messages - Ronder, Noto Sans - 100% DRY */}
-              <div className={cn(
-                safeChatConfig.messages.container.flex,
-                safeChatConfig.messages.container.overflow,
-                safeChatConfig.messages.container.padding,
-                safeChatConfig.messages.container.spacing,
-                safeChatConfig.messages.container.backgroundColor,
-                safeChatConfig.messages.container.display,
-                safeChatConfig.messages.container.direction,
-                safeChatConfig.utilities?.fontFamily || 'font-sans'
-              )}>
-                
-                {messages.map((msg, idx) => (
-                  <div
-                    key={idx}
-                    className={cn(
-                      safeChatConfig.messages.messageWrapper.display,
-                      safeChatConfig.messages.messageWrapper.padding || 'px-2', // ✅ FIX: Padding zodat tekst niet aan zijkanten plakt
-                      msg.role === 'user' 
-                        ? safeChatConfig.messages.messageWrapper.userJustify 
-                        : safeChatConfig.messages.messageWrapper.assistantJustify
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        msg.role === 'user' ? safeChatConfig.messages?.user?.maxWidth || 'max-w-[85%]' : safeChatConfig.messages?.assistant?.maxWidth || 'max-w-[85%]',
-                        msg.role === 'user' ? safeChatConfig.messages?.user?.borderRadius || 'rounded-lg' : safeChatConfig.messages?.assistant?.borderRadius || 'rounded-lg',
-                        msg.role === 'user' ? safeChatConfig.messages?.user?.padding || 'p-4' : safeChatConfig.messages?.assistant?.padding || 'p-4',
-                        msg.role === 'user' ? safeChatConfig.messages?.user?.fontWeight || 'font-semibold' : safeChatConfig.messages?.assistant?.fontWeight || 'font-semibold',
-                        safeChatConfig.utilities?.transition?.all || 'transition-all',
-                        safeChatConfig.animations?.duration?.base || 'duration-200',
-                        safeChatConfig.utilities?.fontFamily || 'font-sans',
-                        msg.role === 'user'
-                          ? cn(safeChatConfig.messages?.user?.backgroundColor || 'bg-gradient-to-r from-[#3C3C3D] to-[#7A7A7D]', safeChatConfig.messages?.user?.textColor || 'text-white') // ✅ GRADIENT (was bg-black)
-                          : cn(safeChatConfig.messages?.assistant?.backgroundColor || 'bg-white', safeChatConfig.messages?.assistant?.textColor || 'text-black', safeChatConfig.messages?.assistant?.border || 'border border-black/10')
-                      )}
-                    >
-                      <p className={cn(
-                        SAFE_DESIGN_SYSTEM.typography.fontSize.sm,
-                        safeChatConfig.utilities?.whitespace?.preWrap || 'whitespace-pre-wrap'
-                      )}>
-                        {msg.content}
-                      </p>
-                      <span className={cn(
-                        safeChatConfig.messages?.timestamp?.fontSize || 'text-xs',
-                        msg.role === 'user' ? 'text-white/80' : (safeChatConfig.messages?.timestamp?.textColor || 'text-black/70'),
-                        safeChatConfig.messages?.timestamp?.marginTop,
-                        safeChatConfig.messages?.timestamp?.display
-                      )}>
-                        {msg.timestamp.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                      {msg.role === 'assistant' && msg.warnings?.length ? (
-                        <div className="mt-2 pt-2 border-t border-black/10">
-                          <p className="text-xs text-amber-700 font-medium">Let op:</p>
-                          <ul className="text-xs text-amber-800 mt-0.5 list-disc list-inside space-y-0.5">
-                            {msg.warnings.map((w, i) => (
-                              <li key={i}>{w}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-                ))}
-                
-                {isLoading && (
-                  <div className={cn(
-                    safeChatConfig.messages.loadingContainer.display,
-                    safeChatConfig.messages.loadingContainer.justify
-                  )}>
-                    <div className={cn(
-                      safeChatConfig.loading.backgroundColor,
-                      safeChatConfig.loading.border,
-                      safeChatConfig.loading.borderRadius,
-                      safeChatConfig.loading.padding
-                    )}>
-                      <Loader2 className={cn(safeChatConfig.loading.iconSize, 'animate-spin', safeChatConfig.loading.iconColor)} />
-                    </div>
-                  </div>
-                )}
-                
-                {error && (
-                  <div className={cn(
-                    safeChatConfig.error.backgroundColor,
-                    safeChatConfig.error.border,
-                    safeChatConfig.error.borderRadius,
-                    safeChatConfig.error.padding,
-                      safeChatConfig.error.fontSize,
-                      safeChatConfig.error.textColor,
-                      safeChatConfig.utilities?.fontFamily || 'font-sans'
-                    )}>
-                      {error}
-                    </div>
-                )}
-              </div>
-
-              {/* ✅ MODERN: Input - Hoekiger, Noto Sans, smoother - 100% DRY */}
-              <div className={cn(
-                safeChatConfig.input.container.padding,
-                safeChatConfig.input.container.backgroundColor,
-                safeChatConfig.input.container.borderTop,
-                safeChatConfig.input.container.borderRadius,
-                safeChatConfig.utilities?.fontFamily || 'font-sans'
-              )}>
+              {isLoading && (
                 <div className={cn(
-                  safeChatConfig.input.fieldContainer.display,
-                  safeChatConfig.input.fieldContainer.gap
+                  safeChatConfig.messages.loadingContainer.display,
+                  safeChatConfig.messages.loadingContainer.justify,
                 )}>
-                  <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Stel je vraag..."
-                    className={cn(
-                      safeChatConfig.input.field.flex,
-                      safeChatConfig.input.field.width || 'w-full',
-                      safeChatConfig.input.field.padding,
-                      safeChatConfig.input.field.border,
-                      safeChatConfig.input.field.borderRadius,
-                      safeChatConfig.input.field.focus.ring,
-                      safeChatConfig.input.field.focus.border,
-                      safeChatConfig.input.field.focus.outline,
-                      safeChatConfig.input.field.fontSize,
-                      safeChatConfig.input.field.fontWeight,
-                      safeChatConfig.input.field.backgroundColor,
-                      safeChatConfig.input.field.textColor,
-                      safeChatConfig.input.field.focus?.backgroundColor,
-                      safeChatConfig.input.field.placeholder?.textColor || 'placeholder:text-white/60',
-                      safeChatConfig.utilities?.fontFamily || 'font-sans'
-                    )}
-                    disabled={isLoading}
-                  />
-                  <button
-                    onClick={handleSendMessage}
-                    disabled={!input.trim() || isLoading}
-                    className={cn(
-                      safeChatConfig.input.button.padding,
-                      safeChatConfig.input.button.minWidth,
-                      safeChatConfig.input.button.minHeight,
-                      safeChatConfig.input.button.borderRadius,
-                      safeChatConfig.input.button.backgroundColor,
-                      safeChatConfig.input.button.textColor,
-                      safeChatConfig.input.button.hoverBackgroundColor,
-                      safeChatConfig.input.button.activeBackgroundColor,
-                      safeChatConfig.input.button.fontSize,
-                      safeChatConfig.input.button.fontWeight,
-                      safeChatConfig.utilities?.transition?.all || 'transition-all',
-                      safeChatConfig.input.button.transition,
-                      safeChatConfig.input.button.disabled?.opacity || safeChatConfig.utilities?.disabled?.opacity || 'disabled:opacity-40',
-                      safeChatConfig.input.button.disabled?.cursor || safeChatConfig.utilities?.disabled?.cursor || 'disabled:cursor-not-allowed',
-                      safeChatConfig.input.buttonContainer.display,
-                      safeChatConfig.input.buttonContainer.align,
-                      safeChatConfig.input.buttonContainer.justify,
-                      safeChatConfig.utilities?.fontFamily || 'font-sans'
-                    )}
-                  >
-                    {isLoading ? (
-                      <Loader2 className={cn(
-                        safeChatConfig.input.button.iconSize,
-                        safeChatConfig.utilities?.animation?.spin || 'animate-spin'
-                      )} />
-                    ) : (
-                      <Send className={safeChatConfig.input.button.iconSize} />
-                    )}
-                  </button>
+                  <div className={cn(
+                    safeChatConfig.loading.backgroundColor,
+                    safeChatConfig.loading.border,
+                    safeChatConfig.loading.borderRadius,
+                    safeChatConfig.loading.padding,
+                  )}>
+                    <Loader2 className={cn(safeChatConfig.loading.iconSize, 'animate-spin', safeChatConfig.loading.iconColor)} />
+                  </div>
                 </div>
-                <p className={cn(
-                  safeChatConfig.input.footer.fontSize || 'text-xs',
-                  safeChatConfig.input.footer.fontWeight || 'font-normal',
-                  safeChatConfig.input.footer.letterSpacing || 'tracking-normal',
-                  safeChatConfig.input.footer.antialiased || 'antialiased',
-                  safeChatConfig.input.footer.textColor,
-                  safeChatConfig.input.footer.marginTop,
-                  safeChatConfig.input.footer.textAlign,
-                  safeChatConfig.input.footer.fontFamily || safeChatConfig.utilities?.fontFamily || 'font-sans'
+              )}
+
+              {error && (
+                <div className={cn(
+                  safeChatConfig.error.backgroundColor,
+                  safeChatConfig.error.border,
+                  safeChatConfig.error.borderRadius,
+                  safeChatConfig.error.padding,
+                  safeChatConfig.error.fontSize,
+                  safeChatConfig.error.textColor,
+                  safeChatConfig.utilities?.fontFamily || 'font-sans',
                 )}>
-                  Powered by AI
-                </p>
+                  {error}
+                </div>
+              )}
+            </div>
+
+            {/* Input — vastzittend onderaan, krimpt nooit */}
+            <div className={cn(
+              'shrink-0',
+              safeChatConfig.input.container.padding,
+              safeChatConfig.input.container.backgroundColor,
+              safeChatConfig.input.container.borderTop,
+              safeChatConfig.input.container.borderRadius,
+              safeChatConfig.utilities?.fontFamily || 'font-sans',
+            )}>
+              <div className={cn(
+                safeChatConfig.input.fieldContainer.display,
+                safeChatConfig.input.fieldContainer.gap,
+              )}>
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Stel je vraag..."
+                  className={cn(
+                    safeChatConfig.input.field.flex,
+                    safeChatConfig.input.field.width || 'w-full',
+                    safeChatConfig.input.field.padding,
+                    safeChatConfig.input.field.border,
+                    safeChatConfig.input.field.borderRadius,
+                    safeChatConfig.input.field.focus.ring,
+                    safeChatConfig.input.field.focus.border,
+                    safeChatConfig.input.field.focus.outline,
+                    safeChatConfig.input.field.fontSize,
+                    safeChatConfig.input.field.fontWeight,
+                    safeChatConfig.input.field.backgroundColor,
+                    safeChatConfig.input.field.textColor,
+                    safeChatConfig.input.field.focus?.backgroundColor,
+                    safeChatConfig.input.field.placeholder?.textColor || 'placeholder:text-white/60',
+                    safeChatConfig.utilities?.fontFamily || 'font-sans',
+                  )}
+                  disabled={isLoading}
+                />
+                <button
+                  onClick={handleSendMessage}
+                  disabled={!input.trim() || isLoading}
+                  className={cn(
+                    safeChatConfig.input.button.padding,
+                    safeChatConfig.input.button.minWidth,
+                    safeChatConfig.input.button.minHeight,
+                    safeChatConfig.input.button.borderRadius,
+                    safeChatConfig.input.button.backgroundColor,
+                    safeChatConfig.input.button.textColor,
+                    safeChatConfig.input.button.hoverBackgroundColor,
+                    safeChatConfig.input.button.activeBackgroundColor,
+                    safeChatConfig.input.button.fontSize,
+                    safeChatConfig.input.button.fontWeight,
+                    safeChatConfig.utilities?.transition?.all || 'transition-all',
+                    safeChatConfig.input.button.transition,
+                    safeChatConfig.input.button.disabled?.opacity || safeChatConfig.utilities?.disabled?.opacity || 'disabled:opacity-40',
+                    safeChatConfig.input.button.disabled?.cursor || safeChatConfig.utilities?.disabled?.cursor || 'disabled:cursor-not-allowed',
+                    safeChatConfig.input.buttonContainer.display,
+                    safeChatConfig.input.buttonContainer.align,
+                    safeChatConfig.input.buttonContainer.justify,
+                    safeChatConfig.utilities?.fontFamily || 'font-sans',
+                  )}
+                >
+                  {isLoading ? (
+                    <Loader2 className={cn(
+                      safeChatConfig.input.button.iconSize,
+                      safeChatConfig.utilities?.animation?.spin || 'animate-spin',
+                    )} />
+                  ) : (
+                    <Send className={safeChatConfig.input.button.iconSize} />
+                  )}
+                </button>
               </div>
+              <p className={cn(
+                safeChatConfig.input.footer.fontSize || 'text-xs',
+                safeChatConfig.input.footer.fontWeight || 'font-normal',
+                safeChatConfig.input.footer.letterSpacing || 'tracking-normal',
+                safeChatConfig.input.footer.antialiased || 'antialiased',
+                safeChatConfig.input.footer.textColor,
+                safeChatConfig.input.footer.marginTop,
+                safeChatConfig.input.footer.textAlign,
+                safeChatConfig.input.footer.fontFamily || safeChatConfig.utilities?.fontFamily || 'font-sans',
+              )}>
+                Powered by AI
+              </p>
             </div>
           </div>
         </>

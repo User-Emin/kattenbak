@@ -42,16 +42,20 @@ export const CHAT_CONFIG = {
 
   // Modal styling - ULTRA MODERN, 100% Dynamisch via DESIGN_SYSTEM
   modal: {
-    maxWidth: 'max-w-sm',
-    maxHeight: 'max-h-[90vh] sm:max-h-[85vh]',
+    maxWidth: 'max-w-[380px] sm:max-w-sm',
+    // Vaste hoogte zodat modal niet resizet bij typen/content-change
+    height: 'h-[min(85dvh,560px)] sm:h-[min(80dvh,600px)]',
     backgroundColor: 'bg-white', // ✅ DESIGN_SYSTEM.layout.chatModal.messagesBg (#ffffff)
     borderRadius: DESIGN_SYSTEM.layout.chatModal.modalBorderRadius ?? 'rounded-3xl sm:rounded-[2rem]',
     border: 'border border-black/10',
     shadow: DESIGN_SYSTEM.effects.shadow.lg, // ✅ DYNAMISCH: via DESIGN_SYSTEM
-    zIndex: 200, // ✅ Consistent met cookie modal z-[200]
-    overflow: 'overflow-hidden', // ✅ Consistent met cookie modal
-    transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
-    // Note: Container and content layout utilities are in animations.modal
+    zIndex: 'z-[200]',
+    overflow: 'overflow-hidden',
+    // Direct fixed position boven chat-knop (geen wrapper-div nodig)
+    position: 'fixed',
+    right: 'right-3 sm:right-4',
+    bottom: 'bottom-20 sm:bottom-24',
+    transition: 'transition-all duration-300',
   },
 
   // Header styling - ✅ ZWART: geen grijs, altijd zwart (design-system headerBg #000000)
@@ -229,28 +233,7 @@ export const CHAT_CONFIG = {
       transition: '', // ✅ GEEN TRANSITION: Backdrop niet zichtbaar, dus geen transition nodig
     },
     modal: {
-      slideIn: 'animate-in zoom-in-95 duration-300 ease-out', // ✅ DYNAMISCH: DESIGN_SYSTEM transitions - Tailwind classes
-    container: {
-      position: DESIGN_SYSTEM.layoutUtils.position.fixed,
-      inset: 'inset-0', // ✅ VOLLEDIG TRANSPARANT: Container bedekt viewport maar is volledig transparant, achtergrond blijft zichtbaar
-      zIndex: 'z-[200]', // ✅ Consistent met cookie modal
-      display: DESIGN_SYSTEM.layoutUtils.display.flex,
-      align: DESIGN_SYSTEM.layoutUtils.flex.align.end, // ✅ POPUP: Boven button (end i.p.v. center)
-      justify: DESIGN_SYSTEM.layoutUtils.flex.justify.end, // ✅ POPUP: Rechts (end i.p.v. center)
-      padding: 'p-3 sm:p-4 pb-24 sm:pb-24', // ✅ POPUP: Padding onderaan (96px) voor ruimte boven button (64px button + 32px gap)
-      pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.none, // ✅ POINTER EVENTS NONE: Container niet klikbaar, alleen content
-      backgroundColor: 'bg-transparent', // ✅ VOLLEDIG TRANSPARANT: Container bedekt niets, achtergrond blijft volledig zichtbaar
-      transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
-    },
-      content: {
-        pointerEvents: DESIGN_SYSTEM.layoutUtils.pointerEvents.auto,
-        width: DESIGN_SYSTEM.layoutUtils.sizing.widthFull,
-        display: DESIGN_SYSTEM.layoutUtils.display.flex,
-        direction: DESIGN_SYSTEM.layoutUtils.flex.direction.col,
-        position: 'relative', // ✅ Consistent met cookie modal
-        marginBottom: 'mb-4', // ✅ POPUP: Margin onderaan zodat modal boven button verschijnt
-        transition: 'transition-all duration-300', // ✅ Direct Tailwind classes
-      },
+      slideIn: 'animate-in zoom-in-95 duration-300 ease-out',
     },
   },
 
@@ -288,7 +271,7 @@ export const CHAT_CONFIG = {
       textAlign: 'text-left',
     },
   },
-  // Support quick replies (altijd zichtbaar in chat)
+  // Quick replies — inline in de berichtenstroom (geen apart paneel)
   supportQuickReplies: {
     items: [
       { label: 'Capaciteit', value: 'Hoeveel liter is de afvalbak?' },
@@ -298,33 +281,24 @@ export const CHAT_CONFIG = {
       { label: 'Leegfrequentie', value: 'Hoe vaak moet ik legen bij 1 kat?' },
       { label: 'Geschiktheid', value: 'Is het geschikt voor kittens of grote katten?' },
     ],
-    container: {
-      padding: 'px-4 pt-3 pb-2',
-      backgroundColor: 'bg-white',
-      borderBottom: 'border-b border-black/10',
-    },
-    label: {
-      text: 'Snelle opties',
-      fontSize: DESIGN_SYSTEM.typography.fontSize.xs,
-      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
-      textColor: 'text-black',
-      marginBottom: 'mb-2',
-    },
-    list: {
+    // Inline wrapper in de berichtenstroom (na eerste assistantbericht)
+    inlineContainer: {
       display: DESIGN_SYSTEM.layoutUtils.display.flex,
       wrap: 'flex-wrap',
       gap: 'gap-2',
+      padding: 'px-2 pt-2 pb-1',
     },
     button: {
       backgroundColor: 'bg-white',
       hoverBackgroundColor: 'hover:bg-black/5',
-      border: 'border border-black/10',
+      border: 'border border-black/15',
       borderRadius: 'rounded-full',
-      padding: 'px-2.5 py-1',
+      padding: 'px-3 py-1.5',
       fontSize: DESIGN_SYSTEM.typography.fontSize.xs,
       fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
       textColor: 'text-black',
+      transition: 'transition-colors duration-150',
     },
   },
 
