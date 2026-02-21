@@ -80,7 +80,7 @@ echo -e "${GREEN}🔧 Building frontend...${NC}"
 ssh_exec "cd /var/www/kattenbak && rm -rf frontend/.next/cache && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm --workspace=frontend run build && echo '✅ Frontend built'"
 
 echo -e "${GREEN}🔧 Building admin...${NC}"
-ssh_exec "cd /var/www/kattenbak/admin-next && npm ci --legacy-peer-deps && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm run build && echo '✅ Admin built'"
+ssh_exec "cd /var/www/kattenbak && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm --workspace=admin-next run build && echo '✅ Admin built'"
 
 echo -e "${GREEN}🧬 Prisma generate (stability check voor cluster)...${NC}"
 ssh_exec "cd /var/www/kattenbak && npm --workspace=backend run prisma:generate && echo '✅ Prisma client ready'"
