@@ -5,6 +5,7 @@
  */
 
 import { EmbeddingsService } from './embeddings.service';
+import { EmbeddingsLocalService } from './embeddings-local.service';
 import { VectorStoreService, VectorDocument } from './vector-store.service';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -45,9 +46,10 @@ export class DocumentIngestionService {
         const contentHash = EmbeddingsService.calculateHash(doc.content);
         const docId = `doc_${contentHash.substring(0, 12)}`;
         
-        // Generate embedding
+        // Use EmbeddingsLocalService — same as pipeline retrieval (avoids dimension mismatch)
         console.log(`🔮 Generating embedding for: ${doc.title}`);
-        const { embedding } = await EmbeddingsService.generateEmbedding(doc.content);
+        const localEmb = EmbeddingsLocalService.generateEmbedding(doc.content);
+        const embedding = localEmb.embedding;
         
         // Create vector document
         const vectorDoc: VectorDocument = {

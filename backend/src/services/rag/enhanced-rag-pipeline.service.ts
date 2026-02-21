@@ -299,31 +299,21 @@ export class EnhancedRAGPipelineService {
             // Fallback to keyword search
             console.warn('⚠️  Embeddings failed, falling back to keyword search');
             retrievedDocs = SimpleRetrievalService.searchDocuments(
-              currentQuery,
-              allDocs,
-              options.top_k * 2,
-              options.min_score
-            );
+              currentQuery, allDocs, options.top_k * 2, options.min_score
+            ).map((r: any) => ({ ...r.doc, score: r.score }));
           }
         } catch (error: any) {
           console.error('❌ Embeddings retrieval failed:', error.message);
-          
-          // Fallback to keyword search
+          // Normalize SearchResult → flat VectorDocument with score
           retrievedDocs = SimpleRetrievalService.searchDocuments(
-            currentQuery,
-            allDocs,
-            options.top_k * 2,
-            options.min_score
-          );
+            currentQuery, allDocs, options.top_k * 2, options.min_score
+          ).map((r: any) => ({ ...r.doc, score: r.score }));
         }
       } else {
-        // Keyword search only
+        // Keyword search only — normalize SearchResult → flat VectorDocument
         retrievedDocs = SimpleRetrievalService.searchDocuments(
-          currentQuery,
-          allDocs,
-          options.top_k * 2,
-          options.min_score
-        );
+          currentQuery, allDocs, options.top_k * 2, options.min_score
+        ).map((r: any) => ({ ...r.doc, score: r.score }));
       }
 
       latencyBreakdown.retrieval_ms = Date.now() - retrievalStart;
