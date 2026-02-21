@@ -31,8 +31,13 @@ interface ClaudeResponse {
 
 export class ClaudeDirectService {
   private static readonly API_URL = 'https://api.anthropic.com/v1/messages';
-  private static readonly API_KEY = process.env.CLAUDE_API_KEY || '';
-  private static readonly MODEL = 'claude-3-5-haiku-20241022';
+  private static get API_KEY(): string {
+    return process.env.CLAUDE_API_KEY || '';
+  }
+
+  private static get MODEL(): string {
+    return process.env.CLAUDE_MODEL || 'claude-haiku-4-5';
+  }
   private static readonly API_VERSION = '2023-06-01';
   
   /**

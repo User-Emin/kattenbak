@@ -56,6 +56,8 @@ const envSchema = z.object({
   EMAIL_PROVIDER: z.enum(['console', 'smtp', 'sendgrid']).default('console'),
   SENDGRID_API_KEY: z.string().optional(),
   SECURITY_ALERT_EMAIL: z.string().email().optional().or(z.literal('')),
+  CLAUDE_API_KEY: z.string().optional(),
+  CLAUDE_MODEL: z.string().default('claude-haiku-4-5'),
   ADMIN_EMAIL: z.string().optional().transform((val) => {
     // ✅ SECURITY: Validate email format, use default if invalid
     if (!val || val.trim() === '' || !val.includes('@') || !val.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
@@ -196,6 +198,8 @@ class EnvironmentConfig {
   public readonly EMAIL_PROVIDER = validatedEnv.EMAIL_PROVIDER;
   public readonly SENDGRID_API_KEY = validatedEnv.SENDGRID_API_KEY || '';
   public readonly SECURITY_ALERT_EMAIL = validatedEnv.SECURITY_ALERT_EMAIL || '';
+  public readonly CLAUDE_API_KEY = validatedEnv.CLAUDE_API_KEY || '';
+  public readonly CLAUDE_MODEL = validatedEnv.CLAUDE_MODEL;
 
   // Admin - ✅ RUNTIME VALIDATED
   public readonly ADMIN_EMAIL = validatedEnv.ADMIN_EMAIL;

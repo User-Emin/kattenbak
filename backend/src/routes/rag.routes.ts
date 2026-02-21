@@ -144,7 +144,7 @@ router.get('/health', async (req: Request, res: Response) => {
         status: allHealthy ? 'healthy' : 'degraded',
         storage: 'in-memory + file',
         documents_loaded: docCount,
-        model: 'claude-3-5-haiku-20241022',
+        model: process.env.CLAUDE_MODEL || 'claude-haiku-4-5',
         embeddings: 'multilingual-e5-base (HuggingFace)',
         techniques: ['embeddings', 'query_rewriting', 'hierarchical_filtering', 'reranking', 'secure_llm'],
         security_layers: 6,
