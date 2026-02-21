@@ -44,6 +44,7 @@ import { SecureLLMService, LLMGenerationResponse } from './secure-llm.service';
 import { ResponseProcessorService, RAGResponse } from './response-processor.service';
 import { VectorStoreService } from './vector-store.service';
 import { SimpleRetrievalService } from './simple-retrieval.service';
+import { getWarnings, type ProductContext } from './product-warnings.service';
 
 // 🔒 SECURITY: Use LOCAL embeddings only (no Python spawn, no external API)
 // ✅ PERFORMANCE: Local embeddings are <1ms vs 500-2000ms for external APIs
@@ -64,6 +65,8 @@ export interface EmbeddingError {
 export interface EnhancedRAGRequest {
   query: string;
   conversation_history?: Array<{ question: string; answer: string }>;
+  /** Optionele productcontext (bijv. op productpagina) voor betere antwoorden + waarschuwingen */
+  product_context?: ProductContext;
   options?: {
     // Technique toggles (for A/B testing)
     enable_query_rewriting?: boolean;
@@ -366,13 +369,26 @@ export class EnhancedRAGPipelineService {
       const llmStart = Date.now();
 
       // Build context from retrieved docs
-      const context = retrievedDocs
+      let context = retrievedDocs
         .map((doc: any, idx: number) => {
           const title = doc.metadata?.title || doc.title || `Document ${idx + 1}`;
           const content = doc.content || '';
           return `[${idx + 1}] ${title}\n${content}`;
         })
         .join('\n\n');
+
+      // ✅ PRODUCT CONTEXT (modulair): prepend productpagina-info als meegegeven
+      if (request.product_context && (request.product_context.title || request.product_context.slug)) {
+        const pc = request.product_context;
+        const productBlock = [
+          '[Productpagina]',
+          pc.title ? `Titel: ${pc.title}` : '',
+          pc.description ? `Beschrijving: ${String(pc.description).slice(0, 500)}${String(pc.description).length > 500 ? '...' : ''}` : '',
+          pc.price !== undefined && pc.price !== null ? `Prijs: ${pc.price}` : '',
+          pc.slug ? `Slug: ${pc.slug}` : '',
+        ].filter(Boolean).join('\n');
+        context = productBlock + '\n\n' + context;
+      }
 
       // ✅ FALLBACK: Try LLM, fallback to keyword-based answer if API key missing
       try {
@@ -433,20 +449,29 @@ export class EnhancedRAGPipelineService {
       const processingStart = Date.now();
 
       // Build sources for user
-      const sources = retrievedDocs.map((doc: any) => ({
-        title: doc.metadata?.title || doc.title || 'Document',
-        snippet: doc.content.substring(0, 150) + (doc.content.length > 150 ? '...' : '')
-      }));
+      const sources = retrievedDocs.map((doc: any) => {
+        const content: string = doc.content ?? '';
+        return {
+          title: doc.metadata?.title || doc.title || 'Document',
+          snippet: content.substring(0, 150) + (content.length > 150 ? '...' : '')
+        };
+      });
+
+      // ✅ WAARSCHUWINGEN (modulair): o.a. externe leverancier / Alibaba
+      const warnings = getWarnings(request.product_context);
 
       // Build raw response
       const rawResponse: RAGResponse = {
         success: true,
         answer: llmResult.answer,
         sources,
+        ...(warnings.length > 0 ? { warnings } : {}),
         metadata: {
           query: request.query,
           latency_ms: Date.now() - startTime,
-          model: llmResult.model
+          model: llmResult.model,
+          docs_used: retrievedDocs.length,
+          top_score: retrievedDocs[0]?.score != null ? Number(retrievedDocs[0].score) : undefined,
         }
       };
 
@@ -582,6 +607,24 @@ export class EnhancedRAGPipelineService {
           const match = c.match(/(\d+)[-–](\d+)\s*dagen|(\d+)\s*dagen/i);
           if (match) {
             return `Voor 1 kat: ${match[1]}-${match[2] || match[3]} dagen tussen legen. Bij meerdere katten: 3-5 dagen.`;
+          }
+          return '';
+        }
+      },
+      {
+        pattern: /maine\s*coon|mainecoon|grote\s*kat|past\s*er|past\s*een/i,
+        extract: (c) => {
+          if (c.match(/1[,.]?5|12[,.]?5|12\.5|gewicht|geschikt/i)) {
+            return 'Ja, de kattenbak is geschikt voor katten van 1,5 tot 12,5 kg. Een Maine Coon past binnen deze specificaties; het ruime open interieur biedt voldoende ruimte voor grote rassen.';
+          }
+          return '';
+        }
+      },
+      {
+        pattern: /kitten|kittens|onder\s*6|6\s*maanden|geschikt\s*voor\s*katten/i,
+        extract: (c) => {
+          if (c.match(/niet geschikt|6 maanden|1[,.]?5\s*kg/i)) {
+            return 'De kattenbak is niet geschikt voor kittens onder 6 maanden. Vanaf 6 maanden en bij een gewicht van minimaal 1,5 kg wel; begeleid je kat de eerste keren en zorg dat ze niet aan de stroomkabel knagen.';
           }
           return '';
         }

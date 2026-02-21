@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
+    "build": "tsc && cp -r src/data/*.json dist/data/ 2>/dev/null || true",
     "start": "node dist/server-database.js",
     "start:server": "node dist/server.js",
     "rag:ingest": "tsx src/services/rag/document-ingestion.service.ts ingest",
