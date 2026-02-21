@@ -288,6 +288,45 @@ export const CHAT_CONFIG = {
       textAlign: 'text-left',
     },
   },
+  // Support quick replies (altijd zichtbaar in chat)
+  supportQuickReplies: {
+    items: [
+      { label: 'Bestelling volgen', value: 'Waar is mijn bestelling en hoe kan ik die volgen?' },
+      { label: 'Retour aanmelden', value: 'Hoe werkt retourneren en wat zijn de voorwaarden?' },
+      { label: 'Garantie & service', value: 'Hoe werkt garantie en wat wordt er gedekt?' },
+      { label: 'Productadvies', value: 'Welke kattenbak past bij mijn kat (gewicht/leeftijd)?' },
+      { label: 'App & installatie', value: 'Hoe installeer ik de app en koppel ik het apparaat?' },
+      { label: 'Betaling & factuur', value: 'Welke betaalmethodes zijn er en krijg ik een factuur?' },
+    ],
+    container: {
+      padding: 'px-4 pt-4',
+      backgroundColor: 'bg-white',
+      borderBottom: 'border-b border-black/10',
+    },
+    label: {
+      text: 'Snelle hulp',
+      fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,
+      textColor: 'text-black',
+      marginBottom: 'mb-2',
+    },
+    list: {
+      display: DESIGN_SYSTEM.layoutUtils.display.flex,
+      wrap: 'flex-wrap',
+      gap: 'gap-2',
+    },
+    button: {
+      backgroundColor: 'bg-white',
+      hoverBackgroundColor: 'hover:bg-black/5',
+      border: 'border border-black/10',
+      borderRadius: 'rounded-full',
+      padding: 'px-3 py-1.5',
+      fontSize: DESIGN_SYSTEM.typography.fontSize.xs,
+      fontWeight: DESIGN_SYSTEM.typography.fontWeight.medium,
+      fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
+      textColor: 'text-black',
+    },
+  },
 
   // Loading state: geen grijze details
   loading: {

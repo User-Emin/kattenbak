@@ -494,54 +494,54 @@ export function ChatPopup() {
   }, [isExpanded, isProductPage, productSlug]);
 
   // ✅ PERFORMANCE: useCallback voor stable function reference
-  const handleSendMessage = useCallback(async () => {
-    if (!input.trim() || isLoading) return;
-    
+  const sendMessage = useCallback(async (rawInput: string) => {
+    const trimmed = rawInput.trim();
+    if (!trimmed || isLoading) return;
+
     const userMessage: Message = {
       role: 'user',
-      content: input.trim(),
+      content: trimmed,
       timestamp: new Date()
     };
-    
+
     setMessages(prev => [...prev, userMessage]);
-    const currentInput = input.trim();
     setInput("");
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // ✅ SECURITY: Use dynamic API URL (no hardcoding)
       const response = await fetch(`${apiUrl}/rag/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          query: currentInput,
+          query: trimmed,
           conversation_history: messages.map(m => ({ role: m.role, content: m.content })),
           ...(productContext ? { product_context: productContext } : {}),
         })
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         // Handle HTTP errors (429, 403, 500, etc.)
         const errorMessage = data.error || data.message || `HTTP ${response.status}: ${response.statusText}`;
         throw new Error(errorMessage);
       }
-      
+
       if (!data.success) {
         throw new Error(data.error || 'Er ging iets mis');
       }
-      
+
       // ✅ FIX: API returns answer directly in root (RAGResponse structure)
       // Response structure: { success: true, answer: string, sources?: [...], metadata?: {...} }
       const answer = data.answer || data.data?.answer || 'Geen antwoord ontvangen';
-      
+
       // ✅ SECURITY: Sanitize answer (prevent XSS in chat display)
       if (typeof answer !== 'string') {
         throw new Error('Ongeldig antwoord ontvangen van de server');
       }
-      
+
       const warnings = Array.isArray(data.warnings) ? data.warnings : undefined;
       const assistantMessage: Message = {
         role: 'assistant',
@@ -549,9 +549,9 @@ export function ChatPopup() {
         timestamp: new Date(),
         ...(warnings?.length ? { warnings } : {}),
       };
-      
+
       setMessages(prev => [...prev, assistantMessage]);
-      
+
     } catch (err: any) {
       // ✅ SECURITY: Log errors server-side only (not in browser console in production)
       if (typeof window === 'undefined' || process.env.NODE_ENV === 'development') {
@@ -559,13 +559,17 @@ export function ChatPopup() {
       }
       // ✅ SECURITY: Generic error message (no sensitive data exposure)
       setError('Kon geen antwoord krijgen. Probeer het opnieuw.');
-      
+
       // Remove user message on error
       setMessages(prev => prev.slice(0, -1));
     } finally {
       setIsLoading(false);
     }
-  }, [input, isLoading, messages, apiUrl, productContext]);
+  }, [isLoading, messages, apiUrl, productContext]);
+
+  const handleSendMessage = useCallback(async () => {
+    await sendMessage(input);
+  }, [input, sendMessage]);
 
   // ✅ PERFORMANCE: useCallback voor stable function reference
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
@@ -872,6 +876,53 @@ export function ChatPopup() {
                   </button>
                 </div>
               </div>
+
+              {safeChatConfig.supportQuickReplies?.items?.length ? (
+                <div className={cn(
+                  safeChatConfig.supportQuickReplies.container.padding,
+                  safeChatConfig.supportQuickReplies.container.backgroundColor,
+                  safeChatConfig.supportQuickReplies.container.borderBottom
+                )}>
+                  <p className={cn(
+                    safeChatConfig.supportQuickReplies.label.fontSize,
+                    safeChatConfig.supportQuickReplies.label.fontWeight,
+                    safeChatConfig.supportQuickReplies.label.textColor,
+                    safeChatConfig.supportQuickReplies.label.marginBottom,
+                    safeChatConfig.utilities?.fontFamily || 'font-sans'
+                  )}>
+                    {safeChatConfig.supportQuickReplies.label.text}
+                  </p>
+                  <div className={cn(
+                    safeChatConfig.supportQuickReplies.list.display,
+                    safeChatConfig.supportQuickReplies.list.wrap,
+                    safeChatConfig.supportQuickReplies.list.gap
+                  )}>
+                    {safeChatConfig.supportQuickReplies.items.map((item, idx) => (
+                      <button
+                        key={`${item.label}-${idx}`}
+                        onClick={() => sendMessage(item.value)}
+                        disabled={isLoading}
+                        className={cn(
+                          safeChatConfig.supportQuickReplies.button.backgroundColor,
+                          safeChatConfig.supportQuickReplies.button.hoverBackgroundColor,
+                          safeChatConfig.supportQuickReplies.button.border,
+                          safeChatConfig.supportQuickReplies.button.borderRadius,
+                          safeChatConfig.supportQuickReplies.button.padding,
+                          safeChatConfig.supportQuickReplies.button.fontSize,
+                          safeChatConfig.supportQuickReplies.button.fontWeight,
+                          safeChatConfig.supportQuickReplies.button.fontFamily,
+                          safeChatConfig.supportQuickReplies.button.textColor,
+                          safeChatConfig.utilities?.transition?.colors || 'transition-colors',
+                          safeChatConfig.utilities?.disabled?.opacity || 'disabled:opacity-50',
+                          safeChatConfig.utilities?.disabled?.cursor || 'disabled:cursor-not-allowed'
+                        )}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
 
               {/* ✅ WARNING BANNER REMOVED - Nu alleen in product detail pagina */}
 

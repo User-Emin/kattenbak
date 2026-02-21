@@ -4,9 +4,7 @@
  * Team: ML Engineer + Data Scientist
  */
 
-import { ClaudeDirectService } from './claude-direct.service';
-import { VectorStoreService } from './vector-store.service';
-import { EmbeddingsService } from './embeddings.service';
+import { EnhancedRAGPipelineService } from './enhanced-rag-pipeline.service';
 
 interface EvaluationQuestion {
   question: string;
@@ -237,19 +235,18 @@ export class MRREvaluationService {
     evalQ: EvaluationQuestion
   ): Promise<EvaluationResult> {
     try {
-      const startTime = Date.now();
-      
-      // Get answer from RAG
-      const result = await ClaudeDirectService.answerQuestion(evalQ.question);
-      
-      const latency = Date.now() - startTime;
+      // Get answer from the active RAG pipeline
+      const result = await EnhancedRAGPipelineService.query({
+        query: evalQ.question
+      });
+      const latency = result.metadata?.latency_ms || result.pipeline_metadata?.latency_breakdown.total_ms || 0;
       
       // Calculate MRR
-      const rr = this.calculateReciprocalRank(result.answer, evalQ.expected_keywords);
+      const rr = this.calculateReciprocalRank(result.answer || '', evalQ.expected_keywords);
       
       // Find which keywords were found
       const foundKeywords = evalQ.expected_keywords.filter(keyword =>
-        result.answer.toLowerCase().includes(keyword.toLowerCase())
+        (result.answer || '').toLowerCase().includes(keyword.toLowerCase())
       );
       
       // Pass threshold: RR > 0.5 OR at least 50% keywords found
@@ -258,12 +255,12 @@ export class MRREvaluationService {
       
       return {
         question: evalQ.question,
-        answer: result.answer,
+        answer: result.answer || '',
         expected_keywords: evalQ.expected_keywords,
         found_keywords: foundKeywords,
         reciprocal_rank: rr,
         latency_ms: latency,
-        sources_count: result.sources.length,
+        sources_count: result.sources?.length || 0,
         category: evalQ.category,
         difficulty: evalQ.difficulty,
         passed,

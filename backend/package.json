@@ -17,6 +17,7 @@
     "prisma:studio": "prisma studio",
     "prisma:seed": "tsx prisma/seed.ts",
     "security:audit": "node dist/scripts/security-vuln-report.js",
+    "rag:mrr": "node dist/scripts/rag-mrr-report.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",

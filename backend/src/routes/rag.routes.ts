@@ -22,9 +22,39 @@ import crypto from 'crypto';
 
 const router = Router();
 
-// ✅ RAG QUERY CACHING: Prevent overloading with Redis
-const hashQuery = (query: string): string => {
-  return crypto.createHash('sha256').update(query.toLowerCase().trim()).digest('hex');
+// ✅ RAG QUERY CACHING: Prevent overloading with Redis (query + product_context)
+const hashQuery = (query: string, productSlug?: string): string => {
+  const payload = query.toLowerCase().trim() + (productSlug ? `:${productSlug}` : '');
+  return crypto.createHash('sha256').update(payload).digest('hex');
+};
+
+const normalizeConversationHistory = (
+  history: Array<{ role?: string; content?: string; question?: string; answer?: string }> | undefined
+): Array<{ question: string; answer: string }> | undefined => {
+  if (!Array.isArray(history) || history.length === 0) return undefined;
+
+  // If already in Q/A shape, keep it
+  if (history.every(item => typeof item.question === 'string' || typeof item.answer === 'string')) {
+    return history
+      .filter(item => item.question && item.answer)
+      .map(item => ({ question: String(item.question), answer: String(item.answer) }));
+  }
+
+  // Convert role/content pairs into Q/A
+  const pairs: Array<{ question: string; answer: string }> = [];
+  let pendingQuestion: string | null = null;
+  history.forEach(item => {
+    if (item.role === 'user' && item.content) {
+      pendingQuestion = item.content;
+      return;
+    }
+    if (item.role === 'assistant' && item.content && pendingQuestion) {
+      pairs.push({ question: pendingQuestion, answer: item.content });
+      pendingQuestion = null;
+    }
+  });
+
+  return pairs.length > 0 ? pairs : undefined;
 };
 
 /**
@@ -46,8 +76,9 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
       });
     }
     
-    // ✅ RAG CACHING: Check Redis cache first (prevents CPU overload)
-    const cacheKey = `rag:query:${hashQuery(sanitizedQuery)}`;
+    // ✅ RAG CACHING: Check Redis cache first (query + product slug voor product-specifieke antwoorden)
+    const productSlug = req.body.product_context?.slug;
+    const cacheKey = `rag:query:${hashQuery(sanitizedQuery, productSlug)}`;
     const cachedResponse = await redisGet(cacheKey);
     
     if (cachedResponse) {
@@ -55,10 +86,11 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
       return res.json(JSON.parse(cachedResponse));
     }
     
-    // Enhanced RAG Pipeline (5 techniques + 6-layer security)
+    // Enhanced RAG Pipeline (5 techniques + 6-layer security + product context + warnings)
     const response = await EnhancedRAGPipelineService.query({
       query: sanitizedQuery,
-      conversation_history: req.body.conversation_history,
+      conversation_history: normalizeConversationHistory(req.body.conversation_history),
+      product_context: req.body.product_context ?? undefined,
       options: {
         // Enable all techniques by default
         enable_query_rewriting: true,
