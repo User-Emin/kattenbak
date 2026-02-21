@@ -309,9 +309,10 @@ export class MRREvaluationService {
                   `Keywords: ${result.found_keywords.length}/${result.expected_keywords.length} | ` +
                   `${result.passed ? '✅ PASS' : '❌ FAIL'}`);
       
-      // Small delay to be nice to API
+      // Respect Claude rate limit: 5 req/min = 12s per call.
+      // Each question uses up to 2 calls (rewrite + generation) → 25s minimum between questions.
       if (i < questionsToEval.length - 1) {
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 25000));
       }
     }
     
