@@ -937,52 +937,6 @@ export function ChatPopup() {
                 safeChatConfig.messages.container.direction,
                 safeChatConfig.utilities?.fontFamily || 'font-sans'
               )}>
-                {messages.length === 0 && (
-                  <div className={cn(
-                    safeChatConfig.emptyState.container.textAlign,
-                    safeChatConfig.emptyState.textColor,
-                    safeChatConfig.emptyState.container.marginTop
-                  )}>
-                    <ChatIcon size={48} className={cn(
-                      safeChatConfig.emptyState.iconSize,
-                      safeChatConfig.emptyState.iconContainer.marginX,
-                      safeChatConfig.emptyState.iconContainer.marginBottom,
-                      safeChatConfig.emptyState.iconColor
-                    )} />
-                    <p className={cn(
-                      safeChatConfig.emptyState.fontSize,
-                      safeChatConfig.utilities?.fontFamily || 'font-sans'
-                    )}>
-                      Stel een vraag over features, specificaties, of geschiktheid
-                    </p>
-                    <div className={cn(
-                      safeChatConfig.emptyState.suggestionsContainer.marginTop,
-                      safeChatConfig.emptyState.suggestionsContainer.spacing
-                    )}>
-                      {["Past een Maine Coon in?", "Is het geschikt voor kittens?", "Hoeveel liter is de afvalbak?", "Is het veilig voor mijn kat?"].map((suggestion, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => setInput(suggestion)}
-                          className={cn(
-                            safeChatConfig.emptyState.suggestionButton.display,
-                            safeChatConfig.emptyState.suggestionButton.width,
-                            safeChatConfig.emptyState.suggestionButton.textAlign,
-                            safeChatConfig.emptyState.suggestionButton.padding,
-                            safeChatConfig.emptyState.suggestionButton.backgroundColor,
-                            safeChatConfig.emptyState.suggestionButton.borderRadius,
-                            safeChatConfig.emptyState.suggestionButton.fontSize,
-                            safeChatConfig.emptyState.suggestionButton.fontWeight || 'font-semibold',
-                            safeChatConfig.emptyState.suggestionButton.hoverBackgroundColor,
-                            safeChatConfig.utilities?.transition?.colors || 'transition-colors',
-                            safeChatConfig.utilities?.fontFamily || 'font-sans'
-                          )}
-                        >
-                          {suggestion}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
                 
                 {messages.map((msg, idx) => (
                   <div

@@ -214,7 +214,19 @@ export class HierarchicalFilterService {
     const criteria = options.forceCriteria || 
       (options.disableAutoDetect ? {} : this.detectQueryType(query));
 
-    return this.filterDocuments(documents, criteria);
+    const result = this.filterDocuments(documents, criteria);
+    if (result.filtered_documents.length === 0) {
+      return {
+        filtered_documents: documents,
+        original_count: documents.length,
+        filtered_count: documents.length,
+        removed_count: 0,
+        criteria_applied: [...result.criteria_applied, 'fallback_no_filter'],
+        latency_ms: result.latency_ms
+      };
+    }
+
+    return result;
   }
 
   /**
