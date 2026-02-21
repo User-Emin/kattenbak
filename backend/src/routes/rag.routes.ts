@@ -101,7 +101,7 @@ router.post('/chat', RAGSecurityMiddleware.checkSecurity, async (req: Request, r
         // Allow client to override via query params
         ...(req.query.techniques ? JSON.parse(req.query.techniques as string) : {})
       }
-    });
+    } as any);
     
     // ✅ CACHE RESPONSE: Store in Redis for 1 hour (3600 seconds)
     await redisSet(cacheKey, JSON.stringify(response), 3600);
