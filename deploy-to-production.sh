@@ -46,7 +46,7 @@ echo -e "${GREEN}📥 Volledige pull (fetch + reset --hard origin/main)...${NC}"
 ssh_exec "cd /var/www/kattenbak && git fetch origin && git reset --hard origin/main && git rev-parse --short HEAD && echo '✅ Code updated'"
 
 echo -e "${GREEN}📦 Root deps (workspaces install)...${NC}"
-ssh_exec "cd /var/www/kattenbak && npm ci --legacy-peer-deps"
+ssh_exec "cd /var/www/kattenbak && npm ci --legacy-peer-deps --include=dev"
 
 # ━━━ BACKEND FIRST (isolated – nooit frontend bouwen als backend faalt) ━━━
 echo -e "${GREEN}🔧 Building backend...${NC}"
