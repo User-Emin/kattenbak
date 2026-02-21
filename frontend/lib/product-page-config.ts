@@ -137,15 +137,15 @@ export const PRODUCT_PAGE_CONFIG = {
       marginBottom: 'mb-6',
     },
     button: {
-      size: 'w-full py-3 md:py-3.5', // ✅ Winkelwagenbutton iets groter
-      fontSize: 'text-sm md:text-base', // ✅ Leesbaar
+      size: 'w-full py-4 md:py-5', // ✅ Groter: extra hoogte voor CTA
+      fontSize: 'text-base md:text-lg', // ✅ Leesbaar en groter
       fontWeight: 'font-semibold', // ✅ CTA: Vetgedrukt, wit op zwart
       bgColor: 'bg-brand', // ✅ BLAUW: Blauw met wit tekst (slimme variabele)
       hoverBgColor: 'hover:bg-brand-dark', // ✅ BLAUW DARK: Hover (slimme variabele)
       textColor: 'text-white',
-      borderRadius: DESIGN_SYSTEM.button.borderRadius, // ✅ DRY: Via DESIGN_SYSTEM
+      borderRadius: DESIGN_SYSTEM.button.pillBorderRadius || DESIGN_SYSTEM.button.borderRadius, // ✅ DRY: Pilvorm via DESIGN_SYSTEM
       transition: 'transition-all duration-200 hover:scale-[1.02]',
-      icon: 'w-5 h-5 md:w-5 md:h-5', // ✅ Iets groter icoon winkelwagenbutton
+      icon: 'w-5 h-5 md:w-6 md:h-6', // ✅ Iets groter icoon winkelwagenbutton
     },
     // ✅ BOTTOM CART: Verticaal lijn met productnaam, dichtbij, letters iets dunner (geen hardcode)
     bottomCart: {

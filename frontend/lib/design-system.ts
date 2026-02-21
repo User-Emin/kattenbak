@@ -251,9 +251,9 @@ export const DESIGN_SYSTEM = {
     },
     // ✅ SIDEBAR LAYOUT: Centrale config voor overlap + padding
     sidebar: {
-      top: 'calc(40px + 72px)', // ✅ DRY: header.totalHeight (banner + navbar)
-      height: 'calc(100vh - (40px + 72px))', // ✅ DRY: viewport minus header
-      itemsPaddingBottom: 'pb-32',
+      top: '0', // ✅ OVERLAP: Sidebar overlapt banner + navbar
+      height: '100vh',
+      itemsPaddingBottom: 'pb-44', // ✅ EXTRA: Voorkom overlap met overzicht/CTA
       footerPadding: 'p-4 sm:p-6',
       footerPaddingTop: 'pt-4 sm:pt-5',
       footerSafeAreaPadding: 'pb-6 sm:pb-6',
@@ -347,6 +347,7 @@ export const DESIGN_SYSTEM = {
    */
   button: {
     borderRadius: 'rounded-xl', // ✅ EXACT ZELFDE: Zoals Let op kaart (rounded-xl)
+    pillBorderRadius: 'rounded-full', // ✅ PIL: Voor grote CTA buttons zoals winkelwagen
   },
 
   /**
