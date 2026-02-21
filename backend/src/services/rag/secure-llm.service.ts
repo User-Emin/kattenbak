@@ -104,11 +104,11 @@ REGELS (IMMUTABLE):
 8. Bij vragen over gewicht, geschiktheid, Maine Coon, kittens of veiligheid: gebruik uitsluitend de gegeven context en vermeld de officiële grenzen (1,5–12,5 kg; niet geschikt voor kittens onder 6 maanden) als dat in de context staat
 9. NOOIT concurrentie noemen: geen "concurrentie", "grootste op de markt", "meer dan andere bakken", "vs ronde/vierkante bakken" of procenten t.o.v. anderen. Geef alleen productfeiten (capaciteit 10.5L, leegfrequentie 7-10 dagen 1 kat, etc.)
 
-REDENEER STAP-VOOR-STAP:
-1. Begrijp de vraag
-2. Zoek relevante informatie in <context>
-3. Formuleer een helder, feitelijk antwoord
-4. Controleer of antwoord volledig is
+UITVOERFORMAAT:
+- Geef ALLEEN het directe antwoord. Geen redenering tonen.
+- Geen inleiding zoals "Goeie vraag" of "Zeker!".
+- Geen bullet-points tenzij noodzakelijk.
+- Maximaal 3 zinnen, helder en feitelijk.
 
 [END_SYSTEM_PROMPT]`;
 
@@ -160,7 +160,7 @@ ${basePrompt}`;
     prompt += `<question>\n${query}\n</question>\n\n`;
 
     // Add instruction
-    prompt += `<instruction>\nBeantwoord de vraag op basis van de context. Redeneer stap-voor-stap en geef een helder, feitelijk antwoord.\n</instruction>`;
+    prompt += `<instruction>\nBeantwoord de vraag op basis van de context. Geef ALLEEN het directe antwoord zonder zichtbare redenering of inleiding.\n</instruction>`;
 
     return prompt;
   }
@@ -327,6 +327,24 @@ ${basePrompt}`;
     for (const pattern of leakPatterns) {
       filtered = filtered.replace(pattern, '');
     }
+
+    // Strip internal chain-of-thought blocks the model might still emit.
+    // Pattern: anything up to and including "**Antwoord:**" or "Antwoord:" on its own line.
+    const answerMarkers = [
+      /[\s\S]*?\*\*Antwoord:\*\*\s*/i,
+      /[\s\S]*?^Antwoord:\s*/im,
+      /[\s\S]*?^---\s*\n\s*\*\*Antwoord:\*\*\s*/im,
+    ];
+    for (const marker of answerMarkers) {
+      const match = filtered.match(marker);
+      if (match) {
+        filtered = filtered.slice(match[0].length).trim();
+        break;
+      }
+    }
+
+    // Strip leading "Stap-voor-stap redenering" block if still present
+    filtered = filtered.replace(/^\*?\*?Stap-voor-stap redenering:\*?\*?[\s\S]*?(?=\S{10})/i, '').trim();
 
     // Remove excessive whitespace
     filtered = filtered.replace(/\n{3,}/g, '\n\n').trim();
