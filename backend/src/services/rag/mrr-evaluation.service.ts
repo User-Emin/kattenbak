@@ -312,7 +312,7 @@ export class MRREvaluationService {
       // Respect Claude rate limit: 5 req/min = 12s per call.
       // Each question uses up to 2 calls (rewrite + generation) → 25s minimum between questions.
       if (i < questionsToEval.length - 1) {
-        await new Promise(resolve => setTimeout(resolve, 25000));
+        await new Promise(resolve => setTimeout(resolve, 35000)); // 35s: covers 2 Claude calls at 5 req/min
       }
     }
     

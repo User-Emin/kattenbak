@@ -52,6 +52,9 @@ ssh_exec "cd /var/www/kattenbak && npm ci --legacy-peer-deps --include=dev"
 echo -e "${GREEN}🔧 Building backend...${NC}"
 ssh_exec "cd /var/www/kattenbak && PRISMA_GENERATE_SKIP_AUTOINSTALL=1 npm --workspace=backend run prisma:generate && npm --workspace=backend run build && (test -d node_modules/express) && echo '✅ Backend built' || (echo '❌ root node_modules/express missing!' && exit 1)"
 
+echo -e "${GREEN}🗂️  Re-ingesting RAG knowledge base (clears stale embeddings)...${NC}"
+ssh_exec "cd /var/www/kattenbak/backend && rm -f data/vector-store.json && node dist/services/rag/document-ingestion.service.js ingest 2>&1 | tail -5"
+
 echo -e "${GREEN}♻️  Restarting backend (PM2 wait-ready)...${NC}"
 ssh_exec "cd /var/www/kattenbak && pm2 reload backend --update-env 2>/dev/null || pm2 start ecosystem.config.js --only backend && pm2 save"
 

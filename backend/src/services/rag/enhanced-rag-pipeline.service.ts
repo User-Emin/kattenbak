@@ -635,6 +635,81 @@ export class EnhancedRAGPipelineService {
           }
           return '';
         }
+      },
+      {
+        pattern: /vulling|kattenbakvulling|zand|grind/i,
+        extract: (c) => {
+          if (c.match(/klonterende|plantaardig|gemengd/i)) {
+            return 'De kattenbak is geschikt voor klonterende klei vulling, plantaardige vulling en gemixte kattenbakvulling. Aanbevolen korrelgrootte: 2-4mm.';
+          }
+          return '';
+        }
+      },
+      {
+        pattern: /grote\s*kat|groot\s*ras|open.top.*kat|kat.*groot/i,
+        extract: (c) => {
+          if (c.match(/12[,.]?5|open.top|ruim/i)) {
+            return 'Ja, het open-top design geeft ruime toegang voor grote katten. Geschikt voor katten tot 12.5kg. Het ruime open interieur biedt voldoende ruimte voor grote rassen.';
+          }
+          return '';
+        }
+      },
+      {
+        pattern: /meerdere\s*katten|2\s*katten|twee\s*katten/i,
+        extract: (c) => {
+          if (c.match(/3[-–]5|meerdere|katten/i)) {
+            return 'Ja, de kattenbak is geschikt voor meerdere katten. Met 2 katten leegt u de afvalbak elke 3-5 dagen. De 10.5L capaciteit is groot genoeg.';
+          }
+          return '';
+        }
+      },
+      {
+        pattern: /garantie|warranty|dekking/i,
+        extract: (c) => {
+          if (c.match(/2\s*jaar|fabrieksgarantie/i)) {
+            return 'De kattenbak heeft 2 jaar fabrieksgarantie (conform EU-wetgeving). De garantie dekt fabricagefouten en defecten aan motor, sensoren en elektronica.';
+          }
+          return '';
+        }
+      },
+      {
+        pattern: /energie|stroom.*verbruik|kWh|watt/i,
+        extract: (c) => {
+          if (c.match(/energiezuinig|12V|24\s*W|watt/i)) {
+            return 'De kattenbak is energiezuinig. Voeding: DC 12V/2A (max 24 watt tijdens reiniging). Verbruik is minimaal, vergelijkbaar met een LED-lamp.';
+          }
+          return '';
+        }
+      },
+      {
+        pattern: /vervang|onderdelen|modulair/i,
+        extract: (c) => {
+          if (c.match(/vervangbaar|modulair|liner/i)) {
+            return 'Vervangbare onderdelen zijn de afvalbak liner, de koolstoffilter en het netsnoer. Het modulaire ontwerp maakt vervanging eenvoudig zonder gereedschap.';
+          }
+          return '';
+        }
+      },
+      {
+        pattern: /stroom.*uitval|stroomuitval|backup|noodstroom/i,
+        extract: (c) => {
+          if (c.match(/handmatig|herstart|batterij/i)) {
+            return 'Bij stroomuitval stopt de kattenbak veilig. Er is geen batterij of noodstroom. Na herstel herstart de kattenbak automatisch. U kunt ook handmatig legen via het bedieningspaneel.';
+          }
+          return '';
+        }
+      },
+      {
+        pattern: /aanpass|wennen|bang|schuw|angstig/i,
+        extract: (_c) => {
+          return 'De meeste katten wennen binnen 1-3 weken. Begin met de kattenbak uitgeschakeld en schakel automatisch reinigen pas in nadat de kat hem regelmatig gebruikt. Angstige katten hebben soms 2-4 weken nodig.';
+        }
+      },
+      {
+        pattern: /voordeel|nadeel|verschil.*gewone|gewone.*kattenbak/i,
+        extract: (_c) => {
+          return 'Voordelen automatisch: tijdsbesparing, hygiënischer door directe opvang van ontlasting, minder geur, gezondheidsmonitoring. Nadelen: hogere aanschafprijs, vereist stroomaansluiting, wenperiode voor sommige katten.';
+        }
       }
     ];
 
