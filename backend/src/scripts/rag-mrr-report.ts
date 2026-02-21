@@ -1,3 +1,5 @@
+// Must be first import so dotenv loads .env before any service reads process.env
+import '../config/env.config';
 import { MRREvaluationService } from '../services/rag/mrr-evaluation.service';
 
 const main = async () => {
