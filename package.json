@@ -5,17 +5,17 @@
   "workspaces": [
     "frontend",
     "backend",
-    "admin"
+    "admin-next"
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:admin\"",
     "dev:backend": "npm run dev --workspace=backend",
     "dev:frontend": "npm run dev --workspace=frontend",
-    "dev:admin": "npm run dev --workspace=admin",
+    "dev:admin": "npm run dev --workspace=admin-next",
     "build": "npm run build:backend && npm run build:frontend && npm run build:admin",
     "build:backend": "npm run build --workspace=backend",
     "build:frontend": "npm run build --workspace=frontend",
-    "build:admin": "npm run build --workspace=admin",
+    "build:admin": "npm run build --workspace=admin-next",
     "start": "npm run start:backend & npm run start:frontend",
     "start:backend": "npm run start --workspace=backend",
     "start:frontend": "npm run start --workspace=frontend",
@@ -26,16 +26,17 @@
     "prisma:studio": "npm run prisma:studio --workspace=backend"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.8",
+    "@biomejs/biome": "^2.4.4",
+    "@playwright/test": "^1.58.2",
     "browserslist": "^4.28.1",
-    "concurrently": "^8.2.2"
+    "concurrently": "^9.2.1"
   },
   "engines": {
     "node": ">=22.0.0",
     "npm": ">=10.0.0"
   },
   "optionalDependencies": {
-    "@esbuild/darwin-arm64": "^0.27.1",
-    "esbuild": "^0.27.1"
+    "@esbuild/darwin-arm64": "^0.27.3",
+    "esbuild": "^0.27.3"
   }
 }
