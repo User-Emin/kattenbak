@@ -4,29 +4,31 @@ import { existsSync } from 'fs';
 import { z } from 'zod';
 
 // Load environment-specific .env file
-// ✅ SECURITY: Only load specific .env files, exclude backups
-const possibleEnvPaths = [
-  path.resolve(process.cwd(), '.env'),
-  path.resolve(process.cwd(), '..', '.env'),
-  path.resolve(process.cwd(), '..', '.env.development'),
-  path.resolve(process.cwd(), '.env.development'),
-].filter(envPath => {
-  // Exclude backup files
-  return !envPath.includes('.backup') && !envPath.includes('.bak');
-});
+// ✅ ISOLATIE: Productie laadt NOOIT parent .env (alleen process.env of cwd/.env)
+const isProductionEnv = process.env.NODE_ENV === 'production';
+const possibleEnvPaths = isProductionEnv
+  ? [path.resolve(process.cwd(), '.env')]
+  : [
+      path.resolve(process.cwd(), '.env'),
+      path.resolve(process.cwd(), '..', '.env'),
+      path.resolve(process.cwd(), '..', '.env.development'),
+      path.resolve(process.cwd(), '.env.development'),
+    ].filter(envPath => !envPath.includes('.backup') && !envPath.includes('.bak'));
 
 let envLoaded = false;
 for (const envPath of possibleEnvPaths) {
   if (existsSync(envPath)) {
-    config({ path: envPath, override: false }); // Don't override existing env vars
+    config({ path: envPath, override: false });
     console.log(`✅ Environment loaded from: ${envPath}`);
     envLoaded = true;
     break;
   }
 }
-
-if (!envLoaded) {
+if (!envLoaded && !isProductionEnv) {
   console.warn('⚠️  No .env file found, using environment variables');
+}
+if (!envLoaded && isProductionEnv) {
+  console.log('✅ Production: using process environment (no .env file)');
 }
 
 // ✅ SECURITY: Zod schema voor runtime validation
@@ -53,6 +55,7 @@ const envSchema = z.object({
   EMAIL_FROM: z.string().email().default('info@catsupply.nl'),
   EMAIL_PROVIDER: z.enum(['console', 'smtp', 'sendgrid']).default('console'),
   SENDGRID_API_KEY: z.string().optional(),
+  SECURITY_ALERT_EMAIL: z.string().email().optional().or(z.literal('')),
   ADMIN_EMAIL: z.string().optional().transform((val) => {
     // ✅ SECURITY: Validate email format, use default if invalid
     if (!val || val.trim() === '' || !val.includes('@') || !val.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
@@ -61,7 +64,7 @@ const envSchema = z.object({
     return val;
   }).default('admin@localhost'),
   ADMIN_PASSWORD: z.string().optional().transform((val) => {
-    // ✅ SECURITY: Validate password length, use default if invalid
+    // ✅ SECURITY: OWASP min 12 chars (docs/SECURITY_POLICY.md)
     if (!val || val.trim() === '' || val.length < 12) {
       return 'admin123456789';
     }
@@ -192,6 +195,7 @@ class EnvironmentConfig {
   public readonly EMAIL_FROM = validatedEnv.EMAIL_FROM;
   public readonly EMAIL_PROVIDER = validatedEnv.EMAIL_PROVIDER;
   public readonly SENDGRID_API_KEY = validatedEnv.SENDGRID_API_KEY || '';
+  public readonly SECURITY_ALERT_EMAIL = validatedEnv.SECURITY_ALERT_EMAIL || '';
 
   // Admin - ✅ RUNTIME VALIDATED
   public readonly ADMIN_EMAIL = validatedEnv.ADMIN_EMAIL;
@@ -231,7 +235,7 @@ class EnvironmentConfig {
   public readonly UPLOAD_PATH = validatedEnv.UPLOAD_PATH;
 
   // Frontend URLs - ✅ RUNTIME VALIDATED + SECURITY: Production fallback to production domain
-  public readonly FRONTEND_URL = validatedEnv.NEXT_PUBLIC_SITE_URL || validatedEnv.FRONTEND_URL || (this.IS_PRODUCTION ? 'https://catsupply.nl' : 'http://localhost:3001');
+  public readonly FRONTEND_URL = validatedEnv.NEXT_PUBLIC_SITE_URL || validatedEnv.FRONTEND_URL || (this.IS_PRODUCTION ? 'https://catsupply.nl' : 'http://localhost:3002');
 
   /**
    * ✅ SECURITY: Validate configuration on startup with production/development isolation
