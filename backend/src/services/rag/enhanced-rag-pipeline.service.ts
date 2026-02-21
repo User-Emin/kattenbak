@@ -127,7 +127,7 @@ export class EnhancedRAGPipelineService {
     enable_hierarchical_filter: true,
     enable_embeddings: true,
     enable_reranking: true,
-    top_k: 5,
+    top_k: 8,  // top_k*2 docs fetched → 16 candidates for better recall
     min_score: 0, // ✅ MRR OPTIMIZATION: Lower threshold for better recall
     max_tokens: 300,
     temperature: 0.3,
@@ -249,11 +249,20 @@ export class EnhancedRAGPipelineService {
                 };
               });
               
-              // ✅ MRR OPTIMIZATION: Lower threshold for better recall (MRR metrics)
-              // Sort by similarity and take top results
-              const minScore = options.min_score || 0; // ✅ Allow lower scores for better recall
+              // ✅ MRR OPTIMIZATION: Hybrid ranking = embedding similarity + keyword boost
+              const minScore = options.min_score || 0;
+              const queryWords = currentQuery.toLowerCase().split(/\s+/).filter(w => w.length > 3);
               retrievedDocs = scoredDocs
                 .filter(doc => doc.score >= minScore)
+                .map(doc => {
+                  // Keyword boost: +0.05 per matching query word in content/title/keywords
+                  const contentLower = (doc.content ?? '').toLowerCase();
+                  const titleLower = (doc.metadata?.title ?? '').toLowerCase();
+                  const metaKw = (doc.metadata?.keywords ?? []).join(' ').toLowerCase();
+                  const kwBoost = queryWords.reduce((sum, w) =>
+                    sum + (contentLower.includes(w) || titleLower.includes(w) || metaKw.includes(w) ? 0.05 : 0), 0);
+                  return { ...doc, score: doc.score + kwBoost };
+                })
                 .sort((a, b) => b.score - a.score)
                 .slice(0, options.top_k * 2)
                 .map(doc => ({
