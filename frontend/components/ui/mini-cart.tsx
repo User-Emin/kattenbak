@@ -104,7 +104,7 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
       </div>
 
       {/* ✅ MOBIEL: Fixed footer met optimale padding */}
-      <div className={`flex-shrink-0 ${COMPONENT_COLORS.sidebar.bg} border-t ${COMPONENT_COLORS.sidebar.border} ${DESIGN_SYSTEM.layout.sidebar?.footerPadding ?? 'p-4 sm:p-6'} ${DESIGN_SYSTEM.layout.sidebar?.footerPaddingTop ?? 'pt-4 sm:pt-5'} ${DESIGN_SYSTEM.layout.sidebar?.footerSafeAreaPadding ?? ''}`}>
+      <div className={`flex-shrink-0 ${DESIGN_SYSTEM.layout.sidebar?.footerSticky ?? ''} ${COMPONENT_COLORS.sidebar.bg} border-t ${COMPONENT_COLORS.sidebar.border} ${DESIGN_SYSTEM.layout.sidebar?.footerPadding ?? 'p-4 sm:p-6'} ${DESIGN_SYSTEM.layout.sidebar?.footerPaddingTop ?? 'pt-4 sm:pt-5'} ${DESIGN_SYSTEM.layout.sidebar?.footerSafeAreaPadding ?? ''}`}>
         {/* Overzicht Section - Direct op achtergrond */}
         <div className="space-y-2 mb-5">
           <h3 className={`font-semibold ${COMPONENT_COLORS.sidebar.text} text-base mb-3`}>Overzicht</h3>

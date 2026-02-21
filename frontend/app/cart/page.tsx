@@ -56,7 +56,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-white py-12"> {/* ✅ ECHT WIT: bg-white (was bg-gray-50) */}
       <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
-        <h1 className="text-4xl font-semibold mb-2">Winkelwagen</h1>
+        <h1 className={`text-4xl ${DESIGN_SYSTEM.layout.cartPage?.titleFontWeight ?? 'font-medium'} mb-2`}>Winkelwagen</h1>
         <p className="text-gray-600 mb-8">{itemCount} {itemCount === 1 ? 'product' : 'producten'}</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -185,7 +185,7 @@ export default function CartPage() {
           {/* Order Summary - Direct in achtergrond zoals USPs */}
           <div className="lg:col-span-1">
             <div className="bg-gray-50 p-4 sm:p-6 lg:p-8 sticky top-24">
-              <h2 className="text-xl font-semibold mb-6">Overzicht</h2>
+              <h2 className={`text-xl ${DESIGN_SYSTEM.layout.cartPage?.summaryTitleFontWeight ?? 'font-semibold'} mb-6`}>Overzicht</h2>
 
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
@@ -211,10 +211,7 @@ export default function CartPage() {
 
               <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
                 <Button 
-                  className="w-full text-white font-semibold py-3 px-6 flex items-center justify-center gap-2" 
-                  style={{
-                    background: `linear-gradient(135deg, ${DESIGN_SYSTEM.colors.primaryStart} 0%, ${DESIGN_SYSTEM.colors.primaryEnd} 100%)`, // ✅ GRADIENT GRIJS: Via DESIGN_SYSTEM (geen hardcode)
-                  }}
+                  className={`w-full ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonText ?? 'text-white'} font-semibold ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonPaddingY ?? 'py-2.5'} ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonPaddingX ?? 'px-4'} flex items-center justify-center gap-2 ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonBg ?? ''} ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonHoverBg ?? ''}`} 
                   size="lg"
                 >
                   <span>Afrekenen</span>

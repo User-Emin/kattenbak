@@ -246,8 +246,8 @@ export const DESIGN_SYSTEM = {
     
     // ✅ Z-INDEX MANAGEMENT: Centrale z-index configuratie (geen hardcode)
     sidebarZIndex: {
-      sidebar: 'z-[170]', // ✅ BOVEN header (z-[165]) en mobile bottom nav (z-[200]) - sidebar moet boven header
-      sidebarBackdrop: 'z-[160]', // ✅ ONDER sidebar maar BOVEN header (z-[165])
+      sidebar: 'z-[1200]', // ✅ BOVEN navbar (zIndex 999) + banner
+      sidebarBackdrop: 'z-[1190]', // ✅ ONDER sidebar maar BOVEN header
     },
     // ✅ SIDEBAR LAYOUT: Centrale config voor overlap + padding
     sidebar: {
@@ -257,6 +257,7 @@ export const DESIGN_SYSTEM = {
       footerPadding: 'p-4 sm:p-6',
       footerPaddingTop: 'pt-4 sm:pt-5',
       footerSafeAreaPadding: 'pb-6 sm:pb-6',
+      footerSticky: 'sticky bottom-0',
     },
     
     // ✅ MOBILE BOTTOM NAV: Zwarte balk, witte knop (mobiel) – centrale configuratie (geen hardcode)
@@ -283,6 +284,17 @@ export const DESIGN_SYSTEM = {
       buttonPaddingX: 'px-4',
       buttonRounded: 'rounded-md',
       buttonGap: 'gap-1.5',
+    },
+
+    // ✅ CART PAGE: Overzicht/CTA styling (DRY, geen hardcode)
+    cartPage: {
+      titleFontWeight: 'font-medium',
+      summaryTitleFontWeight: 'font-semibold',
+      summaryButtonPaddingX: 'px-4',
+      summaryButtonPaddingY: 'py-2.5',
+      summaryButtonBg: 'bg-brand',
+      summaryButtonHoverBg: 'hover:bg-brand-dark',
+      summaryButtonText: 'text-white',
     },
 
     // CHAT: button positie + modal (variabelensysteem, geen hardcode)
