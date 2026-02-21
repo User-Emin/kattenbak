@@ -24,7 +24,6 @@ frontend/prerender-manifest.json
 frontend/export-marker.json
 frontend/diagnostics/
 frontend/cache/
-frontend/types/
 frontend/trace
 
 # Production
