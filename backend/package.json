@@ -11,7 +11,7 @@
     "rag:ingest": "tsx src/services/rag/document-ingestion.service.ts ingest",
     "rag:clear": "tsx src/services/rag/document-ingestion.service.ts clear",
     "rag:count": "tsx src/services/rag/document-ingestion.service.ts count",
-    "prisma:generate": "../node_modules/.bin/prisma generate",
+    "prisma:generate": "./node_modules/.bin/prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:prod": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
