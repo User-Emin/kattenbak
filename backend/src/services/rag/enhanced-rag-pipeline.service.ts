@@ -249,19 +249,27 @@ export class EnhancedRAGPipelineService {
                 };
               });
               
-              // ✅ MRR OPTIMIZATION: Hybrid ranking = embedding similarity + keyword boost
+              // ✅ MRR OPTIMIZATION: Hybrid ranking = embedding similarity + strong keyword boost
+              // With sparse local embeddings (5D), keyword boost must dominate for recall
               const minScore = options.min_score || 0;
               const queryWords = currentQuery.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+              const kwCandidates = SimpleRetrievalService.searchDocuments(
+                currentQuery, allDocs, options.top_k * 3, 0
+              );
+              const kwDocIds = new Set(kwCandidates.map(r => r.doc.id));
+              
               retrievedDocs = scoredDocs
                 .filter(doc => doc.score >= minScore)
                 .map(doc => {
-                  // Keyword boost: +0.05 per matching query word in content/title/keywords
+                  // Keyword boost: +0.15 per matching query word (strong to overcome sparse 5D embeddings)
                   const contentLower = (doc.content ?? '').toLowerCase();
                   const titleLower = (doc.metadata?.title ?? '').toLowerCase();
                   const metaKw = (doc.metadata?.keywords ?? []).join(' ').toLowerCase();
                   const kwBoost = queryWords.reduce((sum, w) =>
-                    sum + (contentLower.includes(w) || titleLower.includes(w) || metaKw.includes(w) ? 0.05 : 0), 0);
-                  return { ...doc, score: doc.score + kwBoost };
+                    sum + (contentLower.includes(w) || titleLower.includes(w) || metaKw.includes(w) ? 0.15 : 0), 0);
+                  // Extra boost if keyword search also found this doc
+                  const kwMatchBoost = kwDocIds.has(doc.id) ? 0.2 : 0;
+                  return { ...doc, score: doc.score + kwBoost + kwMatchBoost };
                 })
                 .sort((a, b) => b.score - a.score)
                 .slice(0, options.top_k * 2)
