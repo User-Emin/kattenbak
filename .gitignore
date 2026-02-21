@@ -12,6 +12,20 @@ coverage/
 out/
 build/
 dist/
+frontend/standalone/
+frontend/static/
+frontend/server/
+frontend/BUILD_ID
+frontend/*-manifest.json
+frontend/next-*.js.nft.json
+frontend/required-server-files.json
+frontend/routes-manifest.json
+frontend/prerender-manifest.json
+frontend/export-marker.json
+frontend/diagnostics/
+frontend/cache/
+frontend/types/
+frontend/trace
 
 # Production
 .vercel

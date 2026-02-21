@@ -50,7 +50,7 @@ ssh_exec "cd /var/www/kattenbak && npm ci --legacy-peer-deps --include=dev"
 
 # ━━━ BACKEND FIRST (isolated – nooit frontend bouwen als backend faalt) ━━━
 echo -e "${GREEN}🔧 Building backend...${NC}"
-ssh_exec "cd /var/www/kattenbak && npm --workspace=backend run prisma:generate && npm --workspace=backend run build && (test -d node_modules/express) && echo '✅ Backend built' || (echo '❌ root node_modules/express missing!' && exit 1)"
+ssh_exec "cd /var/www/kattenbak && PRISMA_GENERATE_SKIP_AUTOINSTALL=1 npm --workspace=backend run prisma:generate && npm --workspace=backend run build && (test -d node_modules/express) && echo '✅ Backend built' || (echo '❌ root node_modules/express missing!' && exit 1)"
 
 echo -e "${GREEN}♻️  Restarting backend (PM2 wait-ready)...${NC}"
 ssh_exec "cd /var/www/kattenbak && pm2 reload backend --update-env 2>/dev/null || pm2 start ecosystem.config.js --only backend && pm2 save"
@@ -83,7 +83,11 @@ echo -e "${GREEN}🔧 Building admin...${NC}"
 ssh_exec "cd /var/www/kattenbak && NEXT_PUBLIC_API_URL='https://catsupply.nl/api/v1' npm --workspace=admin-next run build && echo '✅ Admin built'"
 
 echo -e "${GREEN}🧬 Prisma generate (stability check voor cluster)...${NC}"
-ssh_exec "cd /var/www/kattenbak && npm --workspace=backend run prisma:generate && echo '✅ Prisma client ready'"
+ssh_exec "cd /var/www/kattenbak && PRISMA_GENERATE_SKIP_AUTOINSTALL=1 npm --workspace=backend run prisma:generate && echo '✅ Prisma client ready'"
+
+echo -e "${GREEN}🧹 Server repo cleanup (build artifacts)...${NC}"
+ssh_exec "cd /var/www/kattenbak && git checkout -- frontend/tsconfig.json frontend/next-env.d.ts admin-next/tsconfig.json backend/package.json package-lock.json 2>/dev/null || true"
+ssh_exec "cd /var/www/kattenbak && rm -rf frontend/standalone frontend/static frontend/server frontend/cache frontend/diagnostics frontend/types frontend/trace && rm -f frontend/BUILD_ID frontend/*-manifest.json frontend/next-*.js.nft.json frontend/required-server-files.json frontend/routes-manifest.json frontend/prerender-manifest.json frontend/export-marker.json frontend/app-build-manifest.json frontend/app-path-routes-manifest.json frontend/images-manifest.json frontend/react-loadable-manifest.json frontend/trace || true"
 
 echo -e "${GREEN}♻️  Restarting frontend + frontend2 + admin...${NC}"
 ssh_exec "cd /var/www/kattenbak && pm2 reload ecosystem.config.js --update-env && pm2 save && pm2 list && echo '✅ Services restarted'"
