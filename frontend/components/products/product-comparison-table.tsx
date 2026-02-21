@@ -76,11 +76,11 @@ const DESKTOP_COMPARISON_CONFIG = {
 const MOBILE_COMPARISON_CONFIG = {
   container: {
     maxWidth: 'max-w-full', // ✅ Full width op mobiel (geen max-w-sm)
-    slidePadding: '12px', // ✅ Horizontale padding per card (gebruikt in style)
+    slidePadding: '6px', // ✅ Minder padding naar zijkanten
     overflow: 'overflow-visible',
   },
   card: {
-    padding: 'p-4', // ✅ Iets meer ruimte voor adem
+    padding: 'p-3', // ✅ Minder padding op mobiel
     borderRadius: 'rounded-xl',
     spacing: {
       header: 'mb-3',

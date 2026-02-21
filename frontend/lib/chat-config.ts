@@ -11,7 +11,7 @@ export const CHAT_CONFIG = {
   // Button styling - ULTRA MODERN, dynamisch via DESIGN_SYSTEM
   button: {
     size: 'px-4 py-3', // ✅ OVAAL: Rechthoekig maar rond
-    borderRadius: 'rounded-2xl', // ✅ RONDIG: Ovaal, niet volledig rond
+    borderRadius: 'rounded-full', // ✅ PILVORM: rondere hoeken
     backgroundColor: 'bg-black', // ✅ ZWART: Volledig zwart zoals gevraagd
     textColor: 'text-white', // ✅ WIT SYMBOOL: Symbool wit
     hoverBackgroundColor: 'hover:bg-gray-900', // ✅ HOVER: Donkerder zwart
@@ -145,8 +145,8 @@ export const CHAT_CONFIG = {
   input: {
     container: {
       padding: 'p-3 sm:p-4',
-      backgroundColor: 'bg-black',
-      borderTop: 'border-t border-black/20',
+      backgroundColor: 'bg-white',
+      borderTop: 'border-t border-black/10',
       borderRadius: DESIGN_SYSTEM.layout.chatModal?.inputBottomBorderRadius ?? 'rounded-b-3xl',
       transition: 'transition-all duration-200',
     },
@@ -162,29 +162,29 @@ export const CHAT_CONFIG = {
     field: {
       flex: DESIGN_SYSTEM.layoutUtils.flex.grow.grow,
       borderRadius: 'rounded-full',
-      border: 'border border-white/30',
-      backgroundColor: 'bg-black',
-      textColor: 'text-white',
+      border: 'border border-black/20',
+      backgroundColor: 'bg-white',
+      textColor: 'text-black',
       padding: 'px-4 py-2.5',
       width: 'w-full',
       fontSize: DESIGN_SYSTEM.typography.fontSize.base,
       fontFamily: DESIGN_SYSTEM.typography.fontFamily.primary,
       fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-      placeholder: { textColor: 'placeholder:text-white/60' },
+      placeholder: { textColor: 'placeholder:text-black/50' },
       focus: {
-        ring: 'focus:ring-2 focus:ring-white/40',
-        border: 'focus:border-white/50',
-        backgroundColor: 'focus:bg-gray-800',
+        ring: 'focus:ring-2 focus:ring-black/20',
+        border: 'focus:border-black/40',
+        backgroundColor: 'focus:bg-white',
         outline: 'focus:outline-none',
       },
       transition: 'transition-all duration-200 ease-out',
     },
     button: {
       borderRadius: 'rounded-full',
-      backgroundColor: 'bg-white/15',
+      backgroundColor: 'bg-black',
       textColor: 'text-white',
-      hoverBackgroundColor: 'hover:bg-white/25',
-      activeBackgroundColor: 'active:bg-white/20',
+      hoverBackgroundColor: 'hover:bg-gray-900',
+      activeBackgroundColor: 'active:bg-black',
       padding: 'p-2.5',
       minWidth: 'min-w-[44px]',
       minHeight: 'min-h-[44px]',

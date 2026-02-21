@@ -155,15 +155,6 @@ export const DESIGN_SYSTEM = {
       full: '100%',
     },
     
-    // Navbar
-    navbar: {
-      height: '80px',
-      bg: '#ffffff',
-      shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)',
-      maxWidth: '100%',     // Edge-to-edge
-      padding: '0 48px',
-    },
-    
     // Hero – afbeelding zwevend: ronde hoeken + marge (SECURITY_POLICY: centrale config, geen hardcode)
     hero: {
       minHeight: '600px',
@@ -300,10 +291,10 @@ export const DESIGN_SYSTEM = {
       inputBorderRadius: 'rounded-2xl',
       borderColor: 'border-gray-200',
       /** Typgebied (onderkant modal): zwart, ook mobiel ronde hoeken */
-      inputBg: '#000000',
-      inputTextColor: '#ffffff',
-      inputFieldBg: '#262626',
-      inputFieldBorder: 'border-gray-600',
+      inputBg: '#ffffff',
+      inputTextColor: '#000000',
+      inputFieldBg: '#ffffff',
+      inputFieldBorder: 'border-black/20',
       inputBottomBorderRadius: 'rounded-b-3xl',
       closeButtonPadding: 'p-2',
       closeButtonRounded: 'rounded-md',
