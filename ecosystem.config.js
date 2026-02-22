@@ -73,7 +73,8 @@ module.exports = {
       // next binary is hoisted to root node_modules (npm workspaces).
       // Use --dir to point Next.js at the admin-next subdirectory.
       script: 'node_modules/.bin/next',
-      args: 'start --dir ./admin-next -p 3103 -H 0.0.0.0',
+      // next start [dir] syntax: directory is positional, no --dir flag
+      args: 'start ./admin-next -p 3103 -H 0.0.0.0',
       cwd: './',
       instances: 1,
       exec_mode: 'fork',
