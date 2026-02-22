@@ -1,9 +1,43 @@
 "use client";
 
+import { useState } from "react";
 import { FORM_CONFIG } from "@/lib/form-config";
+import { API_CONFIG } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 export default function ContactPage() {
+  const [form, setForm] = useState({ naam: '', email: '', bericht: '' });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.email || !form.bericht) return;
+    setStatus('sending');
+    setErrorMsg('');
+    try {
+      const res = await fetch(`${API_CONFIG.BASE_URL}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.naam, email: form.email, message: form.bericht }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setStatus('success');
+        setForm({ naam: '', email: '', bericht: '' });
+      } else {
+        setStatus('error');
+        setErrorMsg(data.error || 'Er ging iets mis. Probeer het opnieuw.');
+      }
+    } catch {
+      setStatus('error');
+      setErrorMsg('Kan geen verbinding maken. Controleer je internet en probeer opnieuw.');
+    }
+  };
+
   const safeFormConfig = FORM_CONFIG || {
     textarea: {
       field: {
@@ -88,111 +122,138 @@ export default function ContactPage() {
         {/* Contact Form */}
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl font-medium mb-8 text-center text-gray-900">Stuur ons een bericht</h2>
-          
-          <form className="space-y-6">
-            <div>
-              <label className={cn(
-                safeFormConfig.input.label.display,
-                safeFormConfig.input.label.fontSize,
-                safeFormConfig.input.label.fontWeight,
-                safeFormConfig.input.label.textColor,
-                safeFormConfig.input.label.marginBottom
-              )}>Naam</label>
-              <input 
-                type="text" 
-                className={cn(
-                  safeFormConfig.input.field.width,
-                  safeFormConfig.input.field.padding,
-                  safeFormConfig.input.field.backgroundColor,
-                  safeFormConfig.input.field.border,
-                  safeFormConfig.input.field.borderColor,
-                  safeFormConfig.input.field.borderRadius,
-                  safeFormConfig.input.field.textColor,
-                  safeFormConfig.input.field.focus.outline,
-                  safeFormConfig.input.field.focus.borderColor,
-                  safeFormConfig.input.field.focus.ring,
-                  safeFormConfig.input.field.focus.ringColor,
-                  safeFormConfig.input.field.transition
-                )}
-                placeholder="Jouw naam"
-              />
-            </div>
 
-            <div>
-              <label className={cn(
-                safeFormConfig.input.label.display,
-                safeFormConfig.input.label.fontSize,
-                safeFormConfig.input.label.fontWeight,
-                safeFormConfig.input.label.textColor,
-                safeFormConfig.input.label.marginBottom
-              )}>Email</label>
-              <input 
-                type="email" 
-                className={cn(
-                  safeFormConfig.input.field.width,
-                  safeFormConfig.input.field.padding,
-                  safeFormConfig.input.field.backgroundColor,
-                  safeFormConfig.input.field.border,
-                  safeFormConfig.input.field.borderColor,
-                  safeFormConfig.input.field.borderRadius,
-                  safeFormConfig.input.field.textColor,
-                  safeFormConfig.input.field.focus.outline,
-                  safeFormConfig.input.field.focus.borderColor,
-                  safeFormConfig.input.field.focus.ring,
-                  safeFormConfig.input.field.focus.ringColor,
-                  safeFormConfig.input.field.transition
-                )}
-                placeholder="jouw@email.nl"
-              />
+          {status === 'success' ? (
+            <div className="text-center py-12 px-6 bg-gray-50 rounded-2xl">
+              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-black mx-auto mb-5">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Bericht verzonden!</h3>
+              <p className="text-gray-600">We nemen zo snel mogelijk contact met je op via je email.</p>
+              <button
+                onClick={() => setStatus('idle')}
+                className="mt-6 text-sm text-gray-500 hover:text-gray-800 underline underline-offset-2 transition-colors"
+              >
+                Nieuw bericht sturen
+              </button>
             </div>
+          ) : (
+            <form className="space-y-5" onSubmit={handleSubmit} noValidate>
+              <div>
+                <label className={cn(
+                  safeFormConfig.input.label.display,
+                  safeFormConfig.input.label.fontSize,
+                  safeFormConfig.input.label.fontWeight,
+                  safeFormConfig.input.label.textColor,
+                  safeFormConfig.input.label.marginBottom
+                )}>Naam</label>
+                <input
+                  type="text"
+                  name="naam"
+                  value={form.naam}
+                  onChange={handleChange}
+                  className={cn(
+                    safeFormConfig.input.field.width,
+                    safeFormConfig.input.field.padding,
+                    safeFormConfig.input.field.backgroundColor,
+                    safeFormConfig.input.field.border,
+                    safeFormConfig.input.field.borderColor,
+                    safeFormConfig.input.field.borderRadius,
+                    safeFormConfig.input.field.textColor,
+                    safeFormConfig.input.field.focus.outline,
+                    safeFormConfig.input.field.focus.borderColor,
+                    safeFormConfig.input.field.focus.ring,
+                    safeFormConfig.input.field.focus.ringColor,
+                    safeFormConfig.input.field.transition
+                  )}
+                  placeholder="Jouw naam"
+                />
+              </div>
 
-            <div>
-              <label className={cn(
-                safeFormConfig.input.label.display,
-                safeFormConfig.input.label.fontSize,
-                safeFormConfig.input.label.fontWeight,
-                safeFormConfig.input.label.textColor,
-                safeFormConfig.input.label.marginBottom
-              )}>Bericht</label>
-              <textarea 
-                rows={6}
-                className={cn(
-                  safeFormConfig.textarea.field.width,
-                  safeFormConfig.textarea.field.padding,
-                  safeFormConfig.textarea.field.backgroundColor,
-                  safeFormConfig.textarea.field.border,
-                  safeFormConfig.textarea.field.borderColor,
-                  safeFormConfig.textarea.field.borderRadius,
-                  safeFormConfig.textarea.field.textColor,
-                  safeFormConfig.textarea.field.resize,
-                  safeFormConfig.textarea.field.focus.outline,
-                  safeFormConfig.textarea.field.focus.borderColor,
-                  safeFormConfig.textarea.field.focus.ring,
-                  safeFormConfig.textarea.field.focus.ringColor,
-                  safeFormConfig.textarea.field.transition
-                )}
-                placeholder="Jouw bericht..."
-              />
-            </div>
+              <div>
+                <label className={cn(
+                  safeFormConfig.input.label.display,
+                  safeFormConfig.input.label.fontSize,
+                  safeFormConfig.input.label.fontWeight,
+                  safeFormConfig.input.label.textColor,
+                  safeFormConfig.input.label.marginBottom
+                )}>
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                  className={cn(
+                    safeFormConfig.input.field.width,
+                    safeFormConfig.input.field.padding,
+                    safeFormConfig.input.field.backgroundColor,
+                    safeFormConfig.input.field.border,
+                    safeFormConfig.input.field.borderColor,
+                    safeFormConfig.input.field.borderRadius,
+                    safeFormConfig.input.field.textColor,
+                    safeFormConfig.input.field.focus.outline,
+                    safeFormConfig.input.field.focus.borderColor,
+                    safeFormConfig.input.field.focus.ring,
+                    safeFormConfig.input.field.focus.ringColor,
+                    safeFormConfig.input.field.transition
+                  )}
+                  placeholder="jouw@email.nl"
+                />
+              </div>
 
-            <button
-              type="submit"
-              className={cn(
-                safeFormConfig.button.submit.width,
-                safeFormConfig.button.submit.backgroundColor,
-                safeFormConfig.button.submit.hoverBackgroundColor,
-                safeFormConfig.button.submit.textColor,
-                safeFormConfig.button.submit.fontWeight,
-                safeFormConfig.button.submit.padding,
-                safeFormConfig.button.submit.borderRadius,
-                safeFormConfig.button.submit.transition,
-                safeFormConfig.button.submit.hoverScale,
-                safeFormConfig.button.submit.activeScale
+              <div>
+                <label className={cn(
+                  safeFormConfig.input.label.display,
+                  safeFormConfig.input.label.fontSize,
+                  safeFormConfig.input.label.fontWeight,
+                  safeFormConfig.input.label.textColor,
+                  safeFormConfig.input.label.marginBottom
+                )}>
+                  Bericht <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  rows={6}
+                  name="bericht"
+                  value={form.bericht}
+                  onChange={handleChange}
+                  required
+                  className={cn(
+                    safeFormConfig.textarea.field.width,
+                    safeFormConfig.textarea.field.padding,
+                    safeFormConfig.textarea.field.backgroundColor,
+                    safeFormConfig.textarea.field.border,
+                    safeFormConfig.textarea.field.borderColor,
+                    safeFormConfig.textarea.field.borderRadius,
+                    safeFormConfig.textarea.field.textColor,
+                    safeFormConfig.textarea.field.resize,
+                    safeFormConfig.textarea.field.focus.outline,
+                    safeFormConfig.textarea.field.focus.borderColor,
+                    safeFormConfig.textarea.field.focus.ring,
+                    safeFormConfig.textarea.field.focus.ringColor,
+                    safeFormConfig.textarea.field.transition
+                  )}
+                  placeholder="Jouw bericht..."
+                />
+              </div>
+
+              {status === 'error' && (
+                <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3">{errorMsg}</p>
               )}
-            >
-              Verstuur Bericht
-            </button>
-          </form>
+
+              <button
+                type="submit"
+                disabled={status === 'sending'}
+                className="w-full bg-black hover:bg-gray-900 disabled:bg-gray-400 text-white font-semibold py-4 px-8 rounded-full transition-all duration-200 hover:scale-[1.02] active:scale-95 disabled:cursor-not-allowed disabled:scale-100"
+              >
+                {status === 'sending' ? 'Verzenden...' : 'Verstuur Bericht'}
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>

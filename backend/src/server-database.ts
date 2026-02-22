@@ -504,25 +504,16 @@ const axios = require('axios');
 // POST new contact message
 app.post('/api/v1/contact', async (req: Request, res: Response) => {
   try {
-    const { email, message, orderNumber, captchaToken } = req.body;
+    const { name, email, message, orderNumber } = req.body;
 
-    if (!email || !message || !captchaToken) {
-      return res.status(400).json(error('Email, message en captchaToken verplicht'));
+    if (!email || !message) {
+      return res.status(400).json(error('Email en bericht zijn verplicht'));
     }
 
-    // Verify hCaptcha
-    const formData = new URLSearchParams();
-    formData.append('secret', ENV.HCAPTCHA_SECRET);
-    formData.append('response', captchaToken);
-
-    const captchaResponse = await axios.post('https://hcaptcha.com/siteverify', formData, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      timeout: 5000,
-    });
-
-    if (!captchaResponse.data.success) {
-      console.warn('❌ hCaptcha fail:', captchaResponse.data['error-codes']);
-      return res.status(403).json(error('Captcha verificatie mislukt'));
+    // Basis email validatie
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json(error('Ongeldig email adres'));
     }
 
     // Save to database
@@ -532,11 +523,73 @@ app.post('/api/v1/contact', async (req: Request, res: Response) => {
         message,
         orderNumber: orderNumber || null,
         status: 'NEW',
-        metadata: { ip: req.ip },
+        metadata: { ip: req.ip, name: name || null },
       },
     });
 
     console.log(`✅ Contact saved to DB: ${contactMessage.id} - ${email}`);
+
+    // Stuur email notificatie naar admin
+    try {
+      const nodemailer = require('nodemailer');
+      const smtpHost = process.env.SMTP_HOST;
+      const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
+      const smtpUser = process.env.SMTP_USER;
+      const smtpPass = process.env.SMTP_PASSWORD;
+      const emailFrom = process.env.EMAIL_FROM || 'info@catsupply.nl';
+      const adminEmail = process.env.SECURITY_ALERT_EMAIL || 'emin@catsupply.nl';
+
+      if (smtpHost && smtpUser && smtpPass) {
+        const transporter = nodemailer.createTransport({
+          host: smtpHost,
+          port: smtpPort,
+          secure: smtpPort === 465,
+          auth: { user: smtpUser, pass: smtpPass },
+        });
+
+        const senderName = name ? name : 'Onbekend';
+
+        // Admin notificatie
+        await transporter.sendMail({
+          from: emailFrom,
+          to: adminEmail,
+          subject: `📬 Nieuw contactbericht van ${senderName}`,
+          html: `
+            <h2>Nieuw contactbericht via CatSupply</h2>
+            <p><strong>Naam:</strong> ${senderName}</p>
+            <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+            ${orderNumber ? `<p><strong>Bestelnummer:</strong> ${orderNumber}</p>` : ''}
+            <hr>
+            <p><strong>Bericht:</strong></p>
+            <blockquote style="border-left:3px solid #ccc;padding-left:12px;color:#555">${message.replace(/\n/g, '<br>')}</blockquote>
+            <hr>
+            <p style="font-size:12px;color:#999">Ontvangen op ${new Date().toLocaleString('nl-NL')} · CatSupply contactsysteem</p>
+          `,
+          text: `Naam: ${senderName}\nEmail: ${email}\n${orderNumber ? `Bestelnummer: ${orderNumber}\n` : ''}\nBericht:\n${message}`,
+        });
+
+        // Bevestiging naar afzender
+        await transporter.sendMail({
+          from: emailFrom,
+          to: email,
+          subject: 'Bedankt voor je bericht – CatSupply',
+          html: `
+            <h2>Bedankt voor je bericht, ${senderName}!</h2>
+            <p>We hebben je bericht ontvangen en nemen zo snel mogelijk contact met je op.</p>
+            <p><strong>Jouw bericht:</strong></p>
+            <blockquote style="border-left:3px solid #ccc;padding-left:12px;color:#555">${message.replace(/\n/g, '<br>')}</blockquote>
+            <p>Heb je nog vragen? Stuur een email naar <a href="mailto:info@catsupply.nl">info@catsupply.nl</a>.</p>
+            <p>Met vriendelijke groet,<br>Team CatSupply</p>
+          `,
+          text: `Bedankt ${senderName}! We hebben je bericht ontvangen en nemen zo snel mogelijk contact op.\n\nJouw bericht:\n${message}\n\nVragen? info@catsupply.nl\n\nMet vriendelijke groet,\nTeam CatSupply`,
+        });
+
+        console.log(`✅ Contact emails verstuurd: admin=${adminEmail}, afzender=${email}`);
+      }
+    } catch (emailErr: any) {
+      // Email fout is niet kritisch: bericht is al opgeslagen in DB
+      console.error('⚠️ Contact email fout (DB opgeslagen):', emailErr.message);
+    }
 
     res.status(201).json(success({ id: contactMessage.id, message: 'Bericht ontvangen' }));
   } catch (err: any) {
