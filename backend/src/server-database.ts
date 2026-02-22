@@ -516,14 +516,15 @@ app.post('/api/v1/contact', async (req: Request, res: Response) => {
       return res.status(400).json(error('Ongeldig email adres'));
     }
 
-    // Save to database
+    // Save to database (naam als prefix in bericht opslaan, schema heeft geen name/metadata veld)
     const contactMessage = await prisma.contactMessage.create({
       data: {
         email,
-        message,
+        message: name ? `[Van: ${name}]\n\n${message}` : message,
         orderNumber: orderNumber || null,
         status: 'NEW',
-        metadata: { ip: req.ip, name: name || null },
+        ipAddress: req.ip || null,
+        userAgent: req.get('user-agent') || null,
       },
     });
 
