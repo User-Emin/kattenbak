@@ -186,6 +186,19 @@ app.get('/api/v1/health', (req: Request, res: Response) => {
 });
 
 // =============================================================================
+// TRACKING ENDPOINT - Anonieme pageview van frontend (geen PII, geen cookies)
+// =============================================================================
+
+app.post('/api/v1/track', (req: Request, res: Response) => {
+  const { path } = req.body as { path?: string };
+  if (path && typeof path === 'string' && path.length < 200) {
+    const { recordRequest } = require('./services/analytics.service');
+    recordRequest(path, true);
+  }
+  res.status(204).end();
+});
+
+// =============================================================================
 // PRODUCTS ENDPOINTS - DATABASE
 // =============================================================================
 

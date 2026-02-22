@@ -47,6 +47,20 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
+  // Anonieme pageview tracking - geen PII, geen cookies
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const apiBase = window.location.hostname === 'localhost'
+      ? 'http://localhost:3101/api/v1'
+      : `${window.location.protocol}//${window.location.hostname}/api/v1`;
+    fetch(`${apiBase}/track`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: pathname }),
+      keepalive: true,
+    }).catch(() => { /* stille fout - tracking is niet kritisch */ });
+  }, [pathname]);
+
   // ✅ CSS VERIFICATION: Ensure CSS always loads
   if (typeof window !== 'undefined') {
     initializeCSSVerification();
