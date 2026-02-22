@@ -60,30 +60,32 @@ export default function ContactPage() {
           </p>
         </div>
 
-        {/* Contact Info - Direct op achtergrond */}
-        <div className="grid md:grid-cols-3 gap-12 mb-20 text-center">
-          <div>
-            <svg className="w-8 h-8 text-brand mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            <h3 className="text-lg font-semibold mb-2 text-gray-900">Email</h3>
-            <a href="mailto:info@catsupply.nl" className="text-brand hover:text-brand-dark transition-colors">
+        {/* Contact Info - Symmetrisch 2-kolom */}
+        <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-20">
+          <div className="flex flex-col items-center text-center bg-gray-50 rounded-2xl px-8 py-10 transition-shadow hover:shadow-sm">
+            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-sm mb-5">
+              <svg className="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 className="text-base font-semibold mb-2 text-gray-900 tracking-wide uppercase text-xs">Email</h3>
+            <a href="mailto:info@catsupply.nl" className="text-brand hover:text-brand-dark transition-colors font-medium text-sm">
               info@catsupply.nl
             </a>
           </div>
 
-          <div>
-            <svg className="w-8 h-8 text-brand mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3 className="text-lg font-semibold mb-2 text-gray-900">Openingstijden</h3>
-            <p className="text-gray-600">
-              Ma-Vr: 9:00 - 17:00
-            </p>
+          <div className="flex flex-col items-center text-center bg-gray-50 rounded-2xl px-8 py-10 transition-shadow hover:shadow-sm">
+            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-sm mb-5">
+              <svg className="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-base font-semibold mb-2 text-gray-900 tracking-wide uppercase text-xs">Openingstijden</h3>
+            <p className="text-gray-600 font-medium text-sm">Ma–Vr: 9:00 – 17:00</p>
           </div>
         </div>
 
-        {/* Contact Form - Direct op achtergrond, 100% dynamisch via FORM_CONFIG */}
+        {/* Contact Form */}
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl font-medium mb-8 text-center text-gray-900">Stuur ons een bericht</h2>
           
