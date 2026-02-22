@@ -70,9 +70,11 @@ module.exports = {
     },
     {
       name: 'admin',
+      // next binary is hoisted to root node_modules (npm workspaces).
+      // Use --dir to point Next.js at the admin-next subdirectory.
       script: 'node_modules/.bin/next',
-      args: 'start -p 3103 -H 0.0.0.0',
-      cwd: './admin-next',
+      args: 'start --dir ./admin-next -p 3103 -H 0.0.0.0',
+      cwd: './',
       instances: 1,
       exec_mode: 'fork',
       env: {
@@ -82,8 +84,8 @@ module.exports = {
         NEXT_PUBLIC_API_URL: 'https://catsupply.nl/api/v1',
         NEXT_TELEMETRY_DISABLED: 1
       },
-      error_file: '../logs/admin-error.log',
-      out_file: '../logs/admin-out.log',
+      error_file: './logs/admin-error.log',
+      out_file: './logs/admin-out.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
       max_memory_restart: '500M',
       watch: false,

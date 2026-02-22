@@ -209,14 +209,12 @@ export default function CartPage() {
                 <p className="text-xs text-gray-500 text-right">Incl. 21% BTW ({formatPrice(tax)})</p>
               </div>
 
-              <Link href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}>
-                <Button 
-                  className={`w-full ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonText ?? 'text-white'} font-semibold ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonPaddingY ?? 'py-2.5'} ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonPaddingX ?? 'px-4'} flex items-center justify-center gap-2 ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonBg ?? ''} ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonHoverBg ?? ''}`} 
-                  size="lg"
-                >
-                  <span>Afrekenen</span>
-                  <ArrowRight className="h-5 w-5" />
-                </Button>
+              <Link
+                href={`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`}
+                className={`w-full flex items-center justify-center gap-2 ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonBg ?? 'bg-black'} ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonHoverBg ?? 'hover:bg-gray-900'} ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonText ?? 'text-white'} font-semibold text-base ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonPaddingY ?? 'py-3'} ${DESIGN_SYSTEM.layout.cartPage?.summaryButtonPaddingX ?? 'px-4'} rounded-xl transition-all duration-200 hover:scale-[1.01] active:scale-95`}
+              >
+                <span>Afrekenen</span>
+                <ArrowRight className="h-5 w-5" />
               </Link>
 
               <p className="text-xs text-gray-500 text-center mt-4">

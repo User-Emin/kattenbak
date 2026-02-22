@@ -291,9 +291,9 @@ export const DESIGN_SYSTEM = {
       titleFontWeight: 'font-medium',
       summaryTitleFontWeight: 'font-semibold',
       summaryButtonPaddingX: 'px-4',
-      summaryButtonPaddingY: 'py-2.5',
-      summaryButtonBg: 'bg-brand',
-      summaryButtonHoverBg: 'hover:bg-brand-dark',
+      summaryButtonPaddingY: 'py-3',
+      summaryButtonBg: 'bg-black',
+      summaryButtonHoverBg: 'hover:bg-gray-900',
       summaryButtonText: 'text-white',
     },
 

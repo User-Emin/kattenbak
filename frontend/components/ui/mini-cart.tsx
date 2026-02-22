@@ -143,15 +143,12 @@ export const MiniCart = ({ onClose }: MiniCartProps) => {
               {SHARED_CONTENT.buttons.viewCart}
             </Button>
           
-          {/* ✅ ORANJE BUTTON MET WITTE TEKST - Gebruik CTA variant */}
-          <Button 
-            size="lg" 
-            fullWidth 
-            variant="cta"
+          <button
             onClick={() => handleNavigate(`/checkout?product=${items[0].product.id}&quantity=${items[0].quantity}`)}
+            className={`w-full ${COMPONENT_COLORS.sidebar.ctaButton} text-lg px-6 py-3.5 ${DESIGN_SYSTEM.button.borderRadius} flex items-center justify-center gap-2 transition-all duration-200 hover:scale-[1.01] active:scale-95`}
           >
             {SHARED_CONTENT.buttons.checkout}
-          </Button>
+          </button>
         </div>
         
         <p className="text-xs text-gray-500 text-center mt-4">
