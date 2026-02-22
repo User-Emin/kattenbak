@@ -6,6 +6,7 @@ import categoryRoutes from './category.routes';
 import shipmentRoutes from './shipment.routes';
 import uploadRoutes from './upload.routes';
 import settingsRoutes from './settings.routes'; // NEW: Site Settings
+import analyticsRoutes from './analytics.routes'; // NEW: Traffic analytics
 // REMOVED: returns.routes (uses MyParcel service -> database)
 // REMOVED: variants.routes (uses variant.service -> database)
 // REMOVED: products-video.routes (uses Prisma)
@@ -25,6 +26,7 @@ router.use('/categories', categoryRoutes);
 router.use('/shipments', shipmentRoutes);
 router.use('/upload', uploadRoutes); // NEW: File upload
 router.use('/settings', settingsRoutes); // NEW: Site Settings
+router.use('/analytics', analyticsRoutes); // NEW: Traffic analytics
 // router.use('/returns', returnsRoutes); // DISABLED: Uses database
 // router.use('/variants', variantRoutes); // DISABLED: Uses database
 

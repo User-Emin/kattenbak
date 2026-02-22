@@ -13,6 +13,8 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { existsSync } from 'fs';
 import adminVariantsRoutes from './routes/admin/variants.routes';
+import analyticsRoutes from './routes/admin/analytics.routes';
+import { analyticsMiddleware } from './middleware/analytics.middleware';
 
 // ✅ CRASH-PREVENTION: Proces blijft draaien bij uncaught exception of unhandled rejection
 process.on('uncaughtException', (err) => {
@@ -107,9 +109,19 @@ if (existsSync(UPLOADS_DIR)) {
 }
 
 // =============================================================================
+// ANALYTICS MIDDLEWARE - Privacy-compliant request tracking (voor alle routes)
+// =============================================================================
+app.use(analyticsMiddleware);
+
+// =============================================================================
 // ADMIN VARIANTS ROUTES (Router-based, auth/admin protected)
 // =============================================================================
 app.use('/api/v1/admin/variants', adminVariantsRoutes);
+
+// =============================================================================
+// ADMIN ANALYTICS ROUTES - Traffic monitoring (SSE + snapshot)
+// =============================================================================
+app.use('/api/v1/admin/analytics', analyticsRoutes);
 
 // ENV config
 const ENV = {

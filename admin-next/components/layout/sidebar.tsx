@@ -17,7 +17,8 @@ import {
   LogOut,
   Menu,
   X,
-  RotateCcw, // NEW: Returns icon
+  RotateCcw,
+  Activity,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth-context';
@@ -59,6 +60,11 @@ const NAV_ITEMS = [
     href: '/dashboard/settings',
     label: 'Site Instellingen',
     icon: Settings,
+  },
+  {
+    href: '/dashboard/analytics',
+    label: 'Verkeersanalyse',
+    icon: Activity,
   },
 ];
 
