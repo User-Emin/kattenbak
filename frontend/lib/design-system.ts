@@ -503,8 +503,6 @@ export const DESIGN_SYSTEM = {
    */
   contact: {
     email: 'info@catsupply.nl' as const,
-    phone: '+31 6 12345678' as const,
-    phoneDisplay: '+31 6 123 456 78' as const,
   }
 } as const;
 

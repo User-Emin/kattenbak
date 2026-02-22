@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
+import { SITE_CONFIG } from "@/lib/config";
 
 /**
  * 🎨 FOOTER - MINIMALISTISCH & PROFESSIONEEL
@@ -85,15 +86,15 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link 
-                  href="/producten" 
+                  href={`/product/${SITE_CONFIG.DEFAULT_PRODUCT_SLUG}`}
                   className="transition-opacity hover:opacity-80"
                   style={{
                     fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                     fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
+                    color: DESIGN_SYSTEM.colors.text.inverse,
                   }}
                 >
-                  Alle Producten
+                  Bekijk Product
                 </Link>
               </li>
               <li>
@@ -178,19 +179,6 @@ export function Footer() {
                   }}
                 >
                   {DESIGN_SYSTEM.contact.email}
-                </a>
-              </li>
-              <li>
-                <a 
-                  href={`tel:${DESIGN_SYSTEM.contact.phone}`}
-                  className="transition-opacity hover:opacity-80"
-                  style={{
-                    fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
-                    fontWeight: DESIGN_SYSTEM.typography.fontWeight.normal,
-                    color: DESIGN_SYSTEM.colors.text.inverse, // ✅ WIT: Alle tekst wit
-                  }}
-                >
-                  {DESIGN_SYSTEM.contact.phoneDisplay}
                 </a>
               </li>
               <li 
