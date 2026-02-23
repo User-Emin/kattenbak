@@ -1,11 +1,20 @@
 import { Router } from 'express';
 import { hashPassword, comparePasswords, generateToken } from '../utils/auth.util';
+import { env } from '../config/env.config';
 
 const router = Router();
+
+// Cache hash for env fallback (SECURITY_POLICY: no hardcoded credentials)
+let fallbackHash: string | null = null;
+async function getFallbackHash(): Promise<string> {
+  if (!fallbackHash) fallbackHash = await hashPassword(env.ADMIN_PASSWORD);
+  return fallbackHash;
+}
 
 /**
  * POST /api/v1/admin/auth/login
  * SECURE: JWT + bcrypt Admin Login Endpoint
+ * ✅ SECURITY_POLICY: Credentials via env only
  */
 router.post('/login', async (req, res) => {
   try {
@@ -19,10 +28,8 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // PRODUCTION: Admin credentials (TODO: move to database)
-    const ADMIN_EMAIL = 'admin@catsupply.nl';
-    // Bcrypt hash of 'admin123' - VERIFIED WORKING (bcrypt 12 rounds)
-    const ADMIN_PASSWORD_HASH = '$2a$12$SQAWDBghvnkgmzfn5PLcfuw.ur63toKdyEfbFQ6i1oUaLo3ShJOcG';
+    const ADMIN_EMAIL = env.ADMIN_EMAIL;
+    const ADMIN_PASSWORD_HASH = await getFallbackHash();
 
     // Check email
     if (email !== ADMIN_EMAIL) {

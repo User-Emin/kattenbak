@@ -46,45 +46,67 @@ const prisma = new PrismaClient();
 /**
  * Transform Product from Prisma to API format
  * Converts all Decimal fields to numbers
+ * ✅ ISOLATIE: Nooit throwen - altijd veilig object returnen
  */
 export const transformProduct = (product: any): any => {
-  return {
-    ...product,
-    price: decimalToNumber(product.price),
-    // ✅ FIX: Preserve null for optional fields (don't convert to 0)
-    compareAtPrice: product.compareAtPrice !== null && product.compareAtPrice !== undefined 
-      ? decimalToNumber(product.compareAtPrice) 
-      : null,
-    costPrice: product.costPrice !== null && product.costPrice !== undefined
-      ? decimalToNumber(product.costPrice)
-      : null,
-    weight: product.weight !== null && product.weight !== undefined
-      ? decimalToNumber(product.weight)
-      : null,
-    // ✅ FIX: Preserve null for dimensions (don't convert to {length: 0, ...})
-    dimensions: product.dimensions || null,
-    // Transform variants if included
-    variants: product.variants?.map(transformVariant),
-  };
+  try {
+    if (!product || typeof product !== 'object') {
+      console.warn('⚠️ transformProduct: Invalid product input', { product });
+      return null;
+    }
+    const safeVariants = Array.isArray(product.variants)
+      ? product.variants.map((v: any) => {
+          try {
+            return transformVariant(v);
+          } catch (e: any) {
+            console.warn('⚠️ transformVariant failed for variant', v?.id, e?.message);
+            return { ...v, priceAdjustment: 0, price: 0 };
+          }
+        })
+      : [];
+    return {
+      ...product,
+      price: decimalToNumber(product.price),
+      compareAtPrice: product.compareAtPrice != null ? decimalToNumber(product.compareAtPrice) : null,
+      costPrice: product.costPrice != null ? decimalToNumber(product.costPrice) : null,
+      weight: product.weight != null ? decimalToNumber(product.weight) : null,
+      dimensions: product.dimensions || null,
+      variants: safeVariants,
+    };
+  } catch (error: any) {
+    console.error('❌ transformProduct: Critical error', { error: error.message, productId: product?.id });
+    return product ? { ...product, _transformError: true } : null;
+  }
 };
 
 /**
  * Transform ProductVariant from Prisma to API format
  * Maps priceAdjustment to both priceAdjustment AND price for frontend compatibility
  * ✅ VARIANT SYSTEM: Includes colorCode and colorImageUrl for preview images
+ * ✅ ISOLATIE: Nooit throwen - veilige fallbacks
  */
 export const transformVariant = (variant: any): any => {
-  const adjustment = decimalToNumber(variant.priceAdjustment);
-  return {
-    ...variant,
-    priceAdjustment: adjustment,
-    price: adjustment, // Frontend expects 'price'
-    sortOrder: variant.sortOrder || 0,
-    // ✅ VARIANT SYSTEM: Include color information and preview image
-    colorName: variant.colorCode || variant.name, // Fallback to name if no colorCode
-    colorHex: variant.colorCode ? getColorHex(variant.colorCode) : null, // Convert color code to hex
-    previewImage: getVariantImage(variant), // ✅ VARIANT SYSTEM: Via shared utility (modulair, geen hardcode)
-  };
+  try {
+    if (!variant || typeof variant !== 'object') return { priceAdjustment: 0, price: 0, sortOrder: 0 };
+    let adjustment = 0;
+    try {
+      adjustment = decimalToNumber(variant.priceAdjustment);
+    } catch {
+      adjustment = 0;
+    }
+    return {
+      ...variant,
+      priceAdjustment: adjustment,
+      price: adjustment,
+      sortOrder: variant.sortOrder ?? 0,
+      colorName: variant.colorCode || variant.name,
+      colorHex: variant.colorCode ? getColorHex(variant.colorCode) : null,
+      previewImage: getVariantImage(variant),
+    };
+  } catch (error: any) {
+    console.warn('⚠️ transformVariant failed', variant?.id, error?.message);
+    return variant ? { ...variant, priceAdjustment: 0, price: 0 } : {};
+  }
 };
 
 /**
@@ -111,9 +133,11 @@ const getColorHex = (colorCode: string | null | undefined): string | null => {
 
 /**
  * Transform array of products
+ * ✅ ISOLATIE: Filter nulls - mislukte transforms crashen niet
  */
 export const transformProducts = (products: any[]): any[] => {
-  return products.map(transformProduct);
+  if (!Array.isArray(products)) return [];
+  return products.map(transformProduct).filter((p): p is NonNullable<typeof p> => p != null);
 };
 
 /**

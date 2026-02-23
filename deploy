@@ -1,0 +1,3 @@
+#!/bin/bash
+# Snelkoppeling: pull + frontend deploy op server (backend blijft draaien)
+cd "$(dirname "$0")" && ./deploy-frontend-only.sh

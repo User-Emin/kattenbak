@@ -1,8 +1,19 @@
 import type { NextConfig } from "next";
 
+// Admin-app origin voor rewrite /admin (lokaal 3001; productie via env)
+const ADMIN_APP_ORIGIN = process.env.ADMIN_APP_ORIGIN || "http://localhost:3001";
+
 const nextConfig: NextConfig = {
   // ✅ DEPLOYMENT: Enable standalone for minimal server setup
   output: "standalone",
+
+  // ✅ /admin: proxy naar admin-app (geen 404); lokaal + server via ADMIN_APP_ORIGIN
+  async rewrites() {
+    return [
+      { source: "/admin", destination: `${ADMIN_APP_ORIGIN}/admin` },
+      { source: "/admin/:path*", destination: `${ADMIN_APP_ORIGIN}/admin/:path*` },
+    ];
+  },
   
   // 🚀 PERFORMANCE: Enable compression
   compress: true,
@@ -28,6 +39,13 @@ const nextConfig: NextConfig = {
   // 🚀 PERFORMANCE: Custom headers for caching - MAXIMALE SNELHEID
   async headers() {
     return [
+      // Productpagina: korte cache zodat wijzigingen direct zichtbaar op domein
+      {
+        source: '/product/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
+        ],
+      },
       {
         source: '/uploads/videos/:path*',
         headers: [

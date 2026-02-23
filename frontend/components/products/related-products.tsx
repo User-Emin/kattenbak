@@ -101,7 +101,7 @@ export function RelatedProducts({ currentProduct, className }: RelatedProductsPr
               </div>
               
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#3071aa] transition-colors">
+                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-brand transition-colors">
                   {product.name}
                 </h3>
                 <p className="text-lg font-bold text-gray-900">

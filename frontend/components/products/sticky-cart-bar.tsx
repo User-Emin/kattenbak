@@ -164,13 +164,13 @@ export function StickyCartBar({
               {/* Add to cart – design system: blauw, tekst wit */}
               <button
                 onClick={handleAddToCart}
-                className="font-bold px-6 py-4 rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02] flex items-center gap-2 text-2xl"
+                className="font-semibold px-5 py-3 rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02] flex items-center gap-2 text-base"
                 style={{
                   backgroundColor: (DESIGN_SYSTEM.layout.navbar as { cartButtonBg?: string }).cartButtonBg,
                   color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText,
                 }}
               >
-                <ShoppingCart className="h-6 w-6" style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText }} />
+                <ShoppingCart className="h-5 w-5" style={{ color: (DESIGN_SYSTEM.layout.navbar as { cartButtonText?: string }).cartButtonText }} />
                 Winkelwagen
               </button>
             </div>

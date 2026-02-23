@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SEO_CONFIG } from "@/lib/seo.config";
 import { SHARED_CONTENT } from "@/lib/content.config";
+import { SITE_CONFIG } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 /**
@@ -62,16 +63,14 @@ export function BreadcrumbNavigation({
       const safeSegment = segment.replace(/[^a-zA-Z0-9\-]/g, '');
       if (!safeSegment) return;
       
-      // ✅ LABEL: Human-readable label (capitalize, replace hyphens)
-      const label = safeSegment
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-      
-      breadcrumbs.push({
-        label,
-        href: currentPath,
-      });
+      // ✅ LABEL: Human-readable; "product" → "Producten" (SEO product focus)
+      const label = segment === 'product'
+        ? 'Producten'
+        : safeSegment.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      // ✅ Product segment links to default product (producten redirect)
+      const href = segment === 'product' ? `/product/${SITE_CONFIG.DEFAULT_PRODUCT_SLUG}` : currentPath;
+
+      breadcrumbs.push({ label, href });
     });
     
     return breadcrumbs;
@@ -85,42 +84,41 @@ export function BreadcrumbNavigation({
   }
   
   return (
-    <nav 
+    <nav
       aria-label="Breadcrumb"
-      className={cn('flex items-center space-x-2 text-sm', className)}
+      className={cn('flex items-center min-w-0 text-xs md:text-sm', className)}
     >
-      <ol className="flex items-center space-x-2" itemScope itemType="https://schema.org/BreadcrumbList">
+      <ol className="flex items-center flex-wrap gap-x-1 md:gap-x-2 min-w-0" itemScope itemType="https://schema.org/BreadcrumbList">
         {breadcrumbs.map((item, index) => {
           const isLast = index === breadcrumbs.length - 1;
-          
+
           return (
-            <li 
+            <li
               key={item.href}
-              className="flex items-center"
+              className="flex items-center min-w-0"
               itemProp="itemListElement"
               itemScope
               itemType="https://schema.org/ListItem"
             >
               {isLast ? (
-                // ✅ LAST ITEM: Current page (no link)
-                <span 
-                  className="text-gray-600 font-medium"
+                <span
+                  className="text-gray-600 font-medium truncate max-w-[140px] md:max-w-none"
                   itemProp="name"
+                  title={item.label}
                 >
                   {item.label}
                 </span>
               ) : (
-                // ✅ LINK: Previous pages
                 <>
                   <Link
                     href={item.href}
-                    className="text-gray-500 hover:text-gray-900 transition-colors"
+                    className="text-gray-400 hover:text-gray-700 transition-colors whitespace-nowrap shrink-0"
                     itemProp="item"
                   >
                     <span itemProp="name">{item.label}</span>
                   </Link>
                   <meta itemProp="position" content={String(index + 1)} />
-                  <span className="mx-2 text-gray-400">/</span>
+                  <span className="mx-1 md:mx-1.5 text-gray-300 shrink-0">/</span>
                 </>
               )}
             </li>

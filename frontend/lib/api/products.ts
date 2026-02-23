@@ -77,11 +77,23 @@ export const productsApi = {
 
   /**
    * Get single product by slug
+   * ✅ ISOLATIE: Defensieve handling - malformed data crasht niet
    */
   async getBySlug(slug: string): Promise<Product> {
     const endpoint = API_CONFIG.ENDPOINTS.PRODUCT_BY_SLUG(slug);
-    const data = await apiFetch<{ success: boolean; data: Product }>(endpoint);
-    return transformProduct(data.data);
+    const data = await apiFetch<{ success: boolean; data: Product | null }>(endpoint);
+    if (!data?.data) {
+      const err = new Error('Product niet gevonden') as any;
+      err.status = 404;
+      throw err;
+    }
+    try {
+      return transformProduct(data.data);
+    } catch (e: any) {
+      const err = new Error('Fout bij verwerken product') as any;
+      err.status = 500;
+      throw err;
+    }
   },
 
   /**

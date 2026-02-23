@@ -246,43 +246,46 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
   const renderValue = (value: string | boolean, isOurProduct: boolean = false, isDesktop: boolean = false) => {
     if (typeof value === 'boolean') {
       return value ? (
-        // ✅ DRY: Gebruik BRAND_COLORS_HEX + SLIMME VARIABELEN - RONDER EN DUIDELIJKER IN BLAUWE KOLOM (DESKTOP)
-        <div 
+        // Vinkje: desktop wit op blauw, mobiel zwart gevuld
+        <div
           className={cn(
             'rounded-full flex items-center justify-center flex-shrink-0',
-            isDesktop 
-              ? DESKTOP_COMPARISON_CONFIG.checkmark.desktop.size 
+            isDesktop
+              ? DESKTOP_COMPARISON_CONFIG.checkmark.desktop.size
               : DESKTOP_COMPARISON_CONFIG.checkmark.mobile.size
           )}
-          style={{ 
-            backgroundColor: isDesktop ? BRAND_COLORS_HEX.white : '#129DD8',
+          style={{
+            backgroundColor: isDesktop ? BRAND_COLORS_HEX.white : '#000000',
             border: isDesktop ? `3px solid ${BRAND_COLORS_HEX.white}` : 'none',
-            boxShadow: isDesktop ? `0 2px 8px ${BRAND_COLORS_HEX.gray[900]}40` : 'none'
+            boxShadow: isDesktop ? `0 2px 8px ${BRAND_COLORS_HEX.gray[900]}40` : 'none',
           }}
         >
-          <Check 
+          <Check
             className={cn(
-              isDesktop 
-                ? DESKTOP_COMPARISON_CONFIG.checkmark.desktop.iconSize 
+              isDesktop
+                ? DESKTOP_COMPARISON_CONFIG.checkmark.desktop.iconSize
                 : DESKTOP_COMPARISON_CONFIG.checkmark.mobile.iconSize
             )}
-            style={{ 
-              color: isDesktop ? '#129DD8' : BRAND_COLORS_HEX.white,
-              strokeWidth: isDesktop ? 3 : 2.5
-            }} 
+            style={{
+              color: isDesktop ? '#129DD8' : '#ffffff',
+              strokeWidth: isDesktop ? 3 : 2.5,
+            }}
           />
         </div>
       ) : (
-        // ✅ COMPACT KRUISJE: Subtieler kruisje - DRY via BRAND_COLORS_HEX + SLIMME VARIABELEN
-        <div 
+        // Kruisje: subtiel grijs op alle schermen
+        <div
           className={cn(
             DESKTOP_COMPARISON_CONFIG.cross.size,
-            'rounded-full bg-white border flex items-center justify-center flex-shrink-0'
+            'rounded-full flex items-center justify-center flex-shrink-0'
           )}
-          style={{ borderColor: BRAND_COLORS_HEX.gray[300] }}
+          style={{
+            backgroundColor: BRAND_COLORS_HEX.gray[100],
+            border: `1.5px solid ${BRAND_COLORS_HEX.gray[300]}`,
+          }}
         >
-          <X 
-            className={DESKTOP_COMPARISON_CONFIG.cross.iconSize} 
+          <X
+            className={DESKTOP_COMPARISON_CONFIG.cross.iconSize}
             strokeWidth={2.5}
             style={{ color: BRAND_COLORS_HEX.gray[400] }}
           />
@@ -449,8 +452,8 @@ export function ProductComparisonTable({ productImages = [], darkModeMobile }: P
         </table>
       </div>
 
-      {/* ✅ MOBIEL: Smooth om-en-om slide - SLIMME VARIABELEN SYSTEEM - ALTIJD ZICHTBAAR - DRY via PRODUCT_PAGE_CONFIG */}
-      <div className={cn('md:hidden', PRODUCT_PAGE_CONFIG.layout.containerPaddingMobile)} ref={containerRef}>
+      {/* ✅ MOBIEL: Smooth om-en-om slide - edge-to-edge, zwart/wit */}
+      <div className={cn('md:hidden px-0')} ref={containerRef}>
         {/* ✅ FIX: Outer wrapper - cards blijven zichtbaar, geen overflow-hidden hier */}
         <div 
           className={cn(

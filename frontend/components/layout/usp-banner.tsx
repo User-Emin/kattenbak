@@ -46,13 +46,11 @@ export function UspBanner() {
         return (
           <div
             key={index}
-            className="absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out"
-            style={{
-              opacity: isActive ? 1 : 0,
-              transform: isActive ? "translateY(0)" : "translateY(10px)",
-            }}
+            className="absolute inset-0 flex items-center justify-center text-center transition-opacity duration-700 ease-in-out"
+            style={{ opacity: isActive ? 1 : 0 }}
           >
             <span
+              className="whitespace-nowrap"
               style={{
                 fontSize: DESIGN_SYSTEM.typography.fontSize.sm,
                 fontWeight: DESIGN_SYSTEM.typography.fontWeight.semibold,

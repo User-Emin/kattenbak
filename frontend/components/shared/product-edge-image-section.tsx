@@ -92,10 +92,12 @@ export function ProductEdgeImageSection() {
 
   const imageSrc = getImageSrc();
   const CONFIG = PRODUCT_PAGE_CONFIG;
+  const paddingClass = (CONFIG.edgeSection as { imagePaddingClass?: string }).imagePaddingClass ?? 'p-4 sm:p-5 md:p-6 lg:p-8';
+  const radiusClass = (CONFIG.edgeSection as { imageBorderRadiusClass?: string }).imageBorderRadiusClass ?? 'rounded-2xl lg:rounded-3xl';
 
   return (
-    <div className={cn(CONFIG.edgeSection.container, 'mt-0')} style={{ marginTop: 0, paddingTop: 0 }}>
-      <div className={cn('relative', CONFIG.edgeSection.image.aspectRatio, 'overflow-hidden', 'bg-gray-100')} style={{ marginTop: 0 }}>
+    <div className={cn(CONFIG.edgeSection.container, 'mt-0', paddingClass)} style={{ marginTop: 0, paddingTop: 0 }}>
+      <div className={cn('relative overflow-hidden bg-gray-100', CONFIG.edgeSection.image.aspectRatio, radiusClass)} style={{ marginTop: 0 }}>
         <Image
           src={imageSrc}
           alt={product.name || 'Product afbeelding'}

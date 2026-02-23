@@ -177,45 +177,45 @@ app.get('/api/v1/products/featured', async (req: Request, res: Response) => {
   }
 });
 
-// Get product by slug
+// Get product by slug – ✅ VOLLEDIG GEÏSOLEERD: nooit crash, altijd veilige response
 app.get('/api/v1/products/slug/:slug', async (req: Request, res: Response) => {
+  let slug: string | undefined;
   try {
-    // ✅ SECURITY: Type-safe parameter extraction
-    const slug = Array.isArray(req.params.slug) ? req.params.slug[0] : req.params.slug;
-    
+    slug = Array.isArray(req.params.slug) ? req.params.slug[0] : req.params.slug;
+    if (!slug || typeof slug !== 'string' || slug.trim().length === 0) {
+      return res.status(400).json({ success: false, error: 'Ongeldige slug' });
+    }
+  } catch (paramError: any) {
+    console.error('Product slug param error:', paramError?.message);
+    return res.status(400).json({ success: false, error: 'Ongeldige aanvraag' });
+  }
+
+  try {
     const product = await prisma.product.findUnique({
-      where: { 
-        slug: slug,
-        isActive: true
-      },
+      where: { slug: slug!, isActive: true },
       include: {
         category: true,
-        variants: {
-          where: { isActive: true }
-        }
-      }
+        variants: { where: { isActive: true } },
+      },
     });
-    
+
     if (!product) {
-      return res.status(404).json({ 
-        success: false, 
-        error: 'Product niet gevonden' 
-      });
+      return res.status(404).json({ success: false, error: 'Product niet gevonden' });
     }
-    
-    // Transform Decimal to number
+
     const transformed = transformProduct(product);
-    res.json({ success: true, data: transformed });
+    if (!transformed || transformed === null) {
+      console.error('transformProduct returned null for slug:', slug);
+      return res.status(500).json({ success: false, error: 'Fout bij verwerken product' });
+    }
+    return res.json({ success: true, data: transformed });
   } catch (error: any) {
-    console.error('Get product by slug error:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: 'Fout bij ophalen product' 
-    });
+    console.error('Get product by slug error:', error?.message || error);
+    return res.status(500).json({ success: false, error: 'Fout bij ophalen product' });
   }
 });
 
-// Get product by ID
+// Get product by ID – ✅ GEÏSOLEERD
 app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
   try {
     const productId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -223,28 +223,20 @@ app.get('/api/v1/products/:id', async (req: Request, res: Response) => {
       where: { id: productId },
       include: {
         category: true,
-        variants: {
-          where: { isActive: true }
-        }
-      }
+        variants: { where: { isActive: true } },
+      },
     });
-    
     if (!product) {
-      return res.status(404).json({ 
-        success: false, 
-        error: 'Product niet gevonden' 
-      });
+      return res.status(404).json({ success: false, error: 'Product niet gevonden' });
     }
-    
-    // Transform Decimal to number
     const transformed = transformProduct(product);
-    res.json({ success: true, data: transformed });
+    if (!transformed) {
+      return res.status(500).json({ success: false, error: 'Fout bij verwerken product' });
+    }
+    return res.json({ success: true, data: transformed });
   } catch (error: any) {
-    console.error('Get product error:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: 'Fout bij ophalen product' 
-    });
+    console.error('Get product error:', error?.message || error);
+    return res.status(500).json({ success: false, error: 'Fout bij ophalen product' });
   }
 });
 

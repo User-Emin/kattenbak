@@ -87,17 +87,17 @@ const config: Config = {
           light: '#ffffff',
           dark: '#f5f5f5',
         },
-        // BRAND - BLAUW #3071aa voor navbar en structurele elementen
+        // BRAND - #129DD8 (sync met lib/color-config.ts BRAND_COLORS_HEX)
         brand: {
-          DEFAULT: '#3071aa',      // Main brand color #3071aa
-          light: '#3d82c0',
-          dark: '#256394',
+          DEFAULT: '#129DD8',
+          light: '#2BAEE5',
+          dark: '#0E7EB8',
         },
-        // ACCENT - BLAUW #3071aa voor buttons, ZWART voor rest
+        // ACCENT - #129DD8 voor buttons/vinkjes (sync met color-config)
         accent: {
-          DEFAULT: '#3071aa',      // BLAUW #3071aa voor buttons
-          light: '#3d82c0',        // BLAUW LIGHT
-          dark: '#256394',         // BLAUW DARK
+          DEFAULT: '#129DD8',
+          light: '#2BAEE5',
+          dark: '#0E7EB8',
         },
         // Verwijder custom cyan - gebruik default Tailwind
         // cyan removed - primary is now BLACK/GRAY
@@ -145,8 +145,8 @@ const config: Config = {
         'float-hover': '0 12px 40px rgba(0, 0, 0, 0.06)',
         'cta': '0 4px 14px rgba(255, 170, 33, 0.25)',
         'cta-hover': '0 6px 20px rgba(255, 170, 33, 0.35)',
-        'brand': '0 8px 32px rgba(0, 89, 128, 0.25)',
-        'brand-lg': '0 12px 48px rgba(0, 89, 128, 0.35)',
+        'brand': '0 8px 32px rgba(18, 157, 216, 0.25)',
+        'brand-lg': '0 12px 48px rgba(18, 157, 216, 0.35)',
       },
     },
   },

@@ -10,10 +10,16 @@ import { Prisma } from '@prisma/client';
 /**
  * Convert Prisma Decimal to number
  * Returns 0 for null/undefined to ensure valid number type
+ * ✅ ISOLATIE: Nooit throwen - veilige fallback bij corrupte data
  */
 export const decimalToNumber = (decimal: Prisma.Decimal | null | undefined): number => {
-  if (!decimal) return 0;
-  return parseFloat(decimal.toString());
+  try {
+    if (!decimal) return 0;
+    const n = parseFloat(String(decimal));
+    return isNaN(n) ? 0 : n;
+  } catch {
+    return 0;
+  }
 };
 
 /**

@@ -3,6 +3,7 @@
 import { Button } from "./button";
 import { Cookie, Settings } from "lucide-react";
 import Link from "next/link";
+import { BRAND_COLORS_HEX } from "@/lib/color-config";
 
 interface CookieConsentBannerProps {
   onAcceptAll: () => void;
@@ -82,9 +83,9 @@ export function CookieConsentBanner({
               <button
                 onClick={onAcceptAll}
                 className="px-4 py-2 text-sm font-bold text-white transition-colors rounded-none whitespace-nowrap"
-                style={{ backgroundColor: '#3071aa' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#256394'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3071aa'}
+                style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary}
               >
                 Alles accepteren
               </button>

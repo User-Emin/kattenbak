@@ -13,28 +13,22 @@ import type {
 
 // ✅ DYNAMIC: Use runtime API URL detection (same as config.ts)
 const getRuntimeApiUrl = (): string => {
-  // Server-side: use env var
   if (typeof window === 'undefined') {
     const envUrl = process.env.NEXT_PUBLIC_API_URL;
-    if (envUrl) {
-      return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
+    if (process.env.NODE_ENV === 'production') {
+      if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1'))
+        return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
+      return 'https://catsupply.nl/api/v1';
     }
-    return 'https://catsupply.nl/api/v1';
-  }
-  
-  // Client-side: dynamic based on hostname
-  const hostname = window.location.hostname;
-  
-  // Development: use local backend
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    const envUrl = process.env.NEXT_PUBLIC_API_URL;
-    if (envUrl) {
-      return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
-    }
+    if (envUrl) return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
     return 'http://localhost:3101/api/v1';
   }
-  
-  // Production: use same domain via NGINX reverse proxy
+  const hostname = window.location.hostname;
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    const envUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (envUrl) return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
+    return 'http://localhost:3101/api/v1';
+  }
   return `${window.location.protocol}//${hostname}/api/v1`;
 };
 

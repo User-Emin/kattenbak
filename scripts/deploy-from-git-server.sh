@@ -30,9 +30,14 @@ echo -e "${YELLOW}━━━ 3. Root workspace deps ━━━${NC}"
 npm ci --legacy-peer-deps
 echo ""
 
-echo -e "${YELLOW}━━━ 4. Backend (deps, Prisma, build) ━━━${NC}"
+echo -e "${YELLOW}━━━ 4. Backend (deps in backend/, Prisma, build) ━━━${NC}"
 cd backend
 npm ci --legacy-peer-deps
+# Zorg dat express in backend/node_modules staat (PM2 start met cwd=./backend)
+if [ ! -d node_modules/express ]; then
+  echo -e "${RED}   backend/node_modules/express ontbreekt, opnieuw npm ci...${NC}"
+  npm ci --legacy-peer-deps
+fi
 npx prisma generate
 npm run build
 cd ..

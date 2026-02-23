@@ -154,7 +154,7 @@ export const MODERN_DESIGN = {
    * PREMIUM COLORS - Modern color palette
    */
   colors: {
-    primary: BRAND_COLORS_HEX.primary, // #3071aa
+    primary: BRAND_COLORS_HEX.primary,
     primaryDark: BRAND_COLORS_HEX.primaryDark,
     primaryLight: BRAND_COLORS_HEX.primaryLight,
     text: {

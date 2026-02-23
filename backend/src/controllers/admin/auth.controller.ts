@@ -1,17 +1,28 @@
 import { Request, Response, NextFunction } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { generateToken, comparePasswords } from '../../utils/auth.util';
+import { generateToken, comparePasswords, hashPassword } from '../../utils/auth.util';
 import { successResponse } from '../../utils/response.util';
 import { UnauthorizedError } from '../../utils/errors.util';
 import { logger } from '../../config/logger.config';
+import { env } from '../../config/env.config';
 
 /**
  * Admin Auth Controller - DATABASE VERSION
  * DRY: Uses Prisma for secure, production-ready authentication
  * Security: bcrypt password hashing, JWT tokens
+ * ✅ SECURITY_POLICY: Admin credentials via env only (no hardcoding)
  */
 
 const prisma = new PrismaClient();
+
+// Cache hash of env password for fallback (when DB has no user)
+let fallbackPasswordHash: string | null = null;
+async function getFallbackHash(): Promise<string> {
+  if (!fallbackPasswordHash) {
+    fallbackPasswordHash = await hashPassword(env.ADMIN_PASSWORD);
+  }
+  return fallbackPasswordHash;
+}
 
 export class AdminAuthController {
   /**
@@ -22,7 +33,7 @@ export class AdminAuthController {
    * - Bcrypt password comparison (timing-attack safe)
    * - JWT token generation with expiry
    * - Role verification (ADMIN only)
-   * - Encrypted database storage
+   * - Credentials from env (SECURITY_POLICY compliant)
    */
   static async login(
     req: Request,
@@ -32,9 +43,8 @@ export class AdminAuthController {
     try {
       const { email, password } = req.body;
 
-      // ✅ FALLBACK: Hardcoded admin credentials (if database not available)
-      const ADMIN_EMAIL = 'admin@catsupply.nl';
-      const ADMIN_PASSWORD_HASH = '$2a$12$SQAWDBghvnkgmzfn5PLcfuw.ur63toKdyEfbFQ6i1oUaLo3ShJOcG'; // Bcrypt hash of 'admin123'
+      // ✅ SECURITY_POLICY: Admin credentials via env (no hardcoding)
+      const ADMIN_EMAIL = env.ADMIN_EMAIL;
 
       let user = null;
       let useDatabase = false;
@@ -59,26 +69,27 @@ export class AdminAuthController {
         useDatabase = false;
       }
 
-      // If no user found in database, check hardcoded credentials
+      // If no user found in database, check env fallback
       if (!user) {
+        const fallbackHash = await getFallbackHash();
         if (email !== ADMIN_EMAIL) {
           // Timing attack prevention: still hash to take same time
-          await comparePasswords(password, ADMIN_PASSWORD_HASH);
+          await comparePasswords(password, fallbackHash);
           throw new UnauthorizedError('Ongeldige inloggegevens');
         }
 
-        // Verify password with hardcoded hash
-        const isPasswordValid = await comparePasswords(password, ADMIN_PASSWORD_HASH);
-        
+        // Verify password with env-derived hash
+        const isPasswordValid = await comparePasswords(password, fallbackHash);
+
         if (!isPasswordValid) {
-        throw new UnauthorizedError('Ongeldige inloggegevens');
-      }
+          throw new UnauthorizedError('Ongeldige inloggegevens');
+        }
 
         // Use fallback user data
         user = {
           id: '1',
           email: ADMIN_EMAIL,
-          passwordHash: ADMIN_PASSWORD_HASH,
+          passwordHash: fallbackHash,
           role: 'ADMIN',
           firstName: 'Admin',
           lastName: 'User',

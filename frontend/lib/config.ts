@@ -4,29 +4,24 @@ const isDevelopment = process.env.NODE_ENV === 'development' ||
 
 // API Configuration - DYNAMISCH & VEILIG
 const getRuntimeApiUrl = (): string => {
-  // Server-side: gebruik env var
+  // Server-side (SSR): productie = nooit localhost
   if (typeof window === 'undefined') {
     const envUrl = process.env.NEXT_PUBLIC_API_URL;
-    if (envUrl) {
-      // Als env var eindigt niet op /api/v1, voeg het toe
-      return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
+    if (process.env.NODE_ENV === 'production') {
+      if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1'))
+        return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
+      return 'https://catsupply.nl/api/v1';
     }
-    return 'https://catsupply.nl/api/v1';
-  }
-  
-  // Client-side: dynamic based on hostname
-  const hostname = window.location.hostname;
-  
-  // DEVELOPMENT: gebruik LOKALE backend MET /api/v1
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    const envUrl = process.env.NEXT_PUBLIC_API_URL;
-    if (envUrl) {
-      return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
-    }
+    if (envUrl) return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
     return 'http://localhost:3101/api/v1';
   }
-  
-  // Production: use same domain via NGINX reverse proxy
+  // Client-side: hostname = lokaal vs productie
+  const hostname = window.location.hostname;
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    const envUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (envUrl) return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
+    return 'http://localhost:3101/api/v1';
+  }
   return `${window.location.protocol}//${hostname}/api/v1`;
 };
 
@@ -113,13 +108,19 @@ export const getApiUrl = (endpoint: string): string => {
 };
 
 // Helper function for fetch with config
+// ✅ ISOLATIE: Timeout voorkomt hangende requests (product detail veilig)
 export const apiFetch = async <T>(
   endpoint: string,
-  options?: RequestInit & { cache?: number | undefined }
+  options?: RequestInit & { cache?: number | undefined; timeout?: number }
 ): Promise<T> => {
   const url = getApiUrl(endpoint);
+  const timeoutMs = options?.timeout ?? API_CONFIG.TIMEOUT;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
   const fetchOptions: RequestInit = {
     ...options,
+    signal: controller.signal,
     headers: {
       'Content-Type': 'application/json',
       ...options?.headers,
@@ -130,8 +131,20 @@ export const apiFetch = async <T>(
     (fetchOptions as any).next = { revalidate: options.cache };
   }
 
-  const response = await fetch(url, fetchOptions);
-  
+  let response: Response;
+  try {
+    response = await fetch(url, fetchOptions);
+  } catch (fetchError: any) {
+    const isAbort = fetchError?.name === 'AbortError';
+    const err = new Error(isAbort ? 'Verzoek time-out. Probeer opnieuw.' : 'Verbinding mislukt.') as any;
+    err.status = isAbort ? 504 : 0;
+    err.isNetworkError = true;
+    err.isGatewayError = isAbort;
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+
   if (!response.ok) {
     // ✅ SECURITY: Generic error - geen gevoelige data
     let errorMessage = 'Er is een fout opgetreden';

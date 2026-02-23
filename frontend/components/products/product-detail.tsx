@@ -31,7 +31,6 @@ import {
   TimerIcon,
   CheckIcon,
 } from "@/components/products/product-how-it-works-icons";
-import { ProductFeatureSlider } from "@/components/products/product-feature-slider"; // ✅ SLIDER: Smooth slide animaties voor mobiel
 import type { Product } from "@/types/product";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 import { BRAND_COLORS_HEX } from "@/lib/color-config"; // ✅ BLAUW: Voor vinkjes
@@ -93,7 +92,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [showAllSpecs, setShowAllSpecs] = useState(false); // ✅ Toon meer specs state
-  const [showAllFeatures, setShowAllFeatures] = useState(false); // ✅ Toon meer features state
   const [openSpecs, setOpenSpecs] = useState<Set<number>>(new Set());
   // ✅ ACCORDION TABS: Omschrijving standaard open (ook na refresh)
   const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set(['omschrijving']));
@@ -604,41 +602,8 @@ export function ProductDetail({ slug }: ProductDetailProps) {
   // ✅ FIX: Gebruik product.images DIRECT - deze bevat alle originele images zonder filtering
   // productImages is al gefilterd, maar we hebben de originele indices nodig (3 en 4)
   
-  // ✅ DYNAMISCH: Features met 4e en 5e foto - GEBRUIK ORIGINELE product.images indices
+  // ✅ DYNAMISCH: Originele product afbeeldingen voor vergelijkingstabel en andere secties
   const originalImages = product.images && Array.isArray(product.images) ? product.images : [];
-  const fourthImage = originalImages[3]; // ✅ 4E FOTO: 10.5L Afvalbak
-  const fifthImage = originalImages[4];  // ✅ 5E FOTO: Geurblokje, Kwast & Afvalzak
-  
-  // ✅ DYNAMISCH: Features met 4e en 5e foto - GEBRUIK ORIGINELE product.images indices
-  const features = PRODUCT_CONTENT.features.map((feature, index) => {
-    let imageUrl: string;
-    
-    if (index === 0) {
-      // ✅ 4E FOTO: 10.5L Afvalbak (index 3 = 4e foto) - DIRECT uit originele product.images
-      // ✅ VALIDATIE: Check of image geldig is (geen placeholder, geen data URL)
-      if (fourthImage && typeof fourthImage === 'string' && !fourthImage.startsWith('data:') && !fourthImage.includes('placeholder')) {
-        imageUrl = fourthImage;
-      } else {
-        imageUrl = '/images/capacity-10.5l-optimized.jpg';
-      }
-    } else if (index === 1) {
-      // ✅ MIDDELSTE: Statische feature-2.jpg
-      imageUrl = '/images/feature-2.jpg';
-    } else {
-      // ✅ 5E FOTO: Geurblokje, kwast & afvalzak (index 4 = 5e foto) - DIRECT uit originele product.images
-      // ✅ VALIDATIE: Check of image geldig is (geen placeholder, geen data URL)
-      if (fifthImage && typeof fifthImage === 'string' && !fifthImage.startsWith('data:') && !fifthImage.includes('placeholder')) {
-        imageUrl = fifthImage;
-      } else {
-        imageUrl = '/images/feature-2.jpg';
-      }
-    }
-    
-    return {
-      ...feature,
-      image: imageUrl,
-    };
-  });
 
   return (
     <div
@@ -1441,12 +1406,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
         </section>
       )}
 
-      {/* ✅ FEATURE SLIDER: Smooth slide animaties voor mobiel, zigzag voor desktop */}
-      <ProductFeatureSlider features={features} />
-
-      {/* ✅ VERGELIJKINGSTABEL: Mobiel blauwe kaart, witte achtergrond, zwarte tekst */}
+      {/* ✅ VERGELIJKINGSTABEL: mobiel edge-to-edge, desktop max-width */}
       <div className={cn(
-        CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding, 'py-12 lg:py-16',
+        'w-full md:max-w-7xl md:mx-auto md:px-8 py-8 md:py-12 lg:py-16',
         'md:bg-transparent',
         PRODUCT_PAGE_CONFIG.comparisonTable?.mobile?.wrapperBg ?? ''
       )}>

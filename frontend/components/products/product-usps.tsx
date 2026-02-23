@@ -30,7 +30,7 @@ const ICON_MAP = {
 // DRY: Color mapping - ✅ GRADIENT: #3C3C3D → #7A7A7D (was text-black)
 const COLOR_MAP = {
   accent: 'gradient-text', // ✅ GRADIENT (was text-black)
-  blue: 'text-[#3071aa]',
+  blue: 'text-brand',
   brand: 'text-brand',
 } as const;
 

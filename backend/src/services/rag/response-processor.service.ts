@@ -27,6 +27,8 @@ export interface RAGResponse {
   success: boolean;
   answer?: string;
   sources?: Array<{ title: string; snippet: string }>;
+  /** Modulaire waarschuwingen (bijv. externe leverancier, Alibaba) */
+  warnings?: string[];
   metadata?: {
     query?: string;
     latency_ms?: number;

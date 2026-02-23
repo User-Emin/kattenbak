@@ -1,35 +1,42 @@
 /**
  * COLOR CONFIG - DRY & SECURE
  * Alle kleuren op één plek - Single Source of Truth
- * 
+ *
  * BELANGRIJK: Dit is de ENIGE plek waar brand colors worden gedefinieerd!
  * Vermijd hardcoded hex codes in components.
  */
+
+// ============================================
+// BRAND BLUE - SINGLE SOURCE (#129DD8)
+// ============================================
+const BRAND_BLUE = '#129DD8' as const;
+const BRAND_BLUE_DARK = '#0E7EB8' as const;
+const BRAND_BLUE_LIGHT = '#2BAEE5' as const;
 
 // ============================================
 // BRAND COLORS - PRIMARY PALETTE
 // ============================================
 
 export const BRAND_COLORS_HEX = {
-  // Primary Brand Color (Navbar Blue / Winkelwagen Blauw)
-  primary: '#3071aa',        // ✅ BLAUW #3071aa - Single source of truth
-  primaryDark: '#256394',    // ✅ BLAUW DARK (donkerder variant)
-  primaryLight: '#3d82c0',   // ✅ BLAUW LIGHT (lichter variant)
-  
+  // Primary Brand Color (buttons, USP vinkjes, banner, CTA)
+  primary: BRAND_BLUE,
+  primaryDark: BRAND_BLUE_DARK,
+  primaryLight: BRAND_BLUE_LIGHT,
+
   // Accent Color - ✅ GRADIENT: #3C3C3D → #7A7A7D (was #000000)
-  accent: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',  // ✅ GRADIENT (was #000000)
-  accentStart: '#3C3C3D',   // ✅ GRADIENT START
-  accentEnd: '#7A7A7D',     // ✅ GRADIENT END
-  accentDark: '#111827',    // ✅ DARK GRAY (was orange-dark)
-  accentLight: '#374151',   // ✅ GRAY (was orange-light)
-  
-  // Button Color (BLAUW #3071aa voor CTA buttons - vervangt oranje)
-  buttonCta: '#3071aa',     // ✅ BLAUW #3071aa (was #2563eb blue-600, vervangt oranje)
-  buttonCtaHover: '#256394', // ✅ BLAUW DARK (was #1d4ed8 blue-700, vervangt oranje hover)
-  
-  // Oranje vervangen door BLAUW #3071aa - Single source of truth
-  orangeReplacement: '#3071aa',      // ✅ BLAUW #3071aa (vervangt #f76402)
-  orangeReplacementHover: '#256394', // ✅ BLAUW DARK (vervangt #e55a02, #e55d00)
+  accent: 'linear-gradient(135deg, #3C3C3D 0%, #7A7A7D 100%)',
+  accentStart: '#3C3C3D',
+  accentEnd: '#7A7A7D',
+  accentDark: '#111827',
+  accentLight: '#374151',
+
+  // Button Color (CTA = brand blue #129DD8)
+  buttonCta: BRAND_BLUE,
+  buttonCtaHover: BRAND_BLUE_DARK,
+
+  // Legacy alias (oranje vervangen door brand blue)
+  orangeReplacement: BRAND_BLUE,
+  orangeReplacementHover: BRAND_BLUE_DARK,
   
   // Neutral Colors - ✅ GRADIENT: #3C3C3D → #7A7A7D (was #000000)
   white: '#ffffff',
@@ -57,7 +64,7 @@ export const BRAND_COLORS_HEX = {
 export const COLOR_CLASSES = {
   // Background Colors
   bg: {
-    primary: 'bg-brand',           // ✅ WINKELWAGEN BLAUW (#005980)
+    primary: 'bg-brand',           // Brand blue #129DD8
     primaryDark: 'bg-brand-dark',  // ✅ WINKELWAGEN BLAUW DARK (#004760)
     accent: 'bg-black',            // ✅ ZWART (was orange)
     accentDark: 'bg-gray-900',     // ✅ DARK GRAY

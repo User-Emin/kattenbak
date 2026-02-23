@@ -21,6 +21,8 @@ import { MODERN_DESIGN } from "@/lib/modern-design-enhancements";
 import { ProductVariantsSection } from "@/components/shared/product-variants-section";
 import { ProductDescriptionSection } from "@/components/shared/product-description-section";
 import { ProductEdgeImageSection } from "@/components/shared/product-edge-image-section";
+import { ProductUspFeatures } from "@/components/products/product-usp-features";
+import { HomeStepsSection } from "@/components/home/home-steps-section";
 import { HomepageJsonLd } from "@/components/seo/homepage-json-ld";
 import { RichSnippets } from "@/components/seo/rich-snippets";
 
@@ -238,26 +240,38 @@ export default function HomePage() {
       </div>
 
       {/* SEPARATOR */}
-      <div 
+      <div
         className="w-full"
-        style={{
-          height: '1px',
-          backgroundColor: DESIGN_SYSTEM.colors.border.default,
-        }}
+        style={{ height: '1px', backgroundColor: DESIGN_SYSTEM.colors.border.default }}
       />
 
-      {/* ✅ EDGE-TO-EDGE SECTIE: Tussen zigzag einde en FAQ begin - Dynamisch - DRY & ZONDER HARDCODE */}
+      {/* ✅ EDGE-TO-EDGE SECTIE: mobiel na varianten */}
       <div className="block md:hidden mb-12">
         <ProductEdgeImageSection />
       </div>
 
-      {/* ✅ MOBIEL: PRODUCT BESCHRIJVING SECTIE (ALP1017 + Premium zelfreinigende) na zigzag, boven FAQ - Dynamisch - DRY & ZONDER HARDCODE */}
+      {/* ✅ MOBIEL: PRODUCT BESCHRIJVING SECTIE na edge image */}
       <div className="block md:hidden">
         <ProductDescriptionSection />
       </div>
 
-      {/* ✅ VIDEO SECTIE VERWIJDERD: Geen redundantie */}
-      {/* ✅ FAQ SECTIE VERWIJDERD: Verplaatst naar productdetail voor betere SEO */}
+      {/* ✅ SEPARATOR voor stappen sectie */}
+      <div
+        className="w-full"
+        style={{ height: '1px', backgroundColor: DESIGN_SYSTEM.colors.border.default }}
+      />
+
+      {/* ✅ HOE WERKT HET: 3-stappen zigzag sectie (admin-configureerbaar via howItWorksImages) */}
+      <HomeStepsSection product={product} />
+
+      {/* ✅ SEPARATOR voor USP features */}
+      <div
+        className="w-full"
+        style={{ height: '1px', backgroundColor: DESIGN_SYSTEM.colors.border.default }}
+      />
+
+      {/* ✅ PRODUCT USP FEATURES: Zigzag met productvoordelen (verplaatst van product detail naar home) */}
+      <ProductUspFeatures product={product} />
 
       {/* Chat popup is nu in layout.tsx voor alle pagina's */}
     </div>

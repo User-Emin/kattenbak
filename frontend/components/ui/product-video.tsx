@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Play } from 'lucide-react';
+import { BRAND_COLORS_HEX } from '@/lib/color-config';
 
 interface ProductVideoProps {
   videoUrl: string;
@@ -135,9 +136,9 @@ export function ProductVideo({ videoUrl, productName, className = '' }: ProductV
               <button
                 onClick={() => setIsPlaying(true)}
                 className="w-20 h-20 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform shadow-2xl"
-                style={{ backgroundColor: '#3071aa' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#256394'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3071aa'}
+                style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primaryDark}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = BRAND_COLORS_HEX.primary}
                 aria-label={`Speel ${productName} demo video af`}
               >
                 <Play className="w-10 h-10 text-white ml-1" fill="white" />
