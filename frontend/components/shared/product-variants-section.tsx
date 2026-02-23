@@ -98,7 +98,6 @@ export function ProductVariantsSection() {
               CONFIG.header.title.fontWeight,
               CONFIG.header.title.textColor,
               CONFIG.header.title.letterSpacing,
-              CONFIG.header.spacing.titleSubtitle
             )}
             style={{
               fontFamily: DESIGN_SYSTEM.typography.fontFamily.headings,
@@ -107,20 +106,10 @@ export function ProductVariantsSection() {
           >
             Onze varianten
           </h2>
-          <p
-            className={cn(
-              CONFIG.header.subtitle.fontSize,
-              CONFIG.header.subtitle.fontWeight,
-              CONFIG.header.subtitle.textColor,
-              CONFIG.header.subtitle.lineHeight
-            )}
-          >
-            Kies jouw favoriete kleur en stijl
-          </p>
         </div>
       </div>
 
-      {/* ✅ MOBIEL: Horizontale slide edge-to-edge met 0 padding | DESKTOP: Grid centraal */}
+      {/* ✅ MOBIEL: Horizontale snap-scroll met zijdelingse peek | DESKTOP: Grid centraal */}
       <div
         className={cn(
           'w-full',
@@ -128,12 +117,14 @@ export function ProductVariantsSection() {
           'flex md:flex-row overflow-x-auto md:overflow-visible gap-4 md:gap-8',
           'snap-x snap-mandatory md:snap-none',
           'scrollbar-hide',
-          'px-0 md:px-0' /* ✅ 0 padding op mobiel = edge-to-edge */
         )}
         style={{
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
-        }}
+          paddingLeft: '1rem',      /* ✅ MOBIEL: Links wat ruimte zodat 2e kaart zichtbaar pikt */
+          paddingRight: '1rem',
+          WebkitOverflowScrolling: 'touch', /* ✅ iOS: Smooth momentum scroll */
+        } as React.CSSProperties}
       >
         {variants.slice(0, 2).map((variant) => {
           const variantImage = variant.displayImage || (product.images && product.images.length > 0 ? product.images[0] : '/placeholder-image.jpg');
@@ -144,9 +135,9 @@ export function ProductVariantsSection() {
               key={variant.id}
               href={`/product/${product.slug}${variant.id ? `?variant=${variant.id}` : ''}`}
               className={cn(
-                'group relative overflow-hidden transition-all duration-300 hover:scale-[1.02]',
-                'flex-shrink-0 snap-center md:snap-align-none',
-                'min-w-[85vw] w-[85vw] md:min-w-0 md:w-[48%]', /* mobiel: vaste breedte voor slide; desktop: 48% */
+                'group relative overflow-hidden transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]',
+                'flex-shrink-0 snap-start md:snap-align-none',
+                'min-w-[80vw] w-[80vw] md:min-w-0 md:w-[48%]', /* ✅ 80vw zodat 2e kaart links peekt */
                 CONFIG.card.borderRadius,
                 CONFIG.card.aspectRatio
               )}

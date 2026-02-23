@@ -22,6 +22,7 @@ import { HowToJsonLd } from "@/components/seo/howto-json-ld";
 import { RelatedProducts } from "@/components/products/related-products";
 import { ProductImage } from "@/components/ui/product-image"; // ✅ ZOOM: ProductImage component met zoom functionaliteit
 import { ProductHowItWorks } from "@/components/products/product-how-it-works"; // ✅ HOE WERKT HET: Nieuwe sectie
+import { HomeStepsSection } from "@/components/home/home-steps-section"; // ✅ 3 STAPPEN: Boven vergelijkingstabel
 // ✅ HOE WERKT HET ACCORDION: Icons voor stappen
 import { 
   PlugIcon,
@@ -1405,6 +1406,9 @@ export function ProductDetail({ slug }: ProductDetailProps) {
           </div>
         </section>
       )}
+
+      {/* ✅ 3 STAPPEN: Hoe werkt het - boven vergelijkingstabel, admin-configureerbaar via howItWorksImages */}
+      <HomeStepsSection product={product} />
 
       {/* ✅ VERGELIJKINGSTABEL: mobiel edge-to-edge, desktop max-width */}
       <div className={cn(

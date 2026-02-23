@@ -3,26 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-// Chat popup is nu in layout.tsx voor alle pagina's
-import { Separator } from "@/components/ui/separator";
-// ✅ VIDEO PLAYER IMPORT VERWIJDERD: Geen redundantie
-import { ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { Product } from "@/types/product";
 import { API_CONFIG, SITE_CONFIG, apiFetch } from "@/lib/config";
-import { IMAGE_CONFIG, getImageFillProps } from "@/lib/image-config";
-import { useCart } from "@/context/cart-context";
-import { useUI } from "@/context/ui-context";
+import { IMAGE_CONFIG } from "@/lib/image-config";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { cn } from "@/lib/utils";
-import { SHARED_CONTENT } from "@/lib/content.config";
-import { BRAND_COLORS_HEX } from "@/lib/color-config";
-import { MODERN_DESIGN } from "@/lib/modern-design-enhancements";
 import { ProductVariantsSection } from "@/components/shared/product-variants-section";
-import { ProductDescriptionSection } from "@/components/shared/product-description-section";
 import { ProductEdgeImageSection } from "@/components/shared/product-edge-image-section";
 import { ProductUspFeatures } from "@/components/products/product-usp-features";
-import { HomeStepsSection } from "@/components/home/home-steps-section";
 import { HomepageJsonLd } from "@/components/seo/homepage-json-ld";
 import { RichSnippets } from "@/components/seo/rich-snippets";
 
@@ -38,38 +27,8 @@ import { RichSnippets } from "@/components/seo/rich-snippets";
  * ✅ Typography: Dunne headings, veel witruimte
  */
 
-// FAQ's - Relevant en informatief
-const faqs = [
-  {
-    q: "Wat maakt deze kattenbak beter dan andere zelfreinigende bakken?",
-    a: "Onze kattenbak heeft een unieke combinatie van features: 10.5L afvalbak capaciteit (17% meer dan de concurrentie), dubbele veiligheidssensoren, open-top low-stress design, en een ultra-stille motor onder 40dB. Ook is hij volledig modulair en makkelijk te demonteren voor reiniging."
-  },
-  {
-    q: "Hoe werkt de zelfreinigende functie?",
-    a: "De kattenbak detecteert automatisch wanneer je kat klaar is via dubbele veiligheidssensoren. Deze sensoren zorgen ervoor dat de reinigingscyclus alleen start wanneer het 100% veilig is. Alle afval wordt verzameld in een afgesloten 10.5L compartiment met anti-splash hoge wanden."
-  },
-  {
-    q: "Hoe vaak moet ik de afvalbak legen?",
-    a: "Bij één kat ongeveer 1x per week, bij meerdere katten 2-3x per week. Dankzij de XL 10.5L capaciteit (grootste in zijn klasse) heb je tot 30% minder onderhoud dan bij concurrerende modellen met 7-9L capaciteit."
-  },
-  {
-    q: "Is de kattenbak geschikt voor meerdere katten?",
-    a: "Ja, geschikt voor huishoudens met meerdere katten dankzij de XL 10.5L capaciteit. Het compacte ontwerp met grote binnenruimte biedt comfort voor katten tot 7kg. Je kunt alle soorten kattenbakvulling gebruiken dankzij het high-efficiency filter."
-  },
-  {
-    q: "Is deze kattenbak geschikt voor starters of eerste kat?",
-    a: "Ja, perfect voor starters! Ideaal voor jonge stellen, net getrouwde stellen en drukke professionals met weinig tijd. Volledig automatisch, minimale onderhoud en app-bediening. Perfect voor je eerste kat zonder dagelijks schoonmaken."
-  },
-  {
-    q: "Is de kattenbak geschikt voor drukke werkweken?",
-    a: "Absoluut! Met de 10.5L capaciteit hoef je bij één kat slechts 1x per week te legen. De app stuurt meldingen wanneer het nodig is. Ideaal voor jonge stellen en professionals met drukke carrières - geen dagelijks onderhoud nodig."
-  },
-];
-
 export default function HomePage() {
   const [product, setProduct] = useState<Product | null>(null);
-  const { itemCount } = useCart();
-  const { openCart, closeCart } = useUI();
 
   // Fetch featured product with proper error handling
   useEffect(() => {
@@ -224,53 +183,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ✅ TRUST BANNER VERWIJDERD: Onder hero weggehaald */}
-      
-      {/* ✅ VARIANTEN SECTIE: Direct na hero - Dynamisch, smooth effect, tekst in afbeelding - DRY & ZONDER HARDCODE */}
+      {/* ✅ VARIANTEN SECTIE: Direct na hero */}
       <ProductVariantsSection />
 
-      {/* ✅ EDGE-TO-EDGE IMAGE SECTIE: Desktop na varianten - 3e foto, dynamisch, secure - DRY & ZONDER HARDCODE */}
-      <div className="hidden md:block">
-        <ProductEdgeImageSection />
-      </div>
+      {/* ✅ EDGE-TO-EDGE IMAGE SECTIE: Responsief */}
+      <ProductEdgeImageSection />
 
-      {/* ✅ PRODUCT BESCHRIJVING SECTIE: Desktop na edge-to-edge, Mobiel na zigzag - Dynamisch - DRY & ZONDER HARDCODE */}
-      <div className="hidden md:block">
-        <ProductDescriptionSection />
-      </div>
-
-      {/* SEPARATOR */}
+      {/* ✅ SEPARATOR */}
       <div
         className="w-full"
         style={{ height: '1px', backgroundColor: DESIGN_SYSTEM.colors.border.default }}
       />
 
-      {/* ✅ EDGE-TO-EDGE SECTIE: mobiel na varianten */}
-      <div className="block md:hidden mb-12">
-        <ProductEdgeImageSection />
-      </div>
-
-      {/* ✅ MOBIEL: PRODUCT BESCHRIJVING SECTIE na edge image */}
-      <div className="block md:hidden">
-        <ProductDescriptionSection />
-      </div>
-
-      {/* ✅ SEPARATOR voor stappen sectie */}
-      <div
-        className="w-full"
-        style={{ height: '1px', backgroundColor: DESIGN_SYSTEM.colors.border.default }}
-      />
-
-      {/* ✅ HOE WERKT HET: 3-stappen zigzag sectie (admin-configureerbaar via howItWorksImages) */}
-      <HomeStepsSection product={product} />
-
-      {/* ✅ SEPARATOR voor USP features */}
-      <div
-        className="w-full"
-        style={{ height: '1px', backgroundColor: DESIGN_SYSTEM.colors.border.default }}
-      />
-
-      {/* ✅ PRODUCT USP FEATURES: Zigzag met productvoordelen (verplaatst van product detail naar home) */}
+      {/* ✅ PRODUCT USP FEATURES: Zigzag met productvoordelen */}
       <ProductUspFeatures product={product} />
 
       {/* Chat popup is nu in layout.tsx voor alle pagina's */}
