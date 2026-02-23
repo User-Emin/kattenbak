@@ -28,7 +28,7 @@ const STEPS_CONFIG = {
   },
   step: {
     number: {
-      wrapper: 'w-8 h-8 rounded-full bg-black flex items-center justify-center shrink-0 mb-3 md:mb-0',
+      wrapper: 'w-8 h-8 rounded-full bg-black flex items-center justify-center shrink-0 mb-3 mx-auto md:mx-0',
       text: 'text-xs font-bold text-white',
     },
     title: 'text-xl sm:text-2xl md:text-3xl font-medium text-black tracking-tight mb-3',
