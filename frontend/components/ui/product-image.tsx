@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, MouseEvent } from 'react';
+import { useState, useRef, useEffect, MouseEvent } from 'react';
 import Image from 'next/image';
 import { X, ZoomIn } from 'lucide-react';
 import { getFallbackImage } from '@/lib/demo-images';
@@ -114,7 +114,15 @@ export function ProductImage({
     setMousePosition({ x: 50, y: 50 });
   };
 
-  // Keyboard ESC to close lightbox
+  // ✅ ESC key: window-level listener zodat ESC altijd werkt (geen focus vereist)
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') handleCloseLightbox(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isLightboxOpen]);
+
+  // Keyboard ESC to close lightbox (fallback voor div focus)
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') handleCloseLightbox();
   };

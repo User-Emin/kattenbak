@@ -31,8 +31,8 @@ const STEPS_CONFIG = {
   },
   step: {
     number: {
-      wrapper: 'w-8 h-8 rounded-full bg-black flex items-center justify-center shrink-0',
-      text: 'text-xs font-bold text-white',
+      wrapper: 'w-11 h-11 md:w-13 md:h-13 rounded-full bg-black flex items-center justify-center shrink-0 shadow-lg',
+      text: 'text-sm font-bold text-white',
     },
     title: 'text-xl sm:text-2xl md:text-3xl font-medium text-black tracking-tight mb-3',
     desc: 'text-base text-gray-500 leading-relaxed',
@@ -94,11 +94,11 @@ export function HomeStepsSection({ product = null }: HomeStepsSectionProps) {
                   ? CONFIG.featureSection.zigzag.leftLayout
                   : CONFIG.featureSection.zigzag.rightLayout}
               >
-                {/* Afbeelding */}
+                {/* Afbeelding + badge overlay */}
                 <div
                   className={cn(
                     CONFIG.featureSection.image.containerMaxWidth,
-                    'w-full md:w-auto',
+                    'w-full md:w-auto relative',
                     isEven
                       ? CONFIG.featureSection.zigzag.imageOrder.left
                       : CONFIG.featureSection.zigzag.imageOrder.right
@@ -119,37 +119,38 @@ export function HomeStepsSection({ product = null }: HomeStepsSectionProps) {
                       }
                     />
                   </div>
+                  {/* Badge overlay op hoek afbeelding */}
+                  <div className={cn(
+                    STEPS_CONFIG.step.number.wrapper,
+                    'absolute -bottom-5 md:-bottom-6',
+                    isEven ? '-right-5 md:-right-6' : '-left-5 md:-left-6'
+                  )}>
+                    <span className={STEPS_CONFIG.step.number.text}>{step.number}</span>
+                  </div>
                 </div>
 
                 {/* Tekst */}
                 <div
                   className={cn(
-                    'space-y-3 md:space-y-4 w-full md:w-auto',
+                    'space-y-3 md:space-y-4 w-full md:w-auto pt-6 md:pt-0',
                     isEven
                       ? CONFIG.featureSection.zigzag.textOrder.left
                       : CONFIG.featureSection.zigzag.textOrder.right
                   )}
                 >
-                  {/* Badge + titel compact gecombineerd */}
-                  <div className="flex flex-col items-center md:items-start gap-2">
-                    {/* Stap nummer badge */}
-                    <div className={STEPS_CONFIG.step.number.wrapper}>
-                      <span className={STEPS_CONFIG.step.number.text}>{step.number}</span>
-                    </div>
-
-                    <h3
-                      className={cn(
-                        CONFIG.featureSection.text.title.fontSize,
-                        CONFIG.featureSection.text.title.fontWeight,
-                        CONFIG.featureSection.text.title.letterSpacing,
-                        CONFIG.featureSection.text.title.textAlign,
-                        'text-black'
-                      )}
-                      style={{ color: '#000000' }}
-                    >
-                      {step.title}
-                    </h3>
-                  </div>
+                  {/* Titel */}
+                  <h3
+                    className={cn(
+                      CONFIG.featureSection.text.title.fontSize,
+                      CONFIG.featureSection.text.title.fontWeight,
+                      CONFIG.featureSection.text.title.letterSpacing,
+                      CONFIG.featureSection.text.title.textAlign,
+                      'text-black'
+                    )}
+                    style={{ color: '#000000' }}
+                  >
+                    {step.title}
+                  </h3>
 
                   <p
                     className={cn(
