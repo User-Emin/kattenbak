@@ -21,6 +21,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { ImageUpload } from '@/components/image-upload';
+import { StepsImageManager } from '@/components/steps-image-manager';
 import { VideoUpload } from '@/components/video-upload';
 import { VariantManager } from '@/components/variant-manager';
 import { Badge } from '@/components/ui/badge';
@@ -264,37 +265,27 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
           </CardContent>
         </Card>
 
-        {/* ✅ HOW IT WORKS: Specifieke afbeeldingen voor "Hoe werkt het?" sectie */}
+        {/* ✅ IN 3 STAPPEN KLAAR: Admin-beheerable foto's per stap */}
         <Card>
           <CardContent className="pt-6 space-y-4">
-            <h2 className="text-lg font-semibold">Hoe werkt het? Afbeeldingen</h2>
-            <p className="text-sm text-muted-foreground">
-              Upload specifieke afbeeldingen voor de "Hoe werkt het?" sectie (maximaal 6). 
-              Deze afbeeldingen zijn los van de product/variant afbeeldingen en worden gebruikt voor de 6 stappen.
-            </p>
-            
+            <div>
+              <h2 className="text-lg font-semibold">In 3 stappen klaar — Foto&apos;s</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Upload per stap een foto die getoond wordt in de &ldquo;In 3 stappen klaar&rdquo; sectie op de productpagina.
+                Sleep de rijen om de volgorde te wijzigen.
+              </p>
+            </div>
             <FormField
               control={form.control}
               name="howItWorksImages"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Stap Afbeeldingen (optioneel)</FormLabel>
                   <FormControl>
-                    <ImageUpload
+                    <StepsImageManager
                       value={field.value || []}
                       onChange={field.onChange}
-                      maxImages={6}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Upload afbeeldingen voor de 6 stappen in "Hoe werkt het?" sectie:
-                    <br />• Stap 1: Stekker erin en klaarzetten
-                    <br />• Stap 2: Grit toevoegen tot MAX lijn
-                    <br />• Stap 3: Afvalzak plaatsen over bak
-                    <br />• Stap 4: Aanzetten en klaar
-                    <br />• Stap 5: Timer instellen via app
-                    <br />• Stap 6: Klaar! Automatisch schoon
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

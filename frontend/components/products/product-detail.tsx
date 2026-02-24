@@ -21,17 +21,7 @@ import { FAQJsonLd } from "@/components/seo/faq-json-ld";
 import { HowToJsonLd } from "@/components/seo/howto-json-ld";
 import { RelatedProducts } from "@/components/products/related-products";
 import { ProductImage } from "@/components/ui/product-image"; // ✅ ZOOM: ProductImage component met zoom functionaliteit
-import { ProductHowItWorks } from "@/components/products/product-how-it-works"; // ✅ HOE WERKT HET: Nieuwe sectie
 import { HomeStepsSection } from "@/components/home/home-steps-section"; // ✅ 3 STAPPEN: Boven vergelijkingstabel
-// ✅ HOE WERKT HET ACCORDION: Icons voor stappen
-import { 
-  PlugIcon,
-  GritIcon,
-  TrashBagIcon,
-  PowerIcon,
-  TimerIcon,
-  CheckIcon,
-} from "@/components/products/product-how-it-works-icons";
 import type { Product } from "@/types/product";
 import { getVariantImage } from "@/lib/variant-utils"; // ✅ VARIANT SYSTEM: Shared utility (modulair, geen hardcode)
 import { BRAND_COLORS_HEX } from "@/lib/color-config"; // ✅ BLAUW: Voor vinkjes
@@ -1207,86 +1197,70 @@ export function ProductDetail({ slug }: ProductDetailProps) {
                   
                   {openAccordions.has('hoe-werkt-het') && (
                     <div className={CONFIG.howItWorks.accordion.content.container}>
-                      {/* ✅ STAPPEN: DRY uit config; image vervangt icoon wanneer geüpload */}
-                      {(() => {
-                        const howItWorksImages = product.howItWorksImages || [];
-                        const stepDefs = (CONFIG.howItWorksSteps as { steps?: readonly { title: string; description: string }[] }).steps
-                          ?? (CONFIG.howItWorksSteps as { stepTitles?: readonly string[] }).stepTitles?.map((t, i) => ({ title: t, description: '' })) ?? [];
-                        const icons = [PlugIcon, GritIcon, TrashBagIcon, PowerIcon, TimerIcon, CheckIcon];
-
-                        return stepDefs.map((stepDef, index) => {
-                          const stepImage = howItWorksImages[index];
-                          const IconComponent = icons[index] ?? CheckIcon;
-                          const step = { ...stepDef, number: index + 1, image: stepImage, icon: IconComponent };
-                          return (
-                            <div
-                              key={step.number}
-                              className={cn(
-                                CONFIG.howItWorks.accordion.content.step.container,
-                                'animate-in fade-in slide-in-from-bottom-4',
-                                'duration-300'
-                              )}
-                              style={{
-                                animationDelay: `${index * 50}ms`,
-                              }}
-                            >
-                              <div className={CONFIG.howItWorks.accordion.content.step.spacing}>
-                                {step.image && (
-                                  <div 
-                                    className={cn(CONFIG.howItWorks.accordion.content.step.image.container)}
-                                    style={{ borderColor: `${BRAND_COLORS_HEX.primary}30` }}
+                      {/* ✅ 3 STAPPEN: DRY via CONFIG.howItWorksSteps.steps */}
+                      {CONFIG.howItWorksSteps.steps.map((stepDef, index) => {
+                        const stepImage = (product.howItWorksImages as string[] | null)?.[index];
+                        return (
+                          <div
+                            key={stepDef.number}
+                            className={cn(
+                              CONFIG.howItWorks.accordion.content.step.container,
+                              'animate-in fade-in slide-in-from-bottom-4 duration-300'
+                            )}
+                            style={{ animationDelay: `${index * 50}ms` }}
+                          >
+                            <div className={CONFIG.howItWorks.accordion.content.step.spacing}>
+                              {/* Nummerbadge of afbeelding */}
+                              {stepImage ? (
+                                <div
+                                  className={cn(CONFIG.howItWorks.accordion.content.step.image.container)}
+                                  style={{ borderColor: `${BRAND_COLORS_HEX.primary}30` }}
+                                >
+                                  <Image
+                                    src={stepImage}
+                                    alt={stepDef.title}
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 768px) 100vw, 400px"
+                                    quality={90}
+                                    loading="lazy"
+                                    unoptimized={stepImage.startsWith('/uploads/') || stepImage.includes('/uploads/')}
+                                  />
+                                  <div
+                                    className={CONFIG.howItWorks.accordion.content.step.image.numberBadge.container}
+                                    style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
                                   >
-                                    <Image
-                                      src={step.image}
-                                      alt={step.title}
-                                      fill
-                                      className="object-cover"
-                                      sizes="(max-width: 768px) 100vw, 400px"
-                                      quality={90}
-                                      loading="lazy"
-                                      unoptimized={step.image.startsWith('/uploads/') || step.image.includes('/uploads/')}
-                                      placeholder="blur"
-                                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                                    />
-                                    <div 
-                                      className={CONFIG.howItWorks.accordion.content.step.image.numberBadge.container}
-                                      style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
-                                    >
-                                      {step.number}
-                                    </div>
+                                    {stepDef.number}
                                   </div>
-                                )}
-                                <div className={CONFIG.howItWorks.accordion.content.step.content.container}>
-                                  <div className={CONFIG.howItWorks.accordion.content.step.content.header.container}>
-                                    {!step.image && (
-                                      <IconComponent 
-                                        className={cn(
-                                          CONFIG.howItWorks.accordion.content.step.content.header.icon.size,
-                                          CONFIG.howItWorks.accordion.content.step.content.header.icon.color
-                                        )}
-                                      />
-                                    )}
-                                    <h3 className={cn(
-                                      CONFIG.howItWorks.accordion.content.step.content.header.title.fontSize,
-                                      CONFIG.howItWorks.accordion.content.step.content.header.title.fontWeight,
-                                      CONFIG.howItWorks.accordion.content.step.content.header.title.textColor
-                                    )}>
-                                      {step.title}
-                                    </h3>
-                                  </div>
-                                  <p className={cn(
-                                    CONFIG.howItWorks.accordion.content.step.content.description.fontSize,
-                                    CONFIG.howItWorks.accordion.content.step.content.description.textColor,
-                                    CONFIG.howItWorks.accordion.content.step.content.description.lineHeight
-                                  )}>
-                                    {step.description}
-                                  </p>
                                 </div>
+                              ) : (
+                                <div
+                                  className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold"
+                                  style={{ backgroundColor: BRAND_COLORS_HEX.primary }}
+                                >
+                                  {stepDef.number}
+                                </div>
+                              )}
+                              <div className={CONFIG.howItWorks.accordion.content.step.content.container}>
+                                <h3 className={cn(
+                                  CONFIG.howItWorks.accordion.content.step.content.header.title.fontSize,
+                                  CONFIG.howItWorks.accordion.content.step.content.header.title.fontWeight,
+                                  CONFIG.howItWorks.accordion.content.step.content.header.title.textColor
+                                )}>
+                                  {stepDef.title}
+                                </h3>
+                                <p className={cn(
+                                  CONFIG.howItWorks.accordion.content.step.content.description.fontSize,
+                                  CONFIG.howItWorks.accordion.content.step.content.description.textColor,
+                                  CONFIG.howItWorks.accordion.content.step.content.description.lineHeight
+                                )}>
+                                  {stepDef.description}
+                                </p>
                               </div>
                             </div>
-                          );
-                        });
-                      })()}
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -1338,74 +1312,6 @@ export function ProductDetail({ slug }: ProductDetailProps) {
       </div>
 
 
-      {/* ✅ SCHEIDINGSTREEP: Tussen tabs/omschrijving en 6 stappen - IETS GRIJZER */}
-      <div className={cn(CONFIG.layout.maxWidth, 'mx-auto', CONFIG.layout.containerPadding)}>
-        <div className="border-t border-gray-300 my-6 sm:my-8"></div>
-      </div>
-
-      {/* ✅ Hoe werkt het – één sectie, 1 kolom, icoon per stap, responsive mobiel (niet dubbel) */}
-      {(CONFIG.howItWorksSteps as { sectionTitle?: string })?.sectionTitle && (
-        <section
-          className={cn((CONFIG.howItWorksSteps as { wrapper?: string }).wrapper, (CONFIG.howItWorksSteps as { wrapperBg?: string }).wrapperBg)}
-          data-testid="how-it-works-steps"
-          aria-label="Hoe werkt het"
-        >
-          <h2 className={(CONFIG.howItWorksSteps as { sectionTitleClass?: string }).sectionTitleClass}>
-            {(CONFIG.howItWorksSteps as { sectionTitle?: string }).sectionTitle}
-          </h2>
-          <div className={(CONFIG.howItWorksSteps as { list?: string }).list}>
-            {((CONFIG.howItWorksSteps as { stepTitles?: readonly string[] }).stepTitles ?? []).map((title, index) => {
-              const icons = [PlugIcon, GritIcon, TrashBagIcon, PowerIcon, TimerIcon, CheckIcon];
-              const IconComponent = icons[index] ?? CheckIcon;
-              const steps = CONFIG.howItWorksSteps as { iconWrapper?: string; iconWrapperFirstTwo?: string; imageWrapper?: string; imageWrapperFirstTwo?: string; numberBg?: string };
-              const isFirstTwo = index < 2;
-              const stepImage = product?.howItWorksImages?.[index];
-              return (
-                <div
-                  key={index}
-                  className={(CONFIG.howItWorksSteps as { stepRow?: string }).stepRow}
-                >
-                  {stepImage ? (
-                    <div className={cn('relative', isFirstTwo ? steps.imageWrapperFirstTwo : steps.imageWrapper)}>
-                      <Image
-                        src={stepImage}
-                        alt={title}
-                        fill
-                        className="object-cover"
-                        sizes="56px"
-                        unoptimized={stepImage.startsWith('/uploads/') || stepImage.includes('/uploads/')}
-                      />
-                    </div>
-                  ) : (
-                  <div
-                    className={isFirstTwo ? (steps.iconWrapperFirstTwo ?? steps.iconWrapper) : steps.iconWrapper}
-                    style={{
-                      backgroundColor: isFirstTwo
-                        ? (CONFIG.howItWorksSteps as { numberBg?: string }).numberBg
-                        : `${(CONFIG.howItWorksSteps as { numberBg?: string }).numberBg}20`,
-                    }}
-                  >
-                    <IconComponent className={cn(
-                      isFirstTwo ? 'w-7 h-7 sm:w-8 sm:h-8' : 'w-5 h-5 sm:w-6 sm:h-6',
-                      isFirstTwo ? 'text-white' : 'text-gray-700'
-                    )} />
-                  </div>
-                  )}
-                  <div
-                    className={(CONFIG.howItWorksSteps as { number?: string }).number}
-                    style={{ backgroundColor: (CONFIG.howItWorksSteps as { numberBg?: string }).numberBg }}
-                  >
-                    {index + 1}
-                  </div>
-                  <span className={(CONFIG.howItWorksSteps as { title?: string }).title}>
-                    {title}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
 
       {/* ✅ 3 STAPPEN: Hoe werkt het - boven vergelijkingstabel, admin-configureerbaar via howItWorksImages */}
       <HomeStepsSection product={product} />

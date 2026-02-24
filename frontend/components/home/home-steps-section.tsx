@@ -13,6 +13,9 @@ import { cn } from '@/lib/utils';
 import { PRODUCT_PAGE_CONFIG } from '@/lib/product-page-config';
 import type { Product } from '@/types/product';
 
+// Gedeelde stap-definities uit single source of truth
+const STEP_DEFINITIONS = PRODUCT_PAGE_CONFIG.howItWorksSteps.steps;
+
 // ─── Config ──────────────────────────────────────────────────────────────────
 
 const STEPS_CONFIG = {
@@ -44,28 +47,6 @@ const DEFAULT_IMAGES = [
   '/images/capacity-10.5l-optimized.jpg',
   '/images/feature-2.jpg',
   '/images/feature-2.jpg',
-] as const;
-
-// Stap definities — content
-const STEP_DEFINITIONS = [
-  {
-    number: 1,
-    title: 'Stekker in en app instellen',
-    description:
-      'Zet de kattenbak op een stabiele plek en sluit de stekker aan. Download de app, koppel via Wi-Fi en stel je voorkeuren in.',
-  },
-  {
-    number: 2,
-    title: 'Afvalzak plaatsen',
-    description:
-      'Schuif een afvalzak in het 10,5L compartiment. Soms de zak verwisselen en geen vieze klusjes meer.',
-  },
-  {
-    number: 3,
-    title: 'Grit toevoegen en beginnen',
-    description:
-      'Vul de bak met klonterend grit tot de MAX-lijn. Klaar! De kattenbak reinigt voortaan automatisch.',
-  },
 ] as const;
 
 // ─── Component ───────────────────────────────────────────────────────────────
