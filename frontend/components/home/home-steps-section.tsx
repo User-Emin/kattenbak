@@ -31,7 +31,7 @@ const STEPS_CONFIG = {
   },
   step: {
     number: {
-      wrapper: 'w-8 h-8 rounded-full bg-black flex items-center justify-center shrink-0 mb-3 mx-auto md:mx-0',
+      wrapper: 'w-8 h-8 rounded-full bg-black flex items-center justify-center shrink-0',
       text: 'text-xs font-bold text-white',
     },
     title: 'text-xl sm:text-2xl md:text-3xl font-medium text-black tracking-tight mb-3',
@@ -124,29 +124,32 @@ export function HomeStepsSection({ product = null }: HomeStepsSectionProps) {
                 {/* Tekst */}
                 <div
                   className={cn(
-                    CONFIG.featureSection.text.container,
+                    'space-y-3 md:space-y-4 w-full md:w-auto',
                     isEven
                       ? CONFIG.featureSection.zigzag.textOrder.left
                       : CONFIG.featureSection.zigzag.textOrder.right
                   )}
                 >
-                  {/* Stap nummer */}
-                  <div className={STEPS_CONFIG.step.number.wrapper}>
-                    <span className={STEPS_CONFIG.step.number.text}>{step.number}</span>
-                  </div>
+                  {/* Badge + titel compact gecombineerd */}
+                  <div className="flex flex-col items-center md:items-start gap-2">
+                    {/* Stap nummer badge */}
+                    <div className={STEPS_CONFIG.step.number.wrapper}>
+                      <span className={STEPS_CONFIG.step.number.text}>{step.number}</span>
+                    </div>
 
-                  <h3
-                    className={cn(
-                      CONFIG.featureSection.text.title.fontSize,
-                      CONFIG.featureSection.text.title.fontWeight,
-                      CONFIG.featureSection.text.title.letterSpacing,
-                      CONFIG.featureSection.text.title.textAlign,
-                      'text-black'
-                    )}
-                    style={{ color: '#000000' }}
-                  >
-                    {step.title}
-                  </h3>
+                    <h3
+                      className={cn(
+                        CONFIG.featureSection.text.title.fontSize,
+                        CONFIG.featureSection.text.title.fontWeight,
+                        CONFIG.featureSection.text.title.letterSpacing,
+                        CONFIG.featureSection.text.title.textAlign,
+                        'text-black'
+                      )}
+                      style={{ color: '#000000' }}
+                    >
+                      {step.title}
+                    </h3>
+                  </div>
 
                   <p
                     className={cn(

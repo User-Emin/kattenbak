@@ -739,7 +739,7 @@ app.put('/api/v1/admin/products/:id', authMiddleware, async (req: Request, res: 
       'sku', 'name', 'slug', 'description', 'shortDescription',
       'price', 'compareAtPrice', 'costPrice',
       'stock', 'lowStockThreshold', 'trackInventory',
-      'weight', 'dimensions', 'images',
+      'weight', 'dimensions', 'images', 'howItWorksImages',
       'metaTitle', 'metaDescription',
       'isActive', 'isFeatured',
       'categoryId'
