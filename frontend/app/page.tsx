@@ -10,7 +10,6 @@ import { IMAGE_CONFIG } from "@/lib/image-config";
 import { DESIGN_SYSTEM } from "@/lib/design-system";
 import { cn } from "@/lib/utils";
 import { ProductVariantsSection } from "@/components/shared/product-variants-section";
-import { ProductEdgeImageSection } from "@/components/shared/product-edge-image-section";
 import { ProductUspFeatures } from "@/components/products/product-usp-features";
 import { HomepageJsonLd } from "@/components/seo/homepage-json-ld";
 import { RichSnippets } from "@/components/seo/rich-snippets";
@@ -185,15 +184,6 @@ export default function HomePage() {
 
       {/* ✅ VARIANTEN SECTIE: Direct na hero */}
       <ProductVariantsSection />
-
-      {/* ✅ EDGE-TO-EDGE IMAGE SECTIE: Responsief */}
-      <ProductEdgeImageSection />
-
-      {/* ✅ SEPARATOR */}
-      <div
-        className="w-full"
-        style={{ height: '1px', backgroundColor: DESIGN_SYSTEM.colors.border.default }}
-      />
 
       {/* ✅ PRODUCT USP FEATURES: Zigzag met productvoordelen */}
       <ProductUspFeatures product={product} />
