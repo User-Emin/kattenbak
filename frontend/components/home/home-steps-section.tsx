@@ -119,11 +119,12 @@ export function HomeStepsSection({ product = null }: HomeStepsSectionProps) {
                       }
                     />
                   </div>
-                  {/* Badge overlay op hoek afbeelding */}
+                  {/* Badge: mobiel centraal onder afbeelding, desktop hoek */}
                   <div className={cn(
                     STEPS_CONFIG.step.number.wrapper,
-                    'absolute -bottom-5 md:-bottom-6',
-                    isEven ? '-right-5 md:-right-6' : '-left-5 md:-left-6'
+                    'absolute -bottom-5 left-1/2 -translate-x-1/2',
+                    'md:left-auto md:translate-x-0 md:-bottom-6',
+                    isEven ? 'md:-right-6' : 'md:-left-6'
                   )}>
                     <span className={STEPS_CONFIG.step.number.text}>{step.number}</span>
                   </div>
