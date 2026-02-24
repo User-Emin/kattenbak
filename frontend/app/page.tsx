@@ -109,7 +109,7 @@ export default function HomePage() {
                 <Link href={`/product/${productSlug}`}>
                   <button
                     className={cn(
-                      'relative overflow-hidden group inline-flex items-center gap-2 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]',
+                      'relative overflow-hidden group inline-flex items-center gap-2 rounded-full text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]',
                       (DESIGN_SYSTEM.layout.hero as { ctaButtonPadding?: string }).ctaButtonPadding ?? 'px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4',
                       (DESIGN_SYSTEM.layout.hero as { ctaButtonFontSize?: string }).ctaButtonFontSize ?? 'text-sm sm:text-base md:text-lg'
                     )}
@@ -184,6 +184,9 @@ export default function HomePage() {
 
       {/* ✅ VARIANTEN SECTIE: Direct na hero */}
       <ProductVariantsSection />
+
+      {/* ✅ WITRUIMTE: Ruimte tussen varianten en zigzag */}
+      <div className="py-8 md:py-14" />
 
       {/* ✅ PRODUCT USP FEATURES: Zigzag met productvoordelen */}
       <ProductUspFeatures product={product} />
