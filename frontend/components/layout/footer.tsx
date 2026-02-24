@@ -185,10 +185,10 @@ export function Footer() {
                 className="pt-2"
                 style={{
                   fontSize: DESIGN_SYSTEM.typography.fontSize.xs,
-                  color: DESIGN_SYSTEM.colors.text.inverse, // ✅ ZWART/WIT: Was gray[500], nu wit (consistent met footer)
+                  color: DESIGN_SYSTEM.colors.text.inverse,
                 }}
               >
-                Ma-Vr: 9:00 - 17:00
+                {DESIGN_SYSTEM.contact.address}
               </li>
               {/* ✅ SEO: Externe links voor link building */}
               <li className="pt-2">

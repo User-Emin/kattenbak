@@ -111,11 +111,12 @@ export default function ContactPage() {
           <div className="flex flex-col items-center text-center bg-gray-50 rounded-2xl px-8 py-10 transition-shadow hover:shadow-sm">
             <div className="w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-sm mb-5">
               <svg className="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h3 className="text-base font-semibold mb-2 text-gray-900 tracking-wide uppercase text-xs">Openingstijden</h3>
-            <p className="text-gray-600 font-medium text-sm">Ma–Vr: 9:00 – 17:00</p>
+            <h3 className="text-base font-semibold mb-2 text-gray-900 tracking-wide uppercase text-xs">Adres</h3>
+            <p className="text-gray-600 font-medium text-sm">Wateringweg 1, Haarlem</p>
           </div>
         </div>
 

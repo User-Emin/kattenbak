@@ -503,6 +503,7 @@ export const DESIGN_SYSTEM = {
    */
   contact: {
     email: 'info@catsupply.nl' as const,
+    address: 'Wateringweg 1, Haarlem' as const,
   }
 } as const;
 
