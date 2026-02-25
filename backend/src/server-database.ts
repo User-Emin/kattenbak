@@ -193,7 +193,8 @@ app.post('/api/v1/track', (req: Request, res: Response) => {
   const { path } = req.body as { path?: string };
   if (path && typeof path === 'string' && path.length < 200) {
     const { recordRequest } = require('./services/analytics.service');
-    recordRequest(path, true);
+    const ua = req.get('user-agent') ?? '';
+    recordRequest(path, true, ua);
   }
   res.status(204).end();
 });

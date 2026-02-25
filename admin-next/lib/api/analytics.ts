@@ -19,6 +19,16 @@ export interface PageStat {
   count: number;
 }
 
+export interface DeviceStat {
+  type: 'mobile' | 'tablet' | 'desktop';
+  count: number;
+}
+
+export interface BrowserStat {
+  name: string;
+  count: number;
+}
+
 export interface AnalyticsSnapshot {
   activeNow: number;
   requestsPerMinute: number;
@@ -28,6 +38,8 @@ export interface AnalyticsSnapshot {
   hourlyBuckets: HourlyBucket[];
   uptimeSince: string;
   totalRequests: number;
+  devices: DeviceStat[];
+  browsers: BrowserStat[];
 }
 
 // ─── REST snapshot ────────────────────────────────────────────────────────────
@@ -46,7 +58,6 @@ export function getAnalyticsStreamUrl(): string {
     ? localStorage.getItem('admin_token') ?? ''
     : '';
 
-  // Bepaal base URL via zelfde logica als apiClient
   const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
   let base: string;
 

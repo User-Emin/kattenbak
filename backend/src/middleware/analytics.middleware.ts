@@ -1,7 +1,8 @@
 /**
  * ANALYTICS MIDDLEWARE - Lichte request tracking
- * - Registreert alleen pad en of het een publieke route is
- * - Geen IP, geen user-agent, geen PII
+ * - Registreert pad, of het een publieke route is, én geanonimiseerd device/browser type
+ * - User-agent wordt DIRECT verwerkt naar type (mobile/desktop/browser) — nooit opgeslagen
+ * - Geen IP, geen raw UA, geen PII
  * - Slaat admin-API calls op als 'apiRequests', publieke routes als 'pageViews'
  */
 
@@ -44,7 +45,9 @@ export function analyticsMiddleware(req: Request, _res: Response, next: NextFunc
 
   // Sla alleen op als het een bekende route is
   if (isPublic || path.startsWith('/api/v1/')) {
-    recordRequest(path, isPublic);
+    // User-agent alleen doorgeven voor publieke routes (device/browser detectie)
+    const ua = isPublic ? (req.get('user-agent') ?? '') : '';
+    recordRequest(path, isPublic, ua);
   }
 
   next();

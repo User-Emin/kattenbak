@@ -25,8 +25,12 @@ import {
   RefreshCw,
   Wifi,
   WifiOff,
+  Monitor,
+  Smartphone,
+  Tablet,
+  Chrome,
 } from 'lucide-react';
-import { getAnalyticsStreamUrl, type AnalyticsSnapshot } from '@/lib/api/analytics';
+import { getAnalyticsStreamUrl, type AnalyticsSnapshot, type DeviceStat, type BrowserStat } from '@/lib/api/analytics';
 
 // ─── Constanten ───────────────────────────────────────────────────────────────
 
@@ -41,6 +45,8 @@ const EMPTY_SNAPSHOT: AnalyticsSnapshot = {
   hourlyBuckets: [],
   uptimeSince: new Date().toISOString(),
   totalRequests: 0,
+  devices: [],
+  browsers: [],
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -55,6 +61,11 @@ function formatUptime(since: string): string {
 
 function formatNumber(n: number): string {
   return n.toLocaleString('nl-NL');
+}
+
+function calcPercent(val: number, total: number): number {
+  if (total === 0) return 0;
+  return Math.round((val / total) * 100);
 }
 
 // ─── Mini bar chart ───────────────────────────────────────────────────────────
@@ -81,7 +92,6 @@ function BarChart({ data }: { data: AnalyticsSnapshot['hourlyBuckets'] }) {
               }`}
               style={{ height: `${height}%` }}
             />
-            {/* Label elke 6 uur */}
             {i % 6 === 0 && (
               <span className="text-[9px] text-muted-foreground leading-none">
                 {bucket.label}
@@ -125,6 +135,118 @@ function StatCard({
   );
 }
 
+// ─── Device icon helper ───────────────────────────────────────────────────────
+
+function DeviceIcon({ type }: { type: DeviceStat['type'] }) {
+  if (type === 'mobile') return <Smartphone className="h-4 w-4 text-muted-foreground" />;
+  if (type === 'tablet') return <Tablet className="h-4 w-4 text-muted-foreground" />;
+  return <Monitor className="h-4 w-4 text-muted-foreground" />;
+}
+
+const DEVICE_LABELS: Record<DeviceStat['type'], string> = {
+  desktop: 'Desktop',
+  mobile: 'Mobiel',
+  tablet: 'Tablet',
+};
+
+// ─── Progress bar ─────────────────────────────────────────────────────────────
+
+function ProgressBar({ percent }: { percent: number }) {
+  return (
+    <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
+      <div
+        className="bg-primary h-1.5 rounded-full transition-all duration-500"
+        style={{ width: `${percent}%` }}
+      />
+    </div>
+  );
+}
+
+// ─── Devices kaart ────────────────────────────────────────────────────────────
+
+function DevicesCard({ devices }: { devices: DeviceStat[] }) {
+  const total = devices.reduce((s, d) => s + d.count, 0);
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base flex items-center gap-2">
+          <Monitor className="h-4 w-4" />
+          Apparaten vandaag
+        </CardTitle>
+        <CardDescription>Op basis van publieke pageviews</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {total === 0 ? (
+          <p className="text-sm text-muted-foreground">Nog geen data beschikbaar.</p>
+        ) : (
+          <ul className="space-y-3">
+            {devices.map(d => {
+              const pct = calcPercent(d.count, total);
+              return (
+                <li key={d.type} className="space-y-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2">
+                      <DeviceIcon type={d.type} />
+                      <span>{DEVICE_LABELS[d.type]}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground text-xs">{pct}%</span>
+                      <Badge variant="secondary">{formatNumber(d.count)}</Badge>
+                    </div>
+                  </div>
+                  <ProgressBar percent={pct} />
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+// ─── Browsers kaart ───────────────────────────────────────────────────────────
+
+function BrowsersCard({ browsers }: { browsers: BrowserStat[] }) {
+  const total = browsers.reduce((s, b) => s + b.count, 0);
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base flex items-center gap-2">
+          <Chrome className="h-4 w-4" />
+          Browsers vandaag
+        </CardTitle>
+        <CardDescription>Op basis van publieke pageviews</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {total === 0 ? (
+          <p className="text-sm text-muted-foreground">Nog geen data beschikbaar.</p>
+        ) : (
+          <ul className="space-y-3">
+            {browsers.slice(0, 6).map(b => {
+              const pct = calcPercent(b.count, total);
+              return (
+                <li key={b.name} className="space-y-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <span>{b.name}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground text-xs">{pct}%</span>
+                      <Badge variant="secondary">{formatNumber(b.count)}</Badge>
+                    </div>
+                  </div>
+                  <ProgressBar percent={pct} />
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 // ─── Hoofdpagina ──────────────────────────────────────────────────────────────
 
 export default function AnalyticsPage() {
@@ -136,7 +258,6 @@ export default function AnalyticsPage() {
   const reconnectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const connect = useCallback(() => {
-    // Sluit bestaande verbinding
     esRef.current?.close();
 
     const url = getAnalyticsStreamUrl();
@@ -263,7 +384,13 @@ export default function AnalyticsPage() {
         </CardContent>
       </Card>
 
-      {/* Onderste rij: Top pagina's + meta */}
+      {/* Apparaten + Browsers */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <DevicesCard devices={snapshot.devices} />
+        <BrowsersCard browsers={snapshot.browsers} />
+      </div>
+
+      {/* Onderste rij: Top pagina's + server info */}
       <div className="grid gap-4 md:grid-cols-2">
         {/* Top pagina's */}
         <Card>

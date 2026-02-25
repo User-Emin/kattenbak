@@ -1,8 +1,8 @@
 /**
  * ANALYTICS SERVICE - Privacy-compliant in-memory traffic tracker
  * - Geen PII opgeslagen: geen IPs, geen emails, geen usernames
- * - Alleen geanonimiseerde pad-counts en tijdsbuckets
- * - GDPR-vriendelijk: uitsluitend aggregeerde data
+ * - User-agent wordt ALLEEN gebruikt om geanonimiseerd device/browser type af te leiden
+ * - GDPR-vriendelijk: uitsluitend aggregeerde telcijfers
  * - Multi-worker aggregatie via gedeeld bestandssysteem
  */
 
@@ -23,8 +23,18 @@ export interface PageStat {
   count: number;
 }
 
+export interface DeviceStat {
+  type: 'mobile' | 'tablet' | 'desktop';
+  count: number;
+}
+
+export interface BrowserStat {
+  name: string;
+  count: number;
+}
+
 export interface AnalyticsSnapshot {
-  activeNow: number;           // verzoeken in laatste 5 minuten
+  activeNow: number;           // unieke bezoekers-sessies in laatste 5 minuten
   requestsPerMinute: number;   // verzoeken in afgelopen minuut
   pageViewsToday: number;      // totale paginaviews vandaag
   apiRequestsToday: number;    // totale API requests vandaag
@@ -32,13 +42,16 @@ export interface AnalyticsSnapshot {
   hourlyBuckets: HourlyBucket[]; // laatste 24 uur per uur
   uptimeSince: string;         // ISO timestamp start analytics
   totalRequests: number;       // totaal verzoeken seit start
+  devices: DeviceStat[];       // device type verdeling (vandaag)
+  browsers: BrowserStat[];     // browser verdeling (vandaag)
 }
 
 // ─── Intern state per worker ──────────────────────────────────────────────────
 
 const MAX_HOURLY_BUCKETS = 24;
-const ACTIVE_WINDOW_MS = 5 * 60 * 1000;
-const PERSIST_INTERVAL_MS = 15_000; // schrijf state elke 15s naar schijf
+const ACTIVE_WINDOW_MS = 5 * 60 * 1000;   // 5 minuten
+const ACTIVE_MAX_ENTRIES = 500;            // max timestamps in geheugen
+const PERSIST_INTERVAL_MS = 15_000;        // schrijf state elke 15s naar schijf
 
 // Gedeeld analytics directory (alle workers lezen/schrijven hier)
 const ANALYTICS_DIR = process.env.ANALYTICS_DIR || '/tmp/kattenbak-analytics';
@@ -54,6 +67,8 @@ interface WorkerState {
   recentTimestamps: number[];
   hourlyBuckets: Record<string, HourlyBucket>;
   pageCounts: Record<string, number>;
+  deviceCounts: Record<string, number>;   // 'mobile' | 'tablet' | 'desktop'
+  browserCounts: Record<string, number>;  // 'Chrome' | 'Firefox' etc.
   todayKey: string;
   lastUpdated: number;
 }
@@ -68,6 +83,8 @@ const state: WorkerState = {
   recentTimestamps: [],
   hourlyBuckets: {},
   pageCounts: {},
+  deviceCounts: { mobile: 0, tablet: 0, desktop: 0 },
+  browserCounts: {},
   todayKey: new Date().toISOString().slice(0, 10),
   lastUpdated: Date.now(),
 };
@@ -101,13 +118,37 @@ export function anonymizePath(rawPath: string): string {
     .replace(/\/[a-z0-9]{20,}/gi, '/:id');
 }
 
+/**
+ * Detecteer device type uit user-agent string.
+ * Verwerkt ALLEEN tot geanonimiseerd type - geen UA opgeslagen.
+ */
+function detectDeviceType(ua: string): 'mobile' | 'tablet' | 'desktop' {
+  const lower = ua.toLowerCase();
+  if (/tablet|ipad|kindle|silk|playbook/.test(lower)) return 'tablet';
+  if (/mobile|android|iphone|ipod|blackberry|windows phone|opera mini|opera mobi/.test(lower)) return 'mobile';
+  return 'desktop';
+}
+
+/**
+ * Detecteer browser uit user-agent string.
+ * Verwerkt ALLEEN tot geanonimiseerd naam - geen UA opgeslagen.
+ */
+function detectBrowser(ua: string): string {
+  if (/edg\//i.test(ua)) return 'Edge';
+  if (/opr\/|opera/i.test(ua)) return 'Opera';
+  if (/firefox\/\d/i.test(ua)) return 'Firefox';
+  if (/chrome\/\d/i.test(ua)) return 'Chrome';
+  if (/safari\/\d/i.test(ua) && !/chrome/i.test(ua)) return 'Safari';
+  if (/msie|trident/i.test(ua)) return 'IE';
+  return 'Overig';
+}
+
 // ─── Persistentie ─────────────────────────────────────────────────────────────
 
 function persistState(): void {
   try {
     const tmp = WORKER_FILE + '.tmp';
     writeFileSync(tmp, JSON.stringify(state), 'utf8');
-    // Atomische rename (POSIX garanteert atomiciteit)
     const { renameSync } = require('fs');
     renameSync(tmp, WORKER_FILE);
   } catch {
@@ -125,7 +166,7 @@ process.on('exit', () => {
 
 // ─── Kernfunctie: registreer een verzoek ──────────────────────────────────────
 
-export function recordRequest(rawPath: string, isPublic: boolean): void {
+export function recordRequest(rawPath: string, isPublic: boolean, userAgent?: string): void {
   const now = Date.now();
   const date = new Date(now);
 
@@ -134,6 +175,8 @@ export function recordRequest(rawPath: string, isPublic: boolean): void {
   if (dayKey !== state.todayKey) {
     state.todayKey = dayKey;
     state.pageCounts = {};
+    state.deviceCounts = { mobile: 0, tablet: 0, desktop: 0 };
+    state.browserCounts = {};
   }
 
   state.totalRequests++;
@@ -147,11 +190,15 @@ export function recordRequest(rawPath: string, isPublic: boolean): void {
   }
   state.minuteRequests++;
 
-  // Actieve bezoekers (5-min venster)
+  // Actieve bezoekers (5-min venster) - begrensd geheugengebruik
   state.recentTimestamps.push(now);
-  const cutoff = now - ACTIVE_WINDOW_MS;
-  if (state.recentTimestamps.length > 600) {
+  if (state.recentTimestamps.length > ACTIVE_MAX_ENTRIES) {
+    const cutoff = now - ACTIVE_WINDOW_MS;
     state.recentTimestamps = state.recentTimestamps.filter(t => t >= cutoff);
+    // Als nog steeds te groot, trim de oudste entries
+    if (state.recentTimestamps.length > ACTIVE_MAX_ENTRIES) {
+      state.recentTimestamps = state.recentTimestamps.slice(-ACTIVE_MAX_ENTRIES);
+    }
   }
 
   // Uurlijkse buckets
@@ -170,24 +217,33 @@ export function recordRequest(rawPath: string, isPublic: boolean): void {
     state.hourlyBuckets[hourKey].apiRequests++;
   }
 
-  // Paginatelling
+  // Paginatelling (alleen publieke paden)
   if (isPublic) {
     const anonPath = anonymizePath(rawPath);
     state.pageCounts[anonPath] = (state.pageCounts[anonPath] ?? 0) + 1;
+
+    // Device & browser tracking (alleen vanuit public pageviews)
+    if (userAgent && userAgent.length > 0) {
+      const device = detectDeviceType(userAgent);
+      state.deviceCounts[device] = (state.deviceCounts[device] ?? 0) + 1;
+
+      const browser = detectBrowser(userAgent);
+      state.browserCounts[browser] = (state.browserCounts[browser] ?? 0) + 1;
+    }
   }
 }
 
 // ─── Multi-worker aggregatie ──────────────────────────────────────────────────
 
 function readAllWorkerStates(): WorkerState[] {
-  const states: WorkerState[] = [state]; // Eigen worker altijd meenemen
+  const states: WorkerState[] = [state];
 
   try {
     const files = readdirSync(ANALYTICS_DIR).filter(
       f => f.startsWith('worker_') && f.endsWith('.json') && f !== `worker_${process.pid}.json`
     );
 
-    const staleThreshold = Date.now() - 60_000; // Bestanden ouder dan 1 min overslaan
+    const staleThreshold = Date.now() - 60_000;
 
     for (const file of files) {
       try {
@@ -196,7 +252,6 @@ function readAllWorkerStates(): WorkerState[] {
         if (ws.lastUpdated > staleThreshold) {
           states.push(ws);
         } else {
-          // Verwijder verouderd worker bestand
           try { unlinkSync(join(ANALYTICS_DIR, file)); } catch { /* ignore */ }
         }
       } catch {
@@ -216,14 +271,12 @@ function buildHourlyBuckets(workerStates: WorkerState[]): HourlyBucket[] {
   const now = new Date();
   const aggregated: Record<string, HourlyBucket> = {};
 
-  // Initialiseer laatste 24 uur
   for (let i = MAX_HOURLY_BUCKETS - 1; i >= 0; i--) {
     const d = new Date(now.getTime() - i * 3_600_000);
     const key = getHourKey(d);
     aggregated[key] = { hour: key, label: getHourLabel(key), pageViews: 0, apiRequests: 0 };
   }
 
-  // Aggregeer over alle workers
   for (const ws of workerStates) {
     for (const [key, bucket] of Object.entries(ws.hourlyBuckets)) {
       if (aggregated[key]) {
@@ -237,7 +290,6 @@ function buildHourlyBuckets(workerStates: WorkerState[]): HourlyBucket[] {
 }
 
 export function getSnapshot(): AnalyticsSnapshot {
-  // Persisteer eigen state zodat andere workers er bij kunnen
   persistState();
 
   const workerStates = readAllWorkerStates();
@@ -264,11 +316,34 @@ export function getSnapshot(): AnalyticsSnapshot {
     .slice(0, 10)
     .map(([path, count]) => ({ path, count }));
 
-  // Aggregeer realtime metrics
+  // Aggregeer device counts over alle workers
+  const aggregatedDevices: Record<string, number> = { mobile: 0, tablet: 0, desktop: 0 };
+  for (const ws of workerStates) {
+    for (const [type, count] of Object.entries(ws.deviceCounts ?? {})) {
+      aggregatedDevices[type] = (aggregatedDevices[type] ?? 0) + count;
+    }
+  }
+  const devices: DeviceStat[] = (['desktop', 'mobile', 'tablet'] as const).map(type => ({
+    type,
+    count: aggregatedDevices[type] ?? 0,
+  }));
+
+  // Aggregeer browser counts over alle workers
+  const aggregatedBrowsers: Record<string, number> = {};
+  for (const ws of workerStates) {
+    for (const [name, count] of Object.entries(ws.browserCounts ?? {})) {
+      aggregatedBrowsers[name] = (aggregatedBrowsers[name] ?? 0) + count;
+    }
+  }
+  const browsers: BrowserStat[] = Object.entries(aggregatedBrowsers)
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, count]) => ({ name, count }));
+
+  // Realtime actieve bezoekers (requests in laatste 5 min)
   const now = Date.now();
   const cutoff = now - ACTIVE_WINDOW_MS;
   const activeNow = workerStates.reduce(
-    (sum, ws) => sum + ws.recentTimestamps.filter(t => t >= cutoff).length,
+    (sum, ws) => sum + (ws.recentTimestamps ?? []).filter(t => t >= cutoff).length,
     0
   );
   const requestsPerMinute = workerStates.reduce((sum, ws) => sum + ws.requestsPerMinute, 0);
@@ -283,5 +358,7 @@ export function getSnapshot(): AnalyticsSnapshot {
     hourlyBuckets,
     uptimeSince: state.uptimeSince,
     totalRequests,
+    devices,
+    browsers,
   };
 }
